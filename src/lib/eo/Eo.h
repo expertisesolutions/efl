@@ -1346,6 +1346,7 @@ EAPI void
 eo2_base_data_del(const char *key);
 
 /**
+ * @def eo_parent_set
  * @brief Set the parent of an object
  * @param[in] parent the new parent.
  *
@@ -1361,6 +1362,7 @@ EAPI void
 eo2_parent_set(Eo *parent);
 
 /**
+ * @def eo_parent_get
  * @brief Get the parent of an object
  * @param[out] a pointer to the parent object.
  *
@@ -1371,6 +1373,7 @@ EAPI Eo *
 eo2_parent_get();
 
 /**
+ * @def eo_children_iterator_new
  * @brief Get an iterator on all childrens
  * @param obj the object to get the childrens from.
  * @return a pointer to an Eina_Iterator containing all the childrens.
@@ -1746,7 +1749,7 @@ eo2_event_callback_del(const Eo_Event_Description *desc,
          EO_CALLBACK_PRIORITY_DEFAULT, data)
 
 /**
- * @def eo_event_callback_priority_add
+ * @def eo_event_callback_array_priority_add
  * @brief Add a callback array for an event with a specific priority.
  * @param[in] array an #Eo_Callback_Array_Item of events to listen to.
  * @param[in] priority The priority of the callback.
@@ -1763,7 +1766,7 @@ eo2_event_callback_array_priority_add(const Eo_Callback_Array_Item *array,
                                       const void *user_data);
 
 /**
- * @def eo_event_callback_del
+ * @def eo_event_callback_array_del
  * @brief Del a callback array with a specific data associated to it for an event.
  * @param[in] array an #Eo_Callback_Array_Item of events to listen to.
  * @param[in] user_data The data to compare.
