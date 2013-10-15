@@ -10,6 +10,7 @@ typedef struct
 static void
 _inc(Eo *obj, void *obj_data)
 {
+  /* puts("eo2_inherit::inc\n"); */
    Private_Data *data = (Private_Data *) obj_data;
 
    eo2_do_super(obj, EO2_INHERIT_CLASS, eo2_inc());
@@ -19,6 +20,7 @@ _inc(Eo *obj, void *obj_data)
 static int
 _get(Eo *obj EINA_UNUSED, void *obj_data)
 {
+  /* puts("eo2_inherit::get\n"); */
    const Private_Data *data = (Private_Data *) obj_data;
 
    return data->y;

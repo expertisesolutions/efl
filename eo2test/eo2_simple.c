@@ -12,6 +12,7 @@ typedef struct
 static void
 _inc(Eo *obj EINA_UNUSED, void *obj_data)
 {
+  /* puts("eo2_simple::inc\n"); */
    Private_Data *data = (Private_Data *) obj_data;
 
    data->x += 1;
@@ -21,6 +22,7 @@ EAPI EO2_VOID_FUNC_BODY(eo2_inc);
 static int
 _get(Eo *obj EINA_UNUSED, void *obj_data)
 {
+  /* puts("eo2_simple::get\n"); */
    const Private_Data *data = (Private_Data *) obj_data;
 
    return data->x;
@@ -30,6 +32,7 @@ EAPI EO2_FUNC_BODY(eo2_get, int, -1);
 static void
 _set(Eo *obj EINA_UNUSED, void *obj_data, int x)
 {
+  /* puts("eo2_simple::set\n"); */
    Private_Data *data = (Private_Data *) obj_data;
    data->x = x;
 }
