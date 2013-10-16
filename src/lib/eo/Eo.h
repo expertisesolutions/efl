@@ -1842,6 +1842,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * The class type for the Eo base class.
  */
 #define EO3_BASE_CLASS eo2_base_class, DUMMY
+#define EO3_NO_BASE_CLASS EO3_PREPROCESSOR_eo3_null_base_class, DUMMY
 
 /**
  * @def EO3_FUNCTION
@@ -1860,6 +1861,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @param ... list of parameters.
  */
 #define EO3_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, __VA_ARGS__)
+
+#define EO3_PREPROCESSOR_eo3_null_base_class_get() NULL
+
+#define EO3_FUNCTION(NAME, ...) NORMAL_FUNCTION(NAME, __VA_ARGS__)
+#define EO3_CONSTRUCTOR(NAME, IMPL, ...) NORMAL_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
 
 /**
  * @def EO3_CONSTRUCTOR
@@ -1943,14 +1949,28 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));
 
 #define EO3_DECLARE_FUNCTION_ELEM(I, F) EO3_DECLARE_FUNCTION_ ## F
-
 #define EO3_DECLARE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DECLARE_FUNCTION_ELEM, __VA_ARGS__)
+
+#define EO3_DECLARE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, ...)       \
+  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                        \
+    (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
+
+#define EO3_DECLARE_INTERFACE_FUNCTION_NORMAL_EVENT(NAME, ...)    \
+  EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
+
+#define EO3_DECLARE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DECLARE_INTERFACE_FUNCTION_ ## F
+#define EO3_DECLARE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DECLARE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)
 
 #define EO3_DECLARE_CLASS_1(CLASS_NAME, ...)                          \
   EAPI const Eo_Class* CLASS_NAME ## _get(void);                      \
   EO3_DECLARE_FUNCTIONS(__VA_ARGS__)
 
+#define EO3_DECLARE_INTERFACE_1(CLASS_NAME, ...)                      \
+  EAPI const Eo_Class* CLASS_NAME ## _get(void);                      \
+  EO3_DECLARE_INTERFACE_FUNCTIONS(__VA_ARGS__)
+
 #define EO3_DECLARE_CLASS(CLASS) EO3_DECLARE_CLASS_1(CLASS)
+#define EO3_DECLARE_INTERFACE(CLASS) EO3_DECLARE_INTERFACE_1(CLASS)
 
 #define EO3_GET_CLASS_1(CLASS, ...) CLASS ## _get()
 #define EO3_GET_CLASS(CLASS) EO3_GET_CLASS_1(CLASS)
@@ -1971,7 +1991,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DEFINE_INTERFACE_FUNCTION_DUMMY
 #define EO3_DEFINE_INTERFACE_FUNCTION_OVERRIDE_FUNCTION(NAME, IMPL, ...)
 
-#define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, IMPL, ...)    \
+#define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL(NAME, ...)    \
   EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                \
        (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__))                  \
   {                                                             \
@@ -1991,6 +2011,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
                 EO3_FUNCTION_ENUM_ARGS(__VA_ARGS__));                 \
   }
 
+#define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, IMPL, ...)  \
+  EO3_DEFINE_INTERFACE_FUNCTION_NORMAL(NAME, __VA_ARGS__)
+
 #define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL_EVENT(NAME, ...)
 
 #define EO3_DEFINE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_FUNCTION_ ## F
@@ -1999,7 +2022,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_PARENTS_GET_CLASS_ELEM(I, P) EO_PREPROCESSOR_COMMA() EO3_GET_CLASS(EO3_REM P)
 #define EO3_PARENTS_GET_CLASS(...) EO_PREPROCESSOR_FOR_EACH(EO3_PARENTS_GET_CLASS_ELEM, __VA_ARGS__)
 
-#define EO3_DEFINE_CLASS_1(PRIVATE_TYPE, PARENTS_CLASS, CLASS_NAME, ...)      \
+#define EO3_DEFINE_CLASS_1(PRIVATE_TYPE, CLASS_TYPE, PARENTS_CLASS, CLASS_NAME, ...) \
   EO3_DEFINE_INTERFACE_FUNCTIONS(__VA_ARGS__)                           \
   EAPI const Eo_Class *                                                 \
   CLASS_NAME ## _get(void)                                              \
@@ -2028,7 +2051,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
       "Eo2 Simple",                                                     \
-      EO_CLASS_TYPE_REGULAR,                                            \
+      CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
       NULL,                                                             \
       sizeof(PRIVATE_TYPE),                                             \
@@ -2046,8 +2069,76 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     return _my_class;                                                   \
   }
 
-#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)  \
-  EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_DUMMY
+/* #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_OVERRIDE_FUNCTION(NAME, ...) \
+   EO2_OP_FUNC_OVERRIDE(IMPL, NAME),*/
+
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_NORMAL_FUNCTION(NAME, ...) \
+  EO2_OP_FUNC(NULL, NAME, "Description"),
+// #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_NORMAL_EVENT(NAME, ...)
+
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ ## F
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM, __VA_ARGS__)
+
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, ...)  \
+  EO3_DEFINE_INTERFACE_FUNCTION_NORMAL(NAME, __VA_ARGS__)
+
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_NORMAL_EVENT(NAME, ...)
+
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ ## F
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)
+
+#define EO3_DEFINE_INTERFACE_1(CLASS_TYPE, PARENTS_CLASS, CLASS_NAME, ...) \
+  EO3_DEFINE_INTERFACE_INTERFACE_FUNCTIONS(__VA_ARGS__)                 \
+  EAPI const Eo_Class *                                                 \
+  CLASS_NAME ## _get(void)                                              \
+  {                                                                     \
+    static volatile char lk_init = 0;                                   \
+    static Eina_Lock _my_lock;                                          \
+    static const Eo_Class * volatile _my_class = NULL;                  \
+    if (EINA_LIKELY(!!_my_class)) return _my_class;                     \
+                                                                        \
+    eina_lock_take(&_eo_class_creation_lock);                           \
+    if (!lk_init)                                                       \
+      eina_lock_new(&_my_lock);                                         \
+    if (lk_init < 2) eina_lock_take(&_my_lock);                         \
+    if (!lk_init)                                                       \
+      lk_init = 1;                                                      \
+    else                                                                \
+    {                                                                   \
+      if (lk_init < 2) eina_lock_release(&_my_lock);                    \
+      eina_lock_release(&_eo_class_creation_lock);                      \
+      return _my_class;                                                 \
+    }                                                                   \
+    static Eo2_Op_Description op_descs [] = {                           \
+      EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(__VA_ARGS__)                 \
+      EO2_OP_SENTINEL                                                   \
+    };                                                                  \
+    static const Eo_Class_Description class_desc = {                    \
+      EO2_VERSION,                                                      \
+      "Eo2 Simple",                                                     \
+      CLASS_TYPE,                                                       \
+      EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
+      NULL,                                                             \
+      0,                                                                \
+      NULL,                                                             \
+      NULL                                                              \
+    };                                                                  \
+    eina_lock_release(&_eo_class_creation_lock);                        \
+    _my_class = eo_class_new(&class_desc PARENTS_CLASS, NULL); \
+    eina_lock_release(&_my_lock);                                       \
+                                                                        \
+    eina_lock_take(&_eo_class_creation_lock);                           \
+    eina_lock_free(&_my_lock);                                          \
+    lk_init = 2;                                                        \
+    eina_lock_release(&_eo_class_creation_lock);                        \
+    return _my_class;                                                   \
+  }
+
+#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
+  EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+#define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
+  EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 #ifdef __cplusplus
 }
