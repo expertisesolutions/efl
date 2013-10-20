@@ -33,7 +33,7 @@ _set(Eo *obj EINA_UNUSED, Private_Data *data, int x)
 static void
 _constructor(Eo *obj, Private_Data *data)
 {
-   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_INTERFACE_CLASS), simple_constructor(66));
+   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_INTERFACE_CLASS), eo2_constructor());
 
    data->y = 68;
 }
@@ -44,4 +44,4 @@ _destructor(Eo *obj, void *obj_data EINA_UNUSED)
   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_INTERFACE_CLASS), eo2_destructor());
 }
 
-EO3_DEFINE_CLASS(EO3_INHERIT_INTERFACE_CLASS, ((EO3_BASE_CLASS)(EO3_SIMPLE_INTERFACE)), Private_Data)
+EO3_DEFINE_CLASS(EO3_INHERIT_INTERFACE_CLASS, ((EO3_BASE_CLASS),(EO3_SIMPLE_INTERFACE)), Private_Data)
