@@ -1843,12 +1843,12 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_BASE_CLASS eo2_base_class, DUMMY
 
-// /**
-//  * @def EO3_NO_BASE_CLASS
-//  * The class type when there's no base class, for example when defining interfaces
-//  * @see EO3_DEFINE_INTERFACE
-//  */
-// #define EO3_NO_BASE_CLASS EO3_PREPROCESSOR_eo3_null_base_class, DUMMY
+/**
+ * @def EO3_NO_BASE_CLASS
+ * The class type when there's no base class, for example when defining interfaces
+ * @see EO3_DEFINE_INTERFACE
+ */
+#define EO3_NO_BASE_CLASS EO3_PREPROCESSOR_eo3_null_base_class, DUMMY
 
 // /**
 //  * @def EO3_FUNCTION
