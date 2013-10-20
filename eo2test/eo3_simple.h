@@ -3,14 +3,14 @@
 
 #include "Eo.h"
 
-#define EO3_SIMPLE_CLASS eo3_simple                                  \
-    , EO3_CONSTRUCTOR(simple_constructor, _constructor, int)         \
-    , EO3_DESTRUCTOR(_destructor)                                    \
-    , EO3_FUNCTION(simple_inc, _inc, void)                           \
-    , EO3_FUNCTION(simple_get, _get, int)                            \
-    , EO3_FUNCTION(simple_set, _set, void, int)                      \
-    , EO3_FUNCTION(simple_virtual, _set, void, int)                  \
-    , EO3_EVENT(simple_set_event, int)
+#define EO3_SIMPLE_CLASS eo3_simple                              \
+    , constructor(simple_constructor, _constructor, int)         \
+    , destructor(_destructor)                                    \
+    , function(simple_inc, _inc, void)                           \
+    , function(simple_get, _get, int)                            \
+    , function(simple_set, _set, void, int)                      \
+    , function(simple_virtual, _set, void, int)                  \
+    , event(simple_set_event, int)
 
 EO3_DECLARE_CLASS(EO3_SIMPLE_CLASS)
 

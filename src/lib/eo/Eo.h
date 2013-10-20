@@ -1842,105 +1842,157 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * The class type for the Eo base class.
  */
 #define EO3_BASE_CLASS eo2_base_class, DUMMY
-#define EO3_NO_BASE_CLASS EO3_PREPROCESSOR_eo3_null_base_class, DUMMY
+
+// /**
+//  * @def EO3_NO_BASE_CLASS
+//  * The class type when there's no base class, for example when defining interfaces
+//  * @see EO3_DEFINE_INTERFACE
+//  */
+// #define EO3_NO_BASE_CLASS EO3_PREPROCESSOR_eo3_null_base_class, DUMMY
+
+// /**
+//  * @def EO3_FUNCTION
+//  * @brief declare a new function.
+//  * @param name Name of the function.
+//  * @param impl Implement of the function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_FUNCTION(NAME, ...) NORMAL_FUNCTION(NAME, __VA_ARGS__)
+
+// /**
+//  * @def EO3_FUNCTION_OVERRIDE
+//  * @brief declare a overriding function.
+//  * @param name Name of overriding function.
+//  * @param impl Implement of the function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, __VA_ARGS__)
 
 /**
- * @def EO3_FUNCTION
- * @brief declare a new function.
- * @param name Name of the function.
- * @param impl Implement of the function.
- * @param ... list of parameters.
- */
-#define EO3_FUNCTION(NAME, IMPL, ...) NORMAL_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
-/**
- * @def EO3_FUNCTION_OVERRIDE
- * @brief declare a overriding function.
- * @param name Name of overriding function.
- * @param impl Implement of the function.
- * @param ... list of parameters.
- */
-#define EO3_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
+ * @internal
+ * */
 #define EO3_PREPROCESSOR_eo3_null_base_class_get() NULL
 
-#define EO3_FUNCTION(NAME, ...) NORMAL_FUNCTION(NAME, __VA_ARGS__)
-#define EO3_CONSTRUCTOR(NAME, IMPL, ...) NORMAL_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
+// /**
+//  * @def EO3_CONSTRUCTOR
+//  * @brief declare a constructor class function.
+//  * @param name Name of constructor
+//  * @param impl Implement of the function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_CONSTRUCTOR(NAME, IMPL, ...) NORMAL_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
+
+// /**
+//  * @def EO3_CONSTRUCTOR_OVERRIDE
+//  * @brief declare a overriding class function.
+//  * @param name Name of overriding function.
+//  * @param impl Implement of the function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_CONSTRUCTOR_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
+
+// /**
+//  * @def EO3_DESTRUCTOR
+//  * @brief declare a destructor class function.
+//  * @param name Name of overriding function.
+//  * @param impl Implement of the function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_DESTRUCTOR(IMPL) OVERRIDE_FUNCTION(eo2_destructor, IMPL, void)
+
+// /**
+//  * @def EO3_CLASS_FUNCTION
+//  * @brief declare a new class function.
+//  * @param name Name of the class function.
+//  * @param impl Implement of the class function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_CLASS_FUNCTION(NAME, IMPL, ...) NORMAL_CLASS_FUNCTION(NAME, IMPL, __VA_ARGS__)
+
+// /**
+//  * @def EO3_CLASS_FUNCTION_OVERRIDE
+//  * @brief declare a overriding class function.
+//  * @param name Name of overriding class function.
+//  * @param impl Implement of the class function.
+//  * @param ... list of parameters.
+//  */
+// #define EO3_CLASS_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_CLASS_FUNCTION(NAME, IMPL, __VA_ARGS__)
+
+
+// /**
+//  * @def EO3_EVENT
+//  * @brief declare a event 
+//  * @param name Name of event 
+//  * @param ... list of parameters.
+//  */
+// #define EO3_EVENT(NAME, ...) NORMAL_EVENT(NAME, __VA_ARGS__)
 
 /**
- * @def EO3_CONSTRUCTOR
- * @brief declare a constructor class function.
- * @param name Name of constructor
- * @param impl Implement of the function.
- * @param ... list of parameters.
+ * @internal
  */
-#define EO3_CONSTRUCTOR(NAME, IMPL, ...) NORMAL_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
-
-/**
- * @def EO3_CONSTRUCTOR_OVERRIDE
- * @brief declare a overriding class function.
- * @param name Name of overriding function.
- * @param impl Implement of the function.
- * @param ... list of parameters.
- */
-#define EO3_CONSTRUCTOR_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
-
-/**
- * @def EO3_DESTRUCTOR
- * @brief declare a destructor class function.
- * @param name Name of overriding function.
- * @param impl Implement of the function.
- * @param ... list of parameters.
- */
-#define EO3_DESTRUCTOR(IMPL) OVERRIDE_FUNCTION(eo2_destructor, IMPL, void)
-
-/**
- * @def EO3_CLASS_FUNCTION
- * @brief declare a new class function.
- * @param name Name of the class function.
- * @param impl Implement of the class function.
- * @param ... list of parameters.
- */
-#define EO3_CLASS_FUNCTION(NAME, IMPL, ...) NORMAL_CLASS_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
-/**
- * @def EO3_CLASS_FUNCTION_OVERRIDE
- * @brief declare a overriding class function.
- * @param name Name of overriding class function.
- * @param impl Implement of the class function.
- * @param ... list of parameters.
- */
-#define EO3_CLASS_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_CLASS_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
-
-/**
- * @def EO3_EVENT
- * @brief declare a event 
- * @param name Name of event 
- * @param ... list of parameters.
- */
-#define EO3_EVENT(NAME, ...) NORMAL_EVENT(NAME, __VA_ARGS__)
-
-
-
 #define EO3_FUNCTION_ENUM_PARAMS_ELEM(I, TYPE) EO_PREPROCESSOR_COMMA_IF(EO_PREPROCESSOR_DEC(I)) EO_PREPROCESSOR_IF(I, TYPE EO_PREPROCESSOR_CONCAT(arg, I) EO_PREPROCESSOR_EMPTY, EO_PREPROCESSOR_EMPTY)() 
 
+/**
+ * @internal
+ */
 #define EO3_FUNCTION_ENUM_PARAMS_SIZE(...) EO_PREPROCESSOR_DEC(EO_PREPROCESSOR_VARIADIC_SIZE(__VA_ARGS__))
+
+/**
+ * @internal
+ */
 #define EO3_FUNCTION_ENUM_PARAMS(...) EO_PREPROCESSOR_FOR_EACH_INNER(EO3_FUNCTION_ENUM_PARAMS_ELEM, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_FUNCTION_ENUM_ARGS_ELEM(I, TYPE) EO_PREPROCESSOR_COMMA_IF(EO_PREPROCESSOR_DEC(I)) EO_PREPROCESSOR_IF(I, EO_PREPROCESSOR_CONCAT(arg, I) EO_PREPROCESSOR_EMPTY, EO_PREPROCESSOR_EMPTY)()
+
+/**
+ * @internal
+ */
 #define EO3_FUNCTION_ENUM_ARGS(...) EO_PREPROCESSOR_FOR_EACH_INNER(EO3_FUNCTION_ENUM_ARGS_ELEM, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_FUNCTION_GET_RETURN(R, ...) R
 
-#define EO3_DECLARE_FUNCTION_NORMAL_FUNCTION(NAME, IMPL, ...)   \
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_function(NAME, IMPL, ...)          \
   EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                \
     (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
 
-#define EO3_DECLARE_FUNCTION_DUMMY
-#define EO3_DECLARE_FUNCTION_OVERRIDE_FUNCTION(NAME, IMPL, ...) 
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_constructor(NAME, IMPL, ...)       \
+  EO3_DECLARE_FUNCTION_function(NAME, IMPL, void, ## __VA_ARGS__)
 
-#define EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, ...)                 \
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_destructor(IMPL)                           \
+  EO3_DECLARE_FUNCTION_function(eo2_destructor, IMPL, void)
+
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_DUMMY
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_function_override(NAME, IMPL, ...) 
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_constructor_override(NAME, IMPL, ...) 
+
+/**
+ * @internal
+ */
+#define EO3_DECLARE_FUNCTION_event(NAME, ...)                 \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)              \
     (void (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));  \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)              \
@@ -1948,23 +2000,47 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)             \
     (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));
 
+/**
+ * @internal
+ */
 #define EO3_DECLARE_FUNCTION_ELEM(I, F) EO3_DECLARE_FUNCTION_ ## F
+/**
+ * @internal
+ */
 #define EO3_DECLARE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DECLARE_FUNCTION_ELEM, __VA_ARGS__)
 
-#define EO3_DECLARE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, ...)       \
+/**
+ * @internal
+ */
+#define EO3_DECLARE_INTERFACE_FUNCTION_function(NAME, ...)              \
   EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                        \
     (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
 
-#define EO3_DECLARE_INTERFACE_FUNCTION_NORMAL_EVENT(NAME, ...)    \
+/**
+ * @internal
+ */
+#define EO3_DECLARE_INTERFACE_FUNCTION_event(NAME, ...) \
   EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_DECLARE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DECLARE_INTERFACE_FUNCTION_ ## F
+/**
+ * @internal
+ */
 #define EO3_DECLARE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DECLARE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_DECLARE_CLASS_1(CLASS_NAME, ...)                          \
   EAPI const Eo_Class* CLASS_NAME ## _get(void);                      \
   EO3_DECLARE_FUNCTIONS(__VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_DECLARE_INTERFACE_1(CLASS_NAME, ...)                      \
   EAPI const Eo_Class* CLASS_NAME ## _get(void);                      \
   EO3_DECLARE_INTERFACE_FUNCTIONS(__VA_ARGS__)
@@ -1972,26 +2048,87 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DECLARE_CLASS(CLASS) EO3_DECLARE_CLASS_1(CLASS)
 #define EO3_DECLARE_INTERFACE(CLASS) EO3_DECLARE_INTERFACE_1(CLASS)
 
+/**
+ * @internal
+ */
 #define EO3_GET_CLASS_1(CLASS, ...) CLASS ## _get()
+
 #define EO3_GET_CLASS(CLASS) EO3_GET_CLASS_1(CLASS)
 
+/**
+ * @internal
+ */
 #define EO3_REM(...) __VA_ARGS__
 
+/**
+ * @internal
+ */
 #define EO3_DEFINE_DESCR_FUNCTION_DUMMY
-#define EO3_DEFINE_DESCR_FUNCTION_OVERRIDE_FUNCTION(NAME, IMPL, ...)    \
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_FUNCTION_function_override(NAME, IMPL, ...)    \
   EO2_OP_FUNC_OVERRIDE(IMPL, NAME),
 
-#define EO3_DEFINE_DESCR_FUNCTION_NORMAL_FUNCTION(NAME, IMPL, ...) \
-  EO2_OP_FUNC(IMPL, NAME, "Description"),
-#define EO3_DEFINE_DESCR_FUNCTION_NORMAL_EVENT(NAME, ...)
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_FUNCTION_constructor_override(NAME, IMPL, ...)    \
+  EO2_OP_FUNC_OVERRIDE(IMPL, NAME),
 
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_FUNCTION_function(NAME, IMPL, ...)     \
+  EO2_OP_FUNC(IMPL, NAME, "Description"),
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_FUNCTION_constructor(NAME, IMPL, ...)     \
+  EO2_OP_FUNC(IMPL, NAME, "Description"),
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_FUNCTION_destructor(IMPL)      \
+  EO2_OP_FUNC(IMPL, eo2_destructor, "Description"),
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_FUNCTION_event(NAME, ...)
+
+/**
+ * @internal
+ */
 #define EO3_DEFINE_DESCR_FUNCTION_ELEM(I, F) EO3_DEFINE_DESCR_FUNCTION_ ## F
+
+/**
+ * @internal
+ */
 #define EO3_DEFINE_DESCR_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_DESCR_FUNCTION_ELEM, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_DEFINE_INTERFACE_FUNCTION_DUMMY
-#define EO3_DEFINE_INTERFACE_FUNCTION_OVERRIDE_FUNCTION(NAME, IMPL, ...)
 
-#define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL(NAME, ...)    \
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_function_override(NAME, IMPL, ...)
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_constructor_override(NAME, IMPL, ...)
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_function(NAME, ...)    \
   EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                \
        (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__))                  \
   {                                                             \
@@ -2011,17 +2148,56 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
                 EO3_FUNCTION_ENUM_ARGS(__VA_ARGS__));                 \
   }
 
-#define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, IMPL, ...)  \
-  EO3_DEFINE_INTERFACE_FUNCTION_NORMAL(NAME, __VA_ARGS__)
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_function(NAME, IMPL, ...) \
+  EO3_DEFINE_INTERFACE_function(NAME, __VA_ARGS__)
 
-#define EO3_DEFINE_INTERFACE_FUNCTION_NORMAL_EVENT(NAME, ...)
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_destructor(IMPL)
 
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_constructor(NAME, IMPL, ...)      \
+  EO3_DEFINE_INTERFACE_FUNCTION_function(NAME, IMPL, void, ## __VA_ARGS__)
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_destructor(IMPL)
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, ...)
+
+/**
+ * @internal
+ */
 #define EO3_DEFINE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_FUNCTION_ ## F
+
+/**
+ * @internal
+ */
 #define EO3_DEFINE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_PARENTS_GET_CLASS_ELEM(I, P) EO_PREPROCESSOR_COMMA() EO3_GET_CLASS(EO3_REM P)
+
+/**
+ * @internal
+ */
 #define EO3_PARENTS_GET_CLASS(...) EO_PREPROCESSOR_FOR_EACH(EO3_PARENTS_GET_CLASS_ELEM, __VA_ARGS__)
 
+/**
+ * @internal
+ */
 #define EO3_DEFINE_CLASS_1(PRIVATE_TYPE, CLASS_TYPE, PARENTS_CLASS, CLASS_NAME, ...) \
   EO3_DEFINE_INTERFACE_FUNCTIONS(__VA_ARGS__)                           \
   EAPI const Eo_Class *                                                 \
@@ -2069,21 +2245,27 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     return _my_class;                                                   \
   }
 
+/**
+ * @internal
+ */
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_DUMMY
 /* #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_OVERRIDE_FUNCTION(NAME, ...) \
    EO2_OP_FUNC_OVERRIDE(IMPL, NAME),*/
 
-#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_NORMAL_FUNCTION(NAME, ...) \
+/**
+ * @internal
+ */
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_function(NAME, ...) \
   EO2_OP_FUNC(NULL, NAME, "Description"),
 // #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_NORMAL_EVENT(NAME, ...)
 
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ ## F
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM, __VA_ARGS__)
 
-#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_NORMAL_FUNCTION(NAME, ...)  \
-  EO3_DEFINE_INTERFACE_FUNCTION_NORMAL(NAME, __VA_ARGS__)
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_function(NAME, ...)  \
+  EO3_DEFINE_INTERFACE_function(NAME, __VA_ARGS__)
 
-#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_NORMAL_EVENT(NAME, ...)
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_event(NAME, ...)
 
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ ## F
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)

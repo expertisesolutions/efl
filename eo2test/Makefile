@@ -1,5 +1,5 @@
 CC       = gcc
-CFLAGS   = -Og -ggdb3 -std=gnu99 -Wall -Wextra
+CFLAGS   = -O0 -g -ggdb3 -std=gnu99 -Wall -Wextra
 CFLAGS_PG= -g -pg -std=gnu99 -Wall -Wextra
 INCLUDE  = -I. -I../ -I../src/lib/eo/ -I../build
 CONFIG   = -DHAVE_CONFIG_H=1 -DEFL_EO_API_SUPPORT=1 -DEFL_BETA_API_SUPPORT=1
@@ -31,6 +31,15 @@ eo2_base_class.o: ../src/lib/eo/eo2_base_class.c ../src/lib/eo/Eo.h ../src/lib/e
 	$(CC) $(CFLAGS) -fPIC -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
 
 eo3_inherit.o: eo3_inherit.c
+	$(CC) $(CFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) -save-temps $< -o $@
+
+eo3_simple.o: eo3_simple.c
+	$(CC) $(CFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) -save-temps $< -o $@
+
+eo3_interface.o: eo3_interface.c
+	$(CC) $(CFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) -save-temps $< -o $@
+
+eo3_inherit_interface.o: eo3_inherit_interface.c
 	$(CC) $(CFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) -save-temps $< -o $@
 
 libeo2.so: $(EO_OBJS)
