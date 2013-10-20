@@ -34,6 +34,14 @@ struct eo3_simple// : Base
   {
     eo_unref(_eo_raw);
   }
+  eo3_simple(eo3_simple const& other)
+    : _eo_raw(eo_ref(other._eo_raw))
+  {}
+  eo3_simple& operator=(eo3_simple const& other)
+  {
+    _eo_raw = eo_ref(other._eo_raw);
+    return *this;
+  }
 
   void simple_inc()
   {
@@ -63,199 +71,73 @@ protected:
   Eo* _eo_raw;
 };
 
-namespace efl { namespace eo { namespace detail {
+// namespace efl { namespace eo { namespace detail {
 
-template <>
-struct virtuals<eo3_simple>
-{
-  template <typename T>
-  struct type
-  {
-    virtual void simple_inc()
-    {
-      eo2_do_super(static_cast<T*>(this)->_eo_raw
-		   , static_cast<T*>(this)->_eo_class
-		   , ::simple_inc());
-    }
-    virtual int simple_get()
-    {
-      int r = 0;
-      eo2_do_super(static_cast<T*>(this)->_eo_raw
-		   , static_cast<T*>(this)->_eo_class
-		   , r = ::simple_get());
-      return r;
-    }
-    virtual void simple_set(int a0)
-    {
-      eo2_do_super(static_cast<T*>(this)->_eo_raw
-		   , static_cast<T*>(this)->_eo_class
-		   , ::simple_set(a0));
-    }
-    virtual void simple_virtual(int) = 0;
-  };
-};
-
-template <>
-struct operation_description_class_size<eo3_simple>
-{
-  static const int value = 4;
-};
-
-template <typename T>
-void funcao_simple_inc(Eo* objid EINA_UNUSED, Inherit_Private_Data* self)
-{
-  static_cast<T*>(self->this_)->simple_inc();
-}
-
-template <typename T>
-void initialize_operation_description(tag<eo3_simple>
-				      , Eo2_Op_Description* ops)
-{
-  ops[0] = {&funcao_simple_inc<T>, & ::simple_inc, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-  ops[1] = {&funcao_simple_get<T>, & ::simple_get, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-  ops[2] = {&funcao_simple_set<T>, & ::simple_set, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-  ops[3] = {&funcao_simple_virtual<T>, & ::simple_virtual, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-}
-
-
-} } }
-
-// typedef simple1_class_internal<eo::base_class> simple1_class;
-
-// struct simple1_class_virtual_members : eo::impl_base_class
+// template <>
+// struct virtuals<eo3_simple>
 // {
-//   typedef eo::base_class _base_0;
-//   explicit simple1_class_virtual_members(Eo* eo) : _base_0(eo) {}
-
-//   virtual void simple1_inc() = 0;
-//   virtual int simple1_get() = 0;
-//   virtual void simple1_set(int) = 0;
-// protected:
-//   void simple1_value_set_hook_call(int x) const
+//   template <typename T>
+//   struct type
 //   {
-//     eo_do(_eo_raw(), ::simple1_value_set_hook_call(x));
-//   }
-// };
-// // <end>
-
-// //// implementation detail (traits and meta-functions)
-// template <typename Derived, typename B0, typename B1, typename B2 ...>
-// struct inherit<Derived, B0, B1, B2, ...> : virtual_members<B0>::type, virtual_members<B1>::type, virtual_members<B2>::type, ...
-// {
-//   typedef inherit<Derived, B0, B1, B2, ...> _inherit_type;
-//   typedef typename virtual_members<B0>::type _base0;
-//   typedef typename virtual_members<B0>::type _base1;
-//   typedef typename virtual_members<B0>::type _base2;
-//   template <typename A0, typename A1, typename A2, ...>
-//   inherit(A0 a0, A1 a1, A2 a2)
-//     : _base0(instantiate_new_class<Derived>(a0, EO_GET_CLASS(B0), a1, EO_GET_CLASS(B1), a2, EO_GET_CLASS(B2), ...))
-//     , _base1(_base0::_eo_raw())
-//     , _base2(_base0::_eo_raw())
-//     ...
-//   {
-//   }
+//     virtual void simple_inc()
+//     {
+//       eo2_do_super(static_cast<T*>(this)->_eo_raw
+// 		   , static_cast<T*>(this)->_eo_class
+// 		   , ::simple_inc());
+//     }
+//     virtual int simple_get()
+//     {
+//       int r = 0;
+//       eo2_do_super(static_cast<T*>(this)->_eo_raw
+// 		   , static_cast<T*>(this)->_eo_class
+// 		   , r = ::simple_get());
+//       return r;
+//     }
+//     virtual void simple_set(int a0)
+//     {
+//       eo2_do_super(static_cast<T*>(this)->_eo_raw
+// 		   , static_cast<T*>(this)->_eo_class
+// 		   , ::simple_set(a0));
+//     }
+//     virtual void simple_virtual(int) = 0;
+//   };
 // };
 
 // template <>
-// struct virtual_members_base<simple1_class> { typedef simple1_class_virtual_members type; }
-
-// template <>
-// struct non_virtual_members_base<simple1_class> { typedef eo::base_class type; }
-
-// template <typename T>
-// struct virtual_members;
-
-// template <template <typename> C, typename T>
-// struct virtual_members<C<T> >
+// struct operation_description_class_size<eo3_simple>
 // {
-//   typedef C<typename virtual_members_base<C<T> >::type> type;
+//   static const int value = 4;
 // };
 
 // template <typename T>
-// struct non_virtual_members;
-
-// template <template <typename> C, typename T>
-// struct non_virtual_members<C<T> >
+// void funcao_simple_inc(Eo* objid EINA_UNUSED, Inherit_Private_Data* self)
 // {
-//   typedef C<typename non_virtual_members_base<C<T> >::type> type;
-// };
-
-// template <typename T, typename U, typename Enable = void>
-// struct is_base_and_derived;
-
-// template <typename T>
-// struct is_user_implementation
-//   : std::is_convertible_to<U, ::eo::impl_base_class>
-// {
-// };
-
-// template <typename T, typename U>
-// struct is_base_and_derived<T, U, typename std::enable_if<is_user_implementation<U> >::type>
-//   : std::is_base_and_derived<T, typename non_virtual_members<U>::type>
-// {
-
-// };
-
-// template <typename T, typename U>
-// struct is_base_and_derived<T, U, typename std::disable_if<is_user_implementation<U> >::type>
-//   : std::is_base_and_derived<T, U>
-// {
-  
-// };
-
-// template <typename T>
-// struct ptr
-// {
-//   template <typename U>
-//   ptr(U* p, typename std::enable_if<is_base_and_derived<T, U> >::type* = 0)
-//     : object(p->_eo_raw())
-//   {
-    
-//   }
-
-//   T* operator->() const { return &object; }
-//   // ...
-// private:
-//   T object;
-// };
-
-// // usage example <begin>
-// struct derived_from_simple1_class : inherit<derived_from_simple1_class, simple1_class>
-// {
-//   derived_from_simple1_class(int x)
-//     : inherit_type
-//       (
-//        args<simple1_class>(0) // args for simple1_class constructor
-//       )
-//   {
-//   }
-
-//   void simple1_inc()
-//   {
-//     std::cout << "inc was called on my derived instance" << std::endl;
-//   }
-
-//   int simple1_get()
-//   {
-//     std::cout << "get was called on my derived instance" << std::endl;
-//     return 0;
-//   }
-
-//   void simple1_set(int x)
-//   {
-//     std::cout << "set was called on my derived instance" << std::endl;
-//     simple1_value_set_hook_call(x);
-//   }
-// };
-
-// void foo(ptr<simple1_class> s)
-// {
-//   s->simple1_inc();
+//   static_cast<T*>(self->this_)->simple_inc();
 // }
 
-// void C_foo(ptr<simple1_class> s)
+// template <typename T>
+// void initialize_operation_description(tag<eo3_simple>
+// 				      , Eo2_Op_Description* ops)
 // {
-//   eo_do(s->_eo_raw(), simple_inc());
+//   ops[0] = {&funcao_simple_inc<T>, & ::simple_inc, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
+//   ops[1] = {&funcao_simple_get<T>, & ::simple_get, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
+//   ops[2] = {&funcao_simple_set<T>, & ::simple_set, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
+//   ops[3] = {&funcao_simple_virtual<T>, & ::simple_virtual, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
 // }
+
+// /* args_class => fusion:: | eo3_simple em args_class<> eh tag,, */
+// void call_constructor(tag<eo3_simple>
+// 		      , Eo* eo, Eo_Class const* cls
+// 		      , args_class<eo3_simple, int> const& args)
+// {
+//   eo_do_super(eo, cls, fusion::at_c<0>(args));
+// }
+
+// inline Eo_Class const* get_eo_class(tag<eo3_simple>)
+// {
+//   return EO3_GET_CLASS(EO3_SIMPLE_CLASS);
+// }
+
+// } } }
 
 // <end>

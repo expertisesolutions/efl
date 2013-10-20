@@ -12,7 +12,7 @@ EO_OBJS  = eo_ptr_indirection.o eo.o eo_class_class.o eo2_class_class.o eo_base_
 BENCH_SRC  = eo2_simple.c eo3_simple.c eo_simple.c eo2_inherit.c eo3_inherit.c eo_inherit.c eo2_composite.c eo_composite.c eo2-bench.c
 BENCH_OBJS  = eo2_simple.o eo3_simple.o eo_simple.o eo2_inherit.o eo3_inherit.o eo_inherit.o eo2_composite.o eo_composite.o eo2-bench.o
 
-all: eo2-bench test simple1 simple2 simple3
+all: eo2-bench test simple1 simple2 simple5
 
 eo.o: ../src/lib/eo/eo.c ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 	$(CC) $(CFLAGS) -fPIC -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
@@ -50,8 +50,14 @@ simple2: libeo2.so eo3_simple.o cxx/simple2.o ../src/lib/eo/Eo.h ../src/lib/eo/e
 simple3: libeo2.so eo3_simple.o cxx/simple3.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/simple3.o eo3_simple.o eo3_inherit.o $(EINA_LIBS) -L. -leo2  -o $@
 
+simple5: libeo2.so cxx/simple5.o cxx/eo3_interface.hpp cxx/eo3_inherit_interface.hpp eo3_interface.o eo3_inherit_interface.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
+	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/simple5.o eo3_interface.o eo3_inherit_interface.o $(EINA_LIBS) -L. -leo2  -o $@
+
 .c.o:
 	$(CC) $(CFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
+
+eo3_inherit_interface.o: eo3_inherit_interface.c
+	$(CC) $(CFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -save-temps -o $@
 
 .cpp.o:
 	$(CXX) $(CXXFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
