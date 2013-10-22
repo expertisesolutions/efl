@@ -60,21 +60,12 @@ struct extension_inheritance< ::eo3_interface>
       std::cout << "simple_get " << r << std::endl;
       return r;
     }
+
+    void isimple_set(int a0)
+    {
+      eo2_do(static_cast<D*>(this)->_eo_ptr(), ::isimple_set(a0));
+    }
   };
-
-  // void simple_set(int a0)
-  // {
-  //   eo2_do(_eo_raw, ::simple_set(a0));
-  // }
-
-//   void simple_virtual(int a0)
-//   {
-//     eo2_do(_eo_raw, ::simple_virtual(a0));
-//   }
-
-//   Eo* _eo_ptr() const { return _eo_raw; }
-// protected:
-//   Eo* _eo_raw;
 };
 
 } } }

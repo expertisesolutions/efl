@@ -1,4 +1,5 @@
 
+#include "eo_private.hpp"
 #include <iostream>
 
 // #define EO3_SIMPLE_CLASS eo3_simple                                  \
@@ -71,73 +72,116 @@ protected:
   Eo* _eo_raw;
 };
 
-// namespace efl { namespace eo { namespace detail {
+template <typename T>
+void funcao_simple_inc(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self)
+{
+  return static_cast<T*>(self->this_)->simple_inc();
+}
 
-// template <>
-// struct virtuals<eo3_simple>
-// {
-//   template <typename T>
-//   struct type
-//   {
-//     virtual void simple_inc()
-//     {
-//       eo2_do_super(static_cast<T*>(this)->_eo_raw
-// 		   , static_cast<T*>(this)->_eo_class
-// 		   , ::simple_inc());
-//     }
-//     virtual int simple_get()
-//     {
-//       int r = 0;
-//       eo2_do_super(static_cast<T*>(this)->_eo_raw
-// 		   , static_cast<T*>(this)->_eo_class
-// 		   , r = ::simple_get());
-//       return r;
-//     }
-//     virtual void simple_set(int a0)
-//     {
-//       eo2_do_super(static_cast<T*>(this)->_eo_raw
-// 		   , static_cast<T*>(this)->_eo_class
-// 		   , ::simple_set(a0));
-//     }
-//     virtual void simple_virtual(int) = 0;
-//   };
-// };
+template <typename T>
+int funcao_simple_get(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self)
+{
+  return static_cast<T*>(self->this_)->simple_get();
+}
 
-// template <>
-// struct operation_description_class_size<eo3_simple>
-// {
-//   static const int value = 4;
-// };
+template <typename T>
+void funcao_simple_set(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self, int a0)
+{
+  return static_cast<T*>(self->this_)->simple_set(a0);
+}
 
-// template <typename T>
-// void funcao_simple_inc(Eo* objid EINA_UNUSED, Inherit_Private_Data* self)
-// {
-//   static_cast<T*>(self->this_)->simple_inc();
-// }
+template <typename T>
+void funcao_simple_virtual(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self, int a0)
+{
+  return static_cast<T*>(self->this_)->simple_virtual(a0);
+}
 
-// template <typename T>
-// void initialize_operation_description(tag<eo3_simple>
-// 				      , Eo2_Op_Description* ops)
-// {
-//   ops[0] = {&funcao_simple_inc<T>, & ::simple_inc, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-//   ops[1] = {&funcao_simple_get<T>, & ::simple_get, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-//   ops[2] = {&funcao_simple_set<T>, & ::simple_set, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-//   ops[3] = {&funcao_simple_virtual<T>, & ::simple_virtual, EO2_OP_OVERRIDE, EO_OP_TYPE_REGULAR, NULL};
-// }
+namespace efl { namespace eo { namespace detail {
 
-// /* args_class => fusion:: | eo3_simple em args_class<> eh tag,, */
-// void call_constructor(tag<eo3_simple>
-// 		      , Eo* eo, Eo_Class const* cls
-// 		      , args_class<eo3_simple, int> const& args)
-// {
-//   eo_do_super(eo, cls, fusion::at_c<0>(args));
-// }
+template <>
+struct virtuals<eo3_simple>
+{
+  template <typename T>
+  struct type
+  {
+    virtual void simple_inc()
+    {
+      eo2_do_super(static_cast<T*>(this)->_eo_ptr()
+		   , static_cast<T*>(this)->_eo_cls()
+		   , ::simple_inc());
+    }
+    virtual int simple_get()
+    {
+      int r = 0;
+      eo2_do_super(static_cast<T*>(this)->_eo_ptr()
+		   , static_cast<T*>(this)->_eo_cls()
+		   , r = ::simple_get());
+      return r;
+    }
+    virtual void simple_set(int a0)
+    {
+      eo2_do_super(static_cast<T*>(this)->_eo_ptr()
+		   , static_cast<T*>(this)->_eo_cls()
+		   , ::simple_set(a0));
+    }
+    virtual void simple_virtual(int a0)
+    {
+      eo2_do_super(static_cast<T*>(this)->_eo_ptr()
+		   , static_cast<T*>(this)->_eo_cls()
+		   , ::simple_virtual(a0));
+    }
+  };
+};
 
-// inline Eo_Class const* get_eo_class(tag<eo3_simple>)
-// {
-//   return EO3_GET_CLASS(EO3_SIMPLE_CLASS);
-// }
+template <>
+struct operation_description_class_size<eo3_simple>
+{
+  static const int value = 4;
+};
 
-// } } }
+template <typename T>
+void initialize_operation_description(tag<eo3_simple>
+				      , Eo2_Op_Description* ops)
+{
+  ops[0].func = reinterpret_cast<void*>(& ::funcao_simple_inc<T>);
+  ops[0].api_func = reinterpret_cast<void*>(& ::simple_inc);
+  ops[0].op = EO2_OP_OVERRIDE;
+  ops[0].op_type = EO_OP_TYPE_REGULAR;
+  ops[0].doc = NULL;
+  
+  ops[1].func = reinterpret_cast<void*>(& ::funcao_simple_get<T>);
+  ops[1].api_func = reinterpret_cast<void*>(& ::simple_get);
+  ops[1].op = EO2_OP_OVERRIDE;
+  ops[1].op_type = EO_OP_TYPE_REGULAR;
+  ops[1].doc = NULL;
+  
+  ops[2].func = reinterpret_cast<void*>(& ::funcao_simple_set<T>);
+  ops[2].api_func = reinterpret_cast<void*>(& ::simple_set);
+  ops[2].op = EO2_OP_OVERRIDE;
+  ops[2].op_type = EO_OP_TYPE_REGULAR;
+  ops[2].doc = NULL;
+
+  ops[3].func = reinterpret_cast<void*>(& ::funcao_simple_virtual<T>);
+  ops[3].api_func = reinterpret_cast<void*>(& ::simple_virtual);
+  ops[3].op = EO2_OP_OVERRIDE;
+  ops[3].op_type = EO_OP_TYPE_REGULAR;
+  ops[3].doc = NULL;
+}
+
+/* args_class => fusion:: | eo3_simple em args_class<> eh tag,, */
+void call_constructor(tag<eo3_simple>
+		      , Eo* eo, Eo_Class const* cls
+		      , args_class<eo3_simple, boost::fusion::vector<int> > const& args)
+{
+  std::cout << "call_constructor eo3_simple" << std::endl;
+  eo2_do(eo/*, cls*/, ::simple_constructor(args.get<0>()));
+}
+
+inline Eo_Class const* get_eo_class(tag<eo3_simple>)
+{
+  return EO3_GET_CLASS(EO3_SIMPLE_CLASS);
+}
+
+} } }
 
 // <end>

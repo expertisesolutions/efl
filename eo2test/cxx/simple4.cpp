@@ -1,6 +1,7 @@
 
 #include "eo_init.hpp"
 #include "eo3_inherit.hpp"
+#include "inherit.hpp"
 
 #include <assert.h>
 
@@ -25,21 +26,21 @@ struct inherit2 : efl::eo::inherit<inherit2, eo3_simple>
   }
 };
 
-void bar(eo3_interface s)
-{
+// void bar(eo3_interface s)
+// {
   
-}
+// }
 
 void f(eo3_simple s)
 {
-  s->simple_inc();
-  assert(s->simple_get() == 1);
+  s.simple_inc();
+  assert(s.simple_get() == 1);
 }
 
-void foo(WeakRef<eo3_simple> s)
-{
-  f(s.lock());
-}
+// void foo(WeakRef<eo3_simple> s)
+// {
+//   f(s.lock());
+// }
 
 int main(int argc, char** argv)
 {
@@ -48,9 +49,7 @@ int main(int argc, char** argv)
   if (argc > 1)
     eina_log_domain_level_set("eo", EINA_LOG_LEVEL_DBG);
 
-  eo3_inherit inherit_;
-  f(inherit_);
   inherit2 inherit;
-  ::foo(inherit);
+  ::f(inherit);
 }
 

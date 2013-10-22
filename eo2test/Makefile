@@ -1,7 +1,8 @@
+BOOST_PATH=../../boost_1_54_0
 CC       = gcc
 CXX	= g++
-CFLAGS   = -Og -g -ggdb3 -std=gnu99 -Wall -Wextra
-CXXFLAGS = -Og -g -ggdb3 -Wall -Wextra
+CFLAGS   = -O0 -g -ggdb3 -std=gnu99 -Wall -Wextra
+CXXFLAGS = -O0 -g -ggdb3 -Wall -Wextra -I${BOOST_PATH}
 CFLAGS_PG= -g -pg -std=gnu99 -Wall -Wextra
 INCLUDE  = -I. -I../ -I../src/lib/eo/ -I../build
 CONFIG   = -DHAVE_CONFIG_H=1 -DEFL_EO_API_SUPPORT=1 -DEFL_BETA_API_SUPPORT=1
@@ -58,6 +59,9 @@ simple2: libeo2.so eo3_simple.o cxx/simple2.o ../src/lib/eo/Eo.h ../src/lib/eo/e
 
 simple3: libeo2.so eo3_simple.o cxx/simple3.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/simple3.o eo3_simple.o eo3_inherit.o $(EINA_LIBS) -L. -leo2  -o $@
+
+simple4: libeo2.so cxx/simple4.o eo3_simple.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
+	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/simple4.o  eo3_simple.o $(EINA_LIBS) -L. -leo2  -o $@
 
 simple5: libeo2.so cxx/simple5.o cxx/eo3_interface.hpp cxx/eo3_inherit_interface.hpp eo3_interface.o eo3_inherit_interface.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/simple5.o eo3_interface.o eo3_inherit_interface.o $(EINA_LIBS) -L. -leo2  -o $@
