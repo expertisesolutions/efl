@@ -10,6 +10,7 @@
 #include "eo2_inherit.h"
 #include "eo3_inherit.h"
 #include "eo2_composite.h"
+#include "eo3_big.h"
 
 static void report(struct timespec t0, struct timespec t1,
                    struct timespec t2, struct timespec t3,
