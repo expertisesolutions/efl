@@ -2478,9 +2478,6 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     return _my_class;                                                   \
   }
 
-#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
-  EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
-
 /**
  * @def EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)
  * @brief define a new Regular Class
@@ -2508,20 +2505,17 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @param PARENTS Parent(s) Class/Interface
  * @param PRIVATE_TYPE
  */
-#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                            \
-  EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                  \
+  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 /**
  * @def EO3_DEFINE_INTERFACE(CLASS, PARENTS)
  * @brief declare a new Interface
  * @param CLASS token
- * @param PARENTS 
+ * @param PARENTS Parent(s) Class/Interface
  */
 #define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
   EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
-
-#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                  \
-  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 #ifdef __cplusplus
 }
