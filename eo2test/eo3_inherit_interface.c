@@ -12,21 +12,21 @@ typedef struct
 static void
 _inc(Eo *obj, Private_Data *data)
 {
-  /* puts("eo3_inherit::inc\n"); */
+  /* puts("eo3_inherit_interface::inc\n"); */
   data->y++;
 }
 
 static int
 _get(Eo *obj EINA_UNUSED, Private_Data *data)
 {
-  /* puts("eo3_inherit::get\n"); */
+  /* puts("eo3_inherit_interface::get\n"); */
   return data->y;
 }
 
 static void
 _set(Eo *obj EINA_UNUSED, Private_Data *data, int x)
 {
-  /* puts("eo3_inherit::get\n"); */
+  /* puts("eo3_inherit_interface::get\n"); */
   data->y = x;
 }
 
