@@ -2045,7 +2045,30 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EAPI const Eo_Class* CLASS_NAME ## _get(void);                      \
   EO3_DECLARE_INTERFACE_FUNCTIONS(__VA_ARGS__)
 
+/**
+ * @def EO3_DECLARE_CLASS
+ * @brief declare a new Class
+ * @param CLASS token previously defined
+ * 
+ * The CLASS token is defined with:
+ * CLASS_MACRO_TOKEN class_name, functions, ...
+ *
+ * functions is a sequence of:
+ * function_type(function_name, _function_impl, <parans_type...>, <return_type>)
+ */
 #define EO3_DECLARE_CLASS(CLASS) EO3_DECLARE_CLASS_1(CLASS)
+
+/**
+ * @def EO3_DECLARE_INTERFACE
+ * @brief declare a new Interface
+ * @param CLASS token previously defined
+ * 
+ * The CLASS token is defined with:
+ * CLASS_MACRO_TOKEN class_name, functions, ...
+ *
+ * functions is a sequence of:
+ * function_type(function_name, [parans_type, ...], [return_type])
+ */
 #define EO3_DECLARE_INTERFACE(CLASS) EO3_DECLARE_INTERFACE_1(CLASS)
 
 /**
@@ -2317,8 +2340,25 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     return _my_class;                                                   \
   }
 
+/**
+ * @def EO3_DEFINE_CLASS
+ * @brief 
+ * @param CLASS token
+ * @param PARENTS 
+ * @param PRIVATE_TYPE
+ * 
+ */
 #define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+
+
+/**
+ * @def EO3_DECLARE_INTERFACE
+ * @brief declare a new Interface
+ * @param CLASS token
+ * @param PARENTS 
+ * 
+ */
 #define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
   EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
