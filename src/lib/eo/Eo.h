@@ -2012,6 +2012,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EO3_DECLARE_INTERFACE_FUNCTIONS(__VA_ARGS__)
 
 /**
+<<<<<<< HEAD
  * @def EO3_DECLARE_CLASS (CLASS)
  * @brief declare a new Class
  * @param CLASS class token previously defined
@@ -2049,6 +2050,32 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DECLARE_INTERFACE(CLASS) \
 	EO3_DECLARE_INTERFACE_1(CLASS)
+=======
+ * @def EO3_DECLARE_CLASS
+ * @brief declare a new Class
+ * @param CLASS token previously defined
+ * 
+ * The CLASS token is defined with:
+ * CLASS_MACRO_TOKEN class_name, functions, ...
+ *
+ * functions is a sequence of:
+ * function_type(function_name, _function_impl, <parans_type...>, <return_type>)
+ */
+#define EO3_DECLARE_CLASS(CLASS) EO3_DECLARE_CLASS_1(CLASS)
+
+/**
+ * @def EO3_DECLARE_INTERFACE
+ * @brief declare a new Interface
+ * @param CLASS token previously defined
+ * 
+ * The CLASS token is defined with:
+ * CLASS_MACRO_TOKEN class_name, functions, ...
+ *
+ * functions is a sequence of:
+ * function_type(function_name, [parans_type, ...], [return_type])
+ */
+#define EO3_DECLARE_INTERFACE(CLASS) EO3_DECLARE_INTERFACE_1(CLASS)
+>>>>>>> added doxygen do DEFINE/DECLARE_CLASS
 
 /**
  * @internal
@@ -2506,7 +2533,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @param PRIVATE_TYPE
  */
 #define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                            \
-  EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 /**
  * @def EO3_DEFINE_INTERFACE(CLASS, PARENTS)
@@ -2516,9 +2543,6 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
   EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
-
-#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                  \
-  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 #ifdef __cplusplus
 }
