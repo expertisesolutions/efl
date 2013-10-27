@@ -1927,6 +1927,8 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 //  */
 // #define EO3_EVENT(NAME, ...) NORMAL_EVENT(NAME, __VA_ARGS__)
 
+#define EO_TYPE(CLASS) Eo*
+
 /**
  * @internal
  */
@@ -1983,11 +1985,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DECLARE_FUNCTION_function_override(NAME, IMPL, ...) 
+#define EO3_DECLARE_FUNCTION_function_override(NAME, IMPL) 
 /**
  * @internal
  */
-#define EO3_DECLARE_FUNCTION_constructor_override(NAME, IMPL, ...) 
+#define EO3_DECLARE_FUNCTION_constructor_override(NAME, IMPL) 
 
 /**
  * @internal
@@ -2068,13 +2070,13 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DEFINE_DESCR_FUNCTION_function_override(NAME, IMPL, ...)    \
+#define EO3_DEFINE_DESCR_FUNCTION_function_override(NAME, IMPL)	\
   EO2_OP_FUNC_OVERRIDE(IMPL, NAME),
 
 /**
  * @internal
  */
-#define EO3_DEFINE_DESCR_FUNCTION_constructor_override(NAME, IMPL, ...)    \
+#define EO3_DEFINE_DESCR_FUNCTION_constructor_override(NAME, IMPL)    \
   EO2_OP_FUNC_OVERRIDE(IMPL, NAME),
 
 /**
@@ -2118,12 +2120,12 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DEFINE_INTERFACE_FUNCTION_function_override(NAME, IMPL, ...)
+#define EO3_DEFINE_INTERFACE_FUNCTION_function_override(NAME, IMPL)
 
 /**
  * @internal
  */
-#define EO3_DEFINE_INTERFACE_FUNCTION_constructor_override(NAME, IMPL, ...)
+#define EO3_DEFINE_INTERFACE_FUNCTION_constructor_override(NAME, IMPL)
 
 /**
  * @internal

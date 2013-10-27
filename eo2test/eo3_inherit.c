@@ -13,7 +13,8 @@ static void
 _inc(Eo *obj, Private_Data *data)
 {
   puts("eo3_inherit::inc\n");
-  eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_inc());
+  /* eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_inc()); */
+  /* eo2_do(obj, simple_inc()); */
   data->y += 1;
 }
 
@@ -42,7 +43,11 @@ static void
 _constructor(Eo *obj, Private_Data *data)
 {
   printf("eo3_inherit.c:_constructor\n");
-  eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_constructor(66));
+  /* eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_constructor(66)); */
+  eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), eo2_constructor());
+  printf("1\n");
+  eo2_do(obj, simple_constructor(66));
+  printf("2\n");
   data->y = 68;
 }
 
@@ -53,4 +58,4 @@ _destructor(Eo *obj, void *obj_data EINA_UNUSED)
   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), eo2_destructor());
 }
 
-EO3_DEFINE_CLASS(EO3_INHERIT_CLASS, ((EO3_SIMPLE_CLASS)), Private_Data)
+EO3_DEFINE_CLASS(EO3_INHERIT_CLASS, ((EO3_BASE_CLASS),(EO3_SIMPLE_CLASS)), Private_Data)
