@@ -30,27 +30,17 @@ struct eo3_simple : efl::eo::Base
   {}
 
   eo3_simple(int a0)
-    : efl::eo::Base(0)
+    : efl::eo::Base(_c1(a0))
   {
-    _eo_raw = eo2_add_custom(EO3_GET_CLASS(EO3_SIMPLE_CLASS)
-			     , NULL, ::simple_constructor(a0));
-    eo_ref(_eo_raw);
   }
 
   ~eo3_simple()
   {
     std::cout << "~eo3_simple()" << std::endl;
-    eo_unref(_eo_raw);
   }
 
   eo3_simple(eo3_simple const& other)
     : efl::eo::Base(eo_ref(other._eo_raw)) {}
-
-  eo3_simple& operator=(eo3_simple const& other)
-  {
-    _eo_raw = eo_ref(other._eo_raw);
-    return *this;
-  }
 
   void simple_inc()
   {
@@ -68,18 +58,19 @@ struct eo3_simple : efl::eo::Base
 
   void simple_set(int a0)
   {
-    eo2_do(_eo_raw, ::simple_set(a0));
+    eo2_do(_eo_ptr(), ::simple_set(a0));
   }
 
   void simple_virtual(int a0)
   {
-    eo2_do(_eo_raw, ::simple_virtual(a0));
+    eo2_do(_eo_ptr(), ::simple_virtual(a0));
   }
-
-  Eo* _eo_ptr() const { return _eo_raw; }
-
-protected:
-  Eo* _eo_raw;
+private:
+  static Eo* _c1(int a0)
+  {
+    return eo2_add_custom(EO3_GET_CLASS(EO3_SIMPLE_CLASS)
+			  , NULL, ::simple_constructor(a0));
+  }
 };
 
 template <typename T>

@@ -25,19 +25,19 @@ struct eo3_inherit : eo3_simple
     : eo3_simple(eo) {}
 
   eo3_inherit()
-    : eo3_simple(_c())
+    : eo3_simple(_c1())
   {
   }
 
   int eo3_inherit_get()
   {
     int r = 0;
-    eo2_do(_eo_raw, r = ::eo3_inherit_get());
+    eo2_do(_eo_ptr(), r = ::eo3_inherit_get());
     std::cout << "eo3_inherit::eo3_inherit_get " << r << std::endl; // XXX
     return r;
   }
 private:
-  static Eo* _c()
+  static Eo* _c1()
   {
     return eo2_add(EO3_GET_CLASS(EO3_INHERIT_CLASS), NULL);
   }

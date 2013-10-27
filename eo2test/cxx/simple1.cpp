@@ -1,3 +1,4 @@
+#include <iostream>
 
 #include "eo_init.hpp"
 #include "eo3_simple.hpp"
