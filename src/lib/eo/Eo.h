@@ -2093,7 +2093,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DEFINE_DESCR_FUNCTION_destructor(IMPL)      \
-  EO2_OP_FUNC(IMPL, eo2_destructor, "Description"),
+  EO2_OP_FUNC_OVERRIDE(IMPL, eo2_destructor),
 
 /**
  * @internal
