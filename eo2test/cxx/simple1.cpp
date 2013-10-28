@@ -5,6 +5,18 @@
 
 #include <assert.h>
 
+Eina_Bool callback(int x)
+{
+  std::cout << "callback  "<< x << std::endl;
+  return EINA_TRUE;
+}
+
+Eina_Bool callback1(int x)
+{
+  std::cout << "callback1 " << x << std::endl;
+  return EINA_TRUE;
+}
+
 int main(int argc, char** argv)
 {
   efl::eo::eo_init eo_init;
@@ -16,5 +28,9 @@ int main(int argc, char** argv)
   simple.simple_inc();
   assert(simple.simple_get() == 67);
   assert(sizeof(simple) == sizeof(Eo*));
+
+  eo2_do(simple._eo_ptr(), ::simple_set_callback_add(callback));
+  eo2_do(simple._eo_ptr(), ::simple_set_callback_add(callback1));
+  simple.simple_set(68);
 }
 

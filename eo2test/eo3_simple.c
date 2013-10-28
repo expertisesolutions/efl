@@ -19,8 +19,9 @@ static int _get(Eo *objid EINA_UNUSED, Private_Data* self)
   printf("eo3_simple::get %d\n", self->x);
   return self->x;
 }
-static void _set(Eo *objid EINA_UNUSED, Private_Data* self, int x)
+static void _set(Eo *objid, Private_Data* self, int x)
 {
+  eo2_do(objid, simple_set_callback_call(x));
   printf("eo3_simple::set %d\n", x);
   self->x = x;
 }
