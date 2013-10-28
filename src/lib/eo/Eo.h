@@ -2228,7 +2228,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
-      "Eo2 Simple",                                                     \
+      "Eo2 Class",                                                      \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
       NULL,                                                             \
@@ -2300,7 +2300,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
-      "Eo2 Simple",                                                     \
+      "Eo2 Interface",                                                  \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
       NULL,                                                             \
@@ -2319,10 +2319,61 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     return _my_class;                                                   \
   }
 
+#define EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, CLASS_TYPE, PARENTS_CLASS, CLASS_NAME, ...) \
+  EO3_DEFINE_INTERFACE_FUNCTIONS(__VA_ARGS__)                           \
+  EAPI const Eo_Class *                                                 \
+  CLASS_NAME ## _get(void)                                              \
+  {                                                                     \
+    static volatile char lk_init = 0;                                   \
+    static Eina_Lock _my_lock;                                          \
+    static const Eo_Class * volatile _my_class = NULL;                  \
+    if (EINA_LIKELY(!!_my_class)) return _my_class;                     \
+                                                                        \
+    eina_lock_take(&_eo_class_creation_lock);                           \
+    if (!lk_init)                                                       \
+      eina_lock_new(&_my_lock);                                         \
+    if (lk_init < 2) eina_lock_take(&_my_lock);                         \
+    if (!lk_init)                                                       \
+      lk_init = 1;                                                      \
+    else                                                                \
+    {                                                                   \
+      if (lk_init < 2) eina_lock_release(&_my_lock);                    \
+      eina_lock_release(&_eo_class_creation_lock);                      \
+      return _my_class;                                                 \
+    }                                                                   \
+    static Eo2_Op_Description op_descs [] = {                           \
+      EO3_DEFINE_DESCR_FUNCTIONS(__VA_ARGS__)                           \
+      EO2_OP_SENTINEL                                                   \
+    };                                                                  \
+    static const Eo_Class_Description class_desc = {                    \
+      EO2_VERSION,                                                      \
+      "Eo2 Mixin",                                                     \
+      CLASS_TYPE,                                                       \
+      EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
+      NULL,                                                             \
+      sizeof(PRIVATE_TYPE),                                             \
+      NULL,                                                             \
+      NULL                                                              \
+    };                                                                  \
+    eina_lock_release(&_eo_class_creation_lock);                        \
+    _my_class = eo_class_new(&class_desc PARENTS_CLASS, NULL); \
+    eina_lock_release(&_my_lock);                                       \
+                                                                        \
+    eina_lock_take(&_eo_class_creation_lock);                           \
+    eina_lock_free(&_my_lock);                                          \
+    lk_init = 2;                                                        \
+    eina_lock_release(&_eo_class_creation_lock);                        \
+    return _my_class;                                                   \
+  }
+
 #define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+
 #define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
   EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+
+#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                  \
+  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 #ifdef __cplusplus
 }
