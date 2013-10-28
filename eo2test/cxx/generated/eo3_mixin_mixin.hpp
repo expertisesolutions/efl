@@ -20,9 +20,9 @@ extern "C" {
 }
 // <end>
 
-struct eo3_mixin_mixin : efl::eo::Base
+struct eo3_mixin_mixin : efl::eo::base
 {
-  explicit eo3_mixin_mixin(Eo* eo) : efl::eo::Base(eo) {}
+  explicit eo3_mixin_mixin(Eo* eo) : efl::eo::base(eo) {}
 
   void mixin_ab_sum_get(int *sum)
   {

@@ -24,14 +24,14 @@ extern "C" {
 #include "eo3_simple.h"
 }
 
-struct eo3_simple : efl::eo::Base
+struct eo3_simple : efl::eo::base
 {
   explicit eo3_simple(Eo* eo)
-    : efl::eo::Base(eo)
+    : efl::eo::base(eo)
   {}
 
   eo3_simple(int a0)
-    : efl::eo::Base(_c1(a0))
+    : efl::eo::base(_c1(a0))
   {
   }
 
@@ -41,7 +41,7 @@ struct eo3_simple : efl::eo::Base
   }
 
   eo3_simple(eo3_simple const& other)
-    : efl::eo::Base(eo_ref(other._eo_ptr())) {}
+    : efl::eo::base(eo_ref(other._eo_ptr())) {}
 
   void simple_inc()
   {
