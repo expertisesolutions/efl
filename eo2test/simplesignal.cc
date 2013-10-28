@@ -737,7 +737,7 @@ bench_callback_eo2_loop()
 
    const uint64_t benchstart = timestamp_benchmark();
    for (i = 0; i < 999999; i++)
-     eo2_do(obj, eo2_event_callback_call(EV_COUNTER, NULL));
+     eo2_do(obj, eo2_event_callback_call(EV_COUNTER, NULL, NULL));
    const uint64_t benchdone = timestamp_benchmark();
 
    eo2_do(obj, d = get());

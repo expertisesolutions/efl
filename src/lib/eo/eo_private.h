@@ -211,7 +211,7 @@ _eo_del_internal(const char *file, int line, _Eo_Object *obj)
    const _Eo_Class *klass = obj->klass;
 
    if (klass->desc->version == EO2_VERSION)
-      eo2_do(_eo_id_get(obj), eo2_event_callback_call(EO_EV_DEL, NULL));
+     eo2_do(_eo_id_get(obj), eo2_event_callback_call(EO_EV_DEL, NULL, NULL));
    else
      eo_do(_eo_id_get(obj), eo_event_callback_call(EO_EV_DEL, NULL, NULL));
 

@@ -507,7 +507,7 @@ _ev_cb_priority_add(Eo *obj, void *class_data,
 
      {
         const Eo_Callback_Array_Item arr[] = { {desc, func}, {NULL, NULL}};
-        eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_ADD, (void *)arr));
+        eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_ADD, (void *)arr, NULL));
      }
 }
 EAPI EO2_VOID_FUNC_BODYV(eo2_event_callback_priority_add,
@@ -536,7 +536,7 @@ _ev_cb_del(Eo *obj, void *class_data,
              cb->delete_me = EINA_TRUE;
              pd->deletions_waiting = EINA_TRUE;
              _eo_callbacks_clear(pd);
-             eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_DEL, (void *)arr); );
+             eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_DEL, (void *)arr, NULL); );
              return;
           }
      }
@@ -567,7 +567,7 @@ _ev_cb_array_priority_add(Eo *obj, void *class_data,
    _eo_callbacks_sorted_insert(pd, cb);
 
      {
-        eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_ADD, (void *)array); );
+       eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_ADD, (void *)array, NULL); );
      }
 }
 EAPI EO2_VOID_FUNC_BODYV(eo2_event_callback_array_priority_add,
@@ -592,7 +592,7 @@ _ev_cb_array_del(Eo *obj, void *class_data,
              pd->deletions_waiting = EINA_TRUE;
              _eo_callbacks_clear(pd);
 
-             eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_DEL, (void *)array); );
+             eo2_do(obj, eo2_event_callback_call(EO_EV_CALLBACK_DEL, (void *)array, NULL); );
              return;
           }
      }
@@ -607,7 +607,7 @@ EAPI EO2_VOID_FUNC_BODYV(eo2_event_callback_array_del,
 static Eina_Bool
 _ev_cb_call(Eo *obj_id, void *class_data,
             const Eo_Event_Description *desc,
-            void *event_info)
+            void *event_info, Eo3_Event_Cb func)
 {
    Eina_Bool ret;
    Eo_Callback_Description *cb;
@@ -637,12 +637,22 @@ _ev_cb_call(Eo *obj_id, void *class_data,
                           continue;
 
                        /* Abort callback calling if the func says so. */
-                       if (!it->func((void *) cb->func_data, obj_id, desc,
-                                (void *) event_info))
+                       if(func)
                          {
-                            ret = EINA_FALSE;
-                            goto end;
+                           if (!func((void*)it->func, (void *) cb->func_data
+                                     , obj_id, desc, (void *) event_info))
+                             {
+                               ret = EINA_FALSE;
+                               goto end;
+                             }
                          }
+                       else
+                         if (it->func((void *) cb->func_data
+                                      , obj_id, desc, (void *) event_info))
+                           {
+                             ret = EINA_FALSE;
+                             goto end;
+                           }
                     }
                }
              else
@@ -655,12 +665,23 @@ _ev_cb_call(Eo *obj_id, void *class_data,
                     continue;
 
                   /* Abort callback calling if the func says so. */
-                  if (!cb->items.item.func((void *) cb->func_data, obj_id, desc,
-                                           (void *) event_info))
-                    {
-                       ret = EINA_FALSE;
-                       goto end;
-                    }
+                  if(func)
+                  {
+                    if (!func((void*)cb->items.item.func,
+                              (void *) cb->func_data, obj_id, desc,
+                              (void *) event_info))
+                      {
+                        ret = EINA_FALSE;
+                        goto end;
+                      }
+                  }
+                  else
+                    if (cb->items.item.func((void *) cb->func_data, obj_id, desc,
+                                            (void *) event_info))
+                      {
+                        ret = EINA_FALSE;
+                        goto end;
+                      }
                }
           }
      }
@@ -674,9 +695,9 @@ end:
 }
 EAPI EO2_FUNC_BODYV(eo2_event_callback_call, Eina_Bool,
                    EINA_FALSE,
-                   EO2_FUNC_CALL(desc, event_info),
+                   EO2_FUNC_CALL(desc, event_info, func),
                    const Eo_Event_Description *desc,
-                   void *event_info);
+                   void *event_info, Eo3_Event_Cb func);
 
 static Eina_Bool
 _eo_event_forwarder_callback(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info)
@@ -685,7 +706,7 @@ _eo_event_forwarder_callback(void *data, Eo *obj, const Eo_Event_Description *de
    Eo *new_obj = (Eo *) data;
    Eina_Bool ret = EINA_FALSE;
 
-   eo2_do(new_obj, ret = eo2_event_callback_call(desc, (void *)event_info); );
+   eo2_do(new_obj, ret = eo2_event_callback_call(desc, (void *)event_info, NULL); );
 
    return ret;
 }

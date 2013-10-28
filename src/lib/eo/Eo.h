@@ -1536,6 +1536,8 @@ eo2_destructor();
  */
 typedef Eina_Bool (*Eo_Event_Cb)(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info);
 
+typedef Eina_Bool (*Eo3_Event_Cb)(void* func, void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info);
+
 /**
  * @typedef Eo_Callback_Array_Item
  * A convenience typedef for #_Eo_Callback_Array_Item
@@ -1781,7 +1783,8 @@ eo2_event_callback_array_del(const Eo_Callback_Array_Item *array,
  */
 #define eo_event_callback_call(desc, event_info, aborted) EO_BASE_ID(EO_BASE_SUB_ID_EVENT_CALLBACK_CALL), EO_TYPECHECK(const Eo_Event_Description *, desc), EO_TYPECHECK(const void *, event_info), EO_TYPECHECK(Eina_Bool *, aborted)
 EAPI Eina_Bool
-eo2_event_callback_call(const Eo_Event_Description *desc, void *event_info);
+eo2_event_callback_call(const Eo_Event_Description *desc, void *event_info
+                        , Eo3_Event_Cb func);
 
 /**
  * @}
@@ -1906,6 +1909,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME               \
     (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
 
+
+#define EO3_DECLARE_FUNCTION_class_function(NAME, IMPL, ...)    \
+  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME               \
+    (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
+
 /**
  * @internal
  */
@@ -1926,6 +1934,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DECLARE_FUNCTION_function_override(NAME, IMPL) 
+
+#define EO3_DECLARE_FUNCTION_class_function_override(NAME, IMPL) 
+
 /**
  * @internal
  */
@@ -1934,13 +1945,19 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DECLARE_FUNCTION_event(NAME, ...)                        \
-  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)         \
-    (Eina_Bool (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) )); \
-  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)              \
-    (Eina_Bool (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));  \
-  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)             \
-    (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));                      \
+#define EO3_DECLARE_FUNCTION_event(NAME, ...)                           \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)                 \
+    (void* data, Eina_Bool (*function)                                  \
+     (void* data                                                        \
+      EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+      EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));                      \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)                 \
+    (void* data, Eina_Bool (*function)                                  \
+     (void* data                                                        \
+      EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+      EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));                      \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)                \
+    (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));                         \
   extern const Eo_Event_Description EO_PREPROCESSOR_CONCAT(NAME, _event);
 
 /**
@@ -2014,6 +2031,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DEFINE_DESCR_FUNCTION_function_override(NAME, IMPL)	\
   EO2_OP_FUNC_OVERRIDE(IMPL, NAME),
 
+#define EO3_DEFINE_DESCR_FUNCTION_class_function_override(NAME, IMPL)	\
+  EO2_OP_CLASS_FUNC_OVERRIDE(IMPL, NAME),
+
 /**
  * @internal
  */
@@ -2025,6 +2045,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DEFINE_DESCR_FUNCTION_function(NAME, IMPL, ...)     \
   EO2_OP_FUNC(IMPL, NAME, "Description"),
+
+#define EO3_DEFINE_DESCR_FUNCTION_class_function(NAME, IMPL, ...)     \
+  EO2_OP_CLASS_FUNC(IMPL, NAME, "Description"),
 
 /**
  * @internal
@@ -2089,11 +2112,31 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
                 EO3_FUNCTION_ENUM_ARGS(__VA_ARGS__));                 \
   }
 
+#define EO3_DEFINE_INTERFACE_class_function(NAME, ...)          \
+  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME               \
+       (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__))                  \
+  {                                                             \
+    typedef EO3_FUNCTION_GET_RETURN(__VA_ARGS__,)                       \
+      (*func_t)(Eo *, void *obj_data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(__VA_ARGS__)) \
+         EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));                \
+    Eo2_Op_Call_Data call;                                             \
+    static Eo_Op op = EO_NOOP;                                         \
+    if ( op == EO_NOOP )                                               \
+      op = eo2_api_op_id_get((void*)NAME, EO_OP_TYPE_CLASS);            \
+    if (!eo2_call_resolve(op, &call)) assert(eo2_call_resolve(op, &call)); \
+    func_t func = (func_t) call.func;                                   \
+    return func(call.klass, call.data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(__VA_ARGS__)) \
+                EO3_FUNCTION_ENUM_ARGS(__VA_ARGS__));                 \
+  }
+
 /**
  * @internal
  */
 #define EO3_DEFINE_INTERFACE_FUNCTION_function(NAME, IMPL, ...) \
   EO3_DEFINE_INTERFACE_function(NAME, __VA_ARGS__)
+
+#define EO3_DEFINE_INTERFACE_FUNCTION_class_function(NAME, IMPL, ...)   \
+  EO3_DEFINE_INTERFACE_class_function(NAME, __VA_ARGS__)
 
 /**
  * @internal
@@ -2118,33 +2161,41 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   const Eo_Event_Description EO_PREPROCESSOR_CONCAT(NAME, _event) =     \
   {EO_PREPROCESSOR_STRINGIZE(NAME), "", EINA_FALSE};                    \
   EAPI Eina_Bool EO_PREPROCESSOR_CONCAT(NAME, _callback_args)           \
-    (void* function, Eo* eo, Eo_Event_Description const* event, void* e) \
+    (void* function, void* user_data, Eo* eo EINA_UNUSED                \
+     , Eo_Event_Description const* event EINA_UNUSED, void* e)          \
   {                                                                     \
     typedef Eina_Bool                                                   \
-      (*func_t)(EO3_FUNCTION_ENUM_PARAMS(~,__VA_ARGS__));               \
+      (*func_t)(void* user_data                                              \
+                EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+                EO3_FUNCTION_ENUM_PARAMS(~,__VA_ARGS__));               \
     func_t f = (func_t)function;                                        \
     struct                                                              \
     {                                                                   \
       EO3_FUNCTION_ENUM_STRUCT_PARAMS(~, __VA_ARGS__)                   \
     } *args = e;                                                    \
-    f(EO3_FUNCTION_ENUM_STRUCT_ARGS(~, __VA_ARGS__));                    \
+    f(user_data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+      EO3_FUNCTION_ENUM_STRUCT_ARGS(~, __VA_ARGS__));                   \
   }                                                                     \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)                 \
-    (Eina_Bool (*function)(EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ))  \
+    (void* data, Eina_Bool (*function)                                  \
+     (void* data                                                        \
+      EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+      EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ))                       \
   {                                                                     \
     eo2_event_callback_priority_add                                     \
       (&EO_PREPROCESSOR_CONCAT(NAME, _event)                            \
        , EO_CALLBACK_PRIORITY_DEFAULT                                   \
-       , &EO_PREPROCESSOR_CONCAT(NAME, _callback_args)                  \
-       , function);                                                     \
+       , function, data);                                               \
   }                                                                     \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)                 \
-    (Eina_Bool (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) )) \
+    (void* data, Eina_Bool (*function)                                  \
+     (void* data                                                        \
+      EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+      EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ))                       \
   {                                                                     \
     eo2_event_callback_del                                              \
       (&EO_PREPROCESSOR_CONCAT(NAME, _event)                            \
-       , &EO_PREPROCESSOR_CONCAT(NAME, _callback_args)                  \
-       , function);                                                     \
+       , function, data);                                               \
   }                                                                     \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)                \
     (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__))                          \
@@ -2160,7 +2211,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     } args = {EO3_FUNCTION_ENUM_ARGS(~, __VA_ARGS__)};              \
     eo2_do(call.obj, eo2_event_callback_call                           \
            (&EO_PREPROCESSOR_CONCAT(NAME, _event)                      \
-            , &args));                                                 \
+            , &args, &EO_PREPROCESSOR_CONCAT(NAME, _callback_args)));  \
   }
 
 /**
@@ -2185,7 +2236,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 
 #define EO3_DEFINE_DESCR_EVENT_DUMMY
 #define EO3_DEFINE_DESCR_EVENT_function(...)
+#define EO3_DEFINE_DESCR_EVENT_class_function(...)
 #define EO3_DEFINE_DESCR_EVENT_function_override(...)
+#define EO3_DEFINE_DESCR_EVENT_class_function_override(...)
 #define EO3_DEFINE_DESCR_EVENT_constructor(...)
 #define EO3_DEFINE_DESCR_EVENT_constructor_override(...)
 #define EO3_DEFINE_DESCR_EVENT_destructor(IMPL)

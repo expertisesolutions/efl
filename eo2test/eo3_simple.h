@@ -10,6 +10,7 @@
     , function(simple_get, _get, int)                            \
     , function(simple_set, _set, void, int)                      \
     , function(simple_virtual, _set, void, int)                  \
+    , class_function(simple_class_foo, _class_hello, void, int)  \
     , event(simple_set, int)
 
 

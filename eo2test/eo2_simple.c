@@ -43,7 +43,7 @@ _set_evt(Eo *obj, void *obj_data, int x)
 {
    Private_Data *data = (Private_Data *) obj_data;
    data->x = x;
-   eo2_do(obj, eo2_event_callback_call(EO2_EV_X_CHANGED, &data->x); );
+   eo2_do(obj, eo2_event_callback_call(EO2_EV_X_CHANGED, &data->x, NULL); );
 }
 EAPI EO2_VOID_FUNC_BODYV(eo2_set_evt, EO2_FUNC_CALL(x), int x);
 
