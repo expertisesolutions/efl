@@ -1945,15 +1945,26 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_FUNCTION_ENUM_PARAMS(...) EO_PREPROCESSOR_FOR_EACH_INNER(EO3_FUNCTION_ENUM_PARAMS_ELEM, __VA_ARGS__)
 
+#define EO3_FUNCTION_ENUM_STRUCT_PARAMS_ELEM(I, TYPE) EO_PREPROCESSOR_IF(I, TYPE EO_PREPROCESSOR_CONCAT(arg, I) EO_PREPROCESSOR_EMPTY, EO_PREPROCESSOR_EMPTY)();
+
+#define EO3_FUNCTION_ENUM_STRUCT_PARAMS(...) EO_PREPROCESSOR_FOR_EACH_INNER(EO3_FUNCTION_ENUM_STRUCT_PARAMS_ELEM, __VA_ARGS__)
+
+
 /**
  * @internal
  */
 #define EO3_FUNCTION_ENUM_ARGS_ELEM(I, TYPE) EO_PREPROCESSOR_COMMA_IF(EO_PREPROCESSOR_DEC(I)) EO_PREPROCESSOR_IF(I, EO_PREPROCESSOR_CONCAT(arg, I) EO_PREPROCESSOR_EMPTY, EO_PREPROCESSOR_EMPTY)()
 
+
 /**
  * @internal
  */
 #define EO3_FUNCTION_ENUM_ARGS(...) EO_PREPROCESSOR_FOR_EACH_INNER(EO3_FUNCTION_ENUM_ARGS_ELEM, __VA_ARGS__)
+
+#define EO3_FUNCTION_ENUM_STRUCT_ARGS_ELEM(I, TYPE) EO_PREPROCESSOR_COMMA_IF(EO_PREPROCESSOR_DEC(I)) EO_PREPROCESSOR_IF(I, EO_PREPROCESSOR_CONCAT(args->arg, I) EO_PREPROCESSOR_EMPTY, EO_PREPROCESSOR_EMPTY)()
+
+#define EO3_FUNCTION_ENUM_STRUCT_ARGS(...) EO_PREPROCESSOR_FOR_EACH_INNER(EO3_FUNCTION_ENUM_STRUCT_ARGS_ELEM, __VA_ARGS__)
+
 
 /**
  * @internal
@@ -1995,13 +2006,14 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DECLARE_FUNCTION_event(NAME, ...)                 \
-  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)              \
-    (void (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));  \
+#define EO3_DECLARE_FUNCTION_event(NAME, ...)                        \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)         \
+    (Eina_Bool (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) )); \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)              \
-    (void (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));  \
+    (Eina_Bool (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ));  \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)             \
-    (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));
+    (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));                      \
+  extern const Eo_Event_Description EO_PREPROCESSOR_CONCAT(NAME, _event);
 
 /**
  * @internal
@@ -2101,7 +2113,8 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DEFINE_DESCR_FUNCTION_event(NAME, ...)
+#define EO3_DEFINE_DESCR_FUNCTION_event(NAME, ...)                      \
+  EO2_OP_FUNC((void*)0, EO_PREPROCESSOR_CONCAT(NAME, _callback_call), ""),
 
 /**
  * @internal
@@ -2176,7 +2189,56 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 /**
  * @internal
  */
-#define EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, ...)
+#define EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, ...)                  \
+  const Eo_Event_Description EO_PREPROCESSOR_CONCAT(NAME, _event) =     \
+  {EO_PREPROCESSOR_STRINGIZE(NAME), "", EINA_FALSE};                    \
+  EAPI Eina_Bool EO_PREPROCESSOR_CONCAT(NAME, _callback_args)           \
+    (void* function, Eo* eo, Eo_Event_Description const* event, void* e) \
+  {                                                                     \
+    typedef Eina_Bool                                                   \
+      (*func_t)(EO3_FUNCTION_ENUM_PARAMS(~,__VA_ARGS__));               \
+    printf(EO_PREPROCESSOR_STRINGIZE(EO_PREPROCESSOR_CONCAT(NAME, _callback_args)) "\n"); \
+    func_t f = (func_t)function;                                        \
+    struct                                                              \
+    {                                                                   \
+      EO3_FUNCTION_ENUM_STRUCT_PARAMS(~, __VA_ARGS__)                   \
+    } *args = e;                                                    \
+    f(EO3_FUNCTION_ENUM_STRUCT_ARGS(~, __VA_ARGS__));                    \
+  }                                                                     \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)                 \
+    (Eina_Bool (*function)(EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) ))  \
+  {                                                                     \
+    eo2_event_callback_priority_add                                     \
+      (&EO_PREPROCESSOR_CONCAT(NAME, _event)                            \
+       , EO_CALLBACK_PRIORITY_DEFAULT                                   \
+       , &EO_PREPROCESSOR_CONCAT(NAME, _callback_args)                  \
+       , function);                                                     \
+  }                                                                     \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)                 \
+    (Eina_Bool (*function)( EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__) )) \
+  {                                                                     \
+    eo2_event_callback_del                                              \
+      (&EO_PREPROCESSOR_CONCAT(NAME, _event)                            \
+       , &EO_PREPROCESSOR_CONCAT(NAME, _callback_args)                  \
+       , function);                                                     \
+  }                                                                     \
+  EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)                \
+    (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__))                          \
+  {                                                                     \
+    printf("api_callback_call\n");                                      \
+    Eo2_Op_Call_Data call;                                             \
+    static Eo_Op op = EO_NOOP;                                         \
+    if ( op == EO_NOOP )                                               \
+      op = eo2_api_op_id_get((void*)NAME, EO_OP_TYPE_REGULAR);          \
+    if (!eo2_call_resolve(op, &call)) assert(eo2_call_resolve(op, &call)); \
+    struct                                                              \
+    {                                                                   \
+      EO3_FUNCTION_ENUM_STRUCT_PARAMS(~, __VA_ARGS__)                   \
+    } args = {EO3_FUNCTION_ENUM_ARGS(~, __VA_ARGS__)};              \
+    eo2_do(call.obj, eo2_event_callback_call                           \
+           (&EO_PREPROCESSOR_CONCAT(NAME, _event)                      \
+            , &args));                                                 \
+  }
 
 /**
  * @internal
@@ -2197,6 +2259,22 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_PARENTS_GET_CLASS(...) EO_PREPROCESSOR_FOR_EACH(EO3_PARENTS_GET_CLASS_ELEM, __VA_ARGS__)
+
+#define EO3_DEFINE_DESCR_EVENT_DUMMY
+#define EO3_DEFINE_DESCR_EVENT_function(...)
+#define EO3_DEFINE_DESCR_EVENT_function_override(...)
+#define EO3_DEFINE_DESCR_EVENT_constructor(...)
+#define EO3_DEFINE_DESCR_EVENT_constructor_override(...)
+#define EO3_DEFINE_DESCR_EVENT_destructor(IMPL)
+#define EO3_DEFINE_DESCR_EVENT_event(NAME, ...) \
+  {EO_PREPROCESSOR_STRINGIZE(NAME), "", EINA_FALSE},
+
+/**
+ * @internal
+ */
+#define EO3_DEFINE_DESCR_EVENT_ELEM(I, F) EO3_DEFINE_DESCR_EVENT_ ## F
+
+#define EO3_DEFINE_DESCR_EVENTS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_DESCR_EVENT_ELEM, __VA_ARGS__)
 
 /**
  * @internal
@@ -2227,12 +2305,16 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
       EO3_DEFINE_DESCR_FUNCTIONS(__VA_ARGS__)                           \
       EO2_OP_SENTINEL                                                   \
     };                                                                  \
+    static Eo_Event_Description* event_descs [] = {                     \
+      EO3_DEFINE_DESCR_EVENTS(__VA_ARGS__)                              \
+      (void*)NULL                                                       \
+    };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
       "Eo2 Class",                                                      \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
-      NULL,                                                             \
+      event_descs,                                                             \
       sizeof(PRIVATE_TYPE),                                             \
       NULL,                                                             \
       NULL                                                              \
