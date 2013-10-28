@@ -23,7 +23,7 @@ extern "C" {
 
 struct eo3_interface : efl::eo::Base
 {
-  eo3_interface(Eo* eo) : efl::eo::Base(eo) {}
+  explicit eo3_interface(Eo* eo) : efl::eo::Base(eo) {}
 
   void isimple_inc()
   {

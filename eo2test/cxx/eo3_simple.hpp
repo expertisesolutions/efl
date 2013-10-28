@@ -40,7 +40,7 @@ struct eo3_simple : efl::eo::Base
   }
 
   eo3_simple(eo3_simple const& other)
-    : efl::eo::Base(eo_ref(other._eo_raw)) {}
+    : efl::eo::Base(eo_ref(other._eo_ptr())) {}
 
   void simple_inc()
   {

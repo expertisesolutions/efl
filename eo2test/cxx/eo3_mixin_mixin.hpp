@@ -1,6 +1,6 @@
 
-#ifndef GENCXX_EO3_INTERFACE_HPP
-#define GENCXX_EO3_INTERFACE_HPP
+#ifndef GENCXX_EO3_MIXIN_MIXIN_HPP
+#define GENCXX_EO3_MIXIN_MIXIN_HPP
 
 #include <iostream>
 
@@ -8,71 +8,45 @@
 #include "eo_private.hpp"
 
 /*
- * #define EO3_SIMPLE_INTERFACE eo3_simple_interface                   \
- *    , EO3_FUNCTION(isimple_inc, void)                                \
- *    , EO3_FUNCTION(isimple_get, int)                                 \
- *    , EO3_FUNCTION(isimple_set, void, int)
+ * #define EO3_MIXIN_MIXIN eo3_mixin_mixin                       \
+ *   , function(mixin_ab_sum_get, _ab_sum_get, void, int*)
  *
- * EO3_DECLARE_INTERFACE(EO3_SIMPLE_INTERFACE)
+ * EO3_DECLARE_MIXIN(EO3_MIXIN_MIXIN);
+ *
  */
 
 extern "C" {
-#include "eo3_interface.h"
+#include "eo3_mixin_mixin.h"
 }
 // <end>
 
-struct eo3_interface : efl::eo::Base
+struct eo3_mixin_mixin : efl::eo::Base
 {
-  eo3_interface(Eo* eo) : efl::eo::Base(eo) {}
+  explicit eo3_mixin_mixin(Eo* eo) : efl::eo::Base(eo) {}
 
-  void isimple_inc()
+  void mixin_ab_sum_get(int *sum)
   {
-    eo2_do(_eo_ptr(), ::isimple_inc());
-  }
-
-  int isimple_get()
-  {
-    int r = 0;
-    eo2_do(_eo_ptr(), r = ::isimple_get());
-    return r;
-  }
-
-  void isimple_set(int a0)
-  {
-    eo2_do(_eo_ptr(), ::isimple_set(a0));
+    eo2_do(_eo_ptr(), ::mixin_ab_sum_get(sum));
   }
 };
 
 namespace efl { namespace eo { namespace detail {
 
 template <>
-struct extension_inheritance< ::eo3_interface>
+struct extension_inheritance< ::eo3_mixin_mixin>
 {
   template <typename D>
   struct type
   {
-    operator eo3_interface() const
+    operator eo3_mixin_mixin() const
     {
-      return eo3_interface
+      return eo3_mixin_mixin
 	(eo_ref(static_cast<D const*>(this)->_eo_ptr()));
     }
 
-    void isimple_inc()
+    void mixin_ab_sum_get(int *sum)
     {
-      eo2_do(static_cast<D*>(this)->_eo_ptr(), ::isimple_inc());
-    }
-
-    int isimple_get()
-    {
-      int r = 0;
-      eo2_do(static_cast<D*>(this)->_eo_ptr(), r = ::isimple_get());
-      std::cout << "eo3_interface::simple_get " << r << std::endl;
-      return r;
-    }
-
-    void isimple_set(int a0)
-    {
-      eo2_do(static_cast<D*>(this)->_eo_ptr(), ::isimple_set(a0));
+      eo2_do(static_cast<D*>(this)->_eo_ptr(), ::mixin_ab_sum_get(sum));
     }
   };
 };
@@ -82,4 +56,4 @@ struct extension_inheritance< ::eo3_interface>
 
 // <end>
 
-#endif // GENCXX_EO3_INTERFACE_HPP
+#endif // GENCXX_EO3_MIXIN_MIXIN_HPP

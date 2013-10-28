@@ -22,10 +22,7 @@ int main(int argc, char** argv)
   eo2_do(c, eo3_container_add(c); eo3_container_add2(simple));
 
   eo3_container container1;
-  container1.eo3_container_add(container1);
-  container1.eo3_container_add(c);
+  container1.eo3_container_add(eo3_container(c));
   container1.eo3_container_add2(eo3_simple(simple));
-  container1.eo3_container_add2(simple);
-  //container1.eo3_container_add(simple); // assertion failure!
 }
 

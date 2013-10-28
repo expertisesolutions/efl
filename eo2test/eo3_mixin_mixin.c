@@ -22,21 +22,19 @@ _ab_sum_get(Eo *obj, Private_Data *self EINA_UNUSED, int *sum)
      , __func__, eo_class_name_get(EO3_GET_CLASS(EO3_MIXIN_MIXIN)), *sum);
 }
 
-static void
-_constructor(Eo *obj, Private_Data* self EINA_UNUSED) // XXX not invoked!
-{
-  printf("eo3_mixin_mixin.c:_constructor\n");
-  eo2_do_super(obj, EO3_GET_CLASS(EO3_MIXIN_MIXIN), eo2_constructor());
-}
+/* static void */
+/* _constructor(Eo *obj, Private_Data* self EINA_UNUSED) // XXX not invoked! */
+/* { */
+/*   printf("eo3_mixin_mixin.c:_constructor\n"); */
+/*   eo2_do_super(obj, EO3_GET_CLASS(EO3_MIXIN_MIXIN), eo2_constructor()); */
+/* } */
 
-static void
-_destructor(Eo *obj, Private_Data* self EINA_UNUSED) // XXX not invoked!
-{
-  printf("eo3_mixin_mixin.c:_destructor\n");
-  eo2_do_super(obj, EO3_GET_CLASS(EO3_MIXIN_MIXIN), eo2_destructor());
-}
+/* static void */
+/* _destructor(Eo *obj, Private_Data* self EINA_UNUSED) // XXX not invoked! */
+/* { */
+/*   printf("eo3_mixin_mixin.c:_destructor\n"); */
+/*   eo2_do_super(obj, EO3_GET_CLASS(EO3_MIXIN_MIXIN), eo2_destructor()); */
+/* } */
 
 EO3_DEFINE_MIXIN(EO3_MIXIN_MIXIN, ((EO3_NO_BASE_CLASS)), Private_Data)
-
-
 

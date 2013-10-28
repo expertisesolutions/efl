@@ -28,30 +28,16 @@ struct eo3_container : efl::eo::Base
   {
   }
 
-  void eo3_container_add(eo3_container const& eo)
+  void eo3_container_add(eo3_container eo)
   {
     std::cout << "eo3_container::eo3_container_add [eo3_container]" << std::endl; // XXX
     eo2_do(_eo_ptr(), ::eo3_container_add(eo._eo_ptr()));
   }
 
-  void eo3_container_add(Eo* eo)
-  {
-    std::cout << "eo3_container::eo3_container_add [EO3_CONTAINER_CLASS]" << std::endl; // XXX
-    assert(eo_isa(eo, EO3_GET_CLASS(EO3_CONTAINER_CLASS)));
-    eo2_do(_eo_ptr(), ::eo3_container_add(eo));
-  }
-
-  void eo3_container_add2(eo3_simple const& eo)
+  void eo3_container_add2(eo3_simple eo)
   {
     std::cout << "eo3_container::eo3_container_add2 [eo3_simple]" << std::endl; // XXX
     eo2_do(_eo_ptr(), ::eo3_container_add2(eo._eo_ptr()));
-  }
-
-  void eo3_container_add2(Eo* eo)
-  {
-    std::cout << "eo3_container::eo3_container_add2 [EO3_SIMPLE_CLASS]" << std::endl; // XXX
-    assert(eo_isa(eo, EO3_GET_CLASS(EO3_SIMPLE_CLASS)));
-    eo2_do(_eo_ptr(), ::eo3_container_add2(eo));
   }
 
 private:
