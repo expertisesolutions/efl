@@ -33,6 +33,6 @@ int main(int argc, char** argv)
   eo2_do(simple._eo_ptr(), ::simple_set_callback_add(0, callback1));
   simple.simple_set(68);
 
-  eo2_do(simple._eo_ptr(), ::simple_class_foo(10));
+  eo2_do(eo_class_get(simple._eo_ptr()), ::simple_class_foo(10));
 }
 

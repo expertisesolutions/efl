@@ -2096,6 +2096,8 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DEFINE_INTERFACE_FUNCTION_function_override(NAME, IMPL)
 
+#define EO3_DEFINE_INTERFACE_FUNCTION_class_function_override(NAME, IMPL)
+
 /**
  * @internal
  */
@@ -2302,7 +2304,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
-      "Eo2 Class",                                                      \
+      EO_PREPROCESSOR_STRINGIZE(CLASS_NAME),                            \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
       event_descs,                                                             \
