@@ -1850,83 +1850,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_NO_BASE_CLASS EO3_PREPROCESSOR_eo3_null_base_class, DUMMY
 
-// /**
-//  * @def EO3_FUNCTION
-//  * @brief declare a new function.
-//  * @param name Name of the function.
-//  * @param impl Implement of the function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_FUNCTION(NAME, ...) NORMAL_FUNCTION(NAME, __VA_ARGS__)
-
-// /**
-//  * @def EO3_FUNCTION_OVERRIDE
-//  * @brief declare a overriding function.
-//  * @param name Name of overriding function.
-//  * @param impl Implement of the function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
 /**
  * @internal
  * 
  * */
 #define EO3_PREPROCESSOR_eo3_null_base_class_get() NULL
-
-// /**
-//  * @def EO3_CONSTRUCTOR
-//  * @brief declare a constructor class function.
-//  * @param name Name of constructor
-//  * @param impl Implement of the function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_CONSTRUCTOR(NAME, IMPL, ...) NORMAL_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
-
-// /**
-//  * @def EO3_CONSTRUCTOR_OVERRIDE
-//  * @brief declare a overriding class function.
-//  * @param name Name of overriding function.
-//  * @param impl Implement of the function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_CONSTRUCTOR_OVERRIDE(NAME, IMPL, ...) OVERRIDE_FUNCTION(NAME, IMPL, void ,## __VA_ARGS__)
-
-// /**
-//  * @def EO3_DESTRUCTOR
-//  * @brief declare a destructor class function.
-//  * @param name Name of overriding function.
-//  * @param impl Implement of the function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_DESTRUCTOR(IMPL) OVERRIDE_FUNCTION(eo2_destructor, IMPL, void)
-
-// /**
-//  * @def EO3_CLASS_FUNCTION
-//  * @brief declare a new class function.
-//  * @param name Name of the class function.
-//  * @param impl Implement of the class function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_CLASS_FUNCTION(NAME, IMPL, ...) NORMAL_CLASS_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
-// /**
-//  * @def EO3_CLASS_FUNCTION_OVERRIDE
-//  * @brief declare a overriding class function.
-//  * @param name Name of overriding class function.
-//  * @param impl Implement of the class function.
-//  * @param ... list of parameters.
-//  */
-// #define EO3_CLASS_FUNCTION_OVERRIDE(NAME, IMPL, ...) OVERRIDE_CLASS_FUNCTION(NAME, IMPL, __VA_ARGS__)
-
-
-// /**
-//  * @def EO3_EVENT
-//  * @brief declare a event 
-//  * @param name Name of event 
-//  * @param ... list of parameters.
-//  */
-// #define EO3_EVENT(NAME, ...) NORMAL_EVENT(NAME, __VA_ARGS__)
 
 #define EO_TYPE(CLASS) Eo*
 
