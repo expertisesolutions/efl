@@ -48,13 +48,13 @@ eo3_inherit_interface.o: eo3_inherit_interface.c
 libeo2.so: $(EO_OBJS)
 	$(CC) $(CFLAGS) -shared -Wl,-soname,libeo2.so $(INCLUDE) $(CONFIG) $(EO_OBJS) $(EINA_LIBS) -o $@
 
-cxx/simple1.o: cxx/samples/simple1.cpp cxx/generated/eo3_simple.hpp
+cxx/samples/simple1.o: cxx/samples/simple1.cpp cxx/generated/eo3_simple.hpp
+	$(CXX) -save-temps -std=c++11 $(CXXFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
+
+cxx/samples/simple3.o: cxx/samples/simple3.cpp cxx/generated/eo3_simple.hpp
 	$(CXX) -save-temps $(CXXFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
 
-cxx/simple3.o: cxx/samples/simple3.cpp cxx/generated/eo3_simple.hpp
-	$(CXX) -save-temps $(CXXFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
-
-cxx/container1.o: cxx/samples/container1.cpp
+cxx/samples/container1.o: cxx/samples/container1.cpp
 	$(CXX) -save-temps $(CXXFLAGS) -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
 
 simple1: libeo2.so eo3_simple.o cxx/samples/simple1.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h

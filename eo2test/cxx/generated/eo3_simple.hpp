@@ -128,14 +128,14 @@ void funcao_simple_virtual(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Priva
 namespace efl { namespace eo { namespace detail {
 
 template <>
-struct virtuals<eo3_simple>
+struct operations<eo3_simple>
 {
   template <typename T>
   struct type
   {
     virtual void simple_inc()
     {
-      std::cout << "virtuals<eo3_simple>::simple_inc" << std::endl; // XXX
+      std::cout << "operations<eo3_simple>::simple_inc" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , ::simple_inc());
@@ -143,7 +143,7 @@ struct virtuals<eo3_simple>
     virtual int simple_get()
     {
       int r = 0;
-      std::cout << "virtuals<eo3_simple>::simple_get" << std::endl; // XXX
+      std::cout << "operations<eo3_simple>::simple_get" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , r = ::simple_get());
@@ -151,14 +151,14 @@ struct virtuals<eo3_simple>
     }
     virtual void simple_set(int a0)
     {
-      std::cout << "virtuals<eo3_simple>::simple_set" << std::endl; // XXX
+      std::cout << "operations<eo3_simple>::simple_set" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , ::simple_set(a0));
     }
     virtual void simple_virtual(int a0)
     {
-      std::cout << "virtuals<eo3_simple>::simple_virtual" << std::endl; // XXX
+      std::cout << "operations<eo3_simple>::simple_virtual" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , ::simple_virtual(a0));

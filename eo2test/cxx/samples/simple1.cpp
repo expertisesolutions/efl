@@ -40,6 +40,8 @@ int main(int argc, char** argv)
   eo2_do(simple._eo_ptr(), ::simple_set_callback_add(0, callback1));
 
   efl::eo::callback_token tok = simple.simple_set_callback_add(boost::bind(&foo, 5, _1));
+  efl::eo::callback_token tok1 = simple.simple_set_callback_add
+    ([](int x) { std::cout << "set to X: " << x << std::endl; });
   simple.simple_set(68);
 
   simple.simple_set_callback_del(tok);
