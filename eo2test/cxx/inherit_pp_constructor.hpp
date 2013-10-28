@@ -1,8 +1,10 @@
 // -*- mode: C++ -*-
 
-#define I BOOST_PP_ADD(BOOST_PP_ITERATION(),1)
+#define I BOOST_PP_ITERATION()
 
+#if I
   template <BOOST_PP_ENUM_PARAMS(I, typename A)>
+#endif
   inherit(BOOST_PP_ENUM_BINARY_PARAMS(I, A, a))
   {
     _eo_class = detail::create_class

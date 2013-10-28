@@ -20,7 +20,6 @@ extern "C" {
 #include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 
 #define EFL_MAX_ARGS 8
-#define EFL_MAX_CONS_PARAMS 10
 
 namespace efl { namespace eo { namespace detail {
 

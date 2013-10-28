@@ -15,5 +15,6 @@ int main(int argc, char** argv)
   eo3_simple simple(66);
   simple.simple_inc();
   assert(simple.simple_get() == 67);
+  assert(sizeof(simple) == sizeof(Eo*));
 }
 

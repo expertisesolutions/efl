@@ -100,7 +100,7 @@ void inherit_constructor_impl(Eo* obj, Inherit_Private_Data* self, void* this_, 
   Eo_Class const* cls
     = static_cast<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>*>(this_)->_eo_cls();
 
-  detail::call_constructor_aux<P>::do_(args, obj, cls);  
+  detail::call_constructor_aux<P>::do_(args, obj, cls);
 #define EFL_CXX_call_constructor_aux_rep(Z, N, DATA) \
   detail::call_constructor_aux<BOOST_PP_CAT(E, N)>::do_(args, obj, cls);
   BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_call_constructor_aux_rep, ~);
@@ -119,7 +119,7 @@ EAPI void inherit_constructor(void* this_, Args args)
   if ( op == EO_NOOP )
     op = eo2_api_op_id_get((void*)&inherit_constructor
                            <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E), Args>
-                           , EO_OP_TYPE_REGULAR); // XXX
+                           , EO_OP_TYPE_REGULAR);
   if (!eo2_call_resolve(op, &call)) assert(eo2_call_resolve(op, &call));
   func_t func = (func_t) call.func;
   return func(call.obj, call.data, this_, args);
@@ -172,7 +172,7 @@ Eo_Class const* create_class(/*info*/)
     <inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
     (detail::tag<P>(), op_descs);
 
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_ARGS, "inherit_pp_opdesc.ipp"))
+#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, BOOST_PP_DEC(EFL_MAX_ARGS), "inherit_pp_operation_description.hpp"))
 #include BOOST_PP_ITERATE()
 
   //locks
@@ -208,12 +208,12 @@ template <typename D, typename P
 struct inherit
     : detail::virtuals<P>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
     BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_virtuals_rep, ~)
-  , detail::conversion_operator<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>, P>
+    , detail::conversion_operator<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>, P>
     BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_conversion_operator_rep, ~)
 {
   typedef inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> inherit_base;
 
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_CONS_PARAMS, "inherit_pp_cons.ipp"))
+#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_ARGS, "inherit_pp_constructor.hpp"))
 #include BOOST_PP_ITERATE()
 
   ~inherit()
@@ -223,6 +223,20 @@ struct inherit
 
   Eo* _eo_ptr() const { return _eo_raw; }
   Eo_Class const* _eo_cls() const { return _eo_class; }
+
+protected:
+  inherit(inherit const& other)
+    : _eo_class(other._eo_class)
+    , _eo_raw(other._eo_raw)
+  { eo_ref(_eo_raw); }
+
+  inherit& operator=(inherit const& other)
+  { 
+    _eo_class = other._eo_class;
+    _eo_raw = other._eo_raw;
+    eo_ref(_eo_raw);
+    return *this;
+  }
 
 private:
   Eo_Class const* _eo_class;
