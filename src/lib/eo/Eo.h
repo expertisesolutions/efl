@@ -2148,17 +2148,14 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME               \
        (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__))                  \
   {                                                             \
-    /*printf("Calling " #NAME "\n");*/                         \
     typedef EO3_FUNCTION_GET_RETURN(__VA_ARGS__,)                       \
       (*func_t)(Eo *, void *obj_data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(__VA_ARGS__)) \
          EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));                \
-    /*EO3_FUNCTION_GET_RETURN(__VA_ARGS__) _r;*/                       \
     Eo2_Op_Call_Data call;                                             \
     static Eo_Op op = EO_NOOP;                                         \
     if ( op == EO_NOOP )                                               \
       op = eo2_api_op_id_get((void*)NAME, EO_OP_TYPE_REGULAR);          \
     if (!eo2_call_resolve(op, &call)) assert(eo2_call_resolve(op, &call)); \
-    /*printf("Resolved\n");*/                                          \
     func_t func = (func_t) call.func;                                   \
     return func(call.obj, call.data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(__VA_ARGS__)) \
                 EO3_FUNCTION_ENUM_ARGS(__VA_ARGS__));                 \
@@ -2197,7 +2194,6 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   {                                                                     \
     typedef Eina_Bool                                                   \
       (*func_t)(EO3_FUNCTION_ENUM_PARAMS(~,__VA_ARGS__));               \
-    printf(EO_PREPROCESSOR_STRINGIZE(EO_PREPROCESSOR_CONCAT(NAME, _callback_args)) "\n"); \
     func_t f = (func_t)function;                                        \
     struct                                                              \
     {                                                                   \
@@ -2225,7 +2221,6 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)                \
     (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__))                          \
   {                                                                     \
-    printf("api_callback_call\n");                                      \
     Eo2_Op_Call_Data call;                                             \
     static Eo_Op op = EO_NOOP;                                         \
     if ( op == EO_NOOP )                                               \
