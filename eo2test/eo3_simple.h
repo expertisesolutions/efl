@@ -9,8 +9,7 @@
     , function(simple_inc, _inc, void)                           \
     , function(simple_get, _get, int)                            \
     , function(simple_set, _set, void, int)                      \
-    , function(simple_virtual, _set, void, int)                  \
-    , event(simple_set_event, int)
+    , function(simple_virtual, _set, void, int)
 
 EO3_DECLARE_CLASS(EO3_SIMPLE_CLASS)
 
