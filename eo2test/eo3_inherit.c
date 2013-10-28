@@ -45,9 +45,7 @@ _constructor(Eo *obj, Private_Data *data)
   printf("eo3_inherit.c:_constructor\n");
   /* eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_constructor(66)); */
   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), eo2_constructor());
-  printf("1\n");
   eo2_do(obj, simple_constructor(66));
-  printf("2\n");
   data->y = 68;
 }
 

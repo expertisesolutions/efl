@@ -11,27 +11,25 @@ typedef struct
 
 static void _inc(Eo *objid EINA_UNUSED, Private_Data* self)
 {
-  printf("eo3_simple::inc [privdata=%p]\n", self);
   printf("eo3_simple::inc %d->%d\n", self->x, self->x+1);
   self->x += 1;
 }
 static int _get(Eo *objid EINA_UNUSED, Private_Data* self)
 {
-  printf("eo3_simple::get [privdata=%p]\n", self);
   printf("eo3_simple::get %d\n", self->x);
   return self->x;
 }
 static void _set(Eo *objid EINA_UNUSED, Private_Data* self, int x)
 {
-  printf("eo3_simple::set [privdata=%p]\n", self);
-  puts("eo3_simple::set\n");
+  printf("eo3_simple::set %d\n", x);
   self->x = x;
 }
 static void _class_hello(const Eo_Class *klass, int a)
 {
   (void)klass;
   (void)a;
-  //printf("Hello %d - body %s - EAPI %s\n", a, eo_class_name_get(klass), eo_class_name_get(EO3_SIMPLE_CLASS)); 
+  printf("Hello %d - body %s - EAPI %s\n", a, eo_class_name_get(klass)
+    , eo_class_name_get(EO3_GET_CLASS(EO3_SIMPLE_CLASS))); 
 }
 static void _constructor(Eo *obj, Private_Data* self, int x)
 {
