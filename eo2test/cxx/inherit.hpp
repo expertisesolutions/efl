@@ -195,8 +195,8 @@ Eo_Class const* create_class(/*info*/)
 
 }
 
-#define EFL_CXX_inherit_virtuals_rep(Z, N, DATA) \
-  , detail::virtuals<BOOST_PP_CAT(E, N)>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
+#define EFL_CXX_inherit_operations_rep(Z, N, DATA) \
+  , detail::operations<BOOST_PP_CAT(E, N)>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
 #define EFL_CXX_inherit_conversion_operator_rep(Z, N, DATA) \
 , detail::conversion_operator<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>, BOOST_PP_CAT(E, N)>
 
@@ -206,8 +206,8 @@ Eo_Class const* create_class(/*info*/)
 template <typename D, typename P
     BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)>
 struct inherit
-    : detail::virtuals<P>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
-    BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_virtuals_rep, ~)
+    : detail::operations<P>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
+    BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_operations_rep, ~)
     , detail::conversion_operator<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>, P>
     BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_conversion_operator_rep, ~)
 {
@@ -243,7 +243,7 @@ private:
   Eo* _eo_raw;
 };
 
-#undef EFL_CXX_inherit_virtuals_rep
+#undef EFL_CXX_inherit_operations_rep
 #undef EFL_CXX_inherit_conversion_operator_rep
 
 } }

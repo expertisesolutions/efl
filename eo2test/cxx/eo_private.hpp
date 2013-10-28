@@ -79,16 +79,16 @@ struct conversion_operator
 
 namespace detail {
 
-template <typename T> struct virtuals;
+template <typename T> struct operations;
 
-#define EFL_CXX_void_virtuals(Z, N, DATA) \
-  template <> struct virtuals<BOOST_PP_CAT(void_tag_, N)> \
+#define EFL_CXX_void_operations(Z, N, DATA) \
+  template <> struct operations<BOOST_PP_CAT(void_tag_, N)> \
   {                                                       \
     template <typename D>                                 \
     struct type {};                                       \
   };
-BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_virtuals, ~)
-#undef EFL_CXX_void_virtuals
+BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_operations, ~)
+#undef EFL_CXX_void_operations
 
 
 #define EFL_CXX_void_operation_description_class_size(Z, N, DATA)		    \

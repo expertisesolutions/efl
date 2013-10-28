@@ -18,13 +18,13 @@ extern "C" {
 
 #include "eo3_simple.hpp"
 
-struct eo3_container : efl::eo::Base
+struct eo3_container : efl::eo::base
 {
   explicit eo3_container(Eo* eo)
-    : efl::eo::Base(eo) {}
+    : efl::eo::base(eo) {}
 
   eo3_container()
-    : efl::eo::Base(_c1())
+    : efl::eo::base(_c1())
   {
   }
 

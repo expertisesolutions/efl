@@ -26,9 +26,7 @@ struct wref {
 
   boost::optional<T> lock()
   {
-    // XXX eo_ref() should be able to work on a multi-threaded
-    // environment.
-    if(_eo_wref) 
+    if(_eo_wref) // eo_ref() should work on a multi-threaded environment
       eo_ref(_eo_wref);
     else
       return boost::none;

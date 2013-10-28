@@ -19,10 +19,10 @@ extern "C" {
 #include "eo3_interface.hpp"
 
 struct eo3_inherit_interface 
-    : efl::eo::Base, efl::eo::detail::extension_inheritance<eo3_interface>::type<eo3_inherit_interface>
+    : efl::eo::base, efl::eo::detail::extension_inheritance<eo3_interface>::type<eo3_inherit_interface>
 {
   explicit eo3_inherit_interface(Eo* eo)
-  : efl::eo::Base(eo)
+  : efl::eo::base(eo)
   {}
 };
 
