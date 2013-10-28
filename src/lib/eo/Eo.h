@@ -1960,6 +1960,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__));                         \
   extern const Eo_Event_Description EO_PREPROCESSOR_CONCAT(NAME, _event);
 
+#define EO3_DECLARE_FUNCTION_hot_event(NAME, ...)                           \
+  EO3_DECLARE_FUNCTION_event(NAME, ## __VA_ARGS__)
+
 /**
  * @internal
  */
@@ -1980,6 +1983,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DECLARE_INTERFACE_FUNCTION_event(NAME, ...) \
+  EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
+
+#define EO3_DECLARE_INTERFACE_FUNCTION_hot_event(NAME, ...)     \
   EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
 
 /**
@@ -2066,6 +2072,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DEFINE_DESCR_FUNCTION_event(NAME, ...)                      \
   EO2_OP_FUNC((void*)0, EO_PREPROCESSOR_CONCAT(NAME, _callback_call), ""),
+
+#define EO3_DEFINE_DESCR_FUNCTION_hot_event(NAME, ...)  \
+  EO3_DEFINE_DESCR_FUNCTION_event(NAME, ## __VA_ARGS__)
 
 /**
  * @internal
@@ -2160,7 +2169,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, ...)                  \
   const Eo_Event_Description EO_PREPROCESSOR_CONCAT(NAME, _event) =     \
   {EO_PREPROCESSOR_STRINGIZE(NAME), "", EINA_FALSE};                    \
-  EAPI Eina_Bool EO_PREPROCESSOR_CONCAT(NAME, _callback_args)           \
+  static Eina_Bool EO_PREPROCESSOR_CONCAT(NAME, _callback_args)         \
     (void* function, void* user_data, Eo* eo EINA_UNUSED                \
      , Eo_Event_Description const* event EINA_UNUSED, void* e)          \
   {                                                                     \
@@ -2173,8 +2182,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     {                                                                   \
       EO3_FUNCTION_ENUM_STRUCT_PARAMS(~, __VA_ARGS__)                   \
     } *args = e;                                                    \
-    f(user_data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
-      EO3_FUNCTION_ENUM_STRUCT_ARGS(~, __VA_ARGS__));                   \
+    return f(user_data                                                  \
+             EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(~,__VA_ARGS__)) \
+             EO3_FUNCTION_ENUM_STRUCT_ARGS(~, __VA_ARGS__));            \
   }                                                                     \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_add)                 \
     (void* data, Eina_Bool (*function)                                  \
@@ -2185,7 +2195,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     eo2_event_callback_priority_add                                     \
       (&EO_PREPROCESSOR_CONCAT(NAME, _event)                            \
        , EO_CALLBACK_PRIORITY_DEFAULT                                   \
-       , function, data);                                               \
+       , (Eo_Event_Cb)function, data);                                  \
   }                                                                     \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_del)                 \
     (void* data, Eina_Bool (*function)                                  \
@@ -2195,7 +2205,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   {                                                                     \
     eo2_event_callback_del                                              \
       (&EO_PREPROCESSOR_CONCAT(NAME, _event)                            \
-       , function, data);                                               \
+       , (Eo_Event_Cb)function, data);                                  \
   }                                                                     \
   EAPI void EO_PREPROCESSOR_CONCAT(NAME, _callback_call)                \
     (EO3_FUNCTION_ENUM_PARAMS(~, __VA_ARGS__))                          \
@@ -2213,6 +2223,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
            (&EO_PREPROCESSOR_CONCAT(NAME, _event)                      \
             , &args, &EO_PREPROCESSOR_CONCAT(NAME, _callback_args)));  \
   }
+
+#define EO3_DEFINE_INTERFACE_FUNCTION_hot_event(NAME, ...)      \
+  EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, ## __VA_ARGS__)
 
 /**
  * @internal
@@ -2244,6 +2257,8 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DEFINE_DESCR_EVENT_destructor(IMPL)
 #define EO3_DEFINE_DESCR_EVENT_event(NAME, ...) \
   {EO_PREPROCESSOR_STRINGIZE(NAME), "", EINA_FALSE},
+#define EO3_DEFINE_DESCR_EVENT_hot_event(NAME, ...) \
+  {EO_PREPROCESSOR_STRINGIZE(NAME), "", EINA_TRUE},
 
 /**
  * @internal
