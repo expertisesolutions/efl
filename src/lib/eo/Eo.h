@@ -1870,6 +1870,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 
 /**
  * @internal
+ * 
  * */
 #define EO3_PREPROCESSOR_eo3_null_base_class_get() NULL
 
@@ -1961,7 +1962,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DECLARE_FUNCTION_function(NAME, IMPL, ...)          \
-  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                \
+  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME               \
     (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
 
 /**
@@ -2013,7 +2014,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DECLARE_INTERFACE_FUNCTION_function(NAME, ...)              \
-  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                        \
+  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME                       \
     (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));
 
 /**
@@ -2129,11 +2130,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DEFINE_INTERFACE_function(NAME, ...)    \
-  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__) NAME                \
+  EAPI EO3_FUNCTION_GET_RETURN(__VA_ARGS__,) NAME               \
        (EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__))                  \
   {                                                             \
     /*printf("Calling " #NAME "\n");*/                         \
-    typedef EO3_FUNCTION_GET_RETURN(__VA_ARGS__)                \
+    typedef EO3_FUNCTION_GET_RETURN(__VA_ARGS__,)                       \
       (*func_t)(Eo *, void *obj_data EO_PREPROCESSOR_COMMA_IF(EO3_FUNCTION_ENUM_PARAMS_SIZE(__VA_ARGS__)) \
          EO3_FUNCTION_ENUM_PARAMS(__VA_ARGS__));                \
     /*EO3_FUNCTION_GET_RETURN(__VA_ARGS__) _r;*/                       \
