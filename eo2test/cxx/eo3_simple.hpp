@@ -1,75 +1,76 @@
+#ifndef GENCXX_EO3_SIMPLE_HPP
+#define GENCXX_EO3_SIMPLE_HPP
 
 #include "eo_private.hpp"
+#include "eo_base.hpp"
+
 #include <iostream>
 
-// #define EO3_SIMPLE_CLASS eo3_simple                                  \
-//     , EO3_CONSTRUCTOR(simple_constructor, _constructor, int)         \
-//     , EO3_DESTRUCTOR(_destructor)                                    \
-//     , EO3_FUNCTION(simple_inc, _inc, void)                           \
-//     , EO3_FUNCTION(simple_get, _get, int)                            \
-//     , EO3_FUNCTION(simple_set, _set, void, int)                      \
-//     , EO3_FUNCTION(simple_virtual, _set, void, int)                  \
-//     , EO3_EVENT(simple_set_event, int)
-
-// EO3_DECLARE_CLASS(EO3_SIMPLE_CLASS)
+/*
+ * #define EO3_SIMPLE_CLASS eo3_simple                            \
+ *     , EO3_CONSTRUCTOR(simple_constructor, _constructor, int)   \
+ *     , EO3_DESTRUCTOR(_destructor)                              \
+ *     , EO3_FUNCTION(simple_inc, _inc, void)                     \
+ *     , EO3_FUNCTION(simple_get, _get, int)                      \
+ *     , EO3_FUNCTION(simple_set, _set, void, int)                \
+ *     , EO3_FUNCTION(simple_virtual, _set, void, int)            \
+ *     , EO3_EVENT(simple_set_event, int)
+ *
+ * EO3_DECLARE_CLASS(EO3_SIMPLE_CLASS) 
+ */
 
 extern "C" {
 #include "eo3_simple.h"
 }
-// <end>
 
-// (not yet) generated code <begin>
-struct eo3_simple// : Base
+struct eo3_simple : efl::eo::Base
 {
-  //typedef Base _base_class_0;
   explicit eo3_simple(Eo* eo)
-    : _eo_raw(eo) {}
+    : efl::eo::Base(eo)
+  {}
 
   eo3_simple(int a0)
-    : _eo_raw(0)
+    : efl::eo::Base(_c1(a0))
   {
-    _eo_raw = eo2_add_custom(EO3_GET_CLASS(EO3_SIMPLE_CLASS)
-			     , NULL, ::simple_constructor(a0));
   }
+
   ~eo3_simple()
   {
-    eo_unref(_eo_raw);
+    std::cout << "~eo3_simple()" << std::endl;
   }
+
   eo3_simple(eo3_simple const& other)
-    : _eo_raw(eo_ref(other._eo_raw))
-  {}
-  eo3_simple& operator=(eo3_simple const& other)
-  {
-    _eo_raw = eo_ref(other._eo_raw);
-    return *this;
-  }
+    : efl::eo::Base(eo_ref(other._eo_ptr())) {}
 
   void simple_inc()
   {
-    eo2_do(_eo_raw, ::simple_inc());
+    std::cout << "eo3_simple::simple_inc " << std::endl; // XXX
+    eo2_do(_eo_ptr(), ::simple_inc());
   }
 
   int simple_get()
   {
     int r = 0;
-    eo2_do(_eo_raw, r = ::simple_get());
-    std::cout << "simple_get " << r << std::endl;
+    eo2_do(_eo_ptr(), r = ::simple_get());
+    std::cout << "eo3_simple::simple_get " << r << std::endl; // XXX
     return r;
   }
 
   void simple_set(int a0)
   {
-    eo2_do(_eo_raw, ::simple_set(a0));
+    eo2_do(_eo_ptr(), ::simple_set(a0));
   }
 
   void simple_virtual(int a0)
   {
-    eo2_do(_eo_raw, ::simple_virtual(a0));
+    eo2_do(_eo_ptr(), ::simple_virtual(a0));
   }
-
-  Eo* _eo_ptr() const { return _eo_raw; }
-protected:
-  Eo* _eo_raw;
+private:
+  static Eo* _c1(int a0)
+  {
+    return eo2_add_custom(EO3_GET_CLASS(EO3_SIMPLE_CLASS)
+			  , NULL, ::simple_constructor(a0));
+  }
 };
 
 template <typename T>
@@ -106,6 +107,7 @@ struct virtuals<eo3_simple>
   {
     virtual void simple_inc()
     {
+      std::cout << "virtuals<eo3_simple>::simple_inc" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , ::simple_inc());
@@ -113,6 +115,7 @@ struct virtuals<eo3_simple>
     virtual int simple_get()
     {
       int r = 0;
+      std::cout << "virtuals<eo3_simple>::simple_get" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , r = ::simple_get());
@@ -120,12 +123,14 @@ struct virtuals<eo3_simple>
     }
     virtual void simple_set(int a0)
     {
+      std::cout << "virtuals<eo3_simple>::simple_set" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , ::simple_set(a0));
     }
     virtual void simple_virtual(int a0)
     {
+      std::cout << "virtuals<eo3_simple>::simple_virtual" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
 		   , static_cast<T*>(this)->_eo_cls()
 		   , ::simple_virtual(a0));
@@ -140,7 +145,7 @@ struct operation_description_class_size<eo3_simple>
 };
 
 template <typename T>
-void initialize_operation_description(tag<eo3_simple>
+void initialize_operation_description(efl::eo::detail::tag<eo3_simple>
 				      , Eo2_Op_Description* ops)
 {
   ops[0].func = reinterpret_cast<void*>(& ::funcao_simple_inc<T>);
@@ -168,12 +173,11 @@ void initialize_operation_description(tag<eo3_simple>
   ops[3].doc = NULL;
 }
 
-/* args_class => fusion:: | eo3_simple em args_class<> eh tag,, */
 void call_constructor(tag<eo3_simple>
 		      , Eo* eo, Eo_Class const* cls
 		      , args_class<eo3_simple, boost::fusion::vector<int> > const& args)
 {
-  std::cout << "call_constructor eo3_simple" << std::endl;
+  std::cout << "call_constructor eo3_simple" << std::endl; // XXX
   eo2_do(eo/*, cls*/, ::simple_constructor(args.get<0>()));
 }
 
@@ -185,3 +189,6 @@ inline Eo_Class const* get_eo_class(tag<eo3_simple>)
 } } }
 
 // <end>
+
+#endif // GENCXX_EO3_SIMPLE_HPP
+

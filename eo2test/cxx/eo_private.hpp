@@ -1,9 +1,25 @@
 
+#if !defined(BOOST_PP_IS_ITERATING)
+
 #ifndef EO3_EO_PRIVATE_HPP
 #define EO3_EO_PRIVATE_HPP
 
+extern "C" {
+#include "Eo.h"
+}
+
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/at.hpp>
+
+#include <boost/preprocessor/cat.hpp>
+#include <boost/preprocessor/repeat.hpp>
+#include <boost/preprocessor/iterate.hpp>
+#include <boost/preprocessor/repetition/enum_params.hpp>
+#include <boost/preprocessor/repetition/enum_trailing_params.hpp>
+#include <boost/preprocessor/repetition/enum_binary_params.hpp>
+#include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
+
+#define EFL_MAX_ARGS 8
 
 namespace efl { namespace eo { namespace detail {
 
@@ -25,179 +41,123 @@ struct args_class
   Seq seq;
 };
 
-}
-
-template <typename T, typename A0>
-detail::args_class<T, boost::fusion::vector<A0> > args(A0 a0)
-{
-  return detail::args_class<T, boost::fusion::vector<A0> >
-    (boost::fusion::vector<A0>(a0));
-}
-
-template <typename T, typename A0, typename A1>
-detail::args_class<T, boost::fusion::vector<A0, A1> > args(A0 a0, A1 a1)
-{
-  return detail::args_class<T, boost::fusion::vector<A0, A1> >
-    (boost::fusion::vector<A0, A1>(a0, a1));
-}
-
-template <typename T, typename A0, typename A1, typename A2>
-detail::args_class<T, boost::fusion::vector<A0, A1, A2> > args(A0 a0, A1 a1, A2 a2)
-{
-  return detail::args_class<T, boost::fusion::vector<A0, A1, A2> >
-    (boost::fusion::vector<A0, A1, A2>(a0, a1, a2));
-}
-
-template <typename T, typename A0, typename A1, typename A2, typename A3>
-detail::args_class<T, boost::fusion::vector<A0, A1, A2, A3> > args
-(A0 a0, A1 a1, A2 a2, A3 a3)
-{
-  return detail::args_class<T, boost::fusion::vector<A0, A1, A2, A3> >
-    (boost::fusion::vector<A0, A1, A2, A3>(a0, a1, a2, a3));
-}
-
-namespace detail {
-
 template <typename T> struct tag {};
-template <typename T> struct virtuals;
 
-template <> struct virtuals<void>
-{
-  template <typename D>
-  struct type {};
-};
+#define EFL_CXX_void_tag(Z, N, DATA) struct BOOST_PP_CAT(void_tag_, N) {};
+BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_tag, ~)
+#undef EFL_CXX_void_tag
 
-template <typename T> struct operation_description_class_size;
 
-template <> struct operation_description_class_size<void>
-{
-  static const int value = 0;
-};
-
-template <typename P, typename E1, typename E2, typename E3, typename E4
-	  , typename E5, typename E6, typename E7, typename E8>
+template <typename P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)>
 struct do_eo_class_new
 {
   static Eo_Class const* do_(Eo_Class_Description& class_desc)
   {
+#define EFL_CXX_get_eo_class(Z, N, DATA) ,get_eo_class(tag<BOOST_PP_CAT(E,N)>())
     return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, get_eo_class(tag<E3>()), get_eo_class(tag<E4>())
-			, get_eo_class(tag<E5>()), get_eo_class(tag<E6>())
-			, get_eo_class(tag<E7>()), get_eo_class(tag<E8>())
-                        , (void*)NULL);
+			BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_get_eo_class, ~),
+			(void*)NULL);
   }
 };
 
-template <typename P, typename E1, typename E2, typename E3, typename E4
-	  , typename E5, typename E6, typename E7>
-struct do_eo_class_new<P, E1, E2, E3, E4, E5, E6, E7, void>
+template <typename T> struct operation_description_class_size;
+
+template <typename D, typename T>
+struct conversion_operator
 {
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
+  operator T() const
   {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, get_eo_class(tag<E3>()), get_eo_class(tag<E4>())
-			, get_eo_class(tag<E5>()), get_eo_class(tag<E6>())
-			, get_eo_class(tag<E7>())
-			, (void*)NULL);
+    eo_ref(static_cast<D const*>(this)->_eo_ptr());
+    return T(static_cast<D const*>(this)->_eo_ptr());
   }
 };
 
-template <typename P, typename E1, typename E2, typename E3, typename E4
-	  , typename E5, typename E6>
-struct do_eo_class_new<P, E1, E2, E3, E4, E5, E6, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, get_eo_class(tag<E3>()), get_eo_class(tag<E4>())
-			, get_eo_class(tag<E5>()), get_eo_class(tag<E6>())
-			, (void*)NULL);
-  }
-};
+} // namespace detail {
 
-template <typename P, typename E1, typename E2, typename E3, typename E4
-	  , typename E5>
-struct do_eo_class_new<P, E1, E2, E3, E4, E5, void, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, get_eo_class(tag<E3>()), get_eo_class(tag<E4>())
-			, get_eo_class(tag<E5>())
-			, (void*)NULL);
-  }
-};
+#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_ARGS, "eo_private.hpp"))
+#include BOOST_PP_ITERATE()
 
-template <typename P, typename E1, typename E2, typename E3, typename E4>
-struct do_eo_class_new<P, E1, E2, E3, E4, void, void, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, get_eo_class(tag<E3>()), get_eo_class(tag<E4>())
-			, (void*)NULL);
-  }
-};
+namespace detail {
 
-template <typename P, typename E1, typename E2, typename E3>
-struct do_eo_class_new<P, E1, E2, E3, void, void, void, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, get_eo_class(tag<E3>())
-			, (void*)NULL);
-  }
-};
+template <typename T> struct virtuals;
 
-template <typename P, typename E1, typename E2>
-struct do_eo_class_new<P, E1, E2, void, void, void, void, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>()), get_eo_class(tag<E2>())
-			, (void*)NULL);
-  }
-};
+#define EFL_CXX_void_virtuals(Z, N, DATA) \
+  template <> struct virtuals<BOOST_PP_CAT(void_tag_, N)> \
+  {                                                       \
+    template <typename D>                                 \
+    struct type {};                                       \
+  };
+BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_virtuals, ~)
+#undef EFL_CXX_void_virtuals
 
-template <typename P, typename E1>
-struct do_eo_class_new<P, E1, void, void, void, void, void, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, get_eo_class(tag<E1>())
-			, (void*)NULL);
-  }
-};
 
-template <typename P>
-struct do_eo_class_new<P, void, void, void, void, void, void, void, void>
-{
-  static Eo_Class const* do_(Eo_Class_Description& class_desc)
-  {
-    return eo_class_new(&class_desc, get_eo_class(tag<P>())
-			, (void*)NULL);
-  }
-};
+#define EFL_CXX_void_operation_description_class_size(Z, N, DATA)		    \ 
+  template <> struct operation_description_class_size<BOOST_PP_CAT(void_tag_, N)>   \
+  {										    \
+    static const int value = 0;						            \
+  };
+BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_operation_description_class_size, ~)
+#undef EFL_CXX_void_operation_description_class_size
+
+
+template <typename T>
+struct extension_inheritance {};
+
 
 struct Inherit_Private_Data
 {
   void* this_;
 };
 
+} } }
+
+#undef EFL_CXX_get_eo_class
+
+#endif // EO3_EO_PRIVATE_HPP
+#else 
+
+#define I BOOST_PP_ITERATION()
+
+#if I
+template <typename T BOOST_PP_ENUM_TRAILING_PARAMS(I, typename A)>
+detail::args_class<T, boost::fusion::vector< BOOST_PP_ENUM_PARAMS(I, A) > > 
+  args(BOOST_PP_ENUM_BINARY_PARAMS(I, A, a))
+{
+  return detail::args_class<T, boost::fusion::vector<BOOST_PP_ENUM_PARAMS(I, A)> >
+    (boost::fusion::vector<BOOST_PP_ENUM_PARAMS(I, A)>(BOOST_PP_ENUM_PARAMS(I, a)));
+}
+
+namespace detail {
+
+#define EFL_CXX_do_eo_class_new_spec(Z, N, DATA) , BOOST_PP_CAT(void_tag_, BOOST_PP_ADD(BOOST_PP_SUB(EFL_MAX_ARGS, I), N))
+template <typename P BOOST_PP_ENUM_TRAILING_PARAMS(BOOST_PP_SUB(EFL_MAX_ARGS, I), typename E)>
+struct do_eo_class_new<P 
+  BOOST_PP_ENUM_TRAILING_PARAMS(BOOST_PP_SUB(EFL_MAX_ARGS, I), E) 
+  BOOST_PP_REPEAT(I, EFL_CXX_do_eo_class_new_spec, ~) >
+{
+  static Eo_Class const* do_(Eo_Class_Description& class_desc)
+  {
+    return eo_class_new(&class_desc, get_eo_class(tag<P>())
+			BOOST_PP_REPEAT(BOOST_PP_SUB(EFL_MAX_ARGS,I), EFL_CXX_get_eo_class, ~)
+			, (void*)NULL);
+  }
+};
+
+}
+#endif // #if I
+
+#if I != EFL_MAX_ARGS
+namespace detail {
+
 template <typename T>
-void initialize_operation_description(tag<void>, Eo2_Op_Description*)
+inline void initialize_operation_description(tag<BOOST_PP_CAT(void_tag_, I)>, Eo2_Op_Description*)
 {
 }
 
-} } }
+template <typename D>
+struct conversion_operator<D, BOOST_PP_CAT(void_tag_, I)> {};
 
+}
 #endif
+
+#endif // !defined(BOOST_PP_IS_ITERATING)

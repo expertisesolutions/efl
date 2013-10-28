@@ -12,7 +12,7 @@ typedef struct
 static void
 _inc(Eo *obj, Private_Data *data)
 {
-  /* puts("eo3_inherit::inc\n"); */
+  puts("eo3_inherit::inc\n");
   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_inc());
   data->y += 1;
 }
@@ -20,7 +20,7 @@ _inc(Eo *obj, Private_Data *data)
 static int
 _get(Eo *obj EINA_UNUSED, Private_Data *data)
 {
-  /* puts("eo3_inherit::get\n"); */
+  puts("eo3_inherit::get\n");
   return data->y;
 }
 
@@ -41,14 +41,15 @@ _virtual(Eo *obj EINA_UNUSED, void *obj_data EINA_UNUSED, int in)
 static void
 _constructor(Eo *obj, Private_Data *data)
 {
-   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_constructor(66));
-
-   data->y = 68;
+  printf("eo3_inherit.c:_constructor\n");
+  eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_constructor(66));
+  data->y = 68;
 }
 
 static void
 _destructor(Eo *obj, void *obj_data EINA_UNUSED)
 {
+  puts("eo3_inherit.c:_destructor\n");
   eo2_do_super(obj, EO3_GET_CLASS(EO3_INHERIT_CLASS), eo2_destructor());
 }
 

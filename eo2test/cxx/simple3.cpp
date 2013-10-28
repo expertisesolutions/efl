@@ -1,6 +1,9 @@
+#include <iostream>
+
+#include "eo3_inherit.hpp"
 
 #include "eo_init.hpp"
-#include "eo3_inherit.hpp"
+#include "inherit.hpp"
 
 #include <assert.h>
 

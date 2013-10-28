@@ -22,6 +22,9 @@ tags
 *.lo
 *.a
 *.la
+*.i
+*.ii
+*.s
 *.gcno
 *.gcda
 *.dirstamp
