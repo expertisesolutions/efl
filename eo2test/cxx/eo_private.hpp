@@ -91,7 +91,7 @@ BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_virtuals, ~)
 #undef EFL_CXX_void_virtuals
 
 
-#define EFL_CXX_void_operation_description_class_size(Z, N, DATA)		    \ 
+#define EFL_CXX_void_operation_description_class_size(Z, N, DATA)		    \
   template <> struct operation_description_class_size<BOOST_PP_CAT(void_tag_, N)>   \
   {										    \
     static const int value = 0;						            \
