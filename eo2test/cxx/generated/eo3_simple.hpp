@@ -3,8 +3,9 @@
 
 #include "eo_private.hpp"
 #include "eo_base.hpp"
+#include "eo_callback.hpp"
 
-#include <iostream>
+#include <memory>
 
 /*
  * #define EO3_SIMPLE_CLASS eo3_simple                            \
@@ -65,6 +66,33 @@ struct eo3_simple : efl::eo::Base
   {
     eo2_do(_eo_ptr(), ::simple_virtual(a0));
   }
+
+  template <typename F>
+  ::efl::eo::callback_token simple_set_callback_add(F function)
+  {
+    std::auto_ptr<F> f(new F(function));
+    ::efl::eo::callback_token t 
+        = { f.get()
+          , reinterpret_cast<void*>(static_cast<Eina_Bool(*)(void*, int)>(&::efl::eo::detail::callback_function_object1<F, int>))
+          , &::efl::eo::detail::free_callback<F>
+          };
+    eo2_do(_eo_ptr(), ::simple_set_callback_add
+           (f.release(), &::efl::eo::detail::callback_function_object1<F, int>));
+    return t;
+  }
+
+  void simple_set_callback_del(::efl::eo::callback_token t)
+  {
+    typedef Eina_Bool(*function_type)(void*, int);
+    eo2_do(_eo_ptr(), ::simple_set_callback_del(t.data, (function_type)t.function));
+    t.free_function(t.data);
+  }
+
+  void simple_set_callback_call(int x)
+  {
+    eo2_do(_eo_ptr(), ::simple_set_callback_call(x));
+  }
+
 private:
   static Eo* _c1(int a0)
   {
