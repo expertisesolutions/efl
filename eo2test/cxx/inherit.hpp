@@ -16,14 +16,6 @@
 
 #include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 
-// #include <boost/preprocessor/cat.hpp>
-// #include <boost/preprocessor/repeat.hpp>
-// #include <boost/preprocessor/repetition/enum_params.hpp>
-// #include <boost/preprocessor/repetition/enum_trailing_params.hpp>
-// #include <boost/preprocessor/repetition/enum_binary_params.hpp>
-// #include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
-
-
 #include <cassert>
 
 namespace efl { namespace eo {
@@ -45,7 +37,9 @@ struct operation_description_size
 
   static const int value = operation_description_class_size<P>::value
     BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_operation_description_class_size_val, ~);
+#undef EFL_CXX_operation_description_class_size_val
 };
+
 
 template <typename T>
 struct predicate
@@ -96,27 +90,27 @@ struct call_constructor_aux
   }
 };
 
-template <typename P, typename E1, typename E2, typename E3, typename E4
-          , typename E5, typename E6, typename E7, typename E8, typename Args>
+template <typename D, typename P
+  BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)
+  , typename Args>
 void inherit_constructor_impl(Eo* obj, Inherit_Private_Data* self, void* this_, Args args)
 {
   std::cout << "inherit_constructor_impl" << std::endl; // XXX
   self->this_ = this_;
   Eo_Class const* cls
-    = static_cast<inherit<P, E1, E2, E3, E4, E5, E6, E7, E8>*>(this_)->_eo_cls();
-  detail::call_constructor_aux<P>::do_(args, obj, cls);
-  detail::call_constructor_aux<E1>::do_(args, obj, cls);
-  detail::call_constructor_aux<E2>::do_(args, obj, cls);
-  detail::call_constructor_aux<E3>::do_(args, obj, cls);
-  detail::call_constructor_aux<E4>::do_(args, obj, cls);
-  detail::call_constructor_aux<E5>::do_(args, obj, cls);
-  detail::call_constructor_aux<E6>::do_(args, obj, cls);
-  detail::call_constructor_aux<E7>::do_(args, obj, cls);
-  detail::call_constructor_aux<E8>::do_(args, obj, cls);
+    = static_cast<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>*>(this_)->_eo_cls();
+
+  detail::call_constructor_aux<P>::do_(args, obj, cls);  
+#define EFL_CXX_call_constructor_aux_rep(Z, N, DATA) \
+  detail::call_constructor_aux<BOOST_PP_CAT(E, N)>::do_(args, obj, cls);
+  BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_call_constructor_aux_rep, ~);
+#undef EFL_CXX_call_constructor_aux_rep
 }
 
-template <typename P, typename E1, typename E2, typename E3, typename E4
-          , typename E5, typename E6, typename E7, typename E8, typename Args>
+
+template <typename P
+  BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)
+  , typename Args>
 EAPI void inherit_constructor(void* this_, Args args)
 {
   typedef void (*func_t)(Eo *, void *, void*, Args);
@@ -124,94 +118,63 @@ EAPI void inherit_constructor(void* this_, Args args)
   static Eo_Op op = EO_NOOP;
   if ( op == EO_NOOP )
     op = eo2_api_op_id_get((void*)&inherit_constructor
-                           <P, E1, E2, E3, E4, E5, E6, E7, E8, Args>
-                           , EO_OP_TYPE_REGULAR);
+                           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E), Args>
+                           , EO_OP_TYPE_REGULAR); // XXX
   if (!eo2_call_resolve(op, &call)) assert(eo2_call_resolve(op, &call));
   func_t func = (func_t) call.func;
   return func(call.obj, call.data, this_, args);
 }
 
-
-template <typename D, typename P, typename E1, typename E2
-          , typename E3, typename E4, typename E5, typename E6
-	  , typename E7, typename E8 /* ... */
-          , typename Args>
+template <typename D, typename P
+  BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)
+  , typename Args>
 Eo_Class const* create_class(/*info*/)
 {
   static const Eo_Class* my_class = NULL;
   static Eo2_Op_Description op_descs
     [ detail::operation_description_size
-      <P, E1, E2, E3, E4, E5, E6, E7, E8>::value + 2 ];
+      <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value + 2 ];
 
   op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value].func =
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value].func =
     reinterpret_cast<void*>
     (
      static_cast<void(*)(Eo*, Inherit_Private_Data*, void*, Args)>
-     (&detail::inherit_constructor_impl<P, E1, E2, E3, E4, E5, E6, E7, E8, Args>)
+     (&detail::inherit_constructor_impl<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E), Args>)
     );
+
   op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value].api_func =
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value].api_func =
     reinterpret_cast<void*>
     (
      static_cast<void(*)(void*, Args)>
-     (&detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8, Args>)
+     (&detail::inherit_constructor<P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E), Args>)
     );
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value].op = EO_NOOP;
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value].op_type = EO_OP_TYPE_REGULAR;
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value].doc = "";
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value+1].func = 0;
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value+1].api_func = 0;
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value+1].op = 0;
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value+1].op_type = EO_OP_TYPE_INVALID;
-  op_descs[detail::operation_description_size
-           <P, E1, E2, E3, E4, E5, E6, E7, E8>::value+1].doc = 0;
 
-  // XXX: include a header -- making use of
-  //      boost::preprocessor::iterator to generate the code bellow.
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value].op = EO_NOOP;
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value].op_type = EO_OP_TYPE_REGULAR;
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value].doc = "";
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value+1].func = 0;
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value+1].api_func = 0;
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value+1].op = 0;
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value+1].op_type = EO_OP_TYPE_INVALID;
+  op_descs[detail::operation_description_size
+           <P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::value+1].doc = 0;
 
   detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
+    <inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
     (detail::tag<P>(), op_descs);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E1>()
-     , &op_descs[detail::operation_description_size<P>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E2>()
-     , &op_descs[detail::operation_description_size<P, E1>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E3>()
-     , &op_descs[detail::operation_description_size<P, E1, E2>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E4>()
-     , &op_descs[detail::operation_description_size<P, E1, E2, E3>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E5>()
-     , &op_descs[detail::operation_description_size<P, E1, E2, E3, E4>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E6>()
-     , &op_descs[detail::operation_description_size<P, E1, E2, E3, E4, E5>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E7>()
-     , &op_descs[detail::operation_description_size<P, E1, E2, E3, E4, E5, E6>::value]);
-  detail::initialize_operation_description
-    <inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    (detail::tag<E8>()
-     , &op_descs[detail::operation_description_size<P, E1, E2, E3, E4, E5, E6, E7>::value]);
+
+#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_ARGS, "inherit_pp_opdesc.ipp"))
+#include BOOST_PP_ITERATE()
+
   //locks
   if(!my_class)
   {
@@ -225,197 +188,33 @@ Eo_Class const* create_class(/*info*/)
       NULL,
       NULL
     };
-    my_class = detail::do_eo_class_new<P, E1, E2, E3, E4, E5, E6, E7, E8>::do_(class_desc);
+    my_class = detail::do_eo_class_new<P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>::do_(class_desc);
   }
   return my_class;
 }
 
 }
 
+#define EFL_CXX_inherit_virtuals_rep(Z, N, DATA) \
+  , detail::virtuals<BOOST_PP_CAT(E, N)>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
+#define EFL_CXX_inherit_conversion_operator_rep(Z, N, DATA) \
+, detail::conversion_operator<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>, BOOST_PP_CAT(E, N)>
+
 /// @brief inherit
 /// 
 ///
 template <typename D, typename P
-        , typename E1, typename E2, typename E3, typename E4
-        , typename E5, typename E6, typename E7, typename E8>
+    BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)>
 struct inherit
-// XXX: use boost::preprocessor
-  : detail::virtuals<P>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E1>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E2>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E3>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E4>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E5>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E6>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::virtuals<E7>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-    //, detail::virtuals<E8>::template type<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> >
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, P>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E1>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E2>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E3>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E4>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E5>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E6>
-  , detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E7>
-    //, detail::conversion_operator<inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8>, E8>
+    : detail::virtuals<P>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
+    BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_virtuals_rep, ~)
+  , detail::conversion_operator<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)>, P>
+    BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_inherit_conversion_operator_rep, ~)
 {
-  typedef inherit<D, P, E1, E2, E3, E4, E5, E6, E7, E8> inherit_base;
+  typedef inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> inherit_base;
 
-// XXX: use boost::preprocessor
-  template <typename A0>
-  inherit(A0 a0)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0>::type>
-       (static_cast<void*>(this)
-        , boost::fusion::make_vector(a0)));
-  }
-
-// XXX: use boost::preprocessor
-  template <typename A0, typename A1>
-  inherit(A0 a0, A1 a1)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1)));
-  }
-
-  template <typename A0, typename A1, typename A2>
-  inherit(A0 a0, A1 a1, A2 a2)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3, typename A4>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3, A4 a4)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3, a4)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3, a4, a5)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5
-           , typename A6>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3, a4, a5, a6)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5
-           , typename A6, typename A7>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6, A7>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6, A7>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3, a4, a5, a6, a7)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5
-      , typename A6, typename A7, typename A8>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6, A7, A8>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-          , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6, A7, A8>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3, a4, a5, a6, a7, a8)));
-  }
-
-  template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5
-      , typename A6, typename A7, typename A8, typename A9>
-  inherit(A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
-  {
-    _eo_class = detail::create_class
-      <D, P, E1, E2, E3, E4, E5, E6, E7, E8
-      , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>::type>();
-
-    _eo_raw = eo2_add_custom
-      (_eo_class, NULL
-       , detail::inherit_constructor<P, E1, E2, E3, E4, E5, E6, E7, E8
-       , typename boost::fusion::result_of::make_vector<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>::type>
-       (static_cast<void*>(this)
-       , boost::fusion::make_vector(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9)));
-  }
+#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_CONS_PARAMS, "inherit_pp_cons.ipp"))
+#include BOOST_PP_ITERATE()
 
   ~inherit()
   {
@@ -429,6 +228,9 @@ private:
   Eo_Class const* _eo_class;
   Eo* _eo_raw;
 };
+
+#undef EFL_CXX_inherit_virtuals_rep
+#undef EFL_CXX_inherit_conversion_operator_rep
 
 } }
 
