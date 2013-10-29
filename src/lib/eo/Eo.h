@@ -2483,7 +2483,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @brief define a new Regular Class
  * @param CLASS token
  * @param PARENTS Parent(s) Class/Interface
- * @param PRIVATE_TYPE 
+ * @param PRIVATE_TYPE private data state type
  */
 #define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
@@ -2493,7 +2493,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @brief define a new Regular non instant-able class
  * @param CLASS token
  * @param PARENTS Parent(s) Class/Interface
- * @param PRIVATE_TYPE
+ * @param PRIVATE_TYPE private data state type
  */
 #define EO3_DEFINE_CLASS_NO_INSTANT(CLASS, PARENTS, PRIVATE_TYPE)                            \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR_NO_INSTANT, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
@@ -2503,7 +2503,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @brief declare a new Mixing Class
  * @param CLASS token
  * @param PARENTS Parent(s) Class/Interface
- * @param PRIVATE_TYPE
+ * @param PRIVATE_TYPE private data state type
  */
 #define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                            \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
