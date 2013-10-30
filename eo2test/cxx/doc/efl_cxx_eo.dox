@@ -1,26 +1,31 @@
 /**
- * @page efl_cxx_eo EO
+ * @page efl_cxx_eo EO++ API
  *
  * @date 2013
  *
+ * 
+ * 
  * @section efl_cxx_eo_toc Table of Contents
  *
  * <ul>
- *   <li> @ref efl_cxx_eo_library
+ *   <li> @ref efl_cxx_eo_api </li>
  *   <ul>
- *     <li> @ref efl_cxx_eo_library_api </li>
- *     <li> @ref efl_cxx_eo_library_detail </li>
- *     <li> @ref efl_cxx_eo_library_specializations </li>
+ *     <li> @ref efl_cxx_eo_api_public
+ *     <li> @ref efl_cxx_eo_api_detail
  *   </ul>
  *   <li> @ref efl_cxx_eo_generated </li>
- *   <li> @ref efl_cxx_eo_samples </li>
- * </ul>  
- */
-
-/** 
- * @section efl_cxx_eo_library C++ API
+ *   <li> @ref efl_cxx_eo_examples </li>
+ * </ul>
  *
- * @subsection efl_cxx_eo_library_api General API
+ * 
+ * 
+ * @section efl_cxx_eo_api EO++ Programming Interface
+ *
+ * EO++ is implemented within namespace @em efl::eo::. It provides the
+ * user with a C++ interface to manage EO Classes, Objects, Events,
+ * etc.
+ * 
+ * @subsection efl_cxx_eo_api_public Public API
  *
  * @li efl::eo::eo_init
  * @li efl::eo::base
@@ -28,7 +33,7 @@
  * @li efl::eo::callback_token
  * @li efl::eo::inherit
  * 
- * @subsection efl_cxx_eo_library_detail Internals
+ * @subsection efl_cxx_eo_api_detail EO++ Internals
  * 
  * @li efl::eo::detail::call_constructor
  * @li efl::eo::detail::operation_description_size
@@ -38,27 +43,16 @@
  * @li efl::eo::detail::inherit_constructor
  * @li efl::eo::detail::create_class
  *
- * @subsection efl_cxx_eo_library_specializations Specializations
- * 
- * @li efl::eo::detail::operations
- * @li efl::eo::detail::operation_description_class_size
- * @li efl::eo::detail::initialize_operation_description
- * @li efl::eo::detail::call_constructor
- * @li efl::eo::detail::get_eo_class
+ * 
  */
 
-/**
- * @section efl_cxx_eo_generated C++ Binding
- *
- * @subsection Examples of generated code:
- *
- * @li @ref eo3_simple_hpp
- * @li @ref eo3_interface_hpp
- * @li @ref eo3_inherit_hpp
+/*
+ *  <<< Generated Code >>>
  */
 
-/**
- * @section efl_cxx_eo_samples Examples
- *
- * @li @ref simple1_cpp
+
+/*
+ *  <<< EO++ Examples >>>
  */
+
+
