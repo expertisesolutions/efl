@@ -2028,6 +2028,8 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  ** constructor (constructor_name, _function_impl, <params_type, ...>)
  ** constructor_override (constructor_name, _function_impl)
  ** destructor (destructor_name, _function_impl, <params_type, ...>)
+ ** class_constructor (class_constructor_name, _function_impl, <params_type, ...>)
+ ** class_destructor (class_destructor_name, _function_impl, <params_type, ...>)
  ** event (event_name, <params_type, ...>)
  */
 #define EO3_DECLARE_CLASS(CLASS) \
