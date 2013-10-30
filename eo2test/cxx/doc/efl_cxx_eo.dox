@@ -1,0 +1,64 @@
+/**
+ * @page efl_cxx_eo EO
+ *
+ * @date 2013
+ *
+ * @section efl_cxx_eo_toc Table of Contents
+ *
+ * <ul>
+ *   <li> @ref efl_cxx_eo_library
+ *   <ul>
+ *     <li> @ref efl_cxx_eo_library_api </li>
+ *     <li> @ref efl_cxx_eo_library_detail </li>
+ *     <li> @ref efl_cxx_eo_library_specializations </li>
+ *   </ul>
+ *   <li> @ref efl_cxx_eo_generated </li>
+ *   <li> @ref efl_cxx_eo_samples </li>
+ * </ul>  
+ */
+
+/** 
+ * @section efl_cxx_eo_library C++ API
+ *
+ * @subsection efl_cxx_eo_library_api General API
+ *
+ * @li efl::eo::eo_init
+ * @li efl::eo::base
+ * @li efl::eo::wref
+ * @li efl::eo::callback_token
+ * @li efl::eo::inherit
+ * 
+ * @subsection efl_cxx_eo_library_detail Internals
+ * 
+ * @li efl::eo::detail::call_constructor
+ * @li efl::eo::detail::operation_description_size
+ * @li efl::eo::detail::predicate
+ * @li efl::eo::detail::call_constructor_aux
+ * @li efl::eo::detail::inherit_constructor_impl
+ * @li efl::eo::detail::inherit_constructor
+ * @li efl::eo::detail::create_class
+ *
+ * @subsection efl_cxx_eo_library_specializations Specializations
+ * 
+ * @li efl::eo::detail::operations
+ * @li efl::eo::detail::operation_description_class_size
+ * @li efl::eo::detail::initialize_operation_description
+ * @li efl::eo::detail::call_constructor
+ * @li efl::eo::detail::get_eo_class
+ */
+
+/**
+ * @section efl_cxx_eo_generated C++ Binding
+ *
+ * @subsection Examples of generated code:
+ *
+ * @li @ref eo3_simple_hpp
+ * @li @ref eo3_interface_hpp
+ * @li @ref eo3_inherit_hpp
+ */
+
+/**
+ * @section efl_cxx_eo_samples Examples
+ *
+ * @li @ref simple1_cpp
+ */

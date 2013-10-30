@@ -104,3 +104,8 @@ test: libeo2.so simplesignal.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 
 clean:
 	rm -f *~ *.o eo2-bench eo2-bench-pg test libeo2.so gmon.out simple1 simple2 simple3 simple4 simple5 simple6 container1 mixin1 mixin2 cxx/samples/*.o *.i *.s *.ii
+
+doc:
+	echo "entering cxx/doc/"
+	$(MAKE) $(AM_MAKEFLAGS) -C cxx/doc all
+

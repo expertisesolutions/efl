@@ -1,0 +1,10 @@
+/**
+ * @page simple1_cpp
+ *
+ * @include simple1.cpp
+ */ 
+
+/** 
+ * @example simple1.cpp
+ * This example ilustrates the simplest use of EO C++ API.
+ */

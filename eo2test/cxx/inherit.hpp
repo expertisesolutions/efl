@@ -193,7 +193,7 @@ Eo_Class const* create_class(/*info*/)
   return my_class;
 }
 
-}
+} // namespace detail
 
 #define EFL_CXX_inherit_operations_rep(Z, N, DATA) \
   , detail::operations<BOOST_PP_CAT(E, N)>::template type<inherit<D, P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, E)> >
