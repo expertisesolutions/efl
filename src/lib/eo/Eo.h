@@ -2021,15 +2021,34 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  *
  * functions/events is:
  *
+ * Declare a new function and your signature
  ** function (function_name, _function_impl, return_type,<params_type, ...>)
+ *
+ * Declare a new class function and your signature
  ** function_class (function_name, _function_impl, return_type, <params_type, ...>)
+ *
+ * Override a parent function
  ** function_override (function_name, _function_impl)
+ *
+ * Override a parent class function
  ** function_class_override (function_name, _function_impl)
+ *
+ * Declare a new constructor and your signature
  ** constructor (constructor_name, _function_impl, <params_type, ...>)
+ *
+ * Override a parent constructor
  ** constructor_override (constructor_name, _function_impl)
+ *
+ * Declare a new destructor and your signature
  ** destructor (destructor_name, _function_impl, <params_type, ...>)
- ** class_constructor (class_constructor_name, _function_impl, <params_type, ...>)
- ** class_destructor (class_destructor_name, _function_impl, <params_type, ...>)
+ * 
+ * Declare a new class constructor
+ ** class_constructor (_function_impl)
+ *
+ * Declare a new class destructor
+ ** class_destructor (_function_impl)
+ *
+ * Declare a new event and your signature
  ** event (event_name, <params_type, ...>)
  */
 #define EO3_DECLARE_CLASS(CLASS) \
@@ -2045,8 +2064,19 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  *
  * functions/events is:
  *
- ** function (function_name, return_type, <params_type, ...>)
- ** function_class (function_name, return_type, <params_type, ...>)
+ * Declare a new function and your signature
+ ** function (function_name, _function_impl, return_type,<params_type, ...>)
+ *
+ * Declare a new class function and your signature
+ ** function_class (function_name, _function_impl, return_type, <params_type, ...>)
+ *
+ * Declare a new class constructor
+ ** class_constructor (_function_impl)
+ *
+ * Declare a new class destructor
+ ** class_destructor (_function_impl)
+ *
+ * Declare a new event and your signature
  ** event (event_name, <params_type, ...>)
  */
 #define EO3_DECLARE_INTERFACE(CLASS) \
