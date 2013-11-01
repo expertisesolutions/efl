@@ -1,0 +1,34 @@
+/**
+ * @page efl_cxx_tutorials Tutorials
+ *
+ * @date 2013
+ * 
+ * @section efl_cxx_tutorials_toc Table of Contents
+ *
+ * @li @ref efl_cxx_tutorials_eo_init
+ * @li @ref efl_cxx_tutorials_eo_inherit
+ * @li @ref efl_cxx_tutorials_eo_wref
+ */
+
+/**
+ * @section efl_cxx_tutorials_eo Tutorials on EO C++ Binding
+ */
+
+/**
+ * @subsection efl_cxx_tutorials_eo_base How to use efl::eo::base API
+ * 
+ * @todo XXX write documentation.
+ */ 
+
+/**
+ * @subsection efl_cxx_tutorials_eo_inherit Inheriting from EO C++ Classes through efl::eo::inherit
+ *
+ * Suppose you want your C++ class to inherit from an EO C++ Class
+ * such as @ref eo3_simple for example, you'd have:
+ *
+ * @code
+ struct my_class
+   : efl::eo::inherit<my_class, eo3_simple>
+ {  *...*/ }
+ * @endcode
+ */

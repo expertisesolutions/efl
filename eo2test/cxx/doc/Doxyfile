@@ -2010,7 +2010,7 @@ MACRO_EXPANSION        = YES
 # The default value is: NO.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-EXPAND_ONLY_PREDEF     = YES
+EXPAND_ONLY_PREDEF     = NO
 
 # If the SEARCH_INCLUDES tag is set to YES the includes files in the
 # INCLUDE_PATH will be searched if a #include is found.
@@ -2050,7 +2050,8 @@ PREDEFINED             = EINA_MAGIC_DEBUG \
                          EAPI= \
                          EINA_PURE= \
                          EINA_CONST= \
-                         EINA_UNUSED=
+                         EINA_UNUSED= \
+	 		 GENERATING_DOCUMENTATION
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

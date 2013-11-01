@@ -205,8 +205,7 @@ void call_constructor(tag<eo3_simple>
 		      , Eo* eo, Eo_Class const* cls
 		      , args_class<eo3_simple, boost::fusion::vector<int> > const& args)
 {
-  std::cout << "call_constructor eo3_simple" << std::endl; // XXX
-  eo2_do(eo/*, cls*/, ::simple_constructor(args.get<0>()));
+  eo2_do(eo, ::simple_constructor(args.get<0>()));
 }
 
 inline Eo_Class const* get_eo_class(tag<eo3_simple>)

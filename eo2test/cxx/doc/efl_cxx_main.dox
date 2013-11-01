@@ -7,24 +7,12 @@
  * 
  * @section efl_cxx_main_about About
  *
- * @em EFL++ is a C++ binding for EFL (Enlightenment Foundation
- * Library). It's implemented as a template library that provides a
- * safe and comfortable API for developers.
- *
  * 
  * @section efl_cxx_main_toc Table of Contents
  *
- * <ul>
- *   <li/> EO++
- *   <ul>
- *     <li/> @ref efl_cxx_eo
- *     <li/> @ref efl_cxx_samples_eo
- *     <li/> @ref efl_cxx_generated_eo
- *   </ul>
- *   <li/> @ref efl_cxx_generated
- *   <li/> @ref efl_cxx_samples
- * </ul>
- *
+ * @li @ref efl_cxx_eo
+ * @li @ref efl_cxx_generated
+ * @li @ref efl_cxx_samples
  */
 
 /**

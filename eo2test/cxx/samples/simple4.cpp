@@ -5,10 +5,6 @@
 #include "eo_init.hpp"
 #include "inherit.hpp"
 
-
-//#include "eo3_inherit.hpp"
-
-
 #include <assert.h>
 
 struct inherit2 : efl::eo::inherit<inherit2, eo3_simple>
@@ -58,4 +54,3 @@ int main(int argc, char** argv)
   inherit2 inherit;
   ::f(inherit);
 }
-

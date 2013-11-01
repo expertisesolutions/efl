@@ -1,4 +1,8 @@
 
+///
+/// @file eo_private.hpp
+///
+
 #if !defined(BOOST_PP_IS_ITERATING)
 
 #ifndef EO3_EO_PRIVATE_HPP
@@ -23,6 +27,9 @@ extern "C" {
 
 namespace efl { namespace eo { namespace detail {
 
+///
+/// @brief 
+///
 template <typename T, typename Seq>
 struct args_class
 {

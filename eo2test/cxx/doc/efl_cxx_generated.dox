@@ -1,9 +1,9 @@
 /**
- * @page efl_cxx_generated EFL++ and the Conversion-Tool
+ * @page efl_cxx_generated C++ Binding: Generated code
  *
  * 
- * @section efl_cxx_generated_examples Examples
- * @subsection efl_cxx_generated_examples_eo EO++
+ * @section efl_cxx_generated_examples Sample code
+ * @subsection efl_cxx_generated_examples_eo For EO++
  * @copydetails efl_cxx_generated_eo
  */
 
@@ -161,4 +161,9 @@
  * @skip struct eo3_mixin_inherit
  * @until private
  * @until };
+ */
+
+/**
+ * @example eo3_simple.hpp
+ * Generated EO C++ Class. Binds @em EO3_SIMPLE_CLASS (@see eo3_simple.h).
  */
