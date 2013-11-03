@@ -2544,7 +2544,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @def EO3_DEFINE_INTERFACE(CLASS, PARENTS)
  * @brief declare a new Interface
  * @param CLASS token
- * @param PARENTS 
+ * @param PARENTS Parent(s) Class/Interface
  */
 #define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
   EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
