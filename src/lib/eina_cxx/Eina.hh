@@ -1,0 +1,24 @@
+#ifndef EINA_HH_
+#define EINA_HH_
+
+#include <eina_iterator.hh>
+#include <eina_ptrlist.hh>
+#include <eina_inlist.hh>
+
+namespace efl { namespace eina {
+
+struct eina_init
+{
+  eina_init()
+  {
+    ::eina_init();
+  }
+  ~eina_init()
+  {
+    ::eina_shutdown();
+  }
+};
+
+} }
+
+#endif
