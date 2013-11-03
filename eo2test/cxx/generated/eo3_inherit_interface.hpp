@@ -24,6 +24,11 @@ struct eo3_inherit_interface
   explicit eo3_inherit_interface(Eo* eo)
   : efl::eo::base(eo)
   {}
+
+  static Eo_Class const* _eo_class()
+  {
+    return EO3_GET_CLASS(EO3_INHERIT_INTERFACE_CLASS);
+  }
 };
 
 #endif // GENCXX_EO3_INHERIT_INTERFACE_HPP

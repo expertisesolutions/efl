@@ -34,6 +34,11 @@ struct eo3_mixin_inherit
   eo3_mixin_inherit(eo3_mixin_inherit const& other)
     : eo3_simple(eo_ref(other._eo_ptr())) {}
 
+  static Eo_Class const* _eo_class()
+  {
+    return EO3_GET_CLASS(EO3_MIXIN_INHERIT_CLASS);
+  }
+
   void mixin_inherit_print()
   {
     eo2_do(_eo_ptr(), ::mixin_inherit_print());

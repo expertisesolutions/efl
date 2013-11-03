@@ -10,26 +10,37 @@
 
 namespace efl { namespace eo {
 
-/// @brief TODO
+/// @addtogroup Efl_Cxx_API
+/// @{
+
+/// @brief Weak references to an <em>EO Object</em>.
 ///
 template<typename T>
 struct wref {
 
-  /// @brief TODO
+  /// @brief Class constructor.
+  ///
+  /// @param obj The <em>EO Object</em> to be referenced.
+  ///
+  /// Create a weak reference to @p obj. 
   ///
   explicit wref(Eo* obj) : _eo_wref(obj)
   {
     _add();
   }
 
-  /// @brief TODO
+  /// @brief Class constructor.
+  ///
+  /// @param obj The <em>EO C++ Object</em> to be referenced.
+  /// 
+  /// Create a weak reference to @p obj.
   ///
   wref(T obj) : _eo_wref(obj._eo_ptr())
   {
     _add();
   }
 
-  /// @brief TODO
+  /// @brief Class destructor.
   ///
   ~wref()
   {
@@ -37,11 +48,21 @@ struct wref {
       _del();
   }
 
-  /// @brief TODO
+  /// @brief Try to acquire a strong reference to the underlying
+  /// <em>EO Object</em>.
   ///
+  /// This function checkes whether the weak reference still points
+  /// to a valid <em>EO Object</em>. If the reference is still valid
+  /// it increments the reference counter of the object and returns
+  /// a pointer to it.
+  ///
+  /// @return If the lock was successfully acquired it returns a
+  /// strong reference to the <em>EO Object</em>. Otherwise it returns
+  /// @p boost::none.
+  /// 
   boost::optional<T> lock()
   {
-    if(_eo_wref) // eo_ref() should work on a multi-threaded environment
+    if(_eo_wref) // XXX eo_ref() should work on multi-threaded environments
       eo_ref(_eo_wref);
     else
       return boost::none;
@@ -49,7 +70,7 @@ struct wref {
   }
 
   /// @brief Copy constructor.
-  ///
+  /// 
   wref(wref const& other)
     : _eo_wref(other._eo_wref)
   {
@@ -80,7 +101,7 @@ private:
     eo2_do(_eo_wref, eo2_wref_del(&_eo_wref));
   }
 
-  Eo* _eo_wref;
+    Eo* _eo_wref; ///< The weak reference.
 
 //   wref(T obj)
 //   {
@@ -103,6 +124,8 @@ private:
 //   }
 //   boost::shared_ptr<Eo*> _eo_wref;
 };
+
+/// @}
 
 } } // namespace efl { namespace eo {
 

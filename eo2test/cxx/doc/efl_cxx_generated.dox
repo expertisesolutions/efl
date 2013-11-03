@@ -167,3 +167,33 @@
  * @example eo3_simple.hpp
  * Generated EO C++ Class. Binds @em EO3_SIMPLE_CLASS (@see eo3_simple.h).
  */
+
+/**
+ * @example eo3_inherit.hpp
+ * Generated EO C++ Class. Binds @em EO3_INHERIT_CLASS (@see eo3_inherit.h).
+ */
+
+/**
+ * @example eo3_inherit_interface.hpp
+ * Generated EO C++ Class. Binds @em EO3_INHERIT_INTERFACE_CLASS (@see eo3_inherit_interface.h).
+ */
+
+/**
+ * @example eo3_interface.hpp
+ * Generated EO C++ Class. Binds @em EO3_SIMPLE_INTERFACE (@see eo3_interface.h).
+ */
+
+/**
+ * @example eo3_mixin_mixin.hpp
+ * Generated EO C++ Class. Binds @em EO3_MIXIN_MIXIN (@see eo3_mixin_mixin.h).
+ */
+
+/**
+ * @example eo3_mixin_inherit.hpp
+ * Generated EO C++ Class. Binds @em EO3_MIXIN_INHERIT_CLASS (@see eo3_mixin_inherit.h).
+ */
+
+/**
+ * @example eo3_container.hpp
+ * Generated EO C++ Class. Binds @em EO3_CONTAINER_CLASS (@see eo3_container.h).
+ */

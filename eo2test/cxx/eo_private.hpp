@@ -23,19 +23,38 @@ extern "C" {
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 
-#define EFL_MAX_ARGS 8
+#define EFL_MAX_ARGS 8          ///< The maxium number of arguments for templates and constructors.
 
 namespace efl { namespace eo { namespace detail {
 
-///
-/// @brief 
+/// @addtogroup Efl_Cxx_Detail
+/// @{
+
+/// @internal
+/// 
+/// @brief Provides a getter for an heterogeous sequence of arguments.
+/// 
+/// @param T An <em>EO C++ Class</em>
+/// @param Seq An heterogenous sequence of arguments.
 ///
 template <typename T, typename Seq>
 struct args_class
 {
+  /// @internal
+  /// 
+  /// @brief Class constructor.
+  /// 
+  /// @param seq An heterogenous sequence of arguments.
+  /// 
   args_class(Seq seq)
     : seq(seq) {}
 
+  /// @internal
+  /// 
+  /// @brief Get the Nth element of the sequence.
+  /// 
+  /// @param N The index of the argument to be retrieved.
+  /// 
   template <int N>
   typename boost::remove_reference
   <
@@ -45,16 +64,32 @@ struct args_class
     return boost::fusion::at_c<N>(seq);
   }
 
-  Seq seq;
+  Seq seq; ///< The sequence of arguments.
 };
 
+/// @internal
+/// 
+/// @brief A simple generic tag to help keeping track of a type.
+/// 
+/// @details 
+/// Used to mimic what would be a "template specialization" of a
+/// function through the overload of an argument of type @ref
+/// efl::eo::detail::tag --- because @c C++0x does not implement
+/// template specialization of functions.
+///
 template <typename T> struct tag {};
 
 #define EFL_CXX_void_tag(Z, N, DATA) struct BOOST_PP_CAT(void_tag_, N) {};
 BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_tag, ~)
 #undef EFL_CXX_void_tag
 
-
+/// @internal
+/// 
+/// @brief Invokes the different implementations of @ref
+/// efl::eo::detail::eo_class_new for the parent and all extensions.
+///
+/// @see efl::eo::detail::eo_class_new
+/// 
 template <typename P BOOST_PP_ENUM_TRAILING_PARAMS(EFL_MAX_ARGS, typename E)>
 struct do_eo_class_new
 {
@@ -69,6 +104,13 @@ struct do_eo_class_new
 
 template <typename T> struct operation_description_class_size;
 
+/// @internal
+///
+/// @brief Provides the operator to convert @p T to @p D.
+/// 
+/// @param D The target (derived) class
+/// @param T An <em>EO C++ Class</em>
+/// 
 template <typename D, typename T>
 struct conversion_operator
 {
@@ -79,6 +121,8 @@ struct conversion_operator
   }
 };
 
+/// @}
+
 } // namespace detail {
 
 #define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_MAX_ARGS, "eo_private.hpp"))
@@ -86,6 +130,18 @@ struct conversion_operator
 
 namespace detail {
 
+/// @addtogroup Efl_Cxx_Detail
+/// @{
+
+/// @internal
+///
+/// @brief Provides all operations of type @p T.
+///
+/// @param T An <em>EO C++ Class</em>
+///
+/// There must be an unique specialization of this class for each
+/// declared <em>EO C++ Class</em>.
+/// 
 template <typename T> struct operations;
 
 #define EFL_CXX_void_operations(Z, N, DATA) \
@@ -97,7 +153,6 @@ template <typename T> struct operations;
 BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_operations, ~)
 #undef EFL_CXX_void_operations
 
-
 #define EFL_CXX_void_operation_description_class_size(Z, N, DATA)		    \
   template <> struct operation_description_class_size<BOOST_PP_CAT(void_tag_, N)>   \
   {										    \
@@ -107,14 +162,30 @@ BOOST_PP_REPEAT(EFL_MAX_ARGS, EFL_CXX_void_operation_description_class_size, ~)
 #undef EFL_CXX_void_operation_description_class_size
 
 
+/// @internal
+///
+/// @brief Provides the operations of an extension as well as its
+/// conversion operator.
+///
+/// @param T The <em>EO C++ Extension</em>
+///
+/// There must be an unique specialization of @ref
+/// efl::eo::detail::extension_inheritance for each known <em>EO C++
+/// Extension</em> -- i.e., @em Interfaces and @em Mixins.
+/// 
 template <typename T>
 struct extension_inheritance {};
 
-
+/// @internal
+///
+/// @brief efl::eo::inherit's private data.
+/// 
 struct Inherit_Private_Data
 {
   void* this_;
 };
+
+/// @}
 
 } } }
 

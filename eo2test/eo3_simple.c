@@ -34,8 +34,7 @@ static void _class_hello(const Eo_Class *klass, int a)
 }
 static void _constructor(Eo *obj, Private_Data* self, int x)
 {
-  printf("eo3_simple::_constructor [privdata=%p]\n", self);
-  printf("eo3_simple _constructor %d (prev %d)\n", x, self->x);
+  printf("eo3_simple _constructor %d\n", x);
   eo2_do_super(obj, EO3_GET_CLASS(EO3_SIMPLE_CLASS), eo2_constructor());
   self->x = x;
   /* printf("called super\n"); */

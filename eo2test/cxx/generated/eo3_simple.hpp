@@ -93,6 +93,11 @@ struct eo3_simple : efl::eo::base
     eo2_do(_eo_ptr(), ::simple_set_callback_call(x));
   }
 
+  static Eo_Class const* _eo_class()
+  {
+    return EO3_GET_CLASS(EO3_SIMPLE_CLASS);
+  }
+
 private:
   static Eo* _c1(int a0)
   {
@@ -137,7 +142,7 @@ struct operations<eo3_simple>
     {
       std::cout << "operations<eo3_simple>::simple_inc" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
-		   , static_cast<T*>(this)->_eo_cls()
+		   , static_cast<T*>(this)->_eo_class()
 		   , ::simple_inc());
     }
     virtual int simple_get()
@@ -145,7 +150,7 @@ struct operations<eo3_simple>
       int r = 0;
       std::cout << "operations<eo3_simple>::simple_get" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
-		   , static_cast<T*>(this)->_eo_cls()
+		   , static_cast<T*>(this)->_eo_class()
 		   , r = ::simple_get());
       return r;
     }
@@ -153,14 +158,14 @@ struct operations<eo3_simple>
     {
       std::cout << "operations<eo3_simple>::simple_set" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
-		   , static_cast<T*>(this)->_eo_cls()
+		   , static_cast<T*>(this)->_eo_class()
 		   , ::simple_set(a0));
     }
     virtual void simple_virtual(int a0)
     {
       std::cout << "operations<eo3_simple>::simple_virtual" << std::endl; // XXX
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
-		   , static_cast<T*>(this)->_eo_cls()
+		   , static_cast<T*>(this)->_eo_class()
 		   , ::simple_virtual(a0));
     }
   };
@@ -202,7 +207,7 @@ void initialize_operation_description(efl::eo::detail::tag<eo3_simple>
 }
 
 void call_constructor(tag<eo3_simple>
-		      , Eo* eo, Eo_Class const* cls
+		      , Eo* eo, Eo_Class const* cls EINA_UNUSED
 		      , args_class<eo3_simple, boost::fusion::vector<int> > const& args)
 {
   eo2_do(eo, ::simple_constructor(args.get<0>()));

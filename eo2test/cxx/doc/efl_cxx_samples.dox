@@ -19,6 +19,7 @@
  * @li @ref simple4_cpp
  * @li @ref simple5_cpp
  * @li @ref simple6_cpp
+ * @li @ref simple7_cpp
  * @li @ref container1_cpp
  * @li @ref mixin1_cpp
  * @li @ref mixin2_cpp
@@ -55,6 +56,11 @@
  */ 
 
 /**
+ * @page simple7_cpp
+ * @include simple7.cpp
+ */ 
+
+/**
  * @page container1_cpp
  * @include container1.cpp
  */ 
@@ -85,11 +91,36 @@
  */
 
 /**
+ * @example simple4.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
  * @example simple5.cpp
  * This example... XXX TODO document.
  */
 
 /**
  * @example simple6.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple7.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example container1.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example mixin1.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example mixin2.cpp
  * This example... XXX TODO document.
  */

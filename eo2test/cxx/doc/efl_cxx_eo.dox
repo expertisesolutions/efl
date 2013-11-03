@@ -3,56 +3,30 @@
  *
  * @date 2013
  *
- * 
- * 
- * @section efl_cxx_eo_toc Table of Contents
- *
- * <ul>
- *   <li> @ref efl_cxx_eo_api </li>
- *   <ul>
- *     <li> @ref efl_cxx_eo_api_public
- *     <li> @ref efl_cxx_eo_api_detail
- *   </ul>
- *   <li> @ref efl_cxx_eo_generated </li>
- *   <li> @ref efl_cxx_eo_examples </li>
- * </ul>
- *
- * 
  * 
  * @section efl_cxx_eo_api EO++ Programming Interface
  *
- * EO++ is implemented within namespace @em efl::eo::. It provides the
- * user with a C++ interface to manage EO Classes, Objects, Events,
- * etc.
+ * @b EO++ is a C++ binding for EFL <em>EO Subsystem</em>. It
+ * provides the user with an interface to manage <em>EO Classes</em>,
+ * <em>Objects</em>, <em>Events</em>, etc. All elements of @b EO++
+ * lives within namespace @c efl::eo::*.
  * 
  * @subsection efl_cxx_eo_api_public Public API
  *
- * @li efl::eo::eo_init
- * @li efl::eo::base
- * @li efl::eo::wref
- * @li efl::eo::callback_token
- * @li efl::eo::inherit
+ * @li @ref efl::eo::eo_init
+ * @li @ref efl::eo::base
+ * @li @ref efl::eo::wref
+ * @li @ref efl::eo::callback_token
+ * @li @ref efl::eo::inherit
  * 
  * @subsection efl_cxx_eo_api_detail EO++ Internals
  * 
- * @li efl::eo::detail::call_constructor
- * @li efl::eo::detail::operation_description_size
- * @li efl::eo::detail::predicate
- * @li efl::eo::detail::call_constructor_aux
- * @li efl::eo::detail::inherit_constructor_impl
- * @li efl::eo::detail::inherit_constructor
- * @li efl::eo::detail::create_class
+ * @li @ref efl::eo::detail::call_constructor()
+ * @li @ref efl::eo::detail::operation_description_size
+ * @li @ref efl::eo::detail::predicate
+ * @li @ref efl::eo::detail::call_constructor_aux
+ * @li @ref efl::eo::detail::inherit_constructor_impl()
+ * @li @ref efl::eo::detail::inherit_constructor()
+ * @li @ref efl::eo::detail::create_class()
  *
- * 
  */
-
-/*
- *  <<< Generated Code >>>
- */
-
-
-/*
- *  <<< EO++ Examples >>>
- */
-
-

@@ -29,11 +29,15 @@ struct eo3_inherit : eo3_simple
   {
   }
 
+  static Eo_Class const* _eo_class()
+  {
+    return EO3_GET_CLASS(EO3_INHERIT_CLASS);
+  }
+
   int eo3_inherit_get()
   {
     int r = 0;
     eo2_do(_eo_ptr(), r = ::eo3_inherit_get());
-    std::cout << "eo3_inherit::eo3_inherit_get " << r << std::endl; // XXX
     return r;
   }
 private:

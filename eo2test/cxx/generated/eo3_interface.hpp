@@ -25,6 +25,11 @@ struct eo3_interface : efl::eo::base
 {
   explicit eo3_interface(Eo* eo) : efl::eo::base(eo) {}
 
+  static Eo_Class const* _eo_class()
+  {
+    return EO3_GET_CLASS(EO3_SIMPLE_INTERFACE);
+  }
+
   void isimple_inc()
   {
     eo2_do(_eo_ptr(), ::isimple_inc());

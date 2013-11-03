@@ -5,9 +5,6 @@
  * @date 2013
  *
  * 
- * @section efl_cxx_main_about About
- *
- * 
  * @section efl_cxx_main_toc Table of Contents
  *
  * @li @ref efl_cxx_eo
@@ -33,7 +30,7 @@
 /**
  * @defgroup Efl_Cxx_Detail EFL++ Internals
  *
- * @brief Implementation details of EFL++.
+ * @brief Implementation details for EFL++.
  */
 
 /**
