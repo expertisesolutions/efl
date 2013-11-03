@@ -866,6 +866,50 @@ EFL_LIB_END([Eina])
 #### End of Eina
 
 
+#### Eina CXX
+EFL_LIB_START([Eina_Cxx])
+
+AC_ARG_WITH([cxx11],
+   [AC_HELP_STRING([--with-cxx11],
+                   [C++ standard to use])], [], [with_cxx11=no])
+AC_ARG_WITH([boost-system],
+   [AC_HELP_STRING([--with-boost-system],
+                   [Use boost.system instead of C++11's functionality])],
+                   [], [with_boost_system=no])
+
+if test "x$with_boost_system" != "xno"; then
+   BOOST_REQUIRE([1.34])
+   BOOST_SYSTEM
+   USE_BOOST_CPPFLAGS="${BOOST_CPPFLAGS}"
+   USE_BOOST_SYSTEM_LIBS="${BOOST_SYSTEM_LIBS}"
+   USE_BOOST_SYSTEM_LDFLAGS="${BOOST_SYSTEM_LDFLAGS}"
+   EFL_EINA_HAVE_BOOST_SYSTEM="#define EFL_EINA_HAVE_BOOST_SYSTEM"
+   AC_DEFINE([HAVE_BOOST_SYSTEM], [1], [Define if you have boost.system])
+else
+   USE_BOOST_CPPFLAGS=""
+   USE_BOOST_SYSTEM_LIBS=""
+   USE_BOOST_SYSTEM_LDFLAGS=""
+   EFL_EINA_HAVE_BOOST_SYSTEM=""
+fi
+AC_SUBST(EFL_EINA_HAVE_BOOST_SYSTEM)
+
+if test "x$with_cxx11" != xno; then
+   AX_CXX_COMPILE_STDCXX_11
+   AC_MSG_NOTICE([Compiling in C++11 mode])
+elif test "x$with_boost_system" == xno; then
+   AX_CXX_COMPILE_STDCXX_11
+   AC_MSG_NOTICE([Compiling in C++11 mode])
+else
+   AC_MSG_NOTICE([Compiling in C++03 mode])
+fi
+
+AC_SUBST([USE_BOOST_CPPFLAGS])
+AC_SUBST([USE_BOOST_SYSTEM_LIBS])
+AC_SUBST([USE_BOOST_SYSTEM_LDFLAGS])
+
+EFL_LIB_END([Eina_Cxx])
+#### End of Eina CXX
+
 #### Eet
 
 EFL_LIB_START([Eet])
@@ -3838,6 +3882,7 @@ src/examples/ethumb_client/Makefile
 src/lib/eina/eina_config.h
 src/lib/ecore_x/ecore_x_version.h
 src/lib/efl/Efl_Config.h
+src/lib/eina_cxx/eina_config.hh
 spec/efl.spec
 pc/evil.pc
 pc/escape.pc

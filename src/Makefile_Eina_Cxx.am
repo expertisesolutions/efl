@@ -1,0 +1,206 @@
+
+### Library
+
+#lib_LTLIBRARIES += lib/eina/libeina.la
+
+installed_einamainheadersdir = $(includedir)/eina_cxx-@VMAJ@
+dist_installed_einamainheaders_DATA = \
+lib/eina_cxx/Eina.hh
+
+installed_einaheadersdir = $(includedir)/eina_cxx-@VMAJ@/eina_cxx
+dist_installed_einaheaders_DATA = \
+lib/eina_cxx/eina_accessor.hh       \
+lib/eina_cxx/eina_clone_allocators.hh       \
+lib/eina_cxx/eina_config.hh \
+lib/eina_cxx/eina_error.hh     \
+lib/eina_cxx/eina_inarray.hh  \
+lib/eina_cxx/eina_inlist.hh   \
+lib/eina_cxx/eina_iterator.hh \
+lib/eina_cxx/eina_lists_auxiliary.hh \
+lib/eina_cxx/eina_ptrarray.hh \
+lib/eina_cxx/eina_ptrlist.hh \
+lib/eina_cxx/eina_stringshare.hh \
+lib/eina_cxx/eina_thread.hh \
+lib/eina_cxx/eina_thread_constr.x \
+lib/eina_cxx/eina_type_traits.hh
+
+
+# Will be back for developper after 1.2.
+# lib/eina/eina_model.h
+# lib/eina/eina_object.h
+
+# lib_eina_libeina_la_SOURCES = \
+# lib/eina/eina_abi.c \
+# lib/eina/eina_accessor.c \
+# lib/eina/eina_array.c \
+# lib/eina/eina_benchmark.c \
+# lib/eina/eina_binbuf.c \
+# lib/eina/eina_binshare.c \
+# lib/eina/eina_convert.c \
+# lib/eina/eina_counter.c \
+# lib/eina/eina_cow.c \
+# lib/eina/eina_cpu.c \
+# lib/eina/eina_error.c \
+# lib/eina/eina_file_common.h \
+# lib/eina/eina_file_common.c \
+# lib/eina/eina_fp.c \
+# lib/eina/eina_hamster.c \
+# lib/eina/eina_hash.c \
+# lib/eina/eina_inarray.c \
+# lib/eina/eina_inlist.c \
+# lib/eina/eina_iterator.c \
+# lib/eina/eina_lalloc.c \
+# lib/eina/eina_list.c \
+# lib/eina/eina_log.c \
+# lib/eina/eina_magic.c \
+# lib/eina/eina_main.c \
+# lib/eina/eina_matrixsparse.c \
+# lib/eina/eina_mempool.c \
+# lib/eina/eina_mmap.c \
+# lib/eina/eina_module.c \
+# lib/eina/eina_prefix.c \
+# lib/eina/eina_quadtree.c \
+# lib/eina/eina_rbtree.c \
+# lib/eina/eina_rectangle.c \
+# lib/eina/eina_safety_checks.c \
+# lib/eina/eina_sched.c \
+# lib/eina/eina_share_common.c \
+# lib/eina/eina_simple_xml_parser.c \
+# lib/eina/eina_str.c \
+# lib/eina/eina_strbuf.c \
+# lib/eina/eina_strbuf_common.c \
+# lib/eina/eina_stringshare.c \
+# lib/eina/eina_tiler.c \
+# lib/eina/eina_thread.c \
+# lib/eina/eina_tmpstr.c \
+# lib/eina/eina_unicode.c \
+# lib/eina/eina_ustrbuf.c \
+# lib/eina/eina_ustringshare.c \
+# lib/eina/eina_value.c \
+# lib/eina/eina_xattr.c \
+# lib/eina/eina_share_common.h \
+# lib/eina/eina_private.h \
+# lib/eina/eina_strbuf_common.h
+
+# Will be back for developper after 1.2
+# lib/eina/eina_model.c \
+# lib/eina/eina_object.c
+
+EINA_MODULE_COMMON_CFLAGS = \
+@EINA_CFLAGS@ \
+@VALGRIND_CFLAGS@
+
+# if EINA_STATIC_BUILD_CHAINED_POOL
+# lib_eina_libeina_la_SOURCES += modules/eina/mp/chained_pool/eina_chained_mempool.c
+# else
+# einampchainedpooldir = $(libdir)/eina/modules/mp/chained_pool/$(MODULE_ARCH)
+# einampchainedpool_LTLIBRARIES = modules/eina/mp/chained_pool/chained_pool_module.la
+
+# modules_eina_mp_chained_pool_chained_pool_module_la_CFLAGS = $(EINA_MODULE_COMMON_CFLAGS)
+# modules_eina_mp_chained_pool_chained_pool_module_la_LIBADD = @USE_EINA_LIBS@
+# modules_eina_mp_chained_pool_chained_pool_module_la_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+# modules_eina_mp_chained_pool_chained_pool_module_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
+# modules_eina_mp_chained_pool_chained_pool_module_la_LIBTOOLFLAGS = --tag=disable-static
+# modules_eina_mp_chained_pool_chained_pool_module_la_SOURCES = modules/eina/mp/chained_pool/eina_chained_mempool.c
+# endif
+
+# if EINA_STATIC_BUILD_ONE_BIG
+# lib_eina_libeina_la_SOURCES += modules/eina/mp/one_big/eina_one_big.c
+# else
+# einamponebigdir = $(libdir)/eina/modules/mp/one_big/$(MODULE_ARCH)
+# einamponebig_LTLIBRARIES = modules/eina/mp/one_big/one_big_module.la
+
+# modules_eina_mp_one_big_one_big_module_la_CFLAGS = $(EINA_MODULE_COMMON_CFLAGS)
+# modules_eina_mp_one_big_one_big_module_la_LIBADD = @USE_EINA_LIBS@
+# modules_eina_mp_one_big_one_big_module_la_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+# modules_eina_mp_one_big_one_big_module_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
+# modules_eina_mp_one_big_one_big_module_la_LIBTOOLFLAGS = --tag=disable-static
+# modules_eina_mp_one_big_one_big_module_la_SOURCES = modules/eina/mp/one_big/eina_one_big.c
+# endif
+
+# if EINA_STATIC_BUILD_PASS_THROUGH
+# lib_eina_libeina_la_SOURCES += modules/eina/mp/pass_through/eina_pass_through.c
+# else
+# einamppassthroughdir = $(libdir)/eina/modules/mp/pass_through/$(MODULE_ARCH)
+# einamppassthrough_LTLIBRARIES = modules/eina/mp/pass_through/pass_through_module.la
+
+# modules_eina_mp_pass_through_pass_through_module_la_CFLAGS = $(EINA_MODULE_COMMON_CFLAGS)
+# modules_eina_mp_pass_through_pass_through_module_la_LIBADD = @USE_EINA_LIBS@
+# modules_eina_mp_pass_through_pass_through_module_la_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+# modules_eina_mp_pass_through_pass_through_module_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
+# modules_eina_mp_pass_through_pass_through_module_la_LIBTOOLFLAGS = --tag=disable-static
+# modules_eina_mp_pass_through_pass_through_module_la_SOURCES = modules/eina/mp/pass_through/eina_pass_through.c
+# endif
+
+# lib_eina_libeina_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
+# @EINA_CFLAGS@ \
+# -DPACKAGE_BIN_DIR=\"$(bindir)\" \
+# -DPACKAGE_LIB_DIR=\"$(libdir)\" \
+# -DPACKAGE_DATA_DIR=\"$(datadir)/eina\" \
+# @VALGRIND_CFLAGS@
+
+# lib_eina_libeina_la_LIBADD = @EINA_LIBS@ @DL_LIBS@
+# lib_eina_libeina_la_DEPENDENCIES = @EINA_INTERNAL_LIBS@ @DL_INTERNAL_LIBS@
+# lib_eina_libeina_la_LDFLAGS = @EFL_LTLIBRARY_FLAGS@
+
+# ### Script
+
+# bin_SCRIPTS += scripts/eina/eina-bench-cmp
+
+### Unit tests
+
+if EFL_ENABLE_TESTS
+
+check_PROGRAMS += tests/eina_cxx/eina_cxx_suite
+TESTS += tests/eina_cxx/eina_cxx_suite
+
+tests_eina_cxx_eina_cxx_suite_SOURCES = \
+tests/eina_cxx/eina_cxx_suite.cc \
+tests/eina_cxx/eina_cxx_test_inlist.cc \
+tests/eina_cxx/eina_cxx_test_inarray.cc \
+tests/eina_cxx/eina_cxx_test_iterator.cc \
+tests/eina_cxx/eina_cxx_test_ptrarray.cc \
+tests/eina_cxx/eina_cxx_test_ptrlist.cc \
+tests/eina_cxx/eina_cxx_test_stringshare.cc \
+tests/eina_cxx/eina_cxx_test_error.cc \
+tests/eina_cxx/eina_cxx_test_accessor.cc \
+tests/eina_cxx/eina_cxx_test_thread.cc \
+tests/eina_cxx/eina_cxx_test_eina_value.cc
+
+tests_eina_cxx_eina_cxx_suite_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
+-I$(top_builddir)/src/lib/eina_cxx \
+-DTESTS_WD=\"`pwd`\" \
+-DTESTS_SRC_DIR=\"$(top_srcdir)/src/tests/eina_cxx\" \
+-DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/eina_cxx\" \
+-DTESTS_BUILD_DIR=PACKAGE_BUILD_DIR \
+@CHECK_CFLAGS@ \
+@USE_BOOST_CPPFLAGS@ \
+@EINA_CFLAGS@
+tests_eina_cxx_eina_cxx_suite_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@ @USE_BOOST_SYSTEM_LIBS@ @USE_BOOST_SYSTEM_LDFLAGS@
+tests_eina_cxx_eina_cxx_suite_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+
+# tests_eina_cxx_compile_test_SOURCES = tests/eina/cxx_compile_test.cxx
+# tests_eina_cxx_compile_test_CPPFLAGS = -I$(top_builddir)/src/lib/efl @EINA_CFLAGS@
+# tests_eina_cxx_compile_test_LDADD = @USE_EINA_LIBS@
+# tests_eina_cxx_compile_test_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+
+# check_LTLIBRARIES = tests/eina/module_dummy.la
+
+# tests_eina_module_dummy_la_SOURCES = tests/eina/eina_test_module_dummy.c
+# tests_eina_module_dummy_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
+# -DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/eina\" \
+# @CHECK_CFLAGS@ \
+# @EINA_CFLAGS@
+# tests_eina_module_dummy_la_LIBADD = @USE_EINA_LIBS@
+# tests_eina_module_dummy_la_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+# tests_eina_module_dummy_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
+# tests_eina_module_dummy_la_LIBTOOLFLAGS = --tag=disable-static
+
+endif
+
+# EXTRA_DIST += \
+# lib/eina/eina_strbuf_template_c.x \
+# lib/eina/eina_binbuf_template_c.x \
+# lib/eina/eina_inline_private.h \
+# tests/eina/sample.gpx \
+# $(bin_SCRIPTS)

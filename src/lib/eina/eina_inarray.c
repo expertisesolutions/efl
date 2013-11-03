@@ -382,6 +382,19 @@ eina_inarray_flush(Eina_Inarray *array)
    array->members = NULL;
 }
 
+EAPI Eina_Bool
+eina_inarray_resize(Eina_Inarray *array, unsigned int new_size)
+{
+  Eina_Bool r = _eina_inarray_resize(array, new_size);
+  if(!r)
+    return EINA_FALSE;
+  else
+    {
+      array->len = new_size;
+      return EINA_TRUE;
+    }
+}
+
 EAPI int
 eina_inarray_push(Eina_Inarray *array, const void *data)
 {

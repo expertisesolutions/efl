@@ -1,0 +1,90 @@
+//  (C) Copyright John Maddock 2001 - 2002.
+//  (C) Copyright Aleksey Gurtovoy 2002.
+//  Use, modification and distribution are subject to the
+//  Boost Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+//  See http://www.boost.org for most recent version.
+
+//  MPW C++ compilers setup:
+
+#   if    defined(__SC__)
+#     define EFL_EINA_BOOST_COMPILER "MPW SCpp version " EFL_EINA_BOOST_STRINGIZE(__SC__)
+#   elif defined(__MRC__)
+#     define EFL_EINA_BOOST_COMPILER "MPW MrCpp version " EFL_EINA_BOOST_STRINGIZE(__MRC__)
+#   else
+#     error "Using MPW compiler configuration by mistake.  Please update."
+#   endif
+
+//
+// MPW 8.90:
+//
+#if (MPW_CPLUS <= 0x890) || !defined(EFL_EINA_BOOST_STRICT_CONFIG)
+#  define EFL_EINA_BOOST_NO_CV_SPECIALIZATIONS
+#  define EFL_EINA_BOOST_NO_DEPENDENT_NESTED_DERIVATIONS
+#  define EFL_EINA_BOOST_NO_DEPENDENT_TYPES_IN_TEMPLATE_VALUE_PARAMETERS
+#  define EFL_EINA_BOOST_NO_INCLASS_MEMBER_INITIALIZATION
+#  define EFL_EINA_BOOST_NO_INTRINSIC_WCHAR_T
+#  define EFL_EINA_BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#  define EFL_EINA_BOOST_NO_USING_TEMPLATE
+
+#  define EFL_EINA_BOOST_NO_CWCHAR
+#  define EFL_EINA_BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
+
+#  define EFL_EINA_BOOST_NO_STD_ALLOCATOR /* actually a bug with const reference overloading */
+
+#endif
+
+//
+// C++0x features
+//
+//   See boost\config\suffix.hpp for EFL_EINA_BOOST_NO_LONG_LONG
+//
+#define EFL_EINA_BOOST_NO_CXX11_AUTO_DECLARATIONS
+#define EFL_EINA_BOOST_NO_CXX11_AUTO_MULTIDECLARATIONS
+#define EFL_EINA_BOOST_NO_CXX11_CHAR16_T
+#define EFL_EINA_BOOST_NO_CXX11_CHAR32_T
+#define EFL_EINA_BOOST_NO_CXX11_CONSTEXPR
+#define EFL_EINA_BOOST_NO_CXX11_DECLTYPE
+#define EFL_EINA_BOOST_NO_CXX11_DECLTYPE_N3276
+#define EFL_EINA_BOOST_NO_CXX11_DEFAULTED_FUNCTIONS
+#define EFL_EINA_BOOST_NO_CXX11_DELETED_FUNCTIONS
+#define EFL_EINA_BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+#define EFL_EINA_BOOST_NO_CXX11_EXTERN_TEMPLATE
+#define EFL_EINA_BOOST_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS
+#define EFL_EINA_BOOST_NO_CXX11_HDR_INITIALIZER_LIST
+#define EFL_EINA_BOOST_NO_CXX11_LAMBDAS
+#define EFL_EINA_BOOST_NO_CXX11_LOCAL_CLASS_TEMPLATE_PARAMETERS
+#define EFL_EINA_BOOST_NO_CXX11_NOEXCEPT
+#define EFL_EINA_BOOST_NO_CXX11_NULLPTR
+#define EFL_EINA_BOOST_NO_CXX11_RANGE_BASED_FOR
+#define EFL_EINA_BOOST_NO_CXX11_RAW_LITERALS
+#define EFL_EINA_BOOST_NO_CXX11_RVALUE_REFERENCES
+#define EFL_EINA_BOOST_NO_CXX11_SCOPED_ENUMS
+#define EFL_EINA_BOOST_NO_SFINAE_EXPR
+#define EFL_EINA_BOOST_NO_CXX11_STATIC_ASSERT
+#define EFL_EINA_BOOST_NO_CXX11_TEMPLATE_ALIASES
+#define EFL_EINA_BOOST_NO_CXX11_UNICODE_LITERALS
+#define EFL_EINA_BOOST_NO_CXX11_VARIADIC_TEMPLATES
+#define EFL_EINA_BOOST_NO_CXX11_VARIADIC_MACROS
+#define EFL_EINA_BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX
+#define EFL_EINA_BOOST_NO_CXX11_USER_DEFINED_LITERALS
+#define EFL_EINA_BOOST_NO_CXX11_ALIGNAS
+#define EFL_EINA_BOOST_NO_CXX11_TRAILING_RESULT_TYPES
+#define EFL_EINA_BOOST_NO_CXX11_INLINE_NAMESPACES
+
+//
+// versions check:
+// we don't support MPW prior to version 8.9:
+#if MPW_CPLUS < 0x890
+#  error "Compiler not supported or configured - please reconfigure"
+#endif
+//
+// last known and checked version is 0x890:
+#if (MPW_CPLUS > 0x890)
+#  if defined(EFL_EINA_BOOST_ASSERT_CONFIG)
+#     error "Unknown compiler version - please run the configure tests and report the results"
+#  endif
+#endif
+
+

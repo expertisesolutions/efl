@@ -146,6 +146,12 @@ typedef void (*Eina_Accessor_Free_Callback)(Eina_Accessor *it);
 typedef Eina_Bool (*Eina_Accessor_Lock_Callback)(Eina_Accessor *it);
 
 /**
+ * @typedef Eina_Accessor_Clone_Callback
+ * Type for a callback that returns a clone for the accessor
+ */
+typedef Eina_Accessor* (*Eina_Accessor_Clone_Callback)(Eina_Accessor *it);
+
+/**
  * @struct _Eina_Accessor
  * Type to provide random access to data structures.
  *
@@ -153,7 +159,7 @@ typedef Eina_Bool (*Eina_Accessor_Lock_Callback)(Eina_Accessor *it);
  */
 struct _Eina_Accessor
 {
-#define EINA_ACCESSOR_VERSION 1
+#define EINA_ACCESSOR_VERSION 2
    int                                  version; /**< Version of the Accessor API. */
 
    Eina_Accessor_Get_At_Callback        get_at        EINA_ARG_NONNULL(1, 3) EINA_WARN_UNUSED_RESULT; /**< Callback called when a data element is requested. */
@@ -162,6 +168,7 @@ struct _Eina_Accessor
 
    Eina_Accessor_Lock_Callback          lock          EINA_WARN_UNUSED_RESULT; /**< Callback called when the container is locked. */
    Eina_Accessor_Lock_Callback          unlock        EINA_WARN_UNUSED_RESULT; /**< Callback called when the container is unlocked. */
+   Eina_Accessor_Clone_Callback         clone         EINA_WARN_UNUSED_RESULT; /**< Callback called when the container is to be cloned. */
 
 #define EINA_MAGIC_ACCESSOR 0x98761232
    EINA_MAGIC
@@ -190,6 +197,12 @@ struct _Eina_Accessor
  * Helper macro to cast @p Function to a Eina_Iterator_Lock_Callback.
  */
 #define FUNC_ACCESSOR_LOCK(Function)          ((Eina_Accessor_Lock_Callback)Function)
+
+/**
+ * @def FUNC_ACCESSOR_CLONE(Function)
+ * Helper macro to cast @p Function to a Eina_Iterator_Clone_Callback.
+ */
+#define FUNC_ACCESSOR_CLONE(Function)          ((Eina_Accessor_Clone_Callback)Function)
 
 
 /**
@@ -266,6 +279,15 @@ EAPI void  eina_accessor_over(Eina_Accessor *accessor,
  * @warning None of the existing eina data structures are lockable.
  */
 EAPI Eina_Bool eina_accessor_lock(Eina_Accessor *accessor) EINA_ARG_NONNULL(1);
+
+/**
+ * @brief Clone the accessor.
+ *
+ * @param accessor The accessor.
+ * @return Another accessor
+ *
+ */
+EAPI Eina_Accessor* eina_accessor_clone(Eina_Accessor *accessor) EINA_ARG_NONNULL(1);
 
 /**
  * @brief Unlock the container of the accessor.

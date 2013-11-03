@@ -601,6 +601,8 @@ EAPI int eina_inarray_foreach_remove(Eina_Inarray *array,
                                      Eina_Each_Cb match,
                                      const void *user_data) EINA_ARG_NONNULL(1, 2);
 
+EAPI Eina_Bool eina_inarray_resize(Eina_Inarray *array, unsigned int new_size);
+
 /**
  * @brief number of members in array.
  * @param array array object

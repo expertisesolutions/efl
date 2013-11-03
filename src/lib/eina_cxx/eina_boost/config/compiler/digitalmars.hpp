@@ -1,0 +1,93 @@
+//  Copyright (C) Christof Meerwald 2003
+//  Copyright (C) Dan Watkins 2003
+//
+//  Use, modification and distribution are subject to the
+//  Boost Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+//  Digital Mars C++ compiler setup:
+#define EFL_EINA_BOOST_COMPILER __DMC_VERSION_STRING__
+
+#define EFL_EINA_BOOST_HAS_LONG_LONG
+#define EFL_EINA_BOOST_HAS_PRAGMA_ONCE
+
+#if !defined(EFL_EINA_BOOST_STRICT_CONFIG)
+#define EFL_EINA_BOOST_NO_MEMBER_TEMPLATE_FRIENDS
+#define EFL_EINA_BOOST_NO_OPERATORS_IN_NAMESPACE
+#define EFL_EINA_BOOST_NO_UNREACHABLE_RETURN_DETECTION
+#define EFL_EINA_BOOST_NO_SFINAE
+#define EFL_EINA_BOOST_NO_USING_TEMPLATE
+#define EFL_EINA_BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL
+#endif
+
+//
+// has macros:
+#define EFL_EINA_BOOST_HAS_DIRENT_H
+#define EFL_EINA_BOOST_HAS_STDINT_H
+#define EFL_EINA_BOOST_HAS_WINTHREADS
+
+#if (__DMC__ >= 0x847)
+#define EFL_EINA_BOOST_HAS_EXPM1
+#define EFL_EINA_BOOST_HAS_LOG1P
+#endif
+
+//
+// Is this really the best way to detect whether the std lib is in namespace std?
+//
+#ifdef __cplusplus
+#include <cstddef>
+#endif
+#if !defined(__STL_IMPORT_VENDOR_CSTD) && !defined(_STLP_IMPORT_VENDOR_CSTD)
+#  define EFL_EINA_BOOST_NO_STDC_NAMESPACE
+#endif
+
+
+// check for exception handling support:
+#if !defined(_CPPUNWIND) && !defined(EFL_EINA_BOOST_NO_EXCEPTIONS)
+#  define EFL_EINA_BOOST_NO_EXCEPTIONS
+#endif
+
+//
+// C++0x features
+//
+#define EFL_EINA_BOOST_NO_CXX11_AUTO_DECLARATIONS
+#define EFL_EINA_BOOST_NO_CXX11_AUTO_MULTIDECLARATIONS
+#define EFL_EINA_BOOST_NO_CXX11_CHAR16_T
+#define EFL_EINA_BOOST_NO_CXX11_CHAR32_T
+#define EFL_EINA_BOOST_NO_CXX11_CONSTEXPR
+#define EFL_EINA_BOOST_NO_CXX11_DECLTYPE
+#define EFL_EINA_BOOST_NO_CXX11_DECLTYPE_N3276
+#define EFL_EINA_BOOST_NO_CXX11_DEFAULTED_FUNCTIONS
+#define EFL_EINA_BOOST_NO_CXX11_DELETED_FUNCTIONS
+#define EFL_EINA_BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+#define EFL_EINA_BOOST_NO_CXX11_EXTERN_TEMPLATE
+#define EFL_EINA_BOOST_NO_CXX11_HDR_INITIALIZER_LIST
+#define EFL_EINA_BOOST_NO_CXX11_LAMBDAS
+#define EFL_EINA_BOOST_NO_CXX11_LOCAL_CLASS_TEMPLATE_PARAMETERS
+#define EFL_EINA_BOOST_NO_CXX11_NOEXCEPT
+#define EFL_EINA_BOOST_NO_CXX11_NULLPTR
+#define EFL_EINA_BOOST_NO_CXX11_RANGE_BASED_FOR
+#define EFL_EINA_BOOST_NO_CXX11_RAW_LITERALS
+#define EFL_EINA_BOOST_NO_CXX11_RVALUE_REFERENCES
+#define EFL_EINA_BOOST_NO_CXX11_SCOPED_ENUMS
+#define EFL_EINA_BOOST_NO_SFINAE_EXPR
+#define EFL_EINA_BOOST_NO_CXX11_STATIC_ASSERT
+#define EFL_EINA_BOOST_NO_CXX11_TEMPLATE_ALIASES
+#define EFL_EINA_BOOST_NO_CXX11_UNICODE_LITERALS
+#define EFL_EINA_BOOST_NO_CXX11_VARIADIC_TEMPLATES
+#define EFL_EINA_BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX
+#define EFL_EINA_BOOST_NO_CXX11_USER_DEFINED_LITERALS
+#define EFL_EINA_BOOST_NO_CXX11_ALIGNAS
+#define EFL_EINA_BOOST_NO_CXX11_TRAILING_RESULT_TYPES
+#define EFL_EINA_BOOST_NO_CXX11_INLINE_NAMESPACES
+
+#if (__DMC__ <= 0x840)
+#error "Compiler not supported or configured - please reconfigure"
+#endif
+//
+// last known and checked version is ...:
+#if (__DMC__ > 0x848)
+#  if defined(EFL_EINA_BOOST_ASSERT_CONFIG)
+#     error "Unknown compiler version - please run the configure tests and report the results"
+#  endif
+#endif
