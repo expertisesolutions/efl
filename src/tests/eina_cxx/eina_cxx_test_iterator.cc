@@ -21,21 +21,14 @@ int main()
       (new bigger_than_pointer);
     elem->a = 5; elem->b = 10;
     list.push_back(elem);
-    assert(list.size() == 1);
-    assert(!list.empty());
-    assert(std::distance(list.begin(), list.end()) == 1);
-    assert(list.begin()->a == 5 && list.begin()->b == 10);
-  }
-  {
-    efl::eina::ptr_list<int> list;
-    assert(list.size() == 0);
-    assert(list.empty());
 
-    std::auto_ptr<int> p(new int(5));
-    list.push_back(p);
-    assert(list.size() == 1);
-    assert(!list.empty());
-    assert(std::distance(list.begin(), list.end()) == 1);
-    assert(*list.begin() == 5);
-  }  
+    efl::eina::iterator<bigger_than_pointer> iterator
+      (eina_list_iterator_new(list.native_handle())), last;
+
+    assert(std::distance(iterator, last) == 1);
+    iterator = efl::eina::iterator<bigger_than_pointer>
+      (eina_list_iterator_new(list.native_handle()));
+    bigger_than_pointer r = *iterator;
+    assert(r.a == 5 && r.b == 10);
+  }
 }

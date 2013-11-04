@@ -127,6 +127,15 @@ struct ptr_list : _common_list_base
     else
       throw std::bad_alloc();
   }
+
+  Eina_List* native_handle()
+  {
+    return _list;
+  }
+  Eina_List const* native_handle() const
+  {
+    return _list;
+  }
 };
 
 } }

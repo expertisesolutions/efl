@@ -37,10 +37,11 @@ public:
   {
     _iterator = other._iterator;
     other._iterator = 0;
+    return *this;
   }
 
 protected:
-  Eina_Iterator* _iterator;
+  mutable Eina_Iterator* _iterator;
 
   friend inline bool operator==(_common_iterator_base<T> const& lhs, _common_iterator_base<T> const& rhs)
   {
@@ -66,7 +67,7 @@ public:
   typedef typename base_type::difference_type difference_type;
   typedef typename base_type::iterator_category iterator_category;
 
-  explicit iterator(Eina_Iterator* iterator)
+  explicit iterator(Eina_Iterator* iterator = 0)
     : base_type(iterator)
   {
     if(this->_iterator)

@@ -466,7 +466,15 @@ public:
     std::swap(this->_impl._list, other._impl._list);
   }
   size_type max_size() const { return -1; }
-  
+
+  Eina_Inlist* native_handle()
+  {
+    return this->_impl._list;
+  }
+  Eina_Inlist const* native_handle() const
+  {
+    return this->_impl._list;
+  }
 };
 
 template <typename T, typename Allocator>

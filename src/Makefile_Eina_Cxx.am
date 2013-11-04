@@ -9,7 +9,9 @@ lib/eina_cxx/Eina.hh
 
 installed_einaheadersdir = $(includedir)/eina_cxx-@VMAJ@/eina_cxx
 dist_installed_einaheaders_DATA = \
-lib/eina_cxx/eina_iterator.hh
+lib/eina_cxx/eina_inlist.hh       \
+lib/eina_cxx/eina_iterator.hh     \
+lib/eina_cxx/eina_ptrlist.hh
 
 # Will be back for developper after 1.2.
 # lib/eina/eina_model.h
@@ -138,9 +140,11 @@ EINA_MODULE_COMMON_CFLAGS = \
 if EFL_ENABLE_TESTS
 
 check_PROGRAMS += tests/eina_cxx/eina_cxx_test_iterator \
-tests/eina_cxx/eina_cxx_test_inlist
+tests/eina_cxx/eina_cxx_test_inlist \
+tests/eina_cxx/eina_cxx_test_ptrlist
 TESTS += tests/eina_cxx/eina_cxx_test_iterator \
-tests/eina_cxx/eina_cxx_test_inlist
+tests/eina_cxx/eina_cxx_test_inlist \
+tests/eina_cxx/eina_cxx_test_ptrlist
 
 tests_eina_cxx_eina_cxx_test_iterator_SOURCES = \
 tests/eina_cxx/eina_cxx_test_iterator.cc
@@ -170,6 +174,21 @@ tests_eina_cxx_eina_cxx_test_inlist_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
 @EINA_CFLAGS@
 tests_eina_cxx_eina_cxx_test_inlist_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@
 tests_eina_cxx_eina_cxx_test_inlist_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+
+
+tests_eina_cxx_eina_cxx_test_ptrlist_SOURCES = \
+tests/eina_cxx/eina_cxx_test_ptrlist.cc
+
+tests_eina_cxx_eina_cxx_test_ptrlist_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
+-I$(top_builddir)/src/lib/eina_cxx \
+-DTESTS_WD=\"`pwd`\" \
+-DTESTS_SRC_DIR=\"$(top_srcdir)/src/tests/eina_cxx\" \
+-DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/eina_cxx\" \
+-DTESTS_BUILD_DIR=PACKAGE_BUILD_DIR \
+@CHECK_CFLAGS@ \
+@EINA_CFLAGS@
+tests_eina_cxx_eina_cxx_test_ptrlist_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@
+tests_eina_cxx_eina_cxx_test_ptrlist_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
 
 # tests_eina_cxx_compile_test_SOURCES = tests/eina/cxx_compile_test.cxx
 # tests_eina_cxx_compile_test_CPPFLAGS = -I$(top_builddir)/src/lib/efl @EINA_CFLAGS@
