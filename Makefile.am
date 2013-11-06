@@ -52,7 +52,8 @@ m4/evas_check_engine.m4 \
 m4/evas_check_loader.m4 \
 m4/evil_windows.m4 \
 m4/libgcrypt.m4 \
-m4/gcc_check_builtin.m4
+m4/gcc_check_builtin.m4 \
+m4/boost.m4
 
 EXTRA_DIST += \
 README \

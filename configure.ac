@@ -841,6 +841,10 @@ EFL_LIB_END([Eina])
 #### End of Eina
 
 
+#### Eina CXX
+BOOST_REQUIRE([1.34])
+#### End of Eina CXX
+
 #### Eet
 
 EFL_LIB_START([Eet])

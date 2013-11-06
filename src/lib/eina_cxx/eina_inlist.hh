@@ -2,6 +2,8 @@
 #define EINA_INLIST_HH_
 
 #include <Eina.h>
+#include <eina_lists_auxiliary.hh>
+#include <eina_type_traits.hh>
 
 #include <iterator>
 
@@ -27,81 +29,32 @@ _inlist_node<T> const* _get_node(Eina_Inlist const* l)
 }
 
 template <typename T>
-struct _inlist_const_iterator
+Eina_Inlist* _get_list(_inlist_node<T>* n)
 {
-  typedef T const value_type;
-  typedef T const* pointer;
-  typedef T const& reference;
-  typedef std::ptrdiff_t difference_type;
-  typedef std::bidirectional_iterator_tag iterator_category;
-
-  explicit _inlist_const_iterator(_inlist_node<T>* node)
-    : _node(node) {}
-
-  _inlist_const_iterator<T>& operator++()
-  {
-    _node = _get_node<T>(_node->__in_list.next);
-    return *this;
-  }
-  _inlist_const_iterator<T> operator++(int)
-  {
-    _inlist_const_iterator<T> tmp(*this);
-    ++*this;
-    return tmp;
-  }
-  _inlist_const_iterator<T>& operator--()
-  {
-    _node = _get_node<T>(_node->__in_list.prev);
-    return *this;
-  }
-  _inlist_const_iterator<T> operator--(int)
-  {
-    _inlist_const_iterator<T> tmp(*this);
-    --*this;
-    return tmp;
-  }
-  T const& operator*() const
-  {
-    return _node->object;
-  }
-  T const* operator->() const
-  {
-    return &_node->object;
-  }
-  _inlist_node<T>* native_handle()
-  {
-    return _node;
-  }
-  _inlist_node<T> const* native_handle() const
-  {
-    return _node;
-  }
-private:
-  _inlist_node<T>* _node;
-
-  friend bool operator==(_inlist_const_iterator<T> lhs, _inlist_const_iterator<T> rhs)
-  {
-    return lhs._node == rhs._node;
-  }
-};
+  if(n)
+    return EINA_INLIST_GET(n);
+  else
+    return 0;
+}
 
 template <typename T>
-bool operator!=(_inlist_const_iterator<T> lhs, _inlist_const_iterator<T> rhs)
+Eina_Inlist const* _get_list(_inlist_node<T> const* n)
 {
-  return !(lhs == rhs);
+  return _get_list(const_cast<_inlist_node<T>*>(n));
 }
 
 template <typename T>
 struct _inlist_iterator
 {
-  typedef T const value_type;
-  typedef T const* pointer;
-  typedef T const& reference;
+  typedef T value_type;
+  typedef T* pointer;
+  typedef T& reference;
   typedef std::ptrdiff_t difference_type;
   typedef std::bidirectional_iterator_tag iterator_category;
 
-  explicit _inlist_iterator(_inlist_node<T>* node)
-    : _node(node) {}
+  _inlist_iterator() {}
+  explicit _inlist_iterator(_inlist_node<T>* list, _inlist_node<T>* node)
+    : _list(list), _node(node) {}
 
   _inlist_iterator<T>& operator++()
   {
@@ -116,7 +69,10 @@ struct _inlist_iterator
   }
   _inlist_iterator<T>& operator--()
   {
-    _node = _get_node<T>(_node->__in_list.prev);
+    if(_node)
+      _node = _get_node<T>(_node->__in_list.prev);
+    else
+      _node = _get_node<T>(_list->__in_list.last);
     return *this;
   }
   _inlist_iterator<T> operator--(int)
@@ -142,6 +98,7 @@ struct _inlist_iterator
     return _node;
   }
 private:
+  _inlist_node<T>* _list;
   _inlist_node<T>* _node;
 
   friend bool operator==(_inlist_iterator<T> lhs, _inlist_iterator<T> rhs)
@@ -174,16 +131,20 @@ struct _inlist_common_base
 
   void clear()
   {
-    for(Eina_Inlist* list = _impl._list
-          ;list;list = list->next)
+    Eina_Inlist* p = _impl._list;
+    Eina_Inlist* q;
+    while(p)
       {
-        _inlist_node<T>* node = _get_node<T>(list);
+        q = p->next;
+
+        _inlist_node<T>* node = _get_node<T>(p);
         node->~_inlist_node<T>();
         get_node_allocator().deallocate(node, 1);
+
+        p = q;
       }
     _impl._list = 0;
   }
-  
   node_allocator_type& get_node_allocator()
   {
     return _impl;
@@ -216,12 +177,12 @@ public:
   typedef typename allocator_type::value_type value_type;
   typedef typename allocator_type::reference reference;
   typedef typename allocator_type::const_reference const_reference;
-  typedef _inlist_const_iterator<T> const_iterator;
+  typedef _inlist_iterator<T const> const_iterator;
   typedef _inlist_iterator<T> iterator;
   typedef typename allocator_type::pointer pointer;
   typedef typename allocator_type::const_pointer const_pointer;
   typedef std::size_t size_type;
-  typedef ptrdiff_t difference_type;
+  typedef std::ptrdiff_t difference_type;
 
   typedef std::reverse_iterator<iterator> reverse_iterator;
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
@@ -237,8 +198,7 @@ public:
   template <typename InputIterator>
   inlist(InputIterator i, InputIterator const& j
          , allocator_type const& alloc = allocator_type()
-         , typename std::iterator_traits<InputIterator>::iterator_category
-         = std::random_access_iterator_tag())
+         , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
     : _base_type(alloc)
   {
     while(i != j)
@@ -252,12 +212,12 @@ public:
   {
     insert(end(), other.begin(), other.end());
   }
-  inlist& operator=(inlist<T, Allocator>const& other)
+  inlist<T, Allocator>& operator=(inlist<T, Allocator>const& other)
   {
     clear();
     insert(end(), other.begin(), other.end());
+    return *this;
   }
-
   size_type size() const
   {
     return ::eina_inlist_count(this->_impl._list);
@@ -277,7 +237,7 @@ public:
     {
       new (&node->object) T(value);
       // eina_inlist_append can't fail
-      this->_impl._list = eina_inlist_append(this->_impl._list, EINA_INLIST_GET(node));
+      this->_impl._list = eina_inlist_append(this->_impl._list, _get_list(node));
     }
     catch(...)
     {
@@ -292,7 +252,7 @@ public:
     {
       new (&node->object) T(value);
       // eina_inlist_prepend can't fail
-      this->_impl._list = eina_inlist_prepend(this->_impl._list, EINA_INLIST_GET(node));
+      this->_impl._list = eina_inlist_prepend(this->_impl._list, _get_list(node));
     }
     catch(...)
     {
@@ -315,14 +275,10 @@ public:
     {
       new (&node->object) T(t);
       // eina_inlist_prepend_relative can't fail
-      if(i.native_handle())
-        this->_impl._list = eina_inlist_prepend_relative
-          (this->_impl._list, EINA_INLIST_GET(node)
-           , EINA_INLIST_GET(i.native_handle()));
-      else
-        this->_impl._list = eina_inlist_append
-          (this->_impl._list, EINA_INLIST_GET(node));
-      return iterator(node);
+      this->_impl._list = _eina_inlist_prepend_relative
+        (this->_impl._list, _get_list(node)
+         , _get_list(i.native_handle()));
+      return iterator(_get_node<T>(this->_impl._list), node);
     }
     catch(...)
     {
@@ -342,13 +298,13 @@ public:
 
   template <typename InputIterator>
   iterator insert(iterator p, InputIterator i, InputIterator j
-                  , typename std::iterator_traits<InputIterator>::iterator_category
-                  = std::random_access_iterator_tag())
+                  , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     iterator r = p;
     if(i != j)
       {
-        r = insert(p, *i);
+        value_type v = *i;
+        r = insert(p, v);
         ++i;
       }
     while(i != j)
@@ -363,8 +319,8 @@ public:
   {
     if(q.native_handle())
       {
-        iterator r(_get_node<T>(EINA_INLIST_GET(q.native_handle())->next));
-        this->_impl._list = eina_inlist_remove(this->_impl._list, q.native_handle());
+        iterator r(_get_node<T>(this->_impl._list), _get_node<T>(_get_list(q.native_handle())->next));
+        this->_impl._list = eina_inlist_remove(this->_impl._list, _get_list(q.native_handle()));
         return r;
       }
     else
@@ -374,7 +330,7 @@ public:
   iterator erase(iterator i, iterator j)
   {
     while(i != j)
-      erase(i);
+      i = erase(i);
     if(j.native_handle())
       return j;
     else
@@ -383,8 +339,7 @@ public:
 
   template <typename InputIterator>
   void assign(InputIterator i, InputIterator j
-              , typename std::iterator_traits<InputIterator>::iterator_category
-              = std::random_access_iterator_tag())
+              , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     clear();
     insert(end(), i, j);
@@ -412,22 +367,21 @@ public:
   {
     return const_cast<inlist<T, Allocator>&>(*this).front();
   }
-
   const_iterator begin() const
   {
-    return const_iterator(_get_node<T>(this->_impl._list));
+    return const_iterator(_get_node<T const>(this->_impl._list), _get_node<T const>(this->_impl._list));
   }
   const_iterator end() const
   {
-    return const_iterator(0);
+    return const_iterator(_get_node<T const>(this->_impl._list), 0);
   }
   iterator begin()
   {
-    return iterator(_get_node<T>(this->_impl._list));
+    return iterator(_get_node<T>(this->_impl._list), _get_node<T>(this->_impl._list));
   }
   iterator end()
   {
-    return iterator(0);
+    return iterator(_get_node<T>(this->_impl._list), 0);
   }
   const_reverse_iterator rbegin() const
   {
@@ -477,11 +431,15 @@ public:
   }
 };
 
-template <typename T, typename Allocator>
-bool operator==(inlist<T, Allocator> const& lhs, inlist<T, Allocator> const& rhs);
+template <typename T, typename Allocator1, typename Allocator2>
+bool operator==(inlist<T, Allocator1> const& lhs, inlist<T, Allocator2> const& rhs)
+{
+  return lhs.size() == rhs.size() &&
+    std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
 
-template <typename T, typename Allocator>
-bool operator!=(inlist<T, Allocator> const& lhs, inlist<T, Allocator> const& rhs)
+template <typename T, typename Allocator1, typename Allocator2>
+bool operator!=(inlist<T, Allocator1> const& lhs, inlist<T, Allocator2> const& rhs)
 {
   return !(lhs == rhs);
 }
