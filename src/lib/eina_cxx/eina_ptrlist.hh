@@ -140,7 +140,7 @@ private:
   _ptr_list_common_base& operator=(_ptr_list_common_base const& other);
 };
 
-template <typename T, typename CloneAllocator = no_clone_allocator>
+template <typename T, typename CloneAllocator = heap_no_copy_allocator>
 class ptr_list : protected _ptr_list_common_base<T, CloneAllocator>
 {
   typedef _ptr_list_common_base<T, CloneAllocator> _base_type;
@@ -181,6 +181,10 @@ public:
     : _base_type()
   {
     insert(end(), other.begin(), other.end());
+  }
+  ~ptr_list()
+  {
+    clear();
   }
   ptr_list<T, CloneAllocator>& operator=(ptr_list<T, CloneAllocator>const& other)
   {

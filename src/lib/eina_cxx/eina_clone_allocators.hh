@@ -1,5 +1,7 @@
-#ifndef EINA_DEFAULT_DELETE_HH_
-#define EINA_DEFAULT_DELETE_HH_
+#ifndef EINA_CLONE_ALLOCATORS_HH_
+#define EINA_CLONE_ALLOCATORS_HH_
+
+#include <memory>
 
 namespace efl { namespace eina {
 
@@ -12,9 +14,13 @@ struct heap_copy_allocator
   }
 
   template <typename T>
-  static T* deallocate_clone(T* p)
+  static void deallocate_clone(T* p)
   {
+#if __cplusplus >= 201103L
+    std::default_delete<T>()(p);
+#else
     delete p;
+#endif
   }
 };
 
@@ -45,8 +51,17 @@ struct view_clone_allocator
   }
 };
 
-struct no_clone_allocator
+struct heap_no_copy_allocator
 {
+  template <typename T>
+  static void deallocate_clone(T* p)
+  {
+#if __cplusplus >= 201103L
+    std::default_delete<T>()(p);
+#else
+    delete p;
+#endif
+  }
 };    
 
 } }
