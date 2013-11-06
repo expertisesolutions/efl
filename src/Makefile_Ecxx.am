@@ -1,0 +1,7 @@
+
+### Library
+
+lib_LTLIBRARIES += lib/
+
+### Binary
+
