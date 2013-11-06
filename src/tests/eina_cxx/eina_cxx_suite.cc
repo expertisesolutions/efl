@@ -8,6 +8,7 @@
 
 void eina_test_inlist(TCase* tc);
 void eina_test_ptrlist(TCase* tc);
+void eina_test_iterator(TCase* tc);
 
 typedef struct _Eina_Test_Case Eina_Test_Case;
 struct _Eina_Test_Case
@@ -19,6 +20,7 @@ struct _Eina_Test_Case
 static const Eina_Test_Case etc[] = {
    { "Ptr_List", eina_test_ptrlist },
    { "Inlist", eina_test_inlist },
+   { "Iterator", eina_test_iterator },
    { NULL, NULL }
 };
 

@@ -6,7 +6,7 @@
 
 #include <check.h>
 
-START_TEST(eina_cxx_iterator)
+START_TEST(eina_cxx_iterator_equal)
 {
   efl::eina::eina_init eina_init;
 
@@ -15,19 +15,21 @@ START_TEST(eina_cxx_iterator)
   assert(list.empty());
 
   list.push_back(new int(5));
+  list.push_back(new int(10));
+  list.push_back(new int(15));
+  list.push_back(new int(20));
   
-  efl::eina::iterator<int> iterator
-    (eina_list_iterator_new(list.native_handle())), last;
+  efl::eina::iterator<int> iterator = list.ibegin()
+    , last_iterator = list.iend();
 
-  // assert(std::distance(iterator, last) == 1);
-  // iterator = efl::eina::iterator<bigger_than_pointer>
-  //   (eina_list_iterator_new(list.native_handle()));
-  // bigger_than_pointer r = *iterator;
-  // assert(r.a == 5 && r.b == 10);
+  int result[] = {5, 10, 15, 20};
+
+  assert(std::equal(iterator, last_iterator, result));
 }
 END_TEST
 
 void
 eina_test_iterator(TCase *tc)
 {
+  tcase_add_test(tc, eina_cxx_iterator_equal);
 }
