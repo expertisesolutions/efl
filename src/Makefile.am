@@ -54,6 +54,7 @@ include Makefile_Edje.am
 include Makefile_Emotion.am
 include Makefile_Ethumb.am
 include Makefile_Ethumb_Client.am
+include Makefile_Ecxx.am
 
 .PHONY: benchmark examples
 

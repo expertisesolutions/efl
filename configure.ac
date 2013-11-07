@@ -579,7 +579,7 @@ EVIL_DLFCN_LIBS=""
 if test "${have_wince}" = "xyes"; then
    EFL_ADD_LIBS([EVIL], [-lws2])
    EVIL_DLFCN_LIBS="-ltoolhelp"
-else
+elsre
    EFL_ADD_LIBS([EVIL], [-lole32 -lws2_32 -lsecur32 -luuid])
    EVIL_DLFCN_LIBS="-lpsapi"
 fi
@@ -3682,6 +3682,43 @@ EFL_EVAL_PKGS([ETHUMB_CLIENT])
 
 EFL_LIB_END([Ethumb_Client])
 #### End of Ethumb_Client
+
+
+#### Ecxx
+
+EFL_LIB_START([Ecxx])
+
+### Default values
+
+### Additional options to configure
+
+### Checks for programs
+
+### Checks for libraries
+
+EFL_INTERNAL_DEPEND_PKG([ECXX], [eina])
+EFL_INTERNAL_DEPEND_PKG([ECXX], [eo])
+
+### Checks for header files
+
+### Checks for types
+
+### Checks for structures
+
+### Checks for compiler characteristics
+
+ECXX_CXXFLAGS="${ECXX_CFLAGS} -save-temps" # XXX
+AC_SUBST([ECXX_CXXFLAGS])
+
+### Checks for linker characteristics
+
+### Checks for library functions
+
+### Check availability
+
+EFL_LIB_END([Ecxx])
+
+#### End of Ecxx
 
 
 AC_ARG_ENABLE([always-build-examples],
