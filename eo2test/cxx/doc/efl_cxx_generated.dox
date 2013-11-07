@@ -1,0 +1,199 @@
+/**
+ * @page efl_cxx_generated C++ Binding: Generated code
+ *
+ * 
+ * @section efl_cxx_generated_examples Sample code
+ * @subsection efl_cxx_generated_examples_eo For EO++
+ * @copydetails efl_cxx_generated_eo
+ */
+
+/**
+ * @page efl_cxx_generated_eo EO++ Generated Samples
+ * @ingroup Efl_Cxx_Generated
+ * @details
+ *
+ * @li @ref eo3_simple_hpp
+ * @li @ref eo3_interface_hpp
+ * @li @ref eo3_inherit_hpp
+ * @li @ref eo3_inherit_interface_hpp
+ * @li @ref eo3_container_hpp
+ * @li @ref eo3_mixin_inherit_hpp
+ * @li @ref eo3_mixin_mixin_hpp
+ */
+
+/* Generated code -- Samples */
+
+/**
+ * @page eo3_simple_hpp eo3_simple.hpp
+ * @details
+ *
+ * @section eo3_simple_hpp_c EO C Declaration
+ * @dontinclude eo3_simple.h
+ * From @em eo3_simple.h, EO3_SIMPLE_CLASS is declared as follows:
+ * @skip EO3_SIMPLE_CLASS
+ * @until EO3_DECLARE_CLASS
+ * @until EO3_SIMPLE_CLASS)
+ *
+ * @section eo3_simple_hpp_cxx Generated code for eo3_simple as EO++ Class
+ * @dontinclude eo3_simple.hpp
+ * @skip struct eo3_simple
+ * @until private
+ * @until };
+ *
+ * @section eo3_simple_hpp_cxx_freefuncs Generated EO C wrappers
+ * @dontinclude eo3_simple.hpp
+ * @skip struct eo3_simple
+ * @skip private
+ * @skip };
+ * @skip template
+ * @until static_cast
+ * @until static_cast
+ * @until static_cast
+ * @until static_cast
+ * @until }
+ *
+ * @section eo3_simple_hpp_cxx_detail Generated EO++ specializations for eo3_simple
+ * @dontinclude eo3_simple.hpp
+ * @skip namespace efl
+ * @until } } }
+ */
+
+/**
+ * @page eo3_interface_hpp eo3_interface.hpp
+ * @details
+ *
+ * @section eo3_interface_hpp_c EO C Declaration
+ * @dontinclude eo3_interface.h
+ * From @em eo3_interface.h, EO3_SIMPLE_INTERFACE is declared as follows:
+ * @skip EO3_SIMPLE_INTERFACE
+ * @until EO3_DECLARE_INTERFACE
+ * @until EO3_SIMPLE_INTERFACE)
+ *
+ * @section eo3_interface_hpp_cxx Generated code for eo3_interface as EO++ Class
+ * @dontinclude eo3_interface.hpp
+ * @skip struct eo3_interface
+ * @until };
+ */
+
+/**
+ * @page eo3_inherit_hpp eo3_inherit.hpp
+ * @details
+ *
+ * @section eo3_inherit_hpp_c EO C Declaration
+ * @dontinclude eo3_inherit.h
+ * From @em eo3_inherit.h, EO3_INHERIT_CLASS is declared as follows:
+ * @skip EO3_INHERIT_CLASS
+ * @until EO3_DECLARE_CLASS
+ * @until EO3_INHERIT_CLASS)
+ *
+ * @section eo3_inherit_hpp_cxx Generated code for eo3_inherit as EO++ Class
+ * @dontinclude eo3_inherit.hpp
+ * @skip struct eo3_inherit
+ * @until private
+ * @until };
+ */
+
+/**
+ * @page eo3_inherit_interface_hpp eo3_inherit_interface.hpp
+ * @details
+ *
+ * @section eo3_inherit_interface_hpp_c EO C Declaration
+ * @dontinclude eo3_inherit_interface.h
+ * From @em eo3_inherit_interface.h, EO3_INHERIT_INTERFACE_CLASS is declared as follows:
+ * @skip EO3_INHERIT_INTERFACE_CLASS
+ * @until EO3_DECLARE_CLASS
+ * @until EO3_INHERIT_INTERFACE_CLASS)
+ *
+ * @section eo3_inherit_interface_hpp_cxx Generated code for eo3_inherit_interface as EO++ Class
+ * @dontinclude eo3_inherit_interface.hpp
+ * @skip struct eo3_inherit_interface
+ * @until };
+ */
+
+/**
+ * @page eo3_container_hpp eo3_container.hpp
+ * @details
+ *
+ * @section eo3_container_hpp_c EO C Declaration
+ * @dontinclude eo3_container.h
+ * From @em eo3_container.h, EO3_CONTAINER_CLASS is declared as follows:
+ * @skip EO3_CONTAINER_CLASS
+ * @until EO3_DECLARE_CLASS
+ * @until EO3_CONTAINER_CLASS)
+ *
+ * @section eo3_container_hpp_cxx Generated code for eo3_container as EO++ Class
+ * @dontinclude eo3_container.hpp
+ * @skip struct eo3_container
+ * @until private
+ * @until };
+ */
+
+/**
+ * @page eo3_mixin_mixin_hpp eo3_mixin_mixin.hpp
+ * @details
+ *
+ * @section eo3_mixin_mixin_hpp_c EO C Declaration
+ * @dontinclude eo3_mixin_mixin.h
+ * From @em eo3_mixin_mixin.h, EO3_MIXIN_MIXIN is declared as follows:
+ * @skip EO3_MIXIN_MIXIN
+ * @until EO3_DECLARE_
+ * @until EO3_MIXIN_MIXIN)
+ *
+ * @section eo3_mixin_mixin_hpp_cxx Generated code for eo3_mixin_mixin as EO++ Class
+ * @dontinclude eo3_mixin_mixin.hpp
+ * @skip struct eo3_mixin_mixin
+ * @until };
+ */
+
+/**
+ * @page eo3_mixin_inherit_hpp eo3_mixin_inherit.hpp
+ * @details
+ *
+ * @section eo3_mixin_inherit_hpp_c EO C Declaration
+ * @dontinclude eo3_mixin_inherit.h
+ * From @em eo3_mixin_inherit.h, EO3_MIXIN_INHERIT_CLASS is declared as follows:
+ * @skip EO3_MIXIN_INHERIT_CLASS
+ * @until EO3_DECLARE_
+ * @until EO3_MIXIN_INHERIT_CLASS)
+ *
+ * @section eo3_mixin_inherit_hpp_cxx Generated code for eo3_mixin_inherit as EO++ Class
+ * @dontinclude eo3_mixin_inherit.hpp
+ * @skip struct eo3_mixin_inherit
+ * @until private
+ * @until };
+ */
+
+/**
+ * @example eo3_simple.hpp
+ * Generated EO C++ Class. Binds @em EO3_SIMPLE_CLASS (@see eo3_simple.h).
+ */
+
+/**
+ * @example eo3_inherit.hpp
+ * Generated EO C++ Class. Binds @em EO3_INHERIT_CLASS (@see eo3_inherit.h).
+ */
+
+/**
+ * @example eo3_inherit_interface.hpp
+ * Generated EO C++ Class. Binds @em EO3_INHERIT_INTERFACE_CLASS (@see eo3_inherit_interface.h).
+ */
+
+/**
+ * @example eo3_interface.hpp
+ * Generated EO C++ Class. Binds @em EO3_SIMPLE_INTERFACE (@see eo3_interface.h).
+ */
+
+/**
+ * @example eo3_mixin_mixin.hpp
+ * Generated EO C++ Class. Binds @em EO3_MIXIN_MIXIN (@see eo3_mixin_mixin.h).
+ */
+
+/**
+ * @example eo3_mixin_inherit.hpp
+ * Generated EO C++ Class. Binds @em EO3_MIXIN_INHERIT_CLASS (@see eo3_mixin_inherit.h).
+ */
+
+/**
+ * @example eo3_container.hpp
+ * Generated EO C++ Class. Binds @em EO3_CONTAINER_CLASS (@see eo3_container.h).
+ */

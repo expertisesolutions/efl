@@ -1,0 +1,32 @@
+/**
+ * @page efl_cxx_eo EO++ API
+ *
+ * @date 2013
+ *
+ * 
+ * @section efl_cxx_eo_api EO++ Programming Interface
+ *
+ * @b EO++ is a C++ binding for EFL <em>EO Subsystem</em>. It
+ * provides the user with an interface to manage <em>EO Classes</em>,
+ * <em>Objects</em>, <em>Events</em>, etc. All elements of @b EO++
+ * lives within namespace @c efl::eo::*.
+ * 
+ * @subsection efl_cxx_eo_api_public Public API
+ *
+ * @li @ref efl::eo::eo_init
+ * @li @ref efl::eo::base
+ * @li @ref efl::eo::wref
+ * @li @ref efl::eo::callback_token
+ * @li @ref efl::eo::inherit
+ * 
+ * @subsection efl_cxx_eo_api_detail EO++ Internals
+ * 
+ * @li @ref efl::eo::detail::call_constructor()
+ * @li @ref efl::eo::detail::operation_description_size
+ * @li @ref efl::eo::detail::predicate
+ * @li @ref efl::eo::detail::call_constructor_aux
+ * @li @ref efl::eo::detail::inherit_constructor_impl()
+ * @li @ref efl::eo::detail::inherit_constructor()
+ * @li @ref efl::eo::detail::create_class()
+ *
+ */

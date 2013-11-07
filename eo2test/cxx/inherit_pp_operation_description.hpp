@@ -1,4 +1,3 @@
-// -*- mode: C++ -*-
 
 #define I BOOST_PP_ITERATION()
 

@@ -13,7 +13,7 @@ EO_OBJS  = eo_ptr_indirection.o eo.o eo_class_class.o eo2_class_class.o eo_base_
 BENCH_SRC  = eo2_simple.c eo3_simple.c eo_simple.c eo2_inherit.c eo3_inherit.c eo_inherit.c eo2_composite.c eo_composite.c eo2-bench.c
 BENCH_OBJS  = eo2_simple.o eo3_simple.o eo_simple.o eo2_inherit.o eo3_inherit.o eo_inherit.o eo2_composite.o eo_composite.o eo2-bench.o
 
-all: eo2-bench test simple1 simple2 simple3 simple4 simple5 simple6 container1 mixin1 mixin2
+all: eo2-bench test simple1 simple2 simple3 simple4 simple5 simple6 simple7 container1 mixin1 mixin2
 
 eo.o: ../src/lib/eo/eo.c ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 	$(CC) $(CFLAGS) -fPIC -c $(INCLUDE) $(CONFIG) $(EINA_CFLAGS) $< -o $@
@@ -75,6 +75,9 @@ simple5: libeo2.so cxx/samples/simple5.o cxx/generated/eo3_interface.hpp cxx/gen
 simple6: libeo2.so cxx/samples/simple6.o cxx/generated/eo3_inherit.hpp cxx/generated/eo3_simple.hpp cxx/generated/eo3_interface.hpp
 	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/samples/simple6.o eo3_simple.o eo3_interface.o $(EINA_LIBS) -L. -leo2  -o $@
 
+simple7: libeo2.so cxx/samples/simple7.o cxx/generated/eo3_simple.hpp
+	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) cxx/samples/simple7.o eo3_simple.o $(EINA_LIBS) -L. -leo2  -o $@
+
 container1: libeo2.so cxx/samples/container1.o eo3_container.o eo3_simple.o #cxx/generated/eo3_simple.hpp
 	$(CXX) $(CFLAGS) $(INCLUDE) $(CONFIG) $^ $(EINA_LIBS) -L. -leo2  -o $@
 
@@ -103,4 +106,10 @@ test: libeo2.so simplesignal.o ../src/lib/eo/Eo.h ../src/lib/eo/eo_private.h
 	g++ -O2 -std=c++0x $(INCLUDE) $(CONFIG) simplesignal.o $(EINA_LIBS) -L. -leo2 -o $@
 
 clean:
-	rm -f *~ *.o eo2-bench eo2-bench-pg test libeo2.so gmon.out simple1 simple2 simple3 simple4 simple5 simple6 container1 mixin1 mixin2 cxx/samples/*.o *.i *.s *.ii
+	rm -f *~ *.o eo2-bench eo2-bench-pg test libeo2.so gmon.out simple1 simple2 simple3 simple4 simple5 simple6 simple7 container1 mixin1 mixin2 cxx/samples/*.o *.i *.s *.ii
+	rm -rf cxx/doc/html cxx/doc/latex cxx/doc/man
+
+doc:
+	echo "entering cxx/doc/"
+	$(MAKE) $(AM_MAKEFLAGS) -C cxx/doc all
+

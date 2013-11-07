@@ -24,6 +24,11 @@ struct eo3_mixin_mixin : efl::eo::base
 {
   explicit eo3_mixin_mixin(Eo* eo) : efl::eo::base(eo) {}
 
+  static Eo_Class const* _eo_class()
+  {
+    return EO3_GET_CLASS(EO3_MIXIN_MIXIN);
+  }
+
   void mixin_ab_sum_get(int *sum)
   {
     eo2_do(_eo_ptr(), ::mixin_ab_sum_get(sum));

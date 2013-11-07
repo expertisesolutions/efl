@@ -1,0 +1,126 @@
+/**
+ * @page efl_cxx_samples All Examples 
+ *
+ * @date 2013
+ *
+ * @tableofcontent
+ * 
+ * @section efl_cxx_samples_eo__fake EO++ Examples
+ * @copydetails efl_cxx_samples_eo
+ */
+
+/**
+ * @page efl_cxx_samples_eo EO++ Examples
+ * @details
+ * 
+ * @li @ref simple1_cpp
+ * @li @ref simple2_cpp
+ * @li @ref simple3_cpp
+ * @li @ref simple4_cpp
+ * @li @ref simple5_cpp
+ * @li @ref simple6_cpp
+ * @li @ref simple7_cpp
+ * @li @ref container1_cpp
+ * @li @ref mixin1_cpp
+ * @li @ref mixin2_cpp
+ */
+
+/**
+ * @page simple1_cpp
+ * @include simple1.cpp
+ */ 
+
+/**
+ * @page simple2_cpp
+ * @include simple2.cpp
+ */ 
+
+/**
+ * @page simple3_cpp
+ * @include simple3.cpp
+ */ 
+
+/**
+ * @page simple4_cpp
+ * @include simple4.cpp
+ */ 
+
+/**
+ * @page simple5_cpp
+ * @include simple5.cpp
+ */ 
+
+/**
+ * @page simple6_cpp
+ * @include simple6.cpp
+ */ 
+
+/**
+ * @page simple7_cpp
+ * @include simple7.cpp
+ */ 
+
+/**
+ * @page container1_cpp
+ * @include container1.cpp
+ */ 
+
+/**
+ * @page mixin1_cpp
+ * @include mixin1.cpp
+ */ 
+
+/**
+ * @page mixin2_cpp
+ * @include mixin2.cpp
+ */ 
+
+/**
+ * @example simple1.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple2.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple3.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple4.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple5.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple6.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example simple7.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example container1.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example mixin1.cpp
+ * This example... XXX TODO document.
+ */
+
+/**
+ * @example mixin2.cpp
+ * This example... XXX TODO document.
+ */
