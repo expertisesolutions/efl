@@ -12,7 +12,7 @@
 
 #include "eo_type_def.hh"
 
-namespace efl { namespace ecxx {
+namespace efl { namespace ecxx { namespace grammar {
 
 namespace karma = boost::spirit::karma;
 namespace phoenix = boost::phoenix;
@@ -21,18 +21,40 @@ template <typename OutputIterator>
 struct eo_class_generator
   : karma::grammar<OutputIterator, eo_class()>
 {
-  eo_class_generator() : eo_class_generator::base_type(ini)
+  eo_class_generator() : eo_class_generator::base_type(start)
   {
     using namespace boost::spirit;
     using namespace boost::spirit::ascii;
     using phoenix::at_c;
 
-    ini = "" << string[_1 = at_c<1>(_val)];
+    //eo_class_definition_generator<OutputIterator> 
   }
 
-  karma::rule<OutputIterator, eo_class()> ini;
+  karma::rule<OutputIterator, eo_class()> start;
 };
 
-} } 
+template <typename OutputIterator>
+struct eo_class_definition_generator
+{
+};
+
+template <typename OutputIterator>
+struct eo_class_constructor_generator
+{
+};
+
+template <typename OutputIterator>
+struct eo_class_destructor_generator
+{
+};
+
+template <typename OutputIterator>
+struct eo_class_funcs_generator
+{
+};
+
+
+  
+} } } 
 
 #endif // EFL_ECXX_EO_GENERATOR_HH

@@ -1,25 +1,17 @@
 #include <string>
+#include <vector>
 
-#include <boost/variant.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 
-namespace efl { namespace ecxx { 
+namespace efl { namespace ecxx {
 
 struct eo_constructor;
-struct eo_destructor;
 struct eo_function;
-struct eo_function_override;
 struct eo_event;
 
-typedef boost::variant<
-  eo_constructor,
-  eo_destructor,
-  eo_function,
-  eo_function_override,
-  eo_event>
-eo_class_member;
-
-typedef std::vector<eo_class_member> eo_class_members;
+// Note: There's no need to generate code for constructor_overrides,
+// destructors and function_overrides. EO (C subsystem) already
+// provide the means to enable each of them.
 
 struct eo_class
 {
@@ -29,7 +21,18 @@ struct eo_class
   };
   eo_class_type type;
   std::string name;
-  eo_class_members members;
+  std::string parent;
+  std::vector<std::string> extensions;
+
+  std::vector<eo_constructor> constructors;
+  std::vector<eo_function> functions;
+  std::vector<eo_event> events;
+};
+
+struct eo_constructor 
+{
+  std::string name;
+  std::vector<std::string> params;
 };
 
 struct eo_function
@@ -40,24 +43,42 @@ struct eo_function
   };
   eo_function_type type;
   std::string name;
+  std::string impl;
+  std::string ret;
+  std::vector<std::string> params;
 };
 
-struct eo_constructor {};
-struct eo_destructor {};
-struct eo_function_override {};
-struct eo_event {};
+struct eo_event
+{
+  std::string name;
+  bool is_hot;
+  std::vector<std::string> params;
+};
 
 } } 
  
-BOOST_FUSION_ADAPT_STRUCT(::efl::ecxx::eo_class,
-  (::efl::ecxx::eo_class::eo_class_type, type)
-  (std::string, name)
-  (::efl::ecxx::eo_class_members, members));
+BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_class,
+  ( ::efl::ecxx::eo_class::eo_class_type, type )
+  ( std::string, name )
+  ( std::string, parent )
+  ( std::vector<std::string>, extensions )
+  ( std::vector<efl::ecxx::eo_constructor>, constructors )
+  ( std::vector<efl::ecxx::eo_function>, functions )
+  ( std::vector<efl::ecxx::eo_event>, events) );
 
-BOOST_FUSION_ADAPT_STRUCT(::efl::ecxx::eo_function,
-  (::efl::ecxx::eo_function::eo_function_type, type)
-  (std::string, name));
+BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_constructor,
+  ( std::string, name )
+  ( std::vector<std::string>, params) );
 
+BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_function,
+  ( ::efl::ecxx::eo_function::eo_function_type, type )
+  ( std::string, name )
+  ( std::string, impl )
+  ( std::string, ret )
+  ( std::vector<std::string>, params) );
 
-
+BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_event,
+  ( std::string, name )
+  ( bool, is_hot )
+  ( std::vector<std::string>, params) );
 
