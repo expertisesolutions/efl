@@ -44,6 +44,7 @@ include Makefile_Ecore_IMF.am
 include Makefile_Ecore_IMF_Evas.am
 include Makefile_Ecore_Evas.am
 include Makefile_Ecore_Audio.am
+include Makefile_Ecore_Avahi.am
 include Makefile_Embryo.am
 include Makefile_Eio.am
 include Makefile_Eldbus.am
@@ -75,6 +76,7 @@ examples/eo \
 examples/eet \
 examples/evas \
 examples/ecore \
+examples/ecore_avahi \
 examples/eio \
 examples/eldbus \
 examples/ephysics \
