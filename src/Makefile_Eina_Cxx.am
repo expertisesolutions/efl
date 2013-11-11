@@ -146,7 +146,8 @@ tests_eina_cxx_eina_cxx_suite_SOURCES = \
 tests/eina_cxx/eina_cxx_suite.cc \
 tests/eina_cxx/eina_cxx_test_inlist.cc \
 tests/eina_cxx/eina_cxx_test_iterator.cc \
-tests/eina_cxx/eina_cxx_test_ptrlist.cc 
+tests/eina_cxx/eina_cxx_test_ptrlist.cc \
+tests/eina_cxx/eina_cxx_test_stringshare.cc 
 
 tests_eina_cxx_eina_cxx_suite_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
 -I$(top_builddir)/src/lib/eina_cxx \

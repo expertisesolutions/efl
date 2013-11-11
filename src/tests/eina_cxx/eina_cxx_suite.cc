@@ -9,6 +9,7 @@
 void eina_test_inlist(TCase* tc);
 void eina_test_ptrlist(TCase* tc);
 void eina_test_iterator(TCase* tc);
+void eina_test_stringshare(TCase* tc);
 
 typedef struct _Eina_Test_Case Eina_Test_Case;
 struct _Eina_Test_Case
@@ -21,6 +22,7 @@ static const Eina_Test_Case etc[] = {
    { "Ptr_List", eina_test_ptrlist },
    { "Inlist", eina_test_inlist },
    { "Iterator", eina_test_iterator },
+   { "Stringshare", eina_test_stringshare },
    { NULL, NULL }
 };
 
@@ -92,7 +94,7 @@ int main(int argc, char* argv[])
            return 0;
         }
 
-   putenv("EFL_RUN_IN_TREE=1");
+   putenv(const_cast<char*>("EFL_RUN_IN_TREE=1"));
 
    s = eina_build_suite(argc - 1, (const char **)argv + 1);
    sr = srunner_create(s);
