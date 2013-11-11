@@ -3,6 +3,7 @@
 #include <boost/spirit/home/karma.hpp>
 #include <boost/assign/list_of.hpp>
 
+#include "common_types.hh"
 #include "eo_class_generator.hh"
 
 namespace { // XXX
@@ -23,12 +24,12 @@ efl::ecxx::eo_class get_next()
 int main(int argc, char **argv)
 {
   namespace karma = boost::spirit::karma;
-  
-  typedef std::back_insert_iterator<std::string> out_iter_type;
-  typedef efl::ecxx::grammar::eo_class_generator<out_iter_type> eo_class_generator;
+  typedef efl::ecxx::grammar::eo_class_generator
+    <efl::ecxx::output_iterator_type> eo_class_generator;
+
   std::string s;
-  out_iter_type o(s);
-  eo_class_generator g;
+  efl::ecxx::output_iterator_type o(s);
+  efl::ecxx::grammar::eo_class_generator<efl::ecxx::output_iterator_type> g;
   
   karma::generate(o, g, ::get_next());
   

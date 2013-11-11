@@ -1,6 +1,6 @@
 
-#ifndef EFL_ECXX_EO_GENERATOR_HH
-#define EFL_ECXX_EO_GENERATOR_HH
+#ifndef EFL_ECXX_EO_CLASS_GENERATOR_HH
+#define EFL_ECXX_EO_CLASS_GENERATOR_HH
 
 #include <boost/spirit/home/karma.hpp>
 
@@ -21,40 +21,14 @@ template <typename OutputIterator>
 struct eo_class_generator
   : karma::grammar<OutputIterator, eo_class()>
 {
-  eo_class_generator() : eo_class_generator::base_type(start)
-  {
-    using namespace boost::spirit;
-    using namespace boost::spirit::ascii;
-    using phoenix::at_c;
-
-    //eo_class_definition_generator<OutputIterator> 
-  }
-
+  eo_class_generator();
   karma::rule<OutputIterator, eo_class()> start;
+  karma::rule<OutputIterator> regular_class;
+  karma::rule<OutputIterator> regular_noninst_class;
+  karma::rule<OutputIterator> interface_class;
+  karma::rule<OutputIterator> mixin_class;
 };
 
-template <typename OutputIterator>
-struct eo_class_definition_generator
-{
-};
-
-template <typename OutputIterator>
-struct eo_class_constructor_generator
-{
-};
-
-template <typename OutputIterator>
-struct eo_class_destructor_generator
-{
-};
-
-template <typename OutputIterator>
-struct eo_class_funcs_generator
-{
-};
-
-
-  
 } } } 
 
-#endif // EFL_ECXX_EO_GENERATOR_HH
+#endif // EFL_ECXX_EO_CLASS_GENERATOR_HH
