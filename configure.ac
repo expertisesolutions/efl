@@ -843,6 +843,7 @@ EFL_LIB_END([Eina])
 
 #### Eina CXX
 BOOST_REQUIRE([1.34])
+BOOST_SYSTEM
 #### End of Eina CXX
 
 #### Eet

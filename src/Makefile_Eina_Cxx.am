@@ -147,7 +147,8 @@ tests/eina_cxx/eina_cxx_suite.cc \
 tests/eina_cxx/eina_cxx_test_inlist.cc \
 tests/eina_cxx/eina_cxx_test_iterator.cc \
 tests/eina_cxx/eina_cxx_test_ptrlist.cc \
-tests/eina_cxx/eina_cxx_test_stringshare.cc 
+tests/eina_cxx/eina_cxx_test_stringshare.cc \
+tests/eina_cxx/eina_cxx_test_error.cc 
 
 tests_eina_cxx_eina_cxx_suite_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
 -I$(top_builddir)/src/lib/eina_cxx \
@@ -158,7 +159,7 @@ tests_eina_cxx_eina_cxx_suite_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
 @CHECK_CFLAGS@ \
 @BOOST_CPPFLAGS@ \
 @EINA_CFLAGS@
-tests_eina_cxx_eina_cxx_suite_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@
+tests_eina_cxx_eina_cxx_suite_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@ @BOOST_SYSTEM_LIBS@ @BOOST_SYSTEM_LDFLAGS@
 tests_eina_cxx_eina_cxx_suite_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
 
 # tests_eina_cxx_compile_test_SOURCES = tests/eina/cxx_compile_test.cxx

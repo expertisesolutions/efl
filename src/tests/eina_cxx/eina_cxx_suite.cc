@@ -10,6 +10,7 @@ void eina_test_inlist(TCase* tc);
 void eina_test_ptrlist(TCase* tc);
 void eina_test_iterator(TCase* tc);
 void eina_test_stringshare(TCase* tc);
+void eina_test_error(TCase* tc);
 
 typedef struct _Eina_Test_Case Eina_Test_Case;
 struct _Eina_Test_Case
@@ -23,6 +24,7 @@ static const Eina_Test_Case etc[] = {
    { "Inlist", eina_test_inlist },
    { "Iterator", eina_test_iterator },
    { "Stringshare", eina_test_stringshare },
+   { "Error", eina_test_error },
    { NULL, NULL }
 };
 
