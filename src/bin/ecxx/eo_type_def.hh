@@ -1,3 +1,6 @@
+#ifndef EFL_ECXX_EO_TYPE_DEF_HH
+#define EFL_ECXX_EO_TYPE_DEF_HH
+
 #include <string>
 #include <vector>
 
@@ -9,10 +12,6 @@ struct eo_constructor;
 struct eo_function;
 struct eo_event;
 
-// Note: There's no need to generate code for constructor_overrides,
-// destructors and function_overrides. EO (C subsystem) already
-// provide the means to enable each of them.
-
 struct eo_class
 {
   enum eo_class_type
@@ -20,10 +19,11 @@ struct eo_class
     regular_, regular_noninst_, interface_, mixin_
   };
   eo_class_type type;
+
   std::string name;
+  std::string eo_name;
   std::string parent;
   std::vector<std::string> extensions;
-
   std::vector<eo_constructor> constructors;
   std::vector<eo_function> functions;
   std::vector<eo_event> events;
@@ -56,10 +56,18 @@ struct eo_event
 };
 
 } } 
+
+//
+// There's no need to describe 'constructor_overrides', 'destructors'
+// and 'function_overrides'. EO (C subsystem) already provide the
+// means to enable each of them -- also, the generated code does not
+// depend on any user parameter.
+//
  
 BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_class,
   ( ::efl::ecxx::eo_class::eo_class_type, type )
   ( std::string, name )
+  ( std::string, eo_name )
   ( std::string, parent )
   ( std::vector<std::string>, extensions )
   ( std::vector<efl::ecxx::eo_constructor>, constructors )
@@ -82,3 +90,4 @@ BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_event,
   ( bool, is_hot )
   ( std::vector<std::string>, params) );
 
+#endif // EFL_ECXX_EO_TYPE_DEF_HH
