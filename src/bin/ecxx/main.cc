@@ -16,15 +16,29 @@ efl::ecxx::eo_class get_next()
     { "multi_constructor", boost::assign::list_of("int")("float") };
   efl::ecxx::eo_constructor c3 =
     { "default_constructor", std::vector<std::string>() };
-  efl::ecxx::eo_function f =
-    { efl::ecxx::eo_function::regular_, "simple_inc", "_inc", "void", };
+  efl::ecxx::eo_function f1 =
+    { efl::ecxx::eo_function::regular_, "simple_inc", "_inc", "void"
+    , std::vector<std::string>() };
+  efl::ecxx::eo_function f2 =
+    { efl::ecxx::eo_function::regular_, "simple_set", "_set", "void"
+    , boost::assign::list_of("int") };
+  efl::ecxx::eo_function f3 =
+    { efl::ecxx::eo_function::regular_, "simple_get", "_get", "int"
+    , std::vector<std::string>() };
+  efl::ecxx::eo_function f4 =
+    { efl::ecxx::eo_function::class_, "simple_print", "_print", "void"
+    , std::vector<std::string>() };
+  efl::ecxx::eo_function f5 =
+    { efl::ecxx::eo_function::class_, "variate_print", "_print", "void"
+    , boost::assign::list_of("std::string")("int")("double") };
+
   efl::ecxx::eo_class k =
     {
       efl::ecxx::eo_class::regular_,
       "eo3_simple", "EO3_SIMPLE_CLASS",
       "efl::eo::base", std::vector<std::string>(),
       boost::assign::list_of(c1)(c2)(c3),
-      boost::assign::list_of(f),
+      boost::assign::list_of(f1)(f2)(f3)(f4)(f5),
       std::vector<efl::ecxx::eo_event>()
     };
   return k;
