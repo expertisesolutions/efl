@@ -35,8 +35,9 @@ efl::ecxx::eo_class get_next()
   efl::ecxx::eo_class k =
     {
       efl::ecxx::eo_class::regular_,
-      "eo3_simple", "EO3_SIMPLE_CLASS",
-      "efl::eo::base", std::vector<std::string>(),
+      "eo3_inherit_interface", "EO3_INHERIT_INTERFACE_CLASS",
+      "eo3_simple",
+      boost::assign::list_of("eo3_interface")("eo3_simple_interface"),
       boost::assign::list_of(c1)(c2)(c3),
       boost::assign::list_of(f1)(f2)(f3)(f4)(f5),
       std::vector<efl::ecxx::eo_event>()

@@ -22,29 +22,35 @@ namespace spirit = boost::spirit;
 
 template <typename OutputIterator>
 struct eo_class_generator
-  : karma::grammar<OutputIterator, eo_class()
-  , karma::locals<efl::ecxx::eo_class::eo_class_type, 
-      std::string, std::string, std::string> >
+  : karma::grammar
+  <
+    OutputIterator, eo_class(), 
+    karma::locals<eo_class::eo_class_type, std::string, std::string> 
+  >
 {
   eo_class_generator();
-  karma::rule<OutputIterator, eo_class()
-    , karma::locals<efl::ecxx::eo_class::eo_class_type, 
-        std::string, std::string, std::string > >
-  start;
+  karma::rule<OutputIterator, eo_class(), karma::locals
+    <eo_class::eo_class_type, std::string, std::string> > start;
   karma::rule<OutputIterator, void(unsigned int)> indent;
-  karma::rule<OutputIterator, std::vector<std::string>()> arguments_decl_loop;
+  karma::rule<OutputIterator, std::vector<std::string>()> arguments_declaration_loop;
   karma::rule<OutputIterator, std::vector<std::string>()> arguments_loop;
-  karma::rule<OutputIterator, std::string()> argument_decl;
+  karma::rule<OutputIterator, std::string()> argument_declaration;
   karma::rule<OutputIterator, std::string()> argument;
+  karma::rule<OutputIterator, eo_class()> class_inheritance;
+  karma::rule<OutputIterator, std::vector<std::string>(std::string)> class_extensions_loop;
+  karma::rule<OutputIterator, std::string(std::string)> class_extension;
   karma::rule<OutputIterator, eo_class()> constructor_eo;
   karma::rule<OutputIterator, 
-    std::vector<eo_constructor>(std::string, std::string)> 
-  constructors_loop;
+    std::vector<eo_constructor>(std::string, std::string)> constructors_loop;
   karma::rule<OutputIterator, eo_constructor(std::string, std::string)> constructor;
   karma::rule<OutputIterator, eo_class()> copy_constructor;
   karma::rule<OutputIterator, std::string()> destructor;
   karma::rule<OutputIterator, std::vector<eo_function>()> functions_loop;
   karma::rule<OutputIterator, eo_function(), karma::locals<std::string, bool> > function;
+  karma::rule<OutputIterator, std::string()> eo_class_getter_definition;
+  karma::rule<OutputIterator, 
+    std::vector<eo_constructor>(std::string)> eo_class_constructors_loop;
+  karma::rule<OutputIterator, eo_constructor(std::string)> eo_class_constructor;
 };
 
 } } } 
