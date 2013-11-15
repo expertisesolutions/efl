@@ -5,10 +5,11 @@
 
 #include "common_types.hh"
 #include "eo_class_generator.hh"
+#include "eo_class_detail_generator.hh"
 
-namespace { // XXX
+namespace {
 
-efl::ecxx::eo_class get_next()
+efl::ecxx::eo_class class1()
 {
   efl::ecxx::eo_constructor c1 =
     { "simple_constructor", boost::assign::list_of("int") };
@@ -29,10 +30,14 @@ efl::ecxx::eo_class get_next()
     { efl::ecxx::eo_function::class_, "simple_print", "_print", "void"
     , std::vector<std::string>() };
   efl::ecxx::eo_function f5 =
-    { efl::ecxx::eo_function::class_, "variate_print", "_print", "void"
+    { efl::ecxx::eo_function::class_, "some_other_func", "_other", "void"
     , boost::assign::list_of("std::string")("int")("double") };
+  efl::ecxx::eo_event e1 =
+    { "simple_set_event", boost::assign::list_of("int"), false };
+  efl::ecxx::eo_event e2 =
+    { "simple_print_event", std::vector<std::string>(), true };
 
-  efl::ecxx::eo_class k =
+  efl::ecxx::eo_class class1 =
     {
       efl::ecxx::eo_class::regular_,
       "eo3_inherit_interface", "EO3_INHERIT_INTERFACE_CLASS",
@@ -40,9 +45,9 @@ efl::ecxx::eo_class get_next()
       boost::assign::list_of("eo3_interface")("eo3_simple_interface"),
       boost::assign::list_of(c1)(c2)(c3),
       boost::assign::list_of(f1)(f2)(f3)(f4)(f5),
-      std::vector<efl::ecxx::eo_event>()
+      boost::assign::list_of(e1)(e2)
     };
-  return k;
+  return class1;
 }
 
 }
@@ -55,10 +60,11 @@ int main(int argc, char **argv)
 
   std::string s;
   efl::ecxx::output_iterator_type o(s);
-  efl::ecxx::grammar::eo_class_generator<efl::ecxx::output_iterator_type> g;
-  g.name("grammar::eo_class_generator");
+  efl::ecxx::grammar::eo_class_generator<efl::ecxx::output_iterator_type> g_class;
+  efl::ecxx::grammar::eo_class_detail_generator<efl::ecxx::output_iterator_type> g_detail;
 
-  karma::generate(o, g, ::get_next());
+  karma::generate(o, g_class, ::class1());
+  karma::generate(o, g_detail, ::class1());
 
   std::cout << s << std::endl;
 

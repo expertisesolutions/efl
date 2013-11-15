@@ -19,7 +19,6 @@ struct eo_class
     regular_, regular_noninst_, interface_, mixin_
   };
   eo_class_type type;
-
   std::string name;
   std::string eo_name;
   std::string parent;
@@ -51,19 +50,17 @@ struct eo_function
 struct eo_event
 {
   std::string name;
-  bool is_hot;
   std::vector<std::string> params;
+  bool is_hot;
 };
 
 } } 
 
-//
 // There's no need to describe 'constructor_overrides', 'destructors'
 // and 'function_overrides'. EO (C subsystem) already provide the
 // means to enable each of them -- also, the generated code does not
 // depend on any user parameter.
-//
- 
+
 BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_class,
   ( ::efl::ecxx::eo_class::eo_class_type, type )
   ( std::string, name )
@@ -87,7 +84,7 @@ BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_function,
 
 BOOST_FUSION_ADAPT_STRUCT( ::efl::ecxx::eo_event,
   ( std::string, name )
-  ( bool, is_hot )
-  ( std::vector<std::string>, params) );
+  ( std::vector<std::string>, params)
+  ( bool, is_hot ));
 
 #endif // EFL_ECXX_EO_TYPE_DEF_HH
