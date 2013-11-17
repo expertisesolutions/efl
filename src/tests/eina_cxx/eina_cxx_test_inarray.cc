@@ -42,41 +42,6 @@ START_TEST(eina_cxx_inarray_pop_back)
 }
 END_TEST
 
-// START_TEST(eina_cxx_inarray_push_front)
-// {
-//   efl::eina::eina_init eina_init;
-
-//   efl::eina::inarray<int> array;
-
-//   array.push_front(5);
-//   array.push_front(10);
-//   array.push_front(15);
-
-//   int result[] = {15, 10, 5};
-
-//   assert(array.size() == 3);
-//   assert(std::equal(array.begin(), array.end(), result));
-// }
-// END_TEST
-
-// START_TEST(eina_cxx_inarray_pop_front)
-// {
-//   efl::eina::eina_init eina_init;
-
-//   efl::eina::inarray<int> array;
-
-//   array.push_front(5);
-//   array.push_front(10);
-//   array.push_front(15);
-//   array.pop_front();
-
-//   int result[] = {10, 5};
-
-//   assert(array.size() == 2);
-//   assert(std::equal(array.begin(), array.end(), result));
-// }
-// END_TEST
-
 START_TEST(eina_cxx_inarray_insert)
 {
   efl::eina::eina_init eina_init;
