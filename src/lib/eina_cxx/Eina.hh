@@ -3,6 +3,7 @@
 
 #include <eina_iterator.hh>
 #include <eina_ptrlist.hh>
+#include <eina_inarray.hh>
 #include <eina_inlist.hh>
 #include <eina_stringshare.hh>
 #include <eina_error.hh>

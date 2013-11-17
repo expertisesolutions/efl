@@ -70,4 +70,5 @@ void
 eina_test_error(TCase *tc)
 {
   tcase_add_test(tc, eina_cxx_get_error);
+  tcase_add_test(tc, eina_cxx_throw_on_error);
 }
