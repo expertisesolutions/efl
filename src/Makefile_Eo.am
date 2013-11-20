@@ -4,7 +4,7 @@
 lib_LTLIBRARIES += lib/eo/libeo.la
 
 installed_eomainheadersdir = $(includedir)/eo-@VMAJ@
-dist_installed_eomainheaders_DATA = lib/eo/Eo.h
+dist_installed_eomainheaders_DATA = lib/eo/Eo.h lib/eo/Eo_preprocessor.h lib/eo/Eo_foreach.h lib/eo/Eo_foreach_inner.h
 
 lib_eo_libeo_la_SOURCES = \
 lib/eo/eo.c \
@@ -12,7 +12,11 @@ lib/eo/eo_ptr_indirection.c \
 lib/eo/eo_ptr_indirection.h \
 lib/eo/eo_class_class.c \
 lib/eo/eo_base_class.c \
-lib/eo/eo_private.h
+lib/eo/eo_private.h \
+lib/eo/eo2_base_class.c \
+lib/eo/eo2_class_class.c
+
+
 
 lib_eo_libeo_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl @EO_CFLAGS@
 lib_eo_libeo_la_LIBADD = @EO_LIBS@
