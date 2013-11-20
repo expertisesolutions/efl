@@ -61,8 +61,12 @@ struct stringshare
   {}
   stringshare& operator=(stringshare const& other)
   {
-    ::eina_stringshare_del(_string);
-    _string = ::eina_stringshare_ref(other._string);
+    ::eina_stringshare_refplace(&_string, other._string);
+    return *this;
+  }
+  stringshare& operator=(const char* c_string)
+  {
+    ::eina_stringshare_replace(&_string, c_string);
     return *this;
   }
   
@@ -161,7 +165,7 @@ struct is_contiguous_iterator<stringshare::const_iterator> : true_type {};
 
 inline bool operator==(stringshare const& lhs, stringshare const& rhs)
 {
-  return lhs.c_str() == rhs.c_str() || std::strcmp(lhs.c_str(), rhs.c_str()) == 0;
+  return lhs.c_str() == rhs.c_str();
 }
 
 inline bool operator!=(stringshare const& lhs, stringshare const& rhs)
@@ -171,7 +175,7 @@ inline bool operator!=(stringshare const& lhs, stringshare const& rhs)
 
 inline bool operator==(stringshare const& lhs, const char* rhs)
 {
-  return std::strcmp(lhs.c_str(), rhs) == 0;
+  return lhs.c_str() == rhs || std::strcmp(lhs.c_str(), rhs) == 0;
 }
 
 inline bool operator!=(stringshare const& lhs, const char* rhs)
