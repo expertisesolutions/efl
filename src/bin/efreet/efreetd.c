@@ -28,20 +28,20 @@ main(int argc, char *argv[])
 {
    char path[PATH_MAX];
    FILE *log;
+   int fd;
+   mode_t um;
 
    strcpy(path, "/tmp/efreetd_XXXXXX");
-   if (mkstemp(path) < 0)
+   um = umask(S_IRWXG|S_IRWXO);
+   fd = mkstemp(path);
+   umask(um);
+   if (fd < 0)
      {
         perror("mkstemp");
         return 1;
      }
-   if (chmod(path, 0700) < 0)
-     {
-        perror("chmod");
-        return 1;
-     }
 
-   log = fopen(path, "wb");
+   log = fdopen(fd, "wb");
    if (!log) return 1;
 
    if (!eina_init()) return 1;

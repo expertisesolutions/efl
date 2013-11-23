@@ -366,9 +366,6 @@ eina_file_real_close(Eina_File *file)
 {
    Eina_File_Map *map;
 
-   eina_hash_free(file->rmap);
-   eina_hash_free(file->map);
-
    EINA_LIST_FREE(file->dead_map, map)
      {
         UnmapViewOfFile(map->map);
@@ -380,8 +377,6 @@ eina_file_real_close(Eina_File *file)
 
    if (file->fm) CloseHandle(file->fm);
    if (file->handle) CloseHandle(file->handle);
-
-   free(file);
 }
 
 static void
@@ -807,7 +802,7 @@ eina_file_open(const char *path, Eina_Bool shared)
      {
         file->delete_me = EINA_TRUE;
         eina_hash_del(_eina_file_cache, file->filename, file);
-        eina_file_real_close(file);
+        eina_file_clean_close(file);
         file = NULL;
      }
 
@@ -837,6 +832,8 @@ eina_file_open(const char *path, Eina_Bool shared)
         n->shared = shared;
         eina_lock_new(&n->lock);
         eina_hash_direct_add(_eina_file_cache, n->filename, n);
+
+	EINA_MAGIC_SET(n, EINA_FILE_MAGIC);
      }
    else
      {
@@ -871,6 +868,12 @@ EAPI Eina_Iterator *eina_file_xattr_get(Eina_File *file EINA_UNUSED)
 EAPI Eina_Iterator *eina_file_xattr_value_get(Eina_File *file EINA_UNUSED)
 {
    return NULL;
+}
+
+EAPI void
+eina_file_map_populate(Eina_File *file EINA_UNUSED, Eina_File_Populate rule EINA_UNUSED, const void *map EINA_UNUSED,
+                       unsigned long int offset EINA_UNUSED, unsigned long int length EINA_UNUSED)
+{
 }
 
 EAPI void *

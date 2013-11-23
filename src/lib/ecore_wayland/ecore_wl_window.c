@@ -10,7 +10,7 @@ static void _ecore_wl_window_cb_configure(void *data, struct wl_shell_surface *s
 static void _ecore_wl_window_cb_popup_done(void *data, struct wl_shell_surface *shell_surface EINA_UNUSED);
 static void _ecore_wl_window_cb_surface_enter(void *data, struct wl_surface *surface, struct wl_output *output EINA_UNUSED);
 static void _ecore_wl_window_cb_surface_leave(void *data, struct wl_surface *surface, struct wl_output *output EINA_UNUSED);
-static void _ecore_wl_window_configure_send(Ecore_Wl_Window *win, int w, int h);
+static void _ecore_wl_window_configure_send(Ecore_Wl_Window *win, int w, int h, int edges);
 static char *_ecore_wl_window_id_str_get(unsigned int win_id);
 
 /* local variables */
@@ -86,6 +86,9 @@ ecore_wl_window_new(Ecore_Wl_Window *parent, int x, int y, int w, int h, int buf
    win->opaque.w = w;
    win->opaque.h = h;
 
+   win->title = NULL;
+   win->class_name = NULL;
+
    eina_hash_add(_windows, _ecore_wl_window_id_str_get(win->id), win);
    return win;
 }
@@ -101,7 +104,7 @@ ecore_wl_window_free(Ecore_Wl_Window *win)
 
    eina_hash_del(_windows, _ecore_wl_window_id_str_get(win->id), win);
 
-   wl_list_for_each(input, &_ecore_wl_disp->inputs, link)
+   EINA_INLIST_FOREACH(_ecore_wl_disp->inputs, input)
      {
         if ((input->pointer_focus) && (input->pointer_focus == win))
           input->pointer_focus = NULL;
@@ -109,8 +112,6 @@ ecore_wl_window_free(Ecore_Wl_Window *win)
           input->keyboard_focus = NULL;
      }
 
-   if (win->frame_callback) wl_callback_destroy(win->frame_callback);
-   win->frame_callback = NULL;
    if (win->anim_callback) wl_callback_destroy(win->anim_callback);
    win->anim_callback = NULL;
 
@@ -120,6 +121,9 @@ ecore_wl_window_free(Ecore_Wl_Window *win)
    win->shell_surface = NULL;
    if (win->surface) wl_surface_destroy(win->surface);
    win->surface = NULL;
+
+   if (win->title) eina_stringshare_del(win->title);
+   if (win->class_name) eina_stringshare_del(win->class_name);
 
    /* HMMM, why was this disabled ? */
    free(win);
@@ -131,6 +135,8 @@ ecore_wl_window_move(Ecore_Wl_Window *win, int x, int y)
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
 
    if (!win) return;
+
+   win->moving = EINA_TRUE;
 
    ecore_wl_window_update_location(win, x, y);
 
@@ -161,6 +167,7 @@ ecore_wl_window_resize(Ecore_Wl_Window *win, int w, int h, int location)
 
    if (!win) return;
 
+   win->resizing = EINA_TRUE;
    ecore_wl_window_update_size(win, w, h);
 
    if (win->shell_surface)
@@ -212,24 +219,11 @@ ecore_wl_window_buffer_attach(Ecore_Wl_Window *win, struct wl_buffer *buffer, in
    switch (win->buffer_type)
      {
       case ECORE_WL_WINDOW_BUFFER_TYPE_EGL_WINDOW:
-        win->server.w = win->allocation.w;
-        win->server.h = win->allocation.h;
         break;
       case ECORE_WL_WINDOW_BUFFER_TYPE_EGL_IMAGE:
       case ECORE_WL_WINDOW_BUFFER_TYPE_SHM:
         if (win->surface)
           {
-             if (win->edges & 4) //  resizing from the left
-               x = win->server.w - win->allocation.w;
-             else
-               x = 0;
-
-             if (win->edges & 1) // resizing from the top
-               y = win->server.h - win->allocation.h;
-             else
-               y = 0;
-
-             win->edges = 0;
              win->has_buffer = (buffer != NULL);
 
              /* if (buffer) */
@@ -237,9 +231,6 @@ ecore_wl_window_buffer_attach(Ecore_Wl_Window *win, struct wl_buffer *buffer, in
              wl_surface_damage(win->surface, 0, 0, 
                                win->allocation.w, win->allocation.h);
              wl_surface_commit(win->surface);
-
-             win->server.w = win->allocation.w;
-             win->server.h = win->allocation.h;
           }
         break;
       default:
@@ -252,7 +243,7 @@ ecore_wl_window_surface_create(Ecore_Wl_Window *win)
 {
    if (!win) return NULL;
    if (win->surface) return win->surface;
-   win->surface = wl_compositor_create_surface(_ecore_wl_disp->wl.compositor);
+   win->surface = wl_compositor_create_surface(_ecore_wl_compositor_get());
    win->surface_id = wl_proxy_get_id((struct wl_proxy *)win->surface);
    return win->surface;
 }
@@ -274,6 +265,12 @@ ecore_wl_window_show(Ecore_Wl_Window *win)
              win->shell_surface = 
                wl_shell_get_shell_surface(_ecore_wl_disp->wl.shell, 
                                           win->surface);
+             if (!win->shell_surface) return;
+
+             if (win->title)
+               wl_shell_surface_set_title(win->shell_surface, win->title);
+             if (win->class_name)
+               wl_shell_surface_set_class(win->shell_surface, win->class_name);
           }
 
         if (win->shell_surface)
@@ -357,9 +354,8 @@ ecore_wl_window_maximized_set(Ecore_Wl_Window *win, Eina_Bool maximized)
         if (win->shell_surface) 
           wl_shell_surface_set_toplevel(win->shell_surface);
         win->type = ECORE_WL_WINDOW_TYPE_TOPLEVEL;
-        _ecore_wl_window_configure_send(win, win->saved.w, win->saved.h);
+        _ecore_wl_window_configure_send(win, win->saved.w, win->saved.h, 0);
      }
-   win->edges = 0;
 }
 
 EAPI Eina_Bool
@@ -397,9 +393,8 @@ ecore_wl_window_fullscreen_set(Ecore_Wl_Window *win, Eina_Bool fullscreen)
         if (win->shell_surface)
           wl_shell_surface_set_toplevel(win->shell_surface);
         win->type = ECORE_WL_WINDOW_TYPE_TOPLEVEL;
-        _ecore_wl_window_configure_send(win, win->saved.w, win->saved.h);
+        _ecore_wl_window_configure_send(win, win->saved.w, win->saved.h, 0);
      }
-   win->edges = 0;
 }
 
 EAPI Eina_Bool
@@ -610,7 +605,7 @@ ecore_wl_window_input_region_set(Ecore_Wl_Window *win, int x, int y, int w, int 
              struct wl_region *region = NULL;
 
              region = 
-               wl_compositor_create_region(_ecore_wl_disp->wl.compositor);
+               wl_compositor_create_region(_ecore_wl_compositor_get());
              wl_region_add(region, x, y, w, h);
              wl_surface_set_input_region(win->surface, region);
              wl_region_destroy(region);
@@ -640,7 +635,7 @@ ecore_wl_window_opaque_region_set(Ecore_Wl_Window *win, int x, int y, int w, int
         struct wl_region *region = NULL;
 
         region = 
-          wl_compositor_create_region(_ecore_wl_disp->wl.compositor);
+          wl_compositor_create_region(_ecore_wl_compositor_get());
 
         switch (win->rotation)
           {
@@ -687,6 +682,64 @@ ecore_wl_window_rotation_get(Ecore_Wl_Window *win)
    return win->rotation;
 }
 
+/* @since 1.8 */
+EAPI int
+ecore_wl_window_id_get(Ecore_Wl_Window *win)
+{
+   LOGFN(__FILE__, __LINE__, __FUNCTION__);
+
+   if (!win) return 0;
+   return win->id;
+}
+
+/* @since 1.8 */
+EAPI int
+ecore_wl_window_surface_id_get(Ecore_Wl_Window *win)
+{
+   LOGFN(__FILE__, __LINE__, __FUNCTION__);
+
+   if (!win) return 0;
+   return win->surface_id;
+}
+
+/* @since 1.8 */
+EAPI void
+ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title)
+{
+   LOGFN(__FILE__, __LINE__, __FUNCTION__);
+
+   if (!win) return;
+   eina_stringshare_replace(&win->title, title);
+
+   if ((win->shell_surface) && (win->title))
+     wl_shell_surface_set_title(win->shell_surface, win->title);
+}
+
+/* @since 1.8 */
+EAPI void
+ecore_wl_window_class_name_set(Ecore_Wl_Window *win, const char *class_name)
+{
+   LOGFN(__FILE__, __LINE__, __FUNCTION__);
+
+   if (!win) return;
+   eina_stringshare_replace(&win->class_name, class_name);
+
+   if ((win->shell_surface) && (win->class_name))
+     wl_shell_surface_set_class(win->shell_surface, win->class_name);
+}
+
+/* @since 1.8 */
+/* Maybe we need an ecore_wl_window_pointer_get() too */
+EAPI Ecore_Wl_Input *
+ecore_wl_window_keyboard_get(Ecore_Wl_Window *win)
+{
+   LOGFN(__FILE__, __LINE__, __FUNCTION__);
+
+   if (!win) return 0;
+   return win->keyboard_device;
+}
+
+
 /* local functions */
 static void 
 _ecore_wl_window_cb_ping(void *data EINA_UNUSED, struct wl_shell_surface *shell_surface, unsigned int serial)
@@ -708,10 +761,7 @@ _ecore_wl_window_cb_configure(void *data, struct wl_shell_surface *shell_surface
 
    if ((win->allocation.w != w) || (win->allocation.h != h))
      {
-        if (win->type == ECORE_WL_WINDOW_TYPE_TOPLEVEL)
-          win->edges = edges;
-
-        _ecore_wl_window_configure_send(win, w, h);
+        _ecore_wl_window_configure_send(win, w, h, edges);
      }
 }
 
@@ -750,7 +800,7 @@ _ecore_wl_window_cb_surface_leave(void *data, struct wl_surface *surface, struct
 }
 
 static void 
-_ecore_wl_window_configure_send(Ecore_Wl_Window *win, int w, int h)
+_ecore_wl_window_configure_send(Ecore_Wl_Window *win, int w, int h, int edges)
 {
    Ecore_Wl_Event_Window_Configure *ev;
 
@@ -763,6 +813,7 @@ _ecore_wl_window_configure_send(Ecore_Wl_Window *win, int w, int h)
    ev->y = win->allocation.y;
    ev->w = w;
    ev->h = h;
+   ev->edges = edges;
    ecore_event_add(ECORE_WL_EVENT_WINDOW_CONFIGURE, ev, NULL, NULL);
 }
 

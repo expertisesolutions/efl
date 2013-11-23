@@ -231,6 +231,7 @@ TESTS += tests/eina/eina_suite
 tests_eina_eina_suite_SOURCES = \
 tests/eina/eina_suite.c \
 tests/eina/eina_suite.h \
+tests/eina/eina_test_abi.c \
 tests/eina/eina_test_fp.c \
 tests/eina/eina_test_stringshare.c \
 tests/eina/eina_test_ustringshare.c \
@@ -268,7 +269,8 @@ tests/eina/eina_test_simple_xml_parser.c \
 tests/eina/eina_test_value.c \
 tests/eina/eina_test_cow.c \
 tests/eina/eina_test_barrier.c \
-tests/eina/eina_test_tmpstr.c
+tests/eina/eina_test_tmpstr.c \
+tests/eina/eina_test_lock.c
 # tests/eina/eina_test_model.c
 
 tests_eina_eina_suite_CPPFLAGS = -I$(top_builddir)/src/lib/efl \

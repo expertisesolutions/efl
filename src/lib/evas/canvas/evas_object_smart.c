@@ -7,7 +7,8 @@ EAPI Eo_Op EVAS_OBJ_SMART_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EVAS_OBJ_SMART_CLASS
 
-#define MY_CLASS_NAME "Evas_Object_Smart"
+#define MY_CLASS_NAME "Evas_Smart"
+#define MY_CLASS_NAME_LEGACY "Evas_Object_Smart"
 
 extern Eina_Hash* signals_hash_table;
 
@@ -675,7 +676,7 @@ _constructor(Eo *eo_obj, void *class_data, va_list *list EINA_UNUSED)
    eo_do(eo_obj, eo_parent_get(&parent));
    evas_object_inject(eo_obj, obj, evas_object_evas_get(parent));
    eo_do(eo_obj,
-         evas_obj_type_set(MY_CLASS_NAME),
+         evas_obj_type_set(MY_CLASS_NAME_LEGACY),
          evas_obj_smart_add());
 }
 
@@ -889,8 +890,9 @@ evas_object_smart_callback_del_full(Evas_Object *eo_obj, const char *event, Evas
    MAGIC_CHECK(eo_obj, Evas_Object, MAGIC_OBJ);
    return NULL;
    MAGIC_CHECK_END();
-   o = eo_data_scope_get(eo_obj, MY_CLASS);
    if (!event) return NULL;
+   o = eo_data_scope_get(eo_obj, MY_CLASS);
+   if (!o) return NULL;
 
    const _Evas_Event_Description *event_desc = eina_hash_find(signals_hash_table, event);
    if (!event_desc) return NULL;
@@ -1070,7 +1072,7 @@ _smart_need_recalculate_set(Eo *eo_obj, void *_pd, va_list *list)
 
    if (o->recalculate_cycle > 254)
      {
-        ERR("Object %p is not stable during recalc loop", obj);
+        ERR("Object %p is not stable during recalc loop", eo_obj);
         return;
      }
    if (obj->layer->evas->in_smart_calc) o->recalculate_cycle++;
@@ -1221,13 +1223,15 @@ _smart_members_changed_check(Evas_Object *eo_obj, Evas_Object_Protected_Data *ob
 {
    Evas_Object_Protected_Data *o2;
 
-   if (!obj->changed) return EINA_FALSE;
-   if (!obj->smart.smart) return EINA_TRUE;
-
    if (!evas_object_is_visible(eo_obj, obj) &&
        !evas_object_was_visible(eo_obj, obj))
      return EINA_FALSE;
 
+   if (!obj->smart.smart)
+     {
+        if (obj->changed && !obj->clip.clipees) return EINA_TRUE;
+        return EINA_FALSE;
+     }
    if (_evas_render_has_map(eo_obj, obj))
      {
         if (((obj->changed_pchange) && (obj->changed_map)) ||
@@ -1246,7 +1250,12 @@ evas_object_smart_changed_get(Evas_Object *eo_obj)
    Evas_Object_Protected_Data *obj = eo_data_scope_get(eo_obj, EVAS_OBJ_CLASS);
    Evas_Object_Protected_Data *o2;
 
-   if (!obj->is_smart) return obj->changed;
+   if (!obj->is_smart)
+     {
+        if (obj->changed && !obj->clip.clipees) return EINA_TRUE;
+        else return EINA_FALSE;
+     }
+
    if (obj->changed_color) return EINA_TRUE;
 
    EINA_INLIST_FOREACH(evas_object_smart_members_get_direct(eo_obj), o2)
@@ -1814,7 +1823,7 @@ _class_constructor(Eo_Class *klass)
 
    _evas_smart_class_names_hash_table = eina_hash_string_small_new(NULL);
 
-   evas_smart_legacy_type_register(MY_CLASS_NAME, klass);
+   evas_smart_legacy_type_register(MY_CLASS_NAME_LEGACY, klass);
 }
 
 static void

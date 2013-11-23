@@ -55,7 +55,7 @@ typedef struct _Edje_Edit_Script_Error Edje_Edit_Script_Error;
  * @brief Functions to deal with edje internal object. Don't use in standard
  * situations. The use of any of the edje_edit_* functions can break your
  * theme ability, remember that the program must be separated from the interface!
- * 
+ *
  * This was intended ONLY for use in an actual edje editor program. Unless
  * you are writing one of these, do NOT use this API here.
  *
@@ -271,8 +271,10 @@ EAPI int edje_edit_group_min_w_get(Evas_Object *obj);
  *
  * @param obj Object being edited.
  * @param w New minimum width for the group.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_group_min_w_set(Evas_Object *obj, int w);
+EAPI Eina_Bool edje_edit_group_min_w_set(Evas_Object *obj, int w);
 
 /** Get the group minimum height.
  *
@@ -286,8 +288,10 @@ EAPI int edje_edit_group_min_h_get(Evas_Object *obj);
  *
  * @param obj Object being edited.
  * @param h New minimum height for the group.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_group_min_h_set(Evas_Object *obj, int h);
+EAPI Eina_Bool edje_edit_group_min_h_set(Evas_Object *obj, int h);
 
 /** Get the group maximum width.
  *
@@ -301,8 +305,10 @@ EAPI int edje_edit_group_max_w_get(Evas_Object *obj);
  *
  * @param obj Object being edited.
  * @param w New maximum width for the group.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_group_max_w_set(Evas_Object *obj, int w);
+EAPI Eina_Bool edje_edit_group_max_w_set(Evas_Object *obj, int w);
 
 /** Get the group maximum height.
  *
@@ -316,8 +322,10 @@ EAPI int edje_edit_group_max_h_get(Evas_Object *obj);
  *
  * @param obj Object being edited.
  * @param h New maximum height for the group.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_group_max_h_set(Evas_Object *obj, int h);
+EAPI Eina_Bool edje_edit_group_max_h_set(Evas_Object *obj, int h);
 
 
 //@}
@@ -572,8 +580,10 @@ EAPI Eina_Bool edje_edit_style_add(Evas_Object *obj, const char *style);
  *
  * @param obj Object being edited.
  * @param style Style to delete.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_style_del(Evas_Object *obj, const char *style);
+EAPI Eina_Bool edje_edit_style_del(Evas_Object *obj, const char *style);
 
 /** Get the list of all the tags name in the given text style.
  *
@@ -600,8 +610,10 @@ EAPI const char * edje_edit_style_tag_value_get(Evas_Object *obj, const char *st
  * @param style Style containing the tag to change.
  * @param tag Name of the tag to set the value for.
  * @param new_value Value for the tag.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_style_tag_value_set(Evas_Object *obj, const char *style, const char *tag, const char *new_value);
+EAPI Eina_Bool edje_edit_style_tag_value_set(Evas_Object *obj, const char *style, const char *tag, const char *new_value);
 
 /** Set the name of the given tag.
  *
@@ -609,8 +621,10 @@ EAPI void edje_edit_style_tag_value_set(Evas_Object *obj, const char *style, con
  * @param style Style containing the tag to rename.
  * @param tag Tag to rename.
  * @param new_name New name for the tag.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_style_tag_name_set(Evas_Object *obj, const char *style, const char *tag, const char *new_name);
+EAPI Eina_Bool edje_edit_style_tag_name_set(Evas_Object *obj, const char *style, const char *tag, const char *new_name);
 
 /** Add a new tag to the given text style.
  *
@@ -629,8 +643,10 @@ EAPI Eina_Bool edje_edit_style_tag_add(Evas_Object *obj, const char *style, cons
  * @param obj Object being edited.
  * @param style Style from where to remove the tag.
  * @param tag Tag to delete.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_style_tag_del(Evas_Object *obj, const char *style, const char *tag);
+EAPI Eina_Bool edje_edit_style_tag_del(Evas_Object *obj, const char *style, const char *tag);
 
 
 //@}
@@ -892,12 +908,17 @@ EAPI Eina_Bool edje_edit_part_source_set(Evas_Object *obj, const char *part, con
 EAPI Edje_Text_Effect edje_edit_part_effect_get(Evas_Object *obj, const char *part);
 
 /** Set the effect for a given part.
+ * Effects and shadow directions can be combined.
+ *
+ * For effect and shadow direction list please look at Edje Part Text ref page.
  *
  * @param obj Object being edited.
  * @param part Part to set the effect to. Only makes sense on type TEXT.
  * @param effect Effect to set for the part.
+ *
+ * @see Edje_Part_Text
  */
-EAPI void edje_edit_part_effect_set(Evas_Object *obj, const char *part, Edje_Text_Effect effect);
+EAPI Eina_Bool edje_edit_part_effect_set(Evas_Object *obj, const char *part, Edje_Text_Effect effect);
 
 /** Get the current selected state in part.
  *
@@ -925,7 +946,7 @@ EAPI Eina_Bool edje_edit_part_selected_state_set(Evas_Object *obj, const char *p
  * @param obj Object being edited.
  * @param part Part to get if the mouse events is accepted.
  *
- * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ * @return EINA_TRUE if part will accept mouse events, EINA_FALSE otherwise.
  */
 EAPI Eina_Bool edje_edit_part_mouse_events_get(Evas_Object *obj, const char *part);
 
@@ -934,15 +955,17 @@ EAPI Eina_Bool edje_edit_part_mouse_events_get(Evas_Object *obj, const char *par
  * @param obj Object being edited.
  * @param part The part to set if the mouse events is accepted.
  * @param mouse_events EINA_TRUE if part will accept mouse events, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_mouse_events_set(Evas_Object *obj, const char *part, Eina_Bool mouse_events);
+EAPI Eina_Bool edje_edit_part_mouse_events_set(Evas_Object *obj, const char *part, Eina_Bool mouse_events);
 
 /** Get repeat_events for part.
  *
  * @param obj Object being edited.
- * @param part Part to set if will pass all events to the other parts.
+ * @param part Part to get if it will pass all events to the other parts.
  *
- * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ * @return EINA_TRUE if the events received will propagate to other parts, EINA_FALSE otherwise
  */
 EAPI Eina_Bool edje_edit_part_repeat_events_get(Evas_Object *obj, const char *part);
 
@@ -951,8 +974,10 @@ EAPI Eina_Bool edje_edit_part_repeat_events_get(Evas_Object *obj, const char *pa
  * @param obj Object being edited.
  * @param part Part to set if will repeat all the received mouse events to other parts.
  * @param repeat_events EINA_TRUE if the events received will propagate to other parts, EINA_FALSE otherwise
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_repeat_events_set(Evas_Object *obj, const char *part, Eina_Bool repeat_events);
+EAPI Eina_Bool edje_edit_part_repeat_events_set(Evas_Object *obj, const char *part, Eina_Bool repeat_events);
 
 /** Get ignore_flags for part.
  *
@@ -968,8 +993,10 @@ EAPI Evas_Event_Flags edje_edit_part_ignore_flags_get(Evas_Object *obj, const ch
  * @param obj Object being edited.
  * @param part Part to set which event flags will be ignored.
  * @param ignore_flags The Event flags to be ignored by the part.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_ignore_flags_set(Evas_Object *obj, const char *part, Evas_Event_Flags ignore_flags);
+EAPI Eina_Bool edje_edit_part_ignore_flags_set(Evas_Object *obj, const char *part, Evas_Event_Flags ignore_flags);
 
 /** Set scale property for the part.
  *
@@ -979,8 +1006,10 @@ EAPI void edje_edit_part_ignore_flags_set(Evas_Object *obj, const char *part, Ev
  * @param obj Object being edited.
  * @param part Part to set scale for.
  * @param scale Scale value to set.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_scale_set(Evas_Object *obj, const char *part, Eina_Bool scale);
+EAPI Eina_Bool edje_edit_part_scale_set(Evas_Object *obj, const char *part, Eina_Bool scale);
 
 /** Get scale for the part.
  *
@@ -1005,8 +1034,10 @@ EAPI int edje_edit_part_drag_x_get(Evas_Object *obj, const char *part);
  * @param obj Object being edited.
  * @param part Part to set if should be dragged horizontally.
  * @param drag 1 (or -1) if the part should be dragged horizontally, 0 otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_x_set(Evas_Object *obj, const char *part, int drag);
+EAPI Eina_Bool edje_edit_part_drag_x_set(Evas_Object *obj, const char *part, int drag);
 
 /** Get vertical dragable state for part.
  *
@@ -1022,8 +1053,10 @@ EAPI int edje_edit_part_drag_y_get(Evas_Object *obj, const char *part);
  * @param obj Object being edited.
  * @param part Part to set if should be dragged vertically.
  * @param drag 1 (or -1) of the part shpuld be dragged vertically, 0 otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_y_set(Evas_Object *obj, const char *part, int drag);
+EAPI Eina_Bool edje_edit_part_drag_y_set(Evas_Object *obj, const char *part, int drag);
 
 /** Get horizontal dragable step for part.
  *
@@ -1039,8 +1072,10 @@ EAPI int edje_edit_part_drag_step_x_get(Evas_Object *obj, const char *part);
  * @param obj Object being edited.
  * @param part Part to set the drag horizontal step value.
  * @param step The step the will be dragged.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_step_x_set(Evas_Object *obj, const char *part, int step);
+EAPI Eina_Bool edje_edit_part_drag_step_x_set(Evas_Object *obj, const char *part, int step);
 
 /** Get vertical dragable step for part.
  *
@@ -1056,8 +1091,10 @@ EAPI int edje_edit_part_drag_step_y_get(Evas_Object *obj, const char *part);
  * @param obj Object being edited.
  * @param part Part to set the drag vertical step value.
  * @param step The step the will be dragged.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_step_y_set(Evas_Object *obj, const char *part, int step);
+EAPI Eina_Bool edje_edit_part_drag_step_y_set(Evas_Object *obj, const char *part, int step);
 
 /** Get horizontal dragable count for part.
  *
@@ -1071,8 +1108,10 @@ EAPI int edje_edit_part_drag_count_x_get(Evas_Object *obj, const char *part);
  * @param obj Object being edited.
  * @param part Part to set the drag horizontal count value.
  * @param count The count value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_count_x_set(Evas_Object *obj, const char *part, int count);
+EAPI Eina_Bool edje_edit_part_drag_count_x_set(Evas_Object *obj, const char *part, int count);
 
 /** Get vertical dragable count for part.
  *
@@ -1086,8 +1125,10 @@ EAPI int edje_edit_part_drag_count_y_get(Evas_Object *obj, const char *part);
  * @param obj Object being edited.
  * @param part Part to set the drag vertical count value.
  * @param count The count value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_count_y_set(Evas_Object *obj, const char *part, int count);
+EAPI Eina_Bool edje_edit_part_drag_count_y_set(Evas_Object *obj, const char *part, int count);
 
 /** Get the name of the part that is used as 'confine' for the given draggies.
  *
@@ -1103,8 +1144,10 @@ EAPI const char * edje_edit_part_drag_confine_get(Evas_Object *obj, const char *
  * @param obj Object being edited.
  * @param part Part to set the name that is used as 'confine' for the given draggies.
  * @param confine The name of the confine part or NULL to unset confine.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_confine_set(Evas_Object *obj, const char *part, const char *confine);
+EAPI Eina_Bool edje_edit_part_drag_confine_set(Evas_Object *obj, const char *part, const char *confine);
 
 /** Get the name of the part that is used as the receiver of the drag event.
  *
@@ -1120,8 +1163,29 @@ EAPI const char * edje_edit_part_drag_event_get(Evas_Object *obj, const char *pa
  * @param obj Object being edited.
  * @param part Part to set the name that will receive events from the given draggies.
  * @param event The name of the part that will receive events, or NULL to unset.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_part_drag_event_set(Evas_Object *obj, const char *part, const char *event);
+EAPI Eina_Bool edje_edit_part_drag_event_set(Evas_Object *obj, const char *part, const char *event);
+
+/** Get the name of the part that is used as 'threshold' for the given draggies.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get the name that is used as 'threshold' for the given draggies.
+ *
+ * @return The name of the threshold part or NULL (if unset).
+ */
+EAPI const char * edje_edit_part_drag_threshold_get(Evas_Object *obj, const char *part);
+
+/** Set the name of the part that is used as 'threshold' for the given draggies.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set the name that is used as 'threshold' for the given draggies.
+ * @param confine The name of the threshold part or NULL to unset confine.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_drag_threshold_set(Evas_Object *obj, const char *part, const char *threshold);
 
 
 //@}
@@ -1254,8 +1318,10 @@ EAPI double edje_edit_state_rel2_relative_y_get(Evas_Object *obj, const char *pa
  * @param state The name of the state to set 'rel1 relative X' (not including the state value).
  * @param value The state value.
  * @param x The new 'rel1 relative X' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel1_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_rel1_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the 'rel1 relative Y' value of state.
  *
@@ -1264,8 +1330,10 @@ EAPI void edje_edit_state_rel1_relative_x_set(Evas_Object *obj, const char *part
  * @param state The name of the state to set 'rel1 relative Y' (not including the state value).
  * @param value The state value.
  * @param y The new 'rel1 relative Y' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel1_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_rel1_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Set the 'rel2 relative X' value of state.
  *
@@ -1274,8 +1342,10 @@ EAPI void edje_edit_state_rel1_relative_y_set(Evas_Object *obj, const char *part
  * @param state The name of the state to set 'rel2 relative X' (not including the state value).
  * @param value The state value.
  * @param x The new 'rel2 relative X' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel2_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_rel2_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the 'rel2 relative Y' value of state.
  *
@@ -1284,8 +1354,10 @@ EAPI void edje_edit_state_rel2_relative_x_set(Evas_Object *obj, const char *part
  * @param state The name of the state to set 'rel2 relative Y' (not including the state value).
  * @param value The state value.
  * @param y The new 'rel2 relative Y' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel2_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_rel2_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Get the 'rel1 offset X' value of state.
  *
@@ -1338,8 +1410,10 @@ EAPI int edje_edit_state_rel2_offset_y_get(Evas_Object *obj, const char *part, c
  * @param state The name of the state to set 'rel1 offset X' (not including the state value).
  * @param value The state value.
  * @param x The new 'rel1 offset X' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel1_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_rel1_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the 'rel1 offset Y' value of state.
  *
@@ -1348,8 +1422,10 @@ EAPI void edje_edit_state_rel1_offset_x_set(Evas_Object *obj, const char *part, 
  * @param state The name of the state to set 'rel1 offset Y' (not including the state value).
  * @param value The state value.
  * @param y The new 'rel1 offset Y' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel1_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_rel1_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Set the 'rel2 offset X' value of state.
  *
@@ -1358,8 +1434,10 @@ EAPI void edje_edit_state_rel1_offset_y_set(Evas_Object *obj, const char *part, 
  * @param state The name of the state to set 'rel2 offset X' (not including the state value).
  * @param value The state value.
  * @param x The new 'rel2 offset X' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel2_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_rel2_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the 'rel2 offset Y' value of state.
  *
@@ -1368,8 +1446,10 @@ EAPI void edje_edit_state_rel2_offset_x_set(Evas_Object *obj, const char *part, 
  * @param state The name of the state to set 'rel2 offset Y' (not including the state value).
  * @param value The state value.
  * @param y The new 'rel2 offset Y' value to set'.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel2_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_rel2_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Get the part name rel1x is relative to.
  *
@@ -1423,9 +1503,9 @@ EAPI const char * edje_edit_state_rel2_to_y_get(Evas_Object *obj, const char *pa
  * @param value The state value.
  * @param rel_to The name of the part that is used as container/parent (NULL make the part relative to the whole interface).
  *
- * @return The part name rel1x is relative to or NULL if the part is relative to the whole interface.
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel1_to_x_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
+EAPI Eina_Bool edje_edit_state_rel1_to_x_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
 
 /** Set the part rel1y is relative to.
  *
@@ -1435,9 +1515,9 @@ EAPI void edje_edit_state_rel1_to_x_set(Evas_Object *obj, const char *part, cons
  * @param value The state value.
  * @param rel_to The name of the part that is used as container/parent (NULL make the part relative to the whole interface).
  *
- * @return The part name rel1y is relative to or NULL if the part is relative to the whole interface.
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel1_to_y_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
+EAPI Eina_Bool edje_edit_state_rel1_to_y_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
 
 /** Set the part rel2x is relative to.
  *
@@ -1447,9 +1527,9 @@ EAPI void edje_edit_state_rel1_to_y_set(Evas_Object *obj, const char *part, cons
  * @param value The state value.
  * @param rel_to The name of the part that is used as container/parent (NULL make the part relative to the whole interface).
  *
- * @return The part name rel2x is relative to or NULL if the part is relative to the whole interface.
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel2_to_x_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
+EAPI Eina_Bool edje_edit_state_rel2_to_x_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
 
 /** Set the part rel2y is relative to.
  *
@@ -1459,9 +1539,9 @@ EAPI void edje_edit_state_rel2_to_x_set(Evas_Object *obj, const char *part, cons
  * @param value The state value.
  * @param rel_to The name of the part that is used as container/parent (NULL make the part relative to the whole interface).
  *
- * @return The part name rel2y is relative to or NULL if the part is relative to the whole interface.
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_rel2_to_y_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
+EAPI Eina_Bool edje_edit_state_rel2_to_y_set(Evas_Object *obj, const char *part, const char *state, double value, const char *rel_to);
 
 /** Get the color of a part state.
  *
@@ -1512,8 +1592,10 @@ EAPI void edje_edit_state_color3_get(Evas_Object *obj, const char *part, const c
  * @param g The green value of the color.
  * @param b The blue value of the color.
  * @param a The alpha value of the color.
+ *
+ * @return EINA_TRUE If successfull, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_color_set(Evas_Object *obj, const char *part, const char *state, double value, int r, int g, int b, int a);
+EAPI Eina_Bool edje_edit_state_color_set(Evas_Object *obj, const char *part, const char *state, double value, int r, int g, int b, int a);
 
 /** Set the color2 of a part state.
  *
@@ -1525,8 +1607,10 @@ EAPI void edje_edit_state_color_set(Evas_Object *obj, const char *part, const ch
  * @param g The green value of the color.
  * @param b The blue value of the color.
  * @param a The alpha value of the color.
+ *
+ * @return EINA_TRUE If successfull, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_color2_set(Evas_Object *obj, const char *part, const char *state, double value, int r, int g, int b, int a);
+EAPI Eina_Bool edje_edit_state_color2_set(Evas_Object *obj, const char *part, const char *state, double value, int r, int g, int b, int a);
 
 /** Set the color3 of a part state.
  *
@@ -1538,8 +1622,10 @@ EAPI void edje_edit_state_color2_set(Evas_Object *obj, const char *part, const c
  * @param g The green value of the color.
  * @param b The blue value of the color.
  * @param a The alpha value of the color.
+ *
+ * @return EINA_TRUE If successfull, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_color3_set(Evas_Object *obj, const char *part, const char *state, double value, int r, int g, int b, int a);
+EAPI Eina_Bool edje_edit_state_color3_set(Evas_Object *obj, const char *part, const char *state, double value, int r, int g, int b, int a);
 
 /** Get the horizontal align value of a part state.
  *
@@ -1570,8 +1656,10 @@ EAPI double edje_edit_state_align_y_get(Evas_Object *obj, const char *part, cons
  * @param state The name of the state to get horizontal align (not including the state value).
  * @param value The state value.
  * @param align The new vertical align value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_align_x_set(Evas_Object *obj, const char *part, const char *state, double value,  double align);
+EAPI Eina_Bool edje_edit_state_align_x_set(Evas_Object *obj, const char *part, const char *state, double value,  double align);
 
 /** Set the vertical align value of a part state.
  *
@@ -1580,8 +1668,10 @@ EAPI void edje_edit_state_align_x_set(Evas_Object *obj, const char *part, const 
  * @param state The name of the state to get vertical align (not including the state value).
  * @param value The state value.
  * @param align The new vertical align value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_align_y_set(Evas_Object *obj, const char *part, const char *state, double value,  double align);
+EAPI Eina_Bool edje_edit_state_align_y_set(Evas_Object *obj, const char *part, const char *state, double value,  double align);
 
 /** Get the minimum width value of a part state.
  *
@@ -1595,14 +1685,17 @@ EAPI void edje_edit_state_align_y_set(Evas_Object *obj, const char *part, const 
 EAPI int edje_edit_state_min_w_get(Evas_Object *obj, const char *part, const char *state, double value);
 
 /** Set the minimum width value of a part state.
+ * The minimum width should be greater than 0.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set minimum width (not including the state value).
  * @param value The state value.
  * @param min_w Minimum width value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_min_w_set(Evas_Object *obj, const char *part, const char *state, double value, int min_w);
+EAPI Eina_Bool edje_edit_state_min_w_set(Evas_Object *obj, const char *part, const char *state, double value, int min_w);
 
 /** Get the minimum height value of a part state.
  *
@@ -1616,14 +1709,17 @@ EAPI void edje_edit_state_min_w_set(Evas_Object *obj, const char *part, const ch
 EAPI int edje_edit_state_min_h_get(Evas_Object *obj, const char *part, const char *state, double value);
 
 /** Set the minimum height value of a part state.
+ * The minimum height should be greater than 0.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set minimum height (not including the state value).
  * @param value The state value.
  * @param min_h Minimum height value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_min_h_set(Evas_Object *obj, const char *part, const char *state, double value, int min_h);
+EAPI Eina_Bool edje_edit_state_min_h_set(Evas_Object *obj, const char *part, const char *state, double value, int min_h);
 
 /** Get the maximum width value of a part state.
  *
@@ -1637,14 +1733,19 @@ EAPI void edje_edit_state_min_h_set(Evas_Object *obj, const char *part, const ch
 EAPI int edje_edit_state_max_w_get(Evas_Object *obj, const char *part, const char *state, double value);
 
 /** Set the maximum width value of a part state.
+ * The maximum width should be greater than -1.
+ * The value -1 means that state doesn't have any boundaries on width direction.
+ * (it can be any size that is bigger than it's min)
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set maximum width (not including the state value).
  * @param value The state value.
  * @param max_w Maximum width value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_max_w_set(Evas_Object *obj, const char *part, const char *state, double value, int max_w);
+EAPI Eina_Bool edje_edit_state_max_w_set(Evas_Object *obj, const char *part, const char *state, double value, int max_w);
 
 /** Get the maximum height value of a part state.
  *
@@ -1658,14 +1759,19 @@ EAPI void edje_edit_state_max_w_set(Evas_Object *obj, const char *part, const ch
 EAPI int edje_edit_state_max_h_get(Evas_Object *obj, const char *part, const char *state, double value);
 
 /** Set the maximum height value of a part state.
+ * The maximum height should be greater than -1.
+ * The value -1 means that state doesn't have any boundaries on height direction.
+ * (it can be any size that is bigger than it's min)
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set maximum height (not including the state value).
  * @param value The state value.
  * @param max_h Maximum height value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_max_h_set(Evas_Object *obj, const char *part, const char *state, double value, int max_h);
+EAPI Eina_Bool edje_edit_state_max_h_set(Evas_Object *obj, const char *part, const char *state, double value, int max_h);
 
 /** Get the minimum aspect value of a part state.
  *
@@ -1696,8 +1802,10 @@ EAPI double edje_edit_state_aspect_max_get(Evas_Object *obj, const char *part, c
  * @param state The name of the state to set minimum aspect (not including the state value).
  * @param value The state value.
  * @param aspect Minimum aspect value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_aspect_min_set(Evas_Object *obj, const char *part, const char *state, double value, double aspect);
+EAPI Eina_Bool edje_edit_state_aspect_min_set(Evas_Object *obj, const char *part, const char *state, double value, double aspect);
 
 /** Set the maximum aspect value of a part state.
  *
@@ -1706,8 +1814,10 @@ EAPI void edje_edit_state_aspect_min_set(Evas_Object *obj, const char *part, con
  * @param state The name of the state to set maximum aspect (not including the state value).
  * @param value The state value.
  * @param aspect Maximum aspect value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_aspect_max_set(Evas_Object *obj, const char *part, const char *state, double value, double aspect);
+EAPI Eina_Bool edje_edit_state_aspect_max_set(Evas_Object *obj, const char *part, const char *state, double value, double aspect);
 
 /** Get the aspect preference of a part state.
  *
@@ -1729,8 +1839,10 @@ EAPI unsigned char edje_edit_state_aspect_pref_get(Evas_Object *obj, const char 
  * @param value The state value.
  * @param pref The aspect preference to set (0 = None, 1 = Vertical, 2
  *             = Horizontal, 3 = Both)
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_aspect_pref_set(Evas_Object *obj, const char *part, const char *state, double value, unsigned char pref);
+EAPI Eina_Bool edje_edit_state_aspect_pref_set(Evas_Object *obj, const char *part, const char *state, double value, unsigned char pref);
 
 /** Get the fill horizontal origin relative value of a part state.
  *
@@ -1783,8 +1895,10 @@ EAPI int edje_edit_state_fill_origin_offset_y_get(Evas_Object *obj, const char *
  * @param state The name of the state to set fill horizontal origin relative to area (not including the state value).
  * @param value The state value.
  * @param x The fill horizontal origin value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_origin_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_fill_origin_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the fill horizontal origin relative value of a part state.
  *
@@ -1793,8 +1907,10 @@ EAPI void edje_edit_state_fill_origin_relative_x_set(Evas_Object *obj, const cha
  * @param state The name of the state to set fill vertical origin relative to area (not including the state value).
  * @param value The state value.
  * @param y The fill vertical origin value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_origin_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_fill_origin_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Set the fill horizontal origin offset value of a part state.
  *
@@ -1803,8 +1919,10 @@ EAPI void edje_edit_state_fill_origin_relative_y_set(Evas_Object *obj, const cha
  * @param state The name of the state to set fill horizontal origin offset relative to area (not including the state value).
  * @param value The state value.
  * @param x The fill horizontal origin offset value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_origin_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_fill_origin_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the fill vertical origin offset value of a part state.
  *
@@ -1813,8 +1931,10 @@ EAPI void edje_edit_state_fill_origin_offset_x_set(Evas_Object *obj, const char 
  * @param state The name of the state to set fill vertical origin offset relative to area (not including the state value).
  * @param value The state value.
  * @param y The fill vertical origin offset value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_origin_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_fill_origin_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Get the fill horizontal size relative value of a part state.
  *
@@ -1870,8 +1990,10 @@ EAPI int edje_edit_state_fill_size_offset_y_get(Evas_Object *obj, const char *pa
  * relative value (not including the state value).
  * @param value The state value.
  * @param x The horizontal size relative value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_size_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_fill_size_relative_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the fill vertical size relative value of a part state.
  *
@@ -1881,8 +2003,10 @@ EAPI void edje_edit_state_fill_size_relative_x_set(Evas_Object *obj, const char 
  * relative value (not including the state value).
  * @param value The state value.
  * @param x The vertical size relative value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_size_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_fill_size_relative_y_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the fill horizontal size offset value of a part state.
  *
@@ -1892,8 +2016,10 @@ EAPI void edje_edit_state_fill_size_relative_y_set(Evas_Object *obj, const char 
  * offset relative value (not including the state value).
  * @param value The state value.
  * @param x The horizontal size offset value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_size_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
+EAPI Eina_Bool edje_edit_state_fill_size_offset_x_set(Evas_Object *obj, const char *part, const char *state, double value, double x);
 
 /** Set the fill vertical size offset value of a part state.
  *
@@ -1903,8 +2029,10 @@ EAPI void edje_edit_state_fill_size_offset_x_set(Evas_Object *obj, const char *p
  * relative value (not including the state value).
  * @param value The state value.
  * @param y The vertical size offset value.
+ *
+ * @return EINA_TRUE if the parameter was found, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_fill_size_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
+EAPI Eina_Bool edje_edit_state_fill_size_offset_y_set(Evas_Object *obj, const char *part, const char *state, double value, double y);
 
 /** Get the visibility of a part state.
  *
@@ -1924,8 +2052,10 @@ EAPI Eina_Bool edje_edit_state_visible_get(Evas_Object *obj, const char *part, c
  * @param state The name of the state to set visibility (not including the state value).
  * @param value The state value.
  * @param visible To set state visible (EINA_TRUE if the state is visible, EINA_FALSE otherwise)
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_visible_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool visible);
+EAPI Eina_Bool edje_edit_state_visible_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool visible);
 
 /** Get the color class of the given part state.
  *
@@ -1947,8 +2077,10 @@ EAPI const char *edje_edit_state_color_class_get(Evas_Object *obj, const char *p
  * @param state The name of the state to set color class (not including the state value).
  * @param value The state value.
  * @param color_class The color class to assign.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_state_color_class_set(Evas_Object *obj, const char *part, const char *state, double value, const char *color_class);
+EAPI Eina_Bool edje_edit_state_color_class_set(Evas_Object *obj, const char *part, const char *state, double value, const char *color_class);
 
 /** Get the list of parameters for an external part.
  *
@@ -2169,8 +2301,10 @@ EAPI const char * edje_edit_state_text_get(Evas_Object *obj, const char *part, c
  * @param state The name of the state to set text (not including the state value).
  * @param value The state value.
  * @param text The new text to assign.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_set(Evas_Object *obj, const char *part, const char *state, double value,const char *text);
+EAPI Eina_Bool edje_edit_state_text_set(Evas_Object *obj, const char *part, const char *state, double value,const char *text);
 
 /** Get font name for a given part state.
  *
@@ -2194,8 +2328,10 @@ EAPI const char * edje_edit_state_font_get(Evas_Object *obj, const char *part, c
  * @param state State in which the font is set.
  * @param value Value of the state.
  * @param font The font name to use.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_font_set(Evas_Object *obj, const char *part, const char *state, double value, const char *font);
+EAPI Eina_Bool edje_edit_state_font_set(Evas_Object *obj, const char *part, const char *state, double value, const char *font);
 
 /** Get the text size of a part state
  *
@@ -2215,12 +2351,15 @@ EAPI int edje_edit_state_text_size_get(Evas_Object *obj, const char *part, const
  * @param state The name of the state to set text size (not including the state value).
  * @param value The state value.
  * @param size The new font size to set (in pixel)
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_size_set(Evas_Object *obj, const char *part, const char *state, double value, int size);
+EAPI Eina_Bool edje_edit_state_text_size_set(Evas_Object *obj, const char *part, const char *state, double value, int size);
 
 /** Get the text horizontal align of a part state.
  *
  * The value range is from 0.0(right) to 1.0(left)
+ * If the value is between -1.0 and 0.0 then it uses align automatically.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
@@ -2247,14 +2386,17 @@ EAPI double edje_edit_state_text_align_y_get(Evas_Object *obj, const char *part,
 /** Set the text horizontal align of a part state.
  *
  * The value range is from 0.0(right) to 1.0(left)
+ * If the value is between -1.0 and 0.0 then it uses align automatically.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set the text horizontal align (not including the state value).
  * @param value The state value.
  * @param align The new text horizontal align value
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_align_x_set(Evas_Object *obj, const char *part, const char *state, double value, double align);
+EAPI Eina_Bool edje_edit_state_text_align_x_set(Evas_Object *obj, const char *part, const char *state, double value, double align);
 
 /** Set the text vertical align of a part state.
  *
@@ -2265,12 +2407,14 @@ EAPI void edje_edit_state_text_align_x_set(Evas_Object *obj, const char *part, c
  * @param state The name of the state to set the text vertical align (not including the state value).
  * @param value The state value.
  * @param align The new text vertical align value
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_align_y_set(Evas_Object *obj, const char *part, const char *state, double value, double align);
+EAPI Eina_Bool edje_edit_state_text_align_y_set(Evas_Object *obj, const char *part, const char *state, double value, double align);
 
 /** Get the text elipsis of a part state.
  *
- * The value range is from 0.0(right) to 1.0(left)
+ * The value range is from 0.0(right) to 1.0(left), and -1.0 (if disabled)
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
@@ -2284,14 +2428,17 @@ EAPI double edje_edit_state_text_elipsis_get(Evas_Object *obj, const char *part,
 /** Set the text vertical align of a part state.
  *
  * The value range is from 0.0(right) to 1.0(left)
+ * If the value is in range from -1.0 to 0.0 then ellipsis is disabled.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set the text elipses value (not including the state value).
  * @param value The state value.
  * @param balance The position where to cut the string
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_elipsis_set(Evas_Object *obj, const char *part, const char *state, double value, double balance);
+EAPI Eina_Bool edje_edit_state_text_elipsis_set(Evas_Object *obj, const char *part, const char *state, double value, double balance);
 
 /** Get if the text part fit it's container horizontally
  *
@@ -2311,8 +2458,10 @@ EAPI Eina_Bool edje_edit_state_text_fit_x_get(Evas_Object *obj, const char *part
  * @param state The name of the state to set the if the text part fit it's container horizontally (not including the state value).
  * @param value The state value.
  * @param fit EINA_TRUE to make the text fit it's container horizontally, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_fit_x_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool fit);
+EAPI Eina_Bool edje_edit_state_text_fit_x_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool fit);
 
 /** Get if the text part fit it's container vertically
  *
@@ -2332,8 +2481,10 @@ EAPI Eina_Bool edje_edit_state_text_fit_y_get(Evas_Object *obj, const char *part
  * @param state The name of the state to set the if the text part fit it's container vertically (not including the state value).
  * @param value The state value.
  * @param fit EINA_TRUE to make the text fit it's container vertically, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_fit_y_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool fit);
+EAPI Eina_Bool edje_edit_state_text_fit_y_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool fit);
 
 /** Get if the text part forces the minimum horizontal size of the container to be equal to the minimum horizontal size of the text part
  *
@@ -2386,8 +2537,10 @@ EAPI Eina_Bool edje_edit_state_text_max_y_get(Evas_Object *obj, const char *part
  * @param state The name of the state to set the the minimum horizontal size of the container to be equal (not including the state value).
  * @param value The state value.
  * @param v EINA_TRUE to make the text force it's forces container's minimum horizontal size, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_min_x_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
+EAPI Eina_Bool edje_edit_state_text_min_x_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
 
 /** Set if the text part forces the maximum horizontal size of the container to be equal to the maximum horizontal size of the text part
  *
@@ -2396,8 +2549,10 @@ EAPI void edje_edit_state_text_min_x_set(Evas_Object *obj, const char *part, con
  * @param state The name of the state to set the the maximum horizontal size of the container to be equal (not including the state value).
  * @param value The state value.
  * @param v EINA_TRUE to make the text force it's forces container's maximum horizontal size, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_max_x_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
+EAPI Eina_Bool edje_edit_state_text_max_x_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
 
 /** Set if the text part forces the minimum vertical size of the container to be equal to the minimum vertical size of the text part
  *
@@ -2406,8 +2561,10 @@ EAPI void edje_edit_state_text_max_x_set(Evas_Object *obj, const char *part, con
  * @param state The name of the state to set the the minimum vertical size of the container to be equal (not including the state value).
  * @param value The state value.
  * @param v EINA_TRUE to make the text force it's forces container's minimum vertical size, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_min_y_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
+EAPI Eina_Bool edje_edit_state_text_min_y_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
 
 /** Set if the text part forces the maximum vertical size of the container to be equal to the maximum vertical size of the text part
  *
@@ -2416,8 +2573,10 @@ EAPI void edje_edit_state_text_min_y_set(Evas_Object *obj, const char *part, con
  * @param state The name of the state to set the the maximum vertical size of the container to be equal (not including the state value).
  * @param value The state value.
  * @param v EINA_TRUE to make the text force it's forces container's maximum vertical size, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_text_max_y_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
+EAPI Eina_Bool edje_edit_state_text_max_y_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool v);
 
 /** Get the list of all the fonts in the given edje.
  *
@@ -2477,17 +2636,6 @@ EAPI const char *edje_edit_font_path_get(Evas_Object *obj, const char *alias);
  * @return The name of the font used in the given part state.
  */
 EAPI const char * edje_edit_state_font_get(Evas_Object *obj, const char *part, const char *state, double value);
-
-/** Set font name for a given part state.
- *
- * @param obj Object being edited.
- * @param part Part that contain state.
- * @param state The name of the state to set the name of the font that will be used (not including the state value).
- * @param value The state value.
- * @param font The name of the font to use in the given part state.
- */
-EAPI void edje_edit_state_font_set(Evas_Object *obj, const char *part, const char *state, double value, const char *font);
-
 
 //@}
 /******************************************************************************/
@@ -2570,8 +2718,10 @@ EAPI const char * edje_edit_state_image_get(Evas_Object *obj, const char *part, 
  * @param state The name of the state to set the image that will be used (not including the state value).
  * @param value The state value.
  * @param image The name of the image (must be an image contained in the edje file).
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_image_set(Evas_Object *obj, const char *part, const char *state, double value, const char *image);
+EAPI Eina_Bool edje_edit_state_image_set(Evas_Object *obj, const char *part, const char *state, double value, const char *image);
 
 /** Get image id for a given image name.
  *
@@ -2631,33 +2781,41 @@ EAPI void edje_edit_state_image_border_get(Evas_Object *obj, const char *part, c
  * @param r Right border value (or -1).
  * @param t Top border value (or -1).
  * @param b Bottom border value (or -1).
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_image_border_set(Evas_Object *obj, const char *part, const char *state, double value, int l, int r, int t, int b);
+EAPI Eina_Bool edje_edit_state_image_border_set(Evas_Object *obj, const char *part, const char *state, double value, int l, int r, int t, int b);
 
 /** Get if the image center should be draw.
  *
- * 1 means to draw the center, 0 to don't draw it.
+ * 1 or 2 means to draw the center, 0 to don't draw it.
+ * If 1 - then the center will apply alpha channel.
+ * If 2 (SOLID mode) - then the center of an image wont have alpha channel (Just black color).
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to get the image border fill (not including the state value).
  * @param value The state value.
  *
- * @return 1 if the center of the bordered image is draw, 0 otherwise.
+ * @return 2 if the center of the bordered image is draw without alpha, 1 dawing with alpha and 0 not drawing the center.
  */
 EAPI unsigned char edje_edit_state_image_border_fill_get(Evas_Object *obj, const char *part, const char *state, double value);
 
 /** Set if the image center should be draw.
  *
- * 1 means to draw the center, 0 to don't draw it.
+ * 1 or 2 means to draw the center, 0 to don't draw it.
+ * If 1 - then the center will apply alpha channel.
+ * If 2 (SOLID mode) - then the center of an image wont have alpha channel (Just black color).
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
  * @param state The name of the state to set the image border fill (not including the state value).
  * @param value The state value.
- * @param fill Fill to be se. 1 if the center of the bordered image is draw, 0 otherwise.
+ * @param fill Fill to be set. 1 or 2 if the center of the bordered image is draw, 0 otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
  */
-EAPI void edje_edit_state_image_border_fill_set(Evas_Object *obj, const char *part, const char *state, double value, unsigned char fill);
+EAPI Eina_Bool edje_edit_state_image_border_fill_set(Evas_Object *obj, const char *part, const char *state, double value, unsigned char fill);
 
 /** Get the list of all the tweens images in the given part state.
  *
@@ -3487,6 +3645,51 @@ EAPI Edje_Tween_Mode edje_edit_program_transition_get(Evas_Object *obj, const ch
  */
 EAPI Eina_Bool edje_edit_program_transition_set(Evas_Object *obj, const char *prog, Edje_Tween_Mode transition);
 
+/** Get the interpolation value 1 of the transition.
+ *  Can be used with one of transition type: EDJE_TWEEN_MODE_ACCELERATE_FACTOR, EDJE_TWEEN_MODE_DECELERATE_FACTOR, EDJE_TWEEN_MODE_SINUSOIDAL_FACTOR, EDJE_TWEEN_MODE_DIVISOR_INTERP, EDJE_TWEEN_MODE_BOUNCE or EDJE_TWEEN_MODE_SPRING.
+ *
+ * @param obj Object being edited.
+ * @param prog The name of the program to get the interpolation value 1.
+ *
+ * @return interpolation value 1.
+ */
+EAPI double
+edje_edit_program_transition_value1_get(Evas_Object *obj, const char *prog);
+
+/** Set the interpolation value 1 of the transition.
+ *  Can be used with one of transition type: EDJE_TWEEN_MODE_ACCELERATE_FACTOR, EDJE_TWEEN_MODE_DECELERATE_FACTOR, EDJE_TWEEN_MODE_SINUSOIDAL_FACTOR, EDJE_TWEEN_MODE_DIVISOR_INTERP, EDJE_TWEEN_MODE_BOUNCE or EDJE_TWEEN_MODE_SPRING.
+ *
+ * @param obj Object being edited.
+ * @param prog The name of the program to get the interpolation value 1.
+ * @param value The interpolation value 1 for the transition.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool
+edje_edit_program_transition_value1_set(Evas_Object *obj, const char *prog, double value);
+
+/** Get the interpolation value 2 of the transition.
+ *  Can be used with one of transition type: EDJE_TWEEN_MODE_DIVISOR_INTERP, EDJE_TWEEN_MODE_BOUNCE or EDJE_TWEEN_MODE_SPRING.
+ * @param obj Object being edited.
+ * @param prog The name of the program to get the interpolation value 2.
+ *
+ * @return interpolation value 2.
+ */
+EAPI double
+edje_edit_program_transition_value2_get(Evas_Object *obj, const char *prog);
+
+/** Set the interpolation value 2 of the transition.
+ *  Can be used with one of transition type: EDJE_TWEEN_MODE_DIVISOR_INTERP, EDJE_TWEEN_MODE_BOUNCE or EDJE_TWEEN_MODE_SPRING.
+ *
+ * @param obj Object being edited.
+ * @param prog The name of the program to get the interpolation value 2.
+ * @param value The interpolation value 2 for the transition.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool
+edje_edit_program_transition_value2_set(Evas_Object *obj, const char *prog, double value);
+
 /** Get the duration of the transition in seconds.
  *
  * @param obj Object being edited.
@@ -3541,8 +3744,10 @@ EAPI char *edje_edit_script_get(Evas_Object *obj);
  *
  * @param obj The object being edited
  * @param code The Embryo source
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_script_set(Evas_Object *obj, const char *code);
+EAPI Eina_Bool edje_edit_script_set(Evas_Object *obj, const char *code);
 
 /**
  * Get the Embryo script for the given program.
@@ -3572,8 +3777,10 @@ EAPI char *edje_edit_script_program_get(Evas_Object *obj, const char *prog);
  * @param obj The object being edited
  * @param prog The program name.
  * @param code The Embryo source
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
-EAPI void edje_edit_script_program_set(Evas_Object *obj, const char *prog, const char *code);
+EAPI Eina_Bool edje_edit_script_program_set(Evas_Object *obj, const char *prog, const char *code);
 
 /**
  * Compile the Embryo script for the given object

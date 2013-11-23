@@ -39,6 +39,7 @@ struct _WaylandIMContext
    struct wl_text_input *text_input;
 
    Ecore_Wl_Window *window;
+   Ecore_Wl_Input  *input;
    Evas            *canvas;
 
    char *preedit_text;
@@ -473,8 +474,8 @@ text_input_keysym(void                 *data,
    strcpy((char *)e->key, key);
    strcpy((char *)e->string, string);
 
-   e->window = imcontext->window->id;
-   e->event_window = imcontext->window->id;
+   e->window = ecore_wl_window_id_get(imcontext->window);
+   e->event_window = ecore_wl_window_id_get(imcontext->window);
    e->timestamp = time;
 
    e->modifiers = 0;
@@ -618,20 +619,27 @@ wayland_im_context_focus_in(Ecore_IMF_Context *ctx)
 {
    WaylandIMContext *imcontext = (WaylandIMContext *)ecore_imf_context_data_get(ctx);
    Ecore_Wl_Input *input;
+   struct wl_seat *seat;
 
    EINA_LOG_DOM_INFO(_ecore_imf_wayland_log_dom, "focus-in");
 
    if (!imcontext->window) return;
 
-   input = imcontext->window->keyboard_device;
-   if (!input || !input->seat)
+   input = ecore_wl_window_keyboard_get(imcontext->window);
+   if (!input)
      return;
 
-   if (imcontext->text_input)
+   seat = ecore_wl_input_seat_get(input);
+   if (!seat)
+     return;
+
+   imcontext->input = input;
+
+   if ((imcontext->text_input) && 
+       (ecore_imf_context_input_panel_enabled_get(ctx)))
      {
         wl_text_input_show_input_panel(imcontext->text_input);
-        wl_text_input_activate(imcontext->text_input,
-                               input->seat,
+        wl_text_input_activate(imcontext->text_input, seat,
                                ecore_wl_window_surface_get(imcontext->window));
      }
 }
@@ -643,11 +651,13 @@ wayland_im_context_focus_out(Ecore_IMF_Context *ctx)
 
    EINA_LOG_DOM_INFO(_ecore_imf_wayland_log_dom, "focus-out");
 
-   if (!imcontext->window) return;
+   if (!imcontext->input) return;
 
    if (imcontext->text_input)
      wl_text_input_deactivate(imcontext->text_input,
-                              imcontext->window->display->input->seat);
+                              ecore_wl_input_seat_get(imcontext->input));
+
+   imcontext->input = NULL;
 }
 
 EAPI void
@@ -750,7 +760,8 @@ wayland_im_context_show(Ecore_IMF_Context *ctx)
 
    EINA_LOG_DOM_INFO(_ecore_imf_wayland_log_dom, "context_show");
 
-   if (imcontext->text_input)
+   if ((imcontext->text_input) && 
+       (ecore_imf_context_input_panel_enabled_get(ctx)))
      wl_text_input_show_input_panel(imcontext->text_input);
 }
 
@@ -761,7 +772,8 @@ wayland_im_context_hide(Ecore_IMF_Context *ctx)
 
    EINA_LOG_DOM_INFO(_ecore_imf_wayland_log_dom, "context_hide");
 
-   if (imcontext->text_input)
+   if ((imcontext->text_input) && 
+       (ecore_imf_context_input_panel_enabled_get(ctx)))
      wl_text_input_hide_input_panel(imcontext->text_input);
 }
 

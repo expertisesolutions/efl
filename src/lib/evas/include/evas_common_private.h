@@ -1,9 +1,9 @@
 #ifndef EVAS_COMMON_H
 #define EVAS_COMMON_H
 
-//#ifdef HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include "config.h"  /* so that EAPI in Evas.h is correctly defined */
-//#endif
+#endif
 
 #ifdef STDC_HEADERS
 # include <stdlib.h>
@@ -48,6 +48,11 @@
 #endif
 
 #include <Eina.h>
+#include <Eo.h>
+
+#ifdef BUILD_LOADER_EET
+# include <Eet.h>
+#endif
 #include "Evas.h"
 //#include "Evas_GL.h"
 
@@ -1255,7 +1260,7 @@ void              evas_font_dir_cache_free(void);
 
 EAPI int          evas_async_events_process_blocking(void);
 void	          evas_render_rendering_wait(Evas_Public_Data *evas);
-void              evas_render_sync(void);
+void              evas_all_sync(void);
 
 void              evas_thread_init(void);
 void              evas_thread_shutdown(void);

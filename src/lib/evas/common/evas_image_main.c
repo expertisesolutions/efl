@@ -148,6 +148,12 @@ _evas_common_rgba_image_surface_mmap(unsigned int w, unsigned int h, Eina_Bool a
    if (siz < PAGE_SIZE)
      return malloc(siz);
 
+#if defined (__MacOSX__) || (defined (__MACH__) && defined (__APPLE__))
+# ifndef MAP_ANONYMOUS
+#  define MAP_ANONYMOUS MAP_ANON
+# endif
+#endif
+
    r = mmap(NULL, siz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
    if (r == MAP_FAILED)
      r = mmap(NULL, siz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -188,9 +194,6 @@ evas_common_image_init(void)
    reference++;
 ////   ERR("REF++=%i", reference);
 
-#ifdef BUILD_LOADER_EET
-   eet_init();
-#endif
    evas_common_scalecache_init();
 }
 
@@ -223,9 +226,6 @@ evas_common_image_shutdown(void)
 #endif
      }
 
-#ifdef BUILD_LOADER_EET
-   eet_shutdown();
-#endif
    evas_common_scalecache_shutdown();
 }
 
@@ -285,16 +285,13 @@ _evas_common_rgba_image_delete(Image_Entry *ie)
 
    if (ie->animated.frames)
      {
-        Eina_List *l;
         Image_Entry_Frame *frame;
-        EINA_LIST_FOREACH(ie->animated.frames, l, frame)
+        
+        EINA_LIST_FREE(ie->animated.frames, frame)
           {
-           if (frame)
-             {
-                if (frame->data) free(frame->data);
-                if (frame->info) free(frame->info);
-                free (frame);
-             }
+             if (frame->data) free(frame->data);
+             if (frame->info) free(frame->info);
+             free(frame);
           }
      }
    if (ie->f && !ie->flags.given_mmap) eina_file_close(ie->f);
@@ -565,16 +562,18 @@ _evas_common_rgba_image_dirty(Image_Entry *ie_dst, const Image_Entry *ie_src)
    evas_common_rgba_image_scalecache_dirty((Image_Entry *)ie_src);
    evas_common_rgba_image_scalecache_dirty(ie_dst);
    evas_cache_image_load_data(&src->cache_entry);
-   if (_evas_common_rgba_image_surface_alloc(&dst->cache_entry,
-                                             src->cache_entry.w, src->cache_entry.h))
+   if (!evas_cache_image_pixels(ie_dst))
      {
+        if (_evas_common_rgba_image_surface_alloc(&dst->cache_entry,
+                                                  src->cache_entry.w, src->cache_entry.h))
+          {
 #ifdef EVAS_CSERVE2
-        // if (ie_src->data1) evas_cserve2_image_free((Image_Entry*) ie_src);
-        if (ie_src->data1) ERR("Shouldn't reach this point since we are using cache2.");
+             // if (ie_src->data1) evas_cserve2_image_free((Image_Entry*) ie_src);
+             if (ie_src->data1) ERR("Shouldn't reach this point since we are using cache2.");
 #endif
-        return 1;
+             return 1;
+          }
      }
-
 #ifdef EVAS_CSERVE2
    // if (ie_src->data1) evas_cserve2_image_free((Image_Entry*) ie_src);
    if (ie_src->data1) ERR("Shouldn't reach this point since we are using cache2.");

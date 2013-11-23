@@ -1043,6 +1043,16 @@ eet_internal_read2(Eet_File *ef)
 #endif /* ifdef HAVE_SIGNATURE */
      }
 
+   /* At this stage we have a valid eet file, let's tell the system we are likely to need most of its data */
+   if (ef->readfp && ef->ed)
+     {
+        unsigned long int offset;
+
+        offset = (unsigned char*) ef->ed->start - (unsigned char*) ef->data;
+        eina_file_map_populate(ef->readfp, EINA_FILE_WILLNEED, ef->data,
+                               offset, ef->data_size - offset);
+     }
+
    return ef;
 }
 
@@ -1421,7 +1431,7 @@ eet_file_get(Eet_File *ef)
 }
 
 EAPI Eet_File *
-eet_mmap(Eina_File *file)
+eet_mmap(const Eina_File *file)
 {
    Eet_File *ef = NULL;
    const char *path;
@@ -1467,8 +1477,8 @@ eet_mmap(Eina_File *file)
    ef->sha1_length = 0;
    ef->readfp_owned = EINA_TRUE;
 
-   ef->data_size = eina_file_size_get(file);
-   ef->data = eina_file_map_all(file, EINA_FILE_SEQUENTIAL);
+   ef->data_size = eina_file_size_get(ef->readfp);
+   ef->data = eina_file_map_all(ef->readfp, EINA_FILE_SEQUENTIAL);
    if (eet_test_close((ef->data == NULL), ef))
      goto on_error;
 

@@ -71,7 +71,7 @@
  *      <li>@ref sec_collections_group "Group"</li>
  *      <ul>
  *        <li>@ref sec_collections_group_script "Script"</li>
- *        <li>@ref sec_collections_group_imits "Limits"</li>
+ *        <li>@ref sec_collections_group_limits "Limits"</li>
  *        <li>@ref sec_toplevel_data "Data"</li>
  *        <li>@ref sec_collections_group_parts "Parts"</li>
  *        <ul>
@@ -226,8 +226,6 @@ static void st_collections_group_parts_part_source3(void);
 static void st_collections_group_parts_part_source4(void);
 static void st_collections_group_parts_part_source5(void);
 static void st_collections_group_parts_part_source6(void);
-static void st_collections_group_parts_part_source7(void);
-static void st_collections_group_parts_part_source8(void);
 static void st_collections_group_parts_part_entry_mode(void);
 static void st_collections_group_parts_part_select_mode(void);
 static void st_collections_group_parts_part_cursor_mode(void);
@@ -524,8 +522,6 @@ New_Statement_Handler statement_handlers[] =
      {"collections.group.parts.part.source4", st_collections_group_parts_part_source4},
      {"collections.group.parts.part.source5", st_collections_group_parts_part_source5},
      {"collections.group.parts.part.source6", st_collections_group_parts_part_source6},
-     {"collections.group.parts.part.source7", st_collections_group_parts_part_source7},
-     {"collections.group.parts.part.source8", st_collections_group_parts_part_source8},
      {"collections.group.parts.part.dragable.x", st_collections_group_parts_part_dragable_x},
      {"collections.group.parts.part.dragable.y", st_collections_group_parts_part_dragable_y},
      {"collections.group.parts.part.dragable.confine", st_collections_group_parts_part_dragable_confine},
@@ -2787,6 +2783,8 @@ st_collections_group_inherit(void)
    pcp2 = (Edje_Part_Collection_Parser *)pc2;
    pcp->default_mouse_events = pcp2->default_mouse_events;
 
+   // FIXME: Handle limits dup
+
    #define STRDUP(x) x ? strdup(x) : NULL
    for (i = 0 ; i < pc2->parts_count ; i++)
      {
@@ -2801,8 +2799,6 @@ st_collections_group_inherit(void)
         ep->source4 = STRDUP(ep2->source4);
         ep->source5 = STRDUP(ep2->source5);
         ep->source6 = STRDUP(ep2->source6);
-        ep->source7 = STRDUP(ep2->source7);
-        ep->source8 = STRDUP(ep2->source8);
 
         data_queue_copied_part_lookup(pc, &(ep2->clip_to_id), &(ep->clip_to_id));
 
@@ -4096,48 +4092,6 @@ st_collections_group_parts_part_source6(void)
 
 /**
     @page edcref
-    @property
-        source7
-    @parameters
-        [another group's name]
-    @effect
-        Only available to TEXTBLOCK parts. It is used for the group to be
-        loaded and used for the start selection handler display.
-    @endproperty
-*/
-static void
-st_collections_group_parts_part_source7(void)
-{
-   check_arg_count(1);
-
-   //FIXME: validate this somehow (need to decide on the format also)
-   current_part->source7 = parse_str(0);
-   data_queue_group_lookup(current_part->source7, current_part);
-}
-
-/**
-    @page edcref
-    @property
-        source8
-    @parameters
-        [another group's name]
-    @effect
-        Only available to TEXTBLOCK parts. It is used for the group to be
-        loaded and used for the end selection handler display.
-    @endproperty
-*/
-static void
-st_collections_group_parts_part_source8(void)
-{
-   check_arg_count(1);
-
-   //FIXME: validate this somehow (need to decide on the format also)
-   current_part->source8 = parse_str(0);
-   data_queue_group_lookup(current_part->source8, current_part);
-}
-
-/**
-    @page edcref
 
     @property
         effect
@@ -4249,8 +4203,6 @@ st_collections_group_parts_part_entry_mode(void)
         @li EXPLICIT mode requires the application
         controlling the edje object has to explicitly begin and end selection
         modes, and the selection itself is dragable at both ends.
-        @li BLOCK_HANDLE is based on EXPLICIT mode and adds selection handlers
-        on both sides.
     @endproperty
 */
 static void
@@ -4261,7 +4213,6 @@ st_collections_group_parts_part_select_mode(void)
    current_part->select_mode = parse_enum(0,
                                 "DEFAULT", EDJE_ENTRY_SELECTION_MODE_DEFAULT,
                                 "EXPLICIT", EDJE_ENTRY_SELECTION_MODE_EXPLICIT,
-                                "BLOCK_HANDLE", EDJE_ENTRY_SELECTION_MODE_BLOCK_HANDLE,
                                 NULL);
 }
 
@@ -4367,7 +4318,8 @@ st_collections_group_parts_part_access(void)
         enabled, 1 will set the starting point at 0.0 and -1 at 1.0. The second
         parameter takes any integer and will limit movement to values
         divisible by it, causing the part to jump from position to position.
-        The third parameter, (question from the author: What is count for?).
+        If step is set to 0 it is calculated as width of confine part divided by
+        count.
     @endproperty
 */
 static void
@@ -4392,7 +4344,8 @@ st_collections_group_parts_part_dragable_x(void)
         enabled, 1 will set the starting point at 0.0 and -1 at 1.0. The second
         parameter takes any integer and will limit movement to values
         divisibles by it, causing the part to jump from position to position.
-        The third parameter, (question from the author: What is count for?).
+        If step is set to 0 it is calculated as height of confine part divided by
+        count.
     @endproperty
 */
 static void
@@ -4966,8 +4919,7 @@ _copied_map_colors_get(Edje_Part_Description_Common *parent)
    int i;
 
    if (parent->map.colors_count == 0) return NULL;
-   colors = (Edje_Map_Color **) malloc(sizeof(Edje_Map_Color **) *
-                                       parent->map.colors_count);
+   colors = malloc(sizeof(Edje_Map_Color *) * parent->map.colors_count);
 
    for (i = 0; i < (int)parent->map.colors_count; i++)
      {
@@ -5040,6 +4992,7 @@ ob_collections_group_parts_part_description(void)
    if (!ep->default_desc)
      {
         current_desc = ep->default_desc = ed;
+        ed->state.name = strdup("default");
 
           {  /* Get the ptr of the part above current part in hierarchy */
              Edje_Part *node = edje_cc_handlers_hierarchy_parent_get();
@@ -5192,9 +5145,8 @@ st_collections_group_parts_part_description_inherit(void)
 	     if (min_dst)
 	       {
                   WRN("%s:%i: couldn't find an exact match in part '%s' when looking for '%s' %lf. Falling back to nearest one '%s' %lf.",
-                      file_in, line - 1, ep->name, parent_name, parent_val, parent->state.name, parent->state.value);
+                      file_in, line - 1, ep->name, parent_name, parent_val, parent ? parent->state.name : NULL, parent ? parent->state.value : 0);
                }
-                    
           }
 
         if (!parent)
@@ -5411,6 +5363,7 @@ st_collections_group_parts_part_description_state(void)
         exit(-1);
      }
 
+   free((void *)ed->state.name);
    ed->state.name = s;
    if (get_arg_count() == 1)
      ed->state.value = 0.0;
@@ -5509,21 +5462,11 @@ st_collections_group_parts_part_description_limit(void)
 
         pc = eina_list_data_get(eina_list_last(edje_collections));
         count = pc->limits.parts_count++;
-        // XXX: the data_queue_part_lookup uses a pointer TO the
-        // int id to fill in with the name in the parts[] array
-        // BUT... we REALLOC it.. which means this memory can
-        // be reloacted on realloc... so the lookups are invalid.
-        // 
-        // as a QUICK fix this will just over-allocate a big big blob
-        // so we can queue a lot of limit lookups
-// OLD code.... fix sometime
-//        pc->limits.parts = realloc(pc->limits.parts,
-//                                   pc->limits.parts_count * sizeof (Edje_Part_Limit));
-// temporary over-alloc of 128 slots to fix realloc + lookup bug
-        if (!pc->limits.parts)
-          pc->limits.parts = malloc(128 * sizeof (Edje_Part_Limit));
-        data_queue_part_lookup(pc, current_part->name,
-                               &(pc->limits.parts[count].part));
+	pc->limits.parts = realloc(pc->limits.parts,
+				   pc->limits.parts_count * sizeof (Edje_Part_Limit));
+	data_queue_part_reallocated_lookup(pc, current_part->name,
+					   (unsigned char**) &(pc->limits.parts),
+					   (unsigned char*) &pc->limits.parts[count].part - (unsigned char*) pc->limits.parts); //fixme
      }
 }
 
@@ -8899,6 +8842,7 @@ ob_collections_group_programs_program(void)
    Edje_Part_Collection *pc;
    Edje_Program *ep;
    Edje_Program_Parser *epp;
+   char *def_name;
 
    pc = eina_list_data_get(eina_list_last(edje_collections));
 
@@ -8909,6 +8853,10 @@ ob_collections_group_programs_program(void)
    epp = (Edje_Program_Parser *)ep;
    epp->can_override = EINA_FALSE;
 
+   /* generate new name */
+   def_name = alloca(strlen("program_") + strlen("0xFFFFFFFFFFFFFFFF") + 1);
+   sprintf(def_name, "program_%p", ep);
+   ep->name = strdup(def_name);
    _edje_program_insert(pc, ep);
 
    current_program = ep;
@@ -8932,6 +8880,7 @@ st_collections_group_programs_program_name(void)
    check_arg_count(1);
 
    pc = eina_list_data_get(eina_list_last(edje_collections));
+   if (current_program->name) free((void *)current_program->name);
    current_program->name = parse_str(0);
 
    _edje_program_check(current_program->name, current_program, pc->programs.fnmatch, pc->programs.fnmatch_count);

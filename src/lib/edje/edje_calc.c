@@ -131,7 +131,7 @@ _edje_part_pos_set(Edje *ed, Edje_Real_Part *ep, int mode, FLOAT_T pos, FLOAT_T 
    ed->dirty = EINA_TRUE;
    ed->recalc_call = EINA_TRUE;
 #ifdef EDJE_CALC_CACHE
-   ep->invalidate = 1;
+   ep->invalidate = EINA_TRUE;
 #endif
 }
 
@@ -574,9 +574,9 @@ _edje_part_description_apply(Edje *ed, Edje_Real_Part *ep, const char *d1, doubl
           if (ep->param2)
 	    {
 	      free(ep->param2->set);
-	      eina_cow_free(_edje_calc_params_map_cow, ep->param2->p.map);
+	      eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &ep->param2->p.map);
 #ifdef HAVE_EPHYSICS
-	      eina_cow_free(_edje_calc_params_physics_cow, ep->param2->p.physics);
+	      eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &ep->param2->p.physics);
 #endif
 	    }
           eina_mempool_free(_edje_real_part_state_mp, ep->param2);
@@ -607,7 +607,7 @@ _edje_part_description_apply(Edje *ed, Edje_Real_Part *ep, const char *d1, doubl
    ed->dirty = EINA_TRUE;
    ed->recalc_call = EINA_TRUE;
 #ifdef EDJE_CALC_CACHE
-   ep->invalidate = 1;
+   ep->invalidate = EINA_TRUE;
 #endif
 }
 
@@ -650,7 +650,6 @@ _edje_recalc_do(Edje *ed)
    need_calc = evas_object_smart_need_recalculate_get(ed->obj);
    evas_object_smart_need_recalculate_set(ed->obj, 0);
    if (!ed->dirty) return;
-   ed->have_mapped_part = EINA_FALSE;
    ed->dirty = EINA_FALSE;
    ed->state++;
    for (i = 0; i < ed->table_parts_size; i++)
@@ -765,12 +764,6 @@ _edje_recalc_do(Edje *ed)
      }
 }
 
-void
-_edje_part_recalc_1(Edje *ed, Edje_Real_Part *ep)
-{
-  _edje_part_recalc(ed, ep, FLAG_XY, NULL);
-}
-
 int
 _edje_part_dragable_calc(Edje *ed EINA_UNUSED, Edje_Real_Part *ep, FLOAT_T *x, FLOAT_T *y)
 {
@@ -852,7 +845,7 @@ _edje_dragable_pos_set(Edje *ed, Edje_Real_Part *ep, FLOAT_T x, FLOAT_T y)
      }
 
 #ifdef EDJE_CALC_CACHE
-   ep->invalidate = 1;
+   ep->invalidate = EINA_TRUE;
 #endif
    _edje_recalc(ed); /* won't do anything if dirty flag isn't set */
 }
@@ -2873,9 +2866,20 @@ _edje_physics_body_add(Edje *ed, Edje_Real_Part *rp, EPhysics_World *world)
 
 #define INTP(_x1, _x2, _p) TO_INT(FINTP(_x1, _x2, _p))
 
+static void
+_map_colors_free(Edje_Calc_Params *pf)
+{
+   Edje_Map_Color **colors = pf->map->colors;
+   int i;
+
+   for (i = 0; i < (int) pf->map->colors_count; i++)
+     free(colors[i]);
+   free (colors);
+}
+
 static Eina_Bool
-map_colors_interp(Edje_Calc_Params *p1, Edje_Calc_Params *p2,
-                  Edje_Calc_Params_Map *pmap, FLOAT_T pos)
+_map_colors_interp(Edje_Calc_Params *p1, Edje_Calc_Params *p2,
+                   Edje_Calc_Params_Map *pmap, FLOAT_T pos)
 {
    Edje_Map_Color *col, *col2, *col3;
    int i, j, idx = 0;
@@ -2949,8 +2953,7 @@ map_colors_interp(Edje_Calc_Params *p1, Edje_Calc_Params *p2,
 static void
 _edje_map_prop_set(Evas_Map *map, const  Edje_Calc_Params *pf,
                    Edje_Part_Description_Common *chosen_desc,
-                   Edje_Real_Part *ep, Evas_Object *mo,
-                   Eina_Bool map_colors_free)
+                   Edje_Real_Part *ep, Evas_Object *mo)
 {
    Edje_Map_Color **colors = pf->map->colors;
    int colors_cnt = pf->map->colors_count;
@@ -2985,25 +2988,11 @@ _edje_map_prop_set(Evas_Map *map, const  Edje_Calc_Params *pf,
      }
    else
      {
-        if (map_colors_free)
+        for (i = 0; i < colors_cnt; i++)
           {
-             for (i = 0; i < colors_cnt; i++)
-               {
-                  color = colors[i];
-                  evas_map_point_color_set(map, color->idx, color->r, color->g,
-                                           color->b, color->a);
-                  free(colors[i]);
-               }
-             free (colors);
-          }
-        else
-          {
-             for (i = 0; i < colors_cnt; i++)
-               {
-                  color = colors[i];
-                  evas_map_point_color_set(map, color->idx, color->r, color->g,
-                                           color->b, color->a);
-               }
+             color = colors[i];
+             evas_map_point_color_set(map, color->idx, color->r, color->g,
+                                      color->b, color->a);
           }
      }
 
@@ -3355,24 +3344,28 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
 #ifdef EDJE_CALC_CACHE
         if (ed->all_part_change ||
             ep->invalidate ||
-            state1 >= ep->param1.state ||
-            statec >= ep->param1.state ||
-            statet >= ep->param1.state ||
-            statec1 >= ep->param1.state ||
-            statel1 >= ep->param1.state ||
-            statep1 >= ep->param1.state ||
+            (state1 >= ep->param1.state) ||
+            (statec >= ep->param1.state) ||
+            (statet >= ep->param1.state) ||
+            (statec1 >= ep->param1.state) ||
+            (statel1 >= ep->param1.state) ||
+            (statep1 >= ep->param1.state) ||
             proxy_invalidate ||
             state ||
-            ((ep->part->type == EDJE_PART_TYPE_TEXT || ep->part->type == EDJE_PART_TYPE_TEXTBLOCK) && ed->text_part_change))
+            ed->need_map_update ||
+            ((ep->part->type == EDJE_PART_TYPE_TEXT ||
+              ep->part->type == EDJE_PART_TYPE_TEXTBLOCK) &&
+             ed->text_part_change))
 #endif
           {
-             _edje_part_recalc_single(ed, ep, ep->param1.description, chosen_desc, center[0], light[0], persp[0],
-                                      rp1[Rel1X], rp1[Rel1Y], rp1[Rel2X], rp1[Rel2Y],
-                                      confine_to, threshold,
-                                      p1, ep->param1.set, mmw, mmh, pos);
+             _edje_part_recalc_single(ed, ep, ep->param1.description,
+                                      chosen_desc, center[0], light[0],
+                                      persp[0], rp1[Rel1X], rp1[Rel1Y],
+                                      rp1[Rel2X], rp1[Rel2Y], confine_to,
+                                      threshold, p1, ep->param1.set, mmw, mmh,
+                                      pos);
 #ifdef EDJE_CALC_CACHE
-             if (flags == FLAG_XY)
-               ep->param1.state = ed->state;
+             if (flags == FLAG_XY) ep->param1.state = ed->state;
 #endif
           }
      }
@@ -3420,29 +3413,28 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
 
         if (ed->all_part_change ||
             ep->invalidate ||
-            state2 >= ep->param2->state ||
-            statec >= ep->param2->state ||
-            statet >= ep->param2->state ||
-            statec2 >= ep->param2->state ||
-            statel2 >= ep->param2->state ||
-            statep2 >= ep->param2->state ||
+            (state2 >= ep->param2->state) ||
+            (statec >= ep->param2->state) ||
+            (statet >= ep->param2->state) ||
+            (statec2 >= ep->param2->state) ||
+            (statel2 >= ep->param2->state) ||
+            (statep2 >= ep->param2->state) ||
             proxy_invalidate ||
             state ||
-            ((ep->part->type == EDJE_PART_TYPE_TEXT || ep->part->type == EDJE_PART_TYPE_TEXTBLOCK) && ed->text_part_change))
+            ed->need_map_update ||
+            ((ep->part->type == EDJE_PART_TYPE_TEXT ||
+              ep->part->type == EDJE_PART_TYPE_TEXTBLOCK) &&
+             ed->text_part_change))
 #endif
           {
              _edje_part_recalc_single(ed, ep, ep->param2->description,
-                                      chosen_desc,
-                                      center[1], light[1], persp[1],
-                                      rp2[Rel1X],
-                                      rp2[Rel1Y],
-                                      rp2[Rel2X],
-                                      rp2[Rel2Y],
-                                      confine_to, threshold,
-                                      p2, ep->param2->set, mmw, mmh, pos);
+                                      chosen_desc, center[1], light[1],
+                                      persp[1], rp2[Rel1X], rp2[Rel1Y],
+                                      rp2[Rel2X], rp2[Rel2Y], confine_to,
+                                      threshold, p2, ep->param2->set, mmw, mmh,
+                                      pos);
 #ifdef EDJE_CALC_CACHE
-             if (flags == FLAG_XY)
-               ep->param2->state = ed->state;
+             if (flags == FLAG_XY) ep->param2->state = ed->state;
 #endif
           }
 
@@ -3604,7 +3596,7 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
 
 #define MIX(P1, P2, P3, pos, info)                                      \
                   P3->info = P1->map->info + TO_INT(SCALE(pos, P2->map->info - P1->map->info));
-                  map_colors_free = map_colors_interp(p1, p2, p3_write, pos);
+                  map_colors_free = _map_colors_interp(p1, p2, p3_write, pos);
 
                   if (p1->lighted && p2->lighted)
                     {
@@ -3647,9 +3639,9 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
           }
 
 #ifndef EDJE_CALC_CACHE
-        eina_cow_free(_edje_calc_params_map_cow, lp2.map);
+        eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &lp2.map);
 #ifdef HAVE_EPHYSICS
-        eina_cow_free(_edje_calc_params_physics_cow, lp2.physics);
+        eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &lp2.physics);
 #endif
 #endif
         pf = p3;
@@ -3906,7 +3898,7 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
              // create map and populate with part geometry
              if (!map) map = evas_map_new(4);
 
-             _edje_map_prop_set(map, pf, chosen_desc, ep, mo, map_colors_free);
+             _edje_map_prop_set(map, pf, chosen_desc, ep, mo);
 
              if (ep->nested_smart)
                {  /* Apply map to smart obj holding nested parts */
@@ -3947,6 +3939,8 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
           }
      }
 
+   if (map_colors_free) _map_colors_free(pf);
+
 #ifdef HAVE_EPHYSICS
    ep->prev_description = chosen_desc;
    if (!ep->body)
@@ -3965,10 +3959,10 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
 
    if (pf == &lp3)
      {
-        eina_cow_free(_edje_calc_params_map_cow, lp3.map);
+        eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &lp3.map);
         lp3.map = NULL;
 #ifdef HAVE_EPHYSICS
-        eina_cow_free(_edje_calc_params_physics_cow, lp3.physics);
+        eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &lp3.physics);
         lp3.physics = NULL;
 #endif
      }
@@ -3977,12 +3971,12 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
    if (ep->calculated == FLAG_XY)
      {
         ep->state = ed->state;
-        ep->invalidate = 0;
+        ep->invalidate = EINA_FALSE;
      }
 #else
-   eina_cow_free(_edje_calc_params_map_cow, lp1.map);
+   eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &lp1.map);
 #ifdef HAVE_EPHYSICS
-   eina_cow_free(_edje_calc_params_physics_cow, lp1.physics);
+   eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &lp1.physics);
 #endif
 #endif
 }

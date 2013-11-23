@@ -33,7 +33,7 @@ syn keyword	edcLabel	state visible step aspect fixed middle contained
 syn keyword	edcLabel	aspect_preference ellipsis elipsis image contained
 syn keyword	edcLabel	relative offset to to_x to_y contained
 syn keyword edcLabel source_visible source_clip contained
-syn keyword	edcLabel	border border_scale scale_hint color color2 color3 font size contained
+syn keyword	edcLabel	border border_scale border_scale_by scale_hint color color2 color3 font size contained
 syn keyword	edcLabel	signal action transition in filter contained
 syn keyword	edcLabel	target after fit align contained
 syn keyword	edcLabel	text smooth inherit tag base style contained
@@ -63,7 +63,7 @@ syn keyword	edcConstant	ACCEL_FAC DECEL_FAC SIN_FAC DIVISOR_INTERP
 syn keyword	edcConstant	ACCELERATE_FACTOR DECELERATE_FACTOR
 syn keyword	edcConstant	VERTICAL HORIZONTAL BOTH BOX TABLE
 syn keyword	edcConstant	EDITABLE PASSWORD "default"
-syn keyword edcConstant DEFAULT EXPLICIT BLOCK_HANDLE 
+syn keyword edcConstant DEFAULT EXPLICIT
 syn keyword edcConstant SOLID
 
 syn keyword	edcTodo		contained TODO FIXME XXX

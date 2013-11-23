@@ -57,6 +57,12 @@ static const struct wl_callback_listener frame_listener =
 };
 
 /* local functions */
+static void 
+_ecore_evas_wl_common_state_update(Ecore_Evas *ee)
+{
+   if (ee->func.fn_state_change) ee->func.fn_state_change(ee);
+}
+
 static int 
 _ecore_evas_wl_common_render_updates_process(Ecore_Evas *ee, Eina_List *updates)
 {
@@ -101,11 +107,9 @@ _ecore_evas_wl_common_cb_mouse_in(void *data EINA_UNUSED, int type EINA_UNUSED, 
    ee = ecore_event_window_match(ev->window);
    if ((!ee) || (ee->ignore_events)) return ECORE_CALLBACK_PASS_ON;
    if (ev->window != ee->prop.window) return ECORE_CALLBACK_PASS_ON;
+   if (ee->in) return ECORE_CALLBACK_PASS_ON;
+
    if (ee->func.fn_mouse_in) ee->func.fn_mouse_in(ee);
-
-   if (ee->in)
-     return ECORE_CALLBACK_PASS_ON;
-
    ecore_event_evas_modifier_lock_update(ee->evas, ev->modifiers);
    evas_event_feed_mouse_in(ee->evas, ev->timestamp, NULL);
    _ecore_evas_mouse_move_process(ee, ev->x, ev->y, ev->timestamp);
@@ -125,9 +129,11 @@ _ecore_evas_wl_common_cb_mouse_out(void *data EINA_UNUSED, int type EINA_UNUSED,
    ee = ecore_event_window_match(ev->window);
    if ((!ee) || (ee->ignore_events)) return ECORE_CALLBACK_PASS_ON;
    if (ev->window != ee->prop.window) return ECORE_CALLBACK_PASS_ON;
+
    if (ee->in)
      {
         ecore_event_evas_modifier_lock_update(ee->evas, ev->modifiers);
+        _ecore_evas_mouse_move_process(ee, ev->x, ev->y, ev->timestamp);
         evas_event_feed_mouse_out(ee->evas, ev->timestamp, NULL);
         if (ee->func.fn_mouse_out) ee->func.fn_mouse_out(ee);
         if (ee->prop.cursor.object) evas_object_hide(ee->prop.cursor.object);
@@ -148,6 +154,7 @@ _ecore_evas_wl_common_cb_focus_in(void *data EINA_UNUSED, int type EINA_UNUSED, 
    ee = ecore_event_window_match(ev->win);
    if ((!ee) || (ee->ignore_events)) return ECORE_CALLBACK_PASS_ON;
    if (ev->win != ee->prop.window) return ECORE_CALLBACK_PASS_ON;
+   if (ee->prop.focused) return ECORE_CALLBACK_PASS_ON;
    ee->prop.focused = 1;
    evas_focus_in(ee->evas);
    if (ee->func.fn_focus_in) ee->func.fn_focus_in(ee);
@@ -166,6 +173,7 @@ _ecore_evas_wl_common_cb_focus_out(void *data EINA_UNUSED, int type EINA_UNUSED,
    ee = ecore_event_window_match(ev->win);
    if ((!ee) || (ee->ignore_events)) return ECORE_CALLBACK_PASS_ON;
    if (ev->win != ee->prop.window) return ECORE_CALLBACK_PASS_ON;
+   if (!ee->prop.focused) return ECORE_CALLBACK_PASS_ON;
    evas_focus_out(ee->evas);
    ee->prop.focused = 0;
    if (ee->func.fn_focus_out) ee->func.fn_focus_out(ee);
@@ -196,35 +204,10 @@ _ecore_evas_wl_common_cb_window_configure(void *data EINA_UNUSED, int type EINA_
    ee->prop.maximized = ecore_wl_window_maximized_get(wdata->win);
    ee->prop.fullscreen = ecore_wl_window_fullscreen_get(wdata->win);
 
-   if ((prev_max != ee->prop.maximized) ||
-       (prev_full != ee->prop.fullscreen))
-     {
-        if (ee->func.fn_state_change)
-          ee->func.fn_state_change(ee);
-
-        if (prev_full != ee->prop.fullscreen)
-          _ecore_evas_wl_common_border_update(ee);
-     }
-
-   if (ee->prop.fullscreen)
-     {
-        _ecore_evas_wl_common_move(ee, ev->x, ev->y);
-        ee->engine.func->fn_resize(ee, ev->w, ev->h);
-
-        return ECORE_CALLBACK_PASS_ON;
-     }
-
-   if ((ee->x != ev->x) || (ee->y != ev->y))
-     {
-        ee->req.x = ee->x;
-        ee->req.y = ee->y;
-        if (ee->func.fn_move) ee->func.fn_move(ee);
-     }
-
    nw = ev->w;
    nh = ev->h;
 
-   if ((ee->prop.maximized) || (!ee->prop.fullscreen))
+   if (!ee->prop.fullscreen)
      {
         int fw = 0, fh = 0;
 
@@ -241,46 +224,29 @@ _ecore_evas_wl_common_cb_window_configure(void *data EINA_UNUSED, int type EINA_
           }
      }
 
-   if (ee->prop.min.w > nw) nw = ee->prop.min.w;
-   else if (nw > ee->prop.max.w) nw = ee->prop.max.w;
-   if (ee->prop.min.h > nh) nh = ee->prop.min.h;
-   else if (nh > ee->prop.max.h) nh = ee->prop.max.h;
+   if (prev_full != ee->prop.fullscreen)
+     _ecore_evas_wl_common_border_update(ee);
 
-   if ((ee->w != nw) || (ee->h != nh))
+   if (ee->prop.fullscreen)
      {
-        ee->req.w = nw;
-        ee->req.h = nh;
-        ee->w = nw;
-        ee->h = nh;
-        if (ee->func.fn_resize) ee->func.fn_resize(ee);
+        _ecore_evas_wl_common_move(ee, ev->x, ev->y);
+        _ecore_evas_wl_common_resize(ee, nw, nh);
 
-        if ((ee->rotation == 90) || (ee->rotation == 270))
-          {
-             evas_output_size_set(ee->evas, ev->h, ev->w);
-             evas_output_viewport_set(ee->evas, 0, 0, ev->h, ev->w);
-          }
-        else
-          {
-             evas_output_size_set(ee->evas, ev->w, ev->h);
-             evas_output_viewport_set(ee->evas, 0, 0, ev->w, ev->h);
-          }
+        if (prev_full != ee->prop.fullscreen)
+          _ecore_evas_wl_common_state_update(ee);
 
-        if (wdata->frame)
-          evas_object_resize(wdata->frame, ev->w, ev->h);
-
-        if (wdata->win)
-          {
-             Ecore_Wl_Window *win;
-
-             win = wdata->win;
-
-             _ecore_evas_wayland_resize_edge_set(ee, win->edges);
-
-             win->server.w = win->allocation.w;
-             win->server.h = win->allocation.h;
-             ecore_wl_window_update_size(wdata->win, ev->w, ev->h);
-          }
+        return ECORE_CALLBACK_PASS_ON;
      }
+
+   if ((ee->x != ev->x) || (ee->y != ev->y))
+     _ecore_evas_wl_common_move(ee, ev->x, ev->y);
+
+   if ((ee->w != ev->w) || (ee->h != ev->h))
+     _ecore_evas_wl_common_resize(ee, nw, nh);
+
+   if ((prev_max != ee->prop.maximized) ||
+       (prev_full != ee->prop.fullscreen))
+     _ecore_evas_wl_common_state_update(ee);
 
    return ECORE_CALLBACK_PASS_ON;
 }
@@ -416,12 +382,6 @@ _rotation_do(Ecore_Evas *ee, int rotation, int resize)
         /* record the current rotation of the ecore_evas */
         ee->rotation = rotation;
 
-        ecore_wl_window_opaque_region_set(wdata->win, 
-                                          wdata->win->opaque.x, 
-                                          wdata->win->opaque.y,
-                                          wdata->win->opaque.w,
-                                          wdata->win->opaque.h);
-
         /* send a mouse_move process
          * 
          * NB: Is This Really Needed ?? */
@@ -522,6 +482,8 @@ _ecore_evas_wl_common_free(Ecore_Evas *ee)
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
 
    wdata = ee->engine.data;
+   if (wdata->frame_callback) wl_callback_destroy(wdata->frame_callback);
+   wdata->frame_callback = NULL;
    if (wdata->win) ecore_wl_window_free(wdata->win);
    wdata->win = NULL;
    free(wdata);
@@ -537,6 +499,8 @@ void
 _ecore_evas_wl_common_resize(Ecore_Evas *ee, int w, int h)
 {
    Ecore_Evas_Engine_Wl_Data *wdata = ee->engine.data;
+   int orig_w, orig_h;
+   int ow, oh;
 
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
 
@@ -545,6 +509,8 @@ _ecore_evas_wl_common_resize(Ecore_Evas *ee, int w, int h)
 
    ee->req.w = w;
    ee->req.h = h;
+   orig_w = w;
+   orig_h = h;
 
    if (!ee->prop.fullscreen)
      {
@@ -555,15 +521,27 @@ _ecore_evas_wl_common_resize(Ecore_Evas *ee, int w, int h)
         if (ee->prop.min.h > h) h = ee->prop.min.h;
         else if (h > ee->prop.max.h) h = ee->prop.max.h;
 
+        orig_w = w;
+        orig_h = h;
+
         evas_output_framespace_get(ee->evas, NULL, NULL, &fw, &fh);
-        w += fw;
-        h += fh;
+        if ((ee->rotation == 90) || (ee->rotation == 270))
+          {
+             w += fh;
+             h += fw;
+          }
+        else
+          {
+             w += fw;
+             h += fh;
+          }
      }
 
-   if ((ee->w != w) || (ee->h != h))
+   evas_output_size_get(ee->evas, &ow, &oh);
+   if ((ow != w) || (oh != h))
      {
-        ee->w = w;
-        ee->h = h;
+        ee->w = orig_w;
+        ee->h = orig_h;
 
         if ((ee->rotation == 90) || (ee->rotation == 270))
           {
@@ -587,6 +565,11 @@ _ecore_evas_wl_common_resize(Ecore_Evas *ee, int w, int h)
 
         if (wdata->frame)
           evas_object_resize(wdata->frame, w, h);
+
+        /* if (wdata->win) */
+        /*   ecore_wl_window_update_size(wdata->win, w, h); */
+
+        if (ee->func.fn_resize) ee->func.fn_resize(ee);
      }
 }
 
@@ -926,9 +909,8 @@ _ecore_evas_wl_common_title_set(Ecore_Evas *ee, const char *title)
           evas_object_text_text_set(sd->text, ee->prop.title);
      }
 
-   if ((ee->prop.title) && (wdata->win->shell_surface))
-     wl_shell_surface_set_title(wdata->win->shell_surface,
-                                ee->prop.title);
+   if (ee->prop.title)
+     ecore_wl_window_title_set(wdata->win, ee->prop.title);
 }
 
 void
@@ -947,9 +929,8 @@ _ecore_evas_wl_common_name_class_set(Ecore_Evas *ee, const char *n, const char *
    if (n) ee->prop.name = strdup(n);
    if (c) ee->prop.clas = strdup(c);
 
-   if ((ee->prop.clas) && (wdata->win->shell_surface))
-     wl_shell_surface_set_class(wdata->win->shell_surface,
-                                ee->prop.clas);
+   if (ee->prop.clas)
+     ecore_wl_window_class_name_set(wdata->win, ee->prop.clas);
 }
 
 void
@@ -1061,6 +1042,7 @@ _ecore_evas_wl_common_layer_set(Ecore_Evas *ee, int layer)
    if (layer < 1) layer = 1;
    else if (layer > 255) layer = 255;
    ee->prop.layer = layer;
+   _ecore_evas_wl_common_state_update(ee);
 }
 
 void
@@ -1083,7 +1065,7 @@ _ecore_evas_wl_common_border_update(Ecore_Evas *ee)
    if (!wdata->frame)
      return;
 
-   if (ee->prop.borderless || ee->prop.fullscreen)
+   if ((ee->prop.borderless) || (ee->prop.fullscreen))
      {
         evas_object_hide(wdata->frame);
         evas_output_framespace_set(ee->evas, 0, 0, 0, 0);
@@ -1109,6 +1091,7 @@ _ecore_evas_wl_common_borderless_set(Ecore_Evas *ee, int borderless)
    ee->prop.borderless = borderless;
 
    _ecore_evas_wl_common_border_update(ee);
+   _ecore_evas_wl_common_state_update(ee);
 }
 
 void
@@ -1119,9 +1102,10 @@ _ecore_evas_wl_common_maximized_set(Ecore_Evas *ee, int max)
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
 
    if (!ee) return;
-   wdata = ee->engine.data;
    if (ee->prop.maximized == max) return;
+   wdata = ee->engine.data;
    ecore_wl_window_maximized_set(wdata->win, max);
+//   _ecore_evas_wl_common_state_update(ee);
 }
 
 void
@@ -1135,6 +1119,7 @@ _ecore_evas_wl_common_fullscreen_set(Ecore_Evas *ee, int full)
    if (ee->prop.fullscreen == full) return;
    wdata = ee->engine.data;
    ecore_wl_window_fullscreen_set(wdata->win, full);
+//   _ecore_evas_wl_common_state_update(ee);
 }
 
 void
@@ -1224,14 +1209,15 @@ _ecore_evas_wl_frame_complete(void *data, struct wl_callback *callback, uint32_t
    wdata = ee->engine.data;
    if (!(win = wdata->win)) return;
 
-   win->frame_callback = NULL;
-   win->frame_pending = EINA_FALSE;
+   wdata->frame_callback = NULL;
+   wdata->frame_pending = EINA_FALSE;
    wl_callback_destroy(callback);
 
-   if (win->surface)
+   if (ecore_wl_window_surface_get(win))
      {
-        win->frame_callback = wl_surface_frame(win->surface);
-        wl_callback_add_listener(win->frame_callback, &frame_listener, ee);
+        wdata->frame_callback = 
+          wl_surface_frame(ecore_wl_window_surface_get(win));
+        wl_callback_add_listener(wdata->frame_callback, &frame_listener, ee);
      }
 }
 
@@ -1268,14 +1254,15 @@ _ecore_evas_wl_common_render(Ecore_Evas *ee)
 
    if (!ee->can_async_render)
      {
-        if (!win->frame_pending)
+        if (!wdata->frame_pending)
           {
              Eina_List *updates;
 
-             if (!win->frame_callback)
+             if (!wdata->frame_callback)
                {
-                  win->frame_callback = wl_surface_frame(win->surface);
-                  wl_callback_add_listener(win->frame_callback, 
+                  wdata->frame_callback = 
+                    wl_surface_frame(ecore_wl_window_surface_get(win));
+                  wl_callback_add_listener(wdata->frame_callback, 
                                            &frame_listener, ee);
                }
 
@@ -1284,7 +1271,7 @@ _ecore_evas_wl_common_render(Ecore_Evas *ee)
              evas_render_updates_free(updates);
 
              if (rend) 
-               win->frame_pending = EINA_TRUE;
+               wdata->frame_pending = EINA_TRUE;
           }
      }
    else if (evas_render_async(ee->evas))
@@ -1391,10 +1378,7 @@ _ecore_evas_wayland_move(Ecore_Evas *ee, int x, int y)
      {
 	wdata = ee->engine.data;
         if (wdata->win)
-          {
-             wdata->win->moving = EINA_TRUE;
-             ecore_wl_window_move(wdata->win, x, y);
-          }
+          ecore_wl_window_move(wdata->win, x, y);
      }
 }
 

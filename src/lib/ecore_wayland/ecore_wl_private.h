@@ -50,6 +50,184 @@ extern Ecore_Wl_Display *_ecore_wl_disp;
 # endif
 # define CRIT(...) EINA_LOG_DOM_CRIT(_ecore_wl_log_dom, __VA_ARGS__)
 
+
+struct _Ecore_Wl_Display
+{
+   struct
+     {
+        struct wl_display *display;
+        struct wl_registry *registry;
+        struct wl_compositor *compositor;
+        struct wl_subcompositor *subcompositor;
+        struct wl_shell *shell;
+        struct wl_shell *desktop_shell;
+        struct wl_shm *shm;
+        struct wl_data_device_manager *data_device_manager;
+     } wl;
+
+   int fd;
+   unsigned int mask;
+   unsigned int serial;
+   int sync_ref_count;
+   Ecore_Fd_Handler *fd_hdl;
+   Ecore_Idle_Enterer *idle_enterer;
+
+   Eina_Inlist *inputs;
+   Eina_Inlist *outputs;
+   Eina_Inlist *globals; /** @since 1.7.6 */
+
+   Eina_Bool init_done;
+
+   struct
+     {
+        struct xkb_context *context;
+     } xkb;
+
+   struct wl_cursor_theme *cursor_theme;
+
+   Ecore_Wl_Output *output;
+   Ecore_Wl_Input *input;
+
+   void (*output_configure)(Ecore_Wl_Output *output, void *data);
+   void *data;
+};
+
+struct _Ecore_Wl_Window
+{
+   Ecore_Wl_Display *display;
+   Ecore_Wl_Window *parent;
+
+   struct wl_surface *surface;
+   struct wl_shell_surface *shell_surface;
+
+   struct
+     {
+        struct wl_surface *surface;
+        int hot_x, hot_y;
+        Eina_Bool set : 1;
+     } pointer;
+
+   int id, surface_id;
+   int rotation;
+
+   const char *title;
+   const char *class_name;
+
+   Eina_Rectangle allocation;
+
+   struct
+     {
+        int w, h;
+     } saved;
+
+   struct
+     {
+        int x, y, w, h;
+     } opaque;
+
+   /* Eina_Bool redraw_scheduled : 1; */
+   /* Eina_Bool resize_scheduled : 1; */
+   Eina_Bool alpha : 1;
+   Eina_Bool transparent : 1;
+   Eina_Bool moving : 1;
+   Eina_Bool resizing : 1;
+   Eina_Bool has_buffer : 1;
+
+   Ecore_Wl_Window_Type type;
+   Ecore_Wl_Window_Buffer_Type buffer_type;
+
+   Ecore_Wl_Input *pointer_device;
+   Ecore_Wl_Input *keyboard_device;
+   Ecore_Wl_Input *touch_device;
+
+   Eina_Bool anim_pending : 1;
+   struct wl_callback *anim_callback;
+
+   /* FIXME: Ideally we should record the cursor name for this window
+    * so we can compare and avoid unnecessary cursor set calls to wayland */
+
+   Ecore_Wl_Subsurf *subsurfs;
+
+   void *data;
+};
+
+struct _Ecore_Wl_Input
+{
+   EINA_INLIST;
+   Ecore_Wl_Display *display;
+   struct wl_seat *seat;
+   struct wl_pointer *pointer;
+   struct wl_keyboard *keyboard;
+
+   struct wl_touch *touch;
+   struct wl_list touch_points;
+   int touch_count;
+
+   const char *cursor_name;
+   struct wl_cursor *cursor;
+   struct wl_surface *cursor_surface;
+   struct wl_callback *cursor_frame_cb;
+   Ecore_Timer *cursor_timer;
+   unsigned int cursor_current_index;
+
+   struct wl_data_device *data_device;
+   struct wl_data_source *data_source;
+   struct wl_array data_types;
+
+   Ecore_Wl_Window *pointer_focus;
+   Ecore_Wl_Window *keyboard_focus;
+   Ecore_Wl_Window *touch_focus;
+
+   unsigned int button;
+   unsigned int timestamp;
+   unsigned int modifiers;
+   unsigned int pointer_enter_serial;
+   int sx, sy;
+
+   Ecore_Wl_Window *grab;
+   unsigned int grab_button;
+
+   Ecore_Wl_Dnd_Source *drag_source;
+   Ecore_Wl_Dnd_Source *selection_source;
+
+   struct
+     {
+        struct xkb_keymap *keymap;
+        struct xkb_state *state;
+        xkb_mod_mask_t control_mask;
+        xkb_mod_mask_t alt_mask;
+        xkb_mod_mask_t shift_mask;
+        xkb_mod_mask_t win_mask;
+        xkb_mod_mask_t scroll_mask;
+        xkb_mod_mask_t num_mask;
+        xkb_mod_mask_t caps_mask;
+        xkb_mod_mask_t altgr_mask;
+        unsigned int mods_depressed;
+        unsigned int mods_latched;
+        unsigned int mods_locked;
+        unsigned int mods_group;
+     } xkb;
+
+   struct
+     {
+        Ecore_Timer *tmr;
+        unsigned int sym, key, time;
+     } repeat;
+};
+
+struct _Ecore_Wl_Output
+{
+   EINA_INLIST;
+   Ecore_Wl_Display *display;
+   struct wl_output *output;
+   Eina_Rectangle allocation;
+   int mw, mh;
+   int transform;
+
+   void (*destroy) (Ecore_Wl_Output *output, void *data);
+   void *data;
+};
+
 struct _Ecore_Wl_Dnd
 {
    Ecore_Wl_Display *ewd;
@@ -96,5 +274,8 @@ void _ecore_wl_events_init(void);
 void _ecore_wl_events_shutdown(void);
 
 void _ecore_wl_subsurfs_del_all(Ecore_Wl_Window *win);
+
+struct wl_compositor *_ecore_wl_compositor_get(void);
+struct wl_subcompositor *_ecore_wl_subcompositor_get(void);
 
 #endif

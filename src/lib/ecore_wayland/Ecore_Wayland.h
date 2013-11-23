@@ -31,7 +31,8 @@
 extern "C" {
 #endif
 
-typedef struct _Ecore_Wl_Display Ecore_Wl_Display;
+typedef struct _Ecore_Wl_Display Ecore_Wl_Display; /** FIXME: move to private */
+
 typedef struct _Ecore_Wl_Output Ecore_Wl_Output;
 typedef struct _Ecore_Wl_Input Ecore_Wl_Input;
 typedef struct _Ecore_Wl_Global Ecore_Wl_Global; /** @since 1.7.6 */
@@ -89,173 +90,10 @@ typedef enum _Ecore_Wl_Window_Buffer_Type Ecore_Wl_Window_Buffer_Type;
 /** @since 1.7.6 */
 struct _Ecore_Wl_Global
 {
+   EINA_INLIST;
    unsigned int id;
    char *interface;
    unsigned int version;
-   struct wl_list link;
-};
-
-struct _Ecore_Wl_Display
-{
-   struct 
-     {
-        struct wl_display *display;
-        struct wl_registry *registry;
-        struct wl_compositor *compositor;
-        struct wl_subcompositor *subcompositor;
-        struct wl_shell *shell;
-        struct wl_shell *desktop_shell;
-        struct wl_shm *shm;
-        struct wl_data_device_manager *data_device_manager;
-     } wl;
-
-   int fd;
-   unsigned int mask;
-   unsigned int serial;
-   int sync_ref_count;
-   Ecore_Fd_Handler *fd_hdl;
-   Ecore_Idle_Enterer *idle_enterer;
-
-   struct wl_list inputs;
-   struct wl_list outputs;
-   struct wl_list globals; /** @since 1.7.6 */
-
-   struct
-     {
-        struct xkb_context *context;
-     } xkb;
-
-   struct wl_cursor_theme *cursor_theme;
-
-   Ecore_Wl_Output *output;
-   Ecore_Wl_Input *input;
-
-   void (*output_configure)(Ecore_Wl_Output *output, void *data);
-   void *data;
-};
-
-struct _Ecore_Wl_Output
-{
-   Ecore_Wl_Display *display;
-   struct wl_output *output;
-   Eina_Rectangle allocation;
-   int mw, mh;
-   int transform;
-   struct wl_list link;
-
-   void (*destroy) (Ecore_Wl_Output *output, void *data);
-   void *data;
-};
-
-struct _Ecore_Wl_Input
-{
-   Ecore_Wl_Display *display;
-   struct wl_seat *seat;
-   struct wl_pointer *pointer;
-   struct wl_keyboard *keyboard;
-   struct wl_touch *touch;
-
-   const char *cursor_name;
-   struct wl_cursor *cursor;
-   struct wl_surface *cursor_surface;
-   struct wl_callback *cursor_frame_cb;
-   Ecore_Timer *cursor_timer;
-   unsigned int cursor_current_index;
-
-   struct wl_data_device *data_device;
-   struct wl_data_source *data_source;
-   struct wl_array data_types;
-
-   Ecore_Wl_Window *pointer_focus;
-   Ecore_Wl_Window *keyboard_focus;
-
-   unsigned int button;
-   unsigned int timestamp;
-   unsigned int modifiers;
-   unsigned int pointer_enter_serial;
-   int sx, sy;
-
-   struct wl_list link;
-
-   Ecore_Wl_Window *grab;
-   unsigned int grab_button;
-
-   Ecore_Wl_Dnd_Source *drag_source;
-   Ecore_Wl_Dnd_Source *selection_source;
-
-   struct
-     {
-        struct xkb_keymap *keymap;
-        struct xkb_state *state;
-        xkb_mod_mask_t control_mask;
-        xkb_mod_mask_t alt_mask;
-        xkb_mod_mask_t shift_mask;
-     } xkb;
-
-   struct 
-     {
-        Ecore_Timer *tmr;
-        unsigned int sym, key, time;
-     } repeat;
-};
-
-struct _Ecore_Wl_Window
-{
-   Ecore_Wl_Display *display;
-   Ecore_Wl_Window *parent;
-
-   struct wl_surface *surface;
-   struct wl_shell_surface *shell_surface;
-
-   struct 
-     {
-        struct wl_surface *surface;
-        int hot_x, hot_y;
-        Eina_Bool set : 1;
-     } pointer;
-
-   int id, surface_id;
-   int edges, rotation;
-
-   Eina_Rectangle allocation;
-
-   struct 
-     {
-        int w, h;
-     } saved, server;
-
-   struct 
-     {
-        int x, y, w, h;
-     } opaque;
-
-   /* Eina_Bool redraw_scheduled : 1; */
-   /* Eina_Bool resize_scheduled : 1; */
-   Eina_Bool alpha : 1;
-   Eina_Bool transparent : 1;
-   Eina_Bool moving : 1;
-   Eina_Bool resizing : 1;
-   Eina_Bool has_buffer : 1;
-
-   Ecore_Wl_Window_Type type;
-   Ecore_Wl_Window_Buffer_Type buffer_type;
-
-   Ecore_Wl_Input *pointer_device;
-   Ecore_Wl_Input *keyboard_device;
-
-   /* FIXME: Shouldn't these attributes be private to the Ecore_Wl_Window? */
-   Eina_Bool frame_pending : 1;
-   struct wl_callback *frame_callback;
-
-   Eina_Bool anim_pending : 1;
-   struct wl_callback *anim_callback;
-
-   /* FIXME: Ideally we should record the cursor name for this window 
-    * so we can compare and avoid unnecessary cursor set calls to wayland */
-
-   Ecore_Wl_Subsurf *subsurfs;
-
-   void *data;
 };
 
 struct _Ecore_Wl_Event_Mouse_In
@@ -303,6 +141,7 @@ struct _Ecore_Wl_Event_Window_Configure
    unsigned int win;
    unsigned int event_win;
    int x, y, w, h;
+   int edges;
 };
 
 struct _Ecore_Wl_Event_Dnd_Enter
@@ -366,6 +205,10 @@ struct _Ecore_Wl_Event_Interfaces_Bound
    Eina_Bool compositor : 1;
    Eina_Bool shm : 1;
    Eina_Bool shell : 1;
+   Eina_Bool output : 1;
+   Eina_Bool seat : 1;
+   Eina_Bool data_device_manager : 1;
+   Eina_Bool subcompositor : 1;
 };
 
 /**
@@ -490,6 +333,16 @@ EAPI struct wl_shm *ecore_wl_shm_get(void);
 EAPI struct wl_display *ecore_wl_display_get(void);
 
 /**
+ * Retrieves the Compositor interface.
+ *
+ * This interface is used by clients to request the creation of surfaces and
+ * regions.
+ *
+ * @return The current wayland compositor interface
+ * @since 1.8
+ */
+
+/**
  * Retrieves the size of the current screen.
  *
  * @param w where to return the width. May be NULL. Returns 0 on error.
@@ -548,18 +401,28 @@ EAPI void ecore_wl_input_ungrab(Ecore_Wl_Input *input);
 EAPI void ecore_wl_input_pointer_set(Ecore_Wl_Input *input, struct wl_surface *surface, int hot_x, int hot_y);
 EAPI void ecore_wl_input_cursor_from_name_set(Ecore_Wl_Input *input, const char *cursor_name);
 EAPI void ecore_wl_input_cursor_default_restore(Ecore_Wl_Input *input);
+EAPI struct wl_seat *ecore_wl_input_seat_get(Ecore_Wl_Input *input);
 
-EAPI struct wl_list *ecore_wl_outputs_get(void);
+EAPI Eina_Inlist *ecore_wl_outputs_get(void);
 
 /**
  * Retrieves the Wayland Globals Interface list used for the current Wayland connection.
+ *
+ * This call, if done after the ECORE_WL_EVENT_INTERFACES_BOUND event was
+ * received already, won't block the mainloop or trigger a dispatch. It will
+ * return the current globals immediately. However, if done before this event,
+ * it will probably block the mainloop waiting for the sync "done" event to be
+ * received (by using one or more wl_display_dispatch call), and then finally
+ * return the wl globals list.
+ *
+ * There's no need to call dispatch manually, since this call will do it if necessary.
  *
  * @return The current wayland globals interface list
  *
  * @ingroup Ecore_Wl_Display_Group
  * @since 1.7.6
  */
-EAPI struct wl_list *ecore_wl_globals_get(void);
+EAPI Eina_Inlist *ecore_wl_globals_get(void);
 
 /**
  * Retrieves the Wayland Registry used for the current Wayland connection.
@@ -691,6 +554,14 @@ EAPI void ecore_wl_window_pointer_set(Ecore_Wl_Window *win, struct wl_surface *s
 EAPI void ecore_wl_window_cursor_from_name_set(Ecore_Wl_Window *win, const char *cursor_name);
 EAPI void ecore_wl_window_cursor_default_restore(Ecore_Wl_Window *win);
 EAPI void ecore_wl_window_parent_set(Ecore_Wl_Window *win, Ecore_Wl_Window *parent);
+
+
+EAPI int ecore_wl_window_id_get(Ecore_Wl_Window *win);
+EAPI void ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title);
+EAPI void ecore_wl_window_class_name_set(Ecore_Wl_Window *win, const char *class_name);
+EAPI int ecore_wl_window_surface_id_get(Ecore_Wl_Window *win);
+       
+EAPI Ecore_Wl_Input *ecore_wl_window_keyboard_get(Ecore_Wl_Window *win);
 
 /**
  * Returns a wl_surface with no association to any wl_shell_surface.

@@ -25,7 +25,7 @@ EAPI Eo_Op EVAS_OBJ_IMAGE_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EVAS_OBJ_IMAGE_CLASS
 
-#define MY_CLASS_NAME "Evas_Object_Image"
+#define MY_CLASS_NAME "Evas_Image"
 
 #define VERBOSE_PROXY_ERROR 1
 
@@ -230,7 +230,7 @@ static const Evas_Object_Image_State default_state = {
   EVAS_TEXTURE_REPEAT,
   EVAS_COLORSPACE_ARGB8888,
 
-  EINA_TRUE, EINA_FALSE, EINA_FALSE, EINA_FALSE
+  EINA_TRUE, EINA_FALSE, EINA_FALSE, EINA_FALSE, EINA_FALSE
 };
 
 Eina_Cow *evas_object_image_load_opts_cow = NULL;
@@ -397,7 +397,7 @@ evas_object_image_memfile_set(Evas_Object *eo_obj, void *data, int size, char *f
 }
 
 static void
-_image_init_set(Eina_File *f, const char *file, const char *key,
+_image_init_set(const Eina_File *f, const char *file, const char *key,
                 Eo *eo_obj, Evas_Object_Protected_Data *obj, Evas_Object_Image *o,
                 Evas_Image_Load_Opts *lo)
 {
@@ -523,7 +523,7 @@ _image_done_set(Eo *eo_obj, Evas_Object_Protected_Data *obj, Evas_Object_Image *
 }
 
 EAPI void
-evas_object_image_mmap_set(Evas_Object *eo_obj, Eina_File *f, const char *key)
+evas_object_image_mmap_set(Evas_Object *eo_obj, const Eina_File *f, const char *key)
 {
    eo_do(eo_obj, evas_obj_image_mmap_set(f, key));
 }
@@ -535,7 +535,7 @@ _image_mmap_set(Eo *eo_obj, void *_pd, va_list *list)
    Evas_Object_Image *o = _pd;
    Evas_Image_Load_Opts lo;
 
-   Eina_File *f = va_arg(*list, Eina_File *);
+   const Eina_File *f = va_arg(*list, const Eina_File *);
    const char *key = va_arg(*list, const char*);
 
    if (o->cur->u.f == f)
@@ -1258,8 +1258,8 @@ _image_size_set(Eo *eo_obj, void *_pd, va_list *list)
    _evas_object_image_cleanup(eo_obj, obj, o);
    if (w < 1) w = 1;
    if (h < 1) h = 1;
-   if (w > 32768) return;
-   if (h > 32768) return;
+   if (w >= 32768) return;
+   if (h >= 32768) return;
    if ((w == o->cur->image.w) &&
        (h == o->cur->image.h)) return;
 
@@ -2625,12 +2625,23 @@ _image_video_surface_caps_get(Eo *eo_obj EINA_UNUSED, void *_pd, va_list *list)
    *caps = (!o->video_surface ? 0 : o->pixels->video_caps);
 }
 
+static void
+_on_image_native_surface_del(void *data EINA_UNUSED, Evas *e EINA_UNUSED, Evas_Object *obj, void *einfo EINA_UNUSED)
+{
+   evas_object_image_native_surface_set(obj, NULL);
+}
+
 EAPI void
 evas_object_image_native_surface_set(Evas_Object *eo_obj, Evas_Native_Surface *surf)
 {
    MAGIC_CHECK(eo_obj, Evas_Object, MAGIC_OBJ);
    return;
    MAGIC_CHECK_END();
+   evas_object_event_callback_del_full
+     (eo_obj, EVAS_CALLBACK_DEL, _on_image_native_surface_del, NULL);
+   if (surf) // We need to unset native surf on del to remove shared hash refs
+     evas_object_event_callback_add
+     (eo_obj, EVAS_CALLBACK_DEL, _on_image_native_surface_del, NULL);
    eo_do(eo_obj, evas_obj_image_native_surface_set(surf));
 }
 
@@ -3253,45 +3264,11 @@ _proxy_error(Evas_Object *eo_proxy, void *context, void *output, void *surface,
    return;
 }
 
-/*
-static void
-_proxy_subrender_recurse(Evas_Object *eo_obj, Evas_Object *clip, void *output, void *surface, void *ctx, int x, int y)
-{
-   Evas_Object *eo_obj2;
-   Evas *eo_e = obj->layer->evas;
-   
-   if (obj->clip.clipees) return;
-   if (!obj->cur->visible) return;
-   if ((!clip) || (clip != obj->cur->clipper))
-     {
-        if (!obj->cur->cache.clip.visible) return;
-        if ((obj->cur->cache.clip.a == 0) &&
-            (obj->cur->render_op == EVAS_RENDER_BLEND)) return;
-     }
-   if ((obj->func->is_visible) && (!obj->func->is_visible(eo_obj))) return;
-   
-   if (!obj->pre_render_done)
-      obj->func->render_pre(eo_obj);
-   ctx = e->engine.func->context_new(output);
-   if (obj->is_smart)
-     {
-        EINA_INLIST_FOREACH(evas_object_smart_members_get_direct(eo_obj), obj2)
-          {
-             _proxy_subrender_recurse(obj2, clip, output, surface, ctx, x, y);
-          }
-     }
-   else
-     {
-        obj->func->render(eo_obj, output, ctx, surface, x, y);
-     }
-   e->engine.func->context_free(output, ctx);
-}
-*/
 
 /**
  * Render the source object when a proxy is set.
  *
- * Used to force a draw if necessary, else just makes sures it's available.
+ * Used to force a draw if necessary, else just makes sure it's available.
  */
 static void
 _proxy_subrender(Evas *eo_e, Evas_Object *eo_source, Evas_Object *eo_proxy, Evas_Object_Protected_Data *proxy_obj, Eina_Bool do_async)
@@ -3300,7 +3277,6 @@ _proxy_subrender(Evas *eo_e, Evas_Object *eo_source, Evas_Object *eo_proxy, Evas
    Evas_Object_Protected_Data *source;
    void *ctx;
    int w, h;
-   Eina_Bool src_redraw = EINA_FALSE;
 
    if (!eo_source) return;
    source = eo_data_scope_get(eo_source, EVAS_OBJ_CLASS);
@@ -3330,77 +3306,42 @@ _proxy_subrender(Evas *eo_e, Evas_Object *eo_source, Evas_Object *eo_proxy, Evas
              if (!proxy_write->surface) goto end;
              proxy_write->w = w;
              proxy_write->h = h;
-             src_redraw = EINA_TRUE;
           }
 
-        if (!src_redraw)
-          src_redraw = evas_object_smart_changed_get(eo_source);
+        ctx = e->engine.func->context_new(e->engine.data.output);
+        e->engine.func->context_color_set(e->engine.data.output, ctx, 0, 0,
+                                          0, 0);
+        e->engine.func->context_render_op_set(e->engine.data.output, ctx,
+                                              EVAS_RENDER_COPY);
+        e->engine.func->rectangle_draw(e->engine.data.output, ctx,
+                                       proxy_write->surface, 0, 0, w, h,
+                                       do_async);
+        e->engine.func->context_free(e->engine.data.output, ctx);
 
-        if (src_redraw)
-          {
-             ctx = e->engine.func->context_new(e->engine.data.output);
-             e->engine.func->context_color_set(e->engine.data.output, ctx, 0, 0,
-                                               0, 0);
-             e->engine.func->context_render_op_set(e->engine.data.output, ctx,
-                                                   EVAS_RENDER_COPY);
-             e->engine.func->rectangle_draw(e->engine.data.output, ctx,
-                                            proxy_write->surface, 0, 0, w, h,
-                                            do_async);
-             e->engine.func->context_free(e->engine.data.output, ctx);
+        ctx = e->engine.func->context_new(e->engine.data.output);
 
-             ctx = e->engine.func->context_new(e->engine.data.output);
+        Eina_Bool source_clip;
+        eo_do(eo_proxy, evas_obj_image_source_clip_get(&source_clip));
 
-             Eina_Bool source_clip;
-             eo_do(eo_proxy, evas_obj_image_source_clip_get(&source_clip));
-
-             Evas_Proxy_Render_Data proxy_render_data = {
-                  .eo_proxy = eo_proxy,
-                  .proxy_obj = proxy_obj,
-                  .eo_src = eo_source,
-                  .source_clip = source_clip
-             };
-             evas_render_mapped(e, eo_source, source, ctx, proxy_write->surface,
-                                -source->cur->geometry.x,
-                                -source->cur->geometry.y,
-                                1, 0, 0, e->output.w, e->output.h,
-                                &proxy_render_data
+        Evas_Proxy_Render_Data proxy_render_data = {
+             .eo_proxy = eo_proxy,
+             .proxy_obj = proxy_obj,
+             .eo_src = eo_source,
+             .source_clip = source_clip
+        };
+        evas_render_mapped(e, eo_source, source, ctx, proxy_write->surface,
+                           -source->cur->geometry.x,
+                           -source->cur->geometry.y,
+                           1, 0, 0, e->output.w, e->output.h,
+                           &proxy_render_data
 #ifdef REND_DBG
-                                , 1
+                           , 1
 #endif
-                                , do_async);
+                           , do_async);
 
-             e->engine.func->context_free(e->engine.data.output, ctx);
-          }
+        e->engine.func->context_free(e->engine.data.output, ctx);
         proxy_write->surface = e->engine.func->image_dirty_region
-          (e->engine.data.output, proxy_write->surface, 0, 0, w, h);
-/*   
-   ctx = e->engine.func->context_new(e->engine.data.output);
-   if (eo_isa(source, EVAS_OBJ_SMART_CLASS))
-     {
-        clip = evas_object_smart_clipped_clipper_get(source);
-        EINA_INLIST_FOREACH(evas_object_smart_members_get_direct(source), obj2)
-          {
-             _proxy_subrender_recurse(obj2, clip, e->engine.data.output,
-                                      proxy_write->surface,
-                                      ctx,
-                                      -source->cur->geometry.x,
-                                      -source->cur->geometry.y);
-          }
-     }
-   else
-     {
-        if (!source->pre_render_done)
-           source->func->render_pre(source);
-        source->func->render(source, e->engine.data.output, ctx,
-                             proxy_write->surface,
-                             -source->cur->geometry.x,
-                             -source->cur->geometry.y);
-     }
-   
-   e->engine.func->context_free(e->engine.data.output, ctx);
-   proxy_write->surface = e->engine.func->image_dirty_region
-      (e->engine.data.output, proxy_write->surface, 0, 0, w, h);
-*/
+           (e->engine.data.output, proxy_write->surface, 0, 0, w, h);
      }
  end:
    EINA_COW_WRITE_END(evas_object_proxy_cow, source->proxy, proxy_write);
@@ -3606,14 +3547,11 @@ _evas_object_image_free(Evas_Object *obj)
 
    o = eo_data_scope_get(obj, MY_CLASS);
 
-   eina_cow_free(evas_object_image_load_opts_cow, o->load_opts);
-   o->load_opts = &default_load_opts;
-   eina_cow_free(evas_object_image_pixels_cow, o->pixels);
-   o->pixels = &default_pixels;
-   eina_cow_free(evas_object_image_state_cow, o->cur);
-   o->cur = &default_state;
-   eina_cow_free(evas_object_image_state_cow, o->prev);
-   o->prev = &default_state;
+   // eina_cow_free reset the pointer to the default read only state
+   eina_cow_free(evas_object_image_load_opts_cow, (const Eina_Cow_Data**) &o->load_opts);
+   eina_cow_free(evas_object_image_pixels_cow, (const Eina_Cow_Data**) &o->pixels);
+   eina_cow_free(evas_object_image_state_cow, (const Eina_Cow_Data**) &o->cur);
+   eina_cow_free(evas_object_image_state_cow, (const Eina_Cow_Data**) &o->prev);
 }
 
 static void
@@ -3987,53 +3925,15 @@ evas_object_image_render(Evas_Object *eo_obj, Evas_Object_Protected_Data *obj, v
                            (o->cur->border.b == 0) &&
                            (o->cur->border.fill != 0))
                          {
-#ifdef EVAS_CSERVE2
-                            if (evas_cserve2_use_get())
-                              {
-                                 Image_Entry *ie;
-                                 void *data = pixels;
-                                 int w = imagew, h = imageh;
-                                 Eina_Bool mustclose = EINA_FALSE;
-
-                                 ie = evas_cache2_image_scale_load
-                                   ((Image_Entry *)pixels,
-                                    0, 0,
-                                    imagew, imageh,
-                                    iw, ih, o->cur->smooth_scale);
-                                 if (ie != &((RGBA_Image *)pixels)->cache_entry)
-                                   {
-                                      data = ie;
-                                      w = iw;
-                                      h = ih;
-                                      mustclose = EINA_TRUE;
-                                   }
-
-                                 _draw_image
-                                   (obj, output, context, surface, data,
-                                    0, 0,
-                                    w, h,
-                                    obj->cur->geometry.x + ix + x,
-                                    obj->cur->geometry.y + iy + y,
-                                    iw, ih,
-                                    o->cur->smooth_scale,
-                                    do_async);
-
-                                 if (mustclose)
-                                   evas_cache2_image_close(ie);
-                              }
-                            else
-#endif
-                              {
-                                 _draw_image
-                                   (obj, output, context, surface, pixels,
-                                    0, 0,
-                                    imagew, imageh,
-                                    obj->cur->geometry.x + ix + x,
-                                    obj->cur->geometry.y + iy + y,
-                                    iw, ih,
-                                    o->cur->smooth_scale,
-                                    do_async);
-                              }
+                            _draw_image
+                              (obj, output, context, surface, pixels,
+                               0, 0,
+                               imagew, imageh,
+                               obj->cur->geometry.x + ix + x,
+                               obj->cur->geometry.y + iy + y,
+                               iw, ih,
+                               o->cur->smooth_scale,
+                               do_async);
                          }
                        else
                          {

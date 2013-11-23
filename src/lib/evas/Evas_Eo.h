@@ -257,6 +257,7 @@ enum
    EVAS_CANVAS_SUB_ID_SMART_OBJECTS_CALCULATE,
    EVAS_CANVAS_SUB_ID_SMART_OBJECTS_CALCULATE_COUNT_GET,
    EVAS_CANVAS_SUB_ID_RENDER_ASYNC,
+   EVAS_CANVAS_SUB_ID_TREE_OBJECTS_AT_XY_GET,
    EVAS_CANVAS_SUB_ID_LAST
 };
 
@@ -1158,6 +1159,23 @@ enum
  * @see evas_event_refeed_event
  */
 #define evas_canvas_event_refeed_event(event_copy, event_type) EVAS_CANVAS_ID(EVAS_CANVAS_SUB_ID_EVENT_REFEED_EVENT), EO_TYPECHECK(void *, event_copy), EO_TYPECHECK(Evas_Callback_Type, event_type)
+
+/**
+ * @def evas_canvas_tree_objects_at_xy_get
+ * @since 1.8
+ *
+ * Retrieve a list of Evas objects lying over a given position in
+ * a canvas.
+ *
+ * @param[in] stop An Evas Object where to stop searching.
+ * @param[in] x The horizontal coordinate of the position.
+ * @param[in] y The vertical coordinate of the position.
+ * @param[out] list of Evas Objects.
+ *
+ * @see evas_tree_objects_at_xy_get
+ */
+#define evas_canvas_tree_objects_at_xy_get(stop, x, y, ret) EVAS_CANVAS_ID(EVAS_CANVAS_SUB_ID_TREE_OBJECTS_AT_XY_GET), EO_TYPECHECK(Evas_Object *, stop), EO_TYPECHECK(int, x), EO_TYPECHECK(int, y), EO_TYPECHECK(Eina_List **, ret)
+
 /**
  * @}
  */
@@ -2312,7 +2330,7 @@ enum
  *
  * @see evas_object_textblock_style_set
  */
-#define evas_obj_textblock_style_set(ts) EVAS_OBJ_TEXTBLOCK_ID(EVAS_OBJ_TEXTBLOCK_SUB_ID_STYLE_SET), EO_TYPECHECK(Evas_Textblock_Style *, ts)
+#define evas_obj_textblock_style_set(ts) EVAS_OBJ_TEXTBLOCK_ID(EVAS_OBJ_TEXTBLOCK_SUB_ID_STYLE_SET), EO_TYPECHECK(const Evas_Textblock_Style *, ts)
 
 /**
  * @def evas_obj_textblock_style_get
@@ -4574,10 +4592,10 @@ enum
  * @since 1.8
  * Retrieves the general/main color of the given Evas object.
  *
- * @param r out
- * @param g out
- * @param b out
- * @param a out
+ * @param[out] r out
+ * @param[out] g out
+ * @param[out] b out
+ * @param[out] a out
  *
  * @see evas_object_color_get
  */
@@ -5631,8 +5649,8 @@ enum
  * Set the source file from where an image object must fetch the real
  * image data (it may be an Eet file, besides pure image ones).
  *
- * @param[in] file in
- * @param[in] key in
+ * @param[in] file The image file path.
+ * @param[in] key The image key in @p file (if its an Eet one), or @c
  *
  * @see evas_object_image_file_set
  */
@@ -5650,23 +5668,23 @@ enum
  *
  * @see evas_obj_image_file_set
  */
-#define evas_obj_image_mmap_set(f, key) EVAS_OBJ_IMAGE_ID(EVAS_OBJ_IMAGE_SUB_ID_MMAP_SET), EO_TYPECHECK(Eina_File *, f), EO_TYPECHECK(const char*, key)
+#define evas_obj_image_mmap_set(f, key) EVAS_OBJ_IMAGE_ID(EVAS_OBJ_IMAGE_SUB_ID_MMAP_SET), EO_TYPECHECK(const Eina_File *, f), EO_TYPECHECK(const char*, key)
 
 /**
  * @def evas_obj_image_file_get
  * @since 1.8
  *
- * This is the same as evas_object_image_file_set() but the file to be loaded
- * may exist at an address in memory (the data for the file, not the filename
- * itself). The @p data at the address is copied and stored for future use, so
- * no @p data needs to be kept after this call is made. It will be managed and
- * freed for you when no longer needed. The @p size is limited to 2 gigabytes
- * in size, and must be greater than 0. A @c NULL @p data pointer is also
- * invalid. Set the filename to @c NULL to reset to empty state and have the
- * image file data freed from memory using evas_object_image_file_set().
+ * Retrieve the source file from where an image object is to fetch the
+ * real image data (it may be an Eet file, besides pure image ones).
  *
- * @param[in] file out
- * @param[in] key out
+ * @param[out] file Location to store the image file path.
+ * @param[out] key Location to store the image key (if @p file is an Eet
+ * one).
+ *
+ * You must @b not modify the strings on the returned pointers.
+ *
+ * @note Use @c NULL pointers on the file components you're not
+ * interested in: they'll be ignored by the function.
  *
  * @see evas_object_image_file_get
  */
@@ -6655,7 +6673,7 @@ EO_TYPECHECK(Eina_Bool *, ret)
  *
  * Gets the engine specific output parameters for a given output.
  *
- * @param[ret] info The engine parameters return (NULL on failure)
+ * @param[out] info The engine parameters return (NULL on failure)
  *
  * @see evas_out_engine_info_set
  * @see evas_output_viewport_get

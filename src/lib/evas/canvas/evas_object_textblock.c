@@ -74,7 +74,7 @@ EAPI Eo_Op EVAS_OBJ_TEXTBLOCK_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EVAS_OBJ_TEXTBLOCK_CLASS
 
-#define MY_CLASS_NAME "Evas_Object_Textblock"
+#define MY_CLASS_NAME "Evas_Textblock"
 
 #include "linebreak.h"
 #include "wordbreak.h"
@@ -2332,6 +2332,8 @@ static void
 _format_param_parse(const char *item, const char **key, Eina_Tmpstr **val)
 {
    const char *start, *end;
+   char *tmp, *s, *d;
+   size_t len;
 
    start = strchr(item, '=');
    *key = eina_stringshare_add_length(item, start - item);
@@ -2356,38 +2358,22 @@ _format_param_parse(const char *item, const char **key, Eina_Tmpstr **val)
      }
 
    /* Null terminate before the spaces */
-   if (end)
-     {
-        char *tmp = alloca(end - start + 1);
-        char *s, *d;
+   if (end) len = end - start;
+   else len = strlen(start);
 
-        for (d = tmp, s = (char *)start; s < end; s++)
-          {
-             if (*s != '\\')
-               {
-                  *d = *s;
-                  d++;
-               }
-          }
-        *d = 0;
-        *val = eina_tmpstr_add(tmp);
-     }
-   else
-     {
-        char *tmp = alloca(strlen(start) + 1);
-        char *s, *d;
+   tmp = (char*) eina_tmpstr_add_length(start, len);
 
-        for (d = tmp, s = (char *)start; *s; s++)
+   for (d = tmp, s = tmp; *s; s++)
+     {
+        if (*s != '\\')
           {
-             if (*s != '\\')
-               {
-                  *d = *s;
-                  d++;
-               }
+             *d = *s;
+             d++;
           }
-        *d = 0;
-        *val = eina_tmpstr_add(tmp);
      }
+   *d = '\0';
+
+   *val = tmp;
 }
 
 /**
@@ -5713,7 +5699,7 @@ _textblock_style_generic_set(Evas_Object *eo_obj, Evas_Textblock_Style *ts,
 }
 
 EAPI void
-evas_object_textblock_style_set(Evas_Object *eo_obj, Evas_Textblock_Style *ts)
+evas_object_textblock_style_set(Evas_Object *eo_obj, const Evas_Textblock_Style *ts)
 {
    eo_do(eo_obj, evas_obj_textblock_style_set(ts));
 }
@@ -5722,8 +5708,8 @@ static void
 _textblock_style_set(Eo *eo_obj, void *_pd, va_list *list)
 {
    Evas_Object_Textblock *o = _pd;
-   Evas_Textblock_Style *ts = va_arg(*list, Evas_Textblock_Style *);
-   _textblock_style_generic_set(eo_obj, ts, &(o->style));
+   const Evas_Textblock_Style *ts = va_arg(*list, const Evas_Textblock_Style *);
+   _textblock_style_generic_set(eo_obj, (Evas_Textblock_Style *) ts, &(o->style));
 }
 
 EAPI const Evas_Textblock_Style *
@@ -8592,6 +8578,7 @@ evas_textblock_cursor_format_append(Evas_Textblock_Cursor *cur, const char *form
           }
         else
           {
+             fmt = _evas_textblock_node_format_last_at_off(fmt);
              if (evas_textblock_cursor_format_is_visible_get(cur))
                {
                   o->format_nodes = _NODE_FORMAT(eina_inlist_prepend_relative(
@@ -8607,7 +8594,6 @@ evas_textblock_cursor_format_append(Evas_Textblock_Cursor *cur, const char *form
                }
              else
                {
-                  fmt = _evas_textblock_node_format_last_at_off(fmt);
                   o->format_nodes = _NODE_FORMAT(eina_inlist_append_relative(
                            EINA_INLIST_GET(o->format_nodes),
                            EINA_INLIST_GET(n),
@@ -10740,6 +10726,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
    /* render object to surface with context, and offxet by x,y */
    obj->layer->evas->engine.func->context_multiplier_unset(output,
 							   context);
+   ENFN->context_render_op_set(output, context, obj->cur->render_op);
    /* FIXME: This clipping is just until we fix inset handling correctly. */
    ENFN->context_clip_clip(output, context,
                               obj->cur->geometry.x + x,
@@ -10883,14 +10870,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
              _og = itr->format->color.oname.g; \
              _ob = itr->format->color.oname.b; \
              _oa = itr->format->color.oname.a; \
-             if (!EINA_INLIST_GET(itr)->next) \
-               { \
-                  DRAW_RECT(itr->x, oy, itr->w, oh, _or, _og, _ob, _oa); \
-               } \
-             else \
-               { \
-                  DRAW_RECT(itr->x, oy, itr->adv, oh, _or, _og, _ob, _oa); \
-               } \
+             DRAW_RECT(itr->x, oy, itr->adv, oh, _or, _og, _ob, _oa); \
           } \
      } \
    while (0)
@@ -10934,8 +10914,12 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         switch (ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC)
           {
            case EVAS_TEXT_STYLE_SHADOW:
+             shad_dst = 1;
+             haveshad = 1;
+             break;
            case EVAS_TEXT_STYLE_OUTLINE_SOFT_SHADOW:
              shad_dst = 1;
+             shad_sz = 2;
              haveshad = 1;
              break;
            case EVAS_TEXT_STYLE_OUTLINE_SHADOW:
@@ -11032,7 +11016,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         ti = (itr->type == EVAS_TEXTBLOCK_ITEM_TEXT) ? _ITEM_TEXT(itr) : NULL;
         if (!ti) continue;
 
-        if (ti->parent.format->style == EVAS_TEXT_STYLE_GLOW)
+        if ((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_GLOW)
           {
              for (j = 0; j < 5; j++)
                {
@@ -11061,9 +11045,9 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         ti = (itr->type == EVAS_TEXTBLOCK_ITEM_TEXT) ? _ITEM_TEXT(itr) : NULL;
         if (!ti) continue;
 
-        if ((ti->parent.format->style == EVAS_TEXT_STYLE_OUTLINE) ||
-              (ti->parent.format->style == EVAS_TEXT_STYLE_OUTLINE_SHADOW) ||
-              (ti->parent.format->style == EVAS_TEXT_STYLE_OUTLINE_SOFT_SHADOW))
+        if (((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_OUTLINE) ||
+            ((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_OUTLINE_SHADOW) ||
+            ((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_OUTLINE_SOFT_SHADOW))
           {
              COLOR_SET(outline);
              DRAW_TEXT(-1, 0);
@@ -11493,8 +11477,8 @@ pfnode(Evas_Object_Textblock_Node_Format *n)
 {
    printf("Format Node: %p\n", n);
    printf("next = %p, prev = %p, last = %p\n", EINA_INLIST_GET(n)->next, EINA_INLIST_GET(n)->prev, EINA_INLIST_GET(n)->last);
-   printf("text_node = %p, offset = %u, visible = %d\n", n->text_node, n->offset, n->visible);
-   printf("'%s'\n", eina_strbuf_string_get(n->format));
+   printf("text_node = %p, offset = %u, visible = %d\n", n->text_node, (unsigned int) n->offset, n->visible);
+   printf("'%s'\n", n->format);
 }
 
 EAPI void
@@ -11511,10 +11495,10 @@ pitem(Evas_Object_Textblock_Item *it)
 {
    Evas_Object_Textblock_Text_Item *ti;
    Evas_Object_Textblock_Format_Item *fi;
-   printf("Item: %p\n", it);
+   printf("Item: %p %s\n", it, (it->visually_deleted) ? "(visually deleted)" : "");
    printf("Type: %s (%d)\n", (it->type == EVAS_TEXTBLOCK_ITEM_TEXT) ?
          "TEXT" : "FORMAT", it->type);
-   printf("Text pos: %d Visual pos: %d\n", it->text_pos,
+   printf("Text pos: %u Visual pos: %u\n", (unsigned int) it->text_pos, (unsigned int)
 #ifdef BIDI_SUPPORT
          it->visual_pos
 #else
@@ -11525,8 +11509,12 @@ pitem(Evas_Object_Textblock_Item *it)
          (int) it->adv);
    if (it->type == EVAS_TEXTBLOCK_ITEM_TEXT)
      {
+        Eina_Unicode *tmp;
         ti = _ITEM_TEXT(it);
-        printf("Text: '%*ls'\n", ti->text_props.text_len, GET_ITEM_TEXT(ti));
+        tmp = eina_unicode_strdup(GET_ITEM_TEXT(ti));
+        tmp[ti->text_props.text_len] = '\0';
+        printf("Text: '%ls'\n", tmp);
+        free(tmp);
      }
    else
      {

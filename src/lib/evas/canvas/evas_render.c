@@ -293,25 +293,34 @@ _evas_render_phase1_direct(Evas_Public_Data *e,
    unsigned int i;
    Eina_List *l;
    Evas_Object *eo_proxy;
+   Eina_Bool changed;
 
    RD("  [--- PHASE 1 DIRECT\n");
    for (i = 0; i < active_objects->count; i++)
      {
-        Evas_Object_Protected_Data *obj = eina_array_data_get(active_objects, i);
+        Evas_Object_Protected_Data *obj =
+           eina_array_data_get(active_objects, i);
 
-        if (obj->changed)
+        if (obj->changed) evas_object_clip_recalc(obj);
+        if (!obj->proxy->proxies) continue;
+
+        if (obj->smart.smart)
+          changed = evas_object_smart_changed_get(obj->object);
+        else changed = obj->changed;
+
+        if (changed)
           {
              /* Flag need redraw on proxy too */
-             evas_object_clip_recalc(obj);
              EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
                {
-		 Evas_Object_Protected_Data *proxy;
+                  Evas_Object_Protected_Data *proxy;
+                  proxy = eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
 
-		 proxy = eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
-
-		 EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, proxy->proxy, Evas_Object_Proxy_Data, proxy_write)
-		   proxy_write->redraw = EINA_TRUE;
-		 EINA_COW_WRITE_END(evas_object_proxy_cow, proxy->proxy, proxy_write);
+                  EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, proxy->proxy,
+                                       Evas_Object_Proxy_Data, proxy_write)
+                     proxy_write->redraw = EINA_TRUE;
+                  EINA_COW_WRITE_END(evas_object_proxy_cow, proxy->proxy,
+                                     proxy_write);
                }
           }
      }
@@ -336,15 +345,22 @@ _evas_render_phase1_direct(Evas_Public_Data *e,
                _evas_render_prev_cur_clip_cache_add(e, obj);
              if (obj->proxy->proxies)
                {
-		  EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, obj->proxy, Evas_Object_Proxy_Data, proxy_write)
-		    proxy_write->redraw = EINA_TRUE;
-		  EINA_COW_WRITE_END(evas_object_proxy_cow, obj->proxy, proxy_write);
-
-                  EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
+                  if (obj->smart.smart && evas_object_smart_changed_get(eo_obj))
                     {
-                       Evas_Object_Protected_Data *proxy = eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
-                       proxy->func->render_pre(eo_proxy, proxy, proxy->private_data);
-                       _evas_render_prev_cur_clip_cache_add(e, proxy);
+                       EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, obj->proxy,
+                                            Evas_Object_Proxy_Data, proxy_write)
+                          proxy_write->redraw = EINA_TRUE;
+                       EINA_COW_WRITE_END(evas_object_proxy_cow, obj->proxy,
+                                          proxy_write);
+
+                       EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
+                         {
+                            Evas_Object_Protected_Data *proxy =
+                               eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
+                            proxy->func->render_pre(eo_proxy,
+                                                    proxy, proxy->private_data);
+                            _evas_render_prev_cur_clip_cache_add(e, proxy);
+                         }
                     }
                }
 
@@ -1548,7 +1564,7 @@ evas_render_rendering_wait(Evas_Public_Data *evas)
  * Syncs ALL async rendering canvases. Must be called in the main thread.
  */
 void
-evas_render_sync(void)
+evas_all_sync(void)
 {
    Evas_Public_Data *evas;
 
@@ -1571,7 +1587,7 @@ static Eina_Bool
 _drop_image_cache_ref(const void *container EINA_UNUSED, void *data, void *fdata EINA_UNUSED)
 {
 #ifdef EVAS_CSERVE2
-   if (evas_cserve2_use_get())
+   if (evas_cserve2_use_get() && evas_cache2_image_cached(data))
      evas_cache2_image_close((Image_Entry *)data);
    else
 #endif
@@ -1652,6 +1668,7 @@ evas_render_updates_internal(Evas *eo_e,
 
    if (!strncmp(e->engine.module->definition->name, "wayland", 7))
      {
+        evas_event_freeze(eo_e);
         /* check for master clip */
         if (!e->framespace.clip)
           {
@@ -1661,6 +1678,8 @@ evas_render_updates_internal(Evas *eo_e,
              evas_object_resize(e->framespace.clip, 
                                 e->viewport.w - e->framespace.w, 
                                 e->viewport.h - e->framespace.h);
+             evas_object_pass_events_set(e->framespace.clip, EINA_TRUE);
+             evas_object_layer_set(e->framespace.clip, EVAS_LAYER_MIN);
              evas_object_show(e->framespace.clip);
           }
 
@@ -1693,6 +1712,9 @@ evas_render_updates_internal(Evas *eo_e,
                   evas_object_clip_set(obj->object, e->framespace.clip);
                }
           }
+        if (!evas_object_clipees_get(e->framespace.clip))
+          evas_object_hide(e->framespace.clip);
+        evas_event_thaw(eo_e);
      }
 
    /* phase 1.5. check if the video should be inlined or stay in their overlay */
@@ -2401,7 +2423,7 @@ _canvas_render_dump(Eo *eo_e EINA_UNUSED, void *_pd, va_list *list EINA_UNUSED)
    Evas_Public_Data *e = _pd;
    Evas_Layer *lay;
 
-   evas_render_sync();
+   evas_all_sync();
    evas_cache_async_freeze();
 
    EINA_INLIST_FOREACH(e->layers, lay)

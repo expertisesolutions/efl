@@ -47,6 +47,7 @@ Additions:
      - Add eet_data_descriptor_name_get()
      - Add support EET_T_VALUE
      - Add EET_DATA_DESCRIPTOR_ADD_SUB_NESTED()
+     - Add EET_DATA_DESCRIPTOR_ADD_MAPPING_BASIC()
     * Eo:
      - Add generic efl object infrastructure
      - Add debugging facility
@@ -267,7 +268,8 @@ Fixes:
      - Fix memory leak in eina_xattr_value_ls.
      - Fix magic failure in eina_value_array_count when array has not been allocated.
      - Fix issue when wchar_t is signed and eina_unicode does negative array lookups.
-     - Eina: fix eina_file_map_lines() to not drop of one character in the last line.
+     - Fix eina_file_map_lines() to not drop of one character in the last line.
+     - Fix a possible race condition during eina_file_close().
     * Eet:
      - Fix PPC (big endian) image codec bug.
      - Fix leak in eet_pbkdf2_sha1 with OpenSSL.
@@ -356,6 +358,10 @@ Fixes:
      - Skip the map rendering if all points are transparent.
      - Evas bidi: Fixed a bug causing BiDi not to work in some cases.
      - Evas textblock: fixed an issue with markup_get and markup_to_utf8 behaving differently (markup_get was misbehaving).
+     - Fixed the map surface to be updated properly. By tranversing the whole of the map target's tree, it decides to update the map surface to be redrawn if one of the objects is changed except the clipper itself.
+     - Fixed the textblock format to be drawn according to the glyph's horizontal advance width.
+     - Fixed the textblock set to context with the textblock object's render operation.
+     - Evas textblock: Fixed order of tags inserted with markup_app/prepend.
     * Ecore:
      - Don't leak fd on exec.
      - Fix fd handler increase issue when ecore_pipe_add/del is called repeatedly.
@@ -428,6 +434,11 @@ Fixes:
      - Correctly set match flag of signal callbacks
      - Fix size calculation of flags of signal callbacks
      - Check for both Lua 5.1 and 5.2.
+     - Fixed memory leak in the edje map color transition.
+     - Add null checking for name of anchor and item in geometry get functions.
+     - Fix use of eina_hash_pointer to actually look at the pointer value.
+     - Fix to update map-enabled part when the edje object is moved.
+
     * Efreet:
      - Fix desktop command parsing of https.
     * Emotion:

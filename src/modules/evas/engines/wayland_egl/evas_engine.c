@@ -896,7 +896,6 @@ eng_output_free(void *data)
         if (re->rects_prev[2]) 
           evas_common_tilebuf_free_render_rects(re->rects_prev[2]);
 
-        
         free(re);
      }
 
@@ -1681,6 +1680,7 @@ eng_image_size_set(void *data, void *image, int w, int h)
          break;
      }
 
+   evas_gl_common_image_alloc_ensure(im);
    if ((im_old->im) &&
        ((int)im_old->im->cache_entry.w == w) &&
        ((int)im_old->im->cache_entry.h == h))
@@ -1778,6 +1778,7 @@ eng_image_data_get(void *data, void *image, int to_write, DATA32 **image_data, i
      }
 
    error = evas_cache_image_load_data(&im->im->cache_entry);
+   evas_gl_common_image_alloc_ensure(im);
    switch (im->cs.space)
      {
       case EVAS_COLORSPACE_ARGB8888:
@@ -1832,6 +1833,7 @@ eng_image_data_put(void *data, void *image, DATA32 *image_data)
    if (!(im = image)) return NULL;
    if (im->native.data) return image;
    eng_window_use(re->win);
+   evas_gl_common_image_alloc_ensure(im);
    if ((im->tex) && (im->tex->pt)
        && (im->tex->pt->dyn.data)
        && (im->cs.space == EVAS_COLORSPACE_ARGB8888))
@@ -1959,6 +1961,7 @@ eng_image_alpha_set(void *data, void *image, int has_alpha)
 
         if (!im->im->image.data)
           evas_cache_image_load_data(&im->im->cache_entry);
+        evas_gl_common_image_alloc_ensure(im);
         im_new = evas_gl_common_image_new_from_copied_data
           (im->gc, im->im->cache_entry.w, im->im->cache_entry.h,
               im->im->image.data,
@@ -2014,20 +2017,21 @@ eng_image_draw(void *data, void *context, void *surface, void *image, int src_x,
 
         re->win->gl_context->dc = context;
 
-        // Pass the clip info the evas_gl
-        evgl_direct_img_clip_set(1,
-                                 re->win->gl_context->dc->clip.x,
-                                 re->win->gl_context->dc->clip.y,
-                                 re->win->gl_context->dc->clip.w,
-                                 re->win->gl_context->dc->clip.h);
+        // Set necessary info for direct rendering
+        evgl_direct_info_set(re->win->gl_context->w,
+                             re->win->gl_context->h,
+                             re->win->gl_context->rot,
+                             dst_x, dst_y, dst_w, dst_h,
+                             re->win->gl_context->dc->clip.x,
+                             re->win->gl_context->dc->clip.y,
+                             re->win->gl_context->dc->clip.w,
+                             re->win->gl_context->dc->clip.h);
 
         // Call pixel get function
-        evgl_direct_img_obj_set(re->func.obj, re->win->gl_context->rot);
         re->func.pixels_get(re->func.pixels_data_get, re->func.obj);
-        evgl_direct_img_obj_set(NULL, 0);
 
-        // Reset clip
-        evgl_direct_img_clip_set(0, 0, 0, 0, 0);
+        // Clear direct rendering info
+        evgl_direct_info_clear();
      }
    else
      {
@@ -2071,6 +2075,7 @@ eng_image_colorspace_set(void *data, void *image, int cspace)
    /* FIXME: can move to gl_common */
    if (im->cs.space == cspace) return;
    eng_window_use(re->win);
+   evas_gl_common_image_alloc_ensure(im);
    evas_cache_image_colorspace(&im->im->cache_entry, cspace);
    switch (cspace)
      {
@@ -2307,10 +2312,13 @@ eng_image_cache_flush(void *data)
    Render_Engine *re;
    int tmp_size;
 
+   re = (Render_Engine *)data;
+
+   if (re) eng_window_use(re->win);
+
    tmp_size = evas_common_image_get_cache();
    evas_common_image_set_cache(0);
    evas_common_rgba_image_scalecache_flush();
-   re = (Render_Engine *)data;
    evas_gl_common_image_cache_flush(re->win->gl_context);
 //   if ((re = (Render_Engine *)data))
 //     evas_gl_common_image_cache_flush(re->win->gl_context);
@@ -2322,9 +2330,12 @@ eng_image_cache_set(void *data, int bytes)
 {
    Render_Engine *re;
 
+   re = (Render_Engine *)data;
+
+   if (re) eng_window_use(re->win);
+
    evas_common_image_set_cache(bytes);
    evas_common_rgba_image_scalecache_size_set(bytes);
-   re = (Render_Engine *)data;
    evas_gl_common_image_cache_flush(re->win->gl_context);
 //   if (!(re = (Render_Engine *)data)) return;
 //   if (re->win) evas_gl_common_image_cache_flush(re->win->gl_context);
@@ -2516,6 +2527,7 @@ eng_pixel_alpha_get(void *image, int x, int y, DATA8 *alpha, int src_region_x, i
         return EINA_FALSE;
      }
 
+   evas_gl_common_image_alloc_ensure(im);
    src_w = im->im->cache_entry.w;
    src_h = im->im->cache_entry.h;
    if ((src_w == 0) || (src_h == 0))

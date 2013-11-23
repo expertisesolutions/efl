@@ -97,6 +97,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <Eina.h>
+#include <Efl_Config.h>
 
 #ifdef EAPI
 # undef EAPI
@@ -136,8 +137,8 @@ extern "C" {
  *
  */
 
-#define EET_VERSION_MAJOR 1
-#define EET_VERSION_MINOR 8
+#define EET_VERSION_MAJOR EFL_VERSION_MAJOR
+#define EET_VERSION_MINOR EFL_VERSION_MINOR
 /**
  * @typedef Eet_Version
  *
@@ -580,7 +581,7 @@ eet_open(const char *file,
  * @since 1.8.0
  */
 EAPI Eet_File *
-eet_mmap(Eina_File *file);
+eet_mmap(const Eina_File *file);
 
 /**
  * Open an eet file directly from a memory location. The data is not copied,
@@ -3462,6 +3463,25 @@ eet_data_descriptor_encode(Eet_Data_Descriptor *edd,
                                   NULL,                              \
                                   subtype)
 
+/**
+ * Add a mapping of a basic type to a data descriptor that will be used by a union type.
+ * @param unified_type The data descriptor to add the mapping to.
+ * @param name The string name to get/set type.
+ * @param basic_type The matching basic type.
+ *
+ * @since 1.8
+ * @ingroup Eet_Data_Group
+ * @see Eet_Data_Descriptor_Class
+ */
+#define EET_DATA_DESCRIPTOR_ADD_MAPPING_BASIC(unified_type, name, basic_type) \
+  eet_data_descriptor_element_add(unified_type,                               \
+                                  name,                                       \
+                                  basic_type,                                 \
+                                  EET_G_UNKNOWN,                              \
+                                  0,                                          \
+                                  0,                                          \
+                                  NULL,                                       \
+                                  NULL)
 /**
  * @defgroup Eet_Data_Cipher_Group Eet Data Serialization using A Ciphers
  *

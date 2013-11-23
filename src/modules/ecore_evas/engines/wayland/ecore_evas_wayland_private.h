@@ -35,6 +35,8 @@ struct _Ecore_Evas_Engine_Wl_Data
 #ifdef BUILD_ECORE_EVAS_WAYLAND_EGL
    struct wl_egl_window *egl_win;
 #endif
+   Eina_Bool frame_pending : 1;
+   struct wl_callback *frame_callback;
 };
 
 Ecore_Evas_Interface_Wayland *_ecore_evas_wl_interface_new(void);
@@ -51,6 +53,7 @@ void _ecore_evas_wl_common_callback_focus_out_set(Ecore_Evas *ee, void (*func)(E
 void _ecore_evas_wl_common_callback_mouse_in_set(Ecore_Evas *ee, void (*func)(Ecore_Evas *ee));
 void _ecore_evas_wl_common_callback_mouse_out_set(Ecore_Evas *ee, void (*func)(Ecore_Evas *ee));
 void _ecore_evas_wl_common_move(Ecore_Evas *ee, int x, int y);
+void _ecore_evas_wl_common_resize(Ecore_Evas *ee, int w, int h);
 void _ecore_evas_wl_common_raise(Ecore_Evas *ee);
 void _ecore_evas_wl_common_title_set(Ecore_Evas *ee, const char *title);
 void _ecore_evas_wl_common_name_class_set(Ecore_Evas *ee, const char *n, const char *c);

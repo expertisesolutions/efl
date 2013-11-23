@@ -2,6 +2,8 @@
 extern "C" {
 #endif
 
+#include <Efl_Config.h>
+
 /**
  * @defgroup Ecore_Init_Group Ecore initialization, shutdown functions and reset on fork.
  * @ingroup Ecore
@@ -30,8 +32,8 @@ EAPI int ecore_shutdown(void);
  * @{
  */
 
-#define ECORE_VERSION_MAJOR 1
-#define ECORE_VERSION_MINOR 8
+#define ECORE_VERSION_MAJOR EFL_VERSION_MAJOR
+#define ECORE_VERSION_MINOR EFL_VERSION_MINOR
 
 typedef struct _Ecore_Version
 {
@@ -1739,6 +1741,22 @@ EAPI void ecore_app_args_get(int *argc, char ***argv);
 EAPI void ecore_app_restart(void);
 
 /**
+ * @brief Do not load system modules for this application.
+ *
+ * Ecore will now load platform-specific system modules such as
+ * power-management, time and locate monitors.
+ *
+ * Whenever this function is called @b before ecore_init(), ecore
+ * won't load such modules.
+ *
+ * This may be useful to some command-line utilities, hardly will be
+ * useful for end-user applications.
+ *
+ * @since 1.8
+ */
+EAPI void ecore_app_no_system_modules(void);
+
+/**
  * @}
  */
 
@@ -2007,12 +2025,12 @@ EAPI double ecore_animator_pos_map(double pos, Ecore_Pos_Map map, double v1, dou
  * set a custom tick source by setting the source to
  * ECORE_ANIMATOR_SOURCE_CUSTOM and then drive it yourself based on some input
  * tick source (like another application via ipc, some vertical blanking
- * interrupt interrupt etc.) using
- *ecore_animator_custom_source_tick_begin_callback_set() and
- *ecore_animator_custom_source_tick_end_callback_set() to set the functions
+ * interrupt, and etc.) using
+ * ecore_animator_custom_source_tick_begin_callback_set() and
+ * ecore_animator_custom_source_tick_end_callback_set() to set the functions
  * that will be called to start and stop the ticking source, which when it
- * gets a "tick" should call ecore_animator_custom_tick() to make the "tick" over 1
- * frame.
+ * gets a "tick" should call ecore_animator_custom_tick() to make the "tick"
+ * over 1 frame.
  */
 EAPI void ecore_animator_source_set(Ecore_Animator_Source source);
 /**
@@ -2034,7 +2052,7 @@ EAPI Ecore_Animator_Source ecore_animator_source_get(void);
  * The Ecore Animator infrastructure handles tracking if animators are needed
  * or not and which ones need to be called and when, but when the tick source
  * is custom, you have to provide a tick source by calling
- *ecore_animator_custom_tick() to indicate a frame tick happened. In order
+ * ecore_animator_custom_tick() to indicate a frame tick happened. In order
  * to allow the source of ticks to be dynamically enabled or disabled as
  * needed, the @p func when set is called to enable the tick source to
  * produce tick events that call ecore_animator_custom_tick(). If @p func
@@ -2213,27 +2231,6 @@ typedef Eo Ecore_Job;    /**< A job handle */
 /**
  * @}
  */
-
-typedef struct _Ecore_Coroutine Ecore_Coroutine;
-typedef int (*Ecore_Coroutine_Cb)(void *data, Ecore_Coroutine *coro);
-
-typedef enum {
-  ECORE_COROUTINE_NEW,
-  ECORE_COROUTINE_RUNNING,
-  ECORE_COROUTINE_FINISHED
-} Ecore_Coroutine_State;
-
-EAPI Ecore_Coroutine *ecore_coroutine_add(int stack_size, Ecore_Coroutine_Cb func, void *data);
-EAPI void *ecore_coroutine_del(Ecore_Coroutine *coro);
-
-EAPI int ecore_coroutine_resume(Ecore_Coroutine *coro);
-EAPI void ecore_coroutine_yield(Ecore_Coroutine *coro, int value);
-
-EAPI void *ecore_coroutine_data_get(Ecore_Coroutine *coro);
-EAPI Ecore_Coroutine_State ecore_coroutine_state_get(Ecore_Coroutine *coro);
-
-EAPI void ecore_coroutine_defer(Ecore_Coroutine *coro, Eina_Free_Cb func, void *data);
-EAPI void *ecore_coroutine_alloc(Ecore_Coroutine *coro, size_t size);
 
 #ifdef __cplusplus
 }

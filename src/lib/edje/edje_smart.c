@@ -10,7 +10,8 @@ EAPI Eo_Op EDJE_OBJ_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EDJE_OBJ_CLASS
 
-#define MY_CLASS_NAME "edje"
+#define MY_CLASS_NAME "Edje"
+#define MY_CLASS_NAME_LEGACY "edje"
 
 Eina_List *_edje_edjes = NULL;
 
@@ -32,7 +33,7 @@ _edje_smart_constructor(Eo *obj, void *class_data, va_list *list EINA_UNUSED)
    ed->base = eo_data_ref(obj, EVAS_OBJ_SMART_CLIPPED_CLASS);
 
    eo_do_super(obj, MY_CLASS, eo_constructor());
-   eo_do(obj, evas_obj_type_set(MY_CLASS_NAME));
+   eo_do(obj, evas_obj_type_set(MY_CLASS_NAME_LEGACY));
    _edje_lib_ref();
 }
 
@@ -150,6 +151,7 @@ _edje_smart_move(Eo *obj EINA_UNUSED, void *_pd, va_list *list)
    Evas_Coord x = va_arg(*list, Evas_Coord);
    Evas_Coord y = va_arg(*list, Evas_Coord);
    Edje *ed = _pd;
+   unsigned int i;
 
    if ((ed->x == x) && (ed->y == y)) return;
    ed->x = x;
@@ -167,42 +169,43 @@ _edje_smart_move(Eo *obj EINA_UNUSED, void *_pd, va_list *list)
         return;
      }
 
-   if (ed->have_mapped_part)
+   for (i = 0; i < ed->table_parts_size; i++)
      {
-        ed->dirty = EINA_TRUE;
-        _edje_recalc_do(ed);
-     }
-   else
-     {
-        unsigned int i;
+        Edje_Real_Part *ep;
 
-        for (i = 0; i < ed->table_parts_size; i++)
+        ep = ed->table_parts[i];
+        if ((ep->type == EDJE_RP_TYPE_TEXT) && (ep->typedata.text))
           {
-             Edje_Real_Part *ep;
-
-             ep = ed->table_parts[i];
-             if ((ep->type == EDJE_RP_TYPE_TEXT) &&
-                 (ep->typedata.text))
-               evas_object_move(ep->object, 
-                                ed->x + ep->x + ep->typedata.text->offset.x, 
-                                ed->y + ep->y + ep->typedata.text->offset.y);
-             else
-               evas_object_move(ep->object, 
-                                ed->x + ep->x, 
-                                ed->y + ep->y);
-             if (ep->part->entry_mode > EDJE_ENTRY_EDIT_MODE_NONE)
-               _edje_entry_real_part_configure(ed, ep);
+             evas_object_move(ep->object,
+                              ed->x + ep->x + ep->typedata.text->offset.x,
+                              ed->y + ep->y + ep->typedata.text->offset.y);
+          }
+        else
+          {
+             evas_object_move(ep->object, ed->x + ep->x, ed->y + ep->y);
              if ((ep->type == EDJE_RP_TYPE_SWALLOW) &&
                  (ep->typedata.swallow))
                {
                   if (ep->typedata.swallow->swallowed_object)
                     evas_object_move
-                    (ep->typedata.swallow->swallowed_object, 
-                        ed->x + ep->x, 
+                       (ep->typedata.swallow->swallowed_object,
+                        ed->x + ep->x,
                         ed->y + ep->y);
                }
           }
+        if (ep->part->entry_mode > EDJE_ENTRY_EDIT_MODE_NONE)
+          _edje_entry_real_part_configure(ed, ep);
      }
+
+   if (ed->have_mapped_part)
+     {
+        ed->dirty = EINA_TRUE;
+        ed->have_mapped_part = EINA_FALSE;
+        ed->need_map_update = EINA_TRUE;
+        _edje_recalc_do(ed);
+        ed->need_map_update = EINA_FALSE;
+     }
+
 //   _edje_emit(ed, "move", NULL);
 }
 
@@ -363,7 +366,7 @@ _edje_smart_file_set(Eo *obj, void *_pd EINA_UNUSED, va_list *list)
 static void
 _edje_smart_mmap_set(Eo *obj, void *_pd EINA_UNUSED, va_list *list)
 {
-   Eina_File *f = va_arg(*list, Eina_File *);
+   const Eina_File *f = va_arg(*list, Eina_File *);
    const char *group = va_arg(*list, const char *);
    Eina_Bool *ret = va_arg(*list, Eina_Bool *);
    Eina_Array *nested;
@@ -537,7 +540,7 @@ _edje_smart_class_constructor(Eo_Class *klass)
 
    eo_class_funcs_set(klass, func_desc);
 
-   evas_smart_legacy_type_register(MY_CLASS_NAME, klass);
+   evas_smart_legacy_type_register(MY_CLASS_NAME_LEGACY, klass);
 }
 
 static const Eo_Op_Description op_desc[] = {

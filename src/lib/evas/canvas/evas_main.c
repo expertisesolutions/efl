@@ -5,8 +5,6 @@
 #include "evas_cs2_private.h"
 #endif
 
-#include <Eo.h>
-
 EAPI Eo_Op EVAS_CANVAS_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EVAS_CLASS
@@ -51,11 +49,19 @@ evas_init(void)
 
    eo_init();
 
+#ifdef BUILD_LOADER_EET
+   eet_init();
+#endif
+
    evas_module_init();
    if (!evas_async_events_init())
      goto shutdown_module;
 #ifdef EVAS_CSERVE2
-   if (getenv("EVAS_CSERVE2")) evas_cserve2_init();
+   {
+      const char *env;
+      env = getenv("EVAS_CSERVE2");
+      if (env && atoi(env)) evas_cserve2_init();
+   }
 #endif
    _evas_preload_thread_init();
 
@@ -95,6 +101,11 @@ evas_shutdown(void)
 		   EINA_LOG_STATE_START,
 		   EINA_LOG_STATE_SHUTDOWN);
 
+#ifdef EVAS_CSERVE2
+   if (evas_cserve2_use_get())
+     evas_cserve2_shutdown();
+#endif
+
    eina_cow_del(evas_object_proxy_cow);
    eina_cow_del(evas_object_map_cow);
    eina_cow_del(evas_object_state_cow);
@@ -115,6 +126,10 @@ evas_shutdown(void)
    evas_font_dir_cache_free();
    evas_common_shutdown();
    evas_module_shutdown();
+
+#ifdef BUILD_LOADER_EET
+   eet_shutdown();
+#endif
    eo_shutdown();
 
    eina_log_domain_unregister(_evas_log_dom_global);
@@ -1103,6 +1118,7 @@ _class_constructor(Eo_Class *klass)
         EO_OP_FUNC(EVAS_CANVAS_ID(EVAS_CANVAS_SUB_ID_SMART_OBJECTS_CALCULATE), _canvas_smart_objects_calculate),
         EO_OP_FUNC(EVAS_CANVAS_ID(EVAS_CANVAS_SUB_ID_SMART_OBJECTS_CALCULATE_COUNT_GET), _canvas_smart_objects_calculate_count_get),
         EO_OP_FUNC(EVAS_CANVAS_ID(EVAS_CANVAS_SUB_ID_RENDER_ASYNC), _canvas_render_async),
+        EO_OP_FUNC(EVAS_CANVAS_ID(EVAS_CANVAS_SUB_ID_TREE_OBJECTS_AT_XY_GET), _canvas_tree_objects_at_xy_get),
         EO_OP_FUNC_SENTINEL
    };
 
@@ -1207,6 +1223,7 @@ static const Eo_Op_Description op_desc[] = {
      EO_OP_DESCRIPTION(EVAS_CANVAS_SUB_ID_SMART_OBJECTS_CALCULATE, "Call user-provided calculate() smart functions."),
      EO_OP_DESCRIPTION(EVAS_CANVAS_SUB_ID_SMART_OBJECTS_CALCULATE_COUNT_GET, "Get the internal counter that counts the number of smart calculations."),
      EO_OP_DESCRIPTION(EVAS_CANVAS_SUB_ID_RENDER_ASYNC, "Renders the canvas asynchronously."),
+     EO_OP_DESCRIPTION(EVAS_CANVAS_SUB_ID_TREE_OBJECTS_AT_XY_GET, "Retrieve a list of Evas objects lying over a given position in a canvas."),
      EO_OP_DESCRIPTION_SENTINEL
 };
 

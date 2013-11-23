@@ -136,15 +136,29 @@ _parent_set(Eo *obj, void *class_data, va_list *list)
         eo_xunref(obj, pd->parent);
      }
 
-   pd->parent = parent_id;
-   if (pd->parent)
+   /* Set new parent */
+   if (parent_id)
      {
         Private_Data *parent_pd = NULL;
-
         parent_pd = eo_data_scope_get(parent_id, EO_BASE_CLASS);
-        parent_pd->children = eina_list_append(parent_pd->children,
-                                               obj);
-        eo_xref(obj, pd->parent);
+
+        if (EINA_LIKELY(parent_pd != NULL))
+          {
+             pd->parent = parent_id;
+             parent_pd->children = eina_list_append(parent_pd->children,
+                   obj);
+             eo_xref(obj, pd->parent);
+          }
+        else
+          {
+             pd->parent = NULL;
+             ERR("New parent %p for object %p is not a valid Eo object.",
+                 parent_id, obj);
+          }
+     }
+   else
+     {
+        pd->parent = NULL;
      }
 }
 
@@ -891,11 +905,12 @@ static void
 _destructor(Eo *obj, void *class_data, va_list *list EINA_UNUSED)
 {
    Private_Data *pd = class_data;
+   Eo *child;
 
    DBG("%p - %s.", obj, eo_class_name_get(MY_CLASS));
 
-   while (pd->children)
-     eo_do(eina_list_data_get(pd->children), eo_parent_set(NULL));
+   EINA_LIST_FREE(pd->children, child)
+      eo_do(child, eo_parent_set(NULL));
 
    _eo_generic_data_del_all(class_data);
    _wref_destruct(class_data);
@@ -977,7 +992,7 @@ static const Eo_Event_Description *event_desc[] = {
 
 static const Eo_Class_Description class_desc = {
      EO_VERSION,
-     "Eo Base",
+     "Eo_Base",
      EO_CLASS_TYPE_REGULAR_NO_INSTANT,
      EO_CLASS_DESCRIPTION_OPS(&EO_BASE_BASE_ID, op_desc, EO_BASE_SUB_ID_LAST),
      event_desc,

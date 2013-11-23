@@ -1,5 +1,5 @@
-EFL_VERSION([1], [7], [99], [dev])
-AC_INIT([efl], [efl_version], [enlightenment-devel@lists.sourceforge.net])
+EFL_VERSION([1], [8], [0], [dev])
+AC_INIT([efl], [efl_version-alpha2], [enlightenment-devel@lists.sourceforge.net])
 
 AC_PREREQ([2.60])
 AC_CONFIG_SRCDIR([configure.ac])
@@ -47,7 +47,7 @@ case "$efl_api" in
         EFL_API_LEGACY_DEF=""
         EFL_API_EO_DEF="#define EFL_EO_API_SUPPORT"
         ;;
-    *) AC_MSG_ERROR([Invalid web backend: must be eo, legacy or both]) ;;
+    *) AC_MSG_ERROR([Invalid api (${efl_api}): must be eo, legacy or both]) ;;
 esac
 
 AC_SUBST(EFL_API_LEGACY_DEF)
@@ -55,6 +55,16 @@ AC_SUBST(EFL_API_EO_DEF)
 
 #### Additional options to configure
 
+# string to identify the build
+AC_ARG_WITH([id],
+   [AC_HELP_STRING([--with-id=BUILD_ID],
+                   [Specify a string to identify the build (vendor, maintainer, etc).
+                     @<:@default=none@:>@])],
+   [EFL_BUILD_ID="${withval}"],
+   [EFL_BUILD_ID="none"])
+AC_SUBST(EFL_BUILD_ID)
+
+# profile
 AC_ARG_WITH([profile],
    [AC_HELP_STRING([--with-profile=PROFILE],
                    [use the predefined build profile, one of: dev, debug and release.
@@ -173,6 +183,11 @@ case "$host_os" in
    ;;
 esac
 
+EFL_VERSION_MAJOR="v_maj"
+EFL_VERSION_MINOR="v_min"
+AC_SUBST(EFL_VERSION_MAJOR)
+AC_SUBST(EFL_VERSION_MINOR)
+
 want_systemd="no"
 have_wince="no"
 have_win32="no"
@@ -189,6 +204,7 @@ case "$host_os" in
       # TODO: check cygwin* here
       have_win32="yes"
       have_windows="yes"
+      EFL_CFLAGS="${EFL_CFLAGS} -D__USE_MINGW_ANSI_STDIO"
    ;;
    darwin*)
       have_darwin="yes"
@@ -806,7 +822,7 @@ EFL_CHECK_GCC_BUILTIN([bswap64], [HAVE_BSWAP64])
 
 AC_CHECK_FUNCS([fchmod])
 
-EFL_CHECK_FUNCS([EINA], [dlopen dladdr iconv shm_open splice setxattr])
+EFL_CHECK_FUNCS([EINA], [dlopen dladdr iconv shm_open splice setxattr getpagesize])
 
 enable_log="no"
 if test "x${efl_func_fnmatch}" = "xyes" && test "x${want_log}" = "xyes" ; then
@@ -1011,7 +1027,7 @@ AC_ARG_ENABLE([wayland],
    [want_wayland="no"])
 
 if test "${want_wayland}" = "yes"; then
-   EFL_PKG_CHECK_STRICT([wayland-client])
+   EFL_PKG_CHECK_STRICT([wayland-client >= 1.3.0])
 fi
 
 # Fb
@@ -1264,8 +1280,6 @@ ARG_ENABLE_EVAS_IMAGE_LOADER(WEBP, no)
 ARG_ENABLE_EVAS_IMAGE_LOADER(XPM, static)
 
 ### Default values
-
-want_evas_cserve2="yes"
 
 want_evas_engine_software_gdi="${have_win32}"
 want_evas_engine_software_ddraw="${have_win32}"
@@ -1612,6 +1626,20 @@ AC_CHECK_LIB([m], [lround],
 [EFL_CHECK_GCC_BUILTIN([lround], [HAVE_LROUND])]
 )
 
+
+# Evas cserve2
+
+AC_ARG_ENABLE([cserve],
+   [AC_HELP_STRING([--enable-cserve],
+       [enable shared cache server (cserve2). @<:@default=enabled@:>@])],
+   [
+    if test "x${enableval}" = "xyes" ; then
+       want_evas_cserve2="yes"
+    else
+       want_evas_cserve2="no"
+    fi
+   ],
+   [want_evas_cserve2="yes"])
 
 if test "x${want_evas_image_loader_generic}" = "xyes" || test "x${want_evas_cserve2}" = "xyes" ; then
    EFL_ADD_LIBS([EVAS], [${requirements_libs_shm}])
@@ -2399,7 +2427,7 @@ EFL_INTERNAL_DEPEND_PKG([ECORE_WAYLAND], [eo])
 EFL_INTERNAL_DEPEND_PKG([ECORE_WAYLAND], [eina])
 
 EFL_DEPEND_PKG([ECORE_WAYLAND], [WAYLAND],
-   [wayland-client >= 1.2.0 wayland-cursor >= 1.2.0 xkbcommon >= 0.3.0])
+   [wayland-client >= 1.3.0 wayland-cursor >= 1.3.0 xkbcommon >= 0.3.0])
 
 EFL_EVAL_PKGS([ECORE_WAYLAND])
 
@@ -2764,6 +2792,9 @@ if test "x${want_x11_xlib}" = "xyes" ; then
 
    AC_DEFINE([HAVE_ECORE_X_XLIB], [1], [Defined to 1 if Xlib is enabled.])
    HAVE_ECORE_X_BACKEND="HAVE_ECORE_X_XLIB"
+
+   EFL_EVAL_PKGS([ECORE_X])
+   EFL_CHECK_FUNCS([ECORE_X], [dlopen dlsym])
 fi
 
 ## XCB
@@ -3813,6 +3844,8 @@ dbus-services/org.enlightenment.Ethumb.service
 $po_makefile_in
 cmakeconfig/EinaConfig.cmake
 cmakeconfig/EinaConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
+cmakeconfig/EezeConfig.cmake
+cmakeconfig/EezeConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
 cmakeconfig/EoConfig.cmake
 cmakeconfig/EoConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
 cmakeconfig/EetConfig.cmake
@@ -3823,8 +3856,14 @@ cmakeconfig/EcoreConfig.cmake
 cmakeconfig/EcoreConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
 cmakeconfig/EdjeConfig.cmake
 cmakeconfig/EdjeConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
+cmakeconfig/EldbusConfig.cmake
+cmakeconfig/EldbusConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
 cmakeconfig/EfreetConfig.cmake
 cmakeconfig/EfreetConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
+cmakeconfig/EthumbConfig.cmake
+cmakeconfig/EthumbConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
+cmakeconfig/EthumbClientConfig.cmake
+cmakeconfig/EthumbClientConfigVersion.cmake:cmakeconfig/EFLConfigVersion.cmake.in
 ])
 
 AC_OUTPUT
@@ -3916,6 +3955,8 @@ echo "Ethumb..........: yes"
 echo "Ethumb_Client...: yes"
 if test "${build_tests}" = "none"; then
 echo "Tests...........: no"
+elif test "${build_tests}" = "auto"; then
+echo "Tests...........: make check (inexplicitly enabled)"
 elif test "${build_tests}" = "regular"; then
 echo "Tests...........: make check"
 elif test "${build_tests}" = "coverage"; then

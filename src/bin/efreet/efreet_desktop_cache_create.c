@@ -152,7 +152,10 @@ cache_scan(const char *path, const char *base_id, int priority, int recurse, int
             if (*base_id)
                 snprintf(id, sizeof(id), "%s-%s", base_id, fname);
             else
-                strcpy(id, fname);
+            {
+                strncpy(id, fname, PATH_MAX);
+                id[PATH_MAX - 1] = '\0';
+            }
             file_id = id;
         }
 
@@ -222,6 +225,7 @@ main(int argc, char **argv)
     int i;
     char file[PATH_MAX] = { '\0' };
     char util_file[PATH_MAX] = { '\0' };
+    mode_t um;
 
     if (!eina_init()) goto eina_error;
     _efreet_desktop_cache_log_dom =
@@ -293,14 +297,20 @@ main(int argc, char **argv)
 
     /* create cache */
     snprintf(file, sizeof(file), "%s.XXXXXX", efreet_desktop_cache_file());
+    /* set secure umask for temporary files */
+    um = umask(0077);
     tmpfd = mkstemp(file);
+    umask(um);
     if (tmpfd < 0) goto error;
     close(tmpfd);
     ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
     if (!ef) goto error;
 
     snprintf(util_file, sizeof(util_file), "%s.XXXXXX", efreet_desktop_util_cache_file());
+    /* set secure umask for temporary files */
+    um = umask(0077);
     tmpfd = mkstemp(util_file);
+    umask(um);
     if (tmpfd < 0) goto error;
     close(tmpfd);
     util_ef = eet_open(util_file, EET_FILE_MODE_READ_WRITE);

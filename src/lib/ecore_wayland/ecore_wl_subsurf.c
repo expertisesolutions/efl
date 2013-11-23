@@ -3,7 +3,17 @@
 #endif
 
 #include "ecore_wl_private.h"
-#include <subsurface-client-protocol.h>
+
+/*
+ * The subsurface protocol was moved into Wayland Core
+ * around v1.3.90 (i.e. v1.4.0).
+ * Test if subsurface protocol is part of wayland-client.h.
+ * If not, we include our own copy of the protocol header.
+ */
+#include <wayland-client.h>
+#ifndef WL_SUBSURFACE_ERROR_ENUM
+# include <subsurface-client-protocol.h>
+#endif
 
 struct _Ecore_Wl_Subsurf
 {
@@ -23,19 +33,22 @@ ecore_wl_subsurf_create(Ecore_Wl_Window *win)
    struct wl_subsurface *subsurface;
    struct wl_surface *surface;
    Ecore_Wl_Subsurf *ess;
+   struct wl_subcompositor *subcomp;
 
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
 
    if (!win) return NULL;
    if (!win->surface) return NULL;
-   if (!_ecore_wl_disp->wl.subcompositor) return NULL;
 
-   surface = wl_compositor_create_surface(_ecore_wl_disp->wl.compositor);
+   subcomp = _ecore_wl_subcompositor_get();
+   if (!subcomp) return NULL;
+
+   surface = wl_compositor_create_surface(_ecore_wl_compositor_get());
    if (!surface)
      return NULL;
 
    subsurface = wl_subcompositor_get_subsurface
-      (_ecore_wl_disp->wl.subcompositor, surface, win->surface);
+      (subcomp, surface, win->surface);
    if (!subsurface)
      {
         wl_surface_destroy(surface);
@@ -171,7 +184,6 @@ ecore_wl_subsurf_sync_set(Ecore_Wl_Subsurf *ess, Eina_Bool val)
 EAPI void
 ecore_wl_subsurf_opaque_region_set(Ecore_Wl_Subsurf *ess, int x, int y, int w, int h)
 {
-   Ecore_Wl_Window *parent;
    struct wl_region *region = NULL;
 
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -180,8 +192,7 @@ ecore_wl_subsurf_opaque_region_set(Ecore_Wl_Subsurf *ess, int x, int y, int w, i
 
    if ((w > 0) && (h > 0))
      {
-        parent = ess->parent_win;
-        region = wl_compositor_create_region(parent->display->wl.compositor);
+        region = wl_compositor_create_region(_ecore_wl_compositor_get());
         wl_region_add(region, x, y, w, h);
         wl_surface_set_opaque_region(ess->surface, region);
         wl_region_destroy(region);

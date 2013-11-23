@@ -1,6 +1,5 @@
 #include "edje_private.h"
 
-
 static Eina_Hash   *_edje_file_hash = NULL;
 static int          _edje_file_cache_size = 16;
 static Eina_List   *_edje_file_cache = NULL;
@@ -299,7 +298,7 @@ _edje_file_change(void *data, int ev_type EINA_UNUSED, void *event)
 #endif
 
 static Edje_File *
-_edje_file_open(Eina_File *f, const char *coll, int *error_ret, Edje_Part_Collection **edc_ret, time_t mtime)
+_edje_file_open(const Eina_File *f, const char *coll, int *error_ret, Edje_Part_Collection **edc_ret, time_t mtime)
 {
    Edje_Color_Class *cc;
    Edje_File *edf;
@@ -389,7 +388,7 @@ _edje_file_dangling(Edje_File *edf)
    if (edf->dangling) return;
    edf->dangling = EINA_TRUE;
 
-   eina_hash_del(_edje_file_hash, edf->f, edf);
+   eina_hash_del(_edje_file_hash, &edf->f, edf);
    if (!eina_hash_population(_edje_file_hash))
      {
        eina_hash_free(_edje_file_hash);
@@ -399,7 +398,7 @@ _edje_file_dangling(Edje_File *edf)
 #endif
 
 Edje_File *
-_edje_cache_file_coll_open(Eina_File *file, const char *coll, int *error_ret, Edje_Part_Collection **edc_ret, Edje *ed)
+_edje_cache_file_coll_open(const Eina_File *file, const char *coll, int *error_ret, Edje_Part_Collection **edc_ret, Edje *ed)
 {
    Edje_File *edf;
    Eina_List *l, *hist;
@@ -412,7 +411,7 @@ _edje_cache_file_coll_open(Eina_File *file, const char *coll, int *error_ret, Ed
 	goto find_list;
      }
 
-   edf = eina_hash_find(_edje_file_hash, file);
+   edf = eina_hash_find(_edje_file_hash, &file);
    if (edf)
      {
 	edf->references++;
@@ -426,7 +425,7 @@ find_list:
 	  {
 	     edf->references = 1;
 	     _edje_file_cache = eina_list_remove_list(_edje_file_cache, l);
-	     eina_hash_direct_add(_edje_file_hash, file, edf);
+	     eina_hash_direct_add(_edje_file_hash, &edf->f, edf);
 	     goto open;
 	  }
      }
@@ -440,7 +439,7 @@ find_list:
    (void) ed;
 #endif
 
-   eina_hash_direct_add(_edje_file_hash, file, edf);
+   eina_hash_direct_add(_edje_file_hash, &edf->f, edf);
    /* return edf; */
 
 open:
@@ -655,7 +654,7 @@ _edje_cache_file_unref(Edje_File *edf)
 	return;
      }
 
-   eina_hash_del(_edje_file_hash, edf->f, edf);
+   eina_hash_del(_edje_file_hash, &edf->f, edf);
    if (!eina_hash_population(_edje_file_hash))
      {
        eina_hash_free(_edje_file_hash);

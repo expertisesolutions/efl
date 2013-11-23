@@ -24,7 +24,7 @@ struct _Edje_Drag_Items
    } page;
 };
 
-void _edje_file_add(Edje *ed, Eina_File *f);
+void _edje_file_add(Edje *ed, const Eina_File *f);
 
 /* START - Nested part support */
 #define _edje_smart_nested_type "Evas_Smart_Nested"
@@ -83,7 +83,7 @@ edje_object_file_set(Evas_Object *obj, const char *file, const char *group)
 }
 
 EAPI Eina_Bool
-edje_object_mmap_set(Evas_Object *obj, Eina_File *file, const char *group)
+edje_object_mmap_set(Evas_Object *obj, const Eina_File *file, const char *group)
 {
    if (!obj) return EINA_FALSE;
    Eina_Bool ret = EINA_FALSE;
@@ -156,17 +156,13 @@ edje_load_error_str(Edje_Load_Error error)
      }
 }
 
-
 EAPI Eina_List *
-edje_file_collection_list(const char *file)
+edje_mmap_collection_list(Eina_File *f)
 {
    Eina_List *lst = NULL;
-   Eina_File *f;
    Edje_File *edf;
    int error_ret = 0;
-
-   if ((!file) || (!*file)) return NULL;
-   f = eina_file_open(file, EINA_FALSE);
+   
    if (!f) return NULL;
    edf = _edje_cache_file_coll_open(f, NULL, &error_ret, NULL, NULL);
    if (edf)
@@ -183,6 +179,21 @@ edje_file_collection_list(const char *file)
 
         _edje_cache_file_unref(edf);
      }
+
+   return lst;
+}                          
+
+EAPI Eina_List *
+edje_file_collection_list(const char *file)
+{
+   Eina_File *f;
+   Eina_List *lst;
+
+   if ((!file) || (!*file)) return NULL;
+   f = eina_file_open(file, EINA_FALSE);
+
+   lst = edje_mmap_collection_list(f);
+
    eina_file_close(f);
    return lst;
 }
@@ -197,24 +208,26 @@ edje_file_collection_list_free(Eina_List *lst)
      }
 }
 
+EAPI void
+edje_mmap_collection_list_free(Eina_List *lst)
+{
+   edje_file_collection_list_free(lst);
+}
+
 EAPI Eina_Bool
-edje_file_group_exists(const char *file, const char *glob)
+edje_mmap_group_exists(Eina_File *f, const char *glob)
 {
    Edje_File *edf;
-   Eina_File *f;
    int error_ret = 0;
    Eina_Bool succeed = EINA_FALSE;
    Eina_Bool is_glob = EINA_FALSE;
    const char *p;
 
-   if ((!file) || (!*file) || (!glob))
+   if ((!f) || (!glob))
       return EINA_FALSE;
 
-   f = eina_file_open(file, EINA_FALSE);
-   if (!f) return EINA_FALSE;
-
    edf = _edje_cache_file_coll_open(f, NULL, &error_ret, NULL, NULL);
-   if (!edf) goto on_error;
+   if (!edf) return EINA_FALSE;
 
    for (p = glob; *p; p++)
      {
@@ -257,39 +270,66 @@ edje_file_group_exists(const char *file, const char *glob)
      }
    _edje_cache_file_unref(edf);
 
-   DBG("edje_file_group_exists: '%s', '%s': %i.", file, glob, succeed);
+   DBG("edje_file_group_exists: '%s', '%s': %i.", eina_file_filename_get(f), glob, succeed);
 
- on_error:
-   eina_file_close(f);
    return succeed;
 }
 
+EAPI Eina_Bool
+edje_file_group_exists(const char *file, const char *glob)
+{
+   Eina_File *f;
+   Eina_Bool result;
+
+   if ((!file) || (!*file) || (!glob))
+     return EINA_FALSE;
+
+   f = eina_file_open(file, EINA_FALSE);
+   if (!f) return EINA_FALSE;
+
+   result = edje_mmap_group_exists(f, glob);
+
+   eina_file_close(f);
+
+   return result;
+}
+
+EAPI char *
+edje_mmap_data_get(const Eina_File *f, const char *key)
+{
+   Edje_File *edf;
+   char *str = NULL;
+   int error_ret = 0;
+
+   if (!key) return NULL;
+
+   edf = _edje_cache_file_coll_open(f, NULL, &error_ret, NULL, NULL);
+   if (edf)
+     {
+        str = (char*) edje_string_get(eina_hash_find(edf->data, key));
+
+        if (str) str = strdup(str);
+
+        _edje_cache_file_unref(edf);
+     }
+   return str;
+}
 
 EAPI char *
 edje_file_data_get(const char *file, const char *key)
 {
-   Edje_File *edf;
    Eina_File *f;
-   char *str = NULL;
-   int error_ret = 0;
+   char *str;
 
-   if (key)
-     {
-        f = eina_file_open(file, EINA_FALSE);
-        if (!f) return NULL;
+   if (!key) return NULL;
 
-        edf = _edje_cache_file_coll_open(f, NULL, &error_ret, NULL, NULL);
-        if (edf)
-          {
-             str = (char*) edje_string_get(eina_hash_find(edf->data, key));
+   f = eina_file_open(file, EINA_FALSE);
+   if (!f) return NULL;
 
-             if (str) str = strdup(str);
+   str = edje_mmap_data_get(f, key);
 
-             _edje_cache_file_unref(edf);
-          }
+   eina_file_close(f);
 
-        eina_file_close(f);
-     }
    return str;
 }
 
@@ -317,7 +357,7 @@ _edje_physics_world_update_cb(void *data, EPhysics_World *world EINA_UNUSED, voi
 #endif
 
 int
-_edje_object_file_set_internal(Evas_Object *obj, Eina_File *file, const char *group, const char *parent, Eina_List *group_path, Eina_Array *nested)
+_edje_object_file_set_internal(Evas_Object *obj, const Eina_File *file, const char *group, const char *parent, Eina_List *group_path, Eina_Array *nested)
 {
    Edje *ed;
    Evas *tev;
@@ -1126,7 +1166,7 @@ on_error:
 }
 
 void
-_edje_file_add(Edje *ed, Eina_File *f)
+_edje_file_add(Edje *ed, const Eina_File *f)
 {
    if (!_edje_edd_edje_file) return;
    if (!f)
@@ -1368,9 +1408,9 @@ _edje_file_del(Edje *ed)
              if (rp->param2)
                {
                   free(rp->param2->set);
-                  eina_cow_free(_edje_calc_params_map_cow, rp->param2->p.map);
+                  eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &rp->param2->p.map);
 #ifdef HAVE_EPHYSICS
-                  eina_cow_free(_edje_calc_params_physics_cow, rp->param2->p.physics);
+                  eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &rp->param2->p.physics);
 #endif
                }
              eina_mempool_free(_edje_real_part_state_mp, rp->param2);
@@ -1378,17 +1418,17 @@ _edje_file_del(Edje *ed)
              if (rp->custom)
                {
                   free(rp->custom->set);
-                  eina_cow_free(_edje_calc_params_map_cow, rp->custom->p.map);
+                  eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &rp->custom->p.map);
 #ifdef HAVE_EPHYSICS
-                  eina_cow_free(_edje_calc_params_physics_cow, rp->custom->p.physics);
+                  eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &rp->custom->p.physics);
 #endif
                }
              eina_mempool_free(_edje_real_part_state_mp, rp->custom);
 
              _edje_unref(ed);
-             eina_cow_free(_edje_calc_params_map_cow, rp->param1.p.map);
+             eina_cow_free(_edje_calc_params_map_cow, (const Eina_Cow_Data **) &rp->param1.p.map);
 #ifdef HAVE_EPHYSICS
-             eina_cow_free(_edje_calc_params_physics_cow, rp->param1.p.physics);
+             eina_cow_free(_edje_calc_params_physics_cow, (const Eina_Cow_Data **) &rp->param1.p.physics);
 #endif
              eina_mempool_free(_edje_real_part_mp, rp);
           }
