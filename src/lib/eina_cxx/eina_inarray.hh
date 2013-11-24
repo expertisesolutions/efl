@@ -8,6 +8,7 @@
 
 #include <iterator>
 #include <cstring>
+#include <cassert>
 
 namespace efl { namespace eina {
 
