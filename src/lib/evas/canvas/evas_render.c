@@ -345,15 +345,22 @@ _evas_render_phase1_direct(Evas_Public_Data *e,
                _evas_render_prev_cur_clip_cache_add(e, obj);
              if (obj->proxy->proxies)
                {
-		  EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, obj->proxy, Evas_Object_Proxy_Data, proxy_write)
-		    proxy_write->redraw = EINA_TRUE;
-		  EINA_COW_WRITE_END(evas_object_proxy_cow, obj->proxy, proxy_write);
-
-                  EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
+                  if (obj->smart.smart && evas_object_smart_changed_get(eo_obj))
                     {
-                       Evas_Object_Protected_Data *proxy = eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
-                       proxy->func->render_pre(eo_proxy, proxy, proxy->private_data);
-                       _evas_render_prev_cur_clip_cache_add(e, proxy);
+                       EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, obj->proxy,
+                                            Evas_Object_Proxy_Data, proxy_write)
+                          proxy_write->redraw = EINA_TRUE;
+                       EINA_COW_WRITE_END(evas_object_proxy_cow, obj->proxy,
+                                          proxy_write);
+
+                       EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
+                         {
+                            Evas_Object_Protected_Data *proxy =
+                               eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
+                            proxy->func->render_pre(eo_proxy,
+                                                    proxy, proxy->private_data);
+                            _evas_render_prev_cur_clip_cache_add(e, proxy);
+                         }
                     }
                }
 
@@ -1661,6 +1668,7 @@ evas_render_updates_internal(Evas *eo_e,
 
    if (!strncmp(e->engine.module->definition->name, "wayland", 7))
      {
+        evas_event_freeze(eo_e);
         /* check for master clip */
         if (!e->framespace.clip)
           {
@@ -1670,6 +1678,8 @@ evas_render_updates_internal(Evas *eo_e,
              evas_object_resize(e->framespace.clip, 
                                 e->viewport.w - e->framespace.w, 
                                 e->viewport.h - e->framespace.h);
+             evas_object_pass_events_set(e->framespace.clip, EINA_TRUE);
+             evas_object_layer_set(e->framespace.clip, EVAS_LAYER_MIN);
              evas_object_show(e->framespace.clip);
           }
 
@@ -1702,6 +1712,9 @@ evas_render_updates_internal(Evas *eo_e,
                   evas_object_clip_set(obj->object, e->framespace.clip);
                }
           }
+        if (!evas_object_clipees_get(e->framespace.clip))
+          evas_object_hide(e->framespace.clip);
+        evas_event_thaw(eo_e);
      }
 
    /* phase 1.5. check if the video should be inlined or stay in their overlay */

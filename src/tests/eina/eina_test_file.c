@@ -266,8 +266,8 @@ START_TEST(eina_file_map_new_test)
    char *test_file_path, *test_file2_path;
    char *big_buffer;
    const char *template = "abcdefghijklmnopqrstuvwxyz";
-   int template_size = strlen (template);
-   int memory_page_size = sysconf(_SC_PAGE_SIZE);
+   int template_size = strlen(template);
+   int memory_page_size = eina_cpu_page_size();
    const int big_buffer_size = memory_page_size * 1.5;
    const int iteration_number = big_buffer_size / template_size;
    int test_string_length = strlen(eina_map_test_string);
@@ -441,6 +441,39 @@ START_TEST(eina_test_file_virtualize)
 }
 END_TEST
 
+static void *
+_eina_test_file_thread(void *data EINA_UNUSED, Eina_Thread t EINA_UNUSED)
+{
+   Eina_File *f;
+   unsigned int i;
+
+   for (i = 0; i < 10000; ++i)
+     {
+        f = eina_file_open("/bin/sh", EINA_FALSE);
+        fail_if(!f);
+        eina_file_close(f);
+     }
+
+   return NULL;
+}
+
+START_TEST(eina_test_file_thread)
+{
+   Eina_Thread th[4];
+   unsigned int i;
+
+   fail_if(!eina_init());
+
+   for (i = 0; i < 4; i++)
+     fail_if(!(eina_thread_create(&th[i], EINA_THREAD_NORMAL, 0, _eina_test_file_thread, NULL)));
+
+   for (i = 0; i < 4; i++)
+     fail_if(eina_thread_join(th[i]) != NULL);
+
+   eina_shutdown();
+}
+END_TEST
+
 void
 eina_test_file(TCase *tc)
 {
@@ -449,5 +482,6 @@ eina_test_file(TCase *tc)
    tcase_add_test(tc, eina_file_ls_simple);
    tcase_add_test(tc, eina_file_map_new_test);
    tcase_add_test(tc, eina_test_file_virtualize);
+   tcase_add_test(tc, eina_test_file_thread);
 }
 

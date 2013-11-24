@@ -104,7 +104,7 @@ ecore_wl_window_free(Ecore_Wl_Window *win)
 
    eina_hash_del(_windows, _ecore_wl_window_id_str_get(win->id), win);
 
-   wl_list_for_each(input, &_ecore_wl_disp->inputs, link)
+   EINA_INLIST_FOREACH(_ecore_wl_disp->inputs, input)
      {
         if ((input->pointer_focus) && (input->pointer_focus == win))
           input->pointer_focus = NULL;
@@ -265,8 +265,12 @@ ecore_wl_window_show(Ecore_Wl_Window *win)
              win->shell_surface = 
                wl_shell_get_shell_surface(_ecore_wl_disp->wl.shell, 
                                           win->surface);
-             wl_shell_surface_set_title(win->shell_surface, win->title);
-             wl_shell_surface_set_class(win->shell_surface, win->class_name);
+             if (!win->shell_surface) return;
+
+             if (win->title)
+               wl_shell_surface_set_title(win->shell_surface, win->title);
+             if (win->class_name)
+               wl_shell_surface_set_class(win->shell_surface, win->class_name);
           }
 
         if (win->shell_surface)
@@ -689,6 +693,16 @@ ecore_wl_window_id_get(Ecore_Wl_Window *win)
 }
 
 /* @since 1.8 */
+EAPI int
+ecore_wl_window_surface_id_get(Ecore_Wl_Window *win)
+{
+   LOGFN(__FILE__, __LINE__, __FUNCTION__);
+
+   if (!win) return 0;
+   return win->surface_id;
+}
+
+/* @since 1.8 */
 EAPI void
 ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title)
 {
@@ -697,7 +711,7 @@ ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title)
    if (!win) return;
    eina_stringshare_replace(&win->title, title);
 
-   if (win->shell_surface)
+   if ((win->shell_surface) && (win->title))
      wl_shell_surface_set_title(win->shell_surface, win->title);
 }
 
@@ -710,7 +724,7 @@ ecore_wl_window_class_name_set(Ecore_Wl_Window *win, const char *class_name)
    if (!win) return;
    eina_stringshare_replace(&win->class_name, class_name);
 
-   if (win->shell_surface)
+   if ((win->shell_surface) && (win->class_name))
      wl_shell_surface_set_class(win->shell_surface, win->class_name);
 }
 

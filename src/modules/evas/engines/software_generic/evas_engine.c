@@ -920,10 +920,17 @@ eng_image_native_set(void *data EINA_UNUSED, void *image, void *native)
 
    if (!im || !ns) return im;
 
-   im2 = evas_cache_image_data(evas_common_image_cache_get(), 
-                               im->w, im->h, 
-                               NULL, 1,
-                               EVAS_COLORSPACE_ARGB8888);
+   if ((ns->type == EVAS_NATIVE_SURFACE_OPENGL) &&
+       (ns->version == EVAS_NATIVE_SURFACE_VERSION))
+     im2 = evas_cache_image_data(evas_common_image_cache_get(), 
+                                 im->w, im->h, 
+                                 ns->data.x11.visual, 1,
+                                 EVAS_COLORSPACE_ARGB8888);
+   else
+     im2 = evas_cache_image_data(evas_common_image_cache_get(), 
+                                 im->w, im->h, 
+                                 NULL, 1,
+                                 EVAS_COLORSPACE_ARGB8888);
    if (im->references > 1)
      ERR("Setting native with more than one references for im=%p", im);
 
@@ -1479,14 +1486,18 @@ _draw_thread_map_draw(void *data)
             (m->pts[2].col == m->pts[3].col))
           {
              DATA32 col;
+             Eina_Bool use;
 
              dx = m->pts[0 + offset].x >> FP;
              dy = m->pts[0 + offset].y >> FP;
              dw = (m->pts[2 + offset].x >> FP) - dx;
              dh = (m->pts[2 + offset].y >> FP) - dy;
 
-             col = map->image_ctx.col.col;
-             map->image_ctx.col.col = MUL4_SYM(col, m->pts[0].col);
+             col = map->image_ctx.mul.col;
+             use = map->image_ctx.mul.use;
+             if (use) map->image_ctx.mul.col = MUL4_SYM(col, m->pts[0].col);
+             else map->image_ctx.mul.col = m->pts[0].col;
+             map->image_ctx.mul.use = 1;
 
              if (map->smooth)
                evas_common_scale_rgba_in_to_out_clip_cb
@@ -1499,7 +1510,8 @@ _draw_thread_map_draw(void *data)
                   0, 0, im->cache_entry.w, im->cache_entry.h,
                   dx, dy, dw, dh, _map_image_sample_draw);
 
-             map->image_ctx.col.col = col;
+             map->image_ctx.mul.col = col;
+             map->image_ctx.mul.use = use;
           }
         else
           {
@@ -1600,10 +1612,12 @@ evas_software_image_map_draw(void *data, void *context, RGBA_Image *surface, RGB
         DATA32 col;
         int a, r, g, b;
         int dx, dy, dw, dh;
+        int mul;
 
-        eng_context_color_get(data, context, &r, &g, &b, &a);
-        col = MUL4_256(a, r, g, b, m->pts[0 + offset].col);
-        eng_context_color_set(data, context, R_VAL(&col), G_VAL(&col), B_VAL(&col), A_VAL(&col));
+        mul = eng_context_multiplier_get(data, context, &r, &g, &b, &a);
+        if (mul) col = MUL4_256(a, r, g, b, m->pts[0 + offset].col);
+        else col = m->pts[0 + offset].col;
+        eng_context_multiplier_set(data, context, R_VAL(&col), G_VAL(&col), B_VAL(&col), A_VAL(&col));
 
         dx = m->pts[0 + offset].x >> FP;
         dy = m->pts[0 + offset].y >> FP;
@@ -1615,7 +1629,8 @@ evas_software_image_map_draw(void *data, void *context, RGBA_Image *surface, RGB
            dx, dy, dw, dh, smooth,
            EINA_FALSE);
 
-        eng_context_color_set(data, context, r, g, b, a);
+        if (mul) eng_context_multiplier_set(data, context, r, g, b, a);
+        else eng_context_multiplier_unset(data, context);
      }
    else
      {
@@ -2375,11 +2390,11 @@ eng_gl_context_create(void *data EINA_UNUSED, void *share_context)
 
    ctx->share_ctx = share_ctx;
 
-   /*
+#if 0
    if (share_ctx)
-      ctx->context = OSMesaCreateContextExt( OSMESA_RGBA, 8, 0, 0, share_ctx->context );
+      ctx->context = _sym_OSMesaCreateContextExt( OSMESA_RGBA, 8, 0, 0, share_ctx->context );
    else
-      ctx->context = OSMesaCreateContextExt( OSMESA_RGBA, 8, 0, 0, NULL );
+      ctx->context = _sym_OSMesaCreateContextExt( OSMESA_RGBA, 8, 0, 0, NULL );
 
 
    if (!ctx->context)
@@ -2388,7 +2403,7 @@ eng_gl_context_create(void *data EINA_UNUSED, void *share_context)
         free(ctx);
         return NULL;
      }
-     */
+#endif
 
    ctx->initialized = 0;
 
@@ -2450,10 +2465,10 @@ eng_gl_make_current(void *data EINA_UNUSED, void *surface, void *context)
            share_ctx = NULL;
 
         ctx->context =  _sym_OSMesaCreateContextExt(sfc->internal_fmt, 
-                                               sfc->depth_bits,
-                                               sfc->stencil_bits, 
-                                               0,
-                                               share_ctx);
+                                                    sfc->depth_bits,
+                                                    sfc->stencil_bits,
+                                                    0,
+                                                    share_ctx);
         if (!ctx->context)
           {
              ERR("Error initializing context.");
@@ -2466,7 +2481,7 @@ eng_gl_make_current(void *data EINA_UNUSED, void *surface, void *context)
 
    // Call MakeCurrent
    ret = _sym_OSMesaMakeCurrent(ctx->context, sfc->buffer, GL_UNSIGNED_BYTE, 
-                           sfc->w, sfc->h);
+                                sfc->w, sfc->h);
 
    if (ret == GL_FALSE)
      {
@@ -2522,7 +2537,7 @@ eng_gl_native_surface_get(void *data EINA_UNUSED, void *surface, void *native_su
    ns->type = EVAS_NATIVE_SURFACE_OPENGL;
    ns->version = EVAS_NATIVE_SURFACE_VERSION;
    ns->data.x11.visual = sfc->buffer;
-
+   
    return 1;
 #else
    (void) surface;
@@ -2749,7 +2764,6 @@ gl_sym_init(void)
    if (!dst) dst = (typeof(dst))dlsym(gl_lib_handle, sym); \
    if (!dst) DBG("Symbol not found %s\n", sym);
 #define FALLBAK(dst, typ) if (!dst) dst = (typeof(dst))sym_missing;
-
 
    //------------------------------------------------------//
    // GLES 2.0 APIs...
@@ -3622,7 +3636,15 @@ gl_lib_init(void)
 {
 #ifdef EVAS_GL
    // dlopen OSMesa 
-   gl_lib_handle = dlopen("libOSMesa.so.1", RTLD_NOW);
+   gl_lib_handle = dlopen("libOSMesa.so.9", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.8", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.7", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.6", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.5", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.4", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.3", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.2", RTLD_NOW);
+   if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so.1", RTLD_NOW);
    if (!gl_lib_handle) gl_lib_handle = dlopen("libOSMesa.so", RTLD_NOW);
    if (!gl_lib_handle)
      {

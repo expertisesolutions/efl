@@ -90,23 +90,10 @@ typedef enum _Ecore_Wl_Window_Buffer_Type Ecore_Wl_Window_Buffer_Type;
 /** @since 1.7.6 */
 struct _Ecore_Wl_Global
 {
+   EINA_INLIST;
    unsigned int id;
    char *interface;
    unsigned int version;
-   struct wl_list link;
-};
-
-struct _Ecore_Wl_Output
-{
-   Ecore_Wl_Display *display;
-   struct wl_output *output;
-   Eina_Rectangle allocation;
-   int mw, mh;
-   int transform;
-   struct wl_list link;
-
-   void (*destroy) (Ecore_Wl_Output *output, void *data);
-   void *data;
 };
 
 struct _Ecore_Wl_Event_Mouse_In
@@ -416,7 +403,7 @@ EAPI void ecore_wl_input_cursor_from_name_set(Ecore_Wl_Input *input, const char 
 EAPI void ecore_wl_input_cursor_default_restore(Ecore_Wl_Input *input);
 EAPI struct wl_seat *ecore_wl_input_seat_get(Ecore_Wl_Input *input);
 
-EAPI struct wl_list *ecore_wl_outputs_get(void);
+EAPI Eina_Inlist *ecore_wl_outputs_get(void);
 
 /**
  * Retrieves the Wayland Globals Interface list used for the current Wayland connection.
@@ -435,7 +422,7 @@ EAPI struct wl_list *ecore_wl_outputs_get(void);
  * @ingroup Ecore_Wl_Display_Group
  * @since 1.7.6
  */
-EAPI struct wl_list *ecore_wl_globals_get(void);
+EAPI Eina_Inlist *ecore_wl_globals_get(void);
 
 /**
  * Retrieves the Wayland Registry used for the current Wayland connection.
@@ -572,7 +559,8 @@ EAPI void ecore_wl_window_parent_set(Ecore_Wl_Window *win, Ecore_Wl_Window *pare
 EAPI int ecore_wl_window_id_get(Ecore_Wl_Window *win);
 EAPI void ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title);
 EAPI void ecore_wl_window_class_name_set(Ecore_Wl_Window *win, const char *class_name);
-
+EAPI int ecore_wl_window_surface_id_get(Ecore_Wl_Window *win);
+       
 EAPI Ecore_Wl_Input *ecore_wl_window_keyboard_get(Ecore_Wl_Window *win);
 
 /**

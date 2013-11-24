@@ -2169,6 +2169,41 @@ START_TEST(evas_textblock_text_getters)
         free(tmp);
      }
 
+   /* complex markup set/get */
+     {
+        const char *text =
+           "This is an entry widget in this window that<ps/>"
+           "uses markup <b>like this</> for styling and<ps/>"
+           "formatting <em>like this</>, as well as<ps/>"
+           "<a href=X><link>links in the text</></a>, so enter text<ps/>"
+           "in here to edit it. By the way, links are<ps/>"
+           "called <a href=anc-02>Anchors</a> so you will need<ps/>"
+           "to refer to them this way.<ps/>"
+           "<ps/>"
+
+           "Also you can stick in items with (relsize + ascent): "
+           "<item relsize=16x16 vsize=ascent href=emoticon/evil-laugh></item>"
+           " (full) "
+           "<item relsize=16x16 vsize=full href=emoticon/guilty-smile></item>"
+           " (to the left)<ps/>"
+
+           "Also (size + ascent): "
+           "<item size=16x16 vsize=ascent href=emoticon/haha></item>"
+           " (full) "
+           "<item size=16x16 vsize=full href=emoticon/happy-panting></item>"
+           " (before this)<ps/>"
+
+           "And as well (absize + ascent): "
+           "<item absize=64x64 vsize=ascent href=emoticon/knowing-grin></item>"
+           " (full) "
+           "<item absize=64x64 vsize=full href=emoticon/not-impressed></item>"
+           " or even paths to image files on disk too like: "
+           "<item absize=96x128 vsize=full href=file://bla/images/sky_01.jpg></item>"
+           " ... end.";
+        evas_object_textblock_text_markup_set(tb, text);
+        ck_assert_str_eq(text, evas_object_textblock_text_markup_get(tb));
+     }
+
    END_TB_TEST();
 }
 END_TEST
@@ -2414,6 +2449,16 @@ START_TEST(evas_textblock_formats)
                evas_textblock_cursor_format_get(cur)), "+ item"));
    fail_if(strcmp(evas_textblock_cursor_content_get(cur), "<item>"));
    fail_if(!evas_textblock_cursor_format_is_visible_get(cur));
+
+   evas_object_textblock_text_markup_set(tb, "abc<br/>def");
+   evas_textblock_cursor_pos_set(cur, 3);
+   evas_object_textblock_text_markup_prepend(cur, "<b></b>");
+   ck_assert_str_eq(evas_object_textblock_text_markup_get(tb), "abc<b></b><br/>def");
+   evas_object_textblock_text_markup_set(tb, "abc<br/>def");
+   evas_textblock_cursor_pos_set(cur, 2);
+   evas_object_textblock_text_markup_prepend(cur, "<b></b>");
+   ck_assert_str_eq(evas_object_textblock_text_markup_get(tb), "ab<b></b>c<br/>def");
+
 
    END_TB_TEST();
 }

@@ -52,6 +52,8 @@ static FILE *_ecore_memory_statistic_file = NULL;
 #endif
 #endif
 
+static Eina_Bool _no_system_modules = EINA_FALSE;
+
 Eo *_ecore_parent = NULL;
 
 static const char *_ecore_magic_string_get(Ecore_Magic m);
@@ -194,6 +196,12 @@ ecore_system_modules_unload(void)
      }
 }
 
+EAPI void
+ecore_app_no_system_modules(void)
+{
+   _no_system_modules = EINA_TRUE;
+}
+
 /**
  * @addtogroup Ecore_Init_Group
  *
@@ -272,7 +280,6 @@ ecore_init(void)
    _ecore_glib_init();
    _ecore_job_init();
    _ecore_time_init();
-   _ecore_coroutine_init();
 
    eina_lock_new(&_thread_mutex);
    eina_condition_new(&_thread_cond, &_thread_mutex);
@@ -321,7 +328,8 @@ ecore_init(void)
      }
 #endif
 
-   ecore_system_modules_load();
+   if (!_no_system_modules)
+     ecore_system_modules_load();
 
    eina_log_timing(_ecore_log_dom,
 		   EINA_LOG_STATE_STOP,
@@ -385,7 +393,6 @@ ecore_shutdown(void)
 #endif
 
      if (_ecore_fps_debug) _ecore_fps_debug_shutdown();
-     _ecore_coroutine_shutdown();
      _ecore_poller_shutdown();
      _ecore_animator_shutdown();
      _ecore_glib_shutdown();
@@ -1068,7 +1075,7 @@ ecore_memory_state_set(Ecore_Memory_State state)
 
 static const Eo_Class_Description parent_class_desc = {
      EO_VERSION,
-     "ecore_parent",
+     "Ecore_Parent",
      EO_CLASS_TYPE_REGULAR,
      EO_CLASS_DESCRIPTION_OPS(NULL, NULL, 0),
      NULL,

@@ -72,9 +72,9 @@ eina_hash_int32(const unsigned int *pkey, int len)
 }
 
 static inline int
-eina_hash_int64(const unsigned long int *pkey, int len)
+eina_hash_int64(const unsigned long long int *pkey, int len)
 {
-   unsigned long int key = *pkey;
+   unsigned long long int key = *pkey;
 
    (void) len;
 
@@ -111,7 +111,7 @@ eina_hash_murmur3(const char *key, int len)
    unsigned int h1 = 0, k1;
    unsigned int c1 = 0xcc9e2d51 ^ eina_seed;
    unsigned int c2 = 0x1b873593 ^ eina_seed;
-   const unsigned int * blocks = (const unsigned int *)(data + nblocks*4);
+   const unsigned int * blocks = (const unsigned int *)(void*)(data + nblocks*4);
    int i;
    const unsigned char *tail;
 

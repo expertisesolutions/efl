@@ -1,3 +1,24 @@
+2013-11-21  ChunEon Park (Hermet)
+
+	* Edje: Fix to update map-enabled part when the edje object is moved.
+
+2013-11-20  Cedric Bail
+
+	* Eina: Fix a possible race condition during eina_file_close.
+	* Edje: Fix use of eina_hash_pointer to actually look at the pointer.
+
+2013-11-19  Tom Hacohen
+
+	* Evas textblock: Fixed order of tags inserted with markup_app/prepend.
+
+2013-11-05  Youngbok Shin
+
+        * Edje: Add null checking for name of anchor and item in geometry get functions.
+
+2013-11-03  Christophe Sadoine
+
+        * Eet: Added EET_DATA_DESCRIPTOR_ADD_MAPPING_BASIC().
+
 2013-10-24  Sung W. Park (sung_)
 
         * EvasGL: Fixed direct rendering mode not clipping to its clip region.

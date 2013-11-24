@@ -15,8 +15,11 @@
 Makefile
 Makefile.in
 tags
+.DS_Store
 .deps
 .libs
+*.trs
+*.log
 *.exe
 *.o
 *.lo

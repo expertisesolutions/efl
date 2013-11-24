@@ -2,6 +2,8 @@
 extern "C" {
 #endif
 
+#include <Efl_Config.h>
+
 /**
  * @defgroup Ecore_Init_Group Ecore initialization, shutdown functions and reset on fork.
  * @ingroup Ecore
@@ -30,8 +32,8 @@ EAPI int ecore_shutdown(void);
  * @{
  */
 
-#define ECORE_VERSION_MAJOR 1
-#define ECORE_VERSION_MINOR 8
+#define ECORE_VERSION_MAJOR EFL_VERSION_MAJOR
+#define ECORE_VERSION_MINOR EFL_VERSION_MINOR
 
 typedef struct _Ecore_Version
 {
@@ -1739,6 +1741,22 @@ EAPI void ecore_app_args_get(int *argc, char ***argv);
 EAPI void ecore_app_restart(void);
 
 /**
+ * @brief Do not load system modules for this application.
+ *
+ * Ecore will now load platform-specific system modules such as
+ * power-management, time and locate monitors.
+ *
+ * Whenever this function is called @b before ecore_init(), ecore
+ * won't load such modules.
+ *
+ * This may be useful to some command-line utilities, hardly will be
+ * useful for end-user applications.
+ *
+ * @since 1.8
+ */
+EAPI void ecore_app_no_system_modules(void);
+
+/**
  * @}
  */
 
@@ -2213,27 +2231,6 @@ typedef Eo Ecore_Job;    /**< A job handle */
 /**
  * @}
  */
-
-typedef struct _Ecore_Coroutine Ecore_Coroutine;
-typedef int (*Ecore_Coroutine_Cb)(void *data, Ecore_Coroutine *coro);
-
-typedef enum {
-  ECORE_COROUTINE_NEW,
-  ECORE_COROUTINE_RUNNING,
-  ECORE_COROUTINE_FINISHED
-} Ecore_Coroutine_State;
-
-EAPI Ecore_Coroutine *ecore_coroutine_add(int stack_size, Ecore_Coroutine_Cb func, void *data);
-EAPI void *ecore_coroutine_del(Ecore_Coroutine *coro);
-
-EAPI int ecore_coroutine_resume(Ecore_Coroutine *coro);
-EAPI void ecore_coroutine_yield(Ecore_Coroutine *coro, int value);
-
-EAPI void *ecore_coroutine_data_get(Ecore_Coroutine *coro);
-EAPI Ecore_Coroutine_State ecore_coroutine_state_get(Ecore_Coroutine *coro);
-
-EAPI void ecore_coroutine_defer(Ecore_Coroutine *coro, Eina_Free_Cb func, void *data);
-EAPI void *ecore_coroutine_alloc(Ecore_Coroutine *coro, size_t size);
 
 #ifdef __cplusplus
 }

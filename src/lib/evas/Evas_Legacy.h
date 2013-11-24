@@ -3982,7 +3982,7 @@ EAPI void                          evas_object_image_file_set(Evas_Object *obj, 
  *
  * @since 1.8
  */
-EAPI void                          evas_object_image_mmap_set(Evas_Object *eo_obj, Eina_File *f, const char *key);
+EAPI void                          evas_object_image_mmap_set(Evas_Object *eo_obj, const Eina_File *f, const char *key);
 
 /**
  * Retrieve the source file from where an image object is to fetch the
@@ -5621,7 +5621,7 @@ EAPI char                                    *evas_textblock_text_utf8_to_markup
  * @param ts  the style to set.
  * @return Returns no value.
  */
-EAPI void                                     evas_object_textblock_style_set(Evas_Object *obj, Evas_Textblock_Style *ts) EINA_ARG_NONNULL(1);
+EAPI void                                     evas_object_textblock_style_set(Evas_Object *obj, const Evas_Textblock_Style *ts) EINA_ARG_NONNULL(1);
 
 /**
  * Return the style of an object.
@@ -7707,6 +7707,12 @@ EAPI Eina_Bool                          evas_object_table_pack_get(const Evas_Ob
  * @param row relative-vertical position to place child.
  * @param colspan how many relative-horizontal position to use for this child.
  * @param rowspan how many relative-vertical position to use for this child.
+ * 
+ * Note that columns and rows only guarantee 16bit unsigned values at best.
+ * That means that col + colspan AND row + rowspan must fit inside 16bit
+ * unsigned values cleanly. You will be warned once values exceed 15bit
+ * storage, and attempting to use values not able to fit in 16bits will
+ * result in failure.
  *
  * @return 1 on success, 0 on failure.
  */

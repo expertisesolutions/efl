@@ -72,9 +72,9 @@ struct _Ecore_Wl_Display
    Ecore_Fd_Handler *fd_hdl;
    Ecore_Idle_Enterer *idle_enterer;
 
-   struct wl_list inputs;
-   struct wl_list outputs;
-   struct wl_list globals; /** @since 1.7.6 */
+   Eina_Inlist *inputs;
+   Eina_Inlist *outputs;
+   Eina_Inlist *globals; /** @since 1.7.6 */
 
    Eina_Bool init_done;
 
@@ -138,6 +138,7 @@ struct _Ecore_Wl_Window
 
    Ecore_Wl_Input *pointer_device;
    Ecore_Wl_Input *keyboard_device;
+   Ecore_Wl_Input *touch_device;
 
    Eina_Bool anim_pending : 1;
    struct wl_callback *anim_callback;
@@ -152,11 +153,15 @@ struct _Ecore_Wl_Window
 
 struct _Ecore_Wl_Input
 {
+   EINA_INLIST;
    Ecore_Wl_Display *display;
    struct wl_seat *seat;
    struct wl_pointer *pointer;
    struct wl_keyboard *keyboard;
+
    struct wl_touch *touch;
+   struct wl_list touch_points;
+   int touch_count;
 
    const char *cursor_name;
    struct wl_cursor *cursor;
@@ -171,14 +176,13 @@ struct _Ecore_Wl_Input
 
    Ecore_Wl_Window *pointer_focus;
    Ecore_Wl_Window *keyboard_focus;
+   Ecore_Wl_Window *touch_focus;
 
    unsigned int button;
    unsigned int timestamp;
    unsigned int modifiers;
    unsigned int pointer_enter_serial;
    int sx, sy;
-
-   struct wl_list link;
 
    Ecore_Wl_Window *grab;
    unsigned int grab_button;
@@ -193,6 +197,15 @@ struct _Ecore_Wl_Input
         xkb_mod_mask_t control_mask;
         xkb_mod_mask_t alt_mask;
         xkb_mod_mask_t shift_mask;
+        xkb_mod_mask_t win_mask;
+        xkb_mod_mask_t scroll_mask;
+        xkb_mod_mask_t num_mask;
+        xkb_mod_mask_t caps_mask;
+        xkb_mod_mask_t altgr_mask;
+        unsigned int mods_depressed;
+        unsigned int mods_latched;
+        unsigned int mods_locked;
+        unsigned int mods_group;
      } xkb;
 
    struct
@@ -200,6 +213,19 @@ struct _Ecore_Wl_Input
         Ecore_Timer *tmr;
         unsigned int sym, key, time;
      } repeat;
+};
+
+struct _Ecore_Wl_Output
+{
+   EINA_INLIST;
+   Ecore_Wl_Display *display;
+   struct wl_output *output;
+   Eina_Rectangle allocation;
+   int mw, mh;
+   int transform;
+
+   void (*destroy) (Ecore_Wl_Output *output, void *data);
+   void *data;
 };
 
 struct _Ecore_Wl_Dnd

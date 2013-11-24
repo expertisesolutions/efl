@@ -41,7 +41,7 @@ EAPI Eina_Error EDJE_EDIT_ERROR_GROUP_DOES_NOT_EXIST = 0;
    Edje *ed; \
    if (!eo_isa(obj, EDJE_OBJ_CLASS)) \
      return RET; \
-   ed = eo_data_scope_get(obj, EDJE_OBJ_CLASS); \
+   ed = eo_data_scope_get(obj, EDJE_OBJ_CLASS);
 
 /* Get rp(Edje_Real_Part*) from obj(Evas_Object*) and part(char*) */
 #define GET_RP_OR_RETURN(RET) \
@@ -263,10 +263,10 @@ _edje_part_description_find_byname(Edje_Edit *eed, const char *part, const char 
 
    if (!eed || !part || !state) return NULL;
 
-   rp = _edje_real_part_get((Edje *)eed, part);
+   rp = _edje_real_part_get(eed->base, part);
    if (!rp) return NULL;
 
-   pd = _edje_part_description_find((Edje *)eed, rp, state, value);
+   pd = _edje_part_description_find(eed->base, rp, state, value);
 
    return pd;
 }
@@ -311,39 +311,44 @@ _edje_real_part_free(Edje *ed, Edje_Real_Part *rp)
 
    if (rp->object)
      {
-	_edje_callbacks_del(rp->object, ed);
-	evas_object_del(rp->object);
+         _edje_callbacks_del(rp->object, ed);
+         evas_object_del(rp->object);
      }
 
-   if (rp->typedata.swallow->swallowed_object)
+   if ((rp->type == EDJE_RP_TYPE_SWALLOW) && (rp->typedata.swallow)
+      && (rp->typedata.swallow->swallowed_object))
      {
-	evas_object_smart_member_del(rp->typedata.swallow->swallowed_object);
-	evas_object_event_callback_del(rp->typedata.swallow->swallowed_object,
-				       EVAS_CALLBACK_FREE,
-				       _edje_object_part_swallow_free_cb);
-	evas_object_clip_unset(rp->typedata.swallow->swallowed_object);
-	evas_object_data_del(rp->typedata.swallow->swallowed_object, "\377 edje.swallowing_part");
-	if (rp->part->mouse_events)
-	  _edje_callbacks_del(rp->typedata.swallow->swallowed_object, ed);
+         evas_object_smart_member_del(rp->typedata.swallow->swallowed_object);
+         evas_object_event_callback_del(rp->typedata.swallow->swallowed_object,
+                        EVAS_CALLBACK_FREE, _edje_object_part_swallow_free_cb);
+         evas_object_clip_unset(rp->typedata.swallow->swallowed_object);
+         evas_object_data_del(rp->typedata.swallow->swallowed_object,
+                        "\377 edje.swallowing_part");
+         if (rp->part->mouse_events)
+            _edje_callbacks_del(rp->typedata.swallow->swallowed_object, ed);
 
-	if (rp->part->type == EDJE_PART_TYPE_GROUP ||
-	    rp->part->type == EDJE_PART_TYPE_EXTERNAL)
-	  evas_object_del(rp->typedata.swallow->swallowed_object);
+         if (rp->part->type == EDJE_PART_TYPE_GROUP ||
+          rp->part->type == EDJE_PART_TYPE_EXTERNAL)
+            evas_object_del(rp->typedata.swallow->swallowed_object);
 
-	rp->typedata.swallow->swallowed_object = NULL;
+         rp->typedata.swallow->swallowed_object = NULL;
      }
 
-   if (rp->typedata.text->text) eina_stringshare_del(rp->typedata.text->text);
-   if (rp->typedata.text->font) eina_stringshare_del(rp->typedata.text->font);
-   if (rp->typedata.text->cache.in_str) eina_stringshare_del(rp->typedata.text->cache.in_str);
-   if (rp->typedata.text->cache.out_str) eina_stringshare_del(rp->typedata.text->cache.out_str);
+   if ((rp->type == EDJE_RP_TYPE_TEXT) && (rp->typedata.text) &&
+    (rp->typedata.text->text)) eina_stringshare_del(rp->typedata.text->text);
+   if ((rp->type == EDJE_RP_TYPE_TEXT) && (rp->typedata.text) &&
+    (rp->typedata.text->font)) eina_stringshare_del(rp->typedata.text->font);
+   if ((rp->type == EDJE_RP_TYPE_TEXT) && (rp->typedata.text) &&
+    (rp->typedata.text->cache.in_str)) eina_stringshare_del(rp->typedata.text->cache.in_str);
+   if ((rp->type == EDJE_RP_TYPE_TEXT) && (rp->typedata.text) &&
+    (rp->typedata.text->cache.out_str)) eina_stringshare_del(rp->typedata.text->cache.out_str);
 
    if (rp->custom)
      {
-	_edje_collection_free_part_description_clean(rp->part->type, rp->custom->description, 0);
-        if (rp->custom) free(rp->custom->set);
-        eina_mempool_free(_edje_real_part_state_mp, rp->custom);
-	rp->custom = NULL;
+         _edje_collection_free_part_description_clean(rp->part->type, rp->custom->description, 0);
+         if (rp->custom) free(rp->custom->set);
+         eina_mempool_free(_edje_real_part_state_mp, rp->custom);
+         rp->custom = NULL;
      }
 
    free(rp->drag);
@@ -2092,8 +2097,10 @@ edje_edit_part_del(Evas_Object *obj, const char* part)
 	if (i == id) continue; //don't check the deleted id
 	real = ed->table_parts[i];
 
-	if (real->typedata.text->source == rp) real->typedata.text->source = NULL;
-	if (real->typedata.text->text_source == rp) real->typedata.text->text_source = NULL;
+	if ((real->typedata.text) && (real->typedata.text->source == rp))
+          real->typedata.text->source = NULL;
+	if ((real->typedata.text) && (real->typedata.text->text_source == rp))
+          real->typedata.text->text_source = NULL;
 
 	if (real->part->clip_to_id == rp->part->id)
 	  {
@@ -2210,7 +2217,7 @@ edje_edit_part_restack_below(Evas_Object *obj, const char* part)
    _edje_parts_id_switch(ed, rp, prev);
 
    evas_object_stack_below(rp->object, prev->object);
-   if (rp->typedata.swallow->swallowed_object)
+   if ((rp->typedata.swallow) && (rp->typedata.swallow->swallowed_object))
      evas_object_stack_above(rp->typedata.swallow->swallowed_object, rp->object);
 
    _edje_edit_flag_script_dirty(eed, EINA_TRUE);
@@ -2245,7 +2252,7 @@ edje_edit_part_restack_above(Evas_Object *obj, const char* part)
    _edje_parts_id_switch(ed, rp, next);
 
    evas_object_stack_above(rp->object, next->object);
-   if (rp->typedata.swallow->swallowed_object)
+   if ((rp->typedata.swallow) && (rp->typedata.swallow->swallowed_object))
      evas_object_stack_above(rp->typedata.swallow->swallowed_object, rp->object);
 
    _edje_edit_flag_script_dirty(eed, EINA_TRUE);
@@ -2320,8 +2327,6 @@ edje_edit_part_clip_to_set(Evas_Object *obj, const char *part, const char *clip_
    /* unset clipping */
    if (!clip_to)
      {
-	//printf("UnSet clip_to for part: %s\n", part);
-
 	if (rp->part->clip_to_id >= 0)
 	  {
 	     clip = ed->table_parts[rp->part->clip_to_id % ed->table_parts_size];
@@ -2332,8 +2337,8 @@ edje_edit_part_clip_to_set(Evas_Object *obj, const char *part, const char *clip_
 	  }
 
 	evas_object_clip_set(rp->object, ed->base->clipper);
-	if (rp->typedata.swallow->swallowed_object)
-	  evas_object_clip_set(rp->typedata.swallow->swallowed_object, ed->base->clipper);
+        if ((rp->typedata.swallow) && (rp->typedata.swallow->swallowed_object))
+          evas_object_clip_set(rp->typedata.swallow->swallowed_object, ed->base->clipper);
 
 	rp->part->clip_to_id = -1;
 
@@ -2359,7 +2364,7 @@ edje_edit_part_clip_to_set(Evas_Object *obj, const char *part, const char *clip_
    evas_object_pass_events_set(clip->object, 1);
    evas_object_pointer_mode_set(clip->object, EVAS_OBJECT_POINTER_MODE_NOGRAB);
    evas_object_clip_set(rp->object, clip->object);
-   if (rp->typedata.swallow->swallowed_object)
+   if ((rp->typedata.swallow) && (rp->typedata.swallow->swallowed_object))
      evas_object_clip_set(rp->typedata.swallow->swallowed_object, clip->object);
 
    edje_object_calc_force(obj);
@@ -2481,7 +2486,7 @@ edje_edit_part_source_set(Evas_Object *obj, const char *part, const char *source
 
    _edje_if_string_free(ed, rp->part->source);
 
-   if (rp->typedata.swallow->swallowed_object)
+   if ((rp->typedata.swallow) && (rp->typedata.swallow->swallowed_object))
      {
        _edje_real_part_swallow_clear(ed, rp);
        evas_object_del(rp->typedata.swallow->swallowed_object);
@@ -5746,10 +5751,10 @@ edje_edit_script_get(Evas_Object *obj)
    return strdup(eed->embryo_source);
 }
 
-EAPI void
+EAPI Eina_Bool
 edje_edit_script_set(Evas_Object *obj, const char *code)
 {
-   GET_EED_OR_RETURN();
+   GET_EED_OR_RETURN(EINA_FALSE);
 
    free(eed->embryo_source);
    free(eed->embryo_processed);
@@ -5763,6 +5768,7 @@ edje_edit_script_set(Evas_Object *obj, const char *code)
    eed->embryo_source_dirty = EINA_TRUE;
 
    _edje_edit_flag_script_dirty(eed, EINA_FALSE);
+   return EINA_TRUE;
 }
 
 EAPI char *
@@ -5776,27 +5782,27 @@ edje_edit_script_program_get(Evas_Object *obj, const char *prog)
    if (epr->action != EDJE_ACTION_TYPE_SCRIPT)
      return NULL;
 
-   ps = eina_hash_find(eed->program_scripts, prog);
+   ps = eina_hash_find(eed->program_scripts, &epr->id);
    if (!ps) /* mmm? it should be there, even if empty */
      return NULL;
 
    return ps->code ? strdup(ps->code) : NULL;
 }
 
-EAPI void
+EAPI Eina_Bool
 edje_edit_script_program_set(Evas_Object *obj, const char *prog, const char *code)
 {
    Program_Script *ps;
 
-   GET_EED_OR_RETURN();
-   GET_EPR_OR_RETURN();
+   GET_EED_OR_RETURN(EINA_FALSE);
+   GET_EPR_OR_RETURN(EINA_FALSE);
 
    if (epr->action != EDJE_ACTION_TYPE_SCRIPT)
-     return;
+     return EINA_FALSE;
 
-   ps = eina_hash_find(eed->program_scripts, prog);
+   ps = eina_hash_find(eed->program_scripts, &epr->id);
    if (!ps) /* ???? how so? */
-     return;
+     return EINA_FALSE;
 
    free(ps->code);
    free(ps->processed);
@@ -5809,6 +5815,7 @@ edje_edit_script_program_set(Evas_Object *obj, const char *prog, const char *cod
    ps->dirty = EINA_TRUE;
 
    _edje_edit_flag_script_dirty(eed, EINA_FALSE);
+   return EINA_TRUE;
 }
 
 static int

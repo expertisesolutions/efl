@@ -2345,12 +2345,12 @@ eng_image_native_set(void *data, void *image, void *native)
                              {
                                 if (found == 0)
                                   {
-//                                     XVisualInfo *vi;
-//                                     
-//                                     vi = glXGetVisualFromFBConfig(re->win->disp, configs[j]);
-//                                     if (!vi) continue;
-//                                     if (vi->depth != depth) continue;
-//                                     XFree(vi);
+                                     XVisualInfo *vi;
+                                     
+                                     vi = glXGetVisualFromFBConfig(re->win->disp, configs[j]);
+                                     if (!vi) continue;
+                                     if (vi->depth != (int)depth) continue;
+                                     XFree(vi);
                                      
                                      glXGetFBConfigAttrib(re->win->disp, configs[j],
                                                           GLX_BUFFER_SIZE, &val);
@@ -3080,6 +3080,8 @@ eng_image_cache_flush(void *data)
 
    re = (Render_Engine *)data;
 
+   eng_window_use(re->win);
+
    tmp_size = evas_common_image_get_cache();
    evas_common_image_set_cache(0);
    evas_common_rgba_image_scalecache_flush();
@@ -3093,6 +3095,9 @@ eng_image_cache_set(void *data, int bytes)
    Render_Engine *re;
 
    re = (Render_Engine *)data;
+
+   eng_window_use(re->win);
+
    evas_common_image_set_cache(bytes);
    evas_common_rgba_image_scalecache_size_set(bytes);
    evas_gl_common_image_cache_flush(re->win->gl_context);

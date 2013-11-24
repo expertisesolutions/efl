@@ -24,11 +24,14 @@
 #include "eina_lock.h"
 #include "eina_list.h"
 
+#define EINA_FILE_MAGIC 0xFEEDBEEF
+
 typedef struct _Eina_File_Map Eina_File_Map;
 typedef struct _Eina_Lines_Iterator Eina_Lines_Iterator;
 
 struct _Eina_File
 {
+   EINA_MAGIC;
    const char *filename;
 
    Eina_Hash *map;
@@ -121,6 +124,7 @@ struct _Eina_Lines_Iterator
 Eina_Bool eina_file_path_relative(const char *path);
 Eina_Tmpstr *eina_file_current_directory_get(const char *path, size_t len);
 char *eina_file_cleanup(Eina_Tmpstr *path);
+void eina_file_clean_close(Eina_File *file);
 void eina_file_real_close(Eina_File *file);
 void eina_file_flush(Eina_File *file, unsigned long int length);
 void eina_file_common_map_free(Eina_File *file, void *map,
@@ -139,8 +143,8 @@ void eina_file_virtual_map_free(Eina_File *file, void *map);
 
 // Common hash function
 unsigned int eina_file_map_key_length(const void *key);
-int eina_file_map_key_cmp(const unsigned long int *key1, int key1_length,
-                          const unsigned long int *key2, int key2_length);
-int eina_file_map_key_hash(const unsigned long int *key, int key_length);
+int eina_file_map_key_cmp(const unsigned long long int *key1, int key1_length,
+                          const unsigned long long int *key2, int key2_length);
+int eina_file_map_key_hash(const unsigned long long int *key, int key_length);
 
 #endif /* EINA_FILE_COMMON_H_ */

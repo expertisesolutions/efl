@@ -8,7 +8,8 @@ EAPI Eo_Op EVAS_OBJ_TABLE_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EVAS_OBJ_TABLE_CLASS
 
-#define MY_CLASS_NAME "Evas_Object_Table"
+#define MY_CLASS_NAME "Evas_Table"
+#define MY_CLASS_NAME_LEGACY "Evas_Object_Table"
 
 typedef struct _Evas_Object_Table_Data       Evas_Object_Table_Data;
 typedef struct _Evas_Object_Table_Option     Evas_Object_Table_Option;
@@ -649,10 +650,8 @@ _evas_object_table_calculate_hints_regular(Evas_Object *o, Evas_Object_Table_Dat
    _evas_object_table_cache_reset(priv);
 
    /* cache interesting data */
-   memset(c->expands.h, 1, priv->size.cols);
-   memset(c->expands.v, 1, priv->size.rows);
-   memset(c->weights.h, 0, priv->size.cols);
-   memset(c->weights.v, 0, priv->size.rows);
+   memset(c->expands.h, 1, priv->size.cols * sizeof(Eina_Bool));
+   memset(c->expands.v, 1, priv->size.rows * sizeof(Eina_Bool));
    EINA_LIST_FOREACH(priv->children, l, opt)
      {
         Evas_Object *child = opt->obj;
@@ -691,14 +690,14 @@ _evas_object_table_calculate_hints_regular(Evas_Object *o, Evas_Object_Table_Dat
           }
 
         if (!opt->expand_h)
-          memset(c->expands.h + opt->col, 0, opt->colspan);
+          memset(c->expands.h + opt->col, 0, opt->colspan * sizeof(Eina_Bool));
         else
           {
              for (i = opt->col; i < opt->col + opt->colspan; i++)
                c->weights.h[i] += (weightw / (double)opt->colspan);
           }
         if (!opt->expand_v)
-          memset(c->expands.v + opt->row, 0, opt->rowspan);
+          memset(c->expands.v + opt->row, 0, opt->rowspan * sizeof(Eina_Bool));
         else
           {
              for (i = opt->row; i < opt->row + opt->rowspan; i++)
@@ -964,7 +963,7 @@ static void
 _constructor(Eo *obj, void *class_data EINA_UNUSED, va_list *list EINA_UNUSED)
 {
    eo_do_super(obj, MY_CLASS, eo_constructor());
-   eo_do(obj, evas_obj_type_set(MY_CLASS_NAME));
+   eo_do(obj, evas_obj_type_set(MY_CLASS_NAME_LEGACY));
 }
 
 EAPI Evas_Object *
@@ -1172,17 +1171,35 @@ _pack(Eo *o, void *_pd, va_list *list)
 
    Evas_Object_Table_Data *priv = _pd;
 
-   if (rowspan < 1)
-     {
-        ERR("rowspan < 1");
-        return;
-     }
    if (colspan < 1)
      {
         ERR("colspan < 1");
         return;
      }
-
+   if ((0xffff - col) < colspan)
+     {
+        ERR("col + colspan > 0xffff");
+        return;
+     }
+   if ((col + colspan) >= 0x7ffff)
+     {
+        WRN("col + colspan getting rather large (>32767)");
+     }
+   if (rowspan < 1)
+     {
+        ERR("rowspan < 1");
+        return;
+     }
+   if ((0xffff - row) < rowspan)
+     {
+        ERR("row + rowspan > 0xffff");
+        return;
+     }
+   if ((row + rowspan) >= 0x7ffff)
+     {
+        WRN("row + rowspan getting rather large (>32767)");
+     }
+   
    opt = _evas_object_table_option_get(child);
    if (!opt)
      {
@@ -1593,7 +1610,7 @@ _class_constructor(Eo_Class *klass)
    };
    eo_class_funcs_set(klass, func_desc);
 
-   evas_smart_legacy_type_register(MY_CLASS_NAME, klass);
+   evas_smart_legacy_type_register(MY_CLASS_NAME_LEGACY, klass);
 }
 static const Eo_Op_Description op_desc[] = {
      EO_OP_DESCRIPTION(EVAS_OBJ_TABLE_SUB_ID_ADD_TO, "Create a table that is child of a given element parent."),
@@ -1617,7 +1634,7 @@ static const Eo_Op_Description op_desc[] = {
 };
 static const Eo_Class_Description class_desc = {
      EO_VERSION,
-     "Evas_Object_Table",
+     MY_CLASS_NAME,
      EO_CLASS_TYPE_REGULAR,
      EO_CLASS_DESCRIPTION_OPS(&EVAS_OBJ_TABLE_BASE_ID, op_desc, EVAS_OBJ_TABLE_SUB_ID_LAST),
      NULL,

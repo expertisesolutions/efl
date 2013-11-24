@@ -433,7 +433,6 @@ typedef struct _Edje_Signal_Callback_Custom Edje_Signal_Callback_Custom;
 
 #define EDJE_ENTRY_SELECTION_MODE_DEFAULT 0
 #define EDJE_ENTRY_SELECTION_MODE_EXPLICIT 1
-#define EDJE_ENTRY_SELECTION_MODE_BLOCK_HANDLE 2
 
 #define EDJE_ENTRY_CURSOR_MODE_UNDER 0
 #define EDJE_ENTRY_CURSOR_MODE_BEFORE 1
@@ -989,7 +988,7 @@ struct _Edje_Part
 
    Edje_Part_Description_List    other; /* other possible descriptors */
 
-   const char           *source, *source2, *source3, *source4, *source5, *source6, *source7, *source8;
+   const char           *source, *source2, *source3, *source4, *source5, *source6;
    int                    id; /* its id number */
    int                    clip_to_id; /* the part id to clip this one to */
    Edje_Part_Dragable     dragable;
@@ -1371,6 +1370,7 @@ struct _Edje
    Eina_Bool          recalc_call : 1;
    Eina_Bool          update_hints : 1;
    Eina_Bool          recalc_hints : 1;
+   Eina_Bool          need_map_update : 1;
 };
 
 struct _Edje_Calc_Params_Map
@@ -1591,9 +1591,9 @@ struct _Edje_Real_Part
    unsigned char             type; // 1
    unsigned char             calculated : 2; // 1
    unsigned char             calculating : 2; // 0
-   unsigned char             still_in   : 1; // 0
+   Eina_Bool                 still_in   : 1; // 0
 #ifdef EDJE_CALC_CACHE
-   unsigned char             invalidate : 1; // 0
+   Eina_Bool                 invalidate : 1; // 0
 #endif
 }; // 128
 // WITH EDJE_CALC_CACHE: 407
@@ -1948,7 +1948,6 @@ Edje_Part_Description_Common *_edje_part_description_find(Edje *ed,
 void  _edje_part_description_apply(Edje *ed, Edje_Real_Part *ep, const char  *d1, double v1, const char *d2, double v2);
 void  _edje_recalc(Edje *ed);
 void  _edje_recalc_do(Edje *ed);
-void  _edje_part_recalc_1(Edje *ed, Edje_Real_Part *ep);
 int   _edje_part_dragable_calc(Edje *ed, Edje_Real_Part *ep, FLOAT_T *x, FLOAT_T *y);
 void  _edje_dragable_pos_set(Edje *ed, Edje_Real_Part *ep, FLOAT_T x, FLOAT_T y);
 
@@ -1972,7 +1971,7 @@ void *_edje_signal_callback_disable(const Edje_Signal_Callback_Group *cgp,
 EAPI void _edje_edd_init(void);
 EAPI void _edje_edd_shutdown(void);
 
-int _edje_object_file_set_internal(Evas_Object *obj, Eina_File *file, const char *group, const char *parent, Eina_List *group_path, Eina_Array *nested);
+int _edje_object_file_set_internal(Evas_Object *obj, const Eina_File *file, const char *group, const char *parent, Eina_List *group_path, Eina_Array *nested);
 
 void  _edje_file_del(Edje *ed);
 void  _edje_file_free(Edje_File *edf);
@@ -2154,7 +2153,7 @@ void _edje_textblock_styles_del(Edje *ed);
 void _edje_textblock_style_all_update(Edje *ed);
 void _edje_textblock_style_parse_and_fix(Edje_File *edf);
 void _edje_textblock_style_cleanup(Edje_File *edf);
-Edje_File *_edje_cache_file_coll_open(Eina_File *file, const char *coll, int *error_ret, Edje_Part_Collection **edc_ret, Edje *ed);
+Edje_File *_edje_cache_file_coll_open(const Eina_File *file, const char *coll, int *error_ret, Edje_Part_Collection **edc_ret, Edje *ed);
 void _edje_cache_coll_clean(Edje_File *edf);
 void _edje_cache_coll_flush(Edje_File *edf);
 void _edje_cache_coll_unref(Edje_File *edf, Edje_Part_Collection *edc);

@@ -16,6 +16,9 @@
 /* local variables */
 static Eina_Bool _randr_avail = EINA_FALSE;
 
+static Ecore_X_Atom connector_type = 0;
+static Ecore_X_Atom connector_number = 0;
+
 #ifdef ECORE_XRANDR
 
 # define RANDR_VERSION_1_1 ((1 << 16) | 1)
@@ -65,6 +68,9 @@ _ecore_x_randr_init(void)
           _ecore_x_randr_screen_resources_get = XRRGetScreenResources;
 
         _randr_avail = EINA_TRUE;
+
+        connector_type = ecore_x_atom_get(RR_PROPERTY_CONNECTOR_TYPE);
+        connector_number = ecore_x_atom_get(RR_PROPERTY_CONNECTOR_NUMBER);
      }
 #endif
 }
@@ -632,7 +638,9 @@ ecore_x_randr_screen_current_size_set(Ecore_X_Window root, int w, int h, int w_m
         ecore_x_randr_screen_current_size_get(root, &cw, &ch, &cwmm, &chmm);
 
         /* compare to the values passed in. if there are no changes, get out */
-        if ((w == cw) && (h == ch) && (w_mm == cwmm) && (h_mm == chmm))
+        if ((w == cw) && (h == ch) &&
+            ((w_mm == -1) || (w_mm == cwmm)) &&
+            ((h_mm == -1) || (h_mm == chmm)))
           return EINA_TRUE;
 
         /* get the current size range */
@@ -3044,7 +3052,7 @@ ecore_x_randr_output_connector_number_get(Ecore_X_Window root EINA_UNUSED, Ecore
 {
 #ifdef ECORE_XRANDR
    XRRPropertyInfo *info = NULL;
-   Atom conn, type;
+   Atom type;
    unsigned long bytes = 0;
    unsigned long items = 0;
    unsigned char *prop = NULL;
@@ -3052,14 +3060,10 @@ ecore_x_randr_output_connector_number_get(Ecore_X_Window root EINA_UNUSED, Ecore
 
    if (_randr_version < RANDR_VERSION_1_3) return -1;
 
-   /* try to get the connector number atom */
-   if (!(conn = XInternAtom(_ecore_x_disp, RR_PROPERTY_CONNECTOR_NUMBER, True)))
-     return -1;
-
    /* try to get the output property from Xrandr
     * 
     * NB: Returns 0 on success */
-   if (XRRGetOutputProperty(_ecore_x_disp, output, conn, 0, 100, 
+   if (XRRGetOutputProperty(_ecore_x_disp, output, connector_number, 0, 100, 
                             False, False, AnyPropertyType, &type, &format, 
                             &items, &bytes, &prop))
      {
@@ -3075,7 +3079,7 @@ ecore_x_randr_output_connector_number_get(Ecore_X_Window root EINA_UNUSED, Ecore
    free(prop);
 
    /* try to get the output property from Xrandr */
-   if ((info = XRRQueryOutputProperty(_ecore_x_disp, output, conn)))
+   if ((info = XRRQueryOutputProperty(_ecore_x_disp, output, connector_number)))
      {
         int ret = 0;
 
@@ -3096,7 +3100,7 @@ ecore_x_randr_output_connector_type_get(Ecore_X_Window root EINA_UNUSED, Ecore_X
 {
 #ifdef ECORE_XRANDR
    XRRPropertyInfo *info = NULL;
-   Atom conn, type;
+   Atom type;
    unsigned long bytes = 0;
    unsigned long items = 0;
    unsigned char *prop = NULL;
@@ -3105,13 +3109,15 @@ ecore_x_randr_output_connector_type_get(Ecore_X_Window root EINA_UNUSED, Ecore_X
    if (_randr_version < RANDR_VERSION_1_3) return -1;
 
    /* try to get the connector type atom */
-   if ((conn = XInternAtom(_ecore_x_disp, RR_PROPERTY_CONNECTOR_NUMBER, True)))
-     XRRGetOutputProperty(_ecore_x_disp, output, conn, 0, 4, 
-                          False, False, AnyPropertyType, &type, &format, 
-                          &items, &bytes, &prop);
+   if (XRRGetOutputProperty(_ecore_x_disp, output, connector_type, 0, 100, 
+                        False, False, AnyPropertyType, &type, &format, 
+                        &items, &bytes, &prop) != Success)
+     return -1;
 
    if ((!prop) || (items == 0))
      {
+        Atom conn;
+
         /* NB: some butthead drivers (*cough* nouveau *cough*) do not 
          * implement randr properly. They are not using the connector type 
          * property of randr, but rather a "subconnector" property */
@@ -3135,7 +3141,7 @@ ecore_x_randr_output_connector_type_get(Ecore_X_Window root EINA_UNUSED, Ecore_X
    free(prop);
 
    /* try to get the output property from Xrandr */
-   if ((info = XRRQueryOutputProperty(_ecore_x_disp, output, conn)))
+   if ((info = XRRQueryOutputProperty(_ecore_x_disp, output, connector_type)))
      {
         int ret = 0;
 

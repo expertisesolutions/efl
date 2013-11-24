@@ -74,7 +74,7 @@ EAPI Eo_Op EVAS_OBJ_TEXTBLOCK_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EVAS_OBJ_TEXTBLOCK_CLASS
 
-#define MY_CLASS_NAME "Evas_Object_Textblock"
+#define MY_CLASS_NAME "Evas_Textblock"
 
 #include "linebreak.h"
 #include "wordbreak.h"
@@ -5699,7 +5699,7 @@ _textblock_style_generic_set(Evas_Object *eo_obj, Evas_Textblock_Style *ts,
 }
 
 EAPI void
-evas_object_textblock_style_set(Evas_Object *eo_obj, Evas_Textblock_Style *ts)
+evas_object_textblock_style_set(Evas_Object *eo_obj, const Evas_Textblock_Style *ts)
 {
    eo_do(eo_obj, evas_obj_textblock_style_set(ts));
 }
@@ -5708,8 +5708,8 @@ static void
 _textblock_style_set(Eo *eo_obj, void *_pd, va_list *list)
 {
    Evas_Object_Textblock *o = _pd;
-   Evas_Textblock_Style *ts = va_arg(*list, Evas_Textblock_Style *);
-   _textblock_style_generic_set(eo_obj, ts, &(o->style));
+   const Evas_Textblock_Style *ts = va_arg(*list, const Evas_Textblock_Style *);
+   _textblock_style_generic_set(eo_obj, (Evas_Textblock_Style *) ts, &(o->style));
 }
 
 EAPI const Evas_Textblock_Style *
@@ -8578,6 +8578,7 @@ evas_textblock_cursor_format_append(Evas_Textblock_Cursor *cur, const char *form
           }
         else
           {
+             fmt = _evas_textblock_node_format_last_at_off(fmt);
              if (evas_textblock_cursor_format_is_visible_get(cur))
                {
                   o->format_nodes = _NODE_FORMAT(eina_inlist_prepend_relative(
@@ -8593,7 +8594,6 @@ evas_textblock_cursor_format_append(Evas_Textblock_Cursor *cur, const char *form
                }
              else
                {
-                  fmt = _evas_textblock_node_format_last_at_off(fmt);
                   o->format_nodes = _NODE_FORMAT(eina_inlist_append_relative(
                            EINA_INLIST_GET(o->format_nodes),
                            EINA_INLIST_GET(n),
@@ -11477,8 +11477,8 @@ pfnode(Evas_Object_Textblock_Node_Format *n)
 {
    printf("Format Node: %p\n", n);
    printf("next = %p, prev = %p, last = %p\n", EINA_INLIST_GET(n)->next, EINA_INLIST_GET(n)->prev, EINA_INLIST_GET(n)->last);
-   printf("text_node = %p, offset = %u, visible = %d\n", n->text_node, n->offset, n->visible);
-   printf("'%s'\n", eina_strbuf_string_get(n->format));
+   printf("text_node = %p, offset = %u, visible = %d\n", n->text_node, (unsigned int) n->offset, n->visible);
+   printf("'%s'\n", n->format);
 }
 
 EAPI void
@@ -11495,10 +11495,10 @@ pitem(Evas_Object_Textblock_Item *it)
 {
    Evas_Object_Textblock_Text_Item *ti;
    Evas_Object_Textblock_Format_Item *fi;
-   printf("Item: %p\n", it);
+   printf("Item: %p %s\n", it, (it->visually_deleted) ? "(visually deleted)" : "");
    printf("Type: %s (%d)\n", (it->type == EVAS_TEXTBLOCK_ITEM_TEXT) ?
          "TEXT" : "FORMAT", it->type);
-   printf("Text pos: %d Visual pos: %d\n", it->text_pos,
+   printf("Text pos: %u Visual pos: %u\n", (unsigned int) it->text_pos, (unsigned int)
 #ifdef BIDI_SUPPORT
          it->visual_pos
 #else
@@ -11509,8 +11509,12 @@ pitem(Evas_Object_Textblock_Item *it)
          (int) it->adv);
    if (it->type == EVAS_TEXTBLOCK_ITEM_TEXT)
      {
+        Eina_Unicode *tmp;
         ti = _ITEM_TEXT(it);
-        printf("Text: '%*ls'\n", ti->text_props.text_len, GET_ITEM_TEXT(ti));
+        tmp = eina_unicode_strdup(GET_ITEM_TEXT(ti));
+        tmp[ti->text_props.text_len] = '\0';
+        printf("Text: '%ls'\n", tmp);
+        free(tmp);
      }
    else
      {

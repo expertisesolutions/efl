@@ -1,11 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 AM_MAKEFLAGS = --no-print-directory
 AM_DISTCHECK_CONFIGURE_FLAGS = \
---with-tests=regular \
---enable-always-build-examples \
---enable-xine \
---enable-sdl \
---enable-harfbuzz
+--with-tests=regular
 
 SUBDIRS = src data doc
 
@@ -241,6 +237,11 @@ eina_cmakeconfig_DATA = \
 cmakeconfig/EinaConfig.cmake \
 cmakeconfig/EinaConfigVersion.cmake
 
+eeze_cmakeconfigdir = $(libdir)/cmake/Eeze/
+eeze_cmakeconfig_DATA = \
+cmakeconfig/EezeConfig.cmake \
+cmakeconfig/EezeConfigVersion.cmake
+
 eo_cmakeconfigdir = $(libdir)/cmake/Eo/
 eo_cmakeconfig_DATA = \
 cmakeconfig/EoConfig.cmake \
@@ -266,10 +267,25 @@ edje_cmakeconfig_DATA = \
 cmakeconfig/EdjeConfig.cmake \
 cmakeconfig/EdjeConfigVersion.cmake
 
+eldbus_cmakeconfigdir = $(libdir)/cmake/Eldbus/
+eldbus_cmakeconfig_DATA = \
+cmakeconfig/EldbusConfig.cmake \
+cmakeconfig/EldbusConfigVersion.cmake
+
 efreet_cmakeconfigdir =  $(libdir)/cmake/Efreet/
 efreet_cmakeconfig_DATA = \
 cmakeconfig/EfreetConfig.cmake \
 cmakeconfig/EfreetConfigVersion.cmake
+
+ethumb_cmakeconfigdir =  $(libdir)/cmake/Ethumb/
+ethumb_cmakeconfig_DATA = \
+cmakeconfig/EthumbConfig.cmake \
+cmakeconfig/EthumbConfigVersion.cmake
+
+ethumbclient_cmakeconfigdir =  $(libdir)/cmake/EthumbClient/
+ethumbclient_cmakeconfig_DATA = \
+cmakeconfig/EthumbClientConfig.cmake \
+cmakeconfig/EthumbClientConfigVersion.cmake
 
 # D-Bus services:
 

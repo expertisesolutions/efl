@@ -142,18 +142,18 @@ eina_file_map_key_length(const void *key EINA_UNUSED)
 }
 
 int
-eina_file_map_key_cmp(const unsigned long int *key1, int key1_length EINA_UNUSED,
-                       const unsigned long int *key2, int key2_length EINA_UNUSED)
+eina_file_map_key_cmp(const unsigned long long int *key1, int key1_length EINA_UNUSED,
+                       const unsigned long long int *key2, int key2_length EINA_UNUSED)
 {
    if (key1[0] - key2[0] == 0) return key1[1] - key2[1];
    return key1[0] - key2[0];
 }
 
 int
-eina_file_map_key_hash(const unsigned long int *key, int key_length EINA_UNUSED)
+eina_file_map_key_hash(const unsigned long long int *key, int key_length EINA_UNUSED)
 {
-   return eina_hash_int64(&key[0], sizeof (unsigned long int))
-     ^ eina_hash_int64(&key[1], sizeof (unsigned long int));
+   return eina_hash_int64(&key[0], sizeof (unsigned long long int))
+     ^ eina_hash_int64(&key[1], sizeof (unsigned long long int));
 }
 
 void *
@@ -431,8 +431,10 @@ eina_file_virtual(Eina_File *file)
 }
 
 EAPI Eina_File *
-eina_file_dup(Eina_File *file)
+eina_file_dup(const Eina_File *f)
 {
+   Eina_File *file = (Eina_File*) f;
+
    if (file)
      {
         eina_lock_take(&file->lock);
@@ -442,43 +444,68 @@ eina_file_dup(Eina_File *file)
    return file;
 }
 
+void
+eina_file_clean_close(Eina_File *file)
+{
+   // Generic destruction of the file
+   eina_hash_free(file->rmap); file->rmap = NULL;
+   eina_hash_free(file->map); file->map = NULL;
+
+   // Backend specific file resource close
+   eina_file_real_close(file);
+
+   // Final death
+   EINA_MAGIC_SET(file, 0);
+   free(file);   
+}
+
 EAPI void
 eina_file_close(Eina_File *file)
 {
    Eina_Bool leave = EINA_TRUE;
+   unsigned int length;
+   unsigned int key;
 
    EINA_SAFETY_ON_NULL_RETURN(file);
+
+   eina_lock_take(&_eina_file_lock_cache);
 
    eina_lock_take(&file->lock);
    file->refcount--;
    if (file->refcount == 0) leave = EINA_FALSE;
    eina_lock_release(&file->lock);
-   if (leave) return;
+   if (leave) goto end;
 
-   eina_lock_take(&_eina_file_lock_cache);
+   length = strlen(file->filename) + 1;
+   key = eina_hash_djb2(file->filename, length);
+   if (eina_hash_find_by_hash(_eina_file_cache,
+                              file->filename, length, key) == file)
+     {
+        eina_hash_del_by_key_hash(_eina_file_cache,
+                                  file->filename, length, key);
+     }
 
-   eina_hash_del(_eina_file_cache, file->filename, file);
-   eina_file_real_close(file);
-
+   eina_file_clean_close(file);
+ end:
    eina_lock_release(&_eina_file_lock_cache);
 }
 
 EAPI size_t
-eina_file_size_get(Eina_File *file)
+eina_file_size_get(const Eina_File *file)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(file, 0);
    return file->length;
 }
 
 EAPI time_t
-eina_file_mtime_get(Eina_File *file)
+eina_file_mtime_get(const Eina_File *file)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(file, 0);
    return file->mtime;
 }
 
 EAPI const char *
-eina_file_filename_get(Eina_File *file)
+eina_file_filename_get(const Eina_File *file)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(file, NULL);
    return file->filename;
