@@ -133,18 +133,19 @@ START_TEST(eina_cxx_ptrlist_constructors)
 {
   efl::eina::eina_init eina_init;
 
-  efl::eina::inlist<int> list1;
+  efl::eina::ptr_list<int> list1;
   assert(list1.empty());
 
-  efl::eina::inlist<int> list2(10, 5);
+  efl::eina::ptr_list<int, efl::eina::heap_copy_allocator> list2(10, 5);
   assert(list2.size() == 10);
   assert(std::find_if(list2.begin(), list2.end()
                       , std::not1(std::bind1st(std::equal_to<int>(), 5))) == list2.end());
 
-  efl::eina::inlist<int> list3(list2);
+  efl::eina::ptr_list<int, efl::eina::heap_copy_allocator> list3(list2);
   assert(list2 == list3);
 
-  efl::eina::inlist<int> list4(list2.begin(), list2.end());
+  efl::eina::ptr_list<int, efl::eina::heap_copy_allocator> list4
+    (list2.begin(), list2.end());
   assert(list2 == list4);
 }
 END_TEST

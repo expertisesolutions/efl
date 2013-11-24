@@ -177,7 +177,13 @@ public:
         ++i;
       }
   }
-  ptr_list(ptr_list<T>const& other)
+  ptr_list(ptr_list<T, CloneAllocator> const& other)
+    : _base_type()
+  {
+    insert(end(), other.begin(), other.end());
+  }
+  template <typename CloneAllocator1>
+  ptr_list(ptr_list<T, CloneAllocator1>const& other)
     : _base_type()
   {
     insert(end(), other.begin(), other.end());
@@ -269,7 +275,7 @@ public:
     std::auto_ptr<value_type> p(pv);
     return insert(i, p);
   }
-  iterator insert(iterator i, std::auto_ptr<value_type> p)
+  iterator insert(iterator i, std::auto_ptr<value_type>& p)
   {
     this->_impl._list = _eina_list_prepend_relative_list
       (this->_impl._list, p.get(), i.native_handle());

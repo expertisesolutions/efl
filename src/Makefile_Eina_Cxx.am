@@ -9,9 +9,17 @@ lib/eina_cxx/Eina.hh
 
 installed_einaheadersdir = $(includedir)/eina_cxx-@VMAJ@/eina_cxx
 dist_installed_einaheaders_DATA = \
-lib/eina_cxx/eina_inlist.hh       \
-lib/eina_cxx/eina_iterator.hh     \
-lib/eina_cxx/eina_ptrlist.hh
+lib/eina_cxx/eina_clone_allocators.hh       \
+lib/eina_cxx/eina_error.hh     \
+lib/eina_cxx/eina_inarray.hh  \
+lib/eina_cxx/eina_inlist.hh   \
+lib/eina_cxx/eina_iterator.hh \
+lib/eina_cxx/eina_lists_auxiliary.hh \
+lib/eina_cxx/eina_ptrarray.hh \
+lib/eina_cxx/eina_ptrlist.hh \
+lib/eina_cxx/eina_stringshare.hh \
+lib/eina_cxx/eina_type_traits.hh
+
 
 # Will be back for developper after 1.2.
 # lib/eina/eina_model.h
@@ -147,6 +155,7 @@ tests/eina_cxx/eina_cxx_suite.cc \
 tests/eina_cxx/eina_cxx_test_inlist.cc \
 tests/eina_cxx/eina_cxx_test_inarray.cc \
 tests/eina_cxx/eina_cxx_test_iterator.cc \
+tests/eina_cxx/eina_cxx_test_ptrarray.cc \
 tests/eina_cxx/eina_cxx_test_ptrlist.cc \
 tests/eina_cxx/eina_cxx_test_stringshare.cc \
 tests/eina_cxx/eina_cxx_test_error.cc 

@@ -9,6 +9,7 @@
 void eina_test_inlist(TCase* tc);
 void eina_test_inarray(TCase* tc);
 void eina_test_ptrlist(TCase* tc);
+void eina_test_ptrarray(TCase* tc);
 void eina_test_iterator(TCase* tc);
 void eina_test_stringshare(TCase* tc);
 void eina_test_error(TCase* tc);
@@ -22,6 +23,7 @@ struct _Eina_Test_Case
 
 static const Eina_Test_Case etc[] = {
    { "Ptr_List", eina_test_ptrlist },
+   { "Ptr_Array", eina_test_ptrarray },
    { "Inlist", eina_test_inlist },
    { "Inarray", eina_test_inarray },
    { "Iterator", eina_test_iterator },
