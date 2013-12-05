@@ -1983,10 +1983,10 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DECLARE_INTERFACE_FUNCTION_event(NAME, ...) \
-  EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
+  EO3_DECLARE_FUNCTION_event(NAME, __VA_ARGS__)
 
 #define EO3_DECLARE_INTERFACE_FUNCTION_hot_event(NAME, ...)     \
-  EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
+  EO3_DECLARE_FUNCTION_event(NAME, __VA_ARGS__)
 
 /**
  * @internal
@@ -2375,7 +2375,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
       EO_PREPROCESSOR_STRINGIZE(CLASS_NAME),                            \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
-      event_descs,                                                             \
+      event_descs,                                                      \
       sizeof(PRIVATE_TYPE),                                             \
       NULL,                                                             \
       NULL                                                              \
@@ -2403,7 +2403,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_function(NAME, ...) \
   EO2_OP_FUNC(NULL, NAME, "Description"),
-// #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_NORMAL_EVENT(NAME, ...)
+
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_event(NAME, ...)
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_hot_event(NAME, ...)
 
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ ## F
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM, __VA_ARGS__)
@@ -2411,7 +2413,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_function(NAME, ...)  \
   EO3_DEFINE_INTERFACE_function(NAME, __VA_ARGS__)
 
-#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_event(NAME, ...)
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_event(NAME, ...)  \
+  EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, __VA_ARGS__)
+
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_hot_event(NAME, ...) \
+  EO3_DEFINE_INTERFACE_FUNCTION_hot_event(NAME, __VA_ARGS__)
 
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ ## F
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)
@@ -2442,18 +2448,22 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
       EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(__VA_ARGS__)                 \
       EO2_OP_SENTINEL                                                   \
     };                                                                  \
+    static Eo_Event_Description* event_descs [] = {                     \
+      EO3_DEFINE_DESCR_EVENTS(__VA_ARGS__)                              \
+      (void*)NULL                                                       \
+    };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
       "Eo2 Interface",                                                  \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
-      NULL,                                                             \
+      event_descs,                                                      \
       0,                                                                \
       NULL,                                                             \
       NULL                                                              \
     };                                                                  \
     eina_lock_release(&_eo_class_creation_lock);                        \
-    _my_class = eo_class_new(&class_desc PARENTS_CLASS, NULL); \
+    _my_class = eo_class_new(&class_desc PARENTS_CLASS, NULL);          \
     eina_lock_release(&_my_lock);                                       \
                                                                         \
     eina_lock_take(&_eo_class_creation_lock);                           \
@@ -2517,7 +2527,7 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @param PARENTS Parent(s) Class/Interface
  * @param PRIVATE_TYPE private data state type
  */
-#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
+#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE, ...)                 \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 /**
