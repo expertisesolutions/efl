@@ -25,6 +25,21 @@ struct accessor
   {
     assert(_impl != 0);
   }
+  accessor(accessor<T> const& other)
+    : _impl(eina_accessor_clone(other._impl))
+  {}
+  accessor<T>& operator=(accessor<T> const& other)
+  {
+    eina_accessor_free(_impl);
+    _impl = eina_accessor_clone(other._impl);
+    if(!_impl)
+      throw eina::system_error(efl::eina::get_error_code(), "Error cloning accessor");
+    return *this;
+  }
+  ~accessor()
+  {
+    eina_accessor_free(_impl);
+  }
   
   mapped_type& operator[](size_type i) const
   {
@@ -39,6 +54,11 @@ struct accessor
   }
 
   Eina_Accessor* native_handle() const;
+
+  void swap(accessor<T>& other)
+  {
+    std::swap(_impl, other._impl);
+  }
 private:
   typedef Eina_Accessor*(accessor<T>::*unspecified_bool_type)() const;
 public:
@@ -50,6 +70,12 @@ private:
   Eina_Accessor* _impl;
 };
 
+template <typename U>
+void swap(accessor<U>& lhs, accessor<U>& rhs)
+{
+  lhs.swap(rhs);
+}
+
 template <typename T>
 struct accessor_iterator
 {
@@ -60,9 +86,23 @@ struct accessor_iterator
   typedef std::random_access_iterator_tag iterator_category;
 
   accessor_iterator(accessor<T> const& a, unsigned int pos = 0u)
-    : _accessor(&a), _index(pos)
+    : _accessor(a), _index(pos)
   {}
 
+  accessor_iterator<T>& operator+=(difference_type i)
+  {
+    _index += i;
+    return *this;
+  }
+  accessor_iterator<T>& operator-=(difference_type i)
+  {
+    _index -= i;
+    return *this;
+  }
+  value_type& operator[](difference_type i)
+  {
+    return _accessor[_index + i];
+  }
   accessor_iterator<T>& operator++()
   {
     ++_index;
@@ -87,14 +127,19 @@ struct accessor_iterator
   }
   value_type& operator*() const
   {
-    return (*_accessor)[_index];
+    return _accessor[_index];
   }
   pointer operator->() const
   {
     return &**this;
   }
+  void swap(accessor_iterator<T>& other)
+  {
+    std::swap(_index, other._index);
+    std::swap(_accessor, other._accessor);
+  }
 private:
-  accessor<T> const* _accessor;
+  accessor<T> _accessor;
   unsigned int _index;
 
   template <typename U>
@@ -102,12 +147,66 @@ private:
   {
     return lhs._index == rhs._index;
   }
+
+  template <typename U>
+  friend typename accessor_iterator<U>::difference_type
+  operator-(accessor_iterator<U> const& lhs, accessor_iterator<U> const& rhs)
+  {
+    return lhs._index - rhs._index;
+  }
+
+  template <typename U>
+  friend
+  accessor_iterator<U> operator+(accessor_iterator<U> lhs
+                                 , typename accessor_iterator<U>::difference_type rhs)
+  {
+    lhs._index += rhs;
+    return lhs;
+  }
+
+  template <typename U>
+  friend
+  accessor_iterator<U> operator+(typename accessor_iterator<U>::difference_type lhs
+                               , accessor_iterator<U> rhs)
+  {
+    return rhs + lhs;
+  }
+
+  template <typename U>
+  friend bool operator<(accessor_iterator<U> const& lhs, accessor_iterator<U> const& rhs)
+  {
+    return lhs._index < rhs._index;
+  }
+
+  template <typename U>
+  friend bool operator<=(accessor_iterator<U> const& lhs, accessor_iterator<U> const& rhs)
+  {
+    return lhs._index <= rhs._index;
+  }
 };
+
+template <typename U>
+bool operator>=(accessor_iterator<U> const& lhs, accessor_iterator<U> const& rhs)
+{
+  return !(lhs < rhs);
+}
+
+template <typename U>
+bool operator>(accessor_iterator<U> const& lhs, accessor_iterator<U> const& rhs)
+{
+  return !(lhs <= rhs);
+}
 
 template <typename U>
 bool operator!=(accessor_iterator<U> const& lhs, accessor_iterator<U> const& rhs)
 {
   return !(lhs == rhs);
+}
+
+template <typename U>
+void swap(accessor_iterator<U>& lhs, accessor_iterator<U>& rhs)
+{
+  lhs.swap(rhs);
 }
 
 } }
