@@ -90,7 +90,7 @@ public:
   {
     return *_value;
   }
-  pointer operator->()
+  pointer operator->() const
   {
     return _value;
   }
