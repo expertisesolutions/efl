@@ -10,21 +10,33 @@
 
 namespace efl { namespace eina {
 
+#if __cplusplus >= 201103L
+using std::system_error;
+using std::error_code;
+using std::error_condition;
+typedef std::error_category system_error_category;
+#else
+using boost::system::system_error;
+using boost::system::error_code;
+using boost::system::error_condition;
+typedef boost::system::error_category system_error_category;
+#endif
+
 enum error_type {};
 
-struct error_category : boost::system::error_category
+struct error_category : system_error_category
 {
   const char* name() const
   {
     return "eina";
   }
 
-  bool equivalent(int code, boost::system::error_condition const& condition) const
+  bool equivalent(int code, eina::error_condition const& condition) const
   {
     return code == condition.value();
   }
 
-  bool equivalent(boost::system::error_code const& code, int condition) const
+  bool equivalent(eina::error_code const& code, int condition) const
   {
     return code.value() == condition;
   }
@@ -35,34 +47,34 @@ struct error_category : boost::system::error_category
   }
 };
 
-inline boost::system::error_category& eina_error_category()
+inline eina::system_error_category& eina_error_category()
 {
   static error_category _error_category;
   return _error_category;
 }
 
-inline boost::system::error_code get_error_code()
+inline eina::error_code get_error_code()
 {
   Eina_Error error = eina_error_get();
   if(error)
     {
       eina_error_set(0);
-      return boost::system::error_code(error, eina_error_category());
+      return eina::error_code(error, eina_error_category());
     }
   else
-    return boost::system::error_code();
+    return eina::error_code();
 }
 
-inline boost::system::error_condition get_error_condition()
+inline eina::error_condition get_error_condition()
 {
   Eina_Error error = eina_error_get();
   if(error)
     {
       eina_error_set(0);
-      return boost::system::error_condition(error, eina_error_category());
+      return eina::error_condition(error, eina_error_category());
     }
   else
-    return boost::system::error_condition();
+    return eina::error_condition();
 }
 
 inline error_type get_error_code_enum()
@@ -73,10 +85,10 @@ inline error_type get_error_code_enum()
 
 inline void throw_on_error()
 {
-  boost::system::error_code ec = get_error_code();
+  eina::error_code ec = get_error_code();
   if(ec)
   {
-    throw boost::system::system_error(ec, "EFL Eina Error");
+    throw eina::system_error(ec, "EFL Eina Error");
   }
 }
 
