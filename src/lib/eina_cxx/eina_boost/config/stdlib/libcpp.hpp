@@ -15,23 +15,23 @@
 #  endif
 #endif
 
-#define BOOST_STDLIB "libc++ version " BOOST_STRINGIZE(_LIBCPP_VERSION)
+#define EFL_EINA_BOOST_STDLIB "libc++ version " EFL_EINA_BOOST_STRINGIZE(_LIBCPP_VERSION)
 
-#define BOOST_HAS_THREADS
+#define EFL_EINA_BOOST_HAS_THREADS
 
 #ifdef _LIBCPP_HAS_NO_VARIADICS
-#    define BOOST_NO_CXX11_HDR_TUPLE
+#    define EFL_EINA_BOOST_NO_CXX11_HDR_TUPLE
 #endif
 
 //
 // These appear to be unusable/incomplete so far:
 //
-#  define BOOST_NO_CXX11_HDR_CHRONO
-#  define BOOST_NO_CXX11_HDR_FUTURE
-#  define BOOST_NO_CXX11_HDR_TYPE_TRAITS
-#  define BOOST_NO_CXX11_ATOMIC_SMART_PTR
+#  define EFL_EINA_BOOST_NO_CXX11_HDR_CHRONO
+#  define EFL_EINA_BOOST_NO_CXX11_HDR_FUTURE
+#  define EFL_EINA_BOOST_NO_CXX11_HDR_TYPE_TRAITS
+#  define EFL_EINA_BOOST_NO_CXX11_ATOMIC_SMART_PTR
 
 // libc++ uses a non-standard messages_base
-#define BOOST_NO_STD_MESSAGES
+#define EFL_EINA_BOOST_NO_STD_MESSAGES
 
 //  --- end ---

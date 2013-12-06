@@ -8,19 +8,19 @@
 
 //  sun specific config options:
 
-#define BOOST_PLATFORM "Sun Solaris"
+#define EFL_EINA_BOOST_PLATFORM "Sun Solaris"
 
-#define BOOST_HAS_GETTIMEOFDAY
+#define EFL_EINA_BOOST_HAS_GETTIMEOFDAY
 
 // boilerplate code:
-#define BOOST_HAS_UNISTD_H
-#include <boost/config/posix_features.hpp>
+#define EFL_EINA_BOOST_HAS_UNISTD_H
+#include <eina_boost/config/posix_features.hpp>
 
 //
 // pthreads don't actually work with gcc unless _PTHREADS is defined:
 //
 #if defined(__GNUC__) && defined(_POSIX_THREADS) && !defined(_PTHREADS)
-# undef BOOST_HAS_PTHREADS
+# undef EFL_EINA_BOOST_HAS_PTHREADS
 #endif
 
 

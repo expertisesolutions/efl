@@ -10,54 +10,54 @@
 //  symbian specific config options:
 
 
-#define BOOST_PLATFORM "Symbian"
-#define BOOST_SYMBIAN 1
+#define EFL_EINA_BOOST_PLATFORM "Symbian"
+#define EFL_EINA_BOOST_SYMBIAN 1
 
 
 #if defined(__S60_3X__)
 // Open C / C++ plugin was introdused in this SDK, earlier versions don't have CRT / STL
-#  define BOOST_S60_3rd_EDITION_FP2_OR_LATER_SDK
+#  define EFL_EINA_BOOST_S60_3rd_EDITION_FP2_OR_LATER_SDK
 // make sure we have __GLIBC_PREREQ if available at all
 #ifdef __cplusplus
 #include <cstdlib>
 #else
 #include <stdlib.h>
 #endif// boilerplate code:
-#  define BOOST_HAS_UNISTD_H
-#  include <boost/config/posix_features.hpp>
+#  define EFL_EINA_BOOST_HAS_UNISTD_H
+#  include <eina_boost/config/posix_features.hpp>
 // S60 SDK defines _POSIX_VERSION as POSIX.1
-#  ifndef BOOST_HAS_STDINT_H
-#    define BOOST_HAS_STDINT_H
+#  ifndef EFL_EINA_BOOST_HAS_STDINT_H
+#    define EFL_EINA_BOOST_HAS_STDINT_H
 #  endif
-#  ifndef BOOST_HAS_GETTIMEOFDAY
-#    define BOOST_HAS_GETTIMEOFDAY
+#  ifndef EFL_EINA_BOOST_HAS_GETTIMEOFDAY
+#    define EFL_EINA_BOOST_HAS_GETTIMEOFDAY
 #  endif
-#  ifndef BOOST_HAS_DIRENT_H
-#    define BOOST_HAS_DIRENT_H
+#  ifndef EFL_EINA_BOOST_HAS_DIRENT_H
+#    define EFL_EINA_BOOST_HAS_DIRENT_H
 #  endif
-#  ifndef BOOST_HAS_SIGACTION
-#    define BOOST_HAS_SIGACTION
+#  ifndef EFL_EINA_BOOST_HAS_SIGACTION
+#    define EFL_EINA_BOOST_HAS_SIGACTION
 #  endif
-#  ifndef BOOST_HAS_PTHREADS
-#    define BOOST_HAS_PTHREADS
+#  ifndef EFL_EINA_BOOST_HAS_PTHREADS
+#    define EFL_EINA_BOOST_HAS_PTHREADS
 #  endif
-#  ifndef BOOST_HAS_NANOSLEEP
-#    define BOOST_HAS_NANOSLEEP
+#  ifndef EFL_EINA_BOOST_HAS_NANOSLEEP
+#    define EFL_EINA_BOOST_HAS_NANOSLEEP
 #  endif
-#  ifndef BOOST_HAS_SCHED_YIELD
-#    define BOOST_HAS_SCHED_YIELD
+#  ifndef EFL_EINA_BOOST_HAS_SCHED_YIELD
+#    define EFL_EINA_BOOST_HAS_SCHED_YIELD
 #  endif
-#  ifndef BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
-#    define BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
+#  ifndef EFL_EINA_BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
+#    define EFL_EINA_BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
 #  endif
-#  ifndef BOOST_HAS_LOG1P
-#    define BOOST_HAS_LOG1P
+#  ifndef EFL_EINA_BOOST_HAS_LOG1P
+#    define EFL_EINA_BOOST_HAS_LOG1P
 #  endif
-#  ifndef BOOST_HAS_EXPM1
-#    define BOOST_HAS_EXPM1
+#  ifndef EFL_EINA_BOOST_HAS_EXPM1
+#    define EFL_EINA_BOOST_HAS_EXPM1
 #  endif
-#  ifndef BOOST_POSIX_API
-#    define BOOST_POSIX_API
+#  ifndef EFL_EINA_BOOST_POSIX_API
+#    define EFL_EINA_BOOST_POSIX_API
 #  endif
 // endianess support
 #  include <sys/endian.h>
@@ -80,18 +80,18 @@
 #    define __BYTE_ORDER __LITTLE_ENDIAN // Symbian is LE
 #  endif
 // Known limitations
-#  define BOOST_ASIO_DISABLE_SERIAL_PORT
-#  define BOOST_DATE_TIME_NO_LOCALE
-#  define BOOST_NO_STD_WSTRING
-#  define BOOST_EXCEPTION_DISABLE
-#  define BOOST_NO_EXCEPTIONS
+#  define EFL_EINA_BOOST_ASIO_DISABLE_SERIAL_PORT
+#  define EFL_EINA_BOOST_DATE_TIME_NO_LOCALE
+#  define EFL_EINA_BOOST_NO_STD_WSTRING
+#  define EFL_EINA_BOOST_EXCEPTION_DISABLE
+#  define EFL_EINA_BOOST_NO_EXCEPTIONS
 
 #else // TODO: More platform support e.g. UIQ
 #  error "Unsuppoted Symbian SDK"
 #endif
 
-#if defined(__WINSCW__) && !defined(BOOST_DISABLE_WIN32)
-#  define BOOST_DISABLE_WIN32 // winscw defines WIN32 macro
+#if defined(__WINSCW__) && !defined(EFL_EINA_BOOST_DISABLE_WIN32)
+#  define EFL_EINA_BOOST_DISABLE_WIN32 // winscw defines WIN32 macro
 #endif
 
 

@@ -7,20 +7,20 @@
 
 //  BeOS specific config options:
 
-#define BOOST_PLATFORM "BeOS"
+#define EFL_EINA_BOOST_PLATFORM "BeOS"
 
-#define BOOST_NO_CWCHAR
-#define BOOST_NO_CWCTYPE
-#define BOOST_HAS_UNISTD_H
+#define EFL_EINA_BOOST_NO_CWCHAR
+#define EFL_EINA_BOOST_NO_CWCTYPE
+#define EFL_EINA_BOOST_HAS_UNISTD_H
 
-#define BOOST_HAS_BETHREADS
+#define EFL_EINA_BOOST_HAS_BETHREADS
 
-#ifndef BOOST_DISABLE_THREADS
-#  define BOOST_HAS_THREADS
+#ifndef EFL_EINA_BOOST_DISABLE_THREADS
+#  define EFL_EINA_BOOST_HAS_THREADS
 #endif
 
 // boilerplate code:
-#include <boost/config/posix_features.hpp>
+#include <eina_boost/config/posix_features.hpp>
  
 
 

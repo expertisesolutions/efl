@@ -7,26 +7,26 @@
 
 //  IBM/Aix specific config options:
 
-#define BOOST_PLATFORM "IBM Aix"
+#define EFL_EINA_BOOST_PLATFORM "IBM Aix"
 
-#define BOOST_HAS_UNISTD_H
-#define BOOST_HAS_NL_TYPES_H
-#define BOOST_HAS_NANOSLEEP
-#define BOOST_HAS_CLOCK_GETTIME
+#define EFL_EINA_BOOST_HAS_UNISTD_H
+#define EFL_EINA_BOOST_HAS_NL_TYPES_H
+#define EFL_EINA_BOOST_HAS_NANOSLEEP
+#define EFL_EINA_BOOST_HAS_CLOCK_GETTIME
 
 // This needs support in "boost/cstdint.hpp" exactly like FreeBSD.
 // This platform has header named <inttypes.h> which includes all
 // the things needed.
-#define BOOST_HAS_STDINT_H
+#define EFL_EINA_BOOST_HAS_STDINT_H
 
 // Threading API's:
-#define BOOST_HAS_PTHREADS
-#define BOOST_HAS_PTHREAD_DELAY_NP
-#define BOOST_HAS_SCHED_YIELD
-//#define BOOST_HAS_PTHREAD_YIELD
+#define EFL_EINA_BOOST_HAS_PTHREADS
+#define EFL_EINA_BOOST_HAS_PTHREAD_DELAY_NP
+#define EFL_EINA_BOOST_HAS_SCHED_YIELD
+//#define EFL_EINA_BOOST_HAS_PTHREAD_YIELD
 
 // boilerplate code:
-#include <boost/config/posix_features.hpp>
+#include <eina_boost/config/posix_features.hpp>
 
 
 

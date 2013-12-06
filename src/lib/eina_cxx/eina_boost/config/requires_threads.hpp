@@ -4,19 +4,19 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 
-#ifndef BOOST_CONFIG_REQUIRES_THREADS_HPP
-#define BOOST_CONFIG_REQUIRES_THREADS_HPP
+#ifndef EFL_EINA_BOOST_CONFIG_REQUIRES_THREADS_HPP
+#define EFL_EINA_BOOST_CONFIG_REQUIRES_THREADS_HPP
 
-#ifndef BOOST_CONFIG_HPP
-#  include <boost/config.hpp>
+#ifndef EFL_EINA_BOOST_CONFIG_HPP
+#  include <eina_boost/config.hpp>
 #endif
 
-#if defined(BOOST_DISABLE_THREADS)
+#if defined(EFL_EINA_BOOST_DISABLE_THREADS)
 
 //
 // special case to handle versions of gcc which don't currently support threads:
 //
-#if defined(__GNUC__) && ((__GNUC__ < 3) || (__GNUC_MINOR__ <= 3) || !defined(BOOST_STRICT_CONFIG))
+#if defined(__GNUC__) && ((__GNUC__ < 3) || (__GNUC_MINOR__ <= 3) || !defined(EFL_EINA_BOOST_STRICT_CONFIG))
 //
 // this is checked up to gcc 3.3:
 //
@@ -26,9 +26,9 @@
 
 #endif
 
-#  error "Threading support unavaliable: it has been explicitly disabled with BOOST_DISABLE_THREADS"
+#  error "Threading support unavaliable: it has been explicitly disabled with EFL_EINA_BOOST_DISABLE_THREADS"
 
-#elif !defined(BOOST_HAS_THREADS)
+#elif !defined(EFL_EINA_BOOST_HAS_THREADS)
 
 # if defined __COMO__
 //  Comeau C++
@@ -87,6 +87,6 @@
 
 #endif // compilers
 
-#endif // BOOST_HAS_THREADS
+#endif // EFL_EINA_BOOST_HAS_THREADS
 
-#endif // BOOST_CONFIG_REQUIRES_THREADS_HPP
+#endif // EFL_EINA_BOOST_CONFIG_REQUIRES_THREADS_HPP

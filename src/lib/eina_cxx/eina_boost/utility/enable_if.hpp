@@ -11,17 +11,17 @@
 //             Andrew Lumsdaine (lums at osl.iu.edu)
 
 
-#ifndef BOOST_UTILITY_ENABLE_IF_HPP
-#define BOOST_UTILITY_ENABLE_IF_HPP
+#ifndef EFL_EINA_BOOST_UTILITY_ENABLE_IF_HPP
+#define EFL_EINA_BOOST_UTILITY_ENABLE_IF_HPP
 
-#include "boost/config.hpp"
+#include "eina_boost/config.hpp"
 
 // Even the definition of enable_if causes problems on some compilers,
 // so it's macroed out for all compilers that do not support SFINAE
 
-#ifndef BOOST_NO_SFINAE
+#ifndef EFL_EINA_BOOST_NO_SFINAE
 
-namespace boost
+namespace efl_eina_boost
 {
  
   template <bool B, class T = void>
@@ -69,11 +69,11 @@ namespace boost
   template <class Cond, class T> 
   struct lazy_disable_if : public lazy_disable_if_c<Cond::value, T> {};
 
-} // namespace boost
+} // namespace efl_eina_boost
 
 #else
 
-namespace boost {
+namespace efl_eina_boost {
 
   namespace detail { typedef void enable_if_default_T; }
 
@@ -112,8 +112,8 @@ namespace boost {
   struct lazy_disable_if : enable_if_does_not_work_on_this_compiler<T>
   { };
 
-} // namespace boost
+} // namespace efl_eina_boost
 
-#endif // BOOST_NO_SFINAE
+#endif // EFL_EINA_BOOST_NO_SFINAE
 
 #endif

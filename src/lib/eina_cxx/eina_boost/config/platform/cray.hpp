@@ -8,11 +8,11 @@
 
 //  SGI Irix specific config options:
 
-#define BOOST_PLATFORM "Cray"
+#define EFL_EINA_BOOST_PLATFORM "Cray"
 
 // boilerplate code:
-#define BOOST_HAS_UNISTD_H
-#include <boost/config/posix_features.hpp>
+#define EFL_EINA_BOOST_HAS_UNISTD_H
+#include <eina_boost/config/posix_features.hpp>
 
 
 

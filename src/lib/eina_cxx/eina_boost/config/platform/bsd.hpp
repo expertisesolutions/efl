@@ -14,13 +14,13 @@
 #endif
 
 #ifdef __FreeBSD__
-#define BOOST_PLATFORM "FreeBSD " BOOST_STRINGIZE(__FreeBSD__)
+#define EFL_EINA_BOOST_PLATFORM "FreeBSD " EFL_EINA_BOOST_STRINGIZE(__FreeBSD__)
 #elif defined(__NetBSD__)
-#define BOOST_PLATFORM "NetBSD " BOOST_STRINGIZE(__NetBSD__)
+#define EFL_EINA_BOOST_PLATFORM "NetBSD " EFL_EINA_BOOST_STRINGIZE(__NetBSD__)
 #elif defined(__OpenBSD__)
-#define BOOST_PLATFORM "OpenBSD " BOOST_STRINGIZE(__OpenBSD__)
+#define EFL_EINA_BOOST_PLATFORM "OpenBSD " EFL_EINA_BOOST_STRINGIZE(__OpenBSD__)
 #elif defined(__DragonFly__)
-#define BOOST_PLATFORM "DragonFly " BOOST_STRINGIZE(__DragonFly__)
+#define EFL_EINA_BOOST_PLATFORM "DragonFly " EFL_EINA_BOOST_STRINGIZE(__DragonFly__)
 #endif
 
 //
@@ -29,7 +29,7 @@
 // advertise the fact in <unistd.h>:
 //
 #if (defined(__FreeBSD__) && (__FreeBSD__ >= 3)) || defined(__DragonFly__)
-#  define BOOST_HAS_NL_TYPES_H
+#  define EFL_EINA_BOOST_HAS_NL_TYPES_H
 #endif
 
 //
@@ -38,7 +38,7 @@
 //
 #if (defined(__FreeBSD__) && (__FreeBSD__ <= 3))\
    || defined(__OpenBSD__) || defined(__DragonFly__) 
-#  define BOOST_HAS_PTHREADS
+#  define EFL_EINA_BOOST_HAS_PTHREADS
 #endif
 
 //
@@ -57,27 +57,27 @@
 
 #if !((defined(__FreeBSD__) && (__FreeBSD__ >= 5)) \
       || (defined(__NetBSD_GCC__) && (__NetBSD_GCC__ >= 2095003)) || defined(__DragonFly__))
-#  define BOOST_NO_CWCHAR
+#  define EFL_EINA_BOOST_NO_CWCHAR
 #endif
 //
 // The BSD <ctype.h> has macros only, no functions:
 //
 #if !defined(__OpenBSD__) || defined(__DragonFly__)
-#  define BOOST_NO_CTYPE_FUNCTIONS
+#  define EFL_EINA_BOOST_NO_CTYPE_FUNCTIONS
 #endif
 
 //
 // thread API's not auto detected:
 //
-#define BOOST_HAS_SCHED_YIELD
-#define BOOST_HAS_NANOSLEEP
-#define BOOST_HAS_GETTIMEOFDAY
-#define BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
-#define BOOST_HAS_SIGACTION
+#define EFL_EINA_BOOST_HAS_SCHED_YIELD
+#define EFL_EINA_BOOST_HAS_NANOSLEEP
+#define EFL_EINA_BOOST_HAS_GETTIMEOFDAY
+#define EFL_EINA_BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
+#define EFL_EINA_BOOST_HAS_SIGACTION
 
 // boilerplate code:
-#define BOOST_HAS_UNISTD_H
-#include <boost/config/posix_features.hpp>
+#define EFL_EINA_BOOST_HAS_UNISTD_H
+#include <eina_boost/config/posix_features.hpp>
 
 
 

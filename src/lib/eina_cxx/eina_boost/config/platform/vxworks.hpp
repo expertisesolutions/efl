@@ -124,55 +124,55 @@
 
 // vxWorks specific config options:
 // --------------------------------
-#define BOOST_PLATFORM "vxWorks"
+#define EFL_EINA_BOOST_PLATFORM "vxWorks"
 
 // Special behaviour for DKMs:
 #ifdef _WRS_KERNEL
   // DKMs do not have the <cwchar>-header,
   // but apparently they do have an intrinsic wchar_t meanwhile!
-#  define BOOST_NO_CWCHAR
+#  define EFL_EINA_BOOST_NO_CWCHAR
 
   // Lots of wide-functions and -headers are unavailable for DKMs as well:
-#  define BOOST_NO_CWCTYPE
-#  define BOOST_NO_SWPRINTF
-#  define BOOST_NO_STD_WSTRING
-#  define BOOST_NO_STD_WSTREAMBUF
+#  define EFL_EINA_BOOST_NO_CWCTYPE
+#  define EFL_EINA_BOOST_NO_SWPRINTF
+#  define EFL_EINA_BOOST_NO_STD_WSTRING
+#  define EFL_EINA_BOOST_NO_STD_WSTREAMBUF
 #endif
 
 // Generally available headers:
-#define BOOST_HAS_UNISTD_H
-#define BOOST_HAS_STDINT_H
-#define BOOST_HAS_DIRENT_H
-#define BOOST_HAS_SLIST
+#define EFL_EINA_BOOST_HAS_UNISTD_H
+#define EFL_EINA_BOOST_HAS_STDINT_H
+#define EFL_EINA_BOOST_HAS_DIRENT_H
+#define EFL_EINA_BOOST_HAS_SLIST
 
 // vxWorks does not have installed an iconv-library by default,
 // so unfortunately no Unicode support from scratch is available!
 // Thus, instead it is suggested to switch to ICU, as this seems
 // to be the most complete and portable option...
-#define BOOST_LOCALE_WITH_ICU
+#define EFL_EINA_BOOST_LOCALE_WITH_ICU
 
 // Generally available functionality:
-#define BOOST_HAS_THREADS
-#define BOOST_HAS_NANOSLEEP
-#define BOOST_HAS_GETTIMEOFDAY
-#define BOOST_HAS_CLOCK_GETTIME
-#define BOOST_HAS_MACRO_USE_FACET
+#define EFL_EINA_BOOST_HAS_THREADS
+#define EFL_EINA_BOOST_HAS_NANOSLEEP
+#define EFL_EINA_BOOST_HAS_GETTIMEOFDAY
+#define EFL_EINA_BOOST_HAS_CLOCK_GETTIME
+#define EFL_EINA_BOOST_HAS_MACRO_USE_FACET
 
 // Generally unavailable functionality, delivered by boost's test function:
-//#define BOOST_NO_DEDUCED_TYPENAME // Commented this out, boost's test gives an errorneous result!
-#define BOOST_NO_CXX11_EXTERN_TEMPLATE
-#define BOOST_NO_CXX11_VARIADIC_MACROS
+//#define EFL_EINA_BOOST_NO_DEDUCED_TYPENAME // Commented this out, boost's test gives an errorneous result!
+#define EFL_EINA_BOOST_NO_CXX11_EXTERN_TEMPLATE
+#define EFL_EINA_BOOST_NO_CXX11_VARIADIC_MACROS
 
 // Generally available threading API's:
-#define BOOST_HAS_PTHREADS
-#define BOOST_HAS_SCHED_YIELD
-#define BOOST_HAS_SIGACTION
+#define EFL_EINA_BOOST_HAS_PTHREADS
+#define EFL_EINA_BOOST_HAS_SCHED_YIELD
+#define EFL_EINA_BOOST_HAS_SIGACTION
 
 // Functionality available for RTPs only:
 #ifdef __RTP__
-#  define BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
-#  define BOOST_HAS_LOG1P
-#  define BOOST_HAS_EXPM1
+#  define EFL_EINA_BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
+#  define EFL_EINA_BOOST_HAS_LOG1P
+#  define EFL_EINA_BOOST_HAS_EXPM1
 #endif
 
 // Functionality available for DKMs only:
@@ -192,7 +192,7 @@
 #endif
 
 // vxWorks doesn't work with asio serial ports:
-#define BOOST_ASIO_DISABLE_SERIAL_PORT
+#define EFL_EINA_BOOST_ASIO_DISABLE_SERIAL_PORT
 // TODO: The problem here seems to bee that vxWorks uses its own, very specific
 //       ways to handle serial ports, incompatible with POSIX or anything...
 //       Maybe a specific implementation would be possible, but until the
@@ -363,7 +363,7 @@ namespace std {
 //typedef int              locale_t;                     // locale_t is a POSIX-extension, currently unpresent in vxWorks!
 
 // #include boilerplate code:
-#include <boost/config/posix_features.hpp>
+#include <eina_boost/config/posix_features.hpp>
 
 // vxWorks lies about XSI conformance, there is no nl_types.h:
-#undef BOOST_HAS_NL_TYPES_H
+#undef EFL_EINA_BOOST_HAS_NL_TYPES_H

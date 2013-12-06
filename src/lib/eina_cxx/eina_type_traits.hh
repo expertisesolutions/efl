@@ -4,11 +4,11 @@
 #if __cplusplus >= 201103L
 #include <type_traits>
 #else
-#include <boost/utility/enable_if.hpp>
-#include <boost/type_traits/is_integral.hpp>
-#include <boost/type_traits/is_pod.hpp>
-#include <boost/type_traits/remove_cv.hpp>
-#include <boost/type_traits/is_const.hpp>
+#include <eina_boost/utility/enable_if.hpp>
+#include <eina_boost/type_traits/is_integral.hpp>
+#include <eina_boost/type_traits/is_pod.hpp>
+#include <eina_boost/type_traits/remove_cv.hpp>
+#include <eina_boost/type_traits/is_const.hpp>
 #endif
 
 #include <string>
@@ -26,14 +26,14 @@ using std::remove_cv;
 using std::true_type;
 using std::false_type;
 #else
-using boost::enable_if;
-using boost::enable_if_c;
-using boost::is_integral;
-using boost::is_pod;
-using boost::is_const;
-using boost::remove_cv;
-typedef boost::mpl::true_ true_type;
-typedef boost::mpl::false_ false_type;
+using ::efl_eina_boost::enable_if;
+using ::efl_eina_boost::enable_if_c;
+using ::efl_eina_boost::is_integral;
+using ::efl_eina_boost::is_pod;
+using ::efl_eina_boost::is_const;
+using ::efl_eina_boost::remove_cv;
+typedef ::efl_eina_boost::mpl::true_ true_type;
+typedef ::efl_eina_boost::mpl::false_ false_type;
 #endif
 
 template <typename T, typename Enable = void>

@@ -7,28 +7,28 @@
 
 //  cygwin specific config options:
 
-#define BOOST_PLATFORM "Cygwin"
-#define BOOST_HAS_DIRENT_H
-#define BOOST_HAS_LOG1P
-#define BOOST_HAS_EXPM1
+#define EFL_EINA_BOOST_PLATFORM "Cygwin"
+#define EFL_EINA_BOOST_HAS_DIRENT_H
+#define EFL_EINA_BOOST_HAS_LOG1P
+#define EFL_EINA_BOOST_HAS_EXPM1
 
 //
 // Threading API:
 // See if we have POSIX threads, if we do use them, otherwise
 // revert to native Win threads.
-#define BOOST_HAS_UNISTD_H
+#define EFL_EINA_BOOST_HAS_UNISTD_H
 #include <unistd.h>
-#if defined(_POSIX_THREADS) && (_POSIX_THREADS+0 >= 0) && !defined(BOOST_HAS_WINTHREADS)
-#  define BOOST_HAS_PTHREADS
-#  define BOOST_HAS_SCHED_YIELD
-#  define BOOST_HAS_GETTIMEOFDAY
-#  define BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
-#  define BOOST_HAS_SIGACTION
+#if defined(_POSIX_THREADS) && (_POSIX_THREADS+0 >= 0) && !defined(EFL_EINA_BOOST_HAS_WINTHREADS)
+#  define EFL_EINA_BOOST_HAS_PTHREADS
+#  define EFL_EINA_BOOST_HAS_SCHED_YIELD
+#  define EFL_EINA_BOOST_HAS_GETTIMEOFDAY
+#  define EFL_EINA_BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE
+#  define EFL_EINA_BOOST_HAS_SIGACTION
 #else
-#  if !defined(BOOST_HAS_WINTHREADS)
-#     define BOOST_HAS_WINTHREADS
+#  if !defined(EFL_EINA_BOOST_HAS_WINTHREADS)
+#     define EFL_EINA_BOOST_HAS_WINTHREADS
 #  endif
-#  define BOOST_HAS_FTIME
+#  define EFL_EINA_BOOST_HAS_FTIME
 #endif
 
 //
@@ -36,20 +36,20 @@
 //
 #include <sys/types.h>
 #ifdef _STDINT_H
-#define BOOST_HAS_STDINT_H
+#define EFL_EINA_BOOST_HAS_STDINT_H
 #endif
 
 /// Cygwin has no fenv.h
-#define BOOST_NO_FENV_H
+#define EFL_EINA_BOOST_NO_FENV_H
 
 // boilerplate code:
-#include <boost/config/posix_features.hpp>
+#include <eina_boost/config/posix_features.hpp>
 
 //
 // Cygwin lies about XSI conformance, there is no nl_types.h:
 //
-#ifdef BOOST_HAS_NL_TYPES_H
-#  undef BOOST_HAS_NL_TYPES_H
+#ifdef EFL_EINA_BOOST_HAS_NL_TYPES_H
+#  undef EFL_EINA_BOOST_HAS_NL_TYPES_H
 #endif
  
 

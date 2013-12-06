@@ -16,10 +16,10 @@ using std::error_code;
 using std::error_condition;
 typedef std::error_category system_error_category;
 #else
-using boost::system::system_error;
-using boost::system::error_code;
-using boost::system::error_condition;
-typedef boost::system::error_category system_error_category;
+using ::boost::system::system_error;
+using ::boost::system::error_code;
+using ::boost::system::error_condition;
+typedef ::boost::system::error_category system_error_category;
 #endif
 
 enum error_type {};
@@ -105,9 +105,9 @@ template <> struct is_error_code_enum< ::efl::eina::error_type> : true_type {};
 namespace boost { namespace system {
 
 template <> struct is_error_condition_enum< ::efl::eina::error_type>
- : boost::mpl::true_ {};
+ : efl_eina_boost::mpl::true_ {};
 template <> struct is_error_code_enum< ::efl::eina::error_type>
- : boost::mpl::true_ {};
+ : efl_eina_boost::mpl::true_ {};
 
 } }
 #endif
