@@ -158,7 +158,8 @@ tests/eina_cxx/eina_cxx_test_iterator.cc \
 tests/eina_cxx/eina_cxx_test_ptrarray.cc \
 tests/eina_cxx/eina_cxx_test_ptrlist.cc \
 tests/eina_cxx/eina_cxx_test_stringshare.cc \
-tests/eina_cxx/eina_cxx_test_error.cc 
+tests/eina_cxx/eina_cxx_test_error.cc \
+tests/eina_cxx/eina_cxx_test_accessor.cc
 
 tests_eina_cxx_eina_cxx_suite_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
 -I$(top_builddir)/src/lib/eina_cxx \

@@ -5,6 +5,7 @@
 #include <eina_clone_allocators.hh>
 #include <eina_lists_auxiliary.hh>
 #include <eina_type_traits.hh>
+#include <eina_accessor.hh>
 
 #include <memory>
 #include <iterator>
@@ -459,6 +460,14 @@ public:
   Eina_List const* native_handle() const
   {
     return this->_impl._list;
+  }
+  eina::accessor<T const> accessor() const
+  {
+    return eina::accessor<T const>(eina_list_accessor_new(this->_impl._list));
+  }
+  eina::accessor<T> accessor()
+  {
+    return eina::accessor<T>(eina_list_accessor_new(this->_impl._list));
   }
 };
 

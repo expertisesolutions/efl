@@ -13,6 +13,7 @@ void eina_test_ptrarray(TCase* tc);
 void eina_test_iterator(TCase* tc);
 void eina_test_stringshare(TCase* tc);
 void eina_test_error(TCase* tc);
+void eina_test_accessor(TCase* tc);
 
 typedef struct _Eina_Test_Case Eina_Test_Case;
 struct _Eina_Test_Case
@@ -29,6 +30,7 @@ static const Eina_Test_Case etc[] = {
    { "Iterator", eina_test_iterator },
    { "Stringshare", eina_test_stringshare },
    { "Error", eina_test_error },
+   { "Accessor", eina_test_accessor },
    { NULL, NULL }
 };
 

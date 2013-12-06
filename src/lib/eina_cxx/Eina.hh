@@ -8,6 +8,7 @@
 #include <eina_inlist.hh>
 #include <eina_stringshare.hh>
 #include <eina_error.hh>
+#include <eina_accessor.hh>
 
 namespace efl { namespace eina {
 
