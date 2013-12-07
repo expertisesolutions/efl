@@ -15,19 +15,19 @@ START_TEST(eina_cxx_get_error)
 
   ::eina_error_set(0);
   
-  boost::system::error_code ec1 = efl::eina::get_error_code();
+  efl::eina::error_code ec1 = efl::eina::get_error_code();
   assert(!ec1);
 
   ::eina_error_set(my_error);
 
-  boost::system::error_code ec2 = efl::eina::get_error_code();
+  efl::eina::error_code ec2 = efl::eina::get_error_code();
   assert(!!ec2);
   
   assert(ec2.message() == "Message 1");
 
   ::eina_error_set(EINA_ERROR_OUT_OF_MEMORY);
 
-  boost::system::error_code ec3 = efl::eina::get_error_code();
+  efl::eina::error_code ec3 = efl::eina::get_error_code();
   assert(!!ec3);
   
   assert(ec3.message() == "Out of memory");
@@ -57,7 +57,7 @@ START_TEST(eina_cxx_throw_on_error)
       efl::eina::throw_on_error();
       std::abort();
     }
-  catch(boost::system::system_error const& e)
+  catch(efl::eina::system_error const& e)
     {
       assert(e.code().value() == my_error_2);
       assert(e.code().message() == "Message 2");

@@ -4,6 +4,7 @@
 #include <Eina.h>
 #include <eina_lists_auxiliary.hh>
 #include <eina_type_traits.hh>
+#include <eina_accessor.hh>
 
 #include <iterator>
 
@@ -198,7 +199,7 @@ public:
   template <typename InputIterator>
   inlist(InputIterator i, InputIterator const& j
          , allocator_type const& alloc = allocator_type()
-         , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+         , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
     : _base_type(alloc)
   {
     while(i != j)
@@ -298,7 +299,7 @@ public:
 
   template <typename InputIterator>
   iterator insert(iterator p, InputIterator i, InputIterator j
-                  , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+                  , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     iterator r = p;
     if(i != j)
@@ -339,7 +340,7 @@ public:
 
   template <typename InputIterator>
   void assign(InputIterator i, InputIterator j
-              , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+              , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     clear();
     insert(end(), i, j);
@@ -428,6 +429,14 @@ public:
   Eina_Inlist const* native_handle() const
   {
     return this->_impl._list;
+  }
+  eina::accessor<T const> accessor() const
+  {
+    return eina::accessor<T const>(eina_inlist_accessor_new(this->_impl._list));
+  }
+  eina::accessor<T> accessor()
+  {
+    return eina::accessor<T>(eina_inlist_accessor_new(this->_impl._list));
   }
 };
 

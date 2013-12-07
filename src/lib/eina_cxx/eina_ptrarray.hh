@@ -178,7 +178,7 @@ public:
   template <typename InputIterator>
   ptr_array(InputIterator i, InputIterator const& j
            , clone_allocator_type const& alloc = clone_allocator_type()
-           , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+           , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
     : _base_type(alloc)
   {
     while(i != j)
@@ -300,7 +300,7 @@ public:
   }
   template <typename InputIterator>
   iterator insert(iterator p, InputIterator i, InputIterator j
-                  , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+                  , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     size_type index = p.native_handle() - this->_impl._array->data;
     while(i != j)
@@ -334,7 +334,7 @@ public:
   }
   template <typename InputIterator>
   void assign(InputIterator i, InputIterator j
-              , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+              , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     clear();
     insert(end(), i, j);

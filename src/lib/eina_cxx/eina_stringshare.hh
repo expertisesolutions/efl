@@ -30,7 +30,7 @@ struct stringshare
   }
   template <typename InputIterator>
   stringshare(InputIterator i, InputIterator j
-              , typename eina::enable_if_c
+              , typename eina::enable_if
               <!eina::is_integral<InputIterator>::value
               && !eina::is_contiguous_iterator<InputIterator>::value
               >::type* = 0)
@@ -45,7 +45,7 @@ struct stringshare
   }
   template <typename ContiguousMemoryIterator>
   stringshare(ContiguousMemoryIterator i, ContiguousMemoryIterator j
-              , typename eina::enable_if_c
+              , typename eina::enable_if
               <eina::is_contiguous_iterator<ContiguousMemoryIterator>::value>::type* = 0)
     : _string( ::eina_stringshare_add_length(&*i, j - i) )
   {

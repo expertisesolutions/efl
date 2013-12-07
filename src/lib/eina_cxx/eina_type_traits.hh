@@ -18,7 +18,6 @@ namespace efl { namespace eina {
 
 #if __cplusplus >= 201103L
 using std::enable_if;
-using std::enable_if_c;
 using std::is_integral;
 using std::is_pod;
 using std::is_const;
@@ -26,8 +25,8 @@ using std::remove_cv;
 using std::true_type;
 using std::false_type;
 #else
-using ::efl_eina_boost::enable_if;
-using ::efl_eina_boost::enable_if_c;
+template <bool B, typename T = void>
+struct enable_if : ::efl_eina_boost::enable_if<B, T> {};
 using ::efl_eina_boost::is_integral;
 using ::efl_eina_boost::is_pod;
 using ::efl_eina_boost::is_const;

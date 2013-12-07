@@ -1,21 +1,25 @@
 #ifndef _EINA_ERROR_HH
 #define _EINA_ERROR_HH
 
-#if __cplusplus >= 201103L
+#include <Eina.h>
+
+#if __cplusplus >= 201103L && !defined(HAVE_BOOST_SYSTEM)
 #include <system_error>
-#else
+#elif defined(HAVE_BOOST_SYSTEM)
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
+#else
+#error Must have one of boost.system or be compiled in C++11-mode
 #endif
 
 namespace efl { namespace eina {
 
-#if __cplusplus >= 201103L
+#if __cplusplus >= 201103L && !defined(HAVE_BOOST_SYSTEM)
 using std::system_error;
 using std::error_code;
 using std::error_condition;
 typedef std::error_category system_error_category;
-#else
+#elif HAVE_BOOST_SYSTEM
 using ::boost::system::system_error;
 using ::boost::system::error_code;
 using ::boost::system::error_condition;
@@ -26,17 +30,17 @@ enum error_type {};
 
 struct error_category : system_error_category
 {
-  const char* name() const
+  const char* name() const throw()
   {
     return "eina";
   }
 
-  bool equivalent(int code, eina::error_condition const& condition) const
+  bool equivalent(int code, eina::error_condition const& condition) const throw()
   {
     return code == condition.value();
   }
 
-  bool equivalent(eina::error_code const& code, int condition) const
+  bool equivalent(eina::error_code const& code, int condition) const throw()
   {
     return code.value() == condition;
   }

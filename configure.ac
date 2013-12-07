@@ -857,26 +857,44 @@ EFL_LIB_END([Eina])
 
 
 #### Eina CXX
-#BOOST_REQUIRE([1.34])
-AC_ARG_WITH([c++11],
-   [AC_HELP_STRING([--with-c++11=no|yes],
-                   [C++ standard to use])])
+EFL_LIB_START([Eina_Cxx])
 
-if test "x${with-c++11}" = "xno"; then
+AC_ARG_WITH([cxx11],
+   [AC_HELP_STRING([--with-cxx11],
+                   [C++ standard to use])], [], [with_cxx11=no])
+AC_ARG_WITH([boost-system],
+   [AC_HELP_STRING([--with-boost-system],
+                   [Use boost.system instead of C++11's functionality])],
+                   [], [with_boost_system=no])
+
+if test "x$with_boost_system" != "xno"; then
    BOOST_REQUIRE([1.34])
    BOOST_SYSTEM
    USE_BOOST_CPPFLAGS="${BOOST_CPPFLAGS}"
    USE_BOOST_SYSTEM_LIBS="${BOOST_SYSTEM_LIBS}"
    USE_BOOST_SYSTEM_LDFLAGS="${BOOST_SYSTEM_LDFLAGS}"
+   AC_DEFINE([HAVE_BOOST_SYSTEM], [1], [Define if you have boost.system])
 else
-   AX_CXX_COMPILE_STDCXX_0X
    USE_BOOST_CPPFLAGS=""
    USE_BOOST_SYSTEM_LIBS=""
    USE_BOOST_SYSTEM_LDFLAGS=""
 fi
+
+if test "x$with_cxx11" != xno; then
+   AX_CXX_COMPILE_STDCXX_11
+   AC_MSG_NOTICE([Compiling in C++11 mode])
+elif test "x$with_boost_system" != xno; then
+   AX_CXX_COMPILE_STDCXX_11
+   AC_MSG_NOTICE([Compiling in C++11 mode])
+else
+   AC_MSG_NOTICE([Compiling in C++03 mode "${with_cxx11}"])
+fi
+
 AC_SUBST([USE_BOOST_CPPFLAGS])
 AC_SUBST([USE_BOOST_SYSTEM_LIBS])
 AC_SUBST([USE_BOOST_SYSTEM_LDFLAGS])
+
+EFL_LIB_END([Eina_Cxx])
 #### End of Eina CXX
 
 #### Eet

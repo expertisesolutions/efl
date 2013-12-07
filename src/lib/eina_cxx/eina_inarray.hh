@@ -71,7 +71,7 @@ public:
   }
   template <typename InputIterator>
   _pod_inarray(InputIterator i, InputIterator const& j
-         , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+         , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
     : _base_type(sizeof(T))
   {
     while(i != j)
@@ -139,7 +139,7 @@ public:
   }
   template <typename InputIterator>
   iterator insert(iterator p, InputIterator i, InputIterator j
-                  , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+                  , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
   {
     size_type n = 0;
     while(i != j)
@@ -166,7 +166,7 @@ public:
   }
   template <typename InputIterator>
   void assign(InputIterator i, InputIterator j
-              , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0);
+              , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0);
   void assign(size_type n, value_type const& t);
   value_type& back()
   {
@@ -260,7 +260,7 @@ public:
     : _base_type(n, t) {}
   template <typename InputIterator>
   inarray(InputIterator i, InputIterator const& j
-          , typename eina::enable_if_c<!eina::is_integral<InputIterator>::value>::type* = 0)
+          , typename eina::enable_if<!eina::is_integral<InputIterator>::value>::type* = 0)
     : _base_type(i, j)
   {}
   
