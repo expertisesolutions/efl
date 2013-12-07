@@ -168,9 +168,9 @@ tests_eina_cxx_eina_cxx_suite_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
 -DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/eina_cxx\" \
 -DTESTS_BUILD_DIR=PACKAGE_BUILD_DIR \
 @CHECK_CFLAGS@ \
-@BOOST_CPPFLAGS@ \
+@USE_BOOST_CPPFLAGS@ \
 @EINA_CFLAGS@
-tests_eina_cxx_eina_cxx_suite_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@ @BOOST_SYSTEM_LIBS@ @BOOST_SYSTEM_LDFLAGS@
+tests_eina_cxx_eina_cxx_suite_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@ @USE_BOOST_SYSTEM_LIBS@ @USE_BOOST_SYSTEM_LDFLAGS@
 tests_eina_cxx_eina_cxx_suite_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
 
 # tests_eina_cxx_compile_test_SOURCES = tests/eina/cxx_compile_test.cxx
