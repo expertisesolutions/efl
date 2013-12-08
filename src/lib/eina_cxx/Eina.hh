@@ -9,6 +9,7 @@
 #include <eina_stringshare.hh>
 #include <eina_error.hh>
 #include <eina_accessor.hh>
+#include <eina_thread.hh>
 
 namespace efl { namespace eina {
 
