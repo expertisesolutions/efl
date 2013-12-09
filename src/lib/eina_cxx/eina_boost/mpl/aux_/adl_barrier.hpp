@@ -20,9 +20,9 @@
 
 #if !defined(EFL_EINA_BOOST_MPL_CFG_NO_ADL_BARRIER_NAMESPACE)
 
-#   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE efl_eina_boost::mpl::mpl_
-#   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE_OPEN namespace efl_eina_boost { namespace mpl { namespace mpl_ {
-#   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE_CLOSE }}}
+#   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE efl_eina_boost_mpl_
+#   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE_OPEN namespace efl_eina_boost_mpl_ {
+#   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE_CLOSE }
 #   define EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_DECL(type) \
     namespace efl_eina_boost { namespace mpl { \
     using ::EFL_EINA_BOOST_MPL_AUX_ADL_BARRIER_NAMESPACE::type; \

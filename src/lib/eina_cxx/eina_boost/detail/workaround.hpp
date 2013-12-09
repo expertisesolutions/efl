@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-#ifndef EFL_EINA_WORKAROUND_DWA2002126_HPP
-# define EFL_EINA_WORKAROUND_DWA2002126_HPP
+#ifndef EFL_EINA_BOOST_WORKAROUND_DWA2002126_HPP
+# define EFL_EINA_BOOST_WORKAROUND_DWA2002126_HPP
 
 // Compiler/library version workaround macro
 //

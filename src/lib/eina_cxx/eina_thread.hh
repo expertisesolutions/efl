@@ -6,13 +6,13 @@
 #include <eina_defs.hh>
 #include <eina_boost/config.hpp>
 
-#include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/include/make_vector.hpp>
-#include <boost/fusion/include/at_c.hpp>
-#include <boost/fusion/include/fused.hpp>
-#include <boost/fusion/include/advance.hpp>
+#include <eina_boost/fusion/include/vector.hpp>
+#include <eina_boost/fusion/include/make_vector.hpp>
+#include <eina_boost/fusion/include/at_c.hpp>
+#include <eina_boost/fusion/include/fused.hpp>
+#include <eina_boost/fusion/include/advance.hpp>
 
-#include <boost/move/utility.hpp>
+#include <eina_boost/move/utility.hpp>
 
 #include <memory>
 #include <iterator>
@@ -23,9 +23,9 @@
 #if __cplusplus >= 201103L
 #include <chrono>
 #else
-#include <boost/preprocessor/iterate.hpp>
-#include <boost/preprocessor/repetition/enum_trailing_params.hpp>
-#include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
+#include <eina_boost/preprocessor/iterate.hpp>
+#include <eina_boost/preprocessor/repetition/enum_trailing_params.hpp>
+#include <eina_boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 #endif
 
 namespace efl { namespace eina {
@@ -79,7 +79,7 @@ namespace _detail {
 template <typename Arguments>
 void* create_thread(void* data, Eina_Thread)
 {
-  namespace fusion = boost::fusion;
+  namespace fusion = ::efl_eina_boost::fusion;
 
   Arguments* args = static_cast<Arguments*>(data);
   Arguments local_args = *args;
@@ -106,7 +106,6 @@ void* create_thread(void* data, Eina_Thread)
   eina_condition_signal(&fusion::at_c<1u>(*args));
   eina_lock_release(&fusion::at_c<2u>(*args));
 
-  // typedef typename fusion::
   fusion::fused<function_type> ff(f);
   fusion::iterator_range
      <typename fusion::result_of::advance_c
@@ -125,7 +124,7 @@ void* create_thread(void* data, Eina_Thread)
 
 class thread
 {
-   BOOST_MOVABLE_BUT_NOT_COPYABLE(thread)
+   EFL_EINA_BOOST_MOVABLE_BUT_NOT_COPYABLE(thread)
 public:
   typedef thread_id id;
   typedef Eina_Thread native_handle_type;
@@ -139,7 +138,7 @@ public:
   template <typename F, class ... Args>
   explicit thread(F&& f, Args&&... args)
   {
-    namespace fusion = boost::fusion;
+    namespace fusion = ::efl_eina_boost::fusion;
     typedef typename fusion::result_of::make_vector
       <F*, Eina_Condition, Eina_Lock, bool, Args...>
       ::type arguments_type;
@@ -149,15 +148,15 @@ public:
     init(arguments);
   }
 #else
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_EINA_MAX_ARGS, "eina_thread_constr.x"))
-#include BOOST_PP_ITERATE()
+#define EFL_EINA_BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_EINA_MAX_ARGS, "eina_thread_constr.x"))
+#include EFL_EINA_BOOST_PP_ITERATE()
 #endif
-  thread(BOOST_RV_REF(thread) other)
+  thread(EFL_EINA_BOOST_RV_REF(thread) other)
     : _joinable(other._joinable), _raw(other._raw)
   {
   }
 
-  thread& operator=(BOOST_RV_REF(thread) other)
+  thread& operator=(EFL_EINA_BOOST_RV_REF(thread) other)
   {
     _raw = other._raw;
     _joinable = other._joinable;
@@ -206,7 +205,7 @@ private:
   void init(Arguments& arguments)
   {
     _joinable = true;
-    namespace fusion = boost::fusion;
+    namespace fusion = ::efl_eina_boost::fusion;
     ::eina_condition_new(&fusion::at_c<1u>(arguments)
                          , &fusion::at_c<2u>(arguments));
 
@@ -234,13 +233,20 @@ private:
   Eina_Thread _raw;
 };
 
-void swap(thread& lhs, thread& rhs);
+inline void swap(thread& lhs, thread& rhs)
+{
+  lhs.swap(rhs);
+}
 
 namespace this_thread {
 
-thread::id get_id();
+inline thread::id get_id()
+{
+  return thread::id(eina_thread_self());
+}
 
-void yield();
+inline void yield() {}
+
 #if __cplusplus >= 201103L
 template <typename Clock, typename Duration>
 void sleep_until(std::chrono::time_point<Clock, Duration>const& abs_time);
