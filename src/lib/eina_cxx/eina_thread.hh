@@ -3,6 +3,7 @@
 
 #include <Eina.h>
 #include <eina_error.hh>
+#include <eina_defs.hh>
 #include <eina_boost/config.hpp>
 
 #include <boost/fusion/include/vector.hpp>
@@ -23,6 +24,8 @@
 #include <chrono>
 #else
 #include <boost/preprocessor/iterate.hpp>
+#include <boost/preprocessor/repetition/enum_trailing_params.hpp>
+#include <boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 #endif
 
 namespace efl { namespace eina {
@@ -86,9 +89,11 @@ void* create_thread(void* data, Eina_Thread)
      <typename fusion::result_of::at_c<Arguments, 0u>::type>
      ::type>::type function_type;
 
-  function_type&& f =
+  function_type
 #if __cplusplus >= 201103L
-    std::move(
+  && f = std::move(
+#else
+     f =
 #endif
               *fusion::at_c<0u>(local_args)
 #if __cplusplus >= 201103L
@@ -144,7 +149,7 @@ public:
     init(arguments);
   }
 #else
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 10, "eina_thread_constr.x"))
+#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_EINA_MAX_ARGS, "eina_thread_constr.x"))
 #include BOOST_PP_ITERATE()
 #endif
   thread(BOOST_RV_REF(thread) other)

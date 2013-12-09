@@ -1,6 +1,7 @@
 #ifndef EINA_HH_
 #define EINA_HH_
 
+#include <eina_config.hh>
 #include <eina_iterator.hh>
 #include <eina_ptrarray.hh>
 #include <eina_ptrlist.hh>

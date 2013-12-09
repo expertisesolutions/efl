@@ -1,0 +1,9 @@
+#ifndef EFL_EINA_CONFIG_HH_
+#define EFL_EINA_CONFIG_HH_
+
+/* Do we have Boost.System as dependency */
+#ifndef EFL_EINA_HAVE_BOOST_SYSTEM
+@EFL_EINA_HAVE_BOOST_SYSTEM@
+#endif
+
+#endif

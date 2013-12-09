@@ -9,7 +9,9 @@ lib/eina_cxx/Eina.hh
 
 installed_einaheadersdir = $(includedir)/eina_cxx-@VMAJ@/eina_cxx
 dist_installed_einaheaders_DATA = \
+lib/eina_cxx/eina_accessor.hh       \
 lib/eina_cxx/eina_clone_allocators.hh       \
+lib/eina_cxx/eina_config.hh \
 lib/eina_cxx/eina_error.hh     \
 lib/eina_cxx/eina_inarray.hh  \
 lib/eina_cxx/eina_inlist.hh   \
@@ -18,6 +20,8 @@ lib/eina_cxx/eina_lists_auxiliary.hh \
 lib/eina_cxx/eina_ptrarray.hh \
 lib/eina_cxx/eina_ptrlist.hh \
 lib/eina_cxx/eina_stringshare.hh \
+lib/eina_cxx/eina_thread.hh \
+lib/eina_cxx/eina_thread_constr.x \
 lib/eina_cxx/eina_type_traits.hh
 
 

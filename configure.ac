@@ -873,21 +873,24 @@ if test "x$with_boost_system" != "xno"; then
    USE_BOOST_CPPFLAGS="${BOOST_CPPFLAGS}"
    USE_BOOST_SYSTEM_LIBS="${BOOST_SYSTEM_LIBS}"
    USE_BOOST_SYSTEM_LDFLAGS="${BOOST_SYSTEM_LDFLAGS}"
+   EFL_EINA_HAVE_BOOST_SYSTEM="#define EFL_EINA_HAVE_BOOST_SYSTEM"
    AC_DEFINE([HAVE_BOOST_SYSTEM], [1], [Define if you have boost.system])
 else
    USE_BOOST_CPPFLAGS=""
    USE_BOOST_SYSTEM_LIBS=""
    USE_BOOST_SYSTEM_LDFLAGS=""
+   EFL_EINA_HAVE_BOOST_SYSTEM=""
 fi
+AC_SUBST(EFL_EINA_HAVE_BOOST_SYSTEM)
 
 if test "x$with_cxx11" != xno; then
    AX_CXX_COMPILE_STDCXX_11
    AC_MSG_NOTICE([Compiling in C++11 mode])
-elif test "x$with_boost_system" != xno; then
+elif test "x$with_boost_system" == xno; then
    AX_CXX_COMPILE_STDCXX_11
    AC_MSG_NOTICE([Compiling in C++11 mode])
 else
-   AC_MSG_NOTICE([Compiling in C++03 mode "${with_cxx11}"])
+   AC_MSG_NOTICE([Compiling in C++03 mode])
 fi
 
 AC_SUBST([USE_BOOST_CPPFLAGS])
@@ -3788,6 +3791,7 @@ src/examples/ethumb_client/Makefile
 src/lib/eina/eina_config.h
 src/lib/ecore_x/ecore_x_version.h
 src/lib/efl/Efl_Config.h
+src/lib/eina_cxx/eina_config.hh
 spec/efl.spec
 pkgbuild/PKGBUILD
 pc/evil.pc

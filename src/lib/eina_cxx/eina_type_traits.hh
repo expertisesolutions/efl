@@ -30,7 +30,7 @@ using std::remove_pointer;
 using std::remove_reference;
 #else
 template <bool B, typename T = void>
-struct enable_if : ::efl_eina_boost::enable_if<B, T> {};
+struct enable_if : ::efl_eina_boost::enable_if_c<B, T> {};
 using ::efl_eina_boost::is_integral;
 using ::efl_eina_boost::is_pod;
 using ::efl_eina_boost::is_const;

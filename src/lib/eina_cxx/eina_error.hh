@@ -3,9 +3,9 @@
 
 #include <Eina.h>
 
-#if __cplusplus >= 201103L && !defined(HAVE_BOOST_SYSTEM)
+#if __cplusplus >= 201103L && !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 #include <system_error>
-#elif defined(HAVE_BOOST_SYSTEM)
+#elif defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
 #else
@@ -14,12 +14,12 @@
 
 namespace efl { namespace eina {
 
-#if __cplusplus >= 201103L && !defined(HAVE_BOOST_SYSTEM)
+#if __cplusplus >= 201103L && !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 using std::system_error;
 using std::error_code;
 using std::error_condition;
 typedef std::error_category system_error_category;
-#elif HAVE_BOOST_SYSTEM
+#elif defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 using ::boost::system::system_error;
 using ::boost::system::error_code;
 using ::boost::system::error_condition;
