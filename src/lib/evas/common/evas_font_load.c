@@ -14,7 +14,7 @@
 #include "evas_private.h"
 
 #include "evas_font_private.h" /* for Frame-Queuing support */
-#include <freetype/tttables.h> /* Freetype2 OS/2 font table. */
+#include <freetype2/tttables.h> /* Freetype2 OS/2 font table. */
 
 #ifdef EVAS_CSERVE2
 # include "../cserve2/evas_cs2_private.h"
