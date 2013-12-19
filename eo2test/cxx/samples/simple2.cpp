@@ -16,5 +16,7 @@ int main(int argc, char** argv)
   inherit.simple_inc();
   assert(inherit.simple_get() == 67);
   assert(inherit.eo3_inherit_get() == 69);
+
+  eo2_do(eo_class_get(inherit._eo_ptr()), ::simple_class_foo(10));
 }
 

@@ -28,6 +28,7 @@ _set(Eo *obj EINA_UNUSED, Private_Data *data, int x)
 {
   /* puts("eo3_inherit_interface::get\n"); */
   data->y = x;
+  eo2_do(obj, isimple_set_callback_call(x));
 }
 
 static void

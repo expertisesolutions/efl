@@ -1983,10 +1983,10 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DECLARE_INTERFACE_FUNCTION_event(NAME, ...) \
-  EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
+  EO3_DECLARE_FUNCTION_event(NAME, __VA_ARGS__)
 
 #define EO3_DECLARE_INTERFACE_FUNCTION_hot_event(NAME, ...)     \
-  EO3_DECLARE_FUNCTION_NORMAL_EVENT(NAME, __VA_ARGS__)
+  EO3_DECLARE_FUNCTION_event(NAME, __VA_ARGS__)
 
 /**
  * @internal
@@ -2011,8 +2011,76 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
   EAPI const Eo_Class* CLASS_NAME ## _get(void);                      \
   EO3_DECLARE_INTERFACE_FUNCTIONS(__VA_ARGS__)
 
-#define EO3_DECLARE_CLASS(CLASS) EO3_DECLARE_CLASS_1(CLASS)
-#define EO3_DECLARE_INTERFACE(CLASS) EO3_DECLARE_INTERFACE_1(CLASS)
+/**
+ * @def EO3_DECLARE_CLASS (CLASS)
+ * @brief declare a new Class
+ * @param CLASS class token previously defined
+ * 
+ * The CLASS is a token defined with:
+ *> #define CLASS_TOKEN class_name, <functions/events, ...>
+ *
+ * functions/events is:
+ *
+ * Declare a new function and your signature
+ ** function (function_name, _function_impl, return_type,<params_type, ...>)
+ *
+ * Declare a new class function and your signature
+ ** function_class (function_name, _function_impl, return_type, <params_type, ...>)
+ *
+ * Override a parent function
+ ** function_override (function_name, _function_impl)
+ *
+ * Override a parent class function
+ ** function_class_override (function_name, _function_impl)
+ *
+ * Declare a new constructor and your signature
+ ** constructor (constructor_name, _function_impl, <params_type, ...>)
+ *
+ * Override a parent constructor
+ ** constructor_override (constructor_name, _function_impl)
+ *
+ * Declare a new destructor and your signature
+ ** destructor (destructor_name, _function_impl, <params_type, ...>)
+ * 
+ * Declare a new class constructor
+ ** class_constructor (_function_impl)
+ *
+ * Declare a new class destructor
+ ** class_destructor (_function_impl)
+ *
+ * Declare a new event and your signature
+ ** event (event_name, <params_type, ...>)
+ */
+#define EO3_DECLARE_CLASS(CLASS) \
+  	EO3_DECLARE_CLASS_1(CLASS)
+
+/**
+ * @def EO3_DECLARE_INTERFACE (CLASS)
+ * @brief declare a new Interface
+ * @param CLASS class token previously defined
+ * 
+ * The CLASS is a token defined with:
+ *> #define CLASS_TOKEN class_name, <functions/events, ...>
+ *
+ * functions/events is:
+ *
+ * Declare a new function and your signature
+ ** function (function_name, _function_impl, return_type,<params_type, ...>)
+ *
+ * Declare a new class function and your signature
+ ** function_class (function_name, _function_impl, return_type, <params_type, ...>)
+ *
+ * Declare a new class constructor
+ ** class_constructor (_function_impl)
+ *
+ * Declare a new class destructor
+ ** class_destructor (_function_impl)
+ *
+ * Declare a new event and your signature
+ ** event (event_name, <params_type, ...>)
+ */
+#define EO3_DECLARE_INTERFACE(CLASS) \
+	EO3_DECLARE_INTERFACE_1(CLASS)
 
 /**
  * @internal
@@ -2095,6 +2163,8 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  * @internal
  */
 #define EO3_DEFINE_INTERFACE_FUNCTION_function_override(NAME, IMPL)
+
+#define EO3_DEFINE_INTERFACE_FUNCTION_class_function_override(NAME, IMPL)
 
 /**
  * @internal
@@ -2302,10 +2372,10 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
-      "Eo2 Class",                                                      \
+      EO_PREPROCESSOR_STRINGIZE(CLASS_NAME),                            \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
-      event_descs,                                                             \
+      event_descs,                                                      \
       sizeof(PRIVATE_TYPE),                                             \
       NULL,                                                             \
       NULL                                                              \
@@ -2333,7 +2403,9 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
  */
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_function(NAME, ...) \
   EO2_OP_FUNC(NULL, NAME, "Description"),
-// #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_NORMAL_EVENT(NAME, ...)
+
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_event(NAME, ...)
+#define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_hot_event(NAME, ...)
 
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ ## F
 #define EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_DESCR_FUNCTION_ELEM, __VA_ARGS__)
@@ -2341,7 +2413,11 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_function(NAME, ...)  \
   EO3_DEFINE_INTERFACE_function(NAME, __VA_ARGS__)
 
-#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_event(NAME, ...)
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_event(NAME, ...)  \
+  EO3_DEFINE_INTERFACE_FUNCTION_event(NAME, __VA_ARGS__)
+
+#define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_hot_event(NAME, ...) \
+  EO3_DEFINE_INTERFACE_FUNCTION_hot_event(NAME, __VA_ARGS__)
 
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM(I, F) EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ ## F
 #define EO3_DEFINE_INTERFACE_INTERFACE_FUNCTIONS(...) EO_PREPROCESSOR_FOR_EACH(EO3_DEFINE_INTERFACE_INTERFACE_FUNCTION_ELEM, __VA_ARGS__)
@@ -2372,18 +2448,22 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
       EO3_DEFINE_INTERFACE_DESCR_FUNCTIONS(__VA_ARGS__)                 \
       EO2_OP_SENTINEL                                                   \
     };                                                                  \
+    static Eo_Event_Description* event_descs [] = {                     \
+      EO3_DEFINE_DESCR_EVENTS(__VA_ARGS__)                              \
+      (void*)NULL                                                       \
+    };                                                                  \
     static const Eo_Class_Description class_desc = {                    \
       EO2_VERSION,                                                      \
       "Eo2 Interface",                                                  \
       CLASS_TYPE,                                                       \
       EO2_CLASS_DESCRIPTION_OPS(op_descs),                              \
-      NULL,                                                             \
+      event_descs,                                                      \
       0,                                                                \
       NULL,                                                             \
       NULL                                                              \
     };                                                                  \
     eina_lock_release(&_eo_class_creation_lock);                        \
-    _my_class = eo_class_new(&class_desc PARENTS_CLASS, NULL); \
+    _my_class = eo_class_new(&class_desc PARENTS_CLASS, NULL);          \
     eina_lock_release(&_my_lock);                                       \
                                                                         \
     eina_lock_take(&_eo_class_creation_lock);                           \
@@ -2440,14 +2520,44 @@ EAPI extern const Eo_Event_Description _EO_EV_DEL;
     return _my_class;                                                   \
   }
 
-#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)                  \
+/**
+ * @def EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE)
+ * @brief define a new Regular Class
+ * @param CLASS token
+ * @param PARENTS Parent(s) Class/Interface
+ * @param PRIVATE_TYPE private data state type
+ */
+#define EO3_DEFINE_CLASS(CLASS, PARENTS, PRIVATE_TYPE, ...)                 \
   EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
+/**
+ * @def EO3_DEFINE_CLASS_NO_INSTANT(CLASS, PARENTS, PRIVATE_TYPE)
+ * @brief define a new Regular non instant-able class
+ * @param CLASS token
+ * @param PARENTS Parent(s) Class/Interface
+ * @param PRIVATE_TYPE private data state type
+ */
+#define EO3_DEFINE_CLASS_NO_INSTANT(CLASS, PARENTS, PRIVATE_TYPE)                            \
+  EO3_DEFINE_CLASS_1(PRIVATE_TYPE, EO_CLASS_TYPE_REGULAR_NO_INSTANT, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+
+/**
+ * @def EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)
+ * @brief declare a new Mixing Class
+ * @param CLASS token
+ * @param PARENTS Parent(s) Class/Interface
+ * @param PRIVATE_TYPE private data state type
+ */
+#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                            \
+  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
+
+/**
+ * @def EO3_DEFINE_INTERFACE(CLASS, PARENTS)
+ * @brief declare a new Interface
+ * @param CLASS token
+ * @param PARENTS Parent(s) Class/Interface
+ */
 #define EO3_DEFINE_INTERFACE(CLASS, PARENTS)                            \
   EO3_DEFINE_INTERFACE_1(EO_CLASS_TYPE_INTERFACE, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
-
-#define EO3_DEFINE_MIXIN(CLASS, PARENTS, PRIVATE_TYPE)                  \
-  EO3_DEFINE_MIXIN_1(PRIVATE_TYPE, EO_CLASS_TYPE_MIXIN, EO3_PARENTS_GET_CLASS PARENTS, CLASS)
 
 #ifdef __cplusplus
 }
