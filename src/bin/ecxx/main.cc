@@ -9,7 +9,7 @@
 
 namespace {
 
-efl::ecxx::eo_class class1()
+efl::ecxx::eo_class example1()
 {
   efl::ecxx::eo_constructor c1 =
     { "simple_constructor", boost::assign::list_of("int") };
@@ -50,6 +50,41 @@ efl::ecxx::eo_class class1()
   return class1;
 }
 
+efl::ecxx::eo_class _eo3_simple()
+{
+  efl::ecxx::eo_constructor c1 =
+    { "simple_constructor", boost::assign::list_of("int") };
+  efl::ecxx::eo_function f1 =
+    { efl::ecxx::eo_function::regular_, "simple_inc", "_inc", "void"
+    , std::vector<std::string>() };
+  efl::ecxx::eo_function f2 =
+    { efl::ecxx::eo_function::regular_, "simple_get", "_get", "int"
+    , std::vector<std::string>() };
+  efl::ecxx::eo_function f3 =
+    { efl::ecxx::eo_function::regular_, "simple_set", "_set", "void"
+    , boost::assign::list_of("int") };
+  efl::ecxx::eo_function f4 =
+    { efl::ecxx::eo_function::regular_, "simple_virtual", "_set", "void"
+    , boost::assign::list_of("int") };
+
+  efl::ecxx::eo_event e1 =
+    { "simple_set", boost::assign::list_of("int"), false };
+
+  efl::ecxx::eo_class class1 =
+    {
+      efl::ecxx::eo_class::regular_,
+      "eo3_simple",
+      "EO3_SIMPLE_CLASS",
+      "efl::eo::base",
+      std::vector<std::string>(),
+      boost::assign::list_of(c1),
+      boost::assign::list_of(f1)(f2)(f3)(f4),
+      boost::assign::list_of(e1)
+    };
+  return class1;
+}
+
+
 }
 
 int main(int argc, char **argv)
@@ -63,8 +98,11 @@ int main(int argc, char **argv)
   efl::ecxx::grammar::eo_class_generator<efl::ecxx::output_iterator_type> g_class;
   efl::ecxx::grammar::eo_class_detail_generator<efl::ecxx::output_iterator_type> g_detail;
 
-  karma::generate(o, g_class, ::class1());
-  karma::generate(o, g_detail, ::class1());
+  //karma::generate(o, g_class, ::example1());
+  //karma::generate(o, g_detail, ::example1());
+
+  karma::generate(o, g_class, ::_eo3_simple());
+  karma::generate(o, g_detail, ::_eo3_simple());
 
   std::cout << s << std::endl;
 
