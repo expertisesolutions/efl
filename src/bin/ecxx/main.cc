@@ -9,7 +9,7 @@
 
 namespace {
 
-efl::ecxx::eo_class class1()
+efl::ecxx::eo_class example1()
 {
   efl::ecxx::eo_constructor c1 =
     { "simple_constructor", boost::assign::list_of("int") };
@@ -63,8 +63,8 @@ int main(int argc, char **argv)
   efl::ecxx::grammar::eo_class_generator<efl::ecxx::output_iterator_type> g_class;
   efl::ecxx::grammar::eo_class_detail_generator<efl::ecxx::output_iterator_type> g_detail;
 
-  karma::generate(o, g_class, ::class1());
-  karma::generate(o, g_detail, ::class1());
+  karma::generate(o, g_class, ::example1());
+  karma::generate(o, g_detail, ::example1());
 
   std::cout << s << std::endl;
 

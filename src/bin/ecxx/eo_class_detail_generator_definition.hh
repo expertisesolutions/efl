@@ -18,8 +18,8 @@ template <typename OutputIterator>
 eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
   : eo_class_detail_generator::base_type(start)
 {
-  using namespace boost::spirit;
-  using namespace boost::spirit::ascii;
+  using namespace boost::spirit;                        // XXX
+  using namespace boost::spirit::ascii;                 // XXX
 
   using phoenix::at_c;
   using karma::_1;
@@ -71,7 +71,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << tab(2) << "}" << eol << eol;
   
   virtual_operations_loop = *(virtual_operation);
-  
+
   class_operations = "template<>" << eol
     << "struct operations<" << string[_1 = at_c<1>(_val)] << ">" << eol
     << "{" << eol
@@ -82,12 +82,18 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << tab(1) << "};" << eol
     << "};" << eol << eol;
 
-  operation_description_class_size = string[_1 = ""]; // TODO
+  operation_description_class_size = "template<>"
+    << eol << "struct operation_description_class_size<eo3_simple>" << eol
+    << "{" << eol
+    << tab(1) << "static const int value = "
+    << karma::lit(phoenix::size(at_c<6>(_val)))
+    << ";" << eol
+    << "};" << eol;
 
   operation_description = string[_1 = ""]; // TODO
 
   operations_descriptions_loop = (*operation_description);
-  
+
   initialize_operation_description = "template <typename T>" << eol
     << "void initialize_operation_description(efl::eo::detail::tag<"
     << string[_1 = at_c<1>(_val)] << ">" << eol
@@ -96,20 +102,27 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << operations_descriptions_loop[_1 = at_c<6>(_val)]
     << "}" << eol << eol;
 
+  class_constructor_argument = "args.get<" << karma::lit(_r1) << ">()";
+
+  class_constructor_arguments_loop = -(class_constructor_argument(_a++) % ", ");
+
   class_constructor = "void call_constructor(tag<"
-    << string[_1 = at_c<1>(_val)] << ">" << eol
+    << string[_1 = _r1] << ">" << eol
     << tab(5) << ", Eo* eo, Eo_Class const* cls EINA_UNUSED" << eol
-    << tab(5) << "args_class<" << string[_1 = at_c<1>(_val)] << ","
+    << tab(5) << "args_class<" << string[_1 = _r1] << ","
     << "boost::fusion::vector<int> > const& args)" << eol
     << "{" << eol
-    // TODO XXX YYY
-    //<< tab(1) << "eo2_do(eo, ::" << 
-    ;
+    << tab(1) << "eo2_do(eo, ::" << string[_1 = at_c<0>(_val)] << "("
+    << class_constructor_arguments_loop[_1 = at_c<1>(_val)]
+    << "));" << eol
+    << "}" << eol;
+
+  class_constructors_loop = (*class_constructor(_r1));
 
   get_eo_class = "inline Eo_Class const* get_eo_class(tag<"
     << string[_1 = at_c<1>(_val)] << ">)" << eol
     << "{" << eol
-    << tab(1) << "return EO3_GET_CLASS(" << string[_1 = at_c<2>(_val)] 
+    << tab(1) << "return EO3_GET_CLASS(" << string[_1 = at_c<2>(_val)]
     << ");" << eol
     << "}" << eol << eol;
 
@@ -118,7 +131,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << class_operations[_1 = _val]
     << operation_description_class_size[_1 = _val]
     << initialize_operation_description[_1 = _val]
-    << class_constructor[_1 = _val]
+    << class_constructors_loop(at_c<1>(_val))[_1 = at_c<5>(_val)]
     << get_eo_class[_1 = _val]
     << "} } }" << eol;
 };
