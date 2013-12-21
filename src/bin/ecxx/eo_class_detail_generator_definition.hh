@@ -11,7 +11,7 @@ namespace phoenix = boost::phoenix;
 
 namespace detail {
 inline void next_arg_decl(int& i) { static int c = 0; i = c++; } // XXX
-inline void next_arg(int& i) { static int c = 0; i = c++; } // XXX
+inline void next_arg(int& i) { static int c = 0; i = c++; }      // XXX
 }
 
 template <typename OutputIterator>
@@ -42,7 +42,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     | string[_1 = ""];
       
   eo_operation_wrapper = "template <typename T>" << eol
-    << "void " << string[_1 = at_c<1>(_val)]
+    << string[_1 = at_c<3>(_val)] << " " << string[_1 = at_c<1>(_val)]
     << "_wrapper(Eo* objid EINA_UNUSED, "
     << "efl::eo::detail::Inherit_Private_Data* self"
     << prepended_arguments_declaration[_1 = at_c<4>(_val)] << ")" << eol
@@ -75,7 +75,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
   class_operations = "template<>" << eol
     << "struct operations<" << string[_1 = at_c<1>(_val)] << ">" << eol
     << "{" << eol
-    << tab(1) << "template <typename D>" << eol
+    << tab(1) << "template <typename T>" << eol
     << tab(1) << "struct type" << eol
     << tab(1) << "{" << eol
     << virtual_operations_loop[_1 = at_c<6>(_val)]
@@ -88,18 +88,23 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << tab(1) << "static const int value = "
     << karma::lit(phoenix::size(at_c<6>(_val)))
     << ";" << eol
-    << "};" << eol;
+    << "};" << eol << eol;
 
-  operation_description = string[_1 = ""]; // TODO
+  operation_description = tab(1)
+    << "ops[" << karma::lit(_r1) << "].func = reinterpret_cast<void*>(& ::" << string[_1 = at_c<1>(_val)] << "_wrapper<T>);" << eol 
+    << tab(1) << "ops[" << karma::lit(_r1) << "].api_func = reinterpret_cast<void*>(& ::" << string[_1 = at_c<1>(_val)] << ");" << eol
+    << tab(1) << "ops[" << karma::lit(_r1) << "].op = EO2_OP_OVERRIDE;" << eol
+    << tab(1) << "ops[" << karma::lit(_r1) << "].op_type = EO_OP_TYPE_REGULAR;" << eol  // XXX
+    << tab(1) << "ops[" << karma::lit(_r1) << "].doc = NULL;" << eol                    // XXX
+    << eol;
+    
+  operations_descriptions_loop = (*operation_description(_a++));
 
-  operations_descriptions_loop = (*operation_description);
-
-  initialize_operation_description = "template <typename T>" << eol
-    << "void initialize_operation_description(efl::eo::detail::tag<"
+  initialize_operation_description = "template <typename T>"
+    << eol << "void initialize_operation_description(efl::eo::detail::tag<"
     << string[_1 = at_c<1>(_val)] << ">" << eol
     << tab(7) << ", Eo2_Op_Description* ops)" << eol
-    << "{" << eol
-    << operations_descriptions_loop[_1 = at_c<6>(_val)]
+    << "{" << eol << operations_descriptions_loop[_1 = at_c<6>(_val)]
     << "}" << eol << eol;
 
   class_constructor_argument = "args.get<" << karma::lit(_r1) << ">()";
@@ -108,14 +113,14 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
 
   class_constructor = "void call_constructor(tag<"
     << string[_1 = _r1] << ">" << eol
-    << tab(5) << ", Eo* eo, Eo_Class const* cls EINA_UNUSED" << eol
+    << tab(5) << ", Eo* eo, Eo_Class const* cls EINA_UNUSED," << eol
     << tab(5) << "args_class<" << string[_1 = _r1] << ","
     << "boost::fusion::vector<int> > const& args)" << eol
     << "{" << eol
     << tab(1) << "eo2_do(eo, ::" << string[_1 = at_c<0>(_val)] << "("
     << class_constructor_arguments_loop[_1 = at_c<1>(_val)]
     << "));" << eol
-    << "}" << eol;
+    << "}" << eol << eol;
 
   class_constructors_loop = (*class_constructor(_r1));
 
@@ -127,7 +132,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << "}" << eol << eol;
 
   start = eo_operations_wrappers_loop[_1 = at_c<6>(_val)]
-    << "namespace efl { namespace ecxx { namespace detail {" << eol << eol
+    << "namespace efl { namespace eo { namespace detail {" << eol << eol
     << class_operations[_1 = _val]
     << operation_description_class_size[_1 = _val]
     << initialize_operation_description[_1 = _val]

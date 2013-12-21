@@ -41,8 +41,10 @@ eo_class_generator<OutputIterator>::eo_class_generator()
 
   class_inheritance = 
     ( (eps(at_c<3>(_val) != "") << string[_1 = at_c<3>(_val)]) | "efl::eo::base" ) 
-    << ',' << eol 
-    << class_extensions_loop(at_c<1>(_val))[_1 = at_c<4>(_val)] << eol;
+    << (eps(phoenix::size(at_c<4>(_val)) > 0)
+      << ',' << eol << class_extensions_loop(at_c<1>(_val))[_1 = at_c<4>(_val)]
+      | "")
+    << eol;
 
   argument = 'a' << int_[&detail::next_arg];
   arguments_loop = *(argument % ", ");

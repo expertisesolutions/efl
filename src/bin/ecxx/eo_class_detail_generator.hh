@@ -39,8 +39,8 @@ struct eo_class_detail_generator
   karma::rule<OutputIterator, eo_class(),
     karma::locals<unsigned int> > operation_description_class_size;
   karma::rule<OutputIterator, eo_class()> initialize_operation_description;
-  karma::rule<OutputIterator, std::vector<eo_function>()> operations_descriptions_loop;
-  karma::rule<OutputIterator, eo_function()> operation_description;
+  karma::rule<OutputIterator, std::vector<eo_function>(), karma::locals<int> > operations_descriptions_loop;
+  karma::rule<OutputIterator, eo_function(int)> operation_description;
   karma::rule<OutputIterator, std::vector<eo_constructor>(std::string)> class_constructors_loop;
   karma::rule<OutputIterator, eo_constructor(std::string)> class_constructor;
   karma::rule<OutputIterator, std::string(int)> class_constructor_argument;
