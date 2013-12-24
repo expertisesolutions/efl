@@ -2,8 +2,10 @@
 #ifndef EFL_ECXX_EO_CLASS_GENERATOR_DEFINITION_HH
 #define EFL_ECXX_EO_CLASS_GENERATOR_DEFINITION_HH
 
-#include "arguments_generator.hh"
 #include "eo_class_generator.hh"
+
+#include "arguments_generator.hh"
+#include "eo_class_detail_generator.hh"
 #include "eo_class_event_generator.hh"
 
 namespace efl { namespace ecxx { namespace grammar {
@@ -113,10 +115,11 @@ eo_class_generator<OutputIterator>::eo_class_generator()
     << destructor[_1 = _b]
     << functions_loop[_1 = at_c<6>(_val)]               // 6 = functions
     << eo_class_getter_definition[_1 = at_c<2>(_val)]   // 2 = eo_name
-    << events[_1 = at_c<7>(_val)]         // 7 = events
+    << events[_1 = at_c<7>(_val)]                       // 7 = events
     << "private:" << eol
     << eo_class_constructors_loop(at_c<2>(_val))[_1 = at_c<5>(_val)]
-    << "};" << eol;
+      << "};" << eol << eol;
+//<< detail[_1 = _val];
 }
 
 } } }

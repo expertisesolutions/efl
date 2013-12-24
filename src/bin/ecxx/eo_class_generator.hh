@@ -15,6 +15,7 @@
 #include "eo_type_def.hh"
 #include "arguments_generator.hh"
 #include "eo_class_event_generator.hh"
+#include "eo_class_detail_generator.hh"
 
 namespace efl { namespace ecxx { namespace grammar {
 
@@ -50,6 +51,7 @@ struct eo_class_generator
    efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
    efl::ecxx::grammar::arguments_list_generator<OutputIterator> arguments_list;
    efl::ecxx::grammar::eo_class_event_generator<OutputIterator> events;
+   efl::ecxx::grammar::eo_class_detail_generator<OutputIterator> detail;
 };
 
 } } }
