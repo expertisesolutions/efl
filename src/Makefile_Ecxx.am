@@ -3,8 +3,11 @@
 
 bin_PROGRAMS = bin/ecxx/ecxx
 bin_ecxx_ecxx_SOURCES = bin/ecxx/main.cc									\
+	bin/ecxx/arguments_generator.cc													\
 	bin/ecxx/eo_class_generator.cc													\
-	bin/ecxx/eo_class_detail_generator.cc
+	bin/ecxx/eo_class_detail_generator.cc										\
+	bin/ecxx/eo_class_event_generator.cc
+
 bin_ecxx_ecxx_CPPFLAGS = -I$(top_builddir)/src/lib/ecxx/	\
 	-DPACKAGE_BIN_DIR=\"$(bindir)\"													\
 	-DPACKAGE_LIB_DIR=\"$(libdir)\"													\
