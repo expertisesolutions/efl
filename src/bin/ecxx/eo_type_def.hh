@@ -14,47 +14,48 @@ struct eo_event;
 
 struct eo_class
 {
-  enum eo_class_type
-  {
-    regular_, regular_noninst_, interface_, mixin_
-  };
-  eo_class_type type;
-  std::string name;
-  std::string eo_name;
-  std::string parent;
-  std::vector<std::string> extensions;
-  std::vector<eo_constructor> constructors;
-  std::vector<eo_function> functions;
-  std::vector<eo_event> events;
+   enum eo_class_type
+     {
+       regular_, regular_noninst_, interface_, mixin_
+     };
+
+   eo_class_type type;
+   std::string name;
+   std::string eo_name;
+   std::string parent;
+   std::vector<std::string> extensions;
+   std::vector<eo_constructor> constructors;
+   std::vector<eo_function> functions;
+   std::vector<eo_event> events;
 };
 
-struct eo_constructor 
+struct eo_constructor
 {
-  std::string name;
-  std::vector<std::string> params;
+   std::string name;
+   std::vector<std::string> params;
 };
 
 struct eo_function
 {
-  enum eo_function_type 
-  { 
-    regular_, class_
-  };
-  eo_function_type type;
-  std::string name;
-  std::string impl;
-  std::string ret;
-  std::vector<std::string> params;
+   enum eo_function_type
+     {
+       regular_, class_
+     };
+   eo_function_type type;
+   std::string name;
+   std::string impl;
+   std::string ret;
+   std::vector<std::string> params;
 };
 
 struct eo_event
 {
-  std::string name;
-  std::vector<std::string> params;
-  bool is_hot;
+   std::string name;
+   std::vector<std::string> params;
+   bool is_hot;
 };
 
-} } 
+} }
 
 // There's no need to describe 'constructor_overrides', 'destructors'
 // and 'function_overrides'. EO (C subsystem) already provide the

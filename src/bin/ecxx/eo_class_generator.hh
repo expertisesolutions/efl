@@ -22,43 +22,29 @@ template <typename OutputIterator>
 struct eo_class_generator
   : karma::grammar
   <
-    OutputIterator, eo_class(), 
-    karma::locals<eo_class::eo_class_type, std::string, std::string> 
+    OutputIterator, eo_class(),
+    karma::locals<eo_class::eo_class_type, std::string, std::string>
   >
 {
-  eo_class_generator();
-  karma::rule<OutputIterator, eo_class(), karma::locals
-    <eo_class::eo_class_type, std::string, std::string> > start;
-  karma::rule<OutputIterator, void(unsigned int)> tab;
-  karma::rule<OutputIterator, std::string()> argument;
-  karma::rule<OutputIterator, std::string()> argument_declaration;
-  karma::rule<OutputIterator, std::vector<std::string>()> arguments_declaration_loop;
-  karma::rule<OutputIterator, std::vector<std::string>()> arguments_loop;
-  karma::rule<OutputIterator, std::string()> argument_type;
-  karma::rule<OutputIterator, std::vector<std::string>()> arguments_type_loop;
-  karma::rule<OutputIterator, std::vector<std::string>()> prepended_arguments_type;
-  karma::rule<OutputIterator, eo_class()> class_inheritance;
-  karma::rule<OutputIterator, std::vector<std::string>(std::string)> class_extensions_loop;
-  karma::rule<OutputIterator, std::string(std::string)> class_extension;
-  karma::rule<OutputIterator, eo_class()> constructor_eo;
-  karma::rule<OutputIterator,
-    std::vector<eo_constructor>(std::string, std::string)> constructors_loop;
-  karma::rule<OutputIterator, eo_constructor(std::string, std::string)> constructor;
-  karma::rule<OutputIterator, eo_class()> copy_constructor;
-  karma::rule<OutputIterator, std::string()> destructor;
-  karma::rule<OutputIterator, std::vector<eo_function>()> functions_loop;
-  karma::rule<OutputIterator, eo_function(), karma::locals<std::string, bool> > function;
-  karma::rule<OutputIterator, std::string()> eo_class_getter_definition;
-  karma::rule<OutputIterator,
-    std::vector<eo_constructor>(std::string)> eo_class_constructors_loop;
-  karma::rule<OutputIterator, eo_constructor(std::string)> eo_class_constructor;
-  karma::rule<OutputIterator, std::vector<eo_event>()> event_callbacks_loop;
-  karma::rule<OutputIterator, eo_event()> event_callback;
-  karma::rule<OutputIterator, eo_event()> event_callback_add;
-  karma::rule<OutputIterator, eo_event()> event_callback_del;
-  karma::rule<OutputIterator, eo_event()> event_callback_call;
+   eo_class_generator();
+   karma::rule<OutputIterator, eo_class(),
+               karma::locals<eo_class::eo_class_type, std::string, std::string> > start;
+   karma::rule<OutputIterator, void(unsigned int)> tab;
+   karma::rule<OutputIterator, std::string(std::string)> class_extension;
+   karma::rule<OutputIterator, std::vector<std::string>(std::string)> class_extensions_loop;
+   karma::rule<OutputIterator, eo_class()> class_inheritance;
+   karma::rule<OutputIterator, eo_class()> constructor_eo;
+   karma::rule<OutputIterator, eo_class()> copy_constructor;
+   karma::rule<OutputIterator, eo_constructor(std::string, std::string)> constructor;
+   karma::rule<OutputIterator, std::vector<eo_constructor>(std::string, std::string)> constructors_loop;
+   karma::rule<OutputIterator, std::string()> destructor;
+   karma::rule<OutputIterator, eo_function(), karma::locals<std::string, bool> > function;
+   karma::rule<OutputIterator, std::vector<eo_function>()> functions_loop;
+   karma::rule<OutputIterator, std::string()> eo_class_getter_definition;
+   karma::rule<OutputIterator, eo_constructor(std::string)> eo_class_constructor;
+   karma::rule<OutputIterator, std::vector<eo_constructor>(std::string)> eo_class_constructors_loop;
 };
 
-} } } 
+} } }
 
 #endif // EFL_ECXX_EO_CLASS_GENERATOR_HH

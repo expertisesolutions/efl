@@ -101,7 +101,7 @@ int main(int argc, char **argv)
   //karma::generate(o, g_class, ::example1());
   //karma::generate(o, g_detail, ::example1());
 
-  karma::generate(o, g_class, ::_eo3_simple());
+  //karma::generate(o, g_class, ::_eo3_simple());
   karma::generate(o, g_detail, ::_eo3_simple());
 
   std::cout << s << std::endl;
