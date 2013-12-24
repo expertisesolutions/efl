@@ -13,6 +13,8 @@
 #include <boost/spirit/include/phoenix_stl.hpp>
 
 #include "eo_type_def.hh"
+#include "arguments_generator.hh"
+#include "eo_class_event_generator.hh"
 
 namespace efl { namespace ecxx { namespace grammar {
 
@@ -43,6 +45,11 @@ struct eo_class_generator
    karma::rule<OutputIterator, std::string()> eo_class_getter_definition;
    karma::rule<OutputIterator, eo_constructor(std::string)> eo_class_constructor;
    karma::rule<OutputIterator, std::vector<eo_constructor>(std::string)> eo_class_constructors_loop;
+
+   // sub-grammars
+   efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
+   efl::ecxx::grammar::arguments_list_generator<OutputIterator> arguments_list;
+   efl::ecxx::grammar::eo_class_event_generator<OutputIterator> events;
 };
 
 } } }

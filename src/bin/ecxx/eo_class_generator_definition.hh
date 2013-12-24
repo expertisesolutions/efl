@@ -15,9 +15,6 @@ template <typename OutputIterator>
 eo_class_generator<OutputIterator>::eo_class_generator()
   : eo_class_generator::base_type(start)
 {
-  using namespace boost::spirit;
-  using namespace boost::spirit::ascii;
-
   using phoenix::at_c;
   using karma::_a; using karma::_b; using karma::_c; using karma::_d;
   using karma::_r1; using karma::_r2;
@@ -26,10 +23,6 @@ eo_class_generator<OutputIterator>::eo_class_generator()
   using karma::eol;
   using karma::eps;
   using karma::string;
-
-  efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
-  efl::ecxx::grammar::arguments_list_generator<OutputIterator> arguments_list;
-  efl::ecxx::grammar::eo_class_event_generator<OutputIterator> events;
 
   tab = karma::repeat(2*_r1)[karma::space];
 

@@ -12,6 +12,7 @@
 #include <boost/spirit/include/phoenix_stl.hpp>
 
 #include "eo_type_def.hh"
+#include "arguments_generator.hh"
 
 namespace efl { namespace ecxx { namespace grammar {
 
@@ -28,6 +29,10 @@ struct eo_class_event_generator
    karma::rule<OutputIterator, eo_event()> event_callback_del;
    karma::rule<OutputIterator, eo_event()> event_callback_call;
    karma::rule<OutputIterator, void(unsigned int)> tab;
+
+   efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
+   efl::ecxx::grammar::arguments_list_generator<OutputIterator> arguments_list;
+   efl::ecxx::grammar::arguments_prepended_types_generator<OutputIterator> arguments_prepended_types;
 };
 
 } } }

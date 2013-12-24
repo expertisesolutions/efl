@@ -2,8 +2,8 @@
 #ifndef EFL_ECXX_EO_CLASS_DETAIL_GENERATOR_DEFINITION_HH
 #define EFL_ECXX_EO_CLASS_DETAIL_GENERATOR_DEFINITION_HH
 
-#include "arguments_generator.hh"
 #include "eo_class_detail_generator.hh"
+#include "arguments_generator.hh"
 
 namespace efl { namespace ecxx { namespace grammar {
 
@@ -14,34 +14,29 @@ template <typename OutputIterator>
 eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
   : eo_class_detail_generator::base_type(start)
 {
-  using namespace boost::spirit;                        // XXX
-  using namespace boost::spirit::ascii;                 // XXX
+   using phoenix::at_c;
+   using karma::_1;
+   using karma::_a;
+   using karma::_b;
+   using karma::_r1;
+   using karma::_val;
+   using karma::eol;
+   using karma::eps;
+   using karma::string;
 
-  using karma::_1;
-  using karma::_a;
-  using karma::_r1;
-  using karma::_val;
-  using phoenix::at_c;
-  using karma::eol;
-  using karma::eps;
-  using karma::string;
+   tab = karma::repeat(2*_r1)[karma::space];
+   std::cout << "XXX-1" << std::endl;
 
-  efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
-  efl::ecxx::grammar::arguments_prepended_declaration_generator<OutputIterator> arguments_prepended_declaration;
-  efl::ecxx::grammar::arguments_list_generator<OutputIterator> arguments_list;
-
-  tab = karma::repeat(2*_r1)[karma::space];
-
-  eo_operation_wrapper = "template <typename T>" << eol
-    << string[_1 = at_c<3>(_val)] << " " << string[_1 = at_c<1>(_val)]
-    << "_wrapper(Eo* objid EINA_UNUSED, "
-    << "efl::eo::detail::Inherit_Private_Data* self"
-    << arguments_prepended_declaration[_1 = at_c<4>(_val)] << ")" << eol
-    << "{" << eol
-    << tab(1) << "return static_cast<T*>(self->this_)->"
-    << string[_1 = at_c<1>(_val)]
-    << "(" << arguments_list[_1 = at_c<4>(_val)] << ");" << eol
-    << "}" << eol << eol;
+   eo_operation_wrapper = "template <typename T>" << eol
+     << string[_1 = at_c<3>(_val)] << " " << string[_1 = at_c<1>(_val)]
+     << "_wrapper(Eo* objid EINA_UNUSED, "
+     << "efl::eo::detail::Inherit_Private_Data* self"
+     << arguments_prepended_declaration[_1 = at_c<4>(_val)] << ")" << eol
+     << "{" << eol
+     << tab(1) << "return static_cast<T*>(self->this_)->"
+     << string[_1 = at_c<1>(_val)]
+     << "(" << arguments_list[_1 = at_c<4>(_val)] << ");" << eol
+     << "}" << eol << eol;
 
   eo_operations_wrappers_loop = *(eo_operation_wrapper);
 
@@ -141,6 +136,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
   extension_inheritance = "template<>"
     << eol
     << "struct extension_inheritance< ::" << string[_1 = at_c<1>(_val)] << ">" << eol
+    << "{" << eol
     << tab(1) << "template <typename T>" << eol
     << tab(1) << "struct type" << eol
     << tab(1) << "{" << eol

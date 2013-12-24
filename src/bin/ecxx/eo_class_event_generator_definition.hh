@@ -23,10 +23,6 @@ eo_class_event_generator<OutputIterator>::eo_class_event_generator()
    using karma::eps;
    using karma::string;
 
-   efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
-   efl::ecxx::grammar::arguments_list_generator<OutputIterator> arguments_list;
-   efl::ecxx::grammar::arguments_prepended_types_generator<OutputIterator> arguments_prepended_types;
-
    tab = karma::repeat(2*_r1)[karma::space];
 
    event_callback_add = tab(1) << "template <typename F>" << eol

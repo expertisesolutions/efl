@@ -41,6 +41,7 @@ struct arguments_prepended_declaration_generator
 {
    arguments_prepended_declaration_generator();
    karma::rule<OutputIterator, std::vector<std::string>()> start;
+   efl::ecxx::grammar::arguments_declaration_generator<OutputIterator> arguments_declaration;
 };
 
 template <typename OutputIterator>
@@ -58,6 +59,7 @@ struct arguments_prepended_types_generator
 {
    arguments_prepended_types_generator();
    karma::rule<OutputIterator, std::vector<std::string>()> start;
+   efl::ecxx::grammar::arguments_types_generator<OutputIterator> arguments_type;
 };
 
 template <typename OutputIterator>
@@ -66,6 +68,7 @@ struct arguments_list_generator
 {
    arguments_list_generator();
    karma::rule<OutputIterator, std::vector<std::string>(), karma::locals<int> > start;
+   efl::ecxx::grammar::argument_generator<OutputIterator> argument;
 };
 
 } } }
