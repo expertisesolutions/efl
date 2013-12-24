@@ -25,7 +25,6 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
    using karma::string;
 
    tab = karma::repeat(2*_r1)[karma::space];
-   std::cout << "XXX-1" << std::endl;
 
    eo_operation_wrapper = "template <typename T>" << eol
      << string[_1 = at_c<3>(_val)] << " " << string[_1 = at_c<1>(_val)]
