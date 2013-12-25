@@ -53,14 +53,14 @@ struct eo3_simple
     return r;
   }
 
-  void simple_set(int a1)
+  void simple_set(int a0)
   {
-    eo2_do(_eo_ptr(), ::simple_set(a1));
+    eo2_do(_eo_ptr(), ::simple_set(a0));
   }
 
-  void simple_virtual(int a2)
+  void simple_virtual(int a0)
   {
-    eo2_do(_eo_ptr(), ::simple_virtual(a2));
+    eo2_do(_eo_ptr(), ::simple_virtual(a0));
   }
 
   static Eo_Class const* _eo_class()
@@ -89,18 +89,19 @@ struct eo3_simple
     t.free_function(t.data);
   }
 
-  void simple_set_callback_call(int a3)
+  void simple_set_callback_call(int a0)
   {
-    eo2_do(_eo_ptr(), ::simple_set_callback_call(a3));
+    eo2_do(_eo_ptr(), ::simple_set_callback_call(a0));
   }
 
 private:
-  static Eo* _c1(int a4)
+  static Eo* _c1(int a0)
   {
-    return eo2_add_custom(EO3_GET_CLASS(EO3_SIMPLE_CLASS), NULL, ::simple_constructor(a4));
+    return eo2_add_custom(EO3_GET_CLASS(EO3_SIMPLE_CLASS), NULL, ::simple_constructor(a0));
   }
 
 };
+
 template <typename T>
 void simple_inc_wrapper(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self)
 {
@@ -114,15 +115,15 @@ int simple_get_wrapper(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_D
 }
 
 template <typename T>
-void simple_set_wrapper(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self, int a5)
+void simple_set_wrapper(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self, int a0)
 {
-  return static_cast<T*>(self->this_)->simple_set(a5);
+  return static_cast<T*>(self->this_)->simple_set(a0);
 }
 
 template <typename T>
-void simple_virtual_wrapper(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self, int a6)
+void simple_virtual_wrapper(Eo* objid EINA_UNUSED, efl::eo::detail::Inherit_Private_Data* self, int a0)
 {
-  return static_cast<T*>(self->this_)->simple_virtual(a6);
+  return static_cast<T*>(self->this_)->simple_virtual(a0);
 }
 
 namespace efl { namespace eo { namespace detail {
@@ -149,18 +150,18 @@ struct operations<eo3_simple>
       return r;
     }
 
-    virtual void simple_set(int a7)
+    virtual void simple_set(int a0)
     {
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
         , static_cast<T*>(this)->_eo_class()
-        , ::simple_set(a7));
+        , ::simple_set(a0));
     }
 
-    virtual void simple_virtual(int a8)
+    virtual void simple_virtual(int a0)
     {
       eo2_do_super(static_cast<T*>(this)->_eo_ptr()
         , static_cast<T*>(this)->_eo_class()
-        , ::simple_virtual(a8));
+        , ::simple_virtual(a0));
     }
 
   };
@@ -202,12 +203,51 @@ void initialize_operation_description(efl::eo::detail::tag<eo3_simple>
 
 }
 
+} } }
+
+namespace efl { namespace eo { namespace detail {
+
 void call_constructor(tag<eo3_simple>
           , Eo* eo, Eo_Class const* cls EINA_UNUSED,
           args_class<eo3_simple,boost::fusion::vector<int> > const& args)
 {
   eo2_do(eo, ::simple_constructor(args.get<0>()));
 }
+
+template<>
+struct extension_inheritance< ::eo3_simple>
+{
+  template <typename T>
+  struct type
+  {
+    operator eo3_simple() const
+    {
+      return eo3_simple
+        (eo_ref(static_cast<T const*>(this)->_eo_ptr()));
+    }
+
+  void simple_inc()
+      {
+        eo2_do(static_cast<T*>(this)->_eo_ptr(), ::simple_inc());
+      }
+
+  int simple_get()
+      {
+        eo2_do(static_cast<T*>(this)->_eo_ptr(), ::simple_get());
+      }
+
+  void simple_set(int a0)
+      {
+        eo2_do(static_cast<T*>(this)->_eo_ptr(), ::simple_set(a0));
+      }
+
+  void simple_virtual(int a0)
+      {
+        eo2_do(static_cast<T*>(this)->_eo_ptr(), ::simple_virtual(a0));
+      }
+
+  };
+};
 
 inline Eo_Class const* get_eo_class(tag<eo3_simple>)
 {
