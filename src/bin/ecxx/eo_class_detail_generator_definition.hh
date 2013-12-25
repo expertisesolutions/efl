@@ -23,13 +23,13 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
    using karma::eol;
    using karma::eps;
    using karma::string;
-   
+
    tab = karma::repeat(2*_r1)[karma::space];
-   
+
    class_constructor_argument = "args.get<" << karma::lit(_r1) << ">()";
-   
+
    class_constructor_arguments_loop = -(class_constructor_argument(_a++) % ", ");
-   
+
    class_constructor = "void call_constructor(tag<"
     << string[_1 = _r1] << ">" << eol
     << tab(5) << ", Eo* eo, Eo_Class const* cls EINA_UNUSED," << eol
@@ -50,16 +50,16 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << ");" << eol
     << "}" << eol << eol;
 
-   extension_inheritance_function = tab(1)
+   extension_inheritance_function = tab(2)
     << string[_1 = at_c<3>(_val)] << " "
     << string[_1 = at_c<1>(_val)] << "("
     << arguments_declaration[_1 = at_c<4>(_val)]
     << ")" << eol
-    << tab(1) << "{" << eol
-    << tab(2) << "eo2_do(static_cast<D*>(this)->_eo_ptr(), ::"
+    << tab(2) << "{" << eol
+    << tab(3) << "eo2_do(static_cast<T*>(this)->_eo_ptr(), ::"
     << string[_1 = at_c<1>(_val)]
     << "(" << arguments_list[_1 = at_c<4>(_val)] << "));" << eol
-    << tab(1) << "}" << eol
+    << tab(2) << "}" << eol
     << eol;
 
    extension_inheritance_functions_loop = (*extension_inheritance_function);
@@ -74,7 +74,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << tab(2) << "operator " << string[_1 = at_c<1>(_val)] << "() const" << eol
     << tab(2) << "{" << eol
     << tab(3) << "return " << string[_1 = at_c<1>(_val)] << eol
-    << tab(4) << "(eo_ref(static_cast<D const*>(this)->_eo_ptr()));" << eol
+    << tab(4) << "(eo_ref(static_cast<T const*>(this)->_eo_ptr()));" << eol
     << tab(2) << "}" << eol
     << eol
     << extension_inheritance_functions_loop[_1 = at_c<6>(_val)]
@@ -82,7 +82,7 @@ eo_class_detail_generator<OutputIterator>::eo_class_detail_generator()
     << "};" << eol
     << eol;
 
-   start = operations[_1 = _val]
+   start = operations[_1 = _val] << eol
     << "namespace efl { namespace eo { namespace detail {" << eol << eol
     << class_constructors_loop(at_c<1>(_val))[_1 = at_c<5>(_val)]
     << extension_inheritance[_1 = _val]
