@@ -1282,6 +1282,8 @@ _edje_program_copy(Edje_Program *ep, Edje_Program *ep2)
    ep->tween.time = ep2->tween.time;
    ep->tween.v1 = ep2->tween.v1;
    ep->tween.v2 = ep2->tween.v2;
+   ep->tween.v3 = ep2->tween.v3;
+   ep->tween.v4 = ep2->tween.v4;
    ep->sample_name = STRDUP(ep2->sample_name);
    ep->tone_name = STRDUP(ep2->tone_name);
    ep->duration = ep2->duration;
@@ -2991,6 +2993,7 @@ st_collections_group_alias(void)
    alias = mem_alloc(SZ(Edje_Part_Collection_Directory_Entry));
    alias->id = current_de->id;
    alias->entry = parse_str(0);
+   alias->group_alias = EINA_TRUE;
 
    EINA_LIST_FOREACH(aliases, l, tmp)
      if (strcmp(alias->entry, tmp->entry) == 0)
@@ -4621,6 +4624,7 @@ static void st_collections_group_parts_part_box_items_item_name(void)
                        ep->items = realloc(ep->items, ep->items_count * sizeof (Edje_Pack_Element *));
                        current_item = ep->items[i];
                        pitem->can_override = EINA_FALSE;
+                       break;
                     }
                }
           }
@@ -9265,6 +9269,7 @@ st_collections_group_programs_program_transition(void)
                                             // long/full names
 					    "LINEAR", EDJE_TWEEN_MODE_LINEAR,
 					    "SINUSOIDAL", EDJE_TWEEN_MODE_SINUSOIDAL,
+					    "CUBIC_BEZIER", EDJE_TWEEN_MODE_CUBIC_BEZIER,
 					    "ACCELERATE", EDJE_TWEEN_MODE_ACCELERATE,
 					    "DECELERATE", EDJE_TWEEN_MODE_DECELERATE,
 					    "ACCELERATE_FACTOR", EDJE_TWEEN_MODE_ACCELERATE_FACTOR,
@@ -9326,6 +9331,22 @@ st_collections_group_programs_program_transition(void)
           }
         current_program->tween.v1 = FROM_DOUBLE(parse_float_range(2, 0.0, 999999999.0));
         current_program->tween.v2 = FROM_DOUBLE(parse_float_range(3, 0.0, 999999999.0));
+     }
+   else if ((current_program->tween.mode == EDJE_TWEEN_MODE_CUBIC_BEZIER))
+     {
+        if ((get_arg_count() == 7) && (!strcmp(parse_str(4), "CURRENT")))
+          current_program->tween.mode |= EDJE_TWEEN_MODE_OPT_FROM_CURRENT;
+        else if (get_arg_count() != 6)
+          {
+             ERR("parse error %s:%i. "
+             "Need 3rd, 4th, 5th and 6th parameters to set x1, y1, x2 and y2",
+             file_in, line - 1);
+             exit(-1);
+          }
+        current_program->tween.v1 = FROM_DOUBLE(parse_float_range(2, 0.0, 999999999.0));
+        current_program->tween.v2 = FROM_DOUBLE(parse_float_range(3, 0.0, 999999999.0));
+        current_program->tween.v3 = FROM_DOUBLE(parse_float_range(4, 0.0, 999999999.0));
+        current_program->tween.v4 = FROM_DOUBLE(parse_float_range(5, 0.0, 999999999.0));
      }
 }
 

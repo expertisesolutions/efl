@@ -3330,25 +3330,34 @@ patch_gles_shader(const char *source, int length, int *patched_len)
           {
              if (!strncmp(p, "gl_MaxVertexUniformVectors", 26)) 
                {
-                  p = "(gl_MaxVertexUniformComponents / 4)";
+                  free(p); 
+                  p = strdup("(gl_MaxVertexUniformComponents / 4)");
                } 
              else if (!strncmp(p, "gl_MaxFragmentUniformVectors", 28)) 
                {
-                  p = "(gl_MaxFragmentUniformComponents / 4)";
+                  free(p);
+                  p = strdup("(gl_MaxFragmentUniformComponents / 4)");
                } 
              else if (!strncmp(p, "gl_MaxVaryingVectors", 20)) 
                {
-                  p = "(gl_MaxVaryingFloats / 4)";
+                  free(p);
+                  p = strdup("(gl_MaxVaryingFloats / 4)");
                }
 
              int new_len = strlen(p);
              if (*patched_len + new_len > patched_size) 
                {
-                  patched_size *= 2;
-                  patched = realloc(patched, patched_size + 1);
+                  char *tmp;
 
-                  if (!patched) 
-                     return NULL;
+                  patched_size *= 2;
+                  tmp = realloc(patched, patched_size + 1);
+                  if (!tmp)
+                    {
+                       free(patched);
+                       free(p);
+                       return NULL;
+                    }
+                  patched = tmp;
                }
 
              memcpy(patched + *patched_len, p, new_len);

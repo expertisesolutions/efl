@@ -155,6 +155,7 @@ ecore_wl_window_move(Ecore_Wl_Window *win, int x, int y)
 
         if ((!input) || (!input->seat)) return;
 
+        _ecore_wl_input_grab_release(input, win);
         wl_shell_surface_move(win->shell_surface, input->seat,
                               input->display->serial);
      }
@@ -185,6 +186,7 @@ ecore_wl_window_resize(Ecore_Wl_Window *win, int w, int h, int location)
 
         if ((!input) || (!input->seat)) return;
 
+        _ecore_wl_input_grab_release(input, win);
         wl_shell_surface_resize(win->shell_surface, input->seat, 
                                 input->display->serial, location);
      }

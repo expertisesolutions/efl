@@ -64,7 +64,7 @@
 #define EINA_HASH_BUCKET_SIZE       8
 #define EINA_HASH_SMALL_BUCKET_SIZE 5
 
-#define EINA_HASH_RBTREE_MASK       0xFFF
+#define EINA_HASH_RBTREE_MASK       0xFFFF
 
 typedef struct _Eina_Hash_Head         Eina_Hash_Head;
 typedef struct _Eina_Hash_Element      Eina_Hash_Element;
@@ -85,6 +85,8 @@ struct _Eina_Hash
 
    int             population;
 
+   int             buckets_power_size;
+
    EINA_MAGIC
 };
 
@@ -101,7 +103,6 @@ struct _Eina_Hash_Element
 {
    EINA_RBTREE;
    Eina_Hash_Tuple tuple;
-   int             hash;
 };
 
 struct _Eina_Hash_Foreach_Data
@@ -172,21 +173,18 @@ _eina_hash_hash_rbtree_cmp_node(const Eina_Hash_Head *left,
 
 static inline int
 _eina_hash_key_rbtree_cmp_key_data(const Eina_Hash_Element *hash_element,
-                                   const Eina_Hash_Element *tuple,
+                                   const Eina_Hash_Tuple *tuple,
                                    EINA_UNUSED unsigned int key_length,
                                    Eina_Key_Cmp cmp)
 {
    int result;
 
-   result = hash_element->hash - tuple->hash;
-   if (!result)
-     result = cmp(hash_element->tuple.key,
-                  hash_element->tuple.key_length,
-                  tuple->tuple.key,
-                  tuple->tuple.key_length);
+   result = cmp(hash_element->tuple.key,
+                hash_element->tuple.key_length,
+                tuple->key,
+                tuple->key_length);
 
-   if (result == 0 && tuple->tuple.data &&
-       tuple->tuple.data != hash_element->tuple.data)
+   if (result == 0 && tuple->data && tuple->data != hash_element->tuple.data)
      return 1;
 
    return result;
@@ -199,10 +197,8 @@ _eina_hash_key_rbtree_cmp_node(const Eina_Hash_Element *left,
 {
    int result;
 
-   result = left->hash - right->hash;
-   if (result == 0)
-     result = cmp(left->tuple.key, left->tuple.key_length,
-                  right->tuple.key, right->tuple.key_length);
+   result = cmp(left->tuple.key, left->tuple.key_length,
+                right->tuple.key, right->tuple.key_length);
 
    if (result < 0)
      return EINA_RBTREE_LEFT;
@@ -218,7 +214,6 @@ eina_hash_add_alloc_by_hash(Eina_Hash *hash,
 {
    Eina_Hash_Element *new_hash_element = NULL;
    Eina_Hash_Head *hash_head;
-   int original_key;
    int hash_num;
 
    EINA_SAFETY_ON_NULL_RETURN_VAL(hash, EINA_FALSE);
@@ -227,8 +222,8 @@ eina_hash_add_alloc_by_hash(Eina_Hash *hash,
    EINA_MAGIC_CHECK_HASH(hash);
 
    /* Apply eina mask to hash. */
-   original_key = key_hash;
    hash_num = key_hash & hash->mask;
+   key_hash >>= hash->buckets_power_size;
    key_hash &= EINA_HASH_RBTREE_MASK;
 
    if (!hash->buckets)
@@ -276,7 +271,6 @@ eina_hash_add_alloc_by_hash(Eina_Hash *hash,
    /* Setup the element */
    new_hash_element->tuple.key_length = key_length;
    new_hash_element->tuple.data = (void *)data;
-   new_hash_element->hash = original_key;
    if (alloc_length > 0)
      {
         new_hash_element->tuple.key = (char *)(new_hash_element + 1);
@@ -330,10 +324,9 @@ _eina_hash_find_by_hash(const Eina_Hash *hash,
                         Eina_Hash_Head **hash_head)
 {
    Eina_Hash_Element *hash_element;
-   Eina_Hash_Element tmp;
-   int rb_hash = key_hash & EINA_HASH_RBTREE_MASK;
+   int rb_hash = (key_hash >> hash->buckets_power_size)
+     & EINA_HASH_RBTREE_MASK;
 
-   tmp.hash = key_hash;
    key_hash &= hash->mask;
 
    if (!hash->buckets)
@@ -348,11 +341,9 @@ _eina_hash_find_by_hash(const Eina_Hash *hash,
    if (!*hash_head)
      return NULL;
 
-   tmp.tuple = *tuple;
-
    hash_element = (Eina_Hash_Element *)
      eina_rbtree_inline_lookup((*hash_head)->head,
-                               &tmp, 0,
+                               tuple, 0,
                                EINA_RBTREE_CMP_KEY_CB(
                                  _eina_hash_key_rbtree_cmp_key_data),
                                (const void *)hash->key_cmp_cb);
@@ -502,9 +493,13 @@ _eina_string_key_length(const char *key)
 }
 
 static int
-_eina_string_key_cmp(const char *key1, EINA_UNUSED int key1_length,
-                     const char *key2, EINA_UNUSED int key2_length)
+_eina_string_key_cmp(const char *key1, int key1_length,
+                     const char *key2, int key2_length)
 {
+   int delta;
+
+   delta = key1_length - key2_length;
+   if (delta) return delta;
    return strcmp(key1, key2);
 }
 
@@ -744,6 +739,7 @@ eina_hash_new(Eina_Key_Length key_length_cb,
 
    new->size = 1 << buckets_power_size;
    new->mask = new->size - 1;
+   new->buckets_power_size = buckets_power_size;
 
    return new;
 

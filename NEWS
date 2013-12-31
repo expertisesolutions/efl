@@ -1,4 +1,22 @@
 =========
+EFL 1.9.0
+=========
+
+Changes since 1.8.0:
+--------------------
+
+Additions:
+
+Improvements:
+
+Fixes:
+
+    * Check ecore_x_window_prop_card32_get() return value correctly in ecore_x_e.
+
+Removals:
+
+
+=========
 EFL 1.8.0
 =========
 
@@ -228,6 +246,7 @@ Improvements:
      - Use mmap/munmap for image data allocation on system that have mmap.
      - Add iterator for walking child of smart objects, table and a box.
      - Use Eina_Spinlock for Evas_ScaleCache, Evas_Async_Events and Image_Entry.
+     - Allow fuzziness on the texture format returned by GL.
     * Ecore:
      - Use Eina_Spinlock for Ecore_Thread.
     * Ecore_Con:
@@ -362,9 +381,15 @@ Fixes:
      - Fixed the textblock format to be drawn according to the glyph's horizontal advance width.
      - Fixed the textblock set to context with the textblock object's render operation.
      - Evas textblock: Fixed order of tags inserted with markup_app/prepend.
+     - Fix proxy render to update the proxies recursively. If a proxy has proxies, all the chainged proxies should be updated recursively.
+     - Evas textblock: Fixed wrapping of lines ending with whites.
+     - Evas: Fix the memory corruption introduced by evas fonts_zero.
+     - Evas: If the line goes to the 0, 0 then it won't be updated. Now it's fixed.
+
     * Ecore:
      - Don't leak fd on exec.
      - Fix fd handler increase issue when ecore_pipe_add/del is called repeatedly.
+     - Fixed animator not working problem when source_set is changed back and forth very fast.
     * Ecore_Con:
      - Fix a memory leak in ecore_con_dns when using ecore_con_server_connect.
      - Don't leak fd on exec.

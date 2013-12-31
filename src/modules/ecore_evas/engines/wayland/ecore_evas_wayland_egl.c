@@ -59,7 +59,7 @@ static Ecore_Evas_Engine_Func _ecore_wl_engine_func =
    _ecore_evas_wl_common_maximized_set,
    _ecore_evas_wl_common_fullscreen_set,
    NULL, // func avoid_damage set
-   NULL, // func withdrawn set
+   _ecore_evas_wl_common_withdrawn_set,
    NULL, // func sticky set
    _ecore_evas_wl_common_ignore_events_set,
    _ecore_evas_wl_alpha_set,
@@ -67,7 +67,7 @@ static Ecore_Evas_Engine_Func _ecore_wl_engine_func =
    NULL, // func profiles set
    NULL, // func profile set
    NULL, // window group set
-   NULL, // aspect set
+   _ecore_evas_wl_common_aspect_set,
    NULL, // urgent set
    NULL, // modal set
    NULL, // demand attention set
@@ -285,7 +285,7 @@ _ecore_evas_wl_rotation_set(Ecore_Evas *ee, int rotation, int resize)
 static void 
 _ecore_evas_wl_show(Ecore_Evas *ee)
 {
-   /* Evas_Engine_Info_Wayland_Egl *einfo; */
+   Evas_Engine_Info_Wayland_Egl *einfo;
    Ecore_Evas_Engine_Wl_Data *wdata;
    int fw, fh;
 
@@ -299,15 +299,22 @@ _ecore_evas_wl_show(Ecore_Evas *ee)
    if (wdata->win)
      {
         ecore_wl_window_show(wdata->win);
+        ecore_wl_window_alpha_set(wdata->win, ee->alpha);
         ecore_wl_window_update_size(wdata->win, ee->w + fw, ee->h + fh);
-//        ecore_wl_window_buffer_attach(wdata->win, NULL, 0, 0);
 
-        /* einfo = (Evas_Engine_Info_Wayland_Egl *)evas_engine_info_get(ee->evas); */
-        /* if (einfo) */
-        /*   { */
-        /*      einfo->info.surface = ecore_wl_window_surface_get(wdata->win); */
-        /*      evas_engine_info_set(ee->evas, (Evas_Engine_Info *)einfo); */
-        /*   } */
+        einfo = (Evas_Engine_Info_Wayland_Egl *)evas_engine_info_get(ee->evas);
+        if (einfo)
+          {
+             struct wl_surface *surf;
+
+             surf = ecore_wl_window_surface_get(wdata->win);
+             if ((!einfo->info.surface) || (einfo->info.surface != surf))
+               {
+                  einfo->info.surface = surf;
+                  evas_engine_info_set(ee->evas, (Evas_Engine_Info *)einfo);
+                  evas_damage_rectangle_add(ee->evas, 0, 0, ee->w + fw, ee->h + fh);
+               }
+          }
      }
 
    if (wdata->frame)
@@ -345,6 +352,7 @@ _ecore_evas_wl_hide(Ecore_Evas *ee)
 
    ee->visible = 0;
    ee->should_be_visible = 0;
+   _ecore_evas_wl_common_frame_callback_clean(ee);
 
    if (ee->func.fn_hide) ee->func.fn_hide(ee);
 }
@@ -443,14 +451,14 @@ _ecore_evas_wayland_egl_resize(Ecore_Evas *ee, int location)
      {
         int fw, fh;
 
+        _ecore_evas_wayland_egl_resize_edge_set(ee, location);
+
         evas_output_framespace_get(ee->evas, NULL, NULL, &fw, &fh);
 
         if ((ee->rotation == 0) || (ee->rotation == 180))
           ecore_wl_window_resize(wdata->win, ee->w + fw, ee->h + fh, location);
         else
           ecore_wl_window_resize(wdata->win, ee->w + fh, ee->h + fw, location);
-
-        _ecore_evas_wayland_egl_resize_edge_set(ee, location);
      }
 }
 

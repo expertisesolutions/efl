@@ -479,6 +479,8 @@ ecore_file_mkpath(const char *path)
    char ss[PATH_MAX];
    unsigned int i;
 
+   EINA_SAFETY_ON_NULL_RETURN_VAL(path, EINA_FALSE);
+
    if (ecore_file_is_dir(path))
      return EINA_TRUE;
 
@@ -589,7 +591,8 @@ ecore_file_mv(const char *src, const char *dst)
 
              // Make sure this is a regular file before
              // we do anything fancy.
-             stat(src, &st);
+             if (stat(src, &st) == -1)
+                 goto FAIL;
              if (S_ISREG(st.st_mode))
                {
                   char *dir;
@@ -980,7 +983,11 @@ restart:
              else if (isspace((unsigned char)*p))
                {
                   if (restart)
-                    goto restart;
+                    {
+                       if (exe) free(exe);
+                       exe = NULL;
+                       goto restart;
+                    }
                   else
                     break;
                }

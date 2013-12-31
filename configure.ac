@@ -1,5 +1,5 @@
-EFL_VERSION([1], [8], [0], [dev])
-AC_INIT([efl], [efl_version-alpha2], [enlightenment-devel@lists.sourceforge.net])
+EFL_VERSION([1], [8], [99], [dev])
+AC_INIT([efl], [efl_version], [enlightenment-devel@lists.sourceforge.net])
 
 AC_PREREQ([2.60])
 AC_CONFIG_SRCDIR([configure.ac])
@@ -188,7 +188,7 @@ EFL_VERSION_MINOR="v_min"
 AC_SUBST(EFL_VERSION_MAJOR)
 AC_SUBST(EFL_VERSION_MINOR)
 
-want_systemd="no"
+have_systemd_pkg="no"
 have_wince="no"
 have_win32="no"
 have_windows="no"
@@ -211,6 +211,7 @@ case "$host_os" in
    ;;
    linux*)
       have_linux="yes"
+      have_systemd_pkg="auto"
    ;;
 esac
 
@@ -283,8 +284,12 @@ AM_PROG_CC_C_O
 if test "x${ac_cv_prog_cc_c99}" = "xno" ; then
    AC_MSG_ERROR([efl requires a c99-capable compiler])
 fi
-if test "x${CXX}" = "x"; then
-   AC_MSG_ERROR([efl requires a C++ compiler])
+# We should be using ${CXX} here, but there is a bug in
+# autotools macro and CXX is always set to g++ even if
+# it's not found. So we are using an internal variable
+# that does the work for now, may get broken in the future.
+if test "x${ac_ct_CXX}" = "x" -a "x${CXX}" = "xg++"; then
+   AC_MSG_ERROR([efl requires a C++ compiler got ${ac_ct_CXX} and ${CXX}.])
 fi
 
 AC_SYS_LARGEFILE
@@ -346,13 +351,6 @@ case "$build_crypto" in
 esac
 AM_CONDITIONAL([HAVE_CRYPTO_GNUTLS], [test "${build_crypto}" = "gnutls"])
 AM_CONDITIONAL([HAVE_CRYPTO_OPENSSL], [test "${build_crypto}" = "openssl"])
-
-# check for systemd library if requested
-if test "x{want_systemd}" = "xyes"; then
-   PKG_CHECK_MODULES([SYSTEMD], [libsystemd-daemon >= 192 libsystemd-journal >= 192],
-   		[want_systemd="yes"],
-		[want_systemd="no"])
-fi
 
 #### Checks for header files
 
@@ -570,10 +568,22 @@ AC_ARG_ENABLE([systemd],
     else
        want_systemd="no"
     fi
-   ],
-   [want_systemd="no"])
-AM_CONDITIONAL([WANT_SYSTEMD], [test "${want_systemd}" = "yes"])
+   ], [
+    want_systemd="no"
+   ])
 
+if test "x${have_systemd_pkg}" = "xauto" -o "x${have_systemd_pkg}" = "xyes"; then
+   PKG_CHECK_MODULES([SYSTEMD], [libsystemd-daemon >= 192 libsystemd-journal >= 192],
+	[have_systemd_pkg="yes"],
+	[have_systemd_pkg="no"])
+fi
+
+# check for systemd library if requested
+if test "x${want_systemd}" = "xyes" -a "x${have_systemd_pkg}" = "xno"; then
+   AC_MSG_ERROR([Systemd dependencie requested but not found])
+fi
+
+AM_CONDITIONAL([WANT_SYSTEMD], [test "${want_systemd}" = "yes"])
 
 #### Platform-dependent
 DL_LIBS=""
@@ -850,7 +860,7 @@ EINA_CHECK_MODULE([chained-pool], [static], [chained pool])
 EINA_CHECK_MODULE([pass-through], [static], [pass through])
 EINA_CHECK_MODULE([one-big],      [static], [one big])
 
-EFL_ADD_FEATURE([EINA], [systemd-journal], [${have_systemd}])
+EFL_ADD_FEATURE([EINA], [systemd-journal], [${want_systemd}])
 
 EFL_LIB_END([Eina])
 #### End of Eina
@@ -1861,7 +1871,7 @@ fi
 
 EFL_OPTIONAL_DEPEND_PKG([ECORE], [${want_systemd}], [SYSTEMD], [libsystemd-daemon])
 
-EFL_ADD_FEATURE([ECORE], [systemd-daemon], [${have_systemd}])
+EFL_ADD_FEATURE([ECORE], [systemd-daemon], [${want_systemd}])
 EFL_ADD_FEATURE([ECORE], [glib])
 EFL_ADD_FEATURE([ECORE], [g-main-loop])
 
@@ -2064,7 +2074,7 @@ EFL_ADD_FEATURE([ECORE_CON], [cares])
 EFL_ADD_FEATURE([ECORE_CON], [local-sockets], [${want_ecore_con_local_sockets}])
 EFL_ADD_FEATURE([ECORE_CON], [abstract-sockets], [${want_ecore_con_abstract_sockets}])
 EFL_ADD_FEATURE([ECORE_CON], [resolver], [${ecore_con_resolver}])
-EFL_ADD_FEATURE([ECORE_CON], [systemd-daemon], [${have_systemd}])
+EFL_ADD_FEATURE([ECORE_CON], [systemd-daemon], [${want_systemd}])
 
 EFL_EVAL_PKGS([ECORE_CON])
 
@@ -2562,6 +2572,62 @@ AC_SUBST([ECORE_WIN32_LIBS])
 EFL_LIB_END_OPTIONAL([Ecore_Win32])
 #### End of Ecore_Win32
 
+#### Ecore_Avahi
+
+EFL_LIB_START([Ecore_Avahi])
+
+### Default values
+
+### Additional options to configure
+
+want_avahi="yes"
+
+AC_ARG_ENABLE([avahi],
+   [AC_HELP_STRING([--disable-avahi],
+       [disable avahi support. @<:@default=enabled@:>@])],
+   [
+    if test "x${enableval}" = "xyes" ; then
+       want_avahi="yes"
+    else
+       want_avahi="no"
+    fi
+   ], [
+    want_avahi="yes"
+   ])
+
+### Checks for programs
+
+### Checks for libraries
+EFL_INTERNAL_DEPEND_PKG([ECORE_AVAHI], [ecore])
+EFL_INTERNAL_DEPEND_PKG([ECORE_AVAHI], [eina])
+EFL_INTERNAL_DEPEND_PKG([ECORE_AVAHI], [eo])
+
+EFL_OPTIONAL_DEPEND_PKG([ECORE_AVAHI], [${want_avahi}], [AVAHI], [avahi-client])
+
+EFL_ADD_FEATURE([ECORE_AVAHI], [avahi-client], [${have_avahi}])
+
+# Needed bu example as they use avahi directly in that case
+if test "x${have_avahi}" = "xyes"; then
+   PKG_CHECK_MODULES([AVAHI_CLIENT], [avahi-client])
+fi
+
+EFL_EVAL_PKGS([Ecore_Avahi])
+
+### Checks for header files
+
+### Checks for types
+
+### Checks for structures
+
+### Checks for compiler characteristics
+
+### Checks for linker characteristics
+
+### Checks for library functions
+
+EFL_LIB_END([Ecore_Avahi])
+
+#### End of Ecore_Avahi
 
 #### Ecore_WinCE
 EFL_LIB_START_OPTIONAL([Ecore_WinCE], [test "${have_wince}" = "yes"])
@@ -3779,6 +3845,7 @@ src/examples/eet/Makefile
 src/examples/eo/Makefile
 src/examples/evas/Makefile
 src/examples/ecore/Makefile
+src/examples/ecore_avahi/Makefile
 src/examples/eio/Makefile
 src/examples/eldbus/Makefile
 src/examples/ephysics/Makefile
@@ -3789,7 +3856,6 @@ src/lib/eina/eina_config.h
 src/lib/ecore_x/ecore_x_version.h
 src/lib/efl/Efl_Config.h
 spec/efl.spec
-pkgbuild/PKGBUILD
 pc/evil.pc
 pc/escape.pc
 pc/eina.pc
@@ -3827,6 +3893,7 @@ pc/ecore-evas.pc
 pc/ecore-imf.pc
 pc/ecore-imf-evas.pc
 pc/ecore-audio.pc
+pc/ecore-avahi.pc
 pc/embryo.pc
 pc/eio.pc
 pc/eldbus.pc
@@ -3946,6 +4013,7 @@ echo "Ecore_Win32.....: $have_win32"
 echo "Ecore_WinCE.....: $have_wince"
 fi
 echo "Ecore_Audio.....: ${efl_lib_optional_ecore_audio} (${features_ecore_audio})"
+echo "Ecore_Avahi.....: yes (${features_ecore_avahi})"
 echo "Ecore_Evas......: yes (${features_ecore_evas})"
 echo "Eeze............: ${efl_lib_optional_eeze} (${features_eeze})"
 echo "EPhysics........: ${efl_lib_optional_ephysics}"
@@ -3976,3 +4044,18 @@ echo "  LDFLAGS.......: $LDFLAGS"
 echo "Installation....: make install (as root if needed, with 'su' or 'sudo')"
 echo "  prefix........: $prefix"
 echo
+
+if test "x${have_systemd_pkg}" = "xyes" -a "x${want_systemd}" = "xno"; then
+   echo " _________________________________________"
+   echo "/ Systemd dependency is available on your \\"
+   echo "| system, but you are building without    |"
+   echo "| systemd support. Don't forget to        |"
+   echo "| --enable-systemd if you want systemd    |"
+   echo "\\ integration for EFL.                    /"
+   echo " -----------------------------------------"
+   echo "        \\   ^__^"
+   echo "         \\  (oo)\\_______"
+   echo "            (__)\\       )\\/\\"
+   echo "                ||----w |"
+   echo "                ||     ||"
+fi

@@ -284,6 +284,35 @@ _evas_render_cur_clip_cache_del(Evas_Public_Data *e, Evas_Object_Protected_Data 
 }
 
 static void
+_evas_proxy_redraw_set(Evas_Public_Data *e, Evas_Object_Protected_Data *obj,
+                       Eina_Bool render)
+{
+   Evas_Object *eo_proxy;
+   Evas_Object_Protected_Data *proxy;
+   Eina_List *l;
+
+   EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
+     {
+        proxy = eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
+
+        /* Flag need redraw on proxy too */
+        EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, proxy->proxy,
+                             Evas_Object_Proxy_Data, proxy_write)
+           proxy_write->redraw = EINA_TRUE;
+        EINA_COW_WRITE_END(evas_object_proxy_cow, proxy->proxy, proxy_write);
+
+        if (render)
+          {
+             proxy->func->render_pre(eo_proxy, proxy, proxy->private_data);
+             _evas_render_prev_cur_clip_cache_add(e, proxy);
+          }
+
+        //Update the proxies recursively.
+        _evas_proxy_redraw_set(e, proxy, render);
+     }
+}
+
+static void
 _evas_render_phase1_direct(Evas_Public_Data *e,
                            Eina_Array *active_objects,
                            Eina_Array *restack_objects EINA_UNUSED,
@@ -291,8 +320,7 @@ _evas_render_phase1_direct(Evas_Public_Data *e,
                            Eina_Array *render_objects)
 {
    unsigned int i;
-   Eina_List *l;
-   Evas_Object *eo_proxy;
+   Evas_Object *eo_obj;
    Eina_Bool changed;
 
    RD("  [--- PHASE 1 DIRECT\n");
@@ -308,37 +336,23 @@ _evas_render_phase1_direct(Evas_Public_Data *e,
           changed = evas_object_smart_changed_get(obj->object);
         else changed = obj->changed;
 
-        if (changed)
-          {
-             /* Flag need redraw on proxy too */
-             EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
-               {
-                  Evas_Object_Protected_Data *proxy;
-                  proxy = eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
-
-                  EINA_COW_WRITE_BEGIN(evas_object_proxy_cow, proxy->proxy,
-                                       Evas_Object_Proxy_Data, proxy_write)
-                     proxy_write->redraw = EINA_TRUE;
-                  EINA_COW_WRITE_END(evas_object_proxy_cow, proxy->proxy,
-                                     proxy_write);
-               }
-          }
+        if (changed) _evas_proxy_redraw_set(e, obj, EINA_FALSE);
      }
    for (i = 0; i < render_objects->count; i++)
      {
-        Evas_Object *eo_obj;
-
-        Evas_Object_Protected_Data *obj = eina_array_data_get(render_objects, i);
+        Evas_Object_Protected_Data *obj =
+           eina_array_data_get(render_objects, i);
         eo_obj = obj->object;
+
         RD("    OBJ [%p", obj);
         if (obj->name)
           {
              RD(":%s", obj->name);
           }
         RD("] changed %i\n", obj->changed);
+
         if (obj->changed)
           {
-             /* Flag need redraw on proxy too */
              evas_object_clip_recalc(obj);
              obj->func->render_pre(eo_obj, obj, obj->private_data);
              if (obj->proxy->redraw)
@@ -352,15 +366,7 @@ _evas_render_phase1_direct(Evas_Public_Data *e,
                           proxy_write->redraw = EINA_TRUE;
                        EINA_COW_WRITE_END(evas_object_proxy_cow, obj->proxy,
                                           proxy_write);
-
-                       EINA_LIST_FOREACH(obj->proxy->proxies, l, eo_proxy)
-                         {
-                            Evas_Object_Protected_Data *proxy =
-                               eo_data_scope_get(eo_proxy, EVAS_OBJ_CLASS);
-                            proxy->func->render_pre(eo_proxy,
-                                                    proxy, proxy->private_data);
-                            _evas_render_prev_cur_clip_cache_add(e, proxy);
-                         }
+                       _evas_proxy_redraw_set(e, obj, EINA_TRUE);
                     }
                }
 
@@ -1245,17 +1251,7 @@ evas_render_mapped(Evas_Public_Data *e, Evas_Object *eo_obj,
              changed = EINA_TRUE;
           }
 
-        if (!changed)
-          {
-             if (obj->is_smart)
-               changed = evas_object_smart_changed_get(eo_obj);
-             else if (obj->changed)
-               {
-                  if (((obj->changed_pchange) && (obj->changed_map)) ||
-                      (obj->changed_color))
-                    changed = EINA_TRUE;
-               }
-          }
+        if (!changed) changed = evas_object_smart_changed_get(eo_obj);
 
         /* mark the old map as invalid, so later we don't reuse it as a
          * cache. */
@@ -1433,6 +1429,7 @@ evas_render_mapped(Evas_Public_Data *e, Evas_Object *eo_obj,
                                                            , level + 1
 #endif
                                                            , do_async);
+                          evas_object_change_reset(obj2->object);
                        }
                }
              else
@@ -1596,6 +1593,17 @@ _drop_image_cache_ref(const void *container EINA_UNUSED, void *data, void *fdata
    return EINA_TRUE;
 }
 
+static void
+_cb_always_call(Evas *eo_e, Evas_Callback_Type type, void *event_info)
+{
+   int freeze_num = 0, i;
+
+   eo_do(eo_e, eo_event_freeze_get(&freeze_num));
+   for (i = 0; i < freeze_num; i++) eo_do(eo_e, eo_event_thaw());
+   evas_event_callback_call(eo_e, type, event_info);
+   for (i = 0; i < freeze_num; i++) eo_do(eo_e, eo_event_freeze());
+}
+
 static Eina_Bool
 evas_render_updates_internal(Evas *eo_e,
                              unsigned char make_updates,
@@ -1651,7 +1659,7 @@ evas_render_updates_internal(Evas *eo_e,
 
    RD("[--- RENDER EVAS (size: %ix%i)\n", e->viewport.w, e->viewport.h);
 
-   evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_PRE, NULL);
+   _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_PRE, NULL);
 
    /* Check if the modified object mean recalculating every thing */
    if (!e->invalidate)
@@ -1988,10 +1996,10 @@ evas_render_updates_internal(Evas *eo_e,
                {
                   _evas_object_image_video_overlay_do(eo_obj);
                }
-             evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_PRE, NULL);
+             _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_PRE, NULL);
              e->engine.func->output_flush(e->engine.data.output,
                                           EVAS_RENDER_MODE_SYNC);
-             evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_POST, NULL);
+             _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_POST, NULL);
           }
      }
 
@@ -2040,6 +2048,21 @@ evas_render_updates_internal(Evas *eo_e,
       them from the pending list. */
    eina_array_remove(&e->pending_objects, pending_change, NULL);
 
+   /* Reinsert parent of changed object in the pending changed state */
+   for (i = 0; i < e->pending_objects.count; ++i)
+     {
+        obj = eina_array_data_get(&e->pending_objects, i);
+        eo_obj = obj->object;
+        if (obj->smart.parent)
+          {
+             Evas_Object_Protected_Data *smart_parent;
+
+             smart_parent = eo_data_scope_get(obj->smart.parent,
+                                              EVAS_OBJ_CLASS);
+             evas_object_change(obj->smart.parent, smart_parent);
+          }
+     }
+
    for (i = 0; i < e->render_objects.count; ++i)
      {
         obj = eina_array_data_get(&e->render_objects, i);
@@ -2047,7 +2070,7 @@ evas_render_updates_internal(Evas *eo_e,
         obj->pre_render_done = EINA_FALSE;
         if ((obj->changed) && (do_draw))
           {
-	    obj->func->render_post(eo_obj, obj, obj->private_data);
+             obj->func->render_post(eo_obj, obj, obj->private_data);
              obj->restack = EINA_FALSE;
              evas_object_change_reset(eo_obj);
           }
@@ -2124,7 +2147,7 @@ evas_render_updates_internal(Evas *eo_e,
         Evas_Event_Render_Post post;
 
         post.updated_area = e->render.updates;
-        evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_POST, e->render.updates ? &post : NULL);
+        _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_POST, e->render.updates ? &post : NULL);
      }
 
    RD("---]\n");
@@ -2183,10 +2206,10 @@ evas_render_wakeup(Evas *eo_e)
           {
              _evas_object_image_video_overlay_do(eo_obj);
           }
-        evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_PRE, NULL);
+        _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_PRE, NULL);
         e->engine.func->output_flush(e->engine.data.output,
                                      EVAS_RENDER_MODE_ASYNC_END);
-        evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_POST, NULL);
+        _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_FLUSH_POST, NULL);
      }
 
    /* clear redraws */
@@ -2211,7 +2234,7 @@ evas_render_wakeup(Evas *eo_e)
    e->rendering = EINA_FALSE;
 
    post.updated_area = ret_updates;
-   evas_event_callback_call(eo_e, EVAS_CALLBACK_RENDER_POST, &post);
+   _cb_always_call(eo_e, EVAS_CALLBACK_RENDER_POST, &post);
 
    evas_render_updates_free(ret_updates);
 
@@ -2455,8 +2478,7 @@ _canvas_render_dump(Eo *eo_e EINA_UNUSED, void *_pd, va_list *list EINA_UNUSED)
      e->engine.func->output_dump(e->engine.data.output);
 
 #define GC_ALL(Cow)				\
-   while (eina_cow_gc(Cow))			\
-     ;
+   while (eina_cow_gc(Cow))
 
    GC_ALL(evas_object_proxy_cow);
    GC_ALL(evas_object_map_cow);

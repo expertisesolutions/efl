@@ -53,6 +53,7 @@ static Ecore_Cb begin_tick_cb = NULL;
 static const void *begin_tick_data = NULL;
 static Ecore_Cb end_tick_cb = NULL;
 static const void *end_tick_data = NULL;
+static Eina_Bool animator_ran = EINA_FALSE;
 
 static void
 _begin_tick(void)
@@ -88,23 +89,15 @@ _end_tick(void)
 {
    if (!ticking) return;
    ticking = 0;
-   switch (src)
+
+   if (timer)
      {
-      case ECORE_ANIMATOR_SOURCE_TIMER:
-        if (timer)
-          {
-             _ecore_timer_del(timer);
-             timer = NULL;
-          }
-        break;
-
-      case ECORE_ANIMATOR_SOURCE_CUSTOM:
-        if (end_tick_cb) end_tick_cb((void *)end_tick_data);
-        break;
-
-      default:
-        break;
+        _ecore_timer_del(timer);
+        timer = NULL;
      }
+
+   if ((src == ECORE_ANIMATOR_SOURCE_CUSTOM) && end_tick_cb)
+     end_tick_cb((void *)end_tick_data);
 }
 
 static Eina_Bool
@@ -122,6 +115,7 @@ _do_tick(void)
             (!animator->suspended) && 
             (!animator->just_added))
           {
+             animator_ran = EINA_TRUE;
              if (!_ecore_call_task_cb(animator->func, animator->data))
                {
                   animator->delete_me = EINA_TRUE;
@@ -321,6 +315,72 @@ _pos_map_spring(double pos,
    return _pos_map_sin((M_PI / 2.0) + (p2 * len)) * decay;
 }
 
+static double
+_cubic_bezier_a (double a1, double a2)
+{
+    return 1.0 - 3.0 * a2 + 3.0 * a1;
+}
+
+static double
+_cubic_bezier_b (double a1, double a2)
+{
+    return 3.0 * a2 - 6.0 * a1;
+}
+
+static double
+_cubic_bezier_c(double a1)
+{
+    return 3.0 * a1;
+}
+
+static double
+_cubic_bezier_calc(double t,
+                   double a1,
+                   double a2)
+{
+    return ((_cubic_bezier_a(a1, a2) * t +
+             _cubic_bezier_b(a1, a2)) * t +
+            _cubic_bezier_c(a1)) * t;
+}
+
+static double
+_cubic_bezier_slope_get(double t,
+                        double a1,
+                        double a2)
+{
+    return 3.0 * _cubic_bezier_a(a1, a2) * t * t +
+           2.0 * _cubic_bezier_b(a1, a2) * t +
+           _cubic_bezier_c(a1);
+}
+
+static double
+_cubic_bezier_t_get(double a,
+                        double x1,
+                        double x2)
+{
+    double guess_t = a;
+    for (int i = 0; i < 4; ++i)
+    {
+        double current_slope = _cubic_bezier_slope_get(a, x1, x2);
+        if (current_slope == 0.0)
+            return guess_t;
+        double current_x = _cubic_bezier_calc(guess_t, x1, x2) - a;
+        guess_t -= current_x / current_slope;
+    }
+    return guess_t;
+}
+
+static double
+_pos_map_cubic_bezier(double pos,
+                      double x1,
+                      double y1,
+                      double x2,
+                      double y2)
+{
+    if (x1 == y1 && x2 == y2) return pos;
+    return _cubic_bezier_calc(_cubic_bezier_t_get(pos, x1, x2), y1, y2);
+}
+
 #define DBL_TO(Fp) eina_f32p32_double_to(Fp)
 #define DBL_FROM(D) eina_f32p32_double_from(D)
 #define INT_FROM(I) eina_f32p32_int_from(I)
@@ -331,11 +391,13 @@ _pos_map_spring(double pos,
 #define MUL(A, B) eina_f32p32_mul(A, B)
 
 EAPI double
-ecore_animator_pos_map(double        pos,
-                       Ecore_Pos_Map map,
-                       double        v1,
-                       double        v2)
+ecore_animator_pos_map_n(double        pos,
+                         Ecore_Pos_Map map,
+                         int v_size,
+                         double v[])
 {
+    double v0 = 0, v1 = 0, v2 = 0, v3 = 0;
+
    /* purely functional - locking not required */
     if (pos >= 1.0) return 1.0;
     else if (pos <= 0.0)
@@ -361,30 +423,47 @@ ecore_animator_pos_map(double        pos,
          return pos;
 
        case ECORE_POS_MAP_ACCELERATE_FACTOR:
-         pos = _pos_map_accel_factor(pos, v1);
+         if (v_size > 0) v0 = v[0];
+         pos = _pos_map_accel_factor(pos, v0);
          return pos;
 
        case ECORE_POS_MAP_DECELERATE_FACTOR:
-         pos = 1.0 - _pos_map_accel_factor(1.0 - pos, v1);
+         if (v_size > 0) v0 = v[0];
+         pos = 1.0 - _pos_map_accel_factor(1.0 - pos, v0);
          return pos;
 
        case ECORE_POS_MAP_SINUSOIDAL_FACTOR:
-         if (pos < 0.5) pos = _pos_map_accel_factor(pos * 2.0, v1) / 2.0;
-         else pos = 1.0 - (_pos_map_accel_factor((1.0 - pos) * 2.0, v1) / 2.0);
+         if (v_size > 0) v0 = v[0];
+         if (pos < 0.5) pos = _pos_map_accel_factor(pos * 2.0, v0) / 2.0;
+         else pos = 1.0 - (_pos_map_accel_factor((1.0 - pos) * 2.0, v0) / 2.0);
          return pos;
 
        case ECORE_POS_MAP_DIVISOR_INTERP:
-         pos = _pos_map_pow(pos, v1, (int)v2);
+         if (v_size > 0) v0 = v[0];
+         if (v_size > 1) v1 = v[1];
+         pos = _pos_map_pow(pos, v0, (int)v1);
          return pos;
 
        case ECORE_POS_MAP_BOUNCE:
-         pos = _pos_map_spring(pos, (int)v2, v1);
+         if (v_size > 0) v0 = v[0];
+         if (v_size > 1) v1 = v[1];
+         pos = _pos_map_spring(pos, (int)v1, v0);
          if (pos < 0.0) pos = -pos;
          pos = 1.0 - pos;
          return pos;
 
        case ECORE_POS_MAP_SPRING:
-         pos = 1.0 - _pos_map_spring(pos, (int)v2, v1);
+         if (v_size > 0) v0 = v[0];
+         if (v_size > 1) v1 = v[1];
+         pos = 1.0 - _pos_map_spring(pos, (int)v1, v0);
+         return pos;
+
+       case ECORE_POS_MAP_CUBIC_BEZIER:
+         if (v_size > 0) v0 = v[0];
+         if (v_size > 1) v1 = v[1];
+         if (v_size > 2) v2 = v[2];
+         if (v_size > 3) v3 = v[3];
+         pos = _pos_map_cubic_bezier(pos, v0, v1, v2, v3);
          return pos;
 
        default:
@@ -392,6 +471,19 @@ ecore_animator_pos_map(double        pos,
       }
 
     return pos;
+}
+
+EAPI double
+ecore_animator_pos_map(double        pos,
+                       Ecore_Pos_Map map,
+                       double        v1,
+                       double        v2)
+{
+    double v[2];
+
+    v[0] = v1;
+    v[1] = v2;
+    return ecore_animator_pos_map_n(pos, map, 2, v);
 }
 
 EAPI void *
@@ -565,6 +657,18 @@ _ecore_animator_shutdown(void)
         else
            eo_manual_free_set(animator->obj, EINA_FALSE);
      }
+}
+
+void
+_ecore_animator_run_reset(void)
+{
+   animator_ran = EINA_FALSE;
+}
+
+Eina_Bool
+_ecore_animator_run_get(void)
+{
+   return animator_ran;
 }
 
 static Eina_Bool

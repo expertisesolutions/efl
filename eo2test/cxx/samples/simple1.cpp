@@ -47,6 +47,6 @@ int main(int argc, char** argv)
   simple.simple_set_callback_del(tok);
   simple.simple_set(69);
 
-  eo2_do(simple._eo_ptr(), ::simple_class_foo(10));
+  eo2_do(eo_class_get(simple._eo_ptr()), ::simple_class_foo(10));
 }
 

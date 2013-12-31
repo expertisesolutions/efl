@@ -102,18 +102,26 @@ _evas_gl_preload_main_loop_wakeup(void)
      {
         Eo *target;
 
-        EINA_LIST_FREE(async->tex->targets, target)
-          eo_do(target, evas_obj_image_pixels_dirty_set(EINA_TRUE));
+        if (async->tex)
+          {
+             EINA_LIST_FREE(async->tex->targets, target)
+               eo_do(target, evas_obj_image_pixels_dirty_set(EINA_TRUE));
+          }
         async->im->cache_entry.flags.preload_done = 0;
-        async->tex->was_preloaded = EINA_TRUE;
+        if (async->tex)
+          {
+             async->tex->was_preloaded = EINA_TRUE;
 
-        async->tex->ptt->allocations = eina_list_remove(async->tex->ptt->allocations, async->tex->aptt);
-        pt_unref(async->tex->ptt);
-        async->tex->ptt = NULL;
-        free(async->tex->aptt);
-        async->tex->aptt = NULL;
+             async->tex->ptt->allocations = 
+               eina_list_remove(async->tex->ptt->allocations,
+                                async->tex->aptt);
+             pt_unref(async->tex->ptt);
+             async->tex->ptt = NULL;
+             free(async->tex->aptt);
+             async->tex->aptt = NULL;
 
-        evas_gl_common_texture_free(async->tex, EINA_FALSE);
+             evas_gl_common_texture_free(async->tex, EINA_FALSE);
+          }
 #ifdef EVAS_CSERVE2
         if (evas_cache2_image_cached(&async->im->cache_entry))
           evas_cache2_image_close(&async->im->cache_entry);
@@ -400,6 +408,8 @@ _evas_gl_preload_target_die(void *data, Eo *obj,
 void
 evas_gl_preload_target_register(Evas_GL_Texture *tex, Eo *target)
 {
+   EINA_SAFETY_ON_NULL_RETURN(tex);
+
    eo_do(target,
          eo_event_callback_add(EO_EV_DEL, _evas_gl_preload_target_die, tex));
    tex->targets = eina_list_append(tex->targets, target);
@@ -411,6 +421,8 @@ evas_gl_preload_target_unregister(Evas_GL_Texture *tex, Eo *target)
 {
    Eina_List *l;
    const Eo *o;
+
+   EINA_SAFETY_ON_NULL_RETURN(tex);
 
    eo_do(target,
          eo_event_callback_del(EO_EV_DEL, _evas_gl_preload_target_die, tex));

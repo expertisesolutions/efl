@@ -1179,6 +1179,19 @@ START_TEST(evas_textblock_format_removal)
    fnode = evas_textblock_node_format_first_get(tb);
    fail_if(fnode);
 
+   /* The first one below used to crash: empty value.
+    * Test some invalid stuff doesn't segv. We force relayout as this will
+    * trigger the parser. */
+   evas_object_textblock_text_markup_set(tb, "A<a=>");
+   evas_object_textblock_size_formatted_get(tb, NULL, NULL);
+   evas_object_textblock_text_markup_set(tb, "A<=b>");
+   evas_object_textblock_size_formatted_get(tb, NULL, NULL);
+   evas_object_textblock_text_markup_set(tb, "A<=>");
+   evas_object_textblock_size_formatted_get(tb, NULL, NULL);
+   evas_object_textblock_text_markup_set(tb, "A<a='>");
+   evas_object_textblock_size_formatted_get(tb, NULL, NULL);
+   evas_object_textblock_text_markup_set(tb, "A<a='");
+   evas_object_textblock_size_formatted_get(tb, NULL, NULL);
 
    /* Deleting a range with just one char and surrounded by formats, that
     * deletes a paragraph. */
@@ -1218,6 +1231,20 @@ START_TEST(evas_textblock_format_removal)
    evas_textblock_cursor_pos_set(main_cur, 3);
    evas_textblock_cursor_range_delete(cur, main_cur);
    ck_assert_str_eq(evas_object_textblock_text_markup_get(tb), "<ps/><ps/><ps/><ps/>");
+
+   /* Range delete with item formats, TEST_CASE#1 */
+   evas_object_textblock_text_markup_set(tb, "The <b>Multiline</b><item size=50x50 href=abc></item> text!");
+   evas_textblock_cursor_pos_set(cur, 4);
+   evas_textblock_cursor_pos_set(main_cur, 14);
+   evas_textblock_cursor_range_delete(cur, main_cur);
+   ck_assert_str_eq(evas_object_textblock_text_markup_get(tb), "The  text!");
+
+   /* Range delete with item formats, TEST_CASE#2 */
+   evas_object_textblock_text_markup_set(tb, "The <b>Multiline</b><item size=50x50 href=abc></item> text! it is lon<item size=40x40 href=move></item>g text for test.");
+   evas_textblock_cursor_pos_set(cur, 14);
+   evas_textblock_cursor_pos_set(main_cur, 15);
+   evas_textblock_cursor_range_delete(cur, main_cur);
+   ck_assert_str_eq(evas_object_textblock_text_markup_get(tb), "The <b>Multiline</b><item size=50x50 href=abc></item>text! it is lon<item size=40x40 href=move></item>g text for test.");
 
    /* Verify fmt position and REP_CHAR positions are the same */
    evas_object_textblock_text_markup_set(tb,
@@ -1682,6 +1709,16 @@ START_TEST(evas_textblock_wrapping)
    evas_object_resize(tb, nw / 2, nh * 2);
    evas_object_textblock_size_formatted_get(tb, &w, &h);
    fail_if(w > (nw / 2));
+
+   /* Word wrap ending with whites. */
+   evas_object_resize(tb, 322, 400);
+   evas_object_textblock_text_markup_set(tb, "<wrap=word>This is an example text that should break at the end aaa     ");
+
+   evas_textblock_cursor_paragraph_last(cur);
+   Evas_Coord cx, cy, cw, ch;
+   evas_textblock_cursor_text_prepend(cur, " ");
+   fail_if(-1 == evas_textblock_cursor_geometry_get(cur, &cx, &cy, &cw, &ch,
+            NULL, EVAS_TEXTBLOCK_CURSOR_BEFORE));
 
    END_TB_TEST();
 }

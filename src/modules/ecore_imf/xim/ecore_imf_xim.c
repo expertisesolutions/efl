@@ -227,8 +227,6 @@ _ecore_imf_context_xim_preedit_string_get(Ecore_IMF_Context *ctx,
      {
         if (str)
           *str = NULL;
-        if (cursor_pos)
-          *cursor_pos = 0;
      }
 
    if (cursor_pos)
@@ -962,6 +960,8 @@ _ecore_imf_xim_preedit_draw_call(XIC xic EINA_UNUSED,
    DBG("ctx=%p, imf_context_data=%p", ctx, imf_context_data);
    EINA_SAFETY_ON_NULL_RETURN(imf_context_data);
 
+   imf_context_data->preedit_cursor = call_data->caret;
+
    preedit_bufs = eina_ustrbuf_new();
    if (imf_context_data->preedit_chars)
      {
@@ -1062,6 +1062,8 @@ _ecore_imf_xim_preedit_callback_set(Ecore_IMF_Context *ctx)
 {
    Ecore_IMF_Context_Data *imf_context_data;
    imf_context_data = ecore_imf_context_data_get(ctx);
+   if (!imf_context_data)
+     return XVaCreateNestedList(0, NULL);
 
    imf_context_data->preedit_start_cb.client_data = (XPointer)ctx;
    imf_context_data->preedit_start_cb.callback = (XIMProc)_ecore_imf_xim_preedit_start_call;
@@ -1255,12 +1257,13 @@ _ecore_imf_xim_ic_client_window_set(Ecore_IMF_Context *ctx,
    DBG("old_win=%#x, window=%#x", old_win, window);
    if (old_win != 0 && old_win != window)   /* XXX how do check window... */
      {
-        XIM_Im_Info *info;
-        info = imf_context_data->im_info;
-        info->ics = eina_list_remove(info->ics, imf_context_data);
-        if (imf_context_data->im_info)
-          imf_context_data->im_info->user = NULL;
-        imf_context_data->im_info = NULL;
+        XIM_Im_Info *info = imf_context_data->im_info;
+        if (info)
+          {
+             info->ics = eina_list_remove(info->ics, imf_context_data);
+             info->user = NULL;
+             info = NULL;
+          }
      }
 
    imf_context_data->win = window;

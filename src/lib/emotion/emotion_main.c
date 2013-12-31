@@ -208,7 +208,7 @@ emotion_shutdown(void)
 
    if (_emotion_init_count <= 0)
      {
-        EINA_LOG_ERR("Init count not greater than 0 in emotion shutdown.");
+        ERR("Init count not greater than 0 in emotion shutdown.");
         return EINA_FALSE;
      }
    if (--_emotion_init_count) return EINA_TRUE;
@@ -221,11 +221,11 @@ emotion_shutdown(void)
 
    if (emotion_pending_objects > 0)
      {
-        EINA_LOG_ERR("There is still %i Emotion pipeline running", emotion_pending_objects);
+        ERR("There is still %i Emotion pipeline running", emotion_pending_objects);
      }
    if (emotion_pendig_events > 0)
      {
-        EINA_LOG_ERR("There is still %i Emotion events queued", emotion_pendig_events);
+        ERR("There is still %i Emotion events queued", emotion_pendig_events);
      }
 
    emotion_modules_shutdown();

@@ -27,9 +27,9 @@ _get(Eo *obj EINA_UNUSED, Private_Data *data)
 static void
 _class_hello(const Eo_Class *klass, int a)
 {
-   /* printf("Hello %d - body %s - EAPI %s\n", a, eo_class_name_get(klass), eo_class_name_get(EO2_SIMPLE_CLASS));  */
-
-   /* eo2_do_super(klass, EO2_INHERIT_CLASS, eo2_class_hello(a * 2)); */
+   printf("Hello %d - body %s - EAPI %s\n", a, eo_class_name_get(klass)
+          , eo_class_name_get(EO3_GET_CLASS(EO3_SIMPLE_CLASS)));
+   eo2_do_super(klass, EO3_GET_CLASS(EO3_INHERIT_CLASS), simple_class_foo(a * 2));
 }
 
 static int

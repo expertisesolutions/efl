@@ -110,7 +110,7 @@ _edje_entry_focus_in_cb(void *data, Evas_Object *o, const char *emission EINA_UN
    if (!rp->typedata.text->entry_data) return;
 
    ed = _edje_fetch(o);
-   if (ed) return;
+   if (!ed) return;
 
    en = rp->typedata.text->entry_data;
    if (!en || !en->imf_context) return;
@@ -3999,7 +3999,7 @@ _edje_entry_imf_event_preedit_changed_cb(void *data, Ecore_IMF_Context *ctx EINA
           {
              EINA_LIST_FOREACH(attrs, l, attr)
                {
-                  if (attr->preedit_type <= preedit_type_size &&
+                  if (attr->preedit_type < preedit_type_size &&
                       tagname[attr->preedit_type])
                     {
                        preedit_attr_str = eina_strbuf_new();
@@ -4128,6 +4128,8 @@ _edje_entry_imf_event_delete_surrounding_cb(void *data, Ecore_IMF_Context *ctx E
    evas_textblock_cursor_pos_set(del_end, cursor_pos + ev->offset + ev->n_chars);
 
    evas_textblock_cursor_range_delete(del_start, del_end);
+   _anchors_get(en->cursor, rp->object, en);
+   _anchors_update(en->cursor, rp->object, en);
 
    evas_textblock_cursor_free(del_start);
    evas_textblock_cursor_free(del_end);

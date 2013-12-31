@@ -893,8 +893,8 @@ _eldbus_service_interface_desc_signals_signatures_get(
    Eina_Strbuf *buf = eina_strbuf_new();
    Eina_Array *signatures = eina_array_new(1);
 
-   EINA_SAFETY_ON_NULL_RETURN_VAL(buf, NULL);
-   EINA_SAFETY_ON_NULL_RETURN_VAL(signatures, NULL);
+   EINA_SAFETY_ON_NULL_GOTO(buf, fail_signature);
+   EINA_SAFETY_ON_NULL_GOTO(signatures, fail_signature);
 
    for (sig = desc->signals; sig && sig->name; sig++)
      {
@@ -919,8 +919,8 @@ _eldbus_service_interface_desc_signals_signatures_get(
    return signatures;
 
 fail_signature:
-   eina_strbuf_free(buf);
-   eina_array_free(signatures);
+   if (buf) eina_strbuf_free(buf);
+   if (signatures) eina_array_free(signatures);
    return NULL;
 }
 
@@ -1026,8 +1026,12 @@ _idler_propschanged(void *data)
         if (!getter || prop->is_invalidate)
           continue;
 
-        EINA_SAFETY_ON_FALSE_GOTO(
-                eldbus_message_iter_arguments_append(dict, "{sv}", &entry), error);
+        if (!eldbus_message_iter_arguments_append(dict, "{sv}", &entry))
+          {
+             eldbus_message_unref(msg);
+             goto error;
+          }
+
 
         eldbus_message_iter_basic_append(entry, 's', prop->property->name);
         var = eldbus_message_iter_container_new(entry, 'v',
@@ -1376,7 +1380,11 @@ eldbus_service_signal_emit(const Eldbus_Service_Interface *iface, unsigned int s
    va_start(ap, signal_id);
    r = eldbus_message_arguments_vappend(sig, signature, ap);
    va_end(ap);
-   EINA_SAFETY_ON_FALSE_RETURN_VAL(r, EINA_FALSE);
+   if (!r)
+     {
+        eldbus_message_unref(sig);
+        return EINA_FALSE;
+     }
 
    eldbus_service_signal_send(iface, sig);
    return EINA_TRUE;

@@ -170,7 +170,8 @@ _constructor(Eo *eo_obj, void *class_data, va_list *list EINA_UNUSED)
    eina_clist_init(&e->calc_done);
 
 #define EVAS_ARRAY_SET(E, Array) \
-   eina_array_step_set(&E->Array, sizeof (E->Array), 4096);
+   eina_array_step_set(&E->Array, sizeof (E->Array), \
+		       ((1024 * sizeof (void*)) - sizeof (E->Array)) / sizeof (void*));
 
    EVAS_ARRAY_SET(e, delete_objects);
    EVAS_ARRAY_SET(e, active_objects);
@@ -233,8 +234,11 @@ _destructor(Eo *eo_e, void *_pd, va_list *list EINA_UNUSED)
                {
                   if (!o->delete_me)
                     {
-                       if (o->ref > 0)
-                         ERR("obj(%p, %s) ref count(%d) is bigger than 0. This object couldn't be deleted", o, o->type, o->ref);
+                       if ((o->ref > 0) || (eo_ref_get(o->object) > 0))
+                         {
+                            ERR("obj(%p, %s) ref count(%d) is bigger than 0. This object couldn't be deleted", o, o->type, eo_ref_get(o->object));
+                            continue;
+                         }
                        del = EINA_TRUE;
                     }
                }

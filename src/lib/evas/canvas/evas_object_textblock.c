@@ -2362,6 +2362,7 @@ _format_param_parse(const char *item, const char **key, Eina_Tmpstr **val)
    else len = strlen(start);
 
    tmp = (char*) eina_tmpstr_add_length(start, len);
+   if (!tmp) goto end;
 
    for (d = tmp, s = tmp; *s; s++)
      {
@@ -2373,6 +2374,7 @@ _format_param_parse(const char *item, const char **key, Eina_Tmpstr **val)
      }
    *d = '\0';
 
+end:
    *val = tmp;
 }
 
@@ -2450,7 +2452,7 @@ _format_fill(Evas_Object *eo_obj, Evas_Object_Textblock_Format *fmt, const char 
              Eina_Tmpstr *val = NULL;
 
              _format_param_parse(item, &key, &val);
-             _format_command(eo_obj, fmt, key, val);
+             if ((key) && (val)) _format_command(eo_obj, fmt, key, val);
              eina_stringshare_del(key);
              eina_tmpstr_del(val);
           }
@@ -2886,13 +2888,11 @@ _paragraph_free(const Evas_Object *eo_obj, Evas_Object_Textblock_Paragraph *par)
    _paragraph_clear(eo_obj, par);
 
      {
-        Eina_List *i, *i_prev;
         Evas_Object_Textblock_Item *it;
-        EINA_LIST_FOREACH_SAFE(par->logical_items, i, i_prev, it)
+        EINA_LIST_FREE(par->logical_items, it)
           {
              _item_free(eo_obj, NULL, it);
           }
-        eina_list_free(par->logical_items);
      }
 #ifdef BIDI_SUPPORT
    if (par->bidi_props)
@@ -4256,7 +4256,7 @@ _layout_get_word_mixwrap_common(Ctxt *c, Evas_Object_Textblock_Format *fmt,
            the rest works on the last char of the previous string.
            If it's a whitespace, then it's ok, and no need to go back
            because we'll remove it anyway. */
-        if (!_is_white(str[wrap]))
+        if (!_is_white(str[wrap]) || (wrap + 1 == len))
            MOVE_PREV_UNTIL(line_start, wrap);
         /* If there's a breakable point inside the text, scan backwards until
          * we find it */
@@ -7830,11 +7830,6 @@ _evas_textblock_node_text_adjust_offsets_to_start(Evas_Object_Textblock *o,
              last_node->offset -= delta;
              break;
           }
-        else if (use_end && itr && (pos + itr->offset >= (size_t) end) &&
-              itr->visible)
-          {
-             break;
-          }
 
         delta = orig_end - pos;
         if (!first)
@@ -10611,6 +10606,7 @@ _dbg_info_get(Eo *eo_obj, void *_pd EINA_UNUSED, va_list *list)
 {
    Eo_Dbg_Info *root = (Eo_Dbg_Info *) va_arg(*list, Eo_Dbg_Info *);
    eo_do_super(eo_obj, MY_CLASS, eo_dbg_info_get(root));
+   if (!root) return;
    Eo_Dbg_Info *group = EO_DBG_INFO_LIST_APPEND(root, MY_CLASS_NAME);
    Eo_Dbg_Info *node;
 

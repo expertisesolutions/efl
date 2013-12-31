@@ -59,7 +59,7 @@ static Ecore_Evas_Engine_Func _ecore_wl_engine_func =
    _ecore_evas_wl_common_maximized_set,
    _ecore_evas_wl_common_fullscreen_set,
    NULL, // func avoid_damage set
-   NULL, // func withdrawn set
+   _ecore_evas_wl_common_withdrawn_set,
    NULL, // func sticky set
    _ecore_evas_wl_common_ignore_events_set,
    _ecore_evas_wl_alpha_set,
@@ -67,7 +67,7 @@ static Ecore_Evas_Engine_Func _ecore_wl_engine_func =
    NULL, // func profiles set
    NULL, // func profile set
    NULL, // window group set
-   NULL, // aspect set
+   _ecore_evas_wl_common_aspect_set,
    NULL, // urgent set
    NULL, // modal set
    NULL, // demand attention set
@@ -292,6 +292,7 @@ _ecore_evas_wl_show(Ecore_Evas *ee)
    if (wdata->win)
      {
         ecore_wl_window_show(wdata->win);
+        ecore_wl_window_alpha_set(wdata->win, ee->alpha);
         ecore_wl_window_update_size(wdata->win, ee->w + fw, ee->h + fh);
 
         einfo = (Evas_Engine_Info_Wayland_Shm *)evas_engine_info_get(ee->evas);
@@ -304,6 +305,7 @@ _ecore_evas_wl_show(Ecore_Evas *ee)
                {
                   einfo->info.wl_surface = surf;
                   evas_engine_info_set(ee->evas, (Evas_Engine_Info *)einfo);
+                  evas_damage_rectangle_add(ee->evas, 0, 0, ee->w + fw, ee->h + fh);
                }
           }
      }
@@ -343,6 +345,7 @@ _ecore_evas_wl_hide(Ecore_Evas *ee)
 
    ee->visible = 0;
    ee->should_be_visible = 0;
+   _ecore_evas_wl_common_frame_callback_clean(ee);
 
    if (ee->func.fn_hide) ee->func.fn_hide(ee);
 }
@@ -439,14 +442,14 @@ _ecore_evas_wayland_shm_resize(Ecore_Evas *ee, int location)
      {
         int fw, fh;
 
+        _ecore_evas_wayland_shm_resize_edge_set(ee, location);
+
         evas_output_framespace_get(ee->evas, NULL, NULL, &fw, &fh);
 
         if ((ee->rotation == 90) || (ee->rotation == 270))
           ecore_wl_window_resize(wdata->win, ee->w + fh, ee->h + fw, location);
         else
           ecore_wl_window_resize(wdata->win, ee->w + fw, ee->h + fh, location);
-
-        _ecore_evas_wayland_shm_resize_edge_set(ee, location);
      }
 }
 

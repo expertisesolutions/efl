@@ -2,14 +2,20 @@
 ### Binary
 
 bin_PROGRAMS = bin/ecxx/ecxx
-bin_ecxx_ecxx_SOURCES = bin/ecxx/main.cc									\
-	bin/ecxx/eo_class_generator.cc													\
-	bin/ecxx/eo_class_detail_generator.cc
-bin_ecxx_ecxx_CPPFLAGS = -I$(top_builddir)/src/lib/ecxx/	\
-	-DPACKAGE_BIN_DIR=\"$(bindir)\"													\
-	-DPACKAGE_LIB_DIR=\"$(libdir)\"													\
-	-DPACKAGE_DATA_DIR=\"$(datadir)/ecxx\"									\
-	-DPACKAGE_SRC_DIR=\"`pwd`/$(top_srcdir)\"								\
+
+bin_ecxx_ecxx_SOURCES = bin/ecxx/main.cc		 \
+	bin/ecxx/arguments_generator.cc			 \
+	bin/ecxx/eo_class_generator.cc			 \
+	bin/ecxx/eo_class_detail_generator.cc		 \
+	bin/ecxx/eo_class_operations_generator.cc	 \
+	bin/ecxx/eo_class_event_generator.cc
+
+bin_ecxx_ecxx_CPPFLAGS = -I$(top_builddir)/src/lib/ecxx/ \
+	-DPACKAGE_BIN_DIR=\"$(bindir)\"			 \
+	-DPACKAGE_LIB_DIR=\"$(libdir)\"			 \
+	-DPACKAGE_DATA_DIR=\"$(datadir)/ecxx\"		 \
+	-DPACKAGE_SRC_DIR=\"`pwd`/$(top_srcdir)\"	 \
 	@ECXX_CXXFLAGS@
+
 bin_ecxx_ecxx_LDFLAGS = @ECXX_LDFLAGS@
 
