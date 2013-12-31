@@ -4,7 +4,7 @@
 #include <Eina.h>
 #include <eina_type_traits.hh>
 
-#include <boost/mpl/if.hpp>
+#include <eina_boost/mpl/if.hpp>
 
 #include <iterator>
 #include <cstring>
@@ -332,7 +332,6 @@ public:
   {
     if(_array->max - _array->len >= n)
       {
-        std::cout << "amortized insert " << _array->members << std::endl;
         iterator end = static_cast<T*>(_array->members)
           + _array->len
           , last = end + n;
@@ -341,8 +340,6 @@ public:
           dest(last), src(end), src_end(i);
         for(;src != src_end; ++src)
           {
-            std::cout << "initializing " << &*dest
-                      << " with " << &*src << std::endl;
             if(dest.base() <= end)
                 *dest++ = *src;
             else
@@ -359,7 +356,6 @@ public:
       }
     else
       {
-        std::cout << "non-amortized insert" << std::endl;
         size_type index = i - static_cast<iterator>(_array->members);
 
         Eina_Inarray* old_array = eina_inarray_new(_array->member_size, 0);
@@ -381,10 +377,6 @@ public:
           }
         for(size_type i = 0;i != n;++i)
           new (&*first++) T(t);
-        std::cout << "last - first: " << last - first << std::endl;
-        std::cout << "array_len: " << _array->len
-                  << "\nindex: " << index
-                  << "\nn: " << n << std::endl;
         assert(last - first == _array->len - index - n);
         while(first != last)
           {
@@ -511,11 +503,11 @@ public:
 };
 
 template <typename T>
-class inarray : public ::boost::mpl::if_<eina::is_pod<T>, _pod_inarray<T>
-                                         , _nonpod_inarray<T> >::type
+class inarray : public ::efl_eina_boost::mpl::if_<eina::is_pod<T>, _pod_inarray<T>
+                                                  , _nonpod_inarray<T> >::type
 {
-  typedef typename ::boost::mpl::if_<eina::is_pod<T>, _pod_inarray<T>
-                                     , _nonpod_inarray<T> >::type _base_type;
+  typedef typename ::efl_eina_boost::mpl::if_<eina::is_pod<T>, _pod_inarray<T>
+                                              , _nonpod_inarray<T> >::type _base_type;
 public:
   inarray() : _base_type() {}
   inarray(typename _base_type::size_type n, typename _base_type::value_type const& t)

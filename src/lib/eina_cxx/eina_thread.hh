@@ -22,6 +22,7 @@
 #include <functional>
 #if __cplusplus >= 201103L
 #include <chrono>
+#include <mutex>
 #else
 #include <eina_boost/preprocessor/iterate.hpp>
 #include <eina_boost/preprocessor/repetition/enum_trailing_params.hpp>
@@ -50,7 +51,7 @@ struct mutex
       case EINA_LOCK_SUCCEED:
         return;
       case EINA_LOCK_DEADLOCK:
-        throw system_error(error_code(eina::errc::resource_deadlock_would_occur
+        throw system_error(error_code(int(eina::errc::resource_deadlock_would_occur)
                                       , get_generic_category()));
       default:
         throw system_error(get_error_code());
@@ -66,7 +67,7 @@ struct mutex
       case EINA_LOCK_FAIL:
         return false;
       case EINA_LOCK_DEADLOCK:
-        throw system_error(error_code(eina::errc::resource_deadlock_would_occur
+        throw system_error(error_code(int(eina::errc::resource_deadlock_would_occur)
                                       , get_generic_category()));
       default:
         throw system_error(get_error_code());
@@ -80,7 +81,7 @@ struct mutex
       case EINA_LOCK_SUCCEED:
         return;
       case EINA_LOCK_DEADLOCK:
-        throw system_error(error_code(eina::errc::resource_deadlock_would_occur
+        throw system_error(error_code(int(eina::errc::resource_deadlock_would_occur)
                                       , get_generic_category()));
       default:
         throw system_error(get_error_code());

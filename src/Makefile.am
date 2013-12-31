@@ -73,6 +73,7 @@ benchmark: all-am
 
 EXAMPLES_SUBDIRS = \
 examples/eina \
+examples/eina_cxx \
 examples/eo \
 examples/eet \
 examples/evas \
