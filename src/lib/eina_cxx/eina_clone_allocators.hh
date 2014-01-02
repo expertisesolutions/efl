@@ -16,7 +16,7 @@ struct heap_copy_allocator
   template <typename T>
   static void deallocate_clone(T* p)
   {
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
     std::default_delete<T>()(p);
 #else
     delete p;
@@ -56,7 +56,7 @@ struct heap_no_copy_allocator
   template <typename T>
   static void deallocate_clone(T* p)
   {
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
     std::default_delete<T>()(p);
 #else
     delete p;

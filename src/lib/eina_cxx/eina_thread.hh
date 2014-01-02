@@ -20,7 +20,7 @@
 #include <cassert>
 #include <iosfwd>
 #include <functional>
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
 #include <chrono>
 #include <mutex>
 #else
@@ -28,6 +28,10 @@
 #include <eina_boost/preprocessor/repetition/enum_trailing_params.hpp>
 #include <eina_boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 #endif
+
+#include <eina_boost/preprocessor/iterate.hpp>
+#include <eina_boost/preprocessor/repetition/enum_trailing_params.hpp>
+#include <eina_boost/preprocessor/repetition/enum_trailing_binary_params.hpp>
 
 namespace efl { namespace eina {
 
@@ -96,7 +100,7 @@ struct mutex
     return &_mutex;
   }
 private:
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
   mutex(mutex const&) = delete;
   mutex& operator=(mutex const&) = delete;
 #else
@@ -106,7 +110,7 @@ private:
   Eina_Lock _mutex;
 };
 
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
 using std::lock_guard;
 using std::unique_lock;
 #else
@@ -311,12 +315,39 @@ operator<<(std::basic_ostream<charT, Traits>& out, thread_id id)
 
 namespace _detail {
 
+#ifdef EFL_EINA_CXX11
+struct arguments
+{
+  Eina_Lock mutex;
+  Eina_Condition condition;
+  bool started;
+  std::function<void()> function;
+};
+
+void* create_thread(void* data, Eina_Thread)
+{
+  arguments* args = static_cast<arguments*>(data);
+
+  eina_lock_take(&args->mutex);
+
+  std::function<void()> f = std::move(args->function);
+
+  args->started = true;
+  eina_condition_signal(&args->condition);
+  eina_lock_release(&args->mutex);
+
+  f();
+}
+#else
 template <typename Arguments>
 void* create_thread(void* data, Eina_Thread)
 {
   namespace fusion = ::efl_eina_boost::fusion;
 
   Arguments* args = static_cast<Arguments*>(data);
+
+  eina_lock_take(&fusion::at_c<2u>(*args));
+
   Arguments local_args = *args;
 
   typedef typename remove_pointer
@@ -325,18 +356,17 @@ void* create_thread(void* data, Eina_Thread)
      ::type>::type function_type;
 
   function_type
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
   && f = std::move(
 #else
      f =
 #endif
               *fusion::at_c<0u>(local_args)
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
               )
 #endif
               ;
 
-  eina_lock_take(&fusion::at_c<2u>(*args));
   fusion::at_c<3u>(*args) = true;
   eina_condition_signal(&fusion::at_c<1u>(*args));
   eina_lock_release(&fusion::at_c<2u>(*args));
@@ -354,6 +384,7 @@ void* create_thread(void* data, Eina_Thread)
   
   return 0;
 }
+#endif
 
 }
 
@@ -369,18 +400,42 @@ public:
   {
   }
 
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
   template <typename F, class ... Args>
   explicit thread(F&& f, Args&&... args)
   {
-    namespace fusion = ::efl_eina_boost::fusion;
-    typedef typename fusion::result_of::make_vector
-      <F*, Eina_Condition, Eina_Lock, bool, Args...>
-      ::type arguments_type;
+    _detail::arguments arguments;
+    arguments.started = false;
+    arguments.function = std::bind(f, args...);
+    
+    _joinable = true;
+    Eina_Bool r = ::eina_lock_new(&arguments.mutex);
+    if(!r) throw eina::system_error(eina::get_error_code());
+    r = ::eina_condition_new(&arguments.condition, &arguments.mutex);
+    if(!r) throw eina::system_error(eina::get_error_code());
 
-    arguments_type arguments (&f, {}, {}, false
-                              , args...);
-    init(arguments);
+    if(!eina_thread_create
+       (&_raw, ::EINA_THREAD_NORMAL
+        , -1, &eina::_detail::create_thread, &arguments))
+      {
+        eina_condition_free(&arguments.condition);
+        eina_lock_free(&arguments.mutex);
+        throw eina::system_error(eina::get_error_code());
+      }
+    Eina_Lock_Result lr = ::eina_lock_take(&arguments.mutex);
+    if(lr != EINA_LOCK_SUCCEED)
+      throw eina::system_error(eina::get_error_code());
+    while(!arguments.started)
+      {
+        r = eina_condition_wait(&arguments.condition);
+        if(!r) throw eina::system_error(eina::get_error_code());
+      }
+    lr = eina_lock_release(&arguments.mutex);
+    if(lr != EINA_LOCK_SUCCEED)
+      throw eina::system_error(eina::get_error_code());
+
+    eina_condition_free(&arguments.condition);
+    eina_lock_free(&arguments.mutex);
   }
 #else
 #define EFL_EINA_BOOST_PP_ITERATION_PARAMS_1 (3, (0, EFL_EINA_MAX_ARGS, "eina_thread_constr.x"))
@@ -436,6 +491,7 @@ public:
 
   static unsigned hardware_concurrency() EFL_EINA_BOOST_NOEXCEPT;
 private:
+#ifndef EFL_EINA_CXX11
   template <typename Arguments>
   void init(Arguments& arguments)
   {
@@ -471,7 +527,7 @@ private:
     eina_condition_free(&fusion::at_c<1u>(arguments));
     eina_lock_free(&fusion::at_c<2u>(arguments));
   }
-
+#endif
   bool _joinable;
   Eina_Thread _raw;
 };
@@ -490,7 +546,7 @@ inline thread::id get_id()
 
 inline void yield() {}
 
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
 template <typename Clock, typename Duration>
 void sleep_until(std::chrono::time_point<Clock, Duration>const& abs_time);
 
@@ -503,7 +559,7 @@ void sleep_for(std::chrono::duration<Rep, Period>const& rel_time);
 
 namespace std {
 
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
 template <typename T> struct hash;
 template <>
 struct hash< ::efl::eina::thread_id> : hash<unsigned long>

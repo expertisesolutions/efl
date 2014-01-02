@@ -3,18 +3,21 @@
 
 #include <Eina.h>
 
-#if __cplusplus >= 201103L && !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
+#if defined(EFL_EINA_CXX11) && !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 #include <system_error>
 #elif defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
+#include <boost/mpl/bool.hpp>
 #else
 #error Must have one of boost.system or be compiled in C++11-mode
 #endif
 
+
+
 namespace efl { namespace eina {
 
-#if __cplusplus >= 201103L && !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
+#if defined(EFL_EINA_CXX11) && !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 using std::errc;
 using std::system_error;
 using std::error_code;
@@ -118,7 +121,7 @@ inline void throw_on_error()
 
 } }
 
-#if __cplusplus >= 201103
+#if !defined(EFL_EINA_HAVE_BOOST_SYSTEM)
 namespace std {
 
 template <> struct is_error_condition_enum< ::efl::eina::error_type> : true_type {};
@@ -129,9 +132,9 @@ template <> struct is_error_code_enum< ::efl::eina::error_type> : true_type {};
 namespace boost { namespace system {
 
 template <> struct is_error_condition_enum< ::efl::eina::error_type>
- : efl_eina_boost::mpl::true_ {};
+ : ::boost::mpl::true_ {};
 template <> struct is_error_code_enum< ::efl::eina::error_type>
- : efl_eina_boost::mpl::true_ {};
+ : ::boost::mpl::true_ {};
 
 } }
 #endif

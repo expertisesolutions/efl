@@ -15,15 +15,14 @@ SRCS = \
 eina_cxx_list_01.cc
 
 EXTRA_PROGRAMS = \
-eina_cxx_list_01
+eina_cxx_list_01 \
+eina_cxx_thread_01
 
 eina_cxx_list_01_SOURCES = \
 eina_cxx_list_01.cc
-eina_cxx_eina_01_CXXFLAGS = -I$(top_builddir)/src/lib/efl \
--I$(top_builddir)/src/lib/eina_cxx \
-@CHECK_CFLAGS@ \
-@EINA_CFLAGS@
-#eina_cxx_list_01_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
+
+eina_cxx_thread_01_SOURCES = \
+eina_cxx_thread_01.cc
 
 EXTRA_DIST = $(DATA_FILES)
 

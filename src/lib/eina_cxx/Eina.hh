@@ -2,6 +2,7 @@
 #define EINA_HH_
 
 #include <eina_config.hh>
+#include <eina_defs.hh>
 #include <eina_iterator.hh>
 #include <eina_ptrarray.hh>
 #include <eina_ptrlist.hh>
@@ -12,6 +13,7 @@
 #include <eina_accessor.hh>
 #include <eina_thread.hh>
 #include <eina_value.hh>
+#include <eina_ref.hh>
 
 namespace efl { namespace eina {
 

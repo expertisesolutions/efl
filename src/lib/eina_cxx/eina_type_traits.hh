@@ -1,7 +1,7 @@
 #ifndef _EINA_TYPE_TRAITS_HH
 #define _EINA_TYPE_TRAITS_HH
 
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
 #include <type_traits>
 #else
 #include <eina_boost/utility/enable_if.hpp>
@@ -18,7 +18,7 @@
 
 namespace efl { namespace eina {
 
-#if __cplusplus >= 201103L
+#ifdef EFL_EINA_CXX11
 using std::enable_if;
 using std::is_integral;
 using std::is_pod;
