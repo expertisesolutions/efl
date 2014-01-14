@@ -188,11 +188,11 @@ public:
   }
   iterator begin()
   {
-    return empty()? 0 : static_cast<iterator>(::eina_inarray_nth(_array, 0u));
+    return !_array->members ? 0 : static_cast<iterator>(::eina_inarray_nth(_array, 0u));
   }
   iterator end()
   {
-    return empty()? 0 : static_cast<iterator>(::eina_inarray_nth(_array, size()-1)) + 1;
+    return !_array->members ? 0 : static_cast<iterator>(::eina_inarray_nth(_array, size()-1)) + 1;
   }
   const_iterator begin() const
   {
@@ -440,11 +440,11 @@ public:
   }
   iterator begin()
   {
-    return empty()? 0 : static_cast<iterator>(::eina_inarray_nth(_array, 0u));
+    return static_cast<iterator>(_array->members);
   }
   iterator end()
   {
-    return empty()? 0 : static_cast<iterator>(::eina_inarray_nth(_array, size()-1)) + 1;
+    return static_cast<iterator>(_array->members) + _array->len;
   }
   const_iterator begin() const
   {
