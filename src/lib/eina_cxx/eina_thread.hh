@@ -324,7 +324,7 @@ struct arguments
   std::function<void()> function;
 };
 
-void* create_thread(void* data, Eina_Thread)
+inline void* create_thread(void* data, Eina_Thread)
 {
   arguments* args = static_cast<arguments*>(data);
 
