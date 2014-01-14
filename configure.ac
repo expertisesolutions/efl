@@ -3880,6 +3880,7 @@ src/examples/ephysics/Makefile
 src/examples/edje/Makefile
 src/examples/emotion/Makefile
 src/examples/ethumb_client/Makefile
+src/lib/eina_cxx/Makefile
 src/lib/eina/eina_config.h
 src/lib/ecore_x/ecore_x_version.h
 src/lib/efl/Efl_Config.h
@@ -3888,6 +3889,7 @@ spec/efl.spec
 pc/evil.pc
 pc/escape.pc
 pc/eina.pc
+pc/eina-cxx.pc
 pc/eet.pc
 pc/eo.pc
 pc/evas-fb.pc

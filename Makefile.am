@@ -120,6 +120,7 @@ endif
 
 pkgconfig_DATA += \
 pc/eina.pc \
+pc/eina-cxx.pc \
 pc/eo.pc \
 pc/eet.pc \
 pc/evas.pc \

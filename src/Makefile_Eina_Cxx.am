@@ -3,15 +3,16 @@
 
 #lib_LTLIBRARIES += lib/eina/libeina.la
 
-installed_einamainheadersdir += $(includedir)/eina_cxx-@VMAJ@
-dist_installed_einamainheaders_DATA += \
+installed_einacxxmainheadersdir = $(includedir)/eina_cxx-@VMAJ@
+dist_installed_einacxxmainheaders_DATA = \
 lib/eina_cxx/Eina.hh
 
-installed_einaheadersdir += $(includedir)/eina_cxx-@VMAJ@/eina_cxx
-dist_installed_einaheaders_DATA += \
+installed_einacxxheadersdir = $(includedir)/eina_cxx-@VMAJ@/eina_cxx
+dist_installed_einacxxheaders_DATA = \
 lib/eina_cxx/eina_accessor.hh       \
 lib/eina_cxx/eina_clone_allocators.hh       \
 lib/eina_cxx/eina_config.hh \
+lib/eina_cxx/eina_defs.hh     \
 lib/eina_cxx/eina_error.hh     \
 lib/eina_cxx/eina_inarray.hh  \
 lib/eina_cxx/eina_inlist.hh   \
@@ -19,10 +20,12 @@ lib/eina_cxx/eina_iterator.hh \
 lib/eina_cxx/eina_lists_auxiliary.hh \
 lib/eina_cxx/eina_ptrarray.hh \
 lib/eina_cxx/eina_ptrlist.hh \
+lib/eina_cxx/eina_ref.hh \
 lib/eina_cxx/eina_stringshare.hh \
 lib/eina_cxx/eina_thread.hh \
 lib/eina_cxx/eina_thread_constr.x \
-lib/eina_cxx/eina_type_traits.hh
+lib/eina_cxx/eina_type_traits.hh \
+lib/eina_cxx/eina_value.hh
 
 EINA_MODULE_COMMON_CFLAGS = \
 @EINA_CFLAGS@ \
@@ -62,3 +65,5 @@ tests_eina_cxx_eina_cxx_suite_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@
 
 endif
 
+install-data-local:
+	make -C lib/eina_cxx install
