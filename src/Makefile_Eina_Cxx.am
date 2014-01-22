@@ -10,6 +10,7 @@ lib/eina_cxx/Eina.hh
 installed_einacxxheadersdir = $(includedir)/eina_cxx-@VMAJ@/eina_cxx
 dist_installed_einacxxheaders_DATA = \
 lib/eina_cxx/eina_accessor.hh       \
+lib/eina_cxx/eina_callback_helper.hh       \
 lib/eina_cxx/eina_clone_allocators.hh       \
 lib/eina_cxx/eina_config.hh \
 lib/eina_cxx/eina_defs.hh     \

@@ -2,6 +2,7 @@
 #define EINA_HH_
 
 #include <eina_config.hh>
+#include <eina_callback_helper.hh>
 #include <eina_defs.hh>
 #include <eina_iterator.hh>
 #include <eina_ptrarray.hh>
