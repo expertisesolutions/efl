@@ -14,6 +14,7 @@
 #include <eina_boost/type_traits/remove_pointer.hpp>
 #include <eina_boost/preprocessor/iterate.hpp>
 #include <eina_boost/preprocessor/comma_if.hpp>
+#include <memory>
 
 namespace efl { namespace eina {
 
@@ -32,12 +33,6 @@ template <typename Sig, typename F>
 void* wrap_with_sig(F f)
 {
   return new std::function<Sig>(std::bind(f));
-}
-
-void call_aux(void* data, Evas_Object*, void*)
-{
-  std::auto_ptr<std::function<void()> > f(static_cast<std::function<void()>*>(data));
-  (*f)();
 }
 
 template <typename T>
