@@ -70,7 +70,8 @@ struct error_category : system_error_category
 
   std::string message(int condition) const
   {
-    return ::eina_error_msg_get(condition);
+    const char* e = ::eina_error_msg_get(condition);
+    return e? e : "::eina_error_msg_get returned NULL. No error message available";
   }
 };
 
