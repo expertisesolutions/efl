@@ -3718,6 +3718,14 @@ EFL_EVAL_PKGS([ECORE_EVAS])
 EFL_LIB_END([Ecore_Evas])
 #### End of Ecore_Evas
 
+#### Emodel
+EFL_LIB_START([Emodel])
+EFL_INTERNAL_DEPEND_PKG([EMODEL], [eo])
+EFL_INTERNAL_DEPEND_PKG([EMODEL], [eio])
+EFL_ADD_LIBS([EMODEL], [-lm])
+EFL_LIB_END([Emodel])
+#### End of Emodel
+
 #### Eio
 EFL_LIB_START([Eio])
 
@@ -4230,6 +4238,7 @@ pc/eo.pc
 pc/eo-cxx.pc
 pc/eolian.pc
 pc/eolian-cxx.pc
+pc/emodel.pc
 pc/evas-fb.pc
 pc/evas-opengl-x11.pc
 pc/evas-opengl-sdl.pc
