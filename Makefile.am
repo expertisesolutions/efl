@@ -136,6 +136,7 @@ pc/ecore-evas.pc \
 pc/ecore-avahi.pc \
 pc/embryo.pc \
 pc/eio.pc \
+pc/emodel.pc \
 pc/eldbus.pc \
 pc/efreet.pc \
 pc/efreet-mime.pc \
