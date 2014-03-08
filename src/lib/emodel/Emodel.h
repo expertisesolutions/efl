@@ -29,8 +29,8 @@ extern "C" {
  * @{
  */
 #define EMODEL_CLASS emodel_class_get()
-const Eo_Class *emodel_class_get(void) EINA_CONST;
-extern EAPI Eo_Op EMODEL_BASE_ID;
+const Eo_Class *emodel_obj_class_get(void) EINA_CONST;
+extern EAPI Eo_Op EMODEL_OBJ_BASE_ID;
 
 enum
 {
@@ -58,6 +58,18 @@ enum
  *
  */
 #define emodel_constructor() EMODEL_ID(EMODEL_SUB_ID_CONSTRUCTOR)
+
+extern const Eo_Event_Description _EMODEL_PROPERTIES_CHANGE_EVT;
+#define EMODEL_PROPERTIES_CHANGE_EVT (&(_EMODEL_PROPERTIES_CHANGE_EVT))
+
+extern const Eo_Event_Description _EMODEL_PROPERTY_CHANGE_EVT;
+#define EMODEL_PROPERTY_CHANGE_EVT (&(_EMODEL_PROPERTY_CHANGE_EVT))
+
+extern const Eo_Event_Description _EMODEL_CHILD_ADD_EVT;
+#define EMODEL_CHILD_ADD_EVT (&(_EMODEL_CHILD_ADD_EVT))
+
+extern const Eo_Event_Description _EMODEL_CHILD_DEL_EVT;
+#define EMODEL_CHILD_DEL_EVT (&(_EMODEL_CHILD_DEL_EVT))
 
 /**
  * @}
