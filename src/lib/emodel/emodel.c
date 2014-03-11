@@ -88,12 +88,20 @@ static const Eo_Op_Description op_desc[] = {
       EO_OP_DESCRIPTION_SENTINEL
 };
 
+static const Eo_Event_Description *event_descs[] = {
+   EMODEL_PROPERTIES_CHANGE_EVT,
+   EMODEL_PROPERTY_CHANGE_EVT,
+   EMODEL_CHILD_ADD_EVT,
+   EMODEL_CHILD_DEL_EVT,
+   NULL
+};
+
 static const Eo_Class_Description class_desc = {
      EO_VERSION,
      MY_CLASS_NAME,
      EO_CLASS_TYPE_REGULAR,
      EO_CLASS_DESCRIPTION_OPS(&EMODEL_OBJ_BASE_ID, op_desc, EMODEL_OBJ_SUB_ID_LAST),
-     NULL,
+     event_descs,
      0,
      _class_constructor,
      NULL
