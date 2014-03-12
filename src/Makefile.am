@@ -52,6 +52,7 @@ include Makefile_Efreet.am
 include Makefile_Eeze.am
 include Makefile_EPhysics.am
 include Makefile_Edje.am
+include Makefile_Emodel.am
 include Makefile_Emotion.am
 include Makefile_Ethumb.am
 include Makefile_Ethumb_Client.am
