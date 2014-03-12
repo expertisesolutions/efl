@@ -6,53 +6,63 @@ EAPI Eo_Op EMODEL_OBJ_BASE_ID = EO_NOOP;
 #define MY_CLASS_NAME "emodel"
 
 static void
-_emodel_constructor(*obj, void *class_data, va_list *list)
+_emodel_constructor(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_properties_get(*obj, void *class_data, va_list *list)
+_emodel_properties_get(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_property_get(*obj, void *class_data, va_list *list)
+_emodel_property_get(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_property_set(*obj, void *class_data, va_list *list)
+_emodel_property_set(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_load(*obj, void *class_data, va_list *list)
+_emodel_load(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_unload(*obj, void *class_data, va_list *list)
+_emodel_unload(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_child_add(*obj, void *class_data, va_list *list)
+_emodel_child_add(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_children_get(*obj, void *class_data, va_list *list)
+_emodel_children_get(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_children_slice_get(*obj, void *class_data, va_list *list)
+_emodel_children_slice_get(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
-_emodel_children_count_get(*obj, void *class_data, va_list *list)
+_emodel_children_count_get(Eo *obj, void *class_data, va_list *list)
 {
+
 }
 
 static void
@@ -72,7 +82,7 @@ _class_constructor(Eo_Class *klass)
       EO_OP_FUNC_SENTINEL
    };
 
-   eo_class_funcs_set(klass, func_descs);
+   eo_class_funcs_set(klass, func_desc);
 }
 
 static const Eo_Op_Description op_desc[] = {
