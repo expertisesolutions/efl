@@ -8,6 +8,9 @@ dist_installed_emodelmainheaders_DATA = lib/emodel/Emodel.h
 lib_emodel_libemodel_la_SOURCES = \
 lib/emodel/emodel.c
 
-
-
-lib_emodel_libemodel_la_CPPFLAGS = -I$(top_builddir)/src/lib/emodel -I$(top_builddir)/src/lib/efl -I$(top_builddir)/src/lib/eo -I$(top_builddir)/src/lib/eina -DEFL_BETA_API_SUPPORT=1  
+lib_emodel_libemodel_la_CPPFLAGS = \
+-I$(top_builddir)/src/lib/emodel \
+-I$(top_builddir)/src/lib/efl \
+-I$(top_builddir)/src/lib/eo \
+-I$(top_builddir)/src/lib/eina \
+-DEFL_BETA_API_SUPPORT=1  

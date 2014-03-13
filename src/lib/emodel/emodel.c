@@ -3,7 +3,7 @@
 EAPI Eo_Op EMODEL_OBJ_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EMODEL_OBJ_CLASS
-#define MY_CLASS_NAME "emodel"
+#define MY_CLASS_NAME "Emodel"
 
 static void
 _emodel_constructor(Eo *obj, void *class_data, va_list *list)

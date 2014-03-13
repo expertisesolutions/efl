@@ -140,4 +140,4 @@ extern const Eo_Event_Description _EMODEL_CHILD_DEL_EVT;
 #ifdef __cplusplus
 }
 #endif
-#endif
+#endif //_EMODEL_H
