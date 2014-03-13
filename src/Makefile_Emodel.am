@@ -14,3 +14,27 @@ lib_emodel_libemodel_la_CPPFLAGS = \
 -I$(top_builddir)/src/lib/eo \
 -I$(top_builddir)/src/lib/eina \
 -DEFL_BETA_API_SUPPORT=1  
+
+if EFL_ENABLE_TESTS
+
+check_PROGRAMS += tests/emodel/emodel_suite
+TESTS += tests/emodel/emodel_suite
+
+tests_emodel_emodel_suite_SOURCES = \
+tests/emodel/emodel_suite.c \
+tests/emodel/emodel_test_inherit.c
+
+tests_emodel_emodel_suite_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
+-I$(top_builddir)/src/lib/emodel \
+-I$(top_srcdir)/src/lib/emodel \
+-DTESTS_WD=\"`pwd`\" \
+-DTESTS_SRC_DIR=\"$(top_srcdir)/src/tests/emodel\" \
+-DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/emodel\" \
+-DTESTS_BUILD_DIR=PACKAGE_BUILD_DIR \
+@CHECK_CFLAGS@ \
+@EINA_CFLAGS@ \
+@EO_CFLAGS@
+tests_emodel_emodel_suite_LDADD = @CHECK_LIBS@ @USE_EINA_LIBS@ @USE_EO_LIBS@
+tests_emodel_emodel_suite_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@ @USE_EO_INTERNAL_LIBS@
+
+endif
