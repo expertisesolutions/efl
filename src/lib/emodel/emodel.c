@@ -5,10 +5,29 @@ EAPI Eo_Op EMODEL_OBJ_BASE_ID = EO_NOOP;
 #define MY_CLASS EMODEL_OBJ_CLASS
 #define MY_CLASS_NAME "Emodel"
 
+struct _E_Model
+{
+   // TODO: Implement this
+};
+
+typedef struct _E_Model E_Model;
+
+EAPI const Eo_Event_Description _EMODEL_PROPERTIES_CHANGE_EVT =
+   EO_EVENT_DESCRIPTION("emodel, properties change","List properties.");
+
+EAPI const Eo_Event_Description _EMODEL_PROPERTY_CHANGE_EVT =
+   EO_EVENT_DESCRIPTION("emodel, property change","Property value is available.");
+
+EAPI const Eo_Event_Description _EMODEL_CHILD_ADD_EVT =
+   EO_EVENT_DESCRIPTION("emodel, child add","New child is added.");
+
+EAPI const Eo_Event_Description _EMODEL_CHILD_DEL_EVT =
+   EO_EVENT_DESCRIPTION("emodel, child del","Child was removed.");
+
 static void
 _emodel_constructor(Eo *obj, void *class_data, va_list *list)
 {
-
+   eo_do_super(obj, MY_CLASS, eo_constructor());
 }
 
 static void
@@ -112,7 +131,7 @@ static const Eo_Class_Description class_desc = {
      EO_CLASS_TYPE_REGULAR,
      EO_CLASS_DESCRIPTION_OPS(&EMODEL_OBJ_BASE_ID, op_desc, EMODEL_OBJ_SUB_ID_LAST),
      event_descs,
-     0,
+     sizeof(E_Model),
      _class_constructor,
      NULL
 };
