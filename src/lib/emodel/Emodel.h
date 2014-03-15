@@ -47,6 +47,8 @@ enum
    EMODEL_OBJ_SUB_ID_LAST,
 };
 
+typedef void (*Emodel_Child_Add_Cb)(Eo *child, void *data);
+
 #define EMODEL_OBJ_ID(sub_id) (EMODEL_OBJ_BASE_ID + sub_id)
 
 /**
@@ -70,14 +72,14 @@ enum
  * @since 1.9
  *
  */
-#define emodel_property_get() EMODEL_OBJ_ID(EMODEL_OBJ_SUB_ID_PROPERTY_GET)
+#define emodel_property_get(property) EMODEL_OBJ_ID(EMODEL_OBJ_SUB_ID_PROPERTY_GET), EO_TYPECHECK(const char*, property)
 
 /**
  * @def emodel_property_set
  * @since 1.9
  *
  */
-#define emodel_property_set() EMODEL_OBJ_ID(EMODEL_OBJ_SUB_ID_PROPERTY_SET)
+#define emodel_property_set(property) EMODEL_OBJ_ID(EMODEL_OBJ_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char*, property)
 
 /**
  * @def emodel_load
@@ -98,7 +100,7 @@ enum
  * @since 1.9
  *
  */
-#define emodel_child_add() EMODEL_OBJ_ID(EMODEL_OBJ_SUB_ID_CHILD_ADD)
+#define emodel_child_add(child_add_cb, data) EMODEL_OBJ_ID(EMODEL_OBJ_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb*, child_add_cd), EO_TYPECHECK(void*, data)
 
 /**
  * @def emodel_children_get
