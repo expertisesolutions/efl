@@ -30,7 +30,7 @@ extern "C" {
  */
 #define EMODEL_CLASS emodel_class_get()
 const Eo_Class *emodel_class_get(void) EINA_CONST;
-extern EAPI Eo_Op EMODEL__BASE_ID;
+extern EAPI Eo_Op EMODEL_BASE_ID;
 
 enum
 {
