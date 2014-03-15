@@ -6,7 +6,8 @@ installed_emodelmainheadersdir = $(includedir)/emodel-@VMAJ@
 dist_installed_emodelmainheaders_DATA = lib/emodel/Emodel.h
 
 lib_emodel_libemodel_la_SOURCES = \
-lib/emodel/emodel.c
+lib/emodel/emodel.c \
+lib/emodel/emodel_eio.c
 
 lib_emodel_libemodel_la_CPPFLAGS = \
 -I$(top_builddir)/src/lib/emodel \
