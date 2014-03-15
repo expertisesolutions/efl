@@ -35,6 +35,8 @@ enum
    EMODEL_OBJ_EIO_SUB_ID_LAST,
 };
 
+#define EMODEL_EIO_ID(sub_id) (EMODEL_OBJ_EIO_BASE_ID + sub_id)
+
 /**
  * @def emodel_constructor
  * @since 1.9
@@ -43,7 +45,7 @@ enum
  * @param[in] path to file
  *
  */
-#define emodel_eio_constructor(path) EMODEL_ID(EMODEL_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
+#define emodel_eio_constructor(path) EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
 
 #ifdef __cplusplus
 }
