@@ -34,7 +34,6 @@ extern EAPI Eo_Op EMODEL__BASE_ID;
 
 enum
 {
-   EMODEL_SUB_ID_CONSTRUCTOR,
    EMODEL_SUB_ID_PROPERTIES_GET,
    EMODEL_SUB_ID_PROPERTY_GET,
    EMODEL_SUB_ID_PROPERTY_SET,
@@ -50,15 +49,6 @@ enum
 typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
 
 #define EMODEL_ID(sub_id) (EMODEL_BASE_ID + sub_id)
-
-/**
- * @def emodel_constructor
- * @since 1.9
- *
- * Contructor for Emodel.
- *
- */
-#define emodel_constructor() EMODEL_ID(EMODEL_SUB_ID_CONSTRUCTOR)
 
 /**
  * @def emodel_properties_get
