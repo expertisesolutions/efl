@@ -78,7 +78,7 @@ typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
  * @since 1.9
  *
  */
-#define emodel_property_set(property) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value), EO_TYPECHECK(Emodel_EVT **, ret)
+#define emodel_property_set(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value), EO_TYPECHECK(Emodel_EVT **, ret)
 
 /**
  * @def emodel_load
