@@ -19,12 +19,13 @@ enum {
 
 struct _Emodel_Eio
 {
+   Eina_Value *properties;
    Eo *obj;
+   Emodel_EVT **evt;
    Eio_File *file;
+   Eina_Hash *hash;
    const char *path;
    const Eina_Stat *stat;
-   Eina_Hash *hash;
-   Eina_Value *properties;
 };
 
 typedef struct _Emodel_Eio Emodel_Eio;
@@ -33,12 +34,21 @@ static void
 _hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
 {
    const char *prop;
+   Emodel_EVT *evt;
    EINA_SAFETY_ON_NULL_RETURN(priv);
    eina_value_array_get(priv->properties, prop_id, &prop);
 
-   Eina_Value *value = eina_hash_find(priv->hash, prop);
-   eina_value_set(value, pvalue);
-//   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, prop, value, NULL));
+
+   /* caller should free allocated memory */
+   evt = calloc(1, sizeof(Emodel_EVT));
+   EINA_SAFETY_ON_NULL_RETURN(evt);
+
+   (*priv->evt)->value =  eina_hash_find(priv->hash, prop);
+   (*priv->evt)->prop = prop;
+
+   eina_value_set(evt->value, pvalue);
+
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, (*priv->evt), NULL));
 }
 
 static void
@@ -74,7 +84,8 @@ _eio_move_done_cb(void *data, Eio_File *handler)
    Eina_Value *value = eina_hash_find(priv->hash, prop);
    eina_value_set(value, priv->path);
    eio_file_direct_stat(priv->path, _stat_done_cb, _eio_error_cb, priv);
-//   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, prop, value, NULL));
+
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, (*priv->evt), NULL));
 }
 
 static void
@@ -87,10 +98,12 @@ static void
 _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
-   const char *prop, *path = va_arg(*list, const char*);
+   const char *prop, *path = va_arg(*list, const char *);
    priv->path = path;
    Eina_Value *v;
    int i;
+   
+   eo_do_super(obj, MY_CLASS, eo_constructor()); 
 
    priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 5);
    eina_value_array_set(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
@@ -121,6 +134,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 
    priv->obj = obj;
    eio_init();
+
 }
 
 static void
@@ -128,13 +142,14 @@ _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
    eina_hash_free(priv->hash);
+   eo_do_super(obj, MY_CLASS, eo_destructor()); 
 }
 
 static void
 _emodel_eio_properties_get(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
-//   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTIES_CHANGE_EVT, priv->properties, NULL));
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTIES_CHANGE_EVT, priv->properties, NULL));
 }
 
 static void
@@ -142,12 +157,15 @@ _emodel_eio_property_get(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
    const char *prop, *prop_arg = va_arg(*list, const char*);
+   priv->evt = va_arg(*list, Emodel_EVT **);
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
    if (!strcmp(prop_arg, prop)) {
-         Eina_Value *value = eina_hash_find(priv->hash, prop);
-//       eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, prop, value, NULL));
-       return;
+        Eina_Value *value = eina_hash_find(priv->hash, prop);
+        (*priv->evt)->value = value;
+        (*priv->evt)->prop = prop;
+        eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, (*priv->evt), NULL));
+        return;
    }
 
    priv->file = eio_file_direct_stat(priv->path, _stat_done_cb, _eio_error_cb, priv);
@@ -161,6 +179,7 @@ _emodel_eio_property_set(Eo *obj , void *class_data, va_list *list)
    const char *dest, *prop, *prop_arg;
    prop_arg = va_arg(*list, const char*);
    dest = va_arg(*list, const char*);
+   priv->evt = va_arg(*list, Emodel_EVT **);
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
    if (!strcmp(prop_arg, prop)) {
@@ -168,6 +187,8 @@ _emodel_eio_property_set(Eo *obj , void *class_data, va_list *list)
       Eina_Value *value = eina_hash_find(priv->hash, prop);
       eina_value_get(value, &src);
       priv->path = dest;
+      (*priv->evt)->value = value;
+      (*priv->evt)->prop = prop;
       priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_error_cb, priv);
    }
 }

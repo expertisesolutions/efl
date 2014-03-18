@@ -24,6 +24,7 @@
 extern "C" {
 #endif
 
+
 #define EMODEL_OBJ_EIO_CLASS emodel_obj_eio_class_get()
 const Eo_Class *emodel_obj_eio_class_get(void) EINA_CONST;
 
