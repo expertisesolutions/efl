@@ -45,7 +45,7 @@ enum
  * @param[in] path to file
  *
  */
-#define emodel_eio_constructor(path) EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
+#define emodel_eio_constructor(path) EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
 
 #ifdef __cplusplus
 }

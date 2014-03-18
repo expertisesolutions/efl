@@ -1,43 +1,175 @@
 #include <Emodel.h>
 #include <Eina.h>
 #include <emodel_eio.h>
+#include <Eio.h>
+#include <Eo.h>
 
 EAPI Eo_Op EMODEL_OBJ_EIO_BASE_ID = EO_NOOP;
 
 #define MY_CLASS EMODEL_OBJ_EIO_CLASS
 #define MY_CLASS_NAME "Emodel_Eio_Class"
 
+enum {
+   EMODEL_EIO_PROP_FILENAME,
+   EMODEL_EIO_PROP_IS_DIR,
+   EMODEL_EIO_PROP_IS_LNK,
+   EMODEL_EIO_PROP_SIZE,
+   EMODEL_EIO_PROP_MTIME
+};
+
 struct _Emodel_Eio
 {
-   //TODO: implement this
+   Eo *obj;
+   Eio_File *file;
+   const char *path;
+   const Eina_Stat *stat;
+   Eina_Hash *hash;
+   Eina_Value *properties;
 };
 
 typedef struct _Emodel_Eio Emodel_Eio;
 
+static void
+_hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
+{
+   const char *prop;
+   EINA_SAFETY_ON_NULL_RETURN(priv);
+   eina_value_array_get(priv->properties, prop_id, &prop);
+
+   Eina_Value *value = eina_hash_find(priv->hash, prop);
+   eina_value_set(value, pvalue);
+//   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, prop, value, NULL));
+}
+
+static void
+_stat_done_cb(void *data, Eio_File *handler, const Eina_Stat *stat)
+{
+   Emodel_Eio *priv = data;
+   priv->stat = stat;
+
+   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_IS_DIR, eio_file_is_dir(stat));
+   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_IS_LNK, eio_file_is_lnk(stat));
+   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_SIZE, eio_file_size(stat));
+   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, eio_file_mtime(stat));
+}
+
+static void
+_eio_progress_cb(void *data, Eio_File *handler, const Eio_Progress *info)
+{
+}
+
+static void
+_eio_error_cb(void *data, Eio_File *handler, int error)
+{
+   Emodel_Eio *priv = data;
+}
+
+static void
+_eio_move_done_cb(void *data, Eio_File *handler)
+{
+   const char *prop, filename;
+   Emodel_Eio *priv = data;
+
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
+   Eina_Value *value = eina_hash_find(priv->hash, prop);
+   eina_value_set(value, priv->path);
+   eio_file_direct_stat(priv->path, _stat_done_cb, _eio_error_cb, priv);
+//   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, prop, value, NULL));
+}
+
+static void
+_emodel_free_data(void *data)
+{
+   eina_value_free(data);
+}
 
 static void
 _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+   const char *prop, *path = va_arg(*list, const char*);
+   priv->path = path;
+   Eina_Value *v;
+   int i;
+
+   priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 5);
+   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
+   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
+   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_IS_LNK, "is_lnk");
+   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
+   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
+
+   priv->hash = eina_hash_string_small_new(_emodel_free_data);
+
+   for (i = 0; eina_value_array_count(priv->properties) < i; i++)
+   {
+       switch(i) {
+       case EMODEL_EIO_PROP_FILENAME:
+          v = eina_value_new(EINA_VALUE_TYPE_STRING);
+          eina_value_set(v, path);
+          break;
+       case EMODEL_EIO_PROP_MTIME:
+          v = eina_value_new(EINA_VALUE_TYPE_TIMEVAL);
+          break;
+       default:
+          v = eina_value_new(EINA_VALUE_TYPE_INT);
+       }
+
+       eina_value_array_get(priv->properties, i, &prop);
+       eina_hash_add(priv->hash, prop, v);
+   }
+
+   priv->obj = obj;
+   eio_init();
 }
 
 static void
 _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+   eina_hash_free(priv->hash);
 }
 
 static void
 _emodel_eio_properties_get(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+//   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTIES_CHANGE_EVT, priv->properties, NULL));
 }
 
 static void
 _emodel_eio_property_get(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+   const char *prop, *prop_arg = va_arg(*list, const char*);
+
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
+   if (!strcmp(prop_arg, prop)) {
+         Eina_Value *value = eina_hash_find(priv->hash, prop);
+//       eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, prop, value, NULL));
+       return;
+   }
+
+   priv->file = eio_file_direct_stat(priv->path, _stat_done_cb, _eio_error_cb, priv);
 }
+
 
 static void
 _emodel_eio_property_set(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+   const char *dest, *prop, *prop_arg;
+   prop_arg = va_arg(*list, const char*);
+   dest = va_arg(*list, const char*);
+
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
+   if (!strcmp(prop_arg, prop)) {
+      const char *src;
+      Eina_Value *value = eina_hash_find(priv->hash, prop);
+      eina_value_get(value, &src);
+      priv->path = dest;
+      priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_error_cb, priv);
+   }
 }
 
 static void
@@ -77,7 +209,7 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 {
    const Eo_Op_Func_Description func_descs[] = {
       EO_OP_FUNC(EO_BASE_ID(EO_BASE_SUB_ID_DESTRUCTOR), _emodel_eio_destructor),
-      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CONSTRUCTOR), _emodel_eio_constructor),
+      EO_OP_FUNC(EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), _emodel_eio_constructor),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTIES_GET), _emodel_eio_properties_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_GET), _emodel_eio_property_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), _emodel_eio_property_set),

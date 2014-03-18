@@ -14,6 +14,8 @@ lib_emodel_libemodel_la_CPPFLAGS = \
 -I$(top_builddir)/src/lib/efl \
 -I$(top_builddir)/src/lib/eo \
 -I$(top_builddir)/src/lib/eina \
+-I$(top_builddir)/src/lib/eio \
+-I$(top_builddir)/src/lib/eet \
 -DEFL_BETA_API_SUPPORT=1  
 
 if EFL_ENABLE_TESTS
