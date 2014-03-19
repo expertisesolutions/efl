@@ -149,12 +149,11 @@ _emodel_eio_property_get(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Property_EVT evt;
    Emodel_Eio *priv = class_data;
-   const char *prop, *prop_arg = va_arg(*list, const char*);
+   const char *prop_arg = va_arg(*list, const char*);
 
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
-   if (!strcmp(prop_arg, prop)) {
-        evt.value = eina_hash_find(priv->hash, prop);
-        evt.prop = prop;
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
+   if (!strcmp(prop_arg, evt.prop)) {
+        evt.value = eina_hash_find(priv->hash, evt.prop);
         eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
         return;
    }
