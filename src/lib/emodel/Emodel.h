@@ -46,14 +46,14 @@ enum
    EMODEL_SUB_ID_LAST,
 };
 
-
-struct _Emodel_Evt
+struct _Emodel_Property_EVT
 {
    Eina_Value *value;
    const char *prop; 
 };
 
-typedef struct _Emodel_Evt Emodel_EVT;
+typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
+
 
 typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
 
@@ -71,14 +71,14 @@ typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
  * @since 1.9
  *
  */
-#define emodel_property_get(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_GET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Emodel_EVT **, ret)
+#define emodel_property_get(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_GET), EO_TYPECHECK(const char *, property)
 
 /**
  * @def emodel_property_set
  * @since 1.9
  *
  */
-#define emodel_property_set(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value), EO_TYPECHECK(Emodel_EVT **, ret)
+#define emodel_property_set(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value)
 
 /**
  * @def emodel_load
