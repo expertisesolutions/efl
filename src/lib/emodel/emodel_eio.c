@@ -69,7 +69,6 @@ static void
 _eio_move_done_cb(void *data, Eio_File *handler)
 {
    Emodel_Property_EVT evt;
-   const char *filename;
    Emodel_Eio *priv = data;
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
@@ -126,7 +125,6 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 
    priv->obj = obj;
    eio_init();
-
 }
 
 static void
