@@ -138,14 +138,14 @@ _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list)
 }
 
 static void
-_emodel_eio_properties_get(Eo *obj , void *class_data, va_list *list)
+_emodel_eio_properties_get(Eo *obj EINA_UNUSED, void *class_data, va_list *list EINA_UNUSED)
 {
    Emodel_Eio *priv = class_data;
    eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTIES_CHANGE_EVT, priv->properties, NULL));
 }
 
 static void
-_emodel_eio_property_get(Eo *obj , void *class_data, va_list *list)
+_emodel_eio_property_get(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 {
    Emodel_Property_EVT evt;
    Emodel_Eio *priv = class_data;
@@ -163,7 +163,7 @@ _emodel_eio_property_get(Eo *obj , void *class_data, va_list *list)
 
 
 static void
-_emodel_eio_property_set(Eo *obj , void *class_data, va_list *list)
+_emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
    const char *dest, *prop, *prop_arg;
