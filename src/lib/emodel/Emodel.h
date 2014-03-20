@@ -71,14 +71,14 @@ typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
  * @since 1.9
  *
  */
-#define emodel_property_get(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_GET), EO_TYPECHECK(const char *, property)
+#define emodel_property_get(property) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_GET), EO_TYPECHECK(const char *, property)
 
 /**
  * @def emodel_property_set
  * @since 1.9
  *
  */
-#define emodel_property_set(property, ret) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value)
+#define emodel_property_set(property, value) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value)
 
 /**
  * @def emodel_load
