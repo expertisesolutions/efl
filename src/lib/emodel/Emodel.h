@@ -91,7 +91,7 @@ typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
  */
 #define emodel_property_set(property, value) EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), EO_TYPECHECK(const char *, property), EO_TYPECHECK(Eina_Value *, value)
 
-/**
+/**E
  * @def emodel_load
  * @since 1.9
  *
@@ -110,7 +110,7 @@ typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
  * @since 1.9
  *
  */
-#define emodel_child_add(child_add_cb, data, filetype) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb *, child_add_cd), EO_TYPECHECK(void *, data), EO_TYPECHECK(Emodel_Filetype, filetype)
+#define emodel_child_add(child_add_cb, data, filetype) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb *, child_add_cb), EO_TYPECHECK(void *, data), EO_TYPECHECK(Emodel_Filetype, filetype)
 
 /**
  * @def emodel_children_get

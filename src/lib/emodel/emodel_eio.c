@@ -36,7 +36,7 @@ typedef struct _Emodel_Eio Emodel_Eio;
 
 struct _Emodel_Eio_Child_Add
 {
-   Emodel_Child_Add_Cb *callback;
+   Emodel_Child_Add_Cb callback;
    void *data;
    Emodel_Filetype filetype;
    Emodel_Eio *priv;
@@ -102,6 +102,11 @@ _eio_move_done_cb(void *data, Eio_File *handler)
 static void
 _eio_done_mkdir_cb(void *data, Eio_File *handler)
 {
+   Emodel_Eio_Child_Add *child = (Emodel_Eio_Child_Add *)data;
+   
+   child->callback(child->data, child->priv->obj, (void*)child->priv->path);
+   eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
+   free(child);
 }
 
 static void
@@ -231,28 +236,28 @@ _emodel_eio_unload(Eo *obj , void *class_data, va_list *list)
 static void
 _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
 { 
-   Emodel_Eio_Child_Add *eio_child = calloc(1, sizeof(Emodel_Eio_Child_Add));
-   EINA_SAFETY_ON_NULL_RETURN(eio_child);
+   Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
+   EINA_SAFETY_ON_NULL_RETURN(child);
 
-   eio_child->callback = va_arg(*list, Emodel_Child_Add_Cb *);
-   eio_child->data = va_arg(*list, void *);
-   eio_child->filetype = va_arg(*list, Emodel_Filetype);
-   eio_child->priv = class_data;
+   child->callback = va_arg(*list, Emodel_Child_Add_Cb);
+   child->data = va_arg(*list, void *);
+   child->filetype = va_arg(*list, Emodel_Filetype);
+   child->priv = class_data;
 
-   switch(eio_child->filetype)
+   switch(child->filetype)
      {
       case EMODEL_FILE_TYPE_DIR:
          {
             mode_t mode = umask(0);
             umask(mode);
-            eio_file_mkdir(eio_child->priv->path, /* TODO check this */ (0777 - mode), 
-                           _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, eio_child);
+            eio_file_mkdir(child->priv->path, /* TODO check this */ (0777 - mode), 
+                           _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
          }
          break;
       case EMODEL_FILE_TYPE_FILE:
          {
-            eio_file_open(eio_child->priv->path, 
-                           EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, eio_child);
+            eio_file_open(child->priv->path, 
+                           EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
          }
 
          break;
