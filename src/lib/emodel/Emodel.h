@@ -46,6 +46,17 @@ enum
    EMODEL_SUB_ID_LAST,
 };
 
+enum _Emodel_Filetype
+{
+   EMODEL_FILE_TYPE_DIR,
+   EMODEL_FILE_TYPE_FILE,
+   EMODEL_FILE_TYPE_LNK
+};
+
+typedef enum _Emodel_Filetype Emodel_Filetype;
+
+typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
+
 struct _Emodel_Property_EVT
 {
    Eina_Value *value;
@@ -55,7 +66,7 @@ struct _Emodel_Property_EVT
 typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
 
 
-typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
+
 
 #define EMODEL_ID(sub_id) (EMODEL_BASE_ID + sub_id)
 
@@ -99,7 +110,7 @@ typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
  * @since 1.9
  *
  */
-#define emodel_child_add(child_add_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb *, child_add_cd), EO_TYPECHECK(void *, data)
+#define emodel_child_add(child_add_cb, data, filetype) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb *, child_add_cd), EO_TYPECHECK(void *, data), EO_TYPECHECK(Emodel_Filetype, filetype)
 
 /**
  * @def emodel_children_get

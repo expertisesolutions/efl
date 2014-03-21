@@ -9,6 +9,11 @@ EAPI Eo_Op EMODEL_OBJ_EIO_BASE_ID = EO_NOOP;
 #define MY_CLASS EMODEL_OBJ_EIO_CLASS
 #define MY_CLASS_NAME "Emodel_Eio_Class"
 
+
+static int _log_dom;
+#define DBG(...)  EINA_LOG_DOM_DBG(_log_dom, __VA_ARGS__)
+#define ERR(...)  EINA_LOG_DOM_ERR(_log_dom, __VA_ARGS__)
+
 enum {
    EMODEL_EIO_PROP_FILENAME,
    EMODEL_EIO_PROP_IS_DIR,
@@ -28,6 +33,16 @@ struct _Emodel_Eio
 };
 
 typedef struct _Emodel_Eio Emodel_Eio;
+
+struct _Emodel_Eio_Child_Add
+{
+   Emodel_Child_Add_Cb *callback;
+   void *data;
+   Emodel_Filetype filetype;
+   Emodel_Eio *priv;
+};
+
+typedef struct _Emodel_Eio_Child_Add Emodel_Eio_Child_Add;
 
 static void
 _hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
@@ -55,6 +70,11 @@ _stat_done_cb(void *data, Eio_File *handler, const Eina_Stat *stat)
 }
 
 static void
+_eio_error_child_add_cb(void *data, Eio_File *handler, int error)
+{
+}
+
+static void
 _eio_progress_cb(void *data, Eio_File *handler, const Eio_Progress *info)
 {
 }
@@ -77,6 +97,25 @@ _eio_move_done_cb(void *data, Eio_File *handler)
    eio_file_direct_stat(priv->path, _stat_done_cb, _eio_error_cb, priv);
 
    eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
+}
+
+static void
+_eio_done_mkdir_cb(void *data, Eio_File *handler)
+{
+}
+
+static void
+_eio_done_error_mkdir_cb(void *data, Eio_File *handler, int error)
+{
+}
+static void
+_eio_done_open_cb(void *data, Eio_File *handler, Eina_File *file)
+{
+}
+
+static void
+_eio_done_error_open_cb(void *data, Eio_File *handler, int error)
+{
 }
 
 static void
@@ -150,7 +189,7 @@ _emodel_eio_property_get(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    const char *prop_arg = va_arg(*list, const char*);
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
-   if (!strcmp(prop_arg, evt.prop)) {
+   if (!strncmp(prop_arg, evt.prop, strlen(evt.prop))) {
         evt.value = eina_hash_find(priv->hash, evt.prop);
         eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
         return;
@@ -169,7 +208,7 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    dest = va_arg(*list, const char*);
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
-   if (!strcmp(prop_arg, prop)) {
+   if (!strncmp(prop_arg, prop, strlen(prop))) {
       const char *src;
       Eina_Value *value = eina_hash_find(priv->hash, prop);
       eina_value_get(value, &src);
@@ -188,9 +227,42 @@ _emodel_eio_unload(Eo *obj , void *class_data, va_list *list)
 {
 }
 
+//TODO
 static void
 _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
-{
+{ 
+   Emodel_Eio_Child_Add *eio_child = calloc(1, sizeof(Emodel_Eio_Child_Add));
+   EINA_SAFETY_ON_NULL_RETURN(eio_child);
+
+   eio_child->callback = va_arg(*list, Emodel_Child_Add_Cb *);
+   eio_child->data = va_arg(*list, void *);
+   eio_child->filetype = va_arg(*list, Emodel_Filetype);
+   eio_child->priv = class_data;
+
+   switch(eio_child->filetype)
+     {
+      case EMODEL_FILE_TYPE_DIR:
+         {
+            mode_t mode = umask(0);
+            umask(mode);
+            eio_file_mkdir(eio_child->priv->path, /* TODO check this */ (0777 - mode), 
+                           _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, eio_child);
+         }
+         break;
+      case EMODEL_FILE_TYPE_FILE:
+         {
+            eio_file_open(eio_child->priv->path, 
+                           EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, eio_child);
+         }
+
+         break;
+      case EMODEL_FILE_TYPE_LNK:
+         ERR("Filetype LNK not implemented");
+         break;
+      default:
+         ERR("Invalid filetype");
+         break;
+     }
 }
 
 
