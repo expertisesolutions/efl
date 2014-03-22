@@ -38,7 +38,7 @@ struct _Emodel_Eio_Child_Add
 {
    Emodel_Child_Add_Cb callback;
    void *data;
-   Emodel_Filetype filetype;
+   Emodel_Eio_Filetype filetype;
    Emodel_Eio *priv;
 };
 
@@ -176,6 +176,7 @@ _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
    eina_hash_free(priv->hash);
+   eio_shutdown();
    eo_do_super(obj, MY_CLASS, eo_destructor()); 
 }
 
@@ -241,12 +242,12 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
 
    child->callback = va_arg(*list, Emodel_Child_Add_Cb);
    child->data = va_arg(*list, void *);
-   child->filetype = va_arg(*list, Emodel_Filetype);
+   child->filetype = va_arg(*list, Emodel_Eio_Filetype);
    child->priv = class_data;
 
    switch(child->filetype)
      {
-      case EMODEL_FILE_TYPE_DIR:
+      case EMODEL_EIO_FILE_TYPE_DIR:
          {
             mode_t mode = umask(0);
             umask(mode);
@@ -254,15 +255,12 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
                            _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
          }
          break;
-      case EMODEL_FILE_TYPE_FILE:
+      case EMODEL_EIO_FILE_TYPE_FILE:
          {
             eio_file_open(child->priv->path, 
                            EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
          }
 
-         break;
-      case EMODEL_FILE_TYPE_LNK:
-         ERR("Filetype LNK not implemented");
          break;
       default:
          ERR("Invalid filetype");
