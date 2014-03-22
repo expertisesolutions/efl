@@ -157,16 +157,16 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    
    eo_do_super(obj, MY_CLASS, eo_constructor()); 
 
-   priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 5);
-   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
-   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
-   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_IS_LNK, "is_lnk");
-   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
-   eina_value_array_set(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
+   priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 0);
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_LNK, "is_lnk");
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
 
    priv->hash = eina_hash_string_small_new(_emodel_free_data);
 
-   for (i = 0; eina_value_array_count(priv->properties) < i; i++)
+   for (i = 0; i < eina_value_array_count(priv->properties); i++)
    {
        switch(i) {
        case EMODEL_EIO_PROP_FILENAME:
@@ -403,14 +403,14 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 }
 
 static const Eo_Op_Description op_desc[] = {
-      EO_OP_DESCRIPTION_SENTINEL
+     EO_OP_DESCRIPTION_SENTINEL
 };
 
 static const Eo_Class_Description class_desc = {
      EO_VERSION,
      MY_CLASS_NAME,
      EO_CLASS_TYPE_REGULAR,
-     EO_CLASS_DESCRIPTION_OPS(&EMODEL_OBJ_EIO_BASE_ID, op_desc, EMODEL_OBJ_EIO_SUB_ID_LAST),
+     EO_CLASS_DESCRIPTION_OPS(&EMODEL_OBJ_EIO_BASE_ID, op_desc, 0),
      NULL,
      sizeof(Emodel_Eio),
      _emodel_eio_class_constructor,
