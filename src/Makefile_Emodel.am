@@ -22,7 +22,7 @@ lib_emodel_libemodel_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
 -DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)\" \
 -DPACKAGE_SRC_DIR=\"`pwd`/$(top_srcdir)\" \
 @EMODEL_CFLAGS@
-lib_emotion_libemodel_la_LIBADD = @EMODEL_LIBS@
+lib_emodel_libemodel_la_LIBADD = @EMODEL_LIBS@
 
 
 if EFL_ENABLE_TESTS
