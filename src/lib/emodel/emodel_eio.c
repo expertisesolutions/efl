@@ -44,6 +44,14 @@ struct _Emodel_Eio_Child_Add
 
 typedef struct _Emodel_Eio_Child_Add Emodel_Eio_Child_Add;
 
+struct _Emodel_Eio_Children_Count
+{
+   Emodel_Eio *priv;
+   size_t total;
+};
+
+typedef struct _Emodel_Eio_Children_Count Emodel_Eio_Children_Count;
+
 static void
 _hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
 {
@@ -116,6 +124,11 @@ _eio_done_error_mkdir_cb(void *data, Eio_File *handler, int error)
 static void
 _eio_done_open_cb(void *data, Eio_File *handler, Eina_File *file)
 {
+   Emodel_Eio_Child_Add *child = (Emodel_Eio_Child_Add *)data;
+   
+   child->callback(child->data, child->priv->obj, (void*)child->priv->path);
+   eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
+   free(child);
 }
 
 static void
@@ -268,22 +281,101 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
      }
 }
 
+/**
+ * Children Get
+ */
+static Eina_Bool 
+_eio_filter_children_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
+{
+   // filter everything
+   DBG("path: %s\n", info->path);
+   return EINA_TRUE;
+}
+
+//TODO
+static void      
+_eio_main_children_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
+{
+   Emodel_Eio *priv = data;
+
+   Eo *child = eo_add_custom(MY_CLASS, priv->obj, emodel_eio_constructor(info->path));
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILDREN_GET_EVT, child, EINA_FALSE));
+}
+
+
+static void 
+_eio_done_children_get_cb(void *data, Eio_File *handler)
+{
+   //TODO: Create new _EVT to inform we're done?
+}
+
+static void
+_eio_error_children_get_cb(void *data, Eio_File *handler, int error)
+{
+}
 
 static void
 _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+
+   eio_file_direct_ls(priv->path, _eio_filter_children_get_cb, 
+                      _eio_main_children_get_cb, _eio_done_children_get_cb, _eio_error_children_get_cb, priv);
 }
 
 
+/**
+ * Children Count Get
+ */
+static Eina_Bool 
+_eio_filter_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
+{
+   // filter everything
+   DBG("path: %s\n", info->path);
+   return EINA_TRUE;
+}
+
+//TODO
+static void      
+_eio_main_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
+{
+   Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
+   EINA_SAFETY_ON_NULL_RETURN(count_data);
+   count_data->total++;
+}
+
+
+static void 
+_eio_done_children_count_get_cb(void *data, Eio_File *handler)
+{
+   Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
+   EINA_SAFETY_ON_NULL_RETURN(count_data);
+   eo_do(count_data->priv->obj, eo_event_callback_call(EMODEL_CHILDREN_COUNT_GET_EVT, &(count_data->total), EINA_FALSE));
+   free(count_data);
+}
+
 static void
-_emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
+_eio_error_children_count_get_cb(void *data, Eio_File *handler, int error)
 {
 }
 
 static void
 _emodel_eio_children_count_get(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Eio *priv = class_data;
+   Emodel_Eio_Children_Count *count_data = calloc(1, sizeof(Emodel_Eio_Children_Count));
+   count_data->priv = priv;
+
+   eio_file_direct_ls(priv->path, _eio_filter_children_count_get_cb, 
+                      _eio_main_children_count_get_cb, _eio_done_children_count_get_cb, 
+                      _eio_error_children_count_get_cb, count_data);
 }
+
+static void
+_emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
+{
+}
+
 
 static void
 _emodel_eio_class_constructor(Eo_Class *klass)
