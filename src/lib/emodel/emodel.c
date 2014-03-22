@@ -25,6 +25,11 @@ EAPI const Eo_Event_Description _EMODEL_CHILD_ADD_EVT =
 EAPI const Eo_Event_Description _EMODEL_CHILD_DEL_EVT =
    EO_EVENT_DESCRIPTION("emodel, child del","Child was removed.");
 
+EAPI const Eo_Event_Description _EMODEL_CHILDREN_GET_EVT =
+   EO_EVENT_DESCRIPTION("emodel, children get","Children available.");
+
+   EAPI const Eo_Event_Description _EMODEL_CHILDREN_COUNT_GET_EVT =
+   EO_EVENT_DESCRIPTION("emodel, children count get","Children count available.");
 
 static const Eo_Op_Description op_desc[] = {
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_PROPERTIES_GET, "Get list of properties."),

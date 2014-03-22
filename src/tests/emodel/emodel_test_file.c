@@ -1,7 +1,9 @@
 //Compile with:
 // gcc -o emodel_file_example emodel_file_example.c `pkg-config --cflags --libs emodel`
 
-#define EFL_BETA_API_SUPPORT
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <Eo.h>
 #include <Ecore.h>
