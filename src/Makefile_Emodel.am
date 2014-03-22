@@ -3,7 +3,7 @@
 lib_LTLIBRARIES += lib/emodel/libemodel.la
 
 installed_emodelmainheadersdir = $(includedir)/emodel-@VMAJ@
-dist_installed_emodelmainheaders_DATA = lib/emodel/Emodel.h
+dist_installed_emodelmainheaders_DATA = lib/emodel/Emodel.h lib/emodel/emodel_eio.h
 
 lib_emodel_libemodel_la_SOURCES = \
 lib/emodel/emodel.c \
