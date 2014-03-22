@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
 #include <Emodel.h>
 #include <Eina.h>
 #include <emodel_eio.h>
