@@ -134,6 +134,12 @@ extern const Eo_Event_Description _EMODEL_CHILD_ADD_EVT;
 extern const Eo_Event_Description _EMODEL_CHILD_DEL_EVT;
 #define EMODEL_CHILD_DEL_EVT (&(_EMODEL_CHILD_DEL_EVT))
 
+extern const Eo_Event_Description _EMODEL_CHILDREN_GET_EVT;
+#define EMODEL_CHILDREN_GET_EVT (&(_EMODEL_CHILDREN_GET_EVT))
+
+extern const Eo_Event_Description _EMODEL_CHILDREN_COUNT_GET_EVT;
+#define EMODEL_CHILDREN_COUNT_GET_EVT (&(_EMODEL_CHILDREN_COUNT_GET_EVT))
+
 /**
  * @}
  */

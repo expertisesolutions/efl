@@ -40,6 +40,8 @@ static const Eo_Event_Description *event_descs[] = {
    EMODEL_PROPERTY_CHANGE_EVT,
    EMODEL_CHILD_ADD_EVT,
    EMODEL_CHILD_DEL_EVT,
+   EMODEL_CHILDREN_GET_EVT,
+   EMODEL_CHILDREN_COUNT_GET_EVT,
    NULL
 };
 
