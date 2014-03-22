@@ -3439,6 +3439,12 @@ EFL_EVAL_PKGS([ECORE_EVAS])
 EFL_LIB_END([Ecore_Evas])
 #### End of Ecore_Evas
 
+#### Emodel
+EFL_LIB_START([Emodel])
+EFL_ADD_LIBS([EMODEL], [-lm])
+EFL_LIB_END([Emodel])
+#### End of Emodel
+
 #### Eio
 EFL_LIB_START([Eio])
 
