@@ -106,7 +106,7 @@ typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
  * @since 1.9
  *
  */
-#define emodel_children_get() EMODEL__ID(EMODEL_SUB_ID_CHILDREN_GET)
+#define emodel_children_get() EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET)
 
 /**
  * @def emodel_children_slice_get

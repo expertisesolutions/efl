@@ -115,7 +115,7 @@ static void
 _eio_done_mkdir_cb(void *data, Eio_File *handler)
 {
    Emodel_Eio_Child_Add *child = (Emodel_Eio_Child_Add *)data;
-   
+
    child->callback(child->data, child->priv->obj, (void*)child->priv->path);
    eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
    free(child);
@@ -129,7 +129,7 @@ static void
 _eio_done_open_cb(void *data, Eio_File *handler, Eina_File *file)
 {
    Emodel_Eio_Child_Add *child = (Emodel_Eio_Child_Add *)data;
-   
+
    child->callback(child->data, child->priv->obj, (void*)child->priv->path);
    eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
    free(child);
@@ -154,7 +154,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    priv->path = path;
    Eina_Value *v;
    int i;
-   
+
    eo_do_super(obj, MY_CLASS, eo_constructor()); 
 
    priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 0);
@@ -167,22 +167,22 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    priv->hash = eina_hash_string_small_new(_emodel_free_data);
 
    for (i = 0; i < eina_value_array_count(priv->properties); i++)
-   {
-       switch(i) {
-       case EMODEL_EIO_PROP_FILENAME:
+     {
+        switch(i) {
+        case EMODEL_EIO_PROP_FILENAME:
           v = eina_value_new(EINA_VALUE_TYPE_STRING);
           eina_value_set(v, path);
           break;
-       case EMODEL_EIO_PROP_MTIME:
+        case EMODEL_EIO_PROP_MTIME:
           v = eina_value_new(EINA_VALUE_TYPE_TIMEVAL);
           break;
-       default:
+        default:
           v = eina_value_new(EINA_VALUE_TYPE_INT);
-       }
+        }
 
-       eina_value_array_get(priv->properties, i, &prop);
-       eina_hash_add(priv->hash, prop, v);
-   }
+        eina_value_array_get(priv->properties, i, &prop);
+        eina_hash_add(priv->hash, prop, v);
+     }
 
    priv->obj = obj;
    eio_init();
@@ -228,13 +228,14 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    Emodel_Eio *priv = class_data;
    const char *dest, *prop, *prop_arg;
    prop_arg = va_arg(*list, const char*);
-   dest = va_arg(*list, const char*);
+   Eina_Value *v = va_arg(*list, const char*);
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
    if (!strncmp(prop_arg, prop, strlen(prop))) {
       const char *src;
       Eina_Value *value = eina_hash_find(priv->hash, prop);
       eina_value_get(value, &src);
+      eina_value_get(v, &dest);
       priv->path = dest;
       priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_error_cb, priv);
    }
@@ -296,8 +297,8 @@ _eio_filter_children_get_cb(void *data, Eio_File *handler, const Eina_File_Direc
    return EINA_TRUE;
 }
 
-//TODO
-static void      
+//TODO:  Create new _EVT to inform we're child get?
+static void
 _eio_main_children_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
    Emodel_Eio *priv = data;
@@ -331,7 +332,7 @@ _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
 /**
  * Children Count Get
  */
-static Eina_Bool 
+static Eina_Bool
 _eio_filter_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
    // filter everything
@@ -340,7 +341,7 @@ _eio_filter_children_count_get_cb(void *data, Eio_File *handler, const Eina_File
 }
 
 //TODO
-static void      
+static void
 _eio_main_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
    Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
@@ -370,8 +371,8 @@ _emodel_eio_children_count_get(Eo *obj , void *class_data, va_list *list)
    Emodel_Eio_Children_Count *count_data = calloc(1, sizeof(Emodel_Eio_Children_Count));
    count_data->priv = priv;
 
-   eio_file_direct_ls(priv->path, _eio_filter_children_count_get_cb, 
-                      _eio_main_children_count_get_cb, _eio_done_children_count_get_cb, 
+   eio_file_direct_ls(priv->path, _eio_filter_children_count_get_cb,
+                      _eio_main_children_count_get_cb, _eio_done_children_count_get_cb,
                       _eio_error_children_count_get_cb, count_data);
 }
 
