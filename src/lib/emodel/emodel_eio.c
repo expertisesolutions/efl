@@ -13,11 +13,6 @@ EAPI Eo_Op EMODEL_OBJ_EIO_BASE_ID = EO_NOOP;
 #define MY_CLASS EMODEL_OBJ_EIO_CLASS
 #define MY_CLASS_NAME "Emodel_Eio_Class"
 
-
-static int _log_dom;
-#define DBG(...)  EINA_LOG_DOM_DBG(_log_dom, __VA_ARGS__)
-#define ERR(...)  EINA_LOG_DOM_ERR(_log_dom, __VA_ARGS__)
-
 enum {
    EMODEL_EIO_PROP_FILENAME,
    EMODEL_EIO_PROP_IS_DIR,
@@ -302,7 +297,7 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
 
          break;
       default:
-         ERR("Invalid filetype");
+         fprintf(stdout, "Invalid filetype");
          break;
      }
 }
@@ -314,7 +309,7 @@ static Eina_Bool
 _eio_filter_children_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
    // filter everything
-   DBG("path: %s\n", info->path);
+   fprintf(stdout, "path: %s\n", info->path);
    return EINA_TRUE;
 }
 
@@ -356,8 +351,7 @@ _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
 static Eina_Bool
 _eio_filter_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
-   // filter everything
-   DBG("path: %s\n", info->path);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(info->path, EINA_FALSE);
    return EINA_TRUE;
 }
 
@@ -367,6 +361,8 @@ _eio_main_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_D
 {
    Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
    EINA_SAFETY_ON_NULL_RETURN(count_data);
+   
+
    count_data->total++;
 }
 
