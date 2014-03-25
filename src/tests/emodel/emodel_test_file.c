@@ -114,6 +114,7 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_property_get("size"));
    eo_do(filemodel, emodel_properties_get());
    eo_do(filemodel, emodel_children_get());
+   eo_do(filemodel, emodel_children_count_get());
 
    nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
    eina_value_set(nameset, "/tmp/dir");
