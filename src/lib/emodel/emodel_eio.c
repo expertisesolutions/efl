@@ -81,15 +81,23 @@ _stat_done_cb(void *data, Eio_File *handler, const Eina_Stat *stat)
 static void
 _eio_error_child_add_cb(void *data, Eio_File *handler, int error)
 {
+   //TODO: implement
 }
 
 static void
 _eio_progress_cb(void *data, Eio_File *handler, const Eio_Progress *info)
 {
+   //TODO: implement
 }
 
 static void
 _eio_error_cb(void *data, Eio_File *handler, int error)
+{
+   Emodel_Eio *priv = data;
+}
+
+static void
+_eio_property_set_error_cb(void *data, Eio_File *handler, int error)
 {
    Emodel_Eio *priv = data;
 }
@@ -103,7 +111,7 @@ _eio_move_done_cb(void *data, Eio_File *handler)
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
    evt.value = eina_hash_find(priv->hash, evt.prop);
    eina_value_set(evt.value, priv->path);
-   eio_file_direct_stat(priv->path, _stat_done_cb, _eio_error_cb, priv);
+   eio_file_direct_stat(priv->path, _stat_done_cb, _eio_property_set_error_cb, priv);
 
    eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
 }
@@ -123,6 +131,8 @@ static void
 _eio_done_error_mkdir_cb(void *data, Eio_File *handler, int error)
 {
 }
+
+/*
 static void
 _eio_done_open_cb(void *data, Eio_File *handler, Eina_File *file)
 {
@@ -137,7 +147,9 @@ _eio_done_open_cb(void *data, Eio_File *handler, Eina_File *file)
 static void
 _eio_done_error_open_cb(void *data, Eio_File *handler, int error)
 {
+   //TODO: implement
 }
+*/
 
 static void
 _emodel_free_data(void *data)
@@ -236,18 +248,20 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
       eina_value_get(value, &src);
       eina_value_get(v, &dest);
       priv->path = dest;
-      priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_error_cb, priv);
+      priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_property_set_error_cb, priv);
    }
 }
 
 static void
 _emodel_eio_load(Eo *obj , void *class_data, va_list *list)
 {
+   //TODO: implement
 }
 
 static void
 _emodel_eio_unload(Eo *obj , void *class_data, va_list *list)
 {
+   //TODO: implement
 }
 
 //TODO
@@ -287,12 +301,9 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
          break;
       case EMODEL_EIO_FILE_TYPE_FILE:
          {
-            //child->fullpath = calloc(1, len+2);
-            //strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
-            //strncat(child->fullpath, "/", 1);
-            //strncat(child->fullpath, child->name, strlen(child->name));
-            eio_file_open(child->priv->path, 
-                           EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
+            fprintf(stdout,"EMODEL_EIO_FILE_TYPE_FILE: unimplemented\n"); 
+            //eio_file_open(child->fullpath, 
+            //               EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
          }
 
          break;
@@ -361,8 +372,6 @@ _eio_main_children_count_get_cb(void *data, Eio_File *handler, const Eina_File_D
 {
    Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
    EINA_SAFETY_ON_NULL_RETURN(count_data);
-   
-
    count_data->total++;
 }
 
