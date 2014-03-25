@@ -36,6 +36,7 @@ START_TEST(emodel_test_test_file)
    filemodel = eo_add_custom(EMODEL_OBJ_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(filemodel, emodel_property_get("filename"));
+   eo_do(filemodel, emodel_property_get("size"));
 
    ecore_main_loop_begin();
    eo_unref(filemodel);
