@@ -42,6 +42,8 @@ struct _Emodel_Eio_Child_Add
 {
    Emodel_Child_Add_Cb callback;
    void *data;
+   const char *name;
+   const char* fullpath;
    Emodel_Eio_Filetype filetype;
    Emodel_Eio *priv;
 };
@@ -118,6 +120,7 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler)
 
    child->callback(child->data, child->priv->obj, (void*)child->priv->path);
    eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
+   free(child->fullpath);
    free(child);
 }
 
@@ -132,6 +135,7 @@ _eio_done_open_cb(void *data, Eio_File *handler, Eina_File *file)
 
    child->callback(child->data, child->priv->obj, (void*)child->priv->path);
    eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
+   free(child->fullpath);
    free(child);
 }
 
@@ -255,26 +259,43 @@ _emodel_eio_unload(Eo *obj , void *class_data, va_list *list)
 static void
 _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
 { 
+   size_t len;
    Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
    EINA_SAFETY_ON_NULL_RETURN(child);
 
    child->callback = va_arg(*list, Emodel_Child_Add_Cb);
    child->data = va_arg(*list, void *);
+   child->name = va_arg(*list, const char *);
    child->filetype = va_arg(*list, Emodel_Eio_Filetype);
    child->priv = class_data;
+
+   EINA_SAFETY_ON_NULL_RETURN(child->name);
+
+   len = strlen(child->priv->path) + strlen(child->name);
 
    switch(child->filetype)
      {
       case EMODEL_EIO_FILE_TYPE_DIR:
          {
+            // len + '/' + '\0'
+            child->fullpath = calloc(1, len+2);
             mode_t mode = umask(0);
             umask(mode);
-            eio_file_mkdir(child->priv->path, /* TODO check this */ (0777 - mode), 
+
+            //_eio_done_mkdir_cb frees memory
+            strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
+            strncat(child->fullpath, "/", 1);
+            strncat(child->fullpath, child->name, strlen(child->name));
+            eio_file_mkdir(child->fullpath, /* TODO check this */ (0777 - mode), 
                            _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
          }
          break;
       case EMODEL_EIO_FILE_TYPE_FILE:
          {
+            //child->fullpath = calloc(1, len+2);
+            //strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
+            //strncat(child->fullpath, "/", 1);
+            //strncat(child->fullpath, child->name, strlen(child->name));
             eio_file_open(child->priv->path, 
                            EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
          }
