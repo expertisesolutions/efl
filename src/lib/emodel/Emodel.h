@@ -113,7 +113,7 @@ typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
  * @since 1.9
  *
  */
-#define emodel_children_slice_get(start, count) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), EO_TYPECHECK(int, start), EO_TYPECHECK(int, cont)
+#define emodel_children_slice_get(start, count) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), EO_TYPECHECK(int, start), EO_TYPECHECK(int, count)
 
 /**
  * @def emodel_children_count_get
