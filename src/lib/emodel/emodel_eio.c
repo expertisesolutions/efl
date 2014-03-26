@@ -21,12 +21,23 @@ enum {
    EMODEL_EIO_PROP_MTIME
 };
 
+struct _Emodel_Eio_Slice
+{
+   Eina_Array *array; /** < Eo objects array */
+   size_t size;   /**< current array size */
+   int start;     /**< current index to start from */
+   int count;     /**< range, counting from start */
+};
+
+typedef struct _Emodel_Eio_Slice Emodel_Eio_Slice;
+
 struct _Emodel_Eio
 {
    Eina_Value *properties;
    Eo *obj;
    Eio_File *file;
    Eina_Hash *hash;
+   Emodel_Eio_Slice slice;
    const char *path;
    const Eina_Stat *stat;
 };
@@ -195,6 +206,9 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
         eina_hash_add(priv->hash, prop, v);
      }
 
+   // initializes array structure for Slice
+   memset(&priv->slice, 0, sizeof(priv->slice)); 
+
    priv->obj = obj;
    eio_init();
 }
@@ -344,6 +358,7 @@ _eio_done_children_get_cb(void *data, Eio_File *handler)
 static void
 _eio_error_children_get_cb(void *data, Eio_File *handler, int error)
 {
+   //TODO: Implement
 }
 
 static void
@@ -353,6 +368,59 @@ _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
 
    eio_file_direct_ls(priv->path, _eio_filter_children_get_cb, 
                       _eio_main_children_get_cb, _eio_done_children_get_cb, _eio_error_children_get_cb, priv);
+}
+
+
+/**
+ * Children Slice Get
+ */
+static Eina_Bool 
+_eio_filter_children_slice_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
+{
+   // filter everything
+   fprintf(stdout, "path: %s\n", info->path);
+   return EINA_TRUE;
+}
+
+static void
+_eio_main_children_slice_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
+{
+   Emodel_Eio *priv = data;
+   //data->list = eina_list_append(data->listlist, const void *data);
+
+}
+
+static void 
+_eio_done_children_slice_get_cb(void *data, Eio_File *handler)
+{
+   //TODO: Create new _EVT to inform we're done?
+}
+
+static void
+_eio_error_children_slice_get_cb(void *data, Eio_File *handler, int error)
+{
+   //TODO: Implement
+}
+
+static void
+_emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
+{
+   Emodel_Eio *priv = class_data;
+
+   int start = va_arg(*list, int);
+   int count = va_arg(*list, int);
+
+   if(priv->slice.size > 0)
+     {
+        //TODO: generate event
+     }
+   else
+     {
+        eio_file_direct_ls(priv->path, _eio_filter_children_slice_get_cb, 
+                           _eio_main_children_slice_get_cb, _eio_done_children_slice_get_cb, 
+                           _eio_error_children_slice_get_cb, priv);
+     }
+
 }
 
 
@@ -400,11 +468,6 @@ _emodel_eio_children_count_get(Eo *obj , void *class_data, va_list *list)
    eio_file_direct_ls(priv->path, _eio_filter_children_count_get_cb,
                       _eio_main_children_count_get_cb, _eio_done_children_count_get_cb,
                       _eio_error_children_count_get_cb, count_data);
-}
-
-static void
-_emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
-{
 }
 
 
