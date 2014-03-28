@@ -21,15 +21,14 @@ enum {
    EMODEL_EIO_PROP_MTIME
 };
 
-struct _Emodel_Eio_Slice
+struct _Emodel_Eio_Item
 {
-   Eina_Array *array; /** < Eo objects array */
-   size_t size;   /**< current array size */
-   int start;     /**< current index to start from */
-   int count;     /**< range, counting from start */
+   Eo *child;
+   const char *path;
 };
 
-typedef struct _Emodel_Eio_Slice Emodel_Eio_Slice;
+typedef struct _Emodel_Eio_Item Emodel_Eio_Item;
+
 
 struct _Emodel_Eio
 {
@@ -37,7 +36,7 @@ struct _Emodel_Eio
    Eo *obj;
    Eio_File *file;
    Eina_Hash *hash;
-   Emodel_Eio_Slice slice;
+   Eina_List *list;
    const char *path;
    const Eina_Stat *stat;
 };
@@ -63,6 +62,17 @@ struct _Emodel_Eio_Children_Count
 };
 
 typedef struct _Emodel_Eio_Children_Count Emodel_Eio_Children_Count;
+
+struct _Emodel_Eio_Children_Slice
+{
+   Emodel_Eio *priv;
+   Eo *child;
+   int start;
+   int count;
+   int idx;
+};
+
+typedef struct _Emodel_Eio_Children_Slice Emodel_Eio_Children_Slice;
 
 static void
 _hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
@@ -187,6 +197,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
 
    priv->hash = eina_hash_string_small_new(_emodel_free_data);
+   priv->list = NULL;
 
    for (i = 0; i < eina_value_array_count(priv->properties); i++)
      {
@@ -205,9 +216,6 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
         eina_value_array_get(priv->properties, i, &prop);
         eina_hash_add(priv->hash, prop, v);
      }
-
-   // initializes array structure for Slice
-   memset(&priv->slice, 0, sizeof(priv->slice)); 
 
    priv->obj = obj;
    eio_init();
@@ -278,6 +286,49 @@ _emodel_eio_unload(Eo *obj , void *class_data, va_list *list)
    //TODO: implement
 }
 
+static Eina_Bool 
+_emodel_list_item_find(Eina_List *list, const char *path, size_t len)
+{
+   Eina_Iterator *it;
+   void *data;
+
+   EINA_SAFETY_ON_NULL_RETURN_VAL(list, EINA_FALSE);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(path, EINA_FALSE);
+
+   it = eina_list_iterator_new(list);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(it, EINA_FALSE);
+
+   EINA_ITERATOR_FOREACH(it, data)
+     {
+        Emodel_Eio_Item *tmp = (Emodel_Eio_Item*)data;
+        if(!strncmp(tmp->path, path, len))
+          {
+             eina_iterator_free(it);
+             return EINA_TRUE;
+          }
+     }
+
+   eina_iterator_free(it);
+   return EINA_FALSE;
+}
+
+static void 
+_emodel_add_item(Emodel_Eio *priv, Eina_List **list, const char *path, Eo *child, size_t len)
+{
+   Emodel_Eio_Item *item;
+   Eina_Bool copy = EINA_FALSE;
+
+   if((NULL == *list) ||
+      (_emodel_list_item_find(*list, path, strlen(path)) == EINA_FALSE))
+     {
+        item = calloc(1, sizeof(Emodel_Eio_Item));
+        EINA_SAFETY_ON_NULL_RETURN(item);
+        item->child = child;
+        item->path = path;
+        *list = eina_list_append(*list, item);
+     } 
+}
+
 //TODO
 static void
 _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
@@ -287,9 +338,10 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
    EINA_SAFETY_ON_NULL_RETURN(child);
 
    child->callback = va_arg(*list, Emodel_Child_Add_Cb);
-   child->data = va_arg(*list, void *);
    child->name = va_arg(*list, const char *);
    child->filetype = va_arg(*list, Emodel_Eio_Filetype);
+
+
    child->priv = class_data;
 
    EINA_SAFETY_ON_NULL_RETURN(child->name);
@@ -385,15 +437,25 @@ _eio_filter_children_slice_get_cb(void *data, Eio_File *handler, const Eina_File
 static void
 _eio_main_children_slice_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
-   Emodel_Eio *priv = data;
-   //data->list = eina_list_append(data->listlist, const void *data);
+   Emodel_Eio_Children_Slice *slice = data;
+   
+   if(slice->idx >= slice->start && slice->idx <= slice->count)
+     {
+        slice->child = eo_add_custom(MY_CLASS, slice->priv->obj, emodel_eio_constructor(slice->priv->path));
+        _emodel_add_item(slice->priv, &slice->priv->list, slice->priv->path, slice->child, strlen(slice->priv->path));
+     }
 
+   if(slice->idx == slice->count)
+         eo_do(slice->priv->obj, eo_event_callback_call(EMODEL_CHILDREN_SLICE_GET_EVT, slice->child, EINA_FALSE));
+
+   slice->idx++;
 }
 
 static void 
 _eio_done_children_slice_get_cb(void *data, Eio_File *handler)
 {
-   //TODO: Create new _EVT to inform we're done?
+   Emodel_Eio_Children_Slice *slice = data;
+   free(slice);
 }
 
 static void
@@ -405,22 +467,15 @@ _eio_error_children_slice_get_cb(void *data, Eio_File *handler, int error)
 static void
 _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
 {
-   Emodel_Eio *priv = class_data;
+   Emodel_Eio_Children_Slice *slice = calloc(1, sizeof(Emodel_Eio_Children_Slice));
 
-   int start = va_arg(*list, int);
-   int count = va_arg(*list, int);
+   slice->priv = class_data;
+   slice->start = va_arg(*list, int);
+   slice->count = va_arg(*list, int);
+   slice->idx = 0;
 
-   if(priv->slice.size > 0)
-     {
-        //TODO: generate event
-     }
-   else
-     {
-        eio_file_direct_ls(priv->path, _eio_filter_children_slice_get_cb, 
-                           _eio_main_children_slice_get_cb, _eio_done_children_slice_get_cb, 
-                           _eio_error_children_slice_get_cb, priv);
-     }
-
+   eio_file_direct_ls(slice->priv->path, _eio_filter_children_slice_get_cb, 
+         _eio_main_children_slice_get_cb, _eio_done_children_slice_get_cb, _eio_error_children_slice_get_cb, slice);
 }
 
 
@@ -482,6 +537,8 @@ _emodel_eio_class_constructor(Eo_Class *klass)
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), _emodel_eio_property_set),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_LOAD), _emodel_eio_load),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_UNLOAD), _emodel_eio_unload),
+      
+      // TODO/FIXME/XXX: Shouldn't we be using EMODEL_EIO_ID and EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD?
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), _emodel_eio_child_add),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
