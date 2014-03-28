@@ -12,7 +12,6 @@
 #include <stdio.h>
 
 #include <check.h>
-static int _log_dom;
 
 #define EMODEL_TEST_FILENAME_PATH "/tmp"
 
@@ -26,7 +25,7 @@ struct requeriments {
 } requeriments = {0, 0, 0, 0, 0};
 
 static Eina_Bool
-_try_quit(void *data EINA_UNUSED)
+__attribute__((unused))_try_quit(void *data EINA_UNUSED)
 {
    printf("Try quit\n");
    fail_if (
@@ -86,6 +85,17 @@ _children_get_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Des
    fprintf(stdout, "child received\n");
    eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(child, emodel_property_get("filename"));
+   return EINA_TRUE;
+}
+
+static Eina_Bool
+_children_slice_get_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+{
+   Eo * child = event_info;
+   fprintf(stdout, "child slice received\n");
+   eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
+   eo_do(child, emodel_property_get("filename"));
+   return EINA_TRUE;
 }
 
 static Eina_Bool
@@ -96,18 +106,20 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
    fprintf(stdout, "children count len=%d\n", *len);
    requeriments.children = *len;
    requeriments.count = 1;
+   return EINA_TRUE;
 }
 
 static Eina_Bool
 _child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   Eo * child = event_info;
+   //Eo * child = event_info;
    const char *s = (const char *)event_info;
    fprintf(stdout, "child added:%s\n", s);
+   return EINA_TRUE;
 }
 
 static void
-_emodel_child_add_cb(void *data, Eo *child, void *event_info)
+_emodel_child_add_cb(void *data, Eo *child EINA_UNUSED, void *event_info EINA_UNUSED)
 {
    const char *s = (const char *)data;
    fprintf(stdout, "my child added:%s\n", s);
@@ -117,7 +129,7 @@ _emodel_child_add_cb(void *data, Eo *child, void *event_info)
 START_TEST(emodel_test_test_file)
 {
    Eo *filemodel;
-   Eina_Value *nameset;
+   //Eina_Value *nameset;
    static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02"};
    //Ecore_Timer *timer;
 
@@ -126,18 +138,27 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTIES_CHANGE_EVT, _properties_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_GET_EVT, _children_get_cb, NULL));
+   eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_SLICE_GET_EVT, _children_slice_get_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_COUNT_GET_EVT, _children_count_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_cb, NULL));
 
    eo_do(filemodel, emodel_property_get("filename"));
    eo_do(filemodel, emodel_property_get("size"));
    eo_do(filemodel, emodel_properties_get());
+   
+   
    eo_do(filemodel, emodel_children_get());
+   eo_do(filemodel, emodel_children_get());
+   
+   
    eo_do(filemodel, emodel_children_count_get());
+   eo_do(filemodel, emodel_children_slice_get(5,10));
+   eo_do(filemodel, emodel_children_slice_get(20,25));
 
-   eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[0], dirs[0], EMODEL_EIO_FILE_TYPE_DIR));
-   eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[1], dirs[1], EMODEL_EIO_FILE_TYPE_DIR));
-   eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[2], dirs[2], EMODEL_EIO_FILE_TYPE_DIR));
+
+   //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, NULL, dirs[0], EMODEL_EIO_FILE_TYPE_DIR));
+   //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[1], dirs[1], EMODEL_EIO_FILE_TYPE_DIR));
+   //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[2], dirs[2], EMODEL_EIO_FILE_TYPE_DIR));
 
    /**
     * The following test works however 
