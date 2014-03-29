@@ -48,6 +48,7 @@ _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descr
    const char *prop;
    unsigned int i;
 
+
    requeriments.properties = 1;
    for (i = 0; i < eina_value_array_count(properties); i++)
      {
@@ -81,20 +82,10 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 static Eina_Bool
 _children_get_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   Eo * child = event_info;
-   fprintf(stdout, "child received\n");
-   eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
-   eo_do(child, emodel_property_get("filename"));
-   return EINA_TRUE;
-}
-
-static Eina_Bool
-_children_slice_get_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
-{
-   Eo * child = event_info;
-   fprintf(stdout, "child slice received\n");
-   eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
-   eo_do(child, emodel_property_get("filename"));
+   Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
+   fprintf(stdout, "child received: child=%p, idx=%d\n", evt->child, evt->idx);
+   eo_do(evt->child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
+   eo_do(evt->child, emodel_property_get("filename"));
    return EINA_TRUE;
 }
 
@@ -134,11 +125,12 @@ START_TEST(emodel_test_test_file)
    //Ecore_Timer *timer;
 
    ecore_init();
+
+
    filemodel = eo_add_custom(EMODEL_OBJ_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTIES_CHANGE_EVT, _properties_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_GET_EVT, _children_get_cb, NULL));
-   eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_SLICE_GET_EVT, _children_slice_get_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_COUNT_GET_EVT, _children_count_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_cb, NULL));
 
@@ -147,13 +139,15 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_properties_get());
    
    
-   eo_do(filemodel, emodel_children_get());
-   eo_do(filemodel, emodel_children_get());
+   //eo_do(filemodel, emodel_children_get());
    
    
    eo_do(filemodel, emodel_children_count_get());
-   eo_do(filemodel, emodel_children_slice_get(5,10));
-   eo_do(filemodel, emodel_children_slice_get(20,25));
+   eo_do(filemodel, emodel_children_slice_get(0,2));
+   eo_do(filemodel, emodel_children_slice_get(10,6));
+   //eo_do(filemodel, emodel_children_slice_get(10,5));
+   //eo_do(filemodel, emodel_children_slice_get(15,30));
+   //eo_do(filemodel, emodel_children_slice_get(20,25));
 
 
    //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, NULL, dirs[0], EMODEL_EIO_FILE_TYPE_DIR));
@@ -181,6 +175,7 @@ START_TEST(emodel_test_test_file)
    ecore_main_loop_begin();
 
    eo_unref(filemodel);
+   ecore_shutdown();
 }
 END_TEST
 

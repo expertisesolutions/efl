@@ -28,9 +28,6 @@ EAPI const Eo_Event_Description _EMODEL_CHILD_DEL_EVT =
 EAPI const Eo_Event_Description _EMODEL_CHILDREN_GET_EVT =
    EO_EVENT_DESCRIPTION("emodel, children get","Children available.");
 
-EAPI const Eo_Event_Description _EMODEL_CHILDREN_SLICE_GET_EVT =
-   EO_EVENT_DESCRIPTION("emodel, children slice get","Children slice available.");
-
    EAPI const Eo_Event_Description _EMODEL_CHILDREN_COUNT_GET_EVT =
    EO_EVENT_DESCRIPTION("emodel, children count get","Children count available.");
 
@@ -42,7 +39,7 @@ static const Eo_Op_Description op_desc[] = {
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_UNLOAD, "Unload emodel"),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILD_ADD, "Add new child."),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_GET, "Get all children."),
-      EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_SLICE_GET, "Get children from given slice/range."),
+      EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_SLICE_GET, "Get children slice."),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_COUNT_GET, "Count number of children."),
       EO_OP_DESCRIPTION_SENTINEL
 };
@@ -53,7 +50,6 @@ static const Eo_Event_Description *event_descs[] = {
    EMODEL_CHILD_ADD_EVT,
    EMODEL_CHILD_DEL_EVT,
    EMODEL_CHILDREN_GET_EVT,
-   EMODEL_CHILDREN_SLICE_GET_EVT,
    EMODEL_CHILDREN_COUNT_GET_EVT,
    NULL
 };

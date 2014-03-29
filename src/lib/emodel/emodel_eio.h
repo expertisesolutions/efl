@@ -58,7 +58,7 @@ typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
 #define emodel_eio_constructor(path) EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
 
 // TODO/FIXME/XXX: Shouldn't we be using EMODEL_EIO_ID and EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD
-#define emodel_eio_child_add(child_add_cb, data, name, filetype) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb *, child_add_cb), EO_TYPECHECK(void *, data), EO_TYPECHECK(const char *, name), EO_TYPECHECK(Emodel_Eio_Filetype, filetype)
+#define emodel_eio_child_add(child_add_cb, data, name, filetype) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb, child_add_cb), EO_TYPECHECK(void *, data), EO_TYPECHECK(const char *, name), EO_TYPECHECK(Emodel_Eio_Filetype, filetype)
 
 #ifdef __cplusplus
 }
