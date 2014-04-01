@@ -47,6 +47,7 @@ enum
 };
 
 typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
+typedef void (*Emodel_Children_Cb)(void *data, Eo *child, void *event_info);
 
 struct _Emodel_Property_EVT
 {
@@ -113,14 +114,14 @@ typedef struct _Emodel_Children_EVT Emodel_Children_EVT;
  * @since 1.9
  *
  */
-#define emodel_children_get() EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET)
+#define emodel_children_get(children_get_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), EO_TYPECHECK(Emodel_Children_Cb, children_get_cb), EO_TYPECHECK(void *, data)
 
 /**
  * @def emodel_children_slice_get
  * @since 1.9
  *
  */
-#define emodel_children_slice_get(start, count) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), EO_TYPECHECK(int, start), EO_TYPECHECK(int, count)
+#define emodel_children_slice_get(children_slice_get_cb, start, count, data) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), EO_TYPECHECK(Emodel_Children_Cb, children_slice_get_cb), EO_TYPECHECK(int, start), EO_TYPECHECK(int, count), EO_TYPECHECK(void *, data)
 
 /**
  * @def emodel_children_count_get

@@ -79,14 +79,13 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
    return EINA_TRUE;
 }
    
-static Eina_Bool
-_children_get_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+static void
+_children_get_cb(void *data, Eo *child, void *event_info EINA_UNUSED)
 {
-   Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
-   fprintf(stdout, "child received: child=%p, idx=%d\n", evt->child, evt->idx);
-   eo_do(evt->child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
-   eo_do(evt->child, emodel_property_get("filename"));
-   return EINA_TRUE;
+   int *idx = (int*)data;
+   fprintf(stdout, "child received: child=%p, idx=%d\n", child, *idx);
+   eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
+   eo_do(child, emodel_property_get("filename"));
 }
 
 static Eina_Bool
@@ -130,7 +129,6 @@ START_TEST(emodel_test_test_file)
    filemodel = eo_add_custom(EMODEL_OBJ_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTIES_CHANGE_EVT, _properties_cb, NULL));
-   eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_GET_EVT, _children_get_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_COUNT_GET_EVT, _children_count_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_cb, NULL));
 
@@ -139,16 +137,12 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_properties_get());
    
    
-   //eo_do(filemodel, emodel_children_get());
+   eo_do(filemodel, emodel_children_get(_children_get_cb, NULL));
    
    
    eo_do(filemodel, emodel_children_count_get());
-   eo_do(filemodel, emodel_children_slice_get(0,2));
-   eo_do(filemodel, emodel_children_slice_get(10,6));
-   //eo_do(filemodel, emodel_children_slice_get(10,5));
-   //eo_do(filemodel, emodel_children_slice_get(15,30));
-   //eo_do(filemodel, emodel_children_slice_get(20,25));
-
+   eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 0,15, NULL));
+   eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 20,5, NULL));
 
    //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, NULL, dirs[0], EMODEL_EIO_FILE_TYPE_DIR));
    //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[1], dirs[1], EMODEL_EIO_FILE_TYPE_DIR));

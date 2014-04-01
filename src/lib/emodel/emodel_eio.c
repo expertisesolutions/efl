@@ -74,6 +74,8 @@ struct _Emodel_Eio_Children_Data
 {
    Emodel_Eio *priv;
    Eio_File *lsref;
+   void *data;
+   Emodel_Children_Cb callback;
    Eina_Bool dispatch;
    int start;
    int count;
@@ -342,7 +344,6 @@ static void
 _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
 {
    Emodel_Eio_Children_Data *cdata = data;
-   Emodel_Children_EVT evt;
    Eo *child;
 
    _assert_ref(eo_ref_get(cdata->priv->obj));
@@ -350,9 +351,8 @@ _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_
 
    _assert_ref(eo_ref_get(cdata->priv->obj));
 
-   evt.child = child;
-   evt.idx = cdata->cidx++;
-   eo_do(cdata->priv->obj, eo_event_callback_call(EMODEL_CHILDREN_GET_EVT, &evt, EINA_FALSE));
+   cdata->callback(&cdata->cidx, child, cdata->data);
+   cdata->cidx++;
 }
 
 
@@ -373,9 +373,15 @@ _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
 static void
 _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
 {
+   Emodel_Children_Cb callback = va_arg(*list, Emodel_Children_Cb);
+   EINA_SAFETY_ON_NULL_RETURN(callback);
+
+
    Emodel_Eio_Children_Data *cdata = calloc(1, sizeof(Emodel_Eio_Children_Data));
    EINA_SAFETY_ON_NULL_RETURN(cdata);
 
+   cdata->callback = callback;
+   cdata->data = va_arg(*list, void *);
    cdata->priv = class_data;
    cdata->priv->obj = obj;
    cdata->start = 0;
@@ -423,8 +429,13 @@ _eio_done_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
 {
-   Emodel_Eio_Children_Data *cdata = calloc(1, sizeof(Emodel_Eio_Children_Data));
+   Emodel_Eio_Children_Data *cdata;
    int start, count;
+
+   Emodel_Children_Cb callback = va_arg(*list, Emodel_Children_Cb);
+   EINA_SAFETY_ON_NULL_RETURN(callback);
+
+   cdata = calloc(1, sizeof(Emodel_Eio_Children_Data));
    EINA_SAFETY_ON_NULL_RETURN(cdata);
    
    start = va_arg(*list, int);
@@ -432,6 +443,8 @@ _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
    EINA_SAFETY_ON_FALSE_RETURN(start >= 0);
    EINA_SAFETY_ON_FALSE_RETURN(count > 0);
 
+   cdata->data = va_arg(*list, void *);
+   cdata->callback = callback;
    cdata->priv = class_data;
    cdata->priv->obj = obj;
    cdata->start = start;
