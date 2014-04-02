@@ -190,12 +190,6 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
 }
 
 static void
-_emodel_free_data(void *data)
-{
-   _emodel_dealloc_memory(data, NULL);
-}
-
-static void
 _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
@@ -213,7 +207,19 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
 
-   priv->hash = eina_hash_string_small_new(_emodel_free_data);
+#define __BUG__ 1
+#if __BUG__
+   /*
+    * TODO/FIXME/XXX
+    *
+    * memory corruption
+    * when freeing hash
+    */
+#warning "<leak>Please FIX this memory corruption!!</leak>"
+   priv->hash = eina_hash_string_small_new(NULL);
+#else
+   priv->hash = eina_hash_string_small_new(free);
+#endif
 
    for (i = 0; i < eina_value_array_count(priv->properties); i++)
      {
@@ -242,14 +248,8 @@ _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list EINA_UNUSED)
 {
    Emodel_Eio *priv = class_data;
    
-   /*
-    * TODO/FIXME/XXX
-    *
-    * memory corruption
-    * when freeing hash
-    */
-#warning "<leak>Please FIX this memory corruption!!</leak>"
-   //eina_hash_free(priv->hash);
+   eina_hash_free(priv->hash);
+   priv->hash = NULL;
    
    eio_shutdown();
    eo_do_super(obj, MY_CLASS, eo_destructor()); 
