@@ -16,9 +16,9 @@
 static inline void _assert_ref(int num){}
 #endif
 
-EAPI Eo_Op EMODEL_OBJ_EIO_BASE_ID = EO_NOOP;
+EAPI Eo_Op EMODEL_EIO_BASE_ID = EO_NOOP;
 
-#define MY_CLASS EMODEL_OBJ_EIO_CLASS
+#define MY_CLASS EMODEL_EIO_CLASS
 #define MY_CLASS_NAME "Emodel_Eio_Class"
 
 enum {
@@ -52,12 +52,10 @@ typedef struct _Emodel_Eio Emodel_Eio;
 
 struct _Emodel_Eio_Child_Add
 {
-   Emodel_Child_Add_Cb callback;
-   void *data;
-   const char *name;
-   const char* fullpath;
-   Emodel_Eio_Filetype filetype;
+   Emodel_Cb callback;
+   char* fullpath;
    Emodel_Eio *priv;
+   Emodel_Child_Add *user;
 };
 
 typedef struct _Emodel_Eio_Child_Add Emodel_Eio_Child_Add;
@@ -75,7 +73,7 @@ struct _Emodel_Eio_Children_Data
    Emodel_Eio *priv;
    Eio_File *lsref;
    void *data;
-   Emodel_Children_Cb callback;
+   Emodel_Cb callback;
    Eina_Bool dispatch;
    int start;
    int count;
@@ -84,6 +82,24 @@ struct _Emodel_Eio_Children_Data
 };
 
 typedef struct _Emodel_Eio_Children_Data Emodel_Eio_Children_Data;
+
+static Eina_Lock eio_mutex;
+static void 
+_emodel_dealloc_memory(void *ptr, ...)
+{
+   va_list al;
+   void *data;
+   //eina_lock_take(&eio_mutex);
+   va_start(al,ptr);
+
+   for(data = ptr; data != NULL; data = va_arg(al, void*))
+     {
+        free(data);
+        data = NULL;
+     }
+   va_end(al);
+   //eina_lock_release(&eio_mutex);
+}
 
 static void
 _hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
@@ -111,11 +127,12 @@ _stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *stat)
    _hash_stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, eio_file_mtime(stat));
 }
 
+/*
 static void
 _eio_error_child_add_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
-   //TODO: implement
 }
+*/
 
 static void
 _eio_progress_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, const Eio_Progress *info EINA_UNUSED)
@@ -126,6 +143,7 @@ _eio_progress_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, const Ei
 static void
 _eio_error_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
+   fprintf(stdout, "[cancel] eio_file_direct_ls : %d\n", error);
 }
 
 static void
@@ -151,24 +169,30 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
-   Emodel_Eio_Child_Add *child = (Emodel_Eio_Child_Add *)data;
+   Emodel_Eio_Child_Add *child_data = (Emodel_Eio_Child_Add *)data;
+   Eo *child;
 
-   child->callback(child->data, child->priv->obj, (void*)child->priv->path);
-   _assert_ref(eo_ref_get(child->priv->obj));
-   eo_do(child->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child->data, NULL));
-   free((char*)child->fullpath);
-   free(child);
+   _assert_ref(eo_ref_get(child_data->priv->obj));
+   child = eo_add_custom(MY_CLASS, child_data->priv->obj, emodel_eio_constructor(child_data->priv->path));
+
+   child_data->callback(child_data->user, child_data->priv->obj, child);
+   
+   //TODO: Should we keep the event below?
+   //eo_do(child_data->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child, NULL));
+
+   _emodel_dealloc_memory(child_data->fullpath, child_data->user, child_data, NULL);
 }
 
 static void
 _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
+   fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
 }
 
 static void
 _emodel_free_data(void *data)
 {
-   eina_value_free(data);
+   _emodel_dealloc_memory(data, NULL);
 }
 
 static void
@@ -217,7 +241,16 @@ static void
 _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list EINA_UNUSED)
 {
    Emodel_Eio *priv = class_data;
-   eina_hash_free(priv->hash);
+   
+   /*
+    * TODO/FIXME/XXX
+    *
+    * memory corruption
+    * when freeing hash
+    */
+#warning "<leak>Please FIX this memory corruption!!</leak>"
+   //eina_hash_free(priv->hash);
+   
    eio_shutdown();
    eo_do_super(obj, MY_CLASS, eo_destructor()); 
 }
@@ -281,36 +314,39 @@ _emodel_eio_unload(Eo *obj  EINA_UNUSED, void *class_data EINA_UNUSED, va_list *
    //TODO: implement
 }
 
-//TODO
 static void
-_emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
+_emodel_eio_child_add(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 { 
    size_t len;
    Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
    EINA_SAFETY_ON_NULL_RETURN(child);
 
-   child->callback = va_arg(*list, Emodel_Child_Add_Cb);
-   child->name = va_arg(*list, const char *);
-   child->filetype = va_arg(*list, Emodel_Eio_Filetype);
+   child->callback = va_arg(*list, Emodel_Cb);
+   
+   child->user = calloc(1, sizeof(Emodel_Child_Add));
+   EINA_SAFETY_ON_NULL_GOTO(child->user, cleanup_bottom);
+   
+   memcpy(child->user, va_arg(*list, Emodel_Child_Add *), sizeof(Emodel_Child_Add));
    child->priv = class_data;
 
-   EINA_SAFETY_ON_NULL_RETURN(child->name);
+   len = strlen(child->priv->path) + strlen(child->user->name);
 
-   len = strlen(child->priv->path) + strlen(child->name);
-
-   switch(child->filetype)
+   switch(child->user->filetype)
      {
       case EMODEL_EIO_FILE_TYPE_DIR:
          {
             // len + '/' + '\0'
             child->fullpath = calloc(1, len+2);
+            EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
+
+            //gets current mask
             mode_t mode = umask(0);
             umask(mode);
 
             //_eio_done_mkdir_cb frees memory
-            strncpy((char*)child->fullpath, child->priv->path, strlen(child->priv->path));
-            strncat((char*)child->fullpath, "/", 1);
-            strncat((char*)child->fullpath, child->name, strlen(child->name));
+            strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
+            strncat(child->fullpath, "/", 1);
+            strncat(child->fullpath, child->user->name, strlen(child->user->name));
             eio_file_mkdir(child->fullpath, /* TODO check this */ (0777 - mode), 
                            _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
          }
@@ -318,14 +354,26 @@ _emodel_eio_child_add(Eo *obj , void *class_data, va_list *list)
       case EMODEL_EIO_FILE_TYPE_FILE:
          {
             fprintf(stdout,"EMODEL_EIO_FILE_TYPE_FILE: unimplemented\n"); 
+            goto cleanup_top; //TODO/FIXME/XXX: remove this temporary jmp
+            
             //eio_file_open(child->fullpath, 
             //               EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
          }
          break;
       default:
-         fprintf(stdout, "Invalid filetype");
-         break;
+         fprintf(stdout, "Invalid filetype\n");
+         goto cleanup_top; 
      }
+
+   // Ok
+   return;
+
+   //cleanup the mess
+cleanup_top:
+   _emodel_dealloc_memory(child->user, child, NULL);
+cleanup_bottom:
+   _emodel_dealloc_memory(child, NULL);
+
 }
 
 /**
@@ -360,20 +408,19 @@ static void
 _eio_done_children_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio_Children_Data *cdata = data;
-   free(cdata);
-   cdata=NULL;
+   _emodel_dealloc_memory(cdata, NULL);
 }
 
 static void
 _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error)
 {
-   fprintf(stdout, "[cancel] eio_file_direct_ls : %d\n", error);
+   fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
 }
 
 static void
 _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
 {
-   Emodel_Children_Cb callback = va_arg(*list, Emodel_Children_Cb);
+   Emodel_Cb callback = va_arg(*list, Emodel_Cb);
    EINA_SAFETY_ON_NULL_RETURN(callback);
 
 
@@ -422,8 +469,7 @@ static void
 _eio_done_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio_Children_Data *cdata = data;
-   free(cdata);
-   cdata=NULL;
+   _emodel_dealloc_memory(cdata, NULL);
 }
 
 static void
@@ -432,7 +478,7 @@ _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
    Emodel_Eio_Children_Data *cdata;
    int start, count;
 
-   Emodel_Children_Cb callback = va_arg(*list, Emodel_Children_Cb);
+   Emodel_Cb callback = va_arg(*list, Emodel_Cb);
    EINA_SAFETY_ON_NULL_RETURN(callback);
 
    cdata = calloc(1, sizeof(Emodel_Eio_Children_Data));
@@ -488,12 +534,13 @@ _eio_done_children_count_get_cb(void *data, Eio_File *handler EINA_UNUSED)
    EINA_SAFETY_ON_NULL_RETURN(count_data);
    _assert_ref(eo_ref_get(count_data->priv->obj));
    eo_do(count_data->priv->obj, eo_event_callback_call(EMODEL_CHILDREN_COUNT_GET_EVT, &(count_data->total), EINA_FALSE));
-   free(count_data);
+   _emodel_dealloc_memory(count_data, NULL);
 }
 
 static void
 _eio_error_children_count_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
+   fprintf(stdout, "[cancel] eio_file_direct_ls : %d\n", error);
 }
 
 static void
@@ -520,8 +567,6 @@ _emodel_eio_class_constructor(Eo_Class *klass)
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), _emodel_eio_property_set),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_LOAD), _emodel_eio_load),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_UNLOAD), _emodel_eio_unload),
-      
-      // TODO/FIXME/XXX: Shouldn't we be using EMODEL_EIO_ID and EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD?
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), _emodel_eio_child_add),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
@@ -540,7 +585,7 @@ static const Eo_Class_Description class_desc = {
      EO_VERSION,
      MY_CLASS_NAME,
      EO_CLASS_TYPE_REGULAR,
-     EO_CLASS_DESCRIPTION_OPS(&EMODEL_OBJ_EIO_BASE_ID, op_desc, 0),
+     EO_CLASS_DESCRIPTION_OPS(&EMODEL_EIO_BASE_ID, op_desc, 0),
      NULL,
      sizeof(Emodel_Eio),
      _emodel_eio_class_constructor,

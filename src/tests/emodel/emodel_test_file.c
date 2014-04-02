@@ -109,29 +109,32 @@ _child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descri
 }
 
 static void
-_emodel_child_add_cb(void *data, Eo *child EINA_UNUSED, void *event_info EINA_UNUSED)
+_emodel_child_add_cb(void *data, Eo *obj EINA_UNUSED, void *event_info)
 {
-   const char *s = (const char *)data;
-   fprintf(stdout, "my child added:%s\n", s);
+   Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
+   Eo *child = (Eo*)event_info;
+   fprintf(stdout, "%p:my child[%p] added:%s\n", userdata, child, userdata->name);
 }
 
 
 START_TEST(emodel_test_test_file)
 {
    Eo *filemodel;
+   Emodel_Child_Add userdata;
+   int i;
    //Eina_Value *nameset;
-   static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02"};
+   static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", NULL};
    //Ecore_Timer *timer;
 
    ecore_init();
 
 
-   filemodel = eo_add_custom(EMODEL_OBJ_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
+   filemodel = eo_add_custom(EMODEL_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTIES_CHANGE_EVT, _properties_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_COUNT_GET_EVT, _children_count_cb, NULL));
-   eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_cb, NULL));
-
+   //eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_cb, NULL));
+#if 1
    eo_do(filemodel, emodel_property_get("filename"));
    eo_do(filemodel, emodel_property_get("size"));
    eo_do(filemodel, emodel_properties_get());
@@ -143,10 +146,18 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_children_count_get());
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 0,15, NULL));
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 20,5, NULL));
+#endif
+#if 1
 
-   //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, NULL, dirs[0], EMODEL_EIO_FILE_TYPE_DIR));
-   //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[1], dirs[1], EMODEL_EIO_FILE_TYPE_DIR));
-   //eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, dirs[2], dirs[2], EMODEL_EIO_FILE_TYPE_DIR));
+   for(i=0; dirs[i] != NULL; ++i)
+     {
+         memset(&userdata, 0, sizeof(userdata));     
+         userdata.name = dirs[i];
+         userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
+         eo_do(filemodel, emodel_child_add(_emodel_child_add_cb, &userdata));
+     }
+
+#endif
 
    /**
     * The following test works however 
@@ -163,8 +174,8 @@ START_TEST(emodel_test_test_file)
 #endif
    //eo_do(filemodel, emodel_property_get("filename"));
 
-//   timer = ecore_timer_add(0.1, _try_quit, NULL);
-//   fail_if(timer == NULL);
+   //timer = ecore_timer_add(0.1, _try_quit, NULL);
+   //fail_if(timer == NULL);
 
    ecore_main_loop_begin();
 

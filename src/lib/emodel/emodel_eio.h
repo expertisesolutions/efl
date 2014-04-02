@@ -24,10 +24,10 @@
 extern "C" {
 #endif
 
-#define EMODEL_OBJ_EIO_CLASS emodel_obj_eio_class_get()
+#define EMODEL_EIO_CLASS emodel_obj_eio_class_get()
 const Eo_Class *emodel_obj_eio_class_get(void) EINA_CONST;
 
-extern EAPI Eo_Op EMODEL_OBJ_EIO_BASE_ID;
+extern EAPI Eo_Op EMODEL_EIO_BASE_ID;
 
 enum
 {
@@ -44,8 +44,16 @@ enum _Emodel_Eio_Filetype
 
 typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
 
+struct _Emodel_Child_Add
+{
+   const char *name;
+   Emodel_Eio_Filetype filetype;
+};
 
-#define EMODEL_EIO_ID(sub_id) (EMODEL_OBJ_EIO_BASE_ID + sub_id)
+typedef struct _Emodel_Child_Add Emodel_Child_Add;
+
+
+#define EMODEL_EIO_ID(sub_id) (EMODEL_EIO_BASE_ID + sub_id)
 
 /**
  * @def emodel_constructor
@@ -56,9 +64,6 @@ typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
  *
  */
 #define emodel_eio_constructor(path) EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
-
-// TODO/FIXME/XXX: Shouldn't we be using EMODEL_EIO_ID and EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD
-#define emodel_eio_child_add(child_add_cb, data, name, filetype) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb, child_add_cb), EO_TYPECHECK(void *, data), EO_TYPECHECK(const char *, name), EO_TYPECHECK(Emodel_Eio_Filetype, filetype)
 
 #ifdef __cplusplus
 }

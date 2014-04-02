@@ -46,8 +46,7 @@ enum
    EMODEL_SUB_ID_LAST,
 };
 
-typedef void (*Emodel_Child_Add_Cb)(void *data, Eo *child, void *event_info);
-typedef void (*Emodel_Children_Cb)(void *data, Eo *child, void *event_info);
+typedef void (*Emodel_Cb)(void *data, Eo *child, void *event_info);
 
 struct _Emodel_Property_EVT
 {
@@ -107,21 +106,21 @@ typedef struct _Emodel_Children_EVT Emodel_Children_EVT;
  * @since 1.9
  *
  */
-#define emodel_child_add(child_add_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Child_Add_Cb , child_add_cb), EO_TYPECHECK(void *, data)
+#define emodel_child_add(child_add_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(void *, data)
 
 /**
  * @def emodel_children_get
  * @since 1.9
  *
  */
-#define emodel_children_get(children_get_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), EO_TYPECHECK(Emodel_Children_Cb, children_get_cb), EO_TYPECHECK(void *, data)
+#define emodel_children_get(children_get_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), EO_TYPECHECK(Emodel_Cb, children_get_cb), EO_TYPECHECK(void *, data)
 
 /**
  * @def emodel_children_slice_get
  * @since 1.9
  *
  */
-#define emodel_children_slice_get(children_slice_get_cb, start, count, data) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), EO_TYPECHECK(Emodel_Children_Cb, children_slice_get_cb), EO_TYPECHECK(int, start), EO_TYPECHECK(int, count), EO_TYPECHECK(void *, data)
+#define emodel_children_slice_get(children_slice_get_cb, start, count, data) EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), EO_TYPECHECK(Emodel_Cb, children_slice_get_cb), EO_TYPECHECK(int, start), EO_TYPECHECK(int, count), EO_TYPECHECK(void *, data)
 
 /**
  * @def emodel_children_count_get
@@ -139,9 +138,11 @@ extern const Eo_Event_Description _EMODEL_PROPERTY_CHANGE_EVT;
 extern const Eo_Event_Description _EMODEL_CHILD_ADD_EVT;
 #define EMODEL_CHILD_ADD_EVT (&(_EMODEL_CHILD_ADD_EVT))
 
+//TODO: implement
 extern const Eo_Event_Description _EMODEL_CHILD_DEL_EVT;
 #define EMODEL_CHILD_DEL_EVT (&(_EMODEL_CHILD_DEL_EVT))
 
+//TODO: remove this event ?
 extern const Eo_Event_Description _EMODEL_CHILDREN_GET_EVT;
 #define EMODEL_CHILDREN_GET_EVT (&(_EMODEL_CHILDREN_GET_EVT))
 
