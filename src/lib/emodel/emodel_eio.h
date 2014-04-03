@@ -33,6 +33,7 @@ enum
 {
    EMODEL_OBJ_EIO_SUB_ID_CONSTRUCTOR,
    EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD,
+   EMODEL_OBJ_EIO_SUB_ID_CHILD_DEL,
    EMODEL_OBJ_EIO_SUB_ID_LAST,
 };
 
@@ -46,6 +47,7 @@ typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
 
 struct _Emodel_Child_Add
 {
+   Eo *child;
    const char *name;
    Emodel_Eio_Filetype filetype;
 };
@@ -56,7 +58,7 @@ typedef struct _Emodel_Child_Add Emodel_Child_Add;
 #define EMODEL_EIO_ID(sub_id) (EMODEL_EIO_BASE_ID + sub_id)
 
 /**
- * @def emodel_constructor
+ * @def emodel_eio_constructor
  * @since 1.9
  *
  * Contructor for Emodel.
@@ -64,6 +66,27 @@ typedef struct _Emodel_Child_Add Emodel_Child_Add;
  *
  */
 #define emodel_eio_constructor(path) EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
+
+/**
+ * @def emodel_eio_child_add
+ * @since 1.9
+ *
+ * Add new child.
+ * @param[in] child_add_cb callback function
+ * @param[in]  data unmodified user data
+ *
+ */
+#define emodel_eio_child_add(child_add_cb, data) EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(void *, data)
+
+/**
+ * @def emodel_eio_child_del
+ * @since 1.9
+ *
+ * Delete child.
+ *
+ *
+ */
+//#define emodel_eio_child_del(child_add_cb, data) EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(void *, data)
 
 #ifdef __cplusplus
 }
