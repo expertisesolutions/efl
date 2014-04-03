@@ -15,28 +15,28 @@
 
 #define EMODEL_TEST_FILENAME_PATH "/tmp"
 
-struct requeriments {
+struct reqs_t {
    int filename;
    int size;
    int properties;
    int propset;
    int count;
    int children;
-} requeriments = {0, 0, 0, 0, 0};
+};
+
+static struct reqs_t reqs;
 
 static Eina_Bool
 __attribute__((unused))_try_quit(void *data EINA_UNUSED)
 {
-   printf("Try quit\n");
-   fail_if (
-       requeriments.filename
-       && requeriments.size
-       && requeriments.properties
-//       && requeriments.propset
-//       && requeriments.count
-//       && requeriments.children == 0
-   );
-//   ecore_main_loop_quit();
+   printf("Try quit: \
+          filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d\n", 
+          reqs.filename, reqs.size, reqs.properties, reqs.propset, reqs.count, reqs.children);
+
+   fail_if((reqs.filename == -1) || (reqs.size == -1) || (reqs.properties == -1) 
+           || (reqs.propset == -1) || (reqs.count == -1) || (reqs.children == -1));
+   
+   ecore_main_loop_quit();
 
    return EINA_TRUE;
 }
@@ -49,7 +49,7 @@ _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descr
    unsigned int i;
 
 
-   requeriments.properties = 1;
+   reqs.properties = 1;
    for (i = 0; i < eina_value_array_count(properties); i++)
      {
         eina_value_array_get(properties, i, &prop);
@@ -68,13 +68,25 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
    if (strncmp(evt->prop, "filename", strlen("filename")) == 0)
      {
         fprintf(stdout, "received Filename\n");
-        requeriments.filename = 1;
+        reqs.filename = 1;
      }
-   else if (strncmp(evt->prop, "size", strlen("size")) == 0) //TODO Test all prop stat names
+   else if (strncmp(evt->prop, "size", strlen("size")) == 0) 
      {
         fprintf(stdout, "received Size\n");
-        requeriments.size = 1;
+        reqs.size = 1;
      }
+   else if (strncmp(evt->prop, "properties", strlen("properties")) == 0) 
+     {
+        fprintf(stdout, "received Properties\n");
+        reqs.properties = 1;
+     }
+   else if (strncmp(evt->prop, "propset", strlen("propset")) == 0) 
+     {
+        fprintf(stdout, "received Propset\n");
+        reqs.propset = 1;
+     }
+   //reqs.count is set below
+   //reqs.children is set below
 
    return EINA_TRUE;
 }
@@ -94,11 +106,13 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
    unsigned int *len = event_info;
 
    fprintf(stdout, "children count len=%d\n", *len);
-   requeriments.children = *len;
-   requeriments.count = 1;
+   reqs.children = *len;
+   reqs.count = 1;
    return EINA_TRUE;
 }
 
+
+/*
 static Eina_Bool
 _child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
@@ -107,13 +121,23 @@ _child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descri
    fprintf(stdout, "child added:%s\n", s);
    return EINA_TRUE;
 }
+*/
+
 
 static void
-_emodel_child_add_cb(void *data, Eo *obj EINA_UNUSED, void *event_info)
+_emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 {
    Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
    Eo *child = (Eo*)event_info;
-   fprintf(stdout, "%p:my child[%p] added:%s\n", userdata, child, userdata->name);
+   fprintf(stdout, "Child add: parent=%p, child=%p path=%s\n", obj, child, userdata->name);
+}
+
+static Eina_Bool
+_child_add_evt_cb(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+{
+   Emodel_Child_Add *userdata = (Emodel_Child_Add*)event_info;
+   fprintf(stdout, "Child add event: parent=%p, child=%p path=%s\n", obj, userdata->child, userdata->name);
+   return EINA_TRUE;
 }
 
 
@@ -122,42 +146,43 @@ START_TEST(emodel_test_test_file)
    Eo *filemodel;
    Emodel_Child_Add userdata;
    int i;
-   //Eina_Value *nameset;
    static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", NULL};
-   //Ecore_Timer *timer;
+   Ecore_Timer *timer;
+
+   //init requirements check fileds to -1
+   memset(&reqs, -1, sizeof(struct reqs_t));
 
    ecore_init();
-
 
    filemodel = eo_add_custom(EMODEL_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_PROPERTIES_CHANGE_EVT, _properties_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILDREN_COUNT_GET_EVT, _children_count_cb, NULL));
-   //eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_cb, NULL));
-#if 1
+
+   // Listener for child add
+   eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_evt_cb, NULL));
+
+   
    eo_do(filemodel, emodel_property_get("filename"));
    eo_do(filemodel, emodel_property_get("size"));
    eo_do(filemodel, emodel_properties_get());
    
-   
    eo_do(filemodel, emodel_children_get(_children_get_cb, NULL));
-   
    
    eo_do(filemodel, emodel_children_count_get());
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 0,15, NULL));
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 20,5, NULL));
-#endif
-#if 1
 
+
+   // here we set the callback for child add
    for(i=0; dirs[i] != NULL; ++i)
      {
          memset(&userdata, 0, sizeof(userdata));     
          userdata.name = dirs[i];
          userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
-         eo_do(filemodel, emodel_child_add(_emodel_child_add_cb, &userdata));
+         eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, &userdata));
      }
 
-#endif
 
    /**
     * The following test works however 
@@ -167,16 +192,14 @@ START_TEST(emodel_test_test_file)
     */
 //#define _RUN_LOCAL_TEST
 #ifdef _RUN_LOCAL_TEST
-   nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
+   Eina_Value *nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
    eina_value_set(nameset, "/tmp/DIRAC");
    eo_do(filemodel, emodel_property_set("filename", nameset));
    eo_do(filemodel, emodel_property_get("filename"));
 #endif
    //eo_do(filemodel, emodel_property_get("filename"));
 
-   //timer = ecore_timer_add(0.1, _try_quit, NULL);
-   //fail_if(timer == NULL);
-
+   ecore_timer_add(3, _try_quit, NULL);
    ecore_main_loop_begin();
 
    eo_unref(filemodel);

@@ -59,6 +59,7 @@ struct _Emodel_Eio_Child_Add
 };
 
 typedef struct _Emodel_Eio_Child_Add Emodel_Eio_Child_Add;
+typedef struct _Emodel_Eio_Child_Add Emodel_Eio_Child_Del;
 
 struct _Emodel_Eio_Children_Count
 {
@@ -83,7 +84,7 @@ struct _Emodel_Eio_Children_Data
 
 typedef struct _Emodel_Eio_Children_Data Emodel_Eio_Children_Data;
 
-static Eina_Lock eio_mutex;
+//static Eina_Lock eio_mutex;
 static void 
 _emodel_dealloc_memory(void *ptr, ...)
 {
@@ -169,18 +170,21 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
-   Emodel_Eio_Child_Add *child_data = (Emodel_Eio_Child_Add *)data;
-   Eo *child;
+   Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
+   Eo *parent = _data->priv->obj;
 
-   _assert_ref(eo_ref_get(child_data->priv->obj));
-   child = eo_add_custom(MY_CLASS, child_data->priv->obj, emodel_eio_constructor(child_data->priv->path));
+   _assert_ref(eo_ref_get(parent));
 
-   child_data->callback(child_data->user, child_data->priv->obj, child);
+   /* save child object in userdata, callback can ignore this field */
+   _data->user->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->priv->path));
+
+   /* dispatch callback for user */
+   _data->callback(_data->user, parent, _data->user->child);
    
-   //TODO: Should we keep the event below?
-   //eo_do(child_data->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, child, NULL));
+   /* also dispatch event for listeners */
+   eo_do(_data->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, _data->user, NULL));
 
-   _emodel_dealloc_memory(child_data->fullpath, child_data->user, child_data, NULL);
+   _emodel_dealloc_memory(_data->fullpath, _data->user, _data, NULL);
 }
 
 static void
@@ -218,6 +222,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 #warning "<leak>Please FIX this memory corruption!!</leak>"
    priv->hash = eina_hash_string_small_new(NULL);
 #else
+#warning "Please FIX this memory corruption!!"
    priv->hash = eina_hash_string_small_new(free);
 #endif
 
@@ -314,6 +319,10 @@ _emodel_eio_unload(Eo *obj  EINA_UNUSED, void *class_data EINA_UNUSED, va_list *
    //TODO: implement
 }
 
+/**
+ * @brief _emodel_eio_child_add overrides  emodel_child_add and 
+ * executes its own event and callback.
+ */
 static void
 _emodel_eio_child_add(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 { 
@@ -374,6 +383,26 @@ cleanup_top:
 cleanup_bottom:
    _emodel_dealloc_memory(child, NULL);
 
+}
+
+/**
+ * Child Del
+ */
+static void
+_emodel_eio_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+{ 
+   //size_t len;
+   //Emodel_Eio_Child_Del *child = calloc(1, sizeof(Emodel_Eio_Child_Del));
+   //EINA_SAFETY_ON_NULL_RETURN(child);
+
+#if 0
+EAPI Eio_File *eio_dir_unlink(const char *path,
+                              Eio_Filter_Direct_Cb filter_cb,
+			      Eio_Progress_Cb progress_cb,
+			      Eio_Done_Cb done_cb,
+			      Eio_Error_Cb error_cb,
+			      const void *data);
+#endif
 }
 
 /**
@@ -555,7 +584,6 @@ _emodel_eio_children_count_get(Eo *obj , void *class_data, va_list *list EINA_UN
                       _eio_error_children_count_get_cb, count_data);
 }
 
-
 static void
 _emodel_eio_class_constructor(Eo_Class *klass)
 {
@@ -567,7 +595,8 @@ _emodel_eio_class_constructor(Eo_Class *klass)
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), _emodel_eio_property_set),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_LOAD), _emodel_eio_load),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_UNLOAD), _emodel_eio_unload),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), _emodel_eio_child_add),
+      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD), _emodel_eio_child_add),
+      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_DEL), _emodel_eio_child_del),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_COUNT_GET), _emodel_eio_children_count_get),
@@ -578,6 +607,9 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 }
 
 static const Eo_Op_Description op_desc[] = {
+     EO_OP_DESCRIPTION(EMODEL_OBJ_EIO_SUB_ID_CONSTRUCTOR, "Eio file constructor."),
+     EO_OP_DESCRIPTION(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD, "Add new child."),
+     EO_OP_DESCRIPTION(EMODEL_OBJ_EIO_SUB_ID_CHILD_DEL, "Delete child."),
      EO_OP_DESCRIPTION_SENTINEL
 };
 
@@ -585,7 +617,7 @@ static const Eo_Class_Description class_desc = {
      EO_VERSION,
      MY_CLASS_NAME,
      EO_CLASS_TYPE_REGULAR,
-     EO_CLASS_DESCRIPTION_OPS(&EMODEL_EIO_BASE_ID, op_desc, 0),
+     EO_CLASS_DESCRIPTION_OPS(&EMODEL_EIO_BASE_ID, op_desc, EMODEL_OBJ_EIO_SUB_ID_LAST),
      NULL,
      sizeof(Emodel_Eio),
      _emodel_eio_class_constructor,
