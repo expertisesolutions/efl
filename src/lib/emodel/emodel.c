@@ -38,6 +38,7 @@ static const Eo_Op_Description op_desc[] = {
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_LOAD, "Load emodel"),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_UNLOAD, "Unload emodel"),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILD_ADD, "Add new child."),
+      EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILD_DEL, "Del child."),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_GET, "Get all children."),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_SLICE_GET, "Get children slice."),
       EO_OP_DESCRIPTION(EMODEL_SUB_ID_CHILDREN_COUNT_GET, "Count number of children."),

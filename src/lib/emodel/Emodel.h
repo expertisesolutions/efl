@@ -40,6 +40,7 @@ enum
    EMODEL_SUB_ID_LOAD,
    EMODEL_SUB_ID_UNLOAD,
    EMODEL_SUB_ID_CHILD_ADD,
+   EMODEL_SUB_ID_CHILD_DEL,
    EMODEL_SUB_ID_CHILDREN_GET,
    EMODEL_SUB_ID_CHILDREN_SLICE_GET,
    EMODEL_SUB_ID_CHILDREN_COUNT_GET,
@@ -107,6 +108,14 @@ typedef struct _Emodel_Children_EVT Emodel_Children_EVT;
  *
  */
 #define emodel_child_add(child_add_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(void *, data)
+
+
+/**
+ * @def emodel_child_del
+ * @since 1.9
+ *
+ */
+#define emodel_child_del() EMODEL_ID(EMODEL_SUB_ID_CHILD_DEL)
 
 /**
  * @def emodel_children_get
