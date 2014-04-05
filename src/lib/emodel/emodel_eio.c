@@ -17,6 +17,7 @@ static inline void _assert_ref(int num){}
 #endif
 
 EAPI Eo_Op EMODEL_EIO_BASE_ID = EO_NOOP;
+#define PROP_LIST_SIZE 5
 
 #define MY_CLASS EMODEL_EIO_CLASS
 #define MY_CLASS_NAME "Emodel_Eio_Class"
@@ -37,13 +38,20 @@ struct _Emodel_Eio_Item
 
 typedef struct _Emodel_Eio_Item Emodel_Eio_Item;
 
+struct _Emodel_Properties
+{
+   Eina_Value *v;
+   const char *prop;
+};
+
+typedef struct _Emodel_Properties Emodel_Properties;
 
 struct _Emodel_Eio
 {
    Eina_Value *properties;
    Eo *obj;
    Eio_File *file;
-   Eina_Hash *hash;
+   Emodel_Properties proplist[PROP_LIST_SIZE];
    const char *path;
    const Eina_Stat *stat;
 };
@@ -84,13 +92,11 @@ struct _Emodel_Eio_Children_Data
 
 typedef struct _Emodel_Eio_Children_Data Emodel_Eio_Children_Data;
 
-//static Eina_Lock eio_mutex;
 static void 
 _emodel_dealloc_memory(void *ptr, ...)
 {
    va_list al;
    void *data;
-   //eina_lock_take(&eio_mutex);
    va_start(al,ptr);
 
    for(data = ptr; data != NULL; data = va_arg(al, void*))
@@ -99,17 +105,28 @@ _emodel_dealloc_memory(void *ptr, ...)
         data = NULL;
      }
    va_end(al);
-   //eina_lock_release(&eio_mutex);
+}
+
+static inline Eina_Value*
+_emodel_property_value_get(const Emodel_Eio *priv, const char *prop)
+{
+   if(!priv || !prop) return NULL;
+   for(unsigned int i = 0; i != PROP_LIST_SIZE; ++i)
+     {
+        if(!strncmp(priv->proplist[i].prop, prop, strlen(priv->proplist[i].prop)))
+           return priv->proplist[i].v;
+     }
+     return NULL;
 }
 
 static void
-_hash_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
+_stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
 {
    Emodel_Property_EVT evt;
 
    EINA_SAFETY_ON_NULL_RETURN(priv);
    eina_value_array_get(priv->properties, prop_id, &evt.prop);
-   evt.value = eina_hash_find(priv->hash, evt.prop);
+   evt.value = _emodel_property_value_get(priv, evt.prop);
    eina_value_set(evt.value, pvalue);
 
    _assert_ref(eo_ref_get(priv->obj));
@@ -122,10 +139,10 @@ _stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *stat)
    Emodel_Eio *priv = data;
    priv->stat = stat;
 
-   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_IS_DIR, eio_file_is_dir(stat));
-   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_IS_LNK, eio_file_is_lnk(stat));
-   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_SIZE, eio_file_size(stat));
-   _hash_stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, eio_file_mtime(stat));
+   _stat_pro_set(priv, EMODEL_EIO_PROP_IS_DIR, eio_file_is_dir(stat));
+   _stat_pro_set(priv, EMODEL_EIO_PROP_IS_LNK, eio_file_is_lnk(stat));
+   _stat_pro_set(priv, EMODEL_EIO_PROP_SIZE, eio_file_size(stat));
+   _stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, eio_file_mtime(stat));
 }
 
 /*
@@ -159,7 +176,7 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
    Emodel_Eio *priv = data;
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
-   evt.value = eina_hash_find(priv->hash, evt.prop);
+   evt.value = _emodel_property_value_get(priv, evt.prop);
    eina_value_set(evt.value, priv->path);
    eio_file_direct_stat(priv->path, _stat_done_cb, _eio_property_set_error_cb, priv);
 
@@ -203,7 +220,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    size_t i;
 
    eo_do_super(obj, MY_CLASS, eo_constructor()); 
-
+   
    priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 0);
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
@@ -211,22 +228,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
 
-#define __BUG__ 1
-#if __BUG__
-   /*
-    * TODO/FIXME/XXX
-    *
-    * memory corruption
-    * when freeing hash
-    */
-#warning "<leak>Please FIX this memory corruption!!</leak>"
-   priv->hash = eina_hash_string_small_new(NULL);
-#else
-#warning "Please FIX this memory corruption!!"
-   priv->hash = eina_hash_string_small_new(free);
-#endif
-
-   for (i = 0; i < eina_value_array_count(priv->properties); i++)
+   for (i = 0; i != PROP_LIST_SIZE; i++)
      {
         switch(i) {
         case EMODEL_EIO_PROP_FILENAME:
@@ -241,7 +243,8 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
         }
 
         eina_value_array_get(priv->properties, i, &prop);
-        eina_hash_add(priv->hash, prop, v);
+        priv->proplist[i].v = v; 
+        priv->proplist[i].prop = prop; 
      }
 
    priv->obj = obj;
@@ -252,10 +255,6 @@ static void
 _emodel_eio_destructor(Eo *obj , void *class_data, va_list *list EINA_UNUSED)
 {
    Emodel_Eio *priv = class_data;
-   
-   eina_hash_free(priv->hash);
-   priv->hash = NULL;
-   
    eio_shutdown();
    eo_do_super(obj, MY_CLASS, eo_destructor()); 
 }
@@ -278,7 +277,7 @@ _emodel_eio_property_get(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
    if (!strncmp(prop_arg, evt.prop, strlen(evt.prop))) 
      {
-        evt.value = eina_hash_find(priv->hash, evt.prop);
+        evt.value = _emodel_property_value_get(priv, evt.prop);
         _assert_ref(eo_ref_get(priv->obj));
         eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
         return;
@@ -299,7 +298,7 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
    if (!strncmp(prop_arg, prop, strlen(prop))) {
       const char *src;
-      Eina_Value *value = eina_hash_find(priv->hash, prop);
+      Eina_Value *value = _emodel_property_value_get(priv, prop);
       eina_value_get(value, &src);
       eina_value_get(v, &dest);
       priv->path = dest;
