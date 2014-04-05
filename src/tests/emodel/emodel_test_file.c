@@ -135,8 +135,13 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 static Eina_Bool
 _child_add_evt_cb(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   Emodel_Child_Add *userdata = (Emodel_Child_Add*)event_info;
-   fprintf(stdout, "Child add event: parent=%p, child=%p path=%s\n", obj, userdata->child, userdata->name);
+   Emodel_Children_EVT *userdata = (Emodel_Children_EVT*)event_info;
+   //fprintf(stdout, "Child add event: parent=%p, child=%p path=%s\n", obj, userdata->child, userdata->name);
+   return EINA_TRUE;
+}
+static Eina_Bool
+_child_add_evt_cb2(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+{
    return EINA_TRUE;
 }
 
@@ -146,7 +151,7 @@ START_TEST(emodel_test_test_file)
    Eo *filemodel;
    Emodel_Child_Add userdata;
    int i;
-   static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", NULL};
+   static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", "emodel_test_dir_03", NULL};
    Ecore_Timer *timer;
 
    //init requirements check fileds to -1
@@ -161,6 +166,7 @@ START_TEST(emodel_test_test_file)
 
    // Listener for child add
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_evt_cb, NULL));
+   //eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_DEL_EVT, _child_add_evt_cb2, NULL));
 
    
    eo_do(filemodel, emodel_property_get("filename"));
@@ -197,7 +203,6 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_property_set("filename", nameset));
    eo_do(filemodel, emodel_property_get("filename"));
 #endif
-   //eo_do(filemodel, emodel_property_get("filename"));
 
    ecore_timer_add(3, _try_quit, NULL);
    ecore_main_loop_begin();

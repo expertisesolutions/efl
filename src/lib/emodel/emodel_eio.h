@@ -45,6 +45,14 @@ enum _Emodel_Eio_Filetype
 
 typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
 
+struct _Emodel_Eio_Public_Data
+{
+   int cb_count_child_add;
+   int cb_count_child_del;
+};
+
+typedef struct _Emodel_Eio_Public_Data Emodel_Eio_Public_Data;
+
 struct _Emodel_Child_Add
 {
    Eo *child;

@@ -6,6 +6,7 @@
 #include <Eina.h>
 #include <emodel_eio.h>
 #include <Eio.h>
+#include <Ecore.h>
 #include <Eo.h>
 #include <assert.h>
 
@@ -51,9 +52,13 @@ struct _Emodel_Eio
    Eina_Value *properties;
    Eo *obj;
    Eio_File *file;
-   Emodel_Properties proplist[PROP_LIST_SIZE];
    const char *path;
    const Eina_Stat *stat;
+   Eio_Monitor *monitor;
+   Ecore_Event_Handler *ecore_child_add_handler;
+   Ecore_Event_Handler *ecore_child_del_handler;
+   Emodel_Eio_Public_Data pub;
+   Emodel_Properties proplist[PROP_LIST_SIZE];
 };
 
 typedef struct _Emodel_Eio Emodel_Eio;
@@ -198,8 +203,9 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    /* dispatch callback for user */
    _data->callback(_data->user, parent, _data->user->child);
    
+   //TODO: remove this
    /* also dispatch event for listeners */
-   eo_do(_data->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, _data->user, NULL));
+  // eo_do(_data->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, _data->user, NULL));
 
    _emodel_dealloc_memory(_data->fullpath, _data->user, _data, NULL);
 }
@@ -208,6 +214,86 @@ static void
 _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
    fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
+}
+
+static Eina_Bool 
+_emodel_evt_added_ecore_cb(void *data, int type, void *event)
+{
+   Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
+   Emodel_Eio *priv = data;
+   Emodel_Children_EVT cevt;
+   Eo *child;
+
+   cevt.child = eo_add_custom(MY_CLASS, priv->obj, emodel_eio_constructor(evt->filename));
+   cevt.idx = 1;
+
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, &cevt, NULL));
+}
+
+Eina_Bool
+_emodel_evt_added_cb(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info)
+{
+   Emodel_Eio *priv = eo_data_scope_get(obj, MY_CLASS);
+   const Eo_Callback_Array_Item *callback_array = event_info;
+   
+   if((priv->pub.cb_count_child_add == 0) && (priv->pub.cb_count_child_del == 0))
+        priv->monitor = eio_monitor_add(priv->path); 
+
+   if(callback_array->desc == EMODEL_CHILD_ADD_EVT)
+     {
+        if(priv->pub.cb_count_child_add == 0)
+          {
+            priv->ecore_child_add_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_CREATED, _emodel_evt_added_ecore_cb, priv);
+          }
+        priv->pub.cb_count_child_add++;
+        return EO_CALLBACK_CONTINUE;
+     }
+   else if(callback_array->desc == EMODEL_CHILD_DEL_EVT)
+     {
+        if(priv->pub.cb_count_child_del == 0)
+          {
+            //priv->ecore_child_del_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_DELETED, (Ecore_Event_Handler_Cb)file_modified, priv->path);
+          }
+        priv->pub.cb_count_child_del++;
+        return EO_CALLBACK_CONTINUE;
+     }
+
+   // TODO: EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h  :(
+   return EINA_TRUE;
+}
+
+Eina_Bool
+_emodel_evt_deleted_cb(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info)
+{
+   
+   Emodel_Eio *priv = eo_data_scope_get(obj, MY_CLASS);
+   const Eo_Callback_Array_Item *callback_array = event_info;
+   
+   if(callback_array->desc == EMODEL_CHILD_ADD_EVT)
+     {
+        priv->pub.cb_count_child_add--;
+        if(priv->pub.cb_count_child_add == 0)
+          {
+            //priv->ecore_child_add_handler = ecore_event_handler_del(EIO_MONITOR_FILE_CREATED, (Ecore_Event_Handler_Cb)file_modified, priv->path);
+            printf("Added EMODEL_CHILD_ADD_EVT callback to %p. Count: %d, Dir: %s\n", obj, priv->pub.cb_count_child_add, priv->path);
+          }
+        return EO_CALLBACK_CONTINUE;
+     }
+   else if(callback_array->desc == EMODEL_CHILD_DEL_EVT)
+     {
+        priv->pub.cb_count_child_del--;
+        if(priv->pub.cb_count_child_del == 0)
+          {
+            //priv->ecore_child_del_handler = ecore_event_handler_del(EIO_MONITOR_FILE_DELETED, (Ecore_Event_Handler_Cb)file_modified, priv->path);
+            printf("Added EMODEL_CHILD_DEL_EVT callback to %p. Count: %d, Dir: %s\n", obj, priv->pub.cb_count_child_del, priv->path);
+          }
+        return EO_CALLBACK_CONTINUE;
+     }
+   
+   if((priv->pub.cb_count_child_add == 0) && (priv->pub.cb_count_child_del == 0))
+        eio_monitor_del(priv->monitor); 
+   
+   return EINA_TRUE;
 }
 
 static void
@@ -247,14 +333,16 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
         priv->proplist[i].prop = prop; 
      }
 
+   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _emodel_evt_added_cb, NULL));
+   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_DEL, _emodel_evt_deleted_cb, NULL));
+
    priv->obj = obj;
    eio_init();
 }
 
 static void
-_emodel_eio_destructor(Eo *obj , void *class_data, va_list *list EINA_UNUSED)
+_emodel_eio_destructor(Eo *obj , void *class_data EINA_UNUSED, va_list *list EINA_UNUSED)
 {
-   Emodel_Eio *priv = class_data;
    eio_shutdown();
    eo_do_super(obj, MY_CLASS, eo_destructor()); 
 }
@@ -327,7 +415,7 @@ _emodel_eio_child_add(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 { 
    size_t len;
    Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
-   EINA_SAFETY_ON_NULL_RETURN(child);
+   EINA_SAFETY_ON_NULL_RETURN(child);  
 
    child->callback = va_arg(*list, Emodel_Cb);
    
@@ -388,7 +476,7 @@ cleanup_bottom:
  * Child Del
  */
 static void
-_emodel_eio_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+_emodel_eio_child_del(Eo *obj EINA_UNUSED, void *class_data EINA_UNUSED, va_list *list EINA_UNUSED)
 { 
    //size_t len;
    //Emodel_Eio_Child_Del *child = calloc(1, sizeof(Emodel_Eio_Child_Del));
@@ -572,7 +660,7 @@ _eio_error_children_count_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_
 }
 
 static void
-_emodel_eio_children_count_get(Eo *obj , void *class_data, va_list *list EINA_UNUSED)
+_emodel_eio_children_count_get(Eo *obj, void *class_data, va_list *list EINA_UNUSED)
 {
    Emodel_Eio *priv = class_data;
    Emodel_Eio_Children_Count *count_data = calloc(1, sizeof(Emodel_Eio_Children_Count));
