@@ -13,6 +13,7 @@ lib_emodel_libemodel_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
 -I$(top_builddir)/src/lib/emodel \
 -I$(top_builddir)/src/lib/efl \
 -I$(top_builddir)/src/lib/eo \
+-I$(top_builddir)/src/lib/ecore \
 -I$(top_builddir)/src/lib/eina \
 -I$(top_builddir)/src/lib/eio \
 -I$(top_builddir)/src/lib/eet \
