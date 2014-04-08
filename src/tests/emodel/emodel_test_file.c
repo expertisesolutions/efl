@@ -92,9 +92,9 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 }
    
 static void
-_children_get_cb(void *data, Eo *child, void *event_info EINA_UNUSED)
+_children_get_cb(void *data, Eo *child, void *event_info)
 {
-   int *idx = (int*)data;
+   int *idx = (int*)event_info;
    fprintf(stdout, "child received: child=%p, idx=%d\n", child, *idx);
    eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(child, emodel_property_get("filename"));
@@ -133,10 +133,10 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 }
 
 static Eina_Bool
-_child_add_evt_cb(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+_child_add_evt_cb(void *data, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   Emodel_Children_EVT *userdata = (Emodel_Children_EVT*)event_info;
-   //fprintf(stdout, "Child add event: parent=%p, child=%p path=%s\n", obj, userdata->child, userdata->name);
+   Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
+   fprintf(stdout, "Child add event: parent=%p, child=%p index=%d\n", obj, evt->child, evt->idx);
    return EINA_TRUE;
 }
 static Eina_Bool

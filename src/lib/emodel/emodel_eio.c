@@ -202,10 +202,6 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 
    /* dispatch callback for user */
    _data->callback(_data->user, parent, _data->user->child);
-   
-   //TODO: remove this
-   /* also dispatch event for listeners */
-  // eo_do(_data->priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, _data->user, NULL));
 
    _emodel_dealloc_memory(_data->fullpath, _data->user, _data, NULL);
 }
@@ -225,7 +221,7 @@ _emodel_evt_added_ecore_cb(void *data, int type, void *event)
    Eo *child;
 
    cevt.child = eo_add_custom(MY_CLASS, priv->obj, emodel_eio_constructor(evt->filename));
-   cevt.idx = 1;
+   cevt.idx = -1; //FIXME
 
    eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, &cevt, NULL));
 }
@@ -515,7 +511,7 @@ _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_
 
    _assert_ref(eo_ref_get(cdata->priv->obj));
 
-   cdata->callback(&cdata->cidx, child, cdata->data);
+   cdata->callback(cdata->data, child, &cdata->cidx);
    cdata->cidx++;
 }
 
