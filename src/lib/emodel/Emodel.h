@@ -60,6 +60,7 @@ typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
 struct _Emodel_Children_EVT
 {
    Eo *child;
+   void *data;
    int idx;
 };
 

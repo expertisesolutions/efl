@@ -94,7 +94,7 @@ typedef struct _Emodel_Child_Add Emodel_Child_Add;
  *
  *
  */
-//#define emodel_eio_child_del(child_add_cb, data) EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(void *, data)
+#define emodel_eio_child_del(child_del_cb, data) EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb , child_del_cb), EO_TYPECHECK(void *, data)
 
 #ifdef __cplusplus
 }

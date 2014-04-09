@@ -122,14 +122,39 @@ _child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descri
    return EINA_TRUE;
 }
 */
-
+static void
+_emodel_child_del_cb(void *data, Eo *obj, void *event_info)
+{
+   //TODO: implement
+   fprintf(stdout, "Deleted!\n");
+}
 
 static void
 _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 {
    Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
    Eo *child = (Eo*)event_info;
+   Emodel_Child_Add _userdata;
+   static int del = 0;
+
    fprintf(stdout, "Child add: parent=%p, child=%p path=%s\n", obj, child, userdata->name);
+   
+   if(!del)
+     {
+        /**
+         * This test means that you would not see one
+         * of previously added directories because we'll 
+         * delete it as soon as add_cb is notified.
+         */
+        del = 1;
+        fprintf(stdout, "[del test] Deleting first child %p (%s/%s)\n", child, EMODEL_TEST_FILENAME_PATH, userdata->name); 
+        _userdata.child = child;
+        _userdata.name = userdata->name;
+        _userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
+
+        // bye bye!
+        eo_do(obj, emodel_eio_child_del(_emodel_child_del_cb, &_userdata));
+     }
 }
 
 static Eina_Bool
@@ -184,6 +209,7 @@ START_TEST(emodel_test_test_file)
    for(i=0; dirs[i] != NULL; ++i)
      {
          memset(&userdata, 0, sizeof(userdata));     
+         userdata.child = NULL;
          userdata.name = dirs[i];
          userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
          eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, &userdata));
