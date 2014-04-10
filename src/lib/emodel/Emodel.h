@@ -116,7 +116,7 @@ typedef struct _Emodel_Children_EVT Emodel_Children_EVT;
  * @since 1.9
  *
  */
-#define emodel_child_del() EMODEL_ID(EMODEL_SUB_ID_CHILD_DEL)
+#define emodel_child_del(child_del_cb, data) EMODEL_ID(EMODEL_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb , child_del_cb), EO_TYPECHECK(void *, data)
 
 /**
  * @def emodel_children_get
