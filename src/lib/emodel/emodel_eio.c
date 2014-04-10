@@ -124,6 +124,7 @@ _emodel_evt_added_ecore_cb(void *data, int type, void *event)
    Emodel_Children_EVT cevt;
    Eo *child;
 
+   cevt.data = (void*)evt->filename;
    cevt.child = eo_add_custom(MY_CLASS, priv->obj, emodel_eio_constructor(evt->filename));
    cevt.idx = -1; 
 
@@ -139,7 +140,7 @@ _emodel_evt_deleted_ecore_cb(void *data, int type, void *event)
    Eo *child;
 
    cevt.data = (void*)evt->filename;
-   cevt.child = NULL; //TODO: check this
+   cevt.child = NULL; // Child is destructed
    cevt.idx = -1; 
 
    eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_DEL_EVT, &cevt, NULL));
@@ -253,7 +254,7 @@ _eio_done_children_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error)
 {
-   fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
+   fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
 /**
@@ -318,7 +319,7 @@ _eio_done_children_count_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _eio_error_children_count_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
-   fprintf(stdout, "[cancel] eio_file_direct_ls : %d\n", error);
+   fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
 /**
@@ -328,25 +329,38 @@ _eio_error_children_count_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_
 static Eina_Bool 
 _eio_filter_child_del_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
-   //TODO: implement
+   return EINA_TRUE;
 }
 
 static void 
 _eio_progress_child_del_cb(void *data, Eio_File *handler, const Eio_Progress *info)
 {
-   //TODO: implement
+   return EINA_TRUE;
 }
 
 static void 
-_eio_done_child_del_cb(void *data, Eio_File *handler)
+_eio_done_unlink_cb(void *data, Eio_File *handler)
 {
-   //TODO: implement
+   Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
+   Eo *parent = _data->priv->obj;
+
+   _assert_ref(eo_ref_get(parent));
+
+   /* save child object in userdata, callback can ignore this field */
+
+   //'Object 0xcbd7a0 is already constructed at this point.'
+   //eo_do_super(_data->user->child, MY_CLASS, eo_destructor()); 
+
+   /* dispatch callback for user */
+   _data->callback(_data->user, parent, _data->user->child);
+
+   _emodel_dealloc_memory(_data->fullpath, _data->user, _data, NULL);
 }
 
 static void 
 _eio_error_child_del_cb(void *data, Eio_File *handler, int error)
 {
-   //TODO: implement
+   fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
 
@@ -516,13 +530,13 @@ _emodel_eio_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
            {
               child->fullpath = calloc(1, len+2);
               EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
-              //_eio_done_mkdir_cb frees memory
+              //_eio_done_unlink_cb frees memory
               strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
               strncat(child->fullpath, "/", 1);
               strncat(child->fullpath, child->user->name, strlen(child->user->name));
 
               eio_dir_unlink(child->fullpath, _eio_filter_child_del_cb, 
-                             _eio_progress_child_del_cb, _eio_done_child_del_cb, _eio_error_child_del_cb, child);
+                             _eio_progress_child_del_cb, _eio_done_unlink_cb, _eio_error_child_del_cb, child);
            }
          break;
       case EMODEL_EIO_FILE_TYPE_FILE:

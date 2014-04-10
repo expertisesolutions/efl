@@ -125,8 +125,9 @@ _child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descri
 static void
 _emodel_child_del_cb(void *data, Eo *obj, void *event_info)
 {
-   //TODO: implement
-   fprintf(stdout, "Deleted!\n");
+   Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
+   Eo *child = (Eo*)event_info;
+   fprintf(stdout, "del: %s/%p\n", userdata->name, child);
 }
 
 static void
@@ -161,12 +162,15 @@ static Eina_Bool
 _child_add_evt_cb(void *data, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
-   fprintf(stdout, "Child add event: parent=%p, child=%p index=%d\n", obj, evt->child, evt->idx);
+   fprintf(stdout, "Child add event: parent=%p, child=%p index=%d dir=%s\n", obj, evt->child, evt->idx, (char*)evt->data);
    return EINA_TRUE;
 }
 static Eina_Bool
-_child_add_evt_cb2(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+_child_del_evt_cb(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
+   Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
+   //child is NULL (already removed)
+   fprintf(stdout, "Child del event: parent=%p, index=%d dir=%s\n", obj, evt->idx, (char*)evt->data);
    return EINA_TRUE;
 }
 
@@ -191,7 +195,7 @@ START_TEST(emodel_test_test_file)
 
    // Listener for child add
    eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_ADD_EVT, _child_add_evt_cb, NULL));
-   //eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_DEL_EVT, _child_add_evt_cb2, NULL));
+   eo_do(filemodel, eo_event_callback_add(EMODEL_CHILD_DEL_EVT, _child_del_evt_cb, NULL));
 
    
    eo_do(filemodel, emodel_property_get("filename"));
