@@ -22,6 +22,8 @@ struct reqs_t {
    int propset;
    int count;
    int children;
+   int child_add;
+   int child_del;
 };
 
 static struct reqs_t reqs;
@@ -30,11 +32,12 @@ static Eina_Bool
 __attribute__((unused))_try_quit(void *data EINA_UNUSED)
 {
    printf("Try quit: \
-          filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d\n", 
-          reqs.filename, reqs.size, reqs.properties, reqs.propset, reqs.count, reqs.children);
+          filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d, child_add=%d, child_del=%d\n", 
+          reqs.filename, reqs.size, reqs.properties, reqs.propset, reqs.count, reqs.children, reqs.child_add, reqs.child_del);
 
    fail_if((reqs.filename == -1) || (reqs.size == -1) || (reqs.properties == -1) 
-           || (reqs.propset == -1) || (reqs.count == -1) || (reqs.children == -1));
+           || (reqs.propset == -1) || (reqs.count == -1) || (reqs.children == -1)
+           || reqs.child_add == -1 || reqs.child_del == -1);
    
    ecore_main_loop_quit();
 
@@ -127,6 +130,7 @@ _emodel_child_del_cb(void *data, Eo *obj, void *event_info)
 {
    Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
    Eo *child = (Eo*)event_info;
+   if(-1 == reqs.child_del) reqs.child_del = 1;
    fprintf(stdout, "del: %s/%p\n", userdata->name, child);
 }
 
@@ -139,6 +143,8 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
    static int del = 0;
 
    fprintf(stdout, "Child add: parent=%p, child=%p path=%s\n", obj, child, userdata->name);
+
+   if(-1 == reqs.child_add) reqs.child_add = 1;
    
    if(!del)
      {
