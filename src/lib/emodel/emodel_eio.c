@@ -151,7 +151,9 @@ _emodel_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description
    const Eo_Callback_Array_Item *callback_array = event_info;
    
    if((priv->pub.cb_count_child_add == 0) && (priv->pub.cb_count_child_del == 0))
+     {
         priv->monitor = eio_monitor_add(priv->path); 
+     }
 
    if(callback_array->desc == EMODEL_CHILD_ADD_EVT)
      {
@@ -209,7 +211,9 @@ _emodel_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descripti
      }
    
    if((priv->pub.cb_count_child_add == 0) && (priv->pub.cb_count_child_del == 0))
+     {
         eio_monitor_del(priv->monitor); 
+     }
    
    return EINA_TRUE;
 }
@@ -274,7 +278,9 @@ _eio_filter_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED, con
      }
 
    if(cdata->idx == cdata->count)
-     eio_file_cancel(cdata->lsref);
+     {
+        eio_file_cancel(cdata->lsref);
+     }
 
    cdata->idx++;
 
@@ -409,14 +415,15 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    Eina_Value *v = va_arg(*list, const char*);
 
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
-   if (!strncmp(prop_arg, prop, strlen(prop))) {
-      const char *src;
-      Eina_Value *value = _emodel_property_value_get(priv, prop);
-      eina_value_get(value, &src);
-      eina_value_get(v, &dest);
-      priv->path = dest;
-      priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_property_set_error_cb, priv);
-   }
+   if (!strncmp(prop_arg, prop, strlen(prop))) 
+     {
+        const char *src;
+        Eina_Value *value = _emodel_property_value_get(priv, prop);
+        eina_value_get(value, &src);
+        eina_value_get(v, &dest);
+        priv->path = dest;
+        priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_property_set_error_cb, priv);
+     }
 }
 
 /**
