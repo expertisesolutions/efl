@@ -3441,6 +3441,8 @@ EFL_LIB_END([Ecore_Evas])
 
 #### Emodel
 EFL_LIB_START([Emodel])
+EFL_INTERNAL_DEPEND_PKG([EMODEL], [eo])
+EFL_INTERNAL_DEPEND_PKG([EMODEL], [eio])
 EFL_ADD_LIBS([EMODEL], [-lm])
 EFL_LIB_END([Emodel])
 #### End of Emodel
@@ -3953,6 +3955,7 @@ pc/escape.pc
 pc/eina.pc
 pc/eet.pc
 pc/eo.pc
+pc/emodel.pc
 pc/evas-fb.pc
 pc/evas-opengl-x11.pc
 pc/evas-opengl-sdl.pc
