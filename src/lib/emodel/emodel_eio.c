@@ -95,14 +95,12 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    Eo *parent = _data->priv->obj;
 
    _assert_ref(eo_ref_get(parent));
-
    /* save child object in userdata, callback can ignore this field */
-   _data->user->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->priv->path));
-
+   _data->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->fullpath));
    /* dispatch callback for user */
-   _data->callback(_data->user, parent, _data->user->child);
-
-   _emodel_dealloc_memory(_data->fullpath, _data->user, _data, NULL);
+   _data->callback(_data->name, parent, _data->child);
+   //eo_unref(_data->child);
+   _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
 }
 
 static void
@@ -119,6 +117,7 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
 static Eina_Bool 
 _emodel_evt_added_ecore_cb(void *data, int type EINA_UNUSED, void *event)
 {
+   Eina_Bool ret;
    Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
    Emodel_Eio *priv = data;
    Emodel_Children_EVT cevt;
@@ -127,7 +126,10 @@ _emodel_evt_added_ecore_cb(void *data, int type EINA_UNUSED, void *event)
    cevt.child = eo_add_custom(MY_CLASS, priv->obj, emodel_eio_constructor(evt->filename));
    cevt.idx = -1; 
 
-   return eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, &cevt, NULL));
+   ret = eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, &cevt, NULL));
+   //eo_unref(cevt.child);
+
+   return ret;
 }
 
 static Eina_Bool 
@@ -258,7 +260,10 @@ _eio_done_children_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error)
 {
-   fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
+   if(0 != error)
+     {
+        fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
+     }
 }
 
 /**
@@ -344,22 +349,20 @@ _eio_progress_child_del_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
 }
 
 static void 
-_eio_done_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
+_eio_done_dir_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
-   Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
-   Eo *parent = _data->priv->obj;
+   Emodel_Eio *priv = data;
 
-   _assert_ref(eo_ref_get(parent));
+   EINA_SAFETY_ON_NULL_RETURN(priv);  
+   EINA_SAFETY_ON_NULL_RETURN(priv->obj);  
+   EINA_SAFETY_ON_NULL_RETURN(priv->emodel_cb);  
 
-   /* save child object in userdata, callback can ignore this field */
+   // TODO: fix this callback call, same reference twice? 
+   // TODO: First argument should not be NULL
+   priv->emodel_cb(NULL, priv->obj, priv->obj);
 
-   //'Object 0xcbd7a0 is already constructed at this point.'
-   //eo_do_super(_data->user->child, MY_CLASS, eo_destructor()); 
-
-   /* dispatch callback for user */
-   _data->callback(_data->user, parent, _data->user->child);
-
-   _emodel_dealloc_memory(_data->fullpath, _data->user, _data, NULL);
+   // destruct / unref?
+   //eo_do_super(priv->obj, MY_CLASS, eo_destructor()); 
 }
 
 static void 
@@ -414,6 +417,7 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    prop_arg = va_arg(*list, const char*);
    Eina_Value *v = va_arg(*list, const char*);
 
+   //carlos
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
    if (!strncmp(prop_arg, prop, strlen(prop))) 
      {
@@ -448,128 +452,87 @@ _emodel_eio_unload(Eo *obj  EINA_UNUSED, void *class_data EINA_UNUSED, va_list *
  * Child Add
  */
 static void
-_emodel_eio_child_add(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+_emodel_eio_dir_add(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 { 
    size_t len;
+   const char *name;
    Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
    EINA_SAFETY_ON_NULL_RETURN(child);  
 
    child->callback = va_arg(*list, Emodel_Cb);
-   
-   child->user = calloc(1, sizeof(Emodel_Child_Add));
-   EINA_SAFETY_ON_NULL_GOTO(child->user, cleanup_bottom);
-   
-   memcpy(child->user, va_arg(*list, Emodel_Child_Add *), sizeof(Emodel_Child_Add));
+   name = va_arg(*list, const char *);
+
+   child->name = calloc(1, strlen(name)+1);
+   EINA_SAFETY_ON_NULL_GOTO(child->name, cleanup_bottom);
+
+   strncpy(child->name, name, strlen(name));
    child->priv = class_data;
+   len = strlen(child->priv->path) + strlen(child->name);
 
-   len = strlen(child->priv->path) + strlen(child->user->name);
+   // len + '/' + '\0'
+   child->fullpath = calloc(1, len+2);
+   EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
 
-   switch(child->user->filetype)
-     {
-      case EMODEL_EIO_FILE_TYPE_DIR:
-         {
-            // len + '/' + '\0'
-            child->fullpath = calloc(1, len+2);
-            EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
+   //gets current mask
+   mode_t mode = umask(0);
+   umask(mode);
 
-            //gets current mask
-            mode_t mode = umask(0);
-            umask(mode);
+   //_eio_done_mkdir_cb frees memory
+   strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
+   strncat(child->fullpath, "/", 1);
+   strncat(child->fullpath, child->name, strlen(child->name));
 
-            //_eio_done_mkdir_cb frees memory
-            strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
-            strncat(child->fullpath, "/", 1);
-            strncat(child->fullpath, child->user->name, strlen(child->user->name));
-
-            eio_file_mkdir(child->fullpath, /* TODO check this */ (0777 - mode), 
-                           _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
-         }
-         break;
-      case EMODEL_EIO_FILE_TYPE_FILE:
-         {
-            fprintf(stdout,"EMODEL_EIO_FILE_TYPE_FILE: unimplemented\n"); 
-            goto cleanup_top; //TODO/FIXME/XXX: remove this temporary jmp
-            
-            //eio_file_open(child->fullpath, 
-            //               EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
-         }
-         break;
-      default:
-         fprintf(stdout, "Invalid filetype\n");
-         goto cleanup_top; 
-     }
+   eio_file_mkdir(child->fullpath, /* TODO check this */ (0777 - mode), 
+                  _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
 
    // Ok
    return;
 
    //cleanup the mess
 cleanup_top:
-   _emodel_dealloc_memory(child->user, child, NULL);
+   _emodel_dealloc_memory((char*)child->name, child, NULL);
 cleanup_bottom:
    _emodel_dealloc_memory(child, NULL);
-
 }
+
+
+static void
+_emodel_eio_do_dir_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+{ 
+
+   struct stat buf;
+   Emodel_Eio *priv = class_data;
+   priv->emodel_cb = va_arg(*list, Emodel_Cb);
+   stat(priv->path, &buf);
+
+   if(S_ISDIR(buf.st_mode))
+     {
+        eio_dir_unlink(priv->path,
+                       _eio_filter_child_del_cb,
+                       _eio_progress_child_del_cb,
+                       _eio_done_dir_unlink_cb,
+                       _eio_error_child_del_cb,
+                       priv);
+     } 
+   else
+     {
+        //TODO: implement
+     }
+}
+
 
 /**
  * Child Del
  */
 static void
-_emodel_eio_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+_emodel_eio_dir_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 { 
-   size_t len;
-   Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
-   EINA_SAFETY_ON_NULL_RETURN(child);  
-
-   child->callback = va_arg(*list, Emodel_Cb);
-
-   child->user = calloc(1, sizeof(Emodel_Child_Add));
-   EINA_SAFETY_ON_NULL_GOTO(child->user, cleanup_bottom);
-
-   memcpy(child->user, va_arg(*list, Emodel_Child_Add *), sizeof(Emodel_Child_Add));
-   child->priv = class_data;
-
-   len = strlen(child->priv->path) + strlen(child->user->name);
-
-   switch(child->user->filetype)
-     {
-      case EMODEL_EIO_FILE_TYPE_DIR:
-           {
-              child->fullpath = calloc(1, len+2);
-              EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
-              //_eio_done_unlink_cb frees memory
-              strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
-              strncat(child->fullpath, "/", 1);
-              strncat(child->fullpath, child->user->name, strlen(child->user->name));
-
-              eio_dir_unlink(child->fullpath, _eio_filter_child_del_cb, 
-                             _eio_progress_child_del_cb, _eio_done_unlink_cb, _eio_error_child_del_cb, child);
-           }
-         break;
-      case EMODEL_EIO_FILE_TYPE_FILE:
-           {
-              fprintf(stdout,"EMODEL_EIO_FILE_TYPE_FILE: unimplemented\n"); 
-              goto cleanup_top; //TODO/FIXME/XXX: remove this temporary jmp
-
-              //eio_file_open(child->fullpath, 
-              //               EINA_FALSE, _eio_done_open_cb, _eio_done_error_open_cb, child);
-           }
-         break;
-      default:
-         fprintf(stdout, "Invalid filetype\n");
-         goto cleanup_top; 
-     }
-
-   // Ok
-   return;
-
-   //cleanup the mess
-cleanup_top:
-   _emodel_dealloc_memory(child->user, child, NULL);
-cleanup_bottom:
-   _emodel_dealloc_memory(child, NULL);
+   Emodel_Cb cb = va_arg(*list, Emodel_Cb);
+   Eo *child = va_arg(*list, Eo *);
+ 
+   Emodel_Eio *priv = class_data;
+   eo_do(child, emodel_eio_del(cb));
 }
-
-
 
 /**
  * Children Get
@@ -712,16 +675,20 @@ _emodel_eio_class_constructor(Eo_Class *klass)
    const Eo_Op_Func_Description func_descs[] = {
       EO_OP_FUNC(EO_BASE_ID(EO_BASE_SUB_ID_DESTRUCTOR), _emodel_eio_destructor),
       EO_OP_FUNC(EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), _emodel_eio_constructor),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTIES_GET), _emodel_eio_properties_get),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_GET), _emodel_eio_property_get),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_PROPERTY_SET), _emodel_eio_property_set),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_LOAD), _emodel_eio_load),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_UNLOAD), _emodel_eio_unload),
-      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD), _emodel_eio_child_add),
-      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_OBJ_EIO_SUB_ID_CHILD_DEL), _emodel_eio_child_del),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
-      EO_OP_FUNC(EMODEL_ID(EMODEL_SUB_ID_CHILDREN_COUNT_GET), _emodel_eio_children_count_get),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_PROPERTIES_GET), _emodel_eio_properties_get),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_PROPERTY_GET), _emodel_eio_property_get),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_PROPERTY_SET), _emodel_eio_property_set),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_LOAD), _emodel_eio_load),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_UNLOAD), _emodel_eio_unload),
+
+      //test
+      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD), _emodel_eio_dir_add),
+      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_DEL), _emodel_eio_do_dir_del),
+
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_DEL), _emodel_eio_dir_del),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_COUNT_GET), _emodel_eio_children_count_get),
       EO_OP_FUNC_SENTINEL
    };
 
@@ -729,9 +696,9 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 }
 
 static const Eo_Op_Description op_desc[] = {
-     EO_OP_DESCRIPTION(EMODEL_OBJ_EIO_SUB_ID_CONSTRUCTOR, "Eio file constructor."),
-     EO_OP_DESCRIPTION(EMODEL_OBJ_EIO_SUB_ID_CHILD_ADD, "Add new child."),
-     EO_OP_DESCRIPTION(EMODEL_OBJ_EIO_SUB_ID_CHILD_DEL, "Delete child."),
+     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR, "Eio file constructor."),
+     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD, "Add new child."),
+     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_DIR_DEL, "Delete node."),
      EO_OP_DESCRIPTION_SENTINEL
 };
 
@@ -739,7 +706,7 @@ static const Eo_Class_Description class_desc = {
      EO_VERSION,
      MY_CLASS_NAME,
      EO_CLASS_TYPE_REGULAR,
-     EO_CLASS_DESCRIPTION_OPS(&EMODEL_EIO_BASE_ID, op_desc, EMODEL_OBJ_EIO_SUB_ID_LAST),
+     EO_CLASS_DESCRIPTION_OPS(&EMODEL_EIO_BASE_ID, op_desc, EMODEL_EIO_OBJ_SUB_ID_LAST),
      NULL,
      sizeof(Emodel_Eio),
      _emodel_eio_class_constructor,

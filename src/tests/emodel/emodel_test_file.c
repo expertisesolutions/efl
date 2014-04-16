@@ -95,7 +95,7 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 }
    
 static void
-_children_get_cb(void *data, Eo *child, void *event_info)
+_children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info)
 {
    int *idx = (int*)event_info;
    fprintf(stdout, "child received: child=%p, idx=%d\n", child, *idx);
@@ -114,35 +114,23 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
    return EINA_TRUE;
 }
 
-
-/*
-static Eina_Bool
-_child_add_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
-{
-   //Eo * child = event_info;
-   const char *s = (const char *)event_info;
-   fprintf(stdout, "child added:%s\n", s);
-   return EINA_TRUE;
-}
-*/
 static void
-_emodel_child_del_cb(void *data, Eo *obj, void *event_info)
+_emodel_dir_del_cb(void *data EINA_UNUSED, Eo *obj, void *event_info EINA_UNUSED)
 {
-   Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
-   Eo *child = (Eo*)event_info;
+   Eo *child = obj;
    if(-1 == reqs.child_del) reqs.child_del = 1;
-   fprintf(stdout, "del: %s/%p\n", userdata->name, child);
+   fprintf(stdout, "Deleted child=%p\n", child);
 }
 
 static void
 _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 {
-   Emodel_Child_Add *userdata = (Emodel_Child_Add*)data;
+#if 1
+   const char *name = (const char *)data;
    Eo *child = (Eo*)event_info;
-   Emodel_Child_Add _userdata;
    static int del = 0;
 
-   fprintf(stdout, "Child add: parent=%p, child=%p path=%s\n", obj, child, userdata->name);
+   fprintf(stdout, "Child add: parent=%p, child=%p path=%s\n", obj, child, name);
 
    if(-1 == reqs.child_add) reqs.child_add = 1;
    
@@ -154,25 +142,22 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
          * delete it as soon as add_cb is notified.
          */
         del = 1;
-        fprintf(stdout, "[del test] Deleting first child %p (%s/%s)\n", child, EMODEL_TEST_FILENAME_PATH, userdata->name); 
-        _userdata.child = child;
-        _userdata.name = userdata->name;
-        _userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
-
         // bye bye!
-        eo_do(obj, emodel_eio_child_del(_emodel_child_del_cb, &_userdata));
+        printf("passing over: %p/%p\n", child, _emodel_dir_del_cb);
+        eo_do(obj, emodel_child_del(_emodel_dir_del_cb, child));
      }
+#endif
 }
 
 static Eina_Bool
-_child_add_evt_cb(void *data, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+_child_add_evt_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
    fprintf(stdout, "Child add event: parent=%p, child=%p index=%d dir=%s\n", obj, evt->child, evt->idx, (char*)evt->data);
    return EINA_TRUE;
 }
 static Eina_Bool
-_child_del_evt_cb(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
+_child_del_evt_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
    //child is NULL (already removed)
@@ -184,10 +169,8 @@ _child_del_evt_cb(void *data, Eo *obj EINA_UNUSED, const Eo_Event_Description *d
 START_TEST(emodel_test_test_file)
 {
    Eo *filemodel;
-   Emodel_Child_Add userdata;
    int i;
    static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", "emodel_test_dir_03", NULL};
-   Ecore_Timer *timer;
 
    //init requirements check fileds to -1
    memset(&reqs, -1, sizeof(struct reqs_t));
@@ -205,6 +188,7 @@ START_TEST(emodel_test_test_file)
 
    
    eo_do(filemodel, emodel_property_get("filename"));
+
    eo_do(filemodel, emodel_property_get("size"));
    eo_do(filemodel, emodel_properties_get());
    
@@ -218,11 +202,11 @@ START_TEST(emodel_test_test_file)
    // here we set the callback for child add
    for(i=0; dirs[i] != NULL; ++i)
      {
-         memset(&userdata, 0, sizeof(userdata));     
-         userdata.child = NULL;
-         userdata.name = dirs[i];
-         userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
-         eo_do(filemodel, emodel_eio_child_add(_emodel_child_add_cb, &userdata));
+         //memset(&userdata, 0, sizeof(userdata));     
+         //userdata.child = NULL;
+         //userdata.name = dirs[i];
+         //userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
+         eo_do(filemodel, emodel_eio_dir_add(_emodel_child_add_cb, dirs[i]));
      }
 
 

@@ -40,6 +40,7 @@ struct _Emodel_Eio
    const char *path;
    const Eina_Stat *stat;
    Eio_Monitor *monitor;
+   Emodel_Cb emodel_cb; //XXX
    Ecore_Event_Handler *ecore_child_add_handler;
    Ecore_Event_Handler *ecore_child_del_handler;
    Emodel_Eio_Public_Data pub;
@@ -50,9 +51,10 @@ struct _Emodel_Eio
 struct _Emodel_Eio_Child_Add
 {
    Emodel_Cb callback;
+   Eo *child;
    Emodel_Eio *priv;
    char* fullpath;
-   Emodel_Child_Add *user;
+   char *name;
 };
 
 struct _Emodel_Eio_Children_Count
