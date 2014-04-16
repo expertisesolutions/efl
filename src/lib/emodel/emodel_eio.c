@@ -99,7 +99,7 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    _data->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->fullpath));
    /* dispatch callback for user */
    _data->callback(_data->name, parent, _data->child);
-   //eo_unref(_data->child);
+   eo_unref(_data->child);
    _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
 }
 
@@ -117,6 +117,7 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
 static Eina_Bool 
 _emodel_evt_added_ecore_cb(void *data, int type EINA_UNUSED, void *event)
 {
+#if 0
    Eina_Bool ret;
    Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
    Emodel_Eio *priv = data;
@@ -127,14 +128,18 @@ _emodel_evt_added_ecore_cb(void *data, int type EINA_UNUSED, void *event)
    cevt.idx = -1; 
 
    ret = eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, &cevt, NULL));
-   //eo_unref(cevt.child);
+   eo_unref(cevt.child);
 
    return ret;
+#else
+   return EINA_TRUE;
+#endif
 }
 
 static Eina_Bool 
 _emodel_evt_deleted_ecore_cb(void *data, int type EINA_UNUSED, void *event)
 {
+#if 0
    Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
    Emodel_Eio *priv = data;
    Emodel_Children_EVT cevt;
@@ -144,6 +149,9 @@ _emodel_evt_deleted_ecore_cb(void *data, int type EINA_UNUSED, void *event)
    cevt.idx = -1; 
 
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_DEL_EVT, &cevt, NULL));
+#else
+   return EINA_TRUE;
+#endif
 }
 
 Eina_Bool
@@ -176,7 +184,7 @@ _emodel_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description
         return EO_CALLBACK_CONTINUE;
      }
 
-   // TODO: EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h  :(
+   // EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h 
    return EINA_TRUE;
 }
 
@@ -231,12 +239,12 @@ _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_
    Emodel_Eio_Children_Data *cdata = data;
    Eo *child;
 
-   _assert_ref(eo_ref_get(cdata->priv->obj));
+   EINA_SAFETY_ON_NULL_RETURN(cdata);
+   EINA_SAFETY_ON_NULL_RETURN(cdata->priv->obj);
+
    child = eo_add_custom(MY_CLASS, cdata->priv->obj, emodel_eio_constructor(info->path));
-
-   _assert_ref(eo_ref_get(cdata->priv->obj));
-
    cdata->callback(cdata->data, child, &cdata->cidx);
+   eo_unref(child);
    cdata->cidx++;
 }
 
@@ -694,7 +702,7 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 static const Eo_Op_Description op_desc[] = {
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR, "Eio file constructor."),
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD, "Add new child."),
-     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL, "Delete node."),
+     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL, "Delete child."),
      EO_OP_DESCRIPTION_SENTINEL
 };
 
