@@ -98,7 +98,7 @@ static void
 _children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info)
 {
    int *idx = (int*)event_info;
-   fprintf(stdout, "child received: child=%p, idx=%d\n", child, *idx);
+   fprintf(stdout, "Child received: child=%p, idx=%d\n", child, *idx);
    eo_do(child, eo_event_callback_add(EMODEL_PROPERTY_CHANGE_EVT, _prop_change_cb, NULL));
    eo_do(child, emodel_property_get("filename"));
 }
@@ -108,7 +108,7 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
 {
    unsigned int *len = event_info;
 
-   fprintf(stdout, "children count len=%d\n", *len);
+   fprintf(stdout, "Children count len=%d\n", *len);
    reqs.children = *len;
    reqs.count = 1;
    return EINA_TRUE;
