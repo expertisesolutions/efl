@@ -115,9 +115,9 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
 }
 
 static void
-_emodel_dir_del_cb(void *data EINA_UNUSED, Eo *obj, void *event_info EINA_UNUSED)
+_child_del_cb(void *data EINA_UNUSED, Eo *obj, void *event_info)
 {
-   Eo *child = obj;
+   Eo *child = (Eo *)event_info;
    if(-1 == reqs.child_del) reqs.child_del = 1;
    fprintf(stdout, "Deleted child=%p\n", child);
 }
@@ -125,7 +125,6 @@ _emodel_dir_del_cb(void *data EINA_UNUSED, Eo *obj, void *event_info EINA_UNUSED
 static void
 _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 {
-#if 1
    const char *name = (const char *)data;
    Eo *child = (Eo*)event_info;
    static int del = 0;
@@ -143,10 +142,8 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
          */
         del = 1;
         // bye bye!
-        printf("passing over: %p/%p\n", child, _emodel_dir_del_cb);
-        eo_do(obj, emodel_child_del(_emodel_dir_del_cb, child));
+        eo_do(obj, emodel_child_del(_child_del_cb, child));
      }
-#endif
 }
 
 static Eina_Bool

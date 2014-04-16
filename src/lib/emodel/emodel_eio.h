@@ -33,7 +33,7 @@ enum
 {
    EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR,
    EMODEL_EIO_OBJ_SUB_ID_DIR_ADD,
-   EMODEL_EIO_OBJ_SUB_ID_DIR_DEL,
+   EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL,
    EMODEL_EIO_OBJ_SUB_ID_LAST,
 };
 
@@ -81,14 +81,15 @@ typedef struct _Emodel_Eio_Public_Data Emodel_Eio_Public_Data;
 //#define emodel_eio_file_add(child_add_cb, name) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(const char *, name)
 
 /**
- * @def emodel_eio_del
+ * @def emodel_eio_child_del
  * @since 1.10
  *
- * Delete child.
+ * Delete directory
  *
  *
  */
-#define emodel_eio_del(del_cb) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_DEL), EO_TYPECHECK(Emodel_Cb, del_cb) 
+#define emodel_eio_child_del(del_cb) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb, del_cb) 
+
 
 #ifdef __cplusplus
 }

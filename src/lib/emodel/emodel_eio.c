@@ -349,7 +349,7 @@ _eio_progress_child_del_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
 }
 
 static void 
-_eio_done_dir_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
+_eio_done_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio *priv = data;
 
@@ -366,7 +366,7 @@ _eio_done_dir_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
 }
 
 static void 
-_eio_error_child_del_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error)
+_eio_error_unlink_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error)
 {
    fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
@@ -497,41 +497,37 @@ cleanup_bottom:
 
 
 static void
-_emodel_eio_do_dir_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+__emodel_eio_do_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
 { 
-
-   struct stat buf;
    Emodel_Eio *priv = class_data;
    priv->emodel_cb = va_arg(*list, Emodel_Cb);
-   stat(priv->path, &buf);
 
-   if(S_ISDIR(buf.st_mode))
-     {
-        eio_dir_unlink(priv->path,
-                       _eio_filter_child_del_cb,
-                       _eio_progress_child_del_cb,
-                       _eio_done_dir_unlink_cb,
-                       _eio_error_child_del_cb,
-                       priv);
-     } 
-   else
-     {
-        //TODO: implement
-     }
+   /**
+    * TODO:
+    * eio_file_unlink can't delete directories
+    * In order to use to most correct approach I need
+    * einther to find proper EIO API or implement
+    * verification by hand.
+    * !! this will delete directories recursively too !!
+    */
+   eio_dir_unlink(priv->path,
+                  _eio_filter_child_del_cb,
+                  _eio_progress_child_del_cb,
+                  _eio_done_unlink_cb,
+                  _eio_error_unlink_cb,
+                  priv);
 }
-
 
 /**
  * Child Del
  */
 static void
-_emodel_eio_dir_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+_emodel_eio_del(Eo *obj EINA_UNUSED, void *class_data EINA_UNUSED, va_list *list)
 { 
    Emodel_Cb cb = va_arg(*list, Emodel_Cb);
    Eo *child = va_arg(*list, Eo *);
  
-   Emodel_Eio *priv = class_data;
-   eo_do(child, emodel_eio_del(cb));
+   eo_do(child, emodel_eio_child_del(cb));
 }
 
 /**
@@ -683,9 +679,9 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 
       //test
       EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD), _emodel_eio_dir_add),
-      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_DEL), _emodel_eio_do_dir_del),
+      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), __emodel_eio_do_child_del),
 
-      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_DEL), _emodel_eio_dir_del),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_DEL), _emodel_eio_del),
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_COUNT_GET), _emodel_eio_children_count_get),
@@ -698,7 +694,7 @@ _emodel_eio_class_constructor(Eo_Class *klass)
 static const Eo_Op_Description op_desc[] = {
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR, "Eio file constructor."),
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD, "Add new child."),
-     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_DIR_DEL, "Delete node."),
+     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL, "Delete node."),
      EO_OP_DESCRIPTION_SENTINEL
 };
 
