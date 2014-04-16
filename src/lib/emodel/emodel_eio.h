@@ -1,17 +1,32 @@
 /**
-   @brief Emodel Library Public API Calls
+ * @page emodel_eio_main Emodel_Eio
+ *
+ * @date 2014 (created)
+ *
+ * @brief Emodel_Eio Library Public API Calls
+ *
+ * @section toc Table of Contents
+ *
+ * @li @ref emodel_eio_main_intro
+ *
+ * @section eo_main_intro Introduction
+ *
+ * This module targets file operations using Emodel.
 
-   These routines are used for Emodel Library interaction
- */
-
-/**
-
-   @page emodel_main Emodel EIO
-
-   @date 2014 (created)
-
-   @section toc Table of Contents
-
+ *
+ * Recommended reading:
+ *
+ * @li @ref Emodel
+ * @li @ref Eo
+ * @li @ref Eina
+ *
+ * @defgroup Emodel_Eio
+ *
+ 
+ *
+ *
+ * @addtogroup Emodel_Eio
+ * @{
  */
 
 #ifndef _EMODEL_EIO_H
@@ -45,13 +60,13 @@ enum _Emodel_Eio_Filetype
 
 typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
 
-struct _Emodel_Eio_Public_Data
+struct _Emodel_Eio_Monitor_Data
 {
-   int cb_count_child_add;
-   int cb_count_child_del;
+   int cb_count_child_add; /**< monitor reference counter for child add event */
+   int cb_count_child_del; /**< monitor reference counter for child del event*/
 };
 
-typedef struct _Emodel_Eio_Public_Data Emodel_Eio_Public_Data;
+typedef struct _Emodel_Eio_Monitor_Data Emodel_Eio_Monitor_Data;
 
 
 #define EMODEL_EIO_ID(sub_id) (EMODEL_EIO_BASE_ID + sub_id)
@@ -60,19 +75,21 @@ typedef struct _Emodel_Eio_Public_Data Emodel_Eio_Public_Data;
  * @def emodel_eio_constructor
  * @since 1.10
  *
- * Contructor for Emodel.
- * @param[in] path to file
+ * Constructor for Emodel_Eio
+ *
+ * @param[in] path constructor
  *
  */
 #define emodel_eio_constructor(path) EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
 
 /**
- * @def emodel_eio_child_add
+ * @def emodel_eio_dir_add
  * @since 1.10
  *
- * Add new child.
- * @param[in] child_add_cb callback function
- * @param[in]  data unmodified user data
+ * Create new empty directory
+ *
+ * @param[in] child_add_cb
+ * @param[in] name 
  *
  */
 #define emodel_eio_dir_add(child_add_cb, name) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD), EO_TYPECHECK(Emodel_Cb , child_add_cb), EO_TYPECHECK(const char *, name)
@@ -84,11 +101,16 @@ typedef struct _Emodel_Eio_Public_Data Emodel_Eio_Public_Data;
  * @def emodel_eio_child_del
  * @since 1.10
  *
- * Delete directory
+ * Delete child
  *
+ * @param[in] child_del_cb
  *
  */
-#define emodel_eio_child_del(del_cb) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb, del_cb) 
+#define emodel_eio_child_del(child_del_cb) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb, child_del_cb) 
+
+/**
+ * @}
+ */
 
 
 #ifdef __cplusplus

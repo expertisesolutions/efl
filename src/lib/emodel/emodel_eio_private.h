@@ -43,7 +43,7 @@ struct _Emodel_Eio
    Emodel_Cb emodel_cb; //XXX
    Ecore_Event_Handler *ecore_child_add_handler;
    Ecore_Event_Handler *ecore_child_del_handler;
-   Emodel_Eio_Public_Data pub;
+   Emodel_Eio_Monitor_Data mon;
    Emodel_Eio_Properties proplist[PROP_LIST_SIZE];
 };
 
