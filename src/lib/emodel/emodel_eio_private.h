@@ -3,14 +3,6 @@
 
 #define PROP_LIST_SIZE 5
 
-#define __EMODEL_ASSERT 1
-#if __EMODEL_ASSERT
-#define _assert_ref(x) assert(x > 0)
-#else
-static inline void 
-_assert_ref(int num EINA_UNUSED){}
-#endif
-
 enum {
    EMODEL_EIO_PROP_FILENAME,
    EMODEL_EIO_PROP_IS_DIR,

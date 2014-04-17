@@ -8,7 +8,6 @@
 #include <Eio.h>
 #include <Ecore.h>
 #include <Eo.h>
-#include <assert.h>
 
 #include "emodel_eio_private.h"
 
@@ -29,8 +28,7 @@ _stat_pro_set(Emodel_Eio *priv, int prop_id, int pvalue)
    eina_value_array_get(priv->properties, prop_id, &evt.prop);
    evt.value = _emodel_property_value_get(priv, evt.prop);
    eina_value_set(evt.value, pvalue);
-
-   _assert_ref(eo_ref_get(priv->obj));
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
    eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
 }
 
@@ -68,20 +66,20 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
    eina_value_set(evt.value, priv->path);
    eio_file_direct_stat(priv->path, _eio_stat_done_cb, _eio_property_set_error_cb, priv);
 
-   _assert_ref(eo_ref_get(priv->obj));
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
    eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
 }
 
 static void
 _eio_error_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
-   fprintf(stdout, "[cancel] eio_file_direct_ls : %d\n", error);
+   fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
 static void
 _eio_property_set_error_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
 {
-   //TODO: Implement
+   fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
 /**
@@ -94,7 +92,7 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
    Eo *parent = _data->priv->obj;
 
-   _assert_ref(eo_ref_get(parent));
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
    /* save child object in userdata, callback can ignore this field */
    _data->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->fullpath));
    /* dispatch callback for user */
@@ -115,7 +113,7 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
  *  Ecore Events
  */
 static Eina_Bool 
-_emodel_evt_added_ecore_cb(void *data, int type EINA_UNUSED, void *event)
+_emodel_evt_added_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
 #if 0
    Eina_Bool ret;
@@ -137,7 +135,7 @@ _emodel_evt_added_ecore_cb(void *data, int type EINA_UNUSED, void *event)
 }
 
 static Eina_Bool 
-_emodel_evt_deleted_ecore_cb(void *data, int type EINA_UNUSED, void *event)
+_emodel_evt_deleted_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
 #if 0
    Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
@@ -328,7 +326,7 @@ _eio_done_children_count_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
    EINA_SAFETY_ON_NULL_RETURN(count_data);
-   _assert_ref(eo_ref_get(count_data->priv->obj));
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(count_data->priv->obj));
    eo_do(count_data->priv->obj, eo_event_callback_call(EMODEL_CHILDREN_COUNT_GET_EVT, &(count_data->total), EINA_FALSE));
    _emodel_dealloc_memory(count_data, NULL);
 }
@@ -573,7 +571,7 @@ _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
    cdata->idx = 0;
    cdata->cidx = 0;
 
-   _assert_ref(eo_ref_get(cdata->priv->obj));
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(cdata->priv->obj));
    cdata->lsref = eio_file_direct_ls(cdata->priv->path, _eio_filter_children_get_cb, 
                       _eio_main_children_get_cb, _eio_done_children_get_cb, _eio_error_children_get_cb, cdata);
 }
@@ -608,7 +606,7 @@ _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
    cdata->idx = 0;
    cdata->cidx = cdata->start;
 
-   _assert_ref(eo_ref_get(cdata->priv->obj));
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(cdata->priv->obj));
    cdata->lsref = eio_file_direct_ls(cdata->priv->path, 
                       _eio_filter_children_slice_get_cb, 
                       _eio_main_children_get_cb, 
