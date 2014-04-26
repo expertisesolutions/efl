@@ -29,7 +29,7 @@ struct _Emodel_Eio
    Eo *obj;
    Eina_Value *properties;
    Eio_File *file;
-   const char *path;
+   char *path;
    const Eina_Stat *stat;
    Eio_Monitor *monitor;
    Emodel_Cb emodel_cb; //XXX

@@ -438,7 +438,8 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
         Eina_Value *value = _emodel_property_value_get(priv, prop);
         eina_value_get(value, &src);
         eina_value_get(v, &dest);
-        priv->path = dest;
+        _emodel_dealloc_memory(priv->path, NULL);
+        priv->path = strdup(dest);
         priv->file = eio_file_move(src, dest, _eio_progress_cb, _eio_move_done_cb, _eio_property_set_error_cb, priv);
      }
 }
@@ -639,7 +640,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 {
    Emodel_Eio *priv = class_data;
    const char *prop, *path = va_arg(*list, const char *);
-   priv->path = path;
+   priv->path = strdup(path);
    Eina_Value *v;
    size_t i;
 
