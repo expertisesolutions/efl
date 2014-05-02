@@ -423,7 +423,7 @@ _emodel_eio_property_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    Emodel_Eio *priv = class_data;
    const char *dest, *prop, *prop_arg;
    prop_arg = va_arg(*list, const char*);
-   Eina_Value *v = va_arg(*list, const char*);
+   Eina_Value *v = va_arg(*list, Eina_Value *);
    prop = NULL;
 
    EINA_SAFETY_ON_NULL_RETURN(v);  
