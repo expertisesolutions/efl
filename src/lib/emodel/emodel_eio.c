@@ -47,6 +47,16 @@ _eio_stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *st
    _stat_pro_set(priv, EMODEL_EIO_PROP_IS_LNK, eio_file_is_lnk(stat));
    _stat_pro_set(priv, EMODEL_EIO_PROP_SIZE, eio_file_size(stat));
    _stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, eio_file_mtime(stat));
+
+   Emodel_Property_EVT evt;
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_ICON, &evt.prop);
+   evt.value = _emodel_property_value_get(priv, evt.prop);
+   if (eio_file_is_dir(stat))
+        eina_value_set(evt.value, "icon folder");
+   else
+        eina_value_set(evt.value, "icon file");
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_PROPERTY_CHANGE_EVT, &evt, NULL));
 }
 
 static void
@@ -496,7 +506,7 @@ _emodel_eio_dir_add(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
    strncat(child->fullpath, "/", 1);
    strncat(child->fullpath, child->name, strlen(child->name));
 
-   eio_file_mkdir(child->fullpath, /* TODO check this */ (0777 - mode), 
+   eio_file_mkdir(child->fullpath, (0777 - mode), 
                   _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
 
    // Ok
@@ -644,14 +654,15 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    Eina_Value *v;
    size_t i;
 
-   eo_do_super(obj, MY_CLASS, eo_constructor()); 
-   
+   eo_do_super(obj, MY_CLASS, eo_constructor());
+
    priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 0);
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_LNK, "is_lnk");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_ICON, "icon");
 
    for (i = 0; i != PROP_LIST_SIZE; i++)
      {
@@ -663,17 +674,20 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
         case EMODEL_EIO_PROP_MTIME:
           v = eina_value_new(EINA_VALUE_TYPE_TIMEVAL);
           break;
+        case EMODEL_EIO_PROP_ICON:
+          v = eina_value_new(EINA_VALUE_TYPE_STRING);
+          break;
         default:
           v = eina_value_new(EINA_VALUE_TYPE_INT);
         }
 
         eina_value_array_get(priv->properties, i, &prop);
-        priv->proplist[i].v = v; 
-        priv->proplist[i].prop = prop; 
+        priv->proplist[i].v = v;
+        priv->proplist[i].prop = prop;
      }
 
-   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL));
-   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
+   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL),
+         eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
 
    priv->obj = obj;
    eio_init();
@@ -682,6 +696,7 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
 static void
 _emodel_eio_destructor(Eo *obj , void *class_data EINA_UNUSED, va_list *list EINA_UNUSED)
 {
+   //TODO: free data
    eio_shutdown();
    eo_do_super(obj, MY_CLASS, eo_destructor()); 
 }

@@ -1,14 +1,15 @@
 #ifndef _EMODEL_EIO_PRIVATE_H
 #define _EMODEL_EIO_PRIVATE_H
 
-#define PROP_LIST_SIZE 5
+#define PROP_LIST_SIZE 6
 
 enum {
    EMODEL_EIO_PROP_FILENAME,
    EMODEL_EIO_PROP_IS_DIR,
    EMODEL_EIO_PROP_IS_LNK,
    EMODEL_EIO_PROP_SIZE,
-   EMODEL_EIO_PROP_MTIME
+   EMODEL_EIO_PROP_MTIME,
+   EMODEL_EIO_PROP_ICON
 };
 
 typedef struct _Emodel_Eio                      Emodel_Eio;
