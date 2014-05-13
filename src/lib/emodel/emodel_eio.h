@@ -22,7 +22,7 @@
  *
  * @defgroup Emodel_Eio
  *
- 
+
  *
  *
  * @addtogroup Emodel_Eio
@@ -34,6 +34,7 @@
 
 #include <Eo.h>
 #include <Emodel.h>
+#include <Eio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +50,7 @@ enum
    EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR,
    EMODEL_EIO_OBJ_SUB_ID_DIR_ADD,
    EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL,
+   EMODEL_EIO_OBJ_SUB_ID_CHILDREN_FILTER_SET,
    EMODEL_EIO_OBJ_SUB_ID_LAST,
 };
 
@@ -59,15 +61,6 @@ enum _Emodel_Eio_Filetype
 };
 
 typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
-
-struct _Emodel_Eio_Monitor_Data
-{
-   int cb_count_child_add; /**< monitor reference counter for child add event */
-   int cb_count_child_del; /**< monitor reference counter for child del event*/
-};
-
-typedef struct _Emodel_Eio_Monitor_Data Emodel_Eio_Monitor_Data;
-
 
 #define EMODEL_EIO_ID(sub_id) (EMODEL_EIO_BASE_ID + sub_id)
 
@@ -106,7 +99,20 @@ typedef struct _Emodel_Eio_Monitor_Data Emodel_Eio_Monitor_Data;
  * @param[in] child_del_cb
  *
  */
-#define emodel_eio_child_del(child_del_cb) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb, child_del_cb) 
+#define emodel_eio_child_del(child_del_cb) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), EO_TYPECHECK(Emodel_Cb, child_del_cb)
+
+/**
+ * @def emodel_eio_children_filter_set
+ * @since 1.10
+ *
+ * Set a children filter callback
+ *
+ * @param[in] filter_cb
+ * @param[in] userdata
+ *
+ */
+#define emodel_eio_children_filter_set(filter_cb, userdata) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILDREN_FILTER_SET), EO_TYPECHECK(Eio_Filter_Direct_Cb, filter_cb), EO_TYPECHECK(void *, userdata)
+
 
 /**
  * @}
