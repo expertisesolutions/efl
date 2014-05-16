@@ -18,11 +18,18 @@ typedef struct _Emodel_Eio_Children_Data        Emodel_Eio_Children_Data;
 typedef struct _Emodel_Eio_Child_Add            Emodel_Eio_Child_Add;
 typedef struct _Emodel_Eio_Child_Add            Emodel_Eio_Child_Del;
 typedef struct _Emodel_Eio_Children_Count       Emodel_Eio_Children_Count;
+typedef struct _Emodel_Eio_Monitor_Data         Emodel_Eio_Monitor_Data;
 
 struct _Emodel_Eio_Properties
 {
    Eina_Value *v;
    const char *prop;
+};
+
+struct _Emodel_Eio_Monitor_Data
+{
+   int cb_count_child_add; /**< monitor reference counter for child add event */
+   int cb_count_child_del; /**< monitor reference counter for child del event*/
 };
 
 struct _Emodel_Eio
@@ -38,8 +45,9 @@ struct _Emodel_Eio
    Ecore_Event_Handler *ecore_child_del_handler;
    Emodel_Eio_Monitor_Data mon;
    Emodel_Eio_Properties proplist[PROP_LIST_SIZE];
+   Eio_Filter_Direct_Cb filter_cb;
+   void *filter_userdata;
 };
-
 
 struct _Emodel_Eio_Child_Add
 {

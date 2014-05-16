@@ -105,6 +105,7 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
    /* save child object in userdata, callback can ignore this field */
    _data->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->fullpath));
+   eo_do(_data->child, emodel_eio_children_filter_set(_data->priv->filter_cb, _data->priv->filter_userdata)); //XXX: set parent filter to child
    /* dispatch callback for user */
    _data->callback(_data->name, parent, _data->child);
    eo_unref(_data->child);
@@ -157,10 +158,10 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
 {
    Emodel_Eio *priv = eo_data_scope_get(obj, MY_CLASS);
    const Eo_Callback_Array_Item *callback_array = event_info;
-   
+
    if((priv->mon.cb_count_child_add == 0) && (priv->mon.cb_count_child_del == 0))
      {
-        priv->monitor = eio_monitor_add(priv->path); 
+        priv->monitor = eio_monitor_add(priv->path);
      }
 
    if(callback_array->desc == EMODEL_CHILD_ADD_EVT)
@@ -184,17 +185,17 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
         return EO_CALLBACK_CONTINUE;
      }
 
-   // EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h 
+   // EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h
    return EINA_TRUE;
 }
 
 Eina_Bool
 _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   
+
    Emodel_Eio *priv = eo_data_scope_get(obj, MY_CLASS);
    const Eo_Callback_Array_Item *callback_array = event_info;
-   
+
    if(callback_array->desc == EMODEL_CHILD_ADD_EVT)
      {
         priv->mon.cb_count_child_add--;
@@ -219,12 +220,12 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
           }
         return EO_CALLBACK_CONTINUE;
      }
-   
+
    if((priv->mon.cb_count_child_add == 0) && (priv->mon.cb_count_child_del == 0))
      {
         eio_monitor_del(priv->monitor); 
      }
-   
+
    return EINA_TRUE;
 }
 
@@ -242,21 +243,28 @@ _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_
    EINA_SAFETY_ON_NULL_RETURN(cdata->priv->obj);
 
    child = eo_add_custom(MY_CLASS, cdata->priv->obj, emodel_eio_constructor(info->path));
+   eo_do(child, emodel_eio_children_filter_set(cdata->priv->filter_cb, cdata->priv->filter_userdata)); //XXX: set parent filter to child
    cdata->callback(cdata->data, child, &cdata->cidx);
    eo_unref(child);
    cdata->cidx++;
 }
 
-static Eina_Bool 
-_eio_filter_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
+static Eina_Bool
+_eio_filter_children_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
    Emodel_Eio_Children_Data *cdata = data;
-   cdata->idx++;
+   EINA_SAFETY_ON_NULL_RETURN_VAL(cdata, EINA_FALSE);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(cdata->priv, EINA_FALSE);
+
+   if (cdata->priv->filter_cb)
+     {
+         return cdata->priv->filter_cb(cdata->priv->filter_userdata, handler, info);
+     }
 
    return EINA_TRUE;
 }
 
-static void 
+static void
 _eio_done_children_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio_Children_Data *cdata = data;
@@ -276,29 +284,31 @@ _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
  *  Callbacks
  *  Children Slice Get
  */
-static Eina_Bool 
-_eio_filter_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
+static Eina_Bool
+_eio_filter_children_slice_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
    Eina_Bool ret = EINA_FALSE;
    Emodel_Eio_Children_Data *cdata = data;
 
-   if(cdata->idx >= cdata->start 
-      && cdata->idx < cdata->count)
+   if (_eio_filter_children_get_cb(data, handler, info))
      {
-        ret = EINA_TRUE;
-     }
+        if(cdata->idx >= cdata->start && cdata->idx < cdata->count)
+          {
+             ret = EINA_TRUE;
+          }
 
-   if(cdata->idx == cdata->count)
-     {
-        eio_file_cancel(cdata->lsref);
-     }
+        if(cdata->idx == cdata->count)
+          {
+             eio_file_cancel(cdata->lsref);
+          }
 
-   cdata->idx++;
+        cdata->idx++;
+     }
 
    return ret;
 }
 
-static void 
+static void
 _eio_done_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio_Children_Data *cdata = data;
@@ -309,12 +319,7 @@ _eio_done_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED)
  *  Callbacks
  *  Children Count Get
  */
-static Eina_Bool
-_eio_filter_children_count_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info)
-{
-   EINA_SAFETY_ON_NULL_RETURN_VAL(info->path, EINA_FALSE);
-   return EINA_TRUE;
-}
+
 static void
 _eio_main_children_count_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
 {
@@ -511,10 +516,9 @@ cleanup_bottom:
    _emodel_dealloc_memory(child, NULL);
 }
 
-
 static void
 _emodel_eio_do_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
-{ 
+{
    Emodel_Eio *priv = class_data;
    priv->emodel_cb = va_arg(*list, Emodel_Cb);
 
@@ -537,18 +541,27 @@ _emodel_eio_do_child_del(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
                   priv);
 }
 
+static void
+_emodel_eio_children_filter_set(Eo *obj EINA_UNUSED, void *class_data, va_list *list)
+{
+   Emodel_Eio *priv = class_data;
+
+   priv->filter_cb = va_arg(*list, Eio_Filter_Direct_Cb);
+   priv->filter_userdata = va_arg(*list, void *);
+}
+
 /**
  * Child Del
  */
 static void
 _emodel_eio_del(Eo *obj EINA_UNUSED, void *class_data EINA_UNUSED, va_list *list)
-{ 
+{
    Emodel_Cb cb = va_arg(*list, Emodel_Cb);
    Eo *child = va_arg(*list, Eo *);
 
    EINA_SAFETY_ON_NULL_RETURN(cb);
    EINA_SAFETY_ON_NULL_RETURN(child);
- 
+
    eo_do(child, emodel_eio_child_del(cb));
 }
 
@@ -575,7 +588,7 @@ _emodel_eio_children_get(Eo *obj , void *class_data, va_list *list)
    cdata->cidx = 0;
 
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(cdata->priv->obj));
-   cdata->lsref = eio_file_direct_ls(cdata->priv->path, _eio_filter_children_get_cb, 
+   cdata->lsref = eio_file_direct_ls(cdata->priv->path, _eio_filter_children_get_cb,
                       _eio_main_children_get_cb, _eio_done_children_get_cb, _eio_error_children_get_cb, cdata);
 }
 
@@ -594,7 +607,7 @@ _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
 
    cdata = calloc(1, sizeof(Emodel_Eio_Children_Data));
    EINA_SAFETY_ON_NULL_RETURN(cdata);
-   
+
    start = va_arg(*list, int);
    count = va_arg(*list, int);
    EINA_SAFETY_ON_FALSE_RETURN(start >= 0);
@@ -610,11 +623,11 @@ _emodel_eio_children_slice_get(Eo *obj , void *class_data, va_list *list)
    cdata->cidx = cdata->start;
 
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(cdata->priv->obj));
-   cdata->lsref = eio_file_direct_ls(cdata->priv->path, 
-                      _eio_filter_children_slice_get_cb, 
-                      _eio_main_children_get_cb, 
-                      _eio_done_children_slice_get_cb, 
-                      _eio_error_children_get_cb, 
+   cdata->lsref = eio_file_direct_ls(cdata->priv->path,
+                      _eio_filter_children_slice_get_cb,
+                      _eio_main_children_get_cb,
+                      _eio_done_children_slice_get_cb,
+                      _eio_error_children_get_cb,
                       cdata);
 }
 
@@ -629,7 +642,7 @@ _emodel_eio_children_count_get(Eo *obj EINA_UNUSED, void *class_data, va_list *l
    EINA_SAFETY_ON_NULL_RETURN(count_data);
    count_data->priv = priv;
 
-   eio_file_direct_ls(priv->path, _eio_filter_children_count_get_cb,
+   eio_file_direct_ls(priv->path, _eio_filter_children_get_cb,
                       _eio_main_children_count_get_cb, _eio_done_children_count_get_cb,
                       _eio_error_children_count_get_cb, count_data);
 }
@@ -708,6 +721,7 @@ _emodel_eio_class_constructor(Eo_Class *klass)
       //test
       EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD), _emodel_eio_dir_add),
       EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL), _emodel_eio_do_child_del),
+      EO_OP_FUNC(EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILDREN_FILTER_SET), _emodel_eio_children_filter_set),
 
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_DEL), _emodel_eio_del),
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
@@ -723,6 +737,7 @@ static const Eo_Op_Description op_desc[] = {
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR, "Eio file constructor."),
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_DIR_ADD, "Add new child."),
      EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL, "Delete child."),
+     EO_OP_DESCRIPTION(EMODEL_EIO_OBJ_SUB_ID_CHILDREN_FILTER_SET, "Set filter children callback."),
      EO_OP_DESCRIPTION_SENTINEL
 };
 
