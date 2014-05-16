@@ -125,7 +125,6 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
 static Eina_Bool 
 _emodel_evt_added_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
-#if 0
    Eina_Bool ret;
    Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
    Emodel_Eio *priv = data;
@@ -137,17 +136,12 @@ _emodel_evt_added_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *e
 
    ret = eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_ADD_EVT, &cevt, NULL));
    eo_unref(cevt.child);
-
    return ret;
-#else
-   return EINA_TRUE;
-#endif
 }
 
 static Eina_Bool 
 _emodel_evt_deleted_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
-#if 0
    Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
    Emodel_Eio *priv = data;
    Emodel_Children_EVT cevt;
@@ -155,11 +149,7 @@ _emodel_evt_deleted_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void 
    cevt.data = (void*)evt->filename;
    cevt.child = NULL; // Child is destructed
    cevt.idx = -1; 
-
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_DEL_EVT, &cevt, NULL));
-#else
-   return EINA_TRUE;
-#endif
 }
 
 Eina_Bool
@@ -177,7 +167,8 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
      {
         if(priv->mon.cb_count_child_add == 0)
           {
-            priv->ecore_child_add_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_CREATED, _emodel_evt_added_ecore_cb, priv);
+            priv->ecore_child_add_handler = 
+               ecore_event_handler_add(EIO_MONITOR_DIRECTORY_CREATED, _emodel_evt_added_ecore_cb, priv);
           }
         priv->mon.cb_count_child_add++;
         return EO_CALLBACK_CONTINUE;
@@ -186,7 +177,8 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
      {
         if(priv->mon.cb_count_child_del == 0)
           {
-            priv->ecore_child_del_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_DELETED, _emodel_evt_deleted_ecore_cb, priv);
+            priv->ecore_child_del_handler = 
+               ecore_event_handler_add(EIO_MONITOR_DIRECTORY_DELETED, _emodel_evt_deleted_ecore_cb, priv);
           }
         priv->mon.cb_count_child_del++;
         return EO_CALLBACK_CONTINUE;
