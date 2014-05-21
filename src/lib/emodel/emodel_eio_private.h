@@ -47,6 +47,7 @@ struct _Emodel_Eio
    Emodel_Eio_Properties proplist[PROP_LIST_SIZE];
    Eio_Filter_Direct_Cb filter_cb;
    void *filter_userdata;
+   Eo* childSelected;
 };
 
 struct _Emodel_Eio_Child_Add

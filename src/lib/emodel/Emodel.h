@@ -62,6 +62,8 @@ enum
    EMODEL_OBJ_SUB_ID_CHILDREN_GET,
    EMODEL_OBJ_SUB_ID_CHILDREN_SLICE_GET,
    EMODEL_OBJ_SUB_ID_CHILDREN_COUNT_GET,
+   EMODEL_OBJ_SUB_ID_CHILD_SELECT_SET,
+   EMODEL_OBJ_SUB_ID_CHILD_SELECT_GET,
    EMODEL_OBJ_SUB_ID_LAST,
 };
 
@@ -188,6 +190,24 @@ typedef struct _Emodel_Children_EVT Emodel_Children_EVT;
  */
 #define emodel_children_count_get() EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_COUNT_GET)
 
+/**
+ * @def emodel_child_select_set
+ * @since 1.10
+ *
+ * select a child
+ *
+ */
+#define emodel_child_select_set(child) EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_SELECT_SET), EO_TYPECHECK(Eo *, child)
+
+/**
+ * @def emodel_child_select_get
+ * @since 1.10
+ *
+ * get selected child
+ *
+ */
+#define emodel_child_select_get() EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_SELECT_GET)
+
 extern const Eo_Event_Description _EMODEL_PROPERTIES_CHANGE_EVT;
 #define EMODEL_PROPERTIES_CHANGE_EVT (&(_EMODEL_PROPERTIES_CHANGE_EVT))
 
@@ -205,6 +225,9 @@ extern const Eo_Event_Description _EMODEL_CHILDREN_GET_EVT;
 
 extern const Eo_Event_Description _EMODEL_CHILDREN_COUNT_GET_EVT;
 #define EMODEL_CHILDREN_COUNT_GET_EVT (&(_EMODEL_CHILDREN_COUNT_GET_EVT))
+
+extern const Eo_Event_Description _EMODEL_CHILD_SELECTED_EVT;
+#define EMODEL_CHILD_SELECTED_EVT (&(_EMODEL_CHILD_SELECTED_EVT))
 
 /**
  * @}

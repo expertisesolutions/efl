@@ -28,8 +28,11 @@ EAPI const Eo_Event_Description _EMODEL_CHILD_DEL_EVT =
 EAPI const Eo_Event_Description _EMODEL_CHILDREN_GET_EVT =
    EO_EVENT_DESCRIPTION("emodel, children get","Children available.");
 
-   EAPI const Eo_Event_Description _EMODEL_CHILDREN_COUNT_GET_EVT =
+EAPI const Eo_Event_Description _EMODEL_CHILDREN_COUNT_GET_EVT =
    EO_EVENT_DESCRIPTION("emodel, children count get","Children count available.");
+
+EAPI const Eo_Event_Description _EMODEL_CHILD_SELECTED_EVT =
+   EO_EVENT_DESCRIPTION("emodel, child select","Child was selected.");
 
 static const Eo_Op_Description op_desc[] = {
       EO_OP_DESCRIPTION(EMODEL_OBJ_SUB_ID_PROPERTIES_GET, "Get list of properties."),
@@ -42,6 +45,8 @@ static const Eo_Op_Description op_desc[] = {
       EO_OP_DESCRIPTION(EMODEL_OBJ_SUB_ID_CHILDREN_GET, "Get all children."),
       EO_OP_DESCRIPTION(EMODEL_OBJ_SUB_ID_CHILDREN_SLICE_GET, "Get children slice."),
       EO_OP_DESCRIPTION(EMODEL_OBJ_SUB_ID_CHILDREN_COUNT_GET, "Count number of children."),
+      EO_OP_DESCRIPTION(EMODEL_OBJ_SUB_ID_CHILD_SELECT_SET, "Set select child."),
+      EO_OP_DESCRIPTION(EMODEL_OBJ_SUB_ID_CHILD_SELECT_GET, "Get selected a child."),
       EO_OP_DESCRIPTION_SENTINEL
 };
 
@@ -52,6 +57,7 @@ static const Eo_Event_Description *event_descs[] = {
    EMODEL_CHILD_DEL_EVT,
    EMODEL_CHILDREN_GET_EVT,
    EMODEL_CHILDREN_COUNT_GET_EVT,
+   EMODEL_CHILD_SELECTED_EVT,
    NULL
 };
 

@@ -168,7 +168,7 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
      {
         if(priv->mon.cb_count_child_add == 0)
           {
-            priv->ecore_child_add_handler = 
+            priv->ecore_child_add_handler =
                ecore_event_handler_add(EIO_MONITOR_DIRECTORY_CREATED, _emodel_evt_added_ecore_cb, priv);
           }
         priv->mon.cb_count_child_add++;
@@ -648,6 +648,44 @@ _emodel_eio_children_count_get(Eo *obj EINA_UNUSED, void *class_data, va_list *l
 }
 
 /**
+ * Child select set
+ */
+static void
+_emodel_eio_child_select_set(Eo *obj, void *class_data, va_list *list)
+{
+   Emodel_Eio *priv = class_data;
+   Emodel_Children_EVT cevt;
+   priv->childSelected = va_arg(*list, Eo *);
+
+   //XXX: verify if eo* is a real child
+   if (priv->childSelected != NULL)
+     {
+         eo_ref(priv->childSelected);
+     }
+
+   cevt.child = priv->childSelected;
+   cevt.idx = 0;
+   cevt.data = NULL;
+
+   eo_do(obj, eo_event_callback_call(EMODEL_CHILD_SELECTED_EVT, &cevt, NULL));
+}
+
+/**
+ * Child select get
+ */
+static void
+_emodel_eio_child_select_get(Eo *obj EINA_UNUSED, void *class_data, va_list *list EINA_UNUSED)
+{
+   Emodel_Eio *priv = class_data;
+   Emodel_Children_EVT cevt;
+   cevt.idx = 0;
+   cevt.data = NULL;
+   cevt.child = priv->childSelected;
+
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_CHILD_SELECTED_EVT, &cevt, NULL));
+}
+
+/**
  * Class definitions
  */
 static void
@@ -694,16 +732,19 @@ _emodel_eio_constructor(Eo *obj , void *class_data, va_list *list)
    eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL),
          eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
 
+   priv->childSelected = NULL;
    priv->obj = obj;
-   eio_init();
 }
 
 static void
-_emodel_eio_destructor(Eo *obj , void *class_data EINA_UNUSED, va_list *list EINA_UNUSED)
+_emodel_eio_destructor(Eo *obj , void *class_data, va_list *list EINA_UNUSED)
 {
-   //TODO: free data
-   eio_shutdown();
-   eo_do_super(obj, MY_CLASS, eo_destructor()); 
+   Emodel_Eio *priv = class_data;
+   if (priv->childSelected != NULL)
+     {
+         eo_unref(priv->childSelected);
+     }
+   eo_do_super(obj, MY_CLASS, eo_destructor());
 }
 
 static void
@@ -727,6 +768,9 @@ _emodel_eio_class_constructor(Eo_Class *klass)
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_GET), _emodel_eio_children_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_SLICE_GET), _emodel_eio_children_slice_get),
       EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILDREN_COUNT_GET), _emodel_eio_children_count_get),
+
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_SELECT_SET), _emodel_eio_child_select_set),
+      EO_OP_FUNC(EMODEL_ID(EMODEL_OBJ_SUB_ID_CHILD_SELECT_GET), _emodel_eio_child_select_get),
       EO_OP_FUNC_SENTINEL
    };
 
