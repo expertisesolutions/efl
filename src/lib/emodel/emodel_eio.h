@@ -47,10 +47,11 @@ extern EAPI Eo_Op EMODEL_EIO_BASE_ID;
 
 enum
 {
-   EMODEL_EIO_OBJ_SUB_ID_CONSTRUCTOR,
+   EMODEL_EIO_OBJ_SUB_ID_ADD,
    EMODEL_EIO_OBJ_SUB_ID_DIR_ADD,
    EMODEL_EIO_OBJ_SUB_ID_CHILD_DEL,
    EMODEL_EIO_OBJ_SUB_ID_CHILDREN_FILTER_SET,
+   EMODEL_EIO_OBJ_SUB_ID_PATH_GET,
    EMODEL_EIO_OBJ_SUB_ID_LAST,
 };
 
@@ -74,6 +75,18 @@ typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
  *
  */
 #define emodel_eio_constructor(path) EO_BASE_ID(EO_BASE_SUB_ID_CONSTRUCTOR), EO_TYPECHECK(const char *, path)
+
+/**
+ * @def emodel_eio_add
+ * @since 1.10
+ *
+ * Constructor for Emodel_Eio
+ *
+ * @param[in] path constructor
+ * @param[in] root constructor
+ *
+ */
+#define emodel_eio_add(path, root) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_ADD), EO_TYPECHECK(const char *, path), EO_TYPECHECK(Eo *, root)
 
 /**
  * @def emodel_eio_dir_add
@@ -113,6 +126,16 @@ typedef enum _Emodel_Eio_Filetype Emodel_Eio_Filetype;
  */
 #define emodel_eio_children_filter_set(filter_cb, userdata) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_CHILDREN_FILTER_SET), EO_TYPECHECK(Eio_Filter_Direct_Cb, filter_cb), EO_TYPECHECK(void *, userdata)
 
+/**
+ * @def emodel_eio_path_get
+ * @since 1.10
+ *
+ * Get path
+ *
+ * @param[out] path
+ *
+ */
+#define emodel_eio_path_get(path) EMODEL_EIO_ID(EMODEL_EIO_OBJ_SUB_ID_PATH_GET), EO_TYPECHECK(const char**, path)
 
 /**
  * @}
