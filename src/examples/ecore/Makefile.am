@@ -102,7 +102,9 @@ $(top_builddir)/src/lib/ecore_con/libecore_con.la \
 $(ECORE_COMMON_LDADD)
 
 ecore_animator_example_SOURCES = ecore_animator_example.c
-ecore_animator_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_animator_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_client_bench_SOURCES = ecore_client_bench.c
 ecore_client_bench_LDADD = $(ECORE_CON_COMMON_LDADD)
@@ -135,31 +137,49 @@ ecore_con_url_headers_example_SOURCES = ecore_con_url_headers_example.c
 ecore_con_url_headers_example_LDADD = $(ECORE_CON_COMMON_LDADD)
 
 ecore_evas_basics_example_SOURCES = ecore_evas_basics_example.c
-ecore_evas_basics_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_basics_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_buffer_example_01_SOURCES = ecore_evas_buffer_example_01.c
-ecore_evas_buffer_example_01_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_buffer_example_01_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_buffer_example_02_SOURCES = ecore_evas_buffer_example_02.c
-ecore_evas_buffer_example_02_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_buffer_example_02_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_extn_socket_example_SOURCES = ecore_evas_extn_socket_example.c
-ecore_evas_extn_socket_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_extn_socket_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_extn_plug_example_SOURCES = ecore_evas_extn_plug_example.c
-ecore_evas_extn_plug_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_extn_plug_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_callbacks_SOURCES = ecore_evas_callbacks.c
-ecore_evas_callbacks_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_callbacks_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_ews_example_SOURCES = ecore_evas_ews_example.c
-ecore_evas_ews_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_ews_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_object_example_SOURCES = ecore_evas_object_example.c
-ecore_evas_object_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_object_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_evas_window_sizes_example_SOURCES = ecore_evas_window_sizes_example.c
-ecore_evas_window_sizes_example_LDADD = $(ECORE_EVAS_COMMON_LDADD)
+ecore_evas_window_sizes_example_LDADD = \
+$(top_builddir)/src/lib/eet/libeet.la \
+$(ECORE_EVAS_COMMON_LDADD)
 
 ecore_event_example_01_SOURCES = ecore_event_example_01.c
 ecore_event_example_01_LDADD = $(ECORE_COMMON_LDADD)
@@ -192,6 +212,7 @@ ecore_idler_example_LDADD = $(ECORE_COMMON_LDADD)
 ecore_imf_example_SOURCES = ecore_imf_example.c
 ecore_imf_example_LDADD = $(ECORE_EVAS_COMMON_LDADD) \
 $(top_builddir)/src/lib/ecore_imf/libecore_imf.la \
+$(top_builddir)/src/lib/eet/libeet.la \
 $(top_builddir)/src/lib/ecore_imf_evas/libecore_imf_evas.la
 
 

@@ -134,6 +134,7 @@ $(top_builddir)/src/lib/ecore/libecore.la \
 $(top_builddir)/src/lib/ecore_input/libecore_input.la \
 $(top_builddir)/src/lib/ecore_evas/libecore_evas.la \
 $(top_builddir)/src/lib/evas/libevas.la \
+$(top_builddir)/src/lib/eet/libeet.la \
 @EINA_LDFLAGS@
 
 DATA_FILES = addr_book.txt chat.xml Makefile.examples
