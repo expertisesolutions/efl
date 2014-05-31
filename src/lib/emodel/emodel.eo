@@ -1,0 +1,109 @@
+interface Emodel ()
+{
+  data: null;
+  methods {
+    properties_get {
+        /**
+         * @def emodel_properties_get
+         * @since 1.10
+         *
+         * Get properties list
+         *
+         */
+    }
+    property_get {
+        /**
+         * @def emodel_property_get
+         * @since 1.10
+         *
+         * Get property from given property name
+         *
+         * @param[in] property
+         *
+         */
+         params {
+           const char* name;
+         }
+    }
+    property_set {
+        /**
+         * @def emodel_property_get
+         * @since 1.10
+         *
+         * Get property from given property name
+         *
+         * @param[in] property
+         *
+         */
+         params {
+           const char* name;
+           const char* value;
+         }
+    }
+    child_del {
+       /**
+        * @def emodel_child_del
+        * @since 1.10
+        *
+        * Delete child
+        *
+        * @param[in] child_del_cb
+        * @param[in] child
+        *
+        */
+        params {
+          Emodel_Cb child_del_cb;
+          Eo* child;
+        }
+    }
+    children_get {
+        /**
+         * @def emodel_children_get
+         * @since 1.10
+         *
+         * Get children 
+         *
+         * @param[in] children_get_cb
+         * @param[in] data
+         *
+         *
+         */
+         params {
+           Emodel_Cb children_get_cb;
+           void* data;
+         }
+    }
+    children_slice_get {
+        /**
+         * @def emodel_children_slice_get
+         * @since 1.10
+         *
+         * Get children slice
+         *
+         * @param[in] children_slice_get_cb
+         * @param[in] start
+         * @param[in] count
+         * @param[in] data
+         *
+         */
+         params {
+           Emodel_Cb children_slice_get_cb;
+           int       start;
+           int       count;
+           void     *data;
+         }
+    }
+    children_count_get {
+        /**
+         * @def emodel_children_count_get
+         * @since 1.10
+         *
+         * Count children number
+         *
+         */
+    }
+  }
+  implements {
+    virtual::properties_get;
+  }
+}
