@@ -25,13 +25,13 @@ static int _eo_tokenizer_log_dom = -1;
 #endif
 #define WRN(...) EINA_LOG_DOM_WARN(_eo_tokenizer_log_dom, __VA_ARGS__)
 
-#define INF_ENABLED EINA_FALSE
+#define INF_ENABLED EINA_TRUE
 #ifdef INF
 #undef INF
 #endif
 #define INF(...) if (INF_ENABLED) EINA_LOG_DOM_INFO(_eo_tokenizer_log_dom, __VA_ARGS__)
 
-#define DBG_ENABLED EINA_FALSE
+#define DBG_ENABLED EINA_TRUE
 #ifdef DBG
 #undef DBG
 #endif
