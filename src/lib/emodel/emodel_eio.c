@@ -12,7 +12,7 @@
 
 #include "emodel_eio_private.h"
 
-#include <emodel.eo.c>
+//#include <emodel.eo.c>
 
 /* EAPI Eo_Op EMODEL_EIO_BASE_ID = EO_NOOP; */
 

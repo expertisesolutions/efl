@@ -1,6 +1,6 @@
-interface Emodel ()
+class Emodel (Eo_Base)
 {
-  data: null;
+eo_prefix: emodel_obj_interface;
   methods {
     properties_get {
         /**
@@ -27,7 +27,7 @@ interface Emodel ()
     }
     property_set {
         /**
-         * @def emodel_property_get
+         * @def emodel_property_set
          * @since 1.10
          *
          * Get property from given property name
@@ -102,8 +102,5 @@ interface Emodel ()
          *
          */
     }
-  }
-  implements {
-    virtual::properties_get;
   }
 }

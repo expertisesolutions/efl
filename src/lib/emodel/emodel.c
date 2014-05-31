@@ -6,6 +6,13 @@
 #include <Emodel.h>
 #include <Eina.h>
 
+#define MY_CLASS_NAME "Emodel"
+
+struct _Emodel_Data
+{
+};
+typedef struct _Emodel_Data Emodel_Data;
+
 /* EAPI Eo_Op EMODEL_BASE_ID = EO_NOOP; */
 
 /* #define MY_CLASS EMODEL_CLASS */
@@ -68,3 +75,5 @@
 /* }; */
 
 /* EO_DEFINE_CLASS(emodel_class_get, &class_desc, NULL, NULL); */
+
+#include "emodel.eo.c"
