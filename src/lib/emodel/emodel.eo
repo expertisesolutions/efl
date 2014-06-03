@@ -1,55 +1,65 @@
 class Emodel (Eo_Base)
 {
-eo_prefix: emodel_obj_interface;
+eo_prefix: emodel_obj;
   methods {
+
+    load {
+        /*@ Load emodel */
+        /**
+         * @def emodel_load
+         * @since 1.10
+         */
+    }
+    unload {
+        /*@ Unload emodel */
+        /**
+         * @def emodel_unload
+         * @since 1.10
+         */
+    }
     properties_get {
+        /*@ Get properties list */
         /**
          * @def emodel_properties_get
          * @since 1.10
-         *
-         * Get properties list
-         *
          */
     }
     property_get {
+        /*@ Get property from given property name */
         /**
          * @def emodel_property_get
          * @since 1.10
          *
-         * Get property from given property name
-         *
-         * @param[in] property
+         * @in property
          *
          */
          params {
-           const char* name;
+           const char* property;
          }
     }
     property_set {
+        /*@ Get property from given property name */
         /**
          * @def emodel_property_set
          * @since 1.10
          *
-         * Get property from given property name
-         *
          * @param[in] property
+         * @param[in] value
          *
          */
          params {
-           const char* name;
-           const char* value;
+           const char* property;
+           Eina_Value* value;
          }
     }
     child_del {
+       /*@ Delete child */
        /**
         * @def emodel_child_del
         * @since 1.10
         *
-        * Delete child
-        *
         * @param[in] child_del_cb
         * @param[in] child
-        *
         */
         params {
           Emodel_Cb child_del_cb;
@@ -57,16 +67,13 @@ eo_prefix: emodel_obj_interface;
         }
     }
     children_get {
+        /*@ Get children */
         /**
          * @def emodel_children_get
          * @since 1.10
          *
-         * Get children 
-         *
          * @param[in] children_get_cb
          * @param[in] data
-         *
-         *
          */
          params {
            Emodel_Cb children_get_cb;
@@ -74,17 +81,15 @@ eo_prefix: emodel_obj_interface;
          }
     }
     children_slice_get {
+        /*@ Get children slice */
         /**
          * @def emodel_children_slice_get
          * @since 1.10
-         *
-         * Get children slice
          *
          * @param[in] children_slice_get_cb
          * @param[in] start
          * @param[in] count
          * @param[in] data
-         *
          */
          params {
            Emodel_Cb children_slice_get_cb;
@@ -94,12 +99,10 @@ eo_prefix: emodel_obj_interface;
          }
     }
     children_count_get {
+        /*@ Count children number */
         /**
          * @def emodel_children_count_get
          * @since 1.10
-         *
-         * Count children number
-         *
          */
     }
   }
