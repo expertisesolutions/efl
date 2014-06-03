@@ -23,7 +23,6 @@ $(top_builddir)/src/lib/evas/libevas.la \
 $(top_builddir)/src/lib/ecore/libecore.la \
 $(top_builddir)/src/lib/ecore_evas/libecore_evas.la \
 $(top_builddir)/src/lib/emotion/libemotion.la \
-$(top_builddir)/src/lib/eet/libeet.la \
 @EMOTION_LDFLAGS@
 
 EXTRA_PROGRAMS = \

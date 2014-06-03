@@ -32,7 +32,6 @@ $(top_builddir)/src/lib/evas/libevas.la \
 $(top_builddir)/src/lib/edje/libedje.la \
 $(top_builddir)/src/lib/ethumb/libethumb.la \
 $(top_builddir)/src/lib/ethumb_client/libethumb_client.la \
-$(top_builddir)/src/lib/eet/libeet.la \
 @ETHUMB_CLIENT_LDFLAGS@
 
 EXTRA_PROGRAMS = \
