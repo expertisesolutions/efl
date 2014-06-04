@@ -8,11 +8,15 @@ GENERATED = \
 #                 lib/emodel/emodel_eio.eo.c \
 #                 lib/emodel/emodel_eio.eo.h
 
-BUILT_SOURCES += $(GENERATED)
+BUILT_SOURCES += ${GENERATED}
 
 installed_emodelmainheadersdir = $(includedir)/emodel-@VMAJ@
 dist_installed_emodelmainheaders_DATA = lib/emodel/Emodel.h lib/emodel/emodel_eio.h
 nodist_installed_emodelmainheaders_DATA = $(GENERATED)
+
+emodeleolianfilesdir = $(datadir)/eolian/include/emodel-@VMAJ@
+emodeleolianfiles_DATA = \
+              lib/emodel/emodel.eo
 
 lib_emodel_libemodel_la_SOURCES = \
 lib/emodel/emodel.c \
