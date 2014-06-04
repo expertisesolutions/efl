@@ -1,6 +1,6 @@
 class Emodel (Eo_Base)
 {
-eo_prefix: emodel_obj;
+  legacy_prefix: null;
   methods {
 
     load {
@@ -106,4 +106,13 @@ eo_prefix: emodel_obj;
          */
     }
   }
+  events {
+      properties_change(void);
+      property_change(void);
+      child_add(void);
+      child_del(void);
+      children_get(void);
+      children_count_get(void);
+  }
 }
+
