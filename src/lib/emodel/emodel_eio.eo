@@ -1,0 +1,63 @@
+class Emodel_Eio (Eo_Base)
+{
+    legacy_prefix: null;
+    methods {
+
+       constructor {
+            /*@ Constructor for Emode Eio */
+            /**
+             * @def emodel_eio_constructor
+             * @since 1.10
+             *
+             * @in path
+             */
+             params {
+                const char *path;
+             }
+       }
+       dir_add {
+            /*@ Create new empty directory setting mode from umask */
+            /**
+             * @def emodel_eio_dir_add
+             * @since 1.10
+             *
+             * @in child_add_cb
+             * @in name
+             *
+             */
+            params {
+                Emodel_Cb child_add_cb;
+                const char *name;
+            }
+       }
+       child_del {
+            /*@ Delete child */
+            /**
+             * @def emodel_eio_child_del
+             * @since 1.10
+             *
+             * @in child_del_cb
+             *
+             */
+             params {
+                 Emodel_Cb child_del_cb;
+             }
+
+       }
+       children_filter_set {
+            /*@ Set children filter callback */
+            /**
+             * @def emodel_eio_children_filter_set
+             * @since 1.10
+             *
+             * @in filter_cb
+             * @in userdata
+             *
+             */
+             params {
+                 Eio_Filter_Direct_Cb filter_cb;
+                 void *userdata;
+             }
+       }
+    }
+}
