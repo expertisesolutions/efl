@@ -1,6 +1,5 @@
 
 ### Library 
-lib_LTLIBRARIES += lib/emodel/libemodel.la
 
 GENERATED = \
            lib/emodel/emodel.eo.c \
@@ -25,7 +24,7 @@ emodeleolianfiles_DATA = \
               lib/emodel/emodel.eo \
               lib/emodel/emodel_eio.eo
 
-EXTRA_DIST += $(emodeleolianfiles_DATA)
+lib_LTLIBRARIES += lib/emodel/libemodel.la
 
 lib_emodel_libemodel_la_SOURCES = \
 lib/emodel/emodel.c \
@@ -51,9 +50,10 @@ lib_emodel_libemodel_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
 -DPACKAGE_SRC_DIR=\"`pwd`/$(top_srcdir)\" \
 @EMODEL_CFLAGS@
 lib_emodel_libemodel_la_LIBADD = @EMODEL_LIBS@
-
+lib_emodel_libemodel_la_DEPENDENCIES = @USE_EINA_INTERNAL_LIBS@ @USE_EO_INTERNAL_LIBS@ @USE_EIO_INTERNAL_LIBS@ @USE_ECORE_INTERNAL_LIBS@
 
 if EFL_ENABLE_TESTS
+EXTRA_DIST += $(emodeleolianfiles_DATA)
 
 check_PROGRAMS += tests/emodel/emodel_suite
 TESTS += tests/emodel/emodel_suite
