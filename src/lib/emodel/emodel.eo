@@ -43,8 +43,8 @@ class Emodel (Eo_Base)
          * @def emodel_property_set
          * @since 1.10
          *
-         * @param[in] property
-         * @param[in] value
+         * @in property
+         * @in value
          *
          */
          params {
@@ -58,8 +58,8 @@ class Emodel (Eo_Base)
         * @def emodel_child_del
         * @since 1.10
         *
-        * @param[in] child_del_cb
-        * @param[in] child
+        * @in child_del_cb
+        * @in child
         */
         params {
           Emodel_Cb child_del_cb;
@@ -72,8 +72,8 @@ class Emodel (Eo_Base)
          * @def emodel_children_get
          * @since 1.10
          *
-         * @param[in] children_get_cb
-         * @param[in] data
+         * @in children_get_cb
+         * @in data
          */
          params {
            Emodel_Cb children_get_cb;
@@ -86,10 +86,10 @@ class Emodel (Eo_Base)
          * @def emodel_children_slice_get
          * @since 1.10
          *
-         * @param[in] children_slice_get_cb
-         * @param[in] start
-         * @param[in] count
-         * @param[in] data
+         * @in children_slice_get_cb
+         * @in start
+         * @in count
+         * @in data
          */
          params {
            Emodel_Cb children_slice_get_cb;

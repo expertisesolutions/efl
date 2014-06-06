@@ -12,7 +12,7 @@ enum {
    EMODEL_EIO_PROP_ICON
 };
 
-typedef struct _Emodel_Eio                      Emodel_Eio;
+typedef struct _Emodel_Eio_Data                 Emodel_Eio_Data;
 typedef struct _Emodel_Eio_Properties           Emodel_Eio_Properties;
 typedef struct _Emodel_Eio_Children_Data        Emodel_Eio_Children_Data;
 typedef struct _Emodel_Eio_Child_Add            Emodel_Eio_Child_Add;
@@ -32,7 +32,7 @@ struct _Emodel_Eio_Monitor_Data
    int cb_count_child_del; /**< monitor reference counter for child del event*/
 };
 
-struct _Emodel_Eio
+struct _Emodel_Eio_Data
 {
    Eo *obj;
    Eina_Value *properties;
@@ -53,20 +53,20 @@ struct _Emodel_Eio_Child_Add
 {
    Emodel_Cb callback;
    Eo *child;
-   Emodel_Eio *priv;
+   Emodel_Eio_Data *priv;
    char* fullpath;
    char *name;
 };
 
 struct _Emodel_Eio_Children_Count
 {
-   Emodel_Eio *priv;
+   Emodel_Eio_Data *priv;
    size_t total;
 };
 
 struct _Emodel_Eio_Children_Data
 {
-   Emodel_Eio *priv;
+   Emodel_Eio_Data *priv;
    Eio_File *lsref;
    void *data;
    Emodel_Cb callback;
@@ -93,7 +93,7 @@ _emodel_dealloc_memory(void *ptr, ...)
 }
 
 static inline Eina_Value*
-_emodel_property_value_get(const Emodel_Eio *priv, const char *prop)
+_emodel_property_value_get(const Emodel_Eio_Data *priv, const char *prop)
 {
    if((NULL == priv) || (NULL == prop)) return NULL;
    for(unsigned int i = 0; i != PROP_LIST_SIZE; ++i)
