@@ -25,6 +25,7 @@ emodeleolianfiles_DATA = \
               lib/emodel/emodel_eio.eo
 
 lib_LTLIBRARIES += lib/emodel/libemodel.la
+EXTRA_DIST += $(emodeleolianfiles_DATA)
 
 lib_emodel_libemodel_la_SOURCES = \
 lib/emodel/emodel.c \
