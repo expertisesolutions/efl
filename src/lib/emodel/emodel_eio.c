@@ -18,7 +18,7 @@
 /* EAPI Eo_Op EMODEL_EIO_BASE_ID = EO_NOOP; */
 
 /* #define MY_CLASS EMODEL_EIO_CLASS */
-/* #define MY_CLASS_NAME "Emodel_Eio_Class" */
+#define MY_CLASS_NAME "Emodel_Eio"
 
 static void _eio_property_set_error_cb(void *, Eio_File *, int);
 
@@ -36,10 +36,10 @@ _stat_pro_set(Emodel_Eio_Data *priv, int prop_id, int pvalue)
 }
 
 
-/* /\** */
-/*  *  Callbacks */
-/*  *  Property  */
-/*  *\/ */
+/**
+ *  Callbacks
+ *  Property
+ */
 static void
 _eio_stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *stat)
 {
@@ -95,10 +95,10 @@ _eio_property_set_error_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
    fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
-/* /\** */
-/*  *  Callbacks */
-/*  *  Child Add */
-/*  *\/ */
+/**
+ *   Callbacks
+ *   Child Add
+ */
 static void
 _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
@@ -122,10 +122,10 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
 }
 
 
-/* /\** */
-/*  *  Callbacks */
-/*  *  Ecore Events */
-/*  *\/ */
+/**
+ *  Callbacks
+ *  Ecore Events
+ */
 static Eina_Bool
  _emodel_evt_added_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
@@ -231,10 +231,10 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
     return EINA_TRUE;
 }
 
-/* /\** */
-/*  *  Callbacks */
-/*  *  Children Get */
-/*  *\/ */
+/*
+ *  Callbacks
+ *  Children Get
+ */
 static void
 _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
 {
@@ -282,10 +282,10 @@ _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
      }
 }
 
-/* /\** */
-/*  *  Callbacks */
-/*  *  Children Slice Get */
-/*  *\/ */
+/**
+ *  Callbacks
+ *  Children Slice Get
+ */
 static Eina_Bool
 _eio_filter_children_slice_get_cb(void *data, Eio_File *handler, const Eina_File_Direct_Info *info)
 {
@@ -317,10 +317,10 @@ _eio_done_children_slice_get_cb(void *data, Eio_File *handler EINA_UNUSED)
    _emodel_dealloc_memory(cdata, NULL);
 }
 
-/* /\** */
-/*  *  Callbacks */
-/*  *  Children Count Get */
-/*  *\/ */
+/**
+ *  Callbacks
+ *  Children Count Get
+ */
 
 static void
 _eio_main_children_count_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
@@ -346,10 +346,10 @@ _eio_error_children_count_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_
    fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
-/* /\\** */
-/*  *  Callbacks */
-/*  *  Child Del */
-/*  *\\/ */
+/**
+ *  Callbacks
+ *  Child Del
+ */
 static Eina_Bool
 _eio_filter_child_del_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
 {
@@ -384,9 +384,9 @@ _eio_error_unlink_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int 
 }
 
 
-/* /\\** */
-/*  * Interfaces impl. */
-/*  *\\/ */
+/**
+ * Interfaces impl.
+ */
 static void
 _emodel_eio_emodel_properties_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 {
@@ -396,9 +396,9 @@ _emodel_eio_emodel_properties_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTIES_CHANGE, priv->properties));
 }
 
-/* /\\** */
-/*  * Property Get */
-/*  *\\/ */
+/**
+ * Property Get
+ */
 static void
 _emodel_eio_emodel_property_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property)
 {
@@ -421,9 +421,9 @@ _emodel_eio_emodel_property_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const
 }
 
 
-/* /\\** */
-/*  * Property Set */
-/*  *\\/ */
+/**
+ * Property Set
+ */
 static void
 _emodel_eio_emodel_property_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property, Eina_Value *value)
 {
@@ -448,27 +448,27 @@ _emodel_eio_emodel_property_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const
      }
 }
 
-/* /\\** */
-/*  * Load */
-/*  *\\/ */
+/**
+ * Load
+ */
  static void
 _emodel_eio_emodel_load(Eo *obj  EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUSED)
 {
    //TODO: implement
 }
 
-/* /\\** */
-/*  * Unload */
-/*  *\\/ */
+/**
+ * Unload
+ */
 static void
 _emodel_eio_emodel_unload(Eo *obj  EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUSED)
 {
    //TODO: implement
 }
 
-/* /\\** */
-/*  * Child Add */
-/*  *\\/ */
+/**
+ * Child Add
+ */
 static void
 _emodel_eio_dir_add(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb child_add_cb, const char *name)
 {
@@ -512,7 +512,7 @@ cleanup_bottom:
 }
 
 static void
-_emodel_eio_do_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_del_cb)
+_emodel_eio_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_del_cb)
 {
    Emodel_Eio_Data *priv = _pd;
    priv->emodel_cb = child_del_cb;
@@ -545,9 +545,9 @@ _emodel_eio_children_filter_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Eio_F
    priv->filter_userdata = data;
 }
 
-/* /\\** */
-/*  * Child Del */
-/*  *\\/ */
+/**
+ * Child Del
+ */
 static void
 _emodel_eio_emodel_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUSED, Emodel_Cb cb, Eo *child)
 {
@@ -557,9 +557,9 @@ _emodel_eio_emodel_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUS
    eo_do(child, emodel_eio_child_del(cb));
 }
 
-/* /\\** */
-/*  * Children Get */
-/*  *\\/ */
+/**
+ * Children Get
+ */
 static void
 _emodel_eio_emodel_children_get(Eo *obj , Emodel_Eio_Data *_pd, Emodel_Cb callback, void *data)
 {
@@ -583,9 +583,9 @@ _emodel_eio_emodel_children_get(Eo *obj , Emodel_Eio_Data *_pd, Emodel_Cb callba
 }
 
 
-/* /\\** */
-/*  * Children Slice Get */
-/*  *\\/ */
+/**
+ * Children Slice Get
+ */
 static void
 _emodel_eio_emodel_children_slice_get(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb children_slice_get_cb, int start, int count, void *data)
 {
@@ -617,9 +617,9 @@ _emodel_eio_emodel_children_slice_get(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb c
                        cdata);
 }
 
-/* /\\** */
-/*  * Children Count Get */
-/*  *\\/ */
+/**
+ * Children Count Get
+ */
 static void
 _emodel_eio_emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 {
@@ -633,12 +633,18 @@ _emodel_eio_emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
                       _eio_error_children_count_get_cb, count_data);
 }
 
-/* /\\** */
-/*  * Class definitions */
-/*  *\\/ */
+static void
+_emodel_eio_eo_base_constructor(Eo *obj, Emodel_Eio_Data *_pd EINA_UNUSED)
+{
+   eo_error_set(obj);
+   fprintf(stderr, "only custom constructor can be used with '%s' class", MY_CLASS_NAME);
+}
+/**
+ * Class definitions
+ */
 static void
 _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *_pd, const char *path)
-{ 
+{
    Emodel_Eio_Data *priv = _pd;
    const char *prop;
    priv->path = strdup(path);
@@ -685,7 +691,7 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *_pd, const char *path)
 }
 
 static void
-_emodel_eio_destructor(Eo *obj , Emodel_Eio_Data *_pd EINA_UNUSED)
+_emodel_eio_eo_base_destructor(Eo *obj , Emodel_Eio_Data *_pd EINA_UNUSED)
 {
    //TODO: free data
    eio_shutdown();

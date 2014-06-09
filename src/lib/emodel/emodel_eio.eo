@@ -1,18 +1,25 @@
 class Emodel_Eio (Eo_Base, Emodel)
 {
     legacy_prefix: null;
-    methods {
-
+    constructors {
        constructor {
-            /*@ Constructor for Emode Eio */
+          /*@ Contructor with parameters for Emodel EIO. */
+          params {
+             @in const char *path;
+          }
+       }
+    }
+    methods {
+       child_del {
+            /*@ Delete child */
             /**
-             * @def emodel_eio_constructor
+             * @def emodel_eio_child_del
              * @since 1.10
              *
-             * @in path
+             * @in child_del_cb;
              */
              params {
-                const char *path;
+                 Emodel_Cb child_del_cb;
              }
        }
        dir_add {
@@ -29,20 +36,6 @@ class Emodel_Eio (Eo_Base, Emodel)
                 Emodel_Cb child_add_cb;
                 const char *name;
             }
-       }
-       child_del {
-            /*@ Delete child */
-            /**
-             * @def emodel_eio_child_del
-             * @since 1.10
-             *
-             * @in child_del_cb
-             *
-             */
-             params {
-                 Emodel_Cb child_del_cb;
-             }
-
        }
        children_filter_set {
             /*@ Set children filter callback */

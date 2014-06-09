@@ -10,7 +10,6 @@
 #include <Ecore.h>
 #include <Emodel.h>
 #include <emodel_eio.eo.h>
-//#include <emodel_eio.h>
 #include <stdio.h>
 
 #include <check.h>
