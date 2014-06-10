@@ -11,6 +11,7 @@ EOLIAN_FLAGS = \
 	       -I$(srcdir)/lib/ecore_audio \
 	       -I$(srcdir)/lib/emodel
 
+ELUA_GEN_FLAGS =
 
 DIST_SUBDIRS =
 SUBDIRS =
@@ -81,6 +82,8 @@ include Makefile_Eolian_Cxx.am
 include Makefile_Eet_Cxx.am
 include Makefile_Eo_Cxx.am
 
+include Makefile_Elua.am
+
 .PHONY: benchmark examples
 
 BENCHMARK_SUBDIRS = \
@@ -108,6 +111,10 @@ examples/ephysics \
 examples/edje \
 examples/emotion \
 examples/ethumb_client
+
+if HAVE_ELUA
+EXAMPLES_SUBDIRS += examples/elua
+endif
 
 if HAVE_CXX11
 EXAMPLES_SUBDIRS += \

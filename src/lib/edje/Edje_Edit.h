@@ -1552,6 +1552,16 @@ EAPI const char * edje_edit_part_drag_threshold_get(Evas_Object *obj, const char
  */
 EAPI Eina_Bool edje_edit_part_drag_threshold_set(Evas_Object *obj, const char *part, const char *threshold);
 
+/** Append new item to box or table part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to add a new item. This part should have BOX or TABLE type.
+ * @param item_name Name of new item that is not exist in BOX or TABLE yet.
+ * @param source_group Source (means group name) of the
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_item_append(Evas_Object *obj, const char *part, const char *item_name, const char *source_group);
 
 //@}
 /******************************************************************************/
@@ -2137,6 +2147,52 @@ EAPI int edje_edit_state_max_h_get(Evas_Object *obj, const char *part, const cha
  * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
 EAPI Eina_Bool edje_edit_state_max_h_set(Evas_Object *obj, const char *part, const char *state, double value, int max_h);
+
+/** Get the multiplier (minmul) width value of a part state.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to get multiplier width (not including the state value).
+ * @param value The state value.
+ *
+ * @return The maximum width value.
+ */
+EAPI double edje_edit_state_minmul_w_get(Evas_Object *obj, const char *part, const char *state, double value);
+
+/** Set the multiplier (minmul) width value of a part state.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to set multiplier width (not including the state value).
+ * @param value The state value.
+ * @param minmul_w Multiplier width value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_state_minmul_w_set(Evas_Object *obj, const char *part, const char *state, double value, double minmul_w);
+
+/** Get the multiplier (minmul) height value of a part state.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to get multiplier height (not including the state value).
+ * @param value The state value.
+ *
+ * @return The maximum height value.
+ */
+EAPI double edje_edit_state_minmul_h_get(Evas_Object *obj, const char *part, const char *state, double value);
+
+/** Set the multiplier (minmul) height value of a part state.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to set multiplier height (not including the state value).
+ * @param value The state value.
+ * @param minmul_h Multiplier height value.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_state_minmul_h_set(Evas_Object *obj, const char *part, const char *state, double value, double minmul_h);
 
 /** Get the fixed width value of a part state.
  *
@@ -3042,6 +3098,33 @@ edje_edit_state_text_style_get(Evas_Object *obj, const char *part, const char *s
 EAPI Eina_Bool
 edje_edit_state_text_style_set(Evas_Object *obj, const char *part, const char *state, double value, const char *style);
 
+/** Get part name, which used as text source.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to set the the maximum vertical size of
+ * the container to be equal (not including the state value).
+ *
+ * @return The name of part or NULL, if text_source param not a setted.
+ */
+EAPI const char *
+edje_edit_state_text_text_source_get(Evas_Object *obj, const char *part, const char *state, double value);
+
+/** Set the source text part for a given part.
+ * Causes the part to display the content text of another part and update
+ * them as they change.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to set the the maximum vertical size of
+ * the container to be equal (not including the state value).
+ * @param source The text source part name.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
+ */
+EAPI Eina_Bool
+edje_edit_state_text_text_source_set(Evas_Object *obj, const char *part, const char *state, double value, const char *source);
+
 /** Get part name, which used as style text source.
  *
  * @param obj Object being edited.
@@ -3068,6 +3151,31 @@ edje_edit_state_text_source_get(Evas_Object *obj, const char *part, const char *
  */
 EAPI Eina_Bool
 edje_edit_state_text_source_set(Evas_Object *obj, const char *part, const char *state, double value, const char *source);
+
+/** Get the text class of the given part state.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to get text class (not including the state value).
+ * @param value The state value.
+ *
+ * @return The current text class.
+ */
+EAPI const char *
+edje_edit_state_text_class_get(Evas_Object *obj, const char *part, const char *state, double value);
+
+/** Set the text class of the given part state.
+ *
+ * @param obj Object being edited.
+ * @param part Part that contain state.
+ * @param state The name of the state to set text class (not including the state value).
+ * @param value The state value.
+ * @param color_class The text class to assign.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool
+edje_edit_state_text_class_set(Evas_Object *obj, const char *part, const char *state, double value, const char *text_class);
 
 /** Get the list of all the fonts in the given edje.
  *
@@ -3418,6 +3526,19 @@ EAPI Eina_List * edje_edit_sounds_samples_get(Evas_Object *obj);
  * @return A List containing all sounds tones names found in the edje file.
  */
 EAPI Eina_List * edje_edit_sounds_tones_get(Evas_Object *obj);
+
+/** Delete sound sample from the collection
+ *
+ * Deletes sound sample from collection by its name. After successfull deletion
+ * all PLAY_SAMPLE actions in all programs of all groups of current collection
+ * that use deleted sound will be deleted.
+ *
+ * @param obj Object being edited.
+ * @param name The name of the sound file to be deleted from the edje.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_sound_sample_del(Evas_Object *obj, const char *name);
 
 //@}
 /******************************************************************************/
