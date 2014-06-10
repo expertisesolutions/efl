@@ -612,6 +612,18 @@ AC_DEFINE_IF([HAVE_ATFILE_SOURCE],
 
 
 ######################  EFL  ######################
+build_gui="yes"
+AC_ARG_ENABLE([gui],
+   [AC_HELP_STRING([--disable-gui], [disable GUI libraries @<:@default=enable@:>@])],
+   [
+    if test "x${enableval}" = "xyes"; then
+       build_gui="yes"
+       CFOPT_WARNING="yes"
+    else
+       build_gui="no"
+    fi
+   ])
+AM_CONDITIONAL([BUILD_GUI], [test "x${build_gui}" = "xyes"])
 
 AC_ARG_ENABLE([systemd],
    [AC_HELP_STRING([--enable-systemd],
@@ -1156,8 +1168,7 @@ EFL_INTERNAL_DEPEND_PKG([EOLIAN_CXX], [eo])
 EFL_LIB_END([Eolian_Cxx])
 
 #### Evas
-
-EFL_LIB_START([Evas])
+EFL_LIB_START_OPTIONAL([Evas], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -1951,7 +1962,80 @@ EFL_ADD_FEATURE([EVAS], [cserve], [${want_evas_cserve2}])
 EFL_ADD_FEATURE([EVAS], [tile-rotate])
 EFL_ADD_FEATURE([EVAS], [dither-mask], [${build_evas_dither_mask}])
 
-EFL_LIB_END([Evas])
+EFL_LIB_END_OPTIONAL([Evas])
+
+if test "x${build_gui}" = "xno"; then
+   AM_CONDITIONAL([BUILD_ENGINE_BUFFER], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_BUFFER], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_FB], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_FB], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_PSL1GHT], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_PSL1GHT], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_GL_COCOA], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GL_COCOA], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_GL_SDL], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GL_SDL], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_SOFTWARE_GDI], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_SOFTWARE_GDI], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_SOFTWARE_DDRAW], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_SOFTWARE_DDRAW], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_WAYLAND_EGL], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_WAYLAND_EGL], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_WAYLAND_SHM], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_WAYLAND_SHM], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_DRM], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_DRM], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_SOFTWARE_XCB], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_SOFTWARE_XCB], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_SOFTWARE_XLIB], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_SOFTWARE_XLIB], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_SOFTWARE_X11], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_SOFTWARE_X11], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_SOFTWARE_GENERIC], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_GL_XCB], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GL_XCB], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_GL_XLIB], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GL_XLIB], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_GL_X11], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GL_X11], [false])
+   AM_CONDITIONAL([BUILD_ENGINE_GL_COMMON], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GL_COMMON], [false])
+   AM_CONDITIONAL([BUILD_LOADER_BMP], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_BMP], [false])
+   AM_CONDITIONAL([BUILD_LOADER_EET], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_EET], [false])
+   AM_CONDITIONAL([BUILD_LOADER_GENERIC], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GENERIC], [false])
+   AM_CONDITIONAL([BUILD_LOADER_GIF], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_GIF], [false])
+   AM_CONDITIONAL([BUILD_LOADER_ICO], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_ICO], [false])
+   AM_CONDITIONAL([BUILD_LOADER_JPEG], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_JPEG], [false])
+   AM_CONDITIONAL([BUILD_LOADER_JP2K], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_JP2K], [false])
+   AM_CONDITIONAL([BUILD_LOADER_PMAPS], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_PMAPS], [false])
+   AM_CONDITIONAL([BUILD_LOADER_PNG], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_PNG], [false])
+   AM_CONDITIONAL([BUILD_LOADER_PSD], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_PSD], [false])
+   AM_CONDITIONAL([BUILD_LOADER_TGA], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_TGA], [false])
+   AM_CONDITIONAL([BUILD_LOADER_TIFF], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_TIFF], [false])
+   AM_CONDITIONAL([BUILD_LOADER_WBMP], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_WBMP], [false])
+   AM_CONDITIONAL([BUILD_LOADER_WEBP], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_WEBP], [false])
+   AM_CONDITIONAL([BUILD_LOADER_XPM], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_XPM], [false])
+   AM_CONDITIONAL([BUILD_LOADER_TGV], [false])
+   AM_CONDITIONAL([EVAS_STATIC_BUILD_TGV], [false])
+   AM_CONDITIONAL([BUILD_SAVER_JPEG], [false])
+   AM_CONDITIONAL([EVAS_CSERVE2], [false])
+fi
+
 #### End of Evas
 
 #### Edje CXX
@@ -2066,6 +2150,9 @@ AC_ARG_ENABLE([gstreamer1],
     fi
    ],
    [want_gstreamer1="yes"])
+if test "x${build_gui}" = "xno"; then
+   want_gstreamer1="no"
+fi
 
 AC_ARG_ENABLE([tizen],
    [AC_HELP_STRING([--enable-tizen],
@@ -2472,7 +2559,7 @@ EFL_LIB_END([Ecore_File])
 
 
 #### Ecore_Input
-EFL_LIB_START([Ecore_Input])
+EFL_LIB_START_OPTIONAL([Ecore_Input], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -2500,12 +2587,12 @@ EFL_INTERNAL_DEPEND_PKG([ECORE_INPUT], [eina])
 
 ### Checks for library functions
 
-EFL_LIB_END([Ecore_Input])
+EFL_LIB_END_OPTIONAL([Ecore_Input])
 #### End of Ecore_Input
 
 
 #### Ecore_Input_Evas
-EFL_LIB_START([Ecore_Input_Evas])
+EFL_LIB_START_OPTIONAL([Ecore_Input_Evas], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -2535,7 +2622,7 @@ EFL_INTERNAL_DEPEND_PKG([ECORE_INPUT_EVAS], [eina])
 
 ### Checks for library functions
 
-EFL_LIB_END([Ecore_Input_Evas])
+EFL_LIB_END_OPTIONAL([Ecore_Input_Evas])
 #### End of Ecore_Input_Evas
 
 
@@ -2788,6 +2875,10 @@ AC_ARG_ENABLE([audio],
     fi
    ],
    [want_audio="yes"])
+
+if test "x${build_gui}" = "xno"; then
+   want_audio="no"
+fi
 
 EFL_LIB_START_OPTIONAL([Ecore_Audio], [test "${want_audio}" = "yes"])
 
@@ -3276,7 +3367,7 @@ AM_CONDITIONAL([HAVE_ECORE_X_XCB], [test "${want_x11_xcb}" = "yes"])
 
 
 #### Ecore_Imf
-EFL_LIB_START([Ecore_Imf])
+EFL_LIB_START_OPTIONAL([Ecore_Imf], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -3397,12 +3488,18 @@ EFL_ADD_FEATURE([ECORE_IMF], [wayland], [${want_ecore_imf_wayland}])
 
 ### Checks for library functions
 
-EFL_LIB_END([Ecore_Imf])
+EFL_LIB_END_OPTIONAL([Ecore_Imf])
+if test "x${build_gui}" = "xno"; then
+   AM_CONDITIONAL([BUILD_ECORE_IMF_IBUS], [false])
+   AM_CONDITIONAL([BUILD_ECORE_IMF_SCIM], [false])
+   AM_CONDITIONAL([BUILD_ECORE_IMF_XIM], [false])
+   AM_CONDITIONAL([BUILD_ECORE_IMF_WAYLAND], [false])
+fi
 #### End of Ecore_Imf
 
 
 #### Ecore_Imf_Evas
-EFL_LIB_START([Ecore_Imf_Evas])
+EFL_LIB_START_OPTIONAL([Ecore_Imf_Evas], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -3433,7 +3530,7 @@ EFL_INTERNAL_DEPEND_PKG([ECORE_IMF_EVAS], [eina])
 
 ### Checks for library functions
 
-EFL_LIB_END([Ecore_Imf_Evas])
+EFL_LIB_END_OPTIONAL([Ecore_Imf_Evas])
 #### End of Ecore_Imf_Evas
 
 
@@ -3556,7 +3653,7 @@ AM_CONDITIONAL([HAVE_EEZE_TIZEN], [test "x${want_tizen}" = "xyes"])
 
 
 #### Ecore_Evas
-EFL_LIB_START([Ecore_Evas])
+EFL_LIB_START_OPTIONAL([Ecore_Evas], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -3716,7 +3813,28 @@ EFL_EVAL_PKGS([ECORE_EVAS])
 
 ### Checks for library functions
 
-EFL_LIB_END([Ecore_Evas])
+EFL_LIB_END_OPTIONAL([Ecore_Evas])
+if test "x${build_gui}" = "xno"; then
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_EXTN], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_EWS], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_FB], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_DRM], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_PSL1GHT], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_OPENGL_COCOA], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_SOFTWARE_SDL], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_OPENGL_SDL], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_SDL], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_WAYLAND_SHM], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_WAYLAND_EGL], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_WAYLAND], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_SOFTWARE_GDI], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_SOFTWARE_DDRAW], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_WIN32], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_SOFTWARE_X11], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_OPENGL_X11], [false])
+   AM_CONDITIONAL([BUILD_ECORE_EVAS_X11], [false])
+fi
+
 #### End of Ecore_Evas
 
 #### Emodel
@@ -3858,6 +3976,10 @@ AC_ARG_ENABLE([physics],
    ],
    [want_physics="yes"])
 
+if test "x${build_gui}" = "xno"; then
+   want_physics="no"
+fi
+
 EFL_LIB_START_OPTIONAL([EPhysics], [test "${want_physics}" = "yes"])
 
 ### Additional options to configure
@@ -3895,7 +4017,7 @@ EFL_LIB_END_OPTIONAL([EPhysics])
 
 
 #### Edje
-EFL_LIB_START([Edje])
+EFL_LIB_START_OPTIONAL([Edje], [test "x${build_gui}" = "xyes"])
 
 ### Additional options to configure
 
@@ -3912,6 +4034,10 @@ AC_ARG_ENABLE([multisense],
     fi
    ],
    [want_multisense="no"])
+
+if test "x${build_gui}" = "xno"; then
+   want_multisense="no"
+fi
 
 # TODO: should we keep or remove these?
 want_edje_program_cache="no"
@@ -3964,7 +4090,8 @@ AC_DEFINE_IF([BUILD_EDJE_FP], [test "${want_fixed_point}" = "yes"],
 
 AM_CONDITIONAL([ENABLE_MULTISENSE], [test "${want_multisense}" = "yes"])
 AC_DEFINE_IF([ENABLE_MULTISENSE], [test "${want_multisense}" = "yes"],
-  [1], [Use Multisense])
+   [1], [Use Multisense])
+
 AC_SUBST([want_multisense])
 AC_SUBST([want_physics])
 
@@ -3984,8 +4111,14 @@ sys/wait.h \
 
 ### Checks for library functions
 
-EFL_LIB_END([Edje])
+EFL_LIB_END_OPTIONAL([Edje])
+
+if test "x${build_gui}" = "xno"; then
+   AC_DEFINE([ENABLE_MULTISENSE], [0], [Use Multisense])
+   AM_CONDITIONAL([ENABLE_MULTISENSE], [false])
+fi
 #### End of Edje
+
 
 #### Edje CXX
 EFL_LIB_START([Edje_Cxx])
@@ -3996,7 +4129,7 @@ EFL_LIB_END([Edje_Cxx])
 #### End of Edje CXX
 
 #### Emotion
-EFL_LIB_START([Emotion])
+EFL_LIB_START_OPTIONAL([Emotion], [test "x${build_gui}" = "xyes"])
 
 ## Compatibility layers
 EFL_PLATFORM_DEPEND([Emotion], [evil])
@@ -4082,12 +4215,23 @@ fi
 
 ### Check availability
 
-EFL_LIB_END([Emotion])
+EFL_LIB_END_OPTIONAL([Emotion])
+
+if test "x${build_gui}" = "xno"; then
+   AM_CONDITIONAL([EMOTION_BUILD_XINE], [false])
+   AM_CONDITIONAL([EMOTION_STATIC_BUILD_XINE], [false])
+   AM_CONDITIONAL([EMOTION_BUILD_GSTREAMER], [false])
+   AM_CONDITIONAL([EMOTION_STATIC_BUILD_GSTREAMER], [false])
+   AM_CONDITIONAL([EMOTION_BUILD_GSTREAMER1], [false])
+   AM_CONDITIONAL([EMOTION_STATIC_BUILD_GSTREAMER1], [false])
+   AM_CONDITIONAL([EMOTION_BUILD_GENERIC], [false])
+   AM_CONDITIONAL([EMOTION_STATIC_BUILD_GENERIC], [false])
+fi
 #### End of Emotion
 
 
 #### Ethumb
-EFL_LIB_START([Ethumb])
+EFL_LIB_START_OPTIONAL([Ethumb], [test "x${build_gui}" = "xyes"])
 
 ### Default values
 
@@ -4129,12 +4273,11 @@ EFL_EVAL_PKGS([ETHUMB])
 
 ### Check availability
 
-EFL_LIB_END([Ethumb])
+EFL_LIB_END_OPTIONAL([Ethumb])
 #### End of Ethumb
 
 #### Ethumb_Client
-EFL_LIB_START([Ethumb_Client])
-
+EFL_LIB_START_OPTIONAL([Ethumb_Client], [test "x${build_gui}" = "xyes"])
 ### Default values
 
 ### Additional options to configure
@@ -4170,7 +4313,7 @@ EFL_EVAL_PKGS([ETHUMB_CLIENT])
 
 ### Check availability
 
-EFL_LIB_END([Ethumb_Client])
+EFL_LIB_END_OPTIONAL([Ethumb_Client])
 #### End of Ethumb_Client
 
 
@@ -4398,7 +4541,8 @@ echo "  Cryptography..: ${build_crypto}"
 echo "  X11...........: ${with_x11}"
 echo "  OpenGL........: ${with_opengl}"
 echo "  C++11.........: ${have_cxx11}"
-echo "Evas............: yes (${features_evas})"
+echo "  GUI libs......: ${build_gui}"
+echo "Evas............: ${efl_lib_optional_evas} (${features_evas})"
 echo "  Engines.......: ${features_evas_engine}"
 echo "  Image Loaders.: ${features_evas_loader}"
 if test "x${have_pixman}" = "xyes" ; then
@@ -4410,7 +4554,7 @@ echo "Eina............: yes (${features_eina})"
 echo "Ecore...........: yes (${features_ecore})"
 echo "Ecore_Con.......: yes (${features_ecore_con})"
 echo "Ecore_File......: yes"
-echo "Ecore_IMF.......: yes (${features_ecore_imf})"
+echo "Ecore_IMF.......: ${efl_lib_optional_ecore_imf} (${features_ecore_imf})"
 echo "Ecore_X.........: ${with_x11} (${features_ecore_x})"
 echo "Ecore_SDL.......: $want_sdl"
 echo "Ecore_Wayland...: $want_wayland"
@@ -4426,13 +4570,13 @@ echo "Ecore_WinCE.....: $have_wince"
 fi
 echo "Ecore_Audio.....: ${efl_lib_optional_ecore_audio} (${features_ecore_audio})"
 echo "Ecore_Avahi.....: yes (${features_ecore_avahi})"
-echo "Ecore_Evas......: yes (${features_ecore_evas})"
+echo "Ecore_Evas......: ${efl_lib_optional_ecore_evas} (${features_ecore_evas})"
 echo "Eeze............: ${efl_lib_optional_eeze} (${features_eeze})"
 echo "EPhysics........: ${efl_lib_optional_ephysics}"
-echo "Edje............: yes (${features_edje})"
-echo "Emotion.........: yes (${features_emotion})"
-echo "Ethumb..........: yes"
-echo "Ethumb_Client...: yes"
+echo "Edje............: ${efl_lib_optional_edje} (${features_edje})"
+echo "Emotion.........: ${efl_lib_optional_emotion} (${features_emotion})"
+echo "Ethumb..........: ${efl_lib_optional_ethumb}"
+echo "Ethumb_Client...: ${efl_lib_optional_ethumb_client}"
 if test "${build_tests}" = "none"; then
 echo "Tests...........: no"
 elif test "${build_tests}" = "auto"; then
@@ -4553,7 +4697,7 @@ if test -n "$CFOPT_WARNING"; then
     echo "_____________________________________________________________________"
     echo "You have disabled fontconfig. This is going to make general font"
     echo "searching not work, and only some very direct 'load /path/file.ttf'"
-    echo "will wok alongside some old-school ttf file path searching. This"
+    echo "will work alongside some old-school ttf file path searching. This"
     echo "is very likely not what you want, so highly reconsider turning"
     echo "fontconfig off. Having it off will lead to visual problems like"
     echo "missing text in many UI areas etc."
@@ -4612,7 +4756,7 @@ if test -n "$CFOPT_WARNING"; then
   fi
   if test "x${want_eo_id}" = "xno"; then
     echo "_____________________________________________________________________"
-    echo "Eo's ID absttraction interface is a major safety system that"
+    echo "Eo's ID abstraction interface is a major safety system that"
     echo "protects code from crashing or misbehaving in many cases. It does"
     echo "come at a slight cost, but the safety and protection is worth it."
     echo "Also by disabling this, you may also introduce security holes in"
@@ -4653,7 +4797,7 @@ if test -n "$CFOPT_WARNING"; then
     echo "_____________________________________________________________________"
     echo "You disabled XIM input method support. This is the most basic and"
     echo "core input method protocol supported in X11 and you almost certainly"
-    echo "want the suport for it. Input methods allow for complex text input"
+    echo "want the support for it. Input methods allow for complex text input"
     echo "like for Chinese, Japanese and Korean as well as virtual keyboards"
     echo "on touch/mobile devices."
     echo "_____________________________________________________________________"

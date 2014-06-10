@@ -306,7 +306,7 @@ _eo_call_stack_mem_alloc(size_t maxsize)
    return ptr;
 #else
    //in regular cases just use malloc
-   return malloc(maxsize);
+   return calloc(1, maxsize);
 #endif   
 }
 
@@ -730,7 +730,7 @@ _eo_api_desc_get(const void *api_func, const _Eo_Class *klass, const _Eo_Class *
               * function name itself. Slow, but this should rarely happen.
               */
              for (unsigned int i = 0; i < cur_klass->desc->ops.count; i++)
-               if (op_descs[i].api_name && !strcmp(api_name, op_descs[i].api_name))
+               if (api_name && !strcmp(api_name, op_descs[i].api_name))
                  {
                     if (op_descs[i].api_func == NULL || op_descs[i].api_func == ((void (*)())-1))
                       break;
@@ -979,7 +979,7 @@ eo_class_get(const Eo *eo_id)
    if (_eo_is_a_class(eo_id))
      {
         EO_CLASS_POINTER_RETURN_VAL(eo_id, _klass, NULL);
-        return eo_class_class_get();
+        return EO_ABSTRACT_CLASS_CLASS;
      }
 
    EO_OBJ_POINTER_RETURN_VAL(eo_id, obj, NULL);
@@ -1802,7 +1802,7 @@ eo_init(void)
                    EINA_LOG_STATE_INIT);
 
    /* bootstrap EO_CLASS_CLASS */
-   (void) eo_class_class_get();
+   (void) EO_ABSTRACT_CLASS_CLASS;
 
    if (_eo_call_stack_key != 0)
      WRN("_eo_call_stack_key already set, this should not happen.");

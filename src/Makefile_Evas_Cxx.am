@@ -11,7 +11,7 @@ lib/evas/canvas/evas_text.eo.hh \
 lib/evas/canvas/evas_textblock.eo.hh \
 lib/evas/canvas/evas_textgrid.eo.hh \
 lib/evas/canvas/evas_signal_interface.eo.hh \
-lib/evas/canvas/evas_smart.eo.hh \
+lib/evas/canvas/evas_object_smart.eo.hh \
 lib/evas/canvas/evas_smart_clipped.eo.hh \
 lib/evas/canvas/evas_table.eo.hh \
 lib/evas/canvas/evas_common_interface.eo.hh \
@@ -26,8 +26,6 @@ lib/evas/canvas/evas_scrollable_interface.eo.hh \
 lib/evas/canvas/evas_selectable_interface.eo.hh \
 lib/evas/canvas/evas_zoomable_interface.eo.hh \
 lib/evas/canvas/evas_box.eo.hh
-
-BUILT_SOURCES += lib/evas/Evas.hh $(generated_evas_canvas_cxx_bindings)
 
 installed_evascxxmainheadersdir = $(includedir)/evas-cxx-@VMAJ@/
 nodist_installed_evascxxmainheaders_DATA = lib/evas/Evas.hh

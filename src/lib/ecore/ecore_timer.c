@@ -10,11 +10,11 @@
 #include "Ecore.h"
 #include "ecore_private.h"
 
-#define MY_CLASS ECORE_OBJ_TIMER_CLASS
+#define MY_CLASS ECORE_TIMER_CLASS
 #define MY_CLASS_NAME "Ecore_Timer"
 
 #define ECORE_TIMER_CHECK(obj)                       \
-  if (!eo_isa((obj), ECORE_OBJ_TIMER_CLASS)) \
+  if (!eo_isa((obj), ECORE_TIMER_CLASS)) \
     return
 
 #ifdef WANT_ECORE_TIMER_DUMP
@@ -431,12 +431,12 @@ ecore_timer_freeze_get(Ecore_Timer *timer)
 {
    int r = 0;
 
-   eo_do(timer, r = eo_event_freeze_get());
+   eo_do(timer, r = eo_event_freeze_count_get());
    return !!r;
 }
 
 EOLIAN static int
-_ecore_timer_eo_base_event_freeze_get(Eo *obj EINA_UNUSED, Ecore_Timer_Data *timer)
+_ecore_timer_eo_base_event_freeze_count_get(Eo *obj EINA_UNUSED, Ecore_Timer_Data *timer)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0);
 

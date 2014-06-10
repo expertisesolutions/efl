@@ -2502,63 +2502,26 @@ _edje_part_swallow(Eo *obj EINA_UNUSED, Edje *ed, const char *part, Evas_Object 
    return EINA_TRUE;
 }
 
-static void
-_recalc_extern_parent(Evas_Object *obj)
-{
-   Evas_Object *parent;
-   Edje *ed;
-
-   parent = evas_object_smart_parent_get(obj);
-   if (!(ed = _edje_fetch(parent))) return;
-
-   ed->dirty = EINA_TRUE;
-   ed->recalc_call = EINA_TRUE; // ZZZ: ???
-   _edje_recalc(ed);
-}
-
 EAPI void
 edje_extern_object_min_size_set(Evas_Object *obj, Evas_Coord minw, Evas_Coord minh)
 {
    if (!obj) return;
-   Edje_Real_Part *rp;
 
    evas_object_size_hint_min_set(obj, minw, minh);
-   rp = evas_object_data_get(obj, "\377 edje.swallowing_part");
-   if (rp)
-     {
-        if ((rp->type != EDJE_RP_TYPE_SWALLOW) ||
-            (!rp->typedata.swallow)) return;
-        rp->typedata.swallow->swallow_params.min.w = minw;
-        rp->typedata.swallow->swallow_params.min.h = minh;
-
-        _recalc_extern_parent(obj);
-     }
 }
 
 EAPI void
 edje_extern_object_max_size_set(Evas_Object *obj, Evas_Coord maxw, Evas_Coord maxh)
 {
    if (!obj) return;
-   Edje_Real_Part *rp;
 
    evas_object_size_hint_max_set(obj, maxw, maxh);
-   rp = evas_object_data_get(obj, "\377 edje.swallowing_part");
-   if (rp)
-     {
-        if ((rp->type != EDJE_RP_TYPE_SWALLOW) ||
-            (!rp->typedata.swallow)) return;
-        rp->typedata.swallow->swallow_params.max.w = maxw;
-        rp->typedata.swallow->swallow_params.max.h = maxh;
-
-        _recalc_extern_parent(obj);
-     }
 }
 
 EAPI void
 edje_extern_object_aspect_set(Evas_Object *obj, Edje_Aspect_Control aspect, Evas_Coord aw, Evas_Coord ah)
 {
    if (!obj) return;
-   Edje_Real_Part *rp;
    Evas_Aspect_Control asp;
 
    asp = EVAS_ASPECT_CONTROL_NONE;
@@ -2574,16 +2537,6 @@ edje_extern_object_aspect_set(Evas_Object *obj, Edje_Aspect_Control aspect, Evas
    if (aw < 1) aw = 1;
    if (ah < 1) ah = 1;
    evas_object_size_hint_aspect_set(obj, asp, aw, ah);
-   rp = evas_object_data_get(obj, "\377 edje.swallowing_part");
-   if (rp)
-     {
-        if ((rp->type != EDJE_RP_TYPE_SWALLOW) ||
-            (!rp->typedata.swallow)) return;
-        rp->typedata.swallow->swallow_params.aspect.mode = aspect;
-        rp->typedata.swallow->swallow_params.aspect.w = aw;
-        rp->typedata.swallow->swallow_params.aspect.h = ah;
-        _recalc_extern_parent(obj);
-     }
 }
 
 struct edje_box_layout_builtin {
@@ -3999,7 +3952,7 @@ _edje_real_part_box_remove_at(Edje *ed, Edje_Real_Part *rp, unsigned int pos)
    Evas_Object_Box_Data *priv;
    Evas_Object *child_obj;
 
-   priv = eo_data_scope_get(rp->object, EVAS_OBJ_BOX_CLASS);
+   priv = eo_data_scope_get(rp->object, EVAS_BOX_CLASS);
    opt = eina_list_nth(priv->children, pos);
    if (!opt) return NULL;
    child_obj = opt->obj;
@@ -4156,7 +4109,7 @@ _edje_perspective_obj_del(void *data, EINA_UNUSED Evas *e, EINA_UNUSED Evas_Obje
      {
         Edje *ed;
 
-        ed = eo_data_scope_get(o, EDJE_OBJ_CLASS);
+        ed = eo_data_scope_get(o, EDJE_CLASS);
         if (!ed) continue;
         ed->persp = NULL;
         ed->dirty = EINA_TRUE;
@@ -4209,7 +4162,7 @@ edje_perspective_set(Edje_Perspective *ps, Evas_Coord px, Evas_Coord py, Evas_Co
      {
         Edje *ed;
 
-        ed = eo_data_scope_get(o, EDJE_OBJ_CLASS);
+        ed = eo_data_scope_get(o, EDJE_CLASS);
         if (!ed) continue;
         if (!ed->persp)
           {
@@ -4224,7 +4177,7 @@ edje_perspective_set(Edje_Perspective *ps, Evas_Coord px, Evas_Coord py, Evas_Co
           {
              Edje *ed;
 
-             ed = eo_data_scope_get(o, EDJE_OBJ_CLASS);
+             ed = eo_data_scope_get(o, EDJE_CLASS);
              if (!ed) continue;
              if (!ed->persp)
                {
@@ -4258,7 +4211,7 @@ edje_perspective_global_set(Edje_Perspective *ps, Eina_Bool global)
      {
         Edje *ed;
 
-        ed = eo_data_scope_get(o, EDJE_OBJ_CLASS);
+        ed = eo_data_scope_get(o, EDJE_CLASS);
         if (!ed) continue;
         if (!ed->persp)
           {
@@ -4845,9 +4798,9 @@ _edje_fetch(const Evas_Object *obj)
 {
    Edje *ed;
 
-   if (!obj || !eo_isa(obj, EDJE_OBJ_CLASS))
+   if (!obj || !eo_isa(obj, EDJE_CLASS))
      return NULL;
-   ed = eo_data_scope_get(obj, EDJE_OBJ_CLASS);
+   ed = eo_data_scope_get(obj, EDJE_CLASS);
    if ((ed) && (ed->delete_me)) return NULL;
    return ed;
 }
@@ -4945,7 +4898,7 @@ _edje_real_part_swallow_hints_update(Edje_Real_Part *rp)
    rp->typedata.swallow->swallow_params.min.h = 0;
    rp->typedata.swallow->swallow_params.max.w = -1;
    rp->typedata.swallow->swallow_params.max.h = -1;
-   if (eo_isa(rp->typedata.swallow->swallowed_object, EDJE_OBJ_CLASS))
+   if (eo_isa(rp->typedata.swallow->swallowed_object, EDJE_CLASS))
      {
         Evas_Coord w, h;
 
@@ -4958,9 +4911,9 @@ _edje_real_part_swallow_hints_update(Edje_Real_Part *rp)
         rp->typedata.swallow->swallow_params.max.w = w;
         rp->typedata.swallow->swallow_params.max.h = h;
      }
-   else if (eo_isa(rp->typedata.swallow->swallowed_object, EVAS_OBJ_TEXT_CLASS) ||
-	    eo_isa(rp->typedata.swallow->swallowed_object, EVAS_OBJ_POLYGON_CLASS) ||
-	    eo_isa(rp->typedata.swallow->swallowed_object, EVAS_OBJ_LINE_CLASS))
+   else if (eo_isa(rp->typedata.swallow->swallowed_object, EVAS_TEXT_CLASS) ||
+	    eo_isa(rp->typedata.swallow->swallowed_object, EVAS_POLYGON_CLASS) ||
+	    eo_isa(rp->typedata.swallow->swallowed_object, EVAS_LINE_CLASS))
      {
         Evas_Coord w, h;
 
@@ -5109,7 +5062,7 @@ _edje_real_part_swallow(Edje *ed,
    evas_object_data_set(rp->typedata.swallow->swallowed_object, ".edje", ed);
 
    //If the map is enabled, uv should be updated when image size is changed.
-   if (eo_isa(rp->typedata.swallow->swallowed_object, EVAS_OBJ_IMAGE_CLASS))
+   if (eo_isa(rp->typedata.swallow->swallowed_object, EVAS_IMAGE_CLASS))
      evas_object_event_callback_add(obj_swallow, EVAS_CALLBACK_IMAGE_RESIZE,
                                     _edje_object_part_swallow_image_resize_cb,
                                     rp);
@@ -5154,7 +5107,7 @@ _edje_real_part_swallow_clear(Edje *ed, Edje_Real_Part *rp)
                                        EVAS_CALLBACK_CHANGED_SIZE_HINTS,
                                        _edje_object_part_swallow_changed_hints_cb,
                                        rp);
-   if (eo_isa(rp->typedata.swallow->swallowed_object, EVAS_OBJ_IMAGE_CLASS))
+   if (eo_isa(rp->typedata.swallow->swallowed_object, EVAS_IMAGE_CLASS))
      evas_object_event_callback_del_full(rp->typedata.swallow->swallowed_object,
                                          EVAS_CALLBACK_IMAGE_RESIZE,
                                          _edje_object_part_swallow_image_resize_cb,

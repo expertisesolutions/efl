@@ -339,6 +339,23 @@ EAPI int edje_edit_group_max_h_get(Evas_Object *obj);
  */
 EAPI Eina_Bool edje_edit_group_max_h_set(Evas_Object *obj, int h);
 
+/** Get the group broadcast_signal.
+ *
+ * @param obj Object being edited.
+ *
+ * @return EINA_FALSE if group not accept broadcast signal, EINA_TRUE otherwise (Default to true since 1.1.).
+ */
+EAPI Eina_Bool edje_edit_group_broadcast_signal_get(Evas_Object *obj);
+
+/** Set the group broadcast signal.
+ *
+ * @param obj Object being edited.
+ * @param bs EINA_TRUE if group will accept broadcast signal, EINA_FALSE otherwise.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_group_broadcast_signal_set(Evas_Object *obj, Eina_Bool bs);
+
 //@}
 /******************************************************************************/
 /**************************   ALIAS API   **************************************/
@@ -807,6 +824,18 @@ EAPI Eina_Bool edje_edit_part_external_add(Evas_Object *obj, const char *name, c
  */
 EAPI Eina_Bool edje_edit_part_del(Evas_Object *obj, const char *part);
 
+/** Copy the given part in edje.
+ *
+ * If another part with the same name just exists nothing is created and EINA_FALSE is returned.
+ *
+ * @param obj Object being edited.
+ * @param part Name of the part.
+ * @param new_copy Name of the new copied part.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_copy(Evas_Object *obj, const char *part, const char *new_copy);
+
 /** Check if a part with the given name exist in the edje object.
  *
  * @param obj Object being edited.
@@ -988,6 +1017,138 @@ EAPI const char * edje_edit_part_source_get(Evas_Object *obj, const char *part);
  */
 EAPI Eina_Bool edje_edit_part_source_set(Evas_Object *obj, const char *part, const char *source);
 
+/** Get the source2 of part.
+ *
+ * Only available to TEXTBLOCK parts. It is used for the group to be loaded and
+ * used for selection display OVER the selected text. source is used for under
+ * of the selected text, if source is specified.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get the source from.
+ *
+ * @return Content of the source2 parameter or NULL if nothing set or an error occurred.
+ */
+EAPI const char * edje_edit_part_source2_get(Evas_Object *obj, const char *part);
+
+/** Set the source2 of part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set the source of.
+ * @param source Value for the source parameter.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ *
+ * @see edje_edit_part_source2_get()
+ *
+ */
+EAPI Eina_Bool edje_edit_part_source2_set(Evas_Object *obj, const char *part, const char *source);
+
+/** Get the source3 of part.
+ *
+ * Only available to TEXTBLOCK parts. It is used for the group to be loaded and
+ * used for cursor display UNDER the cursor position. source4 is used for over
+ * the cursor text, if source4 is specified.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get the source from.
+ *
+ * @return Content of the source3 parameter or NULL if nothing set or an error occurred.
+ */
+EAPI const char * edje_edit_part_source3_get(Evas_Object *obj, const char *part);
+
+/** Set the source3 of part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set the source of.
+ * @param source Value for the source parameter.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ *
+ * @see edje_edit_part_source3_get()
+ *
+ * NOTE: This is not applied now. You must reload the edje to see the change.
+ */
+EAPI Eina_Bool edje_edit_part_source3_set(Evas_Object *obj, const char *part, const char *source);
+
+/** Get the source4 of part.
+ *
+ * Only available to TEXTBLOCK parts. It is used for the group to be loaded and
+ * used for cursor display OVER the cursor position. source3 is used for under
+ * the cursor text, if source4 is specified.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get the source from.
+ *
+ * @return Content of the source4 parameter or NULL if nothing set or an error occurred.
+ */
+EAPI const char * edje_edit_part_source4_get(Evas_Object *obj, const char *part);
+
+/** Set the source4 of part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set the source of.
+ * @param source Value for the source parameter.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ *
+ * @see edje_edit_part_source4_get()
+ *
+ * NOTE: This is not applied now. You must reload the edje to see the change.
+ */
+EAPI Eina_Bool edje_edit_part_source4_set(Evas_Object *obj, const char *part, const char *source);
+
+/** Get the source5 of part.
+ *
+ * Only available to TEXTBLOCK parts. It is used for the group to be loaded and
+ * used for anchors display UNDER the anchor position. source6 is used for over
+ * the anchors text, if source6 is specified.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get the source from.
+ *
+ * @return Content of the source5 parameter or NULL if nothing set or an error occurred.
+ */
+EAPI const char * edje_edit_part_source5_get(Evas_Object *obj, const char *part);
+
+/** Set the source5 of part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set the source of.
+ * @param source Value for the source parameter.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ *
+ * @see edje_edit_part_source5_get()
+ *
+ */
+EAPI Eina_Bool edje_edit_part_source5_set(Evas_Object *obj, const char *part, const char *source);
+
+/** Get the source6 of part.
+ *
+ * Only available to TEXTBLOCK parts. It is used for the group to be loaded and
+ * used for anchor display OVER the anchor position. source5 is used for under
+ * the anchor text, if source6 is specified.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get the source from.
+ *
+ * @return Content of the source6 parameter or NULL if nothing set or an error occurred.
+ */
+EAPI const char * edje_edit_part_source6_get(Evas_Object *obj, const char *part);
+
+/** Set the source6 of part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set the source of.
+ * @param source Value for the source parameter.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ *
+ * @see edje_edit_part_source6_get()
+ *
+ */
+EAPI Eina_Bool edje_edit_part_source6_set(Evas_Object *obj, const char *part, const char *source);
+
 /** Get the effect for a given part.
  *
  * Gets the effect used for parts of type TEXT. See @ref edcref for more details.
@@ -1071,6 +1232,63 @@ EAPI Eina_Bool edje_edit_part_repeat_events_get(Evas_Object *obj, const char *pa
  */
 EAPI Eina_Bool edje_edit_part_repeat_events_set(Evas_Object *obj, const char *part, Eina_Bool repeat_events);
 
+/** Get multiline for part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get if editing multiple lines for text or textblock part is enabled.
+ *
+ * @return EINA_TRUE if multiple lines for editing is enabled, EINA_FALSE otherwise
+ */
+EAPI Eina_Bool edje_edit_part_multiline_get(Evas_Object *obj, const char *part);
+
+/** Set multiline for part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set if editing multiple lines for text or textblock part is enabled.
+ * @param multiline EINA_TRUE if multiple lines for editing is enabled, EINA_FALSE otherwise
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_multiline_set(Evas_Object *obj, const char *part, Eina_Bool multiline);
+
+/** Get precise_is_inside for part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get if it will enable point collision detection for the part.
+ *
+ * @return EINA_TRUE if point collision detection for the part is enabled, EINA_FALSE otherwise
+ */
+EAPI Eina_Bool edje_edit_part_precise_is_inside_get(Evas_Object *obj, const char *part);
+
+/** Set precise_is_inside for part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set if it will enable point collision detection for the part.
+ * @param precise_is_inside EINA_TRUE if point collision detection for the part is enabled, EINA_FALSE otherwise
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_precise_is_inside_set(Evas_Object *obj, const char *part, Eina_Bool precise_is_inside);
+
+/** Get accessibility for part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to get if it uses accessibility feature.
+ *
+ * @return EINA_TRUE if part uses accessibility feature, EINA_FALSE otherwise
+ */
+EAPI Eina_Bool edje_edit_part_access_get(Evas_Object *obj, const char *part);
+
+/** Set accessibility for part.
+ *
+ * @param obj Object being edited.
+ * @param part Part to set if it uses accessibility feature.
+ * @param access EINA_TRUE if part uses accessibility feature, EINA_FALSE otherwise
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_access_set(Evas_Object *obj, const char *part, Eina_Bool access);
+
 /** Get ignore_flags for part.
  *
  * @param obj Object being edited.
@@ -1089,6 +1307,61 @@ EAPI Evas_Event_Flags edje_edit_part_ignore_flags_get(Evas_Object *obj, const ch
  * @return EINA_TRUE if successful, EINA_FALSE otherwise.
  */
 EAPI Eina_Bool edje_edit_part_ignore_flags_set(Evas_Object *obj, const char *part, Evas_Event_Flags ignore_flags);
+
+/** Get pointer_mode of a part.
+ *
+ * @param obj Object being edited.
+ * @param part Part name to get it's pointer_mode.
+ *
+ * @return Ponter Mode of the part.
+ */
+EAPI Evas_Object_Pointer_Mode edje_edit_part_pointer_mode_get(Evas_Object *obj, const char *part);
+
+/** Get pointer_mode of a part.
+ *
+ * Note that Ponter Mode can be:
+ * - EVAS_OBJECT_POINTER_MODE_AUTOGRAB - default, X11-like
+ * - EVAS_OBJECT_POINTER_MODE_NOGRAB - pointer always bound to the object right below it
+ * - EVAS_OBJECT_POINTER_MODE_NOGRAB_NO_REPEAT_UPDOWN - useful on object with "repeat events" enabled, @since 1.2
+ *
+ * @param obj Object being edited.
+ * @param part Part name to get it's pointer_mode.
+ * @param pointer_mode Pointer Mode.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_pointer_mode_set(Evas_Object *obj, const char *part, Evas_Object_Pointer_Mode pointer_mode);
+
+/** Get cursor_mode of a part.
+ *
+ * Note that Cursor Mode can be:
+ * 0 - UNDER cursor mode means the cursor will draw below the character pointed
+ *     at. That's the default.
+ * 1 - BEFORE cursor mode means the cursor is drawn as a vertical line before
+ *     the current character, just like many other GUI toolkits handle it.
+ *
+ * @param obj Object being edited.
+ * @param part Part name to get it's cursor_mode.
+ *
+ * @return Ponter Mode of the part.
+ */
+EAPI unsigned char edje_edit_part_cursor_mode_get(Evas_Object *obj, const char *part);
+
+/** Get pointer_mode of a part.
+ *
+ * Note that Cursor Mode can be:
+ * 0 - UNDER cursor mode means the cursor will draw below the character pointed
+ *     at. That's the default.
+ * 1 - BEFORE cursor mode means the cursor is drawn as a vertical line before
+ *     the current character, just like many other GUI toolkits handle it.
+ *
+ * @param obj Object being edited.
+ * @param part Part name to get it's pointer_mode.
+ * @param pointer_mode Pointer Mode.
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE otherwise.
+ */
+EAPI Eina_Bool edje_edit_part_cursor_mode_set(Evas_Object *obj, const char *part, unsigned char cursor_mode);
 
 /** Set scale property for the part.
  *
@@ -2769,7 +3042,7 @@ edje_edit_state_text_style_get(Evas_Object *obj, const char *part, const char *s
 EAPI Eina_Bool
 edje_edit_state_text_style_set(Evas_Object *obj, const char *part, const char *state, double value, const char *style);
 
-/** Get part name, which used as text source.
+/** Get part name, which used as style text source.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
@@ -2781,9 +3054,9 @@ edje_edit_state_text_style_set(Evas_Object *obj, const char *part, const char *s
 EAPI const char *
 edje_edit_state_text_source_get(Evas_Object *obj, const char *part, const char *state, double value);
 
-/** Set the source text part for a given part.
- * Causes the part to display the text content of another part and update them
- * as they change.
+/** Set the source part which would be used as style for text for a given part.
+ * Causes the part to use the text properties (like font and size) of another
+ * part and update them as they change.
  *
  * @param obj Object being edited.
  * @param part Part that contain state.
@@ -2804,6 +3077,8 @@ edje_edit_state_text_source_set(Evas_Object *obj, const char *part, const char *
  *
  * @return A list containing all the fonts names found in the edje file.
  */
+
+
 EAPI Eina_List * edje_edit_fonts_list_get(Evas_Object *obj);
 
 /** Add a new font to the edje file.
@@ -2991,6 +3266,17 @@ EAPI int edje_edit_image_id_get(Evas_Object *obj, const char *image_name);
  */
 EAPI Edje_Edit_Image_Comp edje_edit_image_compression_type_get(Evas_Object *obj, const char *image);
 
+/** Set compression type for the given image.
+ *
+ * @param obj Object being edited.
+ * @param image The name of the image.
+ * @param ic Edje_Edit_Image_Comp.
+ * (EDJE_EDIT_IMAGE_COMP_RAW, EDJE_EDIT_IMAGE_COMP_USER, EDJE_EDIT_IMAGE_COMP_COMP, EDJE_EDIT_IMAGE_COMP_LOSSY[_ETC1]).
+ *
+ * @return EINA_TRUE if successful, EINA_FALSE - otherwise.
+ */
+EAPI Eina_Bool edje_edit_image_compression_type_set(Evas_Object *obj, const char *image, Edje_Edit_Image_Comp ic);
+
 /** Get compression rate for the given image.
  *
  * @param obj Object being edited.
@@ -3107,6 +3393,31 @@ EAPI Eina_Bool edje_edit_state_tween_add(Evas_Object *obj, const char *part, con
  */
 EAPI Eina_Bool edje_edit_state_tween_del(Evas_Object *obj, const char *part, const char *state, double value, const char *tween);
 
+//@}
+/******************************************************************************/
+/**************************   SOUNDS API   ************************************/
+/******************************************************************************/
+/** @name Sounds API
+ *  Functions to deal with sound objects (see @ref edcref).
+ */ //@{
+
+/** Get the list of all the sounds samples in the given edje.
+ * Use edje_edit_string_list_free() when you don't need the list anymore.
+ *
+ * @param obj Object being edited.
+ *
+ * @return A List containing all sounds samples names found in the edje file.
+ */
+EAPI Eina_List * edje_edit_sounds_samples_get(Evas_Object *obj);
+
+/** Get the list of all the sounds tones in the given edje.
+ * Use edje_edit_string_list_free() when you don't need the list anymore.
+ *
+ * @param obj Object being edited.
+ *
+ * @return A List containing all sounds tones names found in the edje file.
+ */
+EAPI Eina_List * edje_edit_sounds_tones_get(Evas_Object *obj);
 
 //@}
 /******************************************************************************/
@@ -4069,6 +4380,8 @@ EAPI const Eina_List *edje_edit_script_error_list_get(Evas_Object *obj);
 
 /**
  * Return source code of the current edje edit object.
+ *
+ * Remember to free the string with edje_edit_string_free()
  *
  * This function will return source code of the whole group, loaded previously.
  * This function also will collect all possible resources that is required and
