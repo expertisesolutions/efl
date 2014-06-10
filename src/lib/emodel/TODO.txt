@@ -1,0 +1,8 @@
+[TODO.txt]
+
+
+- Make sure to remove EIO monitor after deleting a child, perhaps in _eio_done_unlink_cb().
+
+- Fix "'Ecore_Timer' - Not all of the object constructors have been executed."
+
+- Remove all commented old code.
