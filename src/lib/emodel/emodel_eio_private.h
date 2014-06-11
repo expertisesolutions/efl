@@ -35,9 +35,11 @@ struct _Emodel_Eio_Monitor_Data
 struct _Emodel_Eio_Data
 {
    Eo *obj;
+   Eo *rootmodel;
    Eina_Value *properties;
    Eio_File *file;
    char *path;
+   char *pathSelected;
    const Eina_Stat *stat;
    Eio_Monitor *monitor;
    Emodel_Cb emodel_cb; //XXX
