@@ -131,6 +131,7 @@ class Emodel (Eo_Base)
       property_change(void);
       child_add(void);
       child_del(void);
+      child_selected(void);
       children_get(void);
       children_count_get(void);
   }
