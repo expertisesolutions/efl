@@ -40,6 +40,12 @@ _emodel_children_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb
 static void
 _emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
 
+static void
+_emodel_child_select_set(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Eo *child EINA_UNUSED){}
+
+static void
+_emodel_child_select_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
+
 /* EAPI Eo_Op EMODEL_BASE_ID = EO_NOOP; */
 
 /* #define MY_CLASS EMODEL_CLASS */

@@ -17,6 +17,26 @@ class Emodel (Eo_Base)
          * @since 1.10
          */
     }
+    child_select_set {
+        /*@ Select a child */
+        /**
+         * @def emodel_child_select_set
+         * @since 1.10
+         *
+         * @in child
+         */
+        params {
+            Eo *child;
+        }
+    }
+    child_select_get {
+        /*@ Get selected child */
+        /**
+         * @def emodel_child_select_get
+         * @since 1.10
+         *
+         */
+    }
     properties_get {
         /*@ Get properties list */
         /**
