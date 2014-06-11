@@ -181,6 +181,7 @@ START_TEST(emodel_test_test_file)
    memset(&reqs, -1, sizeof(struct reqs_t));
 
    fail_if(!ecore_init(), "ERROR: Cannot init Ecore!\n");
+   fail_if(!eio_init(), "ERROR: Cannot init EIO!\n");
 
    filemodel = eo_add_custom(EMODEL_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTY_CHANGE, _prop_change_cb, NULL));
