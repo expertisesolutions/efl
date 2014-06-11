@@ -22,6 +22,20 @@ class Emodel_Eio (Eo_Base, Emodel)
                  Emodel_Cb child_del_cb;
              }
        }
+       add {
+           /*@ Constructor wrapper */
+            /**
+             * @def emodel_eio_add
+             * @since 1.10
+             *
+             * @in path
+             * @in root
+             */
+             params {
+                 const char *path;
+                 Eo *root;
+             }
+       }
        dir_add {
             /*@ Create new empty directory setting mode from umask */
             /**
@@ -52,6 +66,18 @@ class Emodel_Eio (Eo_Base, Emodel)
                  void *userdata;
              }
        }
+       path_get {
+            /*@ Get path */
+            /**
+             * @def emodel_eio_path_get
+             * @since 1.10
+             *
+             * @out path
+             */
+             params {
+                 const char **path;
+             }
+       }
     }
    implements {
       Eo_Base::destructor;
@@ -65,5 +91,7 @@ class Emodel_Eio (Eo_Base, Emodel)
       Emodel::children_get;
       Emodel::children_slice_get;
       Emodel::children_count_get;
+      Emodel::child_select_get;
+      Emodel::child_select_set;
    }
 }
