@@ -1,6 +1,5 @@
 //Compile with:
-// gcc -o emodel_file_example emodel_file_example.c `pkg-config --cflags --libs emodel`
-
+// gcc -o emodel_test_file emodel_test_file.c `pkg-config --cflags --libs emodel`
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -28,22 +27,36 @@ struct reqs_t {
 };
 
 static struct reqs_t reqs;
+static double _initial_time = 0;
+Ecore_Timer         *timer1     = NULL;
+Ecore_Event_Handler *handler   = NULL;
 
 static Eina_Bool
 __attribute__((unused))_try_quit(void *data EINA_UNUSED)
 {
-   printf("Try quit: \
-          filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d, child_add=%d, child_del=%d\n",
+   printf("Timer1 expired after %0.3f seconds.\n", ecore_time_get() - _initial_time);
+   printf("Try quit: filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d, child_add=%d, child_del=%d\n",
           reqs.filename, reqs.size, reqs.properties, reqs.propset, reqs.count, reqs.children, reqs.child_add, reqs.child_del);
 
-   fail_if((reqs.filename == -1) || (reqs.size == -1) || (reqs.properties == -1) 
-           || (reqs.propset == -1) || (reqs.count == -1) || (reqs.children == -1)
+   fail_if((reqs.filename == -1) || (reqs.size == -1) || (reqs.properties == -1)
+           || (reqs.propset == -1)  || (reqs.count == -1) || (reqs.children == -1)
            || reqs.child_add == -1 || reqs.child_del == -1);
 
-   ecore_main_loop_quit();
-
-   return EINA_TRUE;
+   return ECORE_CALLBACK_CANCEL;
 }
+
+static Eina_Bool
+ exit_func(void *data EINA_UNUSED, int ev_type EINA_UNUSED, void *ev)
+ {
+    Ecore_Event_Signal_Exit *e;
+ 
+    e = (Ecore_Event_Signal_Exit *)ev;
+    if (e->interrupt)      fprintf(stdout, "Exit: interrupt\n");
+    else if (e->quit)      fprintf(stdout, "Exit: quit\n");
+    else if (e->terminate) fprintf(stdout, "Exit: terminate\n");
+    ecore_main_loop_quit();
+    return ECORE_CALLBACK_CANCEL;
+ }
 
 static Eina_Bool
 _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
@@ -52,14 +65,12 @@ _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descr
    const char *prop;
    unsigned int i;
 
-
    reqs.properties = 1;
    for (i = 0; i < eina_value_array_count(properties); i++)
      {
         eina_value_array_get(properties, i, &prop);
         fprintf(stdout, "property %d: %s\n", i, prop);
      }
-
    return EINA_TRUE;
 }
 
@@ -89,8 +100,6 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
         fprintf(stdout, "received Propset\n");
         reqs.propset = 1;
      }
-   //reqs.count is set below
-   //reqs.children is set below
 
    return EINA_TRUE;
 }
@@ -116,7 +125,7 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
 }
 
 static void
-_child_del_cb(void *data EINA_UNUSED, Eo *obj, void *event_info)
+_child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info)
 {
    Eo *child = (Eo *)event_info;
    if(-1 == reqs.child_del) reqs.child_del = 1;
@@ -142,7 +151,6 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
          * delete it as soon as add_cb is notified.
          */
         del = 1;
-        // bye bye!
         eo_do(obj, emodel_child_del(_child_del_cb, child));
      }
 }
@@ -170,10 +178,9 @@ START_TEST(emodel_test_test_file)
    int i;
    static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", "emodel_test_dir_03", NULL};
 
-   //init requirements check fileds to -1
    memset(&reqs, -1, sizeof(struct reqs_t));
 
-   ecore_init();
+   fail_if(!ecore_init(), "ERROR: Cannot init Ecore!\n");
 
    filemodel = eo_add_custom(EMODEL_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTY_CHANGE, _prop_change_cb, NULL));
@@ -185,7 +192,6 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _child_del_evt_cb, NULL));
 
    eo_do(filemodel, emodel_property_get("filename"));
-
    eo_do(filemodel, emodel_property_get("size"));
    eo_do(filemodel, emodel_properties_get());
    eo_do(filemodel, emodel_children_get(_children_get_cb, NULL));
@@ -193,20 +199,14 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 0,15, NULL));
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 20,5, NULL));
 
-
    // here we set the callback for child add
    for(i=0; dirs[i] != NULL; ++i)
      {
-         //memset(&userdata, 0, sizeof(userdata));
-         //userdata.child = NULL;
-         //userdata.name = dirs[i];
-         //userdata.filetype = EMODEL_EIO_FILE_TYPE_DIR;
          eo_do(filemodel, emodel_eio_dir_add(_emodel_child_add_cb, dirs[i]));
      }
 
-
    /**
-    * The following test works however 
+    * The following test works however
     * it is going to rename (move) the original directory to
     * new one so '/tmp' doesn't work , you'll need to use
     * '/tmp/some_other_dir' instead as source.
@@ -214,16 +214,17 @@ START_TEST(emodel_test_test_file)
 //#define _RUN_LOCAL_TEST
 #ifdef _RUN_LOCAL_TEST
    Eina_Value *nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
-   eina_value_set(nameset, "/tmp/DIRAC");
+   eina_value_set(nameset, "/tmp/emodel_test");
    eo_do(filemodel, emodel_property_set("filename", nameset));
    eo_do(filemodel, emodel_property_get("filename"));
 #endif
 
-   ecore_timer_add(3, _try_quit, NULL);
+   handler = ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_func, NULL);
+   _initial_time = ecore_time_get();
+   timer1 = ecore_timer_add(3, _try_quit, NULL);
    ecore_main_loop_begin();
-
-   eo_unref(filemodel);
    ecore_shutdown();
+   eo_unref(filemodel);
 }
 END_TEST
 
