@@ -4,7 +4,6 @@
 
 #include <Emodel.h>
 #include <Eina.h>
-
 #include <emodel_eio.h>
 #include <Eio.h>
 #include <Ecore.h>
@@ -13,11 +12,6 @@
 #include "emodel_eio_private.h"
 
 #define MY_CLASS EMODEL_EIO_CLASS
-//#include <emodel.eo.c>
-
-/* EAPI Eo_Op EMODEL_EIO_BASE_ID = EO_NOOP; */
-
-/* #define MY_CLASS EMODEL_EIO_CLASS */
 #define MY_CLASS_NAME "Emodel_Eio"
 
 static void _eio_property_set_error_cb(void *, Eio_File *, int);
@@ -104,14 +98,17 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
    Eo *parent = _data->priv->obj;
+   Eo *root = _data->priv->rootmodel;
 
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
    /* save child object in userdata, callback can ignore this field */
-   _data->child = eo_add_custom(MY_CLASS, parent, emodel_eio_constructor(_data->fullpath));
+   if (root == NULL)
+     root = parent;
+
+   _data->child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(_data->fullpath, root));
    eo_do(_data->child, emodel_eio_children_filter_set(_data->priv->filter_cb, _data->priv->filter_userdata)); //XXX: set parent filter to child
    /* dispatch callback for user */
    _data->callback(_data->name, parent, _data->child);
-   eo_unref(_data->child);
    _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
 }
 
@@ -133,14 +130,16 @@ static Eina_Bool
   Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
   Emodel_Eio_Data *priv = data;
   Emodel_Children_EVT cevt;
+   Eo *root = priv->rootmodel;
 
-  cevt.data = (void*)evt->filename;
-  cevt.child = eo_add_custom(MY_CLASS, priv->obj, emodel_eio_constructor(evt->filename));
-  cevt.idx = -1;
+   if (root == NULL)
+     root = priv->obj;
+
+   cevt.data = (void*)evt->filename;
+   cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(evt->filename, root));
+   cevt.idx = -1;
 
   ret = eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_ADD, &cevt));
-  eo_unref(cevt.child);
-
   return ret;
 }
 
@@ -239,15 +238,18 @@ static void
 _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_File_Direct_Info *info EINA_UNUSED)
 {
    Emodel_Eio_Children_Data *cdata = data;
-   Eo *child;
+   Eo *root, *child;
 
    EINA_SAFETY_ON_NULL_RETURN(cdata);
    EINA_SAFETY_ON_NULL_RETURN(cdata->priv->obj);
+   root = cdata->priv->rootmodel;
 
-   child = eo_add_custom(MY_CLASS, cdata->priv->obj, emodel_eio_constructor(info->path));
+   if (root == NULL)
+     root = cdata->priv->obj;
+
+   child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(info->path, root));
    eo_do(child, emodel_eio_children_filter_set(cdata->priv->filter_cb, cdata->priv->filter_userdata)); //XXX: set parent filter to child
    cdata->callback(cdata->data, child, &cdata->cidx);
-   eo_unref(child);
    cdata->cidx++;
 }
 
