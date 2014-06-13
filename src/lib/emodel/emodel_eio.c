@@ -115,15 +115,18 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 static void
 _eio_done_error_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED, int error)
 {
-   fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
-   Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
-   Eo *parent = _data->priv->obj;
+   if(0 != error)
+     {
+        fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
+        Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
+        Eo *parent = _data->priv->obj;
 
-   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
-   /* save child object in userdata, callback can ignore this field */
+        EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
+        /* save child object in userdata, callback can ignore this field */
 
-   _data->callback(_data->name, parent, NULL, error);
-   _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
+        _data->callback(_data->name, parent, NULL, error);
+        _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
+     }
 }
 
 
@@ -307,7 +310,15 @@ _eio_error_children_get_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED
 {
    if(0 != error)
      {
-        fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
+        fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
+        Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
+        Eo *parent = _data->priv->obj;
+
+        EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
+        /* save child object in userdata, callback can ignore this field */
+
+        _data->callback(_data->name, parent, NULL, error);
+        _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
      }
 }
 
