@@ -113,8 +113,13 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
 }
 
 static void
-_eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
+_eio_done_error_mkdir_cb(void *data, Eio_File *handler, int error)
 {
+   if(error == 17) /**< File/Directory exists so we want to listen anyway */
+     {
+        _eio_done_mkdir_cb(data, handler);
+        return;
+     }
    fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
 }
 
