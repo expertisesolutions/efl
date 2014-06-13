@@ -471,8 +471,8 @@ _emodel_eio_emodel_property_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const
    if (!strncmp(property, prop, strlen(prop)))
      {
         const char *src;
-        Eina_Value *value = _emodel_property_value_get(priv, prop);
-        eina_value_get(value, &src);
+        Eina_Value *cvalue = _emodel_property_value_get(priv, prop);
+        eina_value_get(cvalue, &src);
         eina_value_get(value, &dest);
         _emodel_dealloc_memory(priv->path, NULL);
         priv->path = strdup(dest);
