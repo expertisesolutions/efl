@@ -75,6 +75,11 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
 
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
+
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
+   evt.value = _emodel_property_value_get(priv, evt.prop);
+   eina_value_set(evt.value, basename(priv->path));
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
 }
 
 static void
