@@ -105,7 +105,7 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 }
 
 static void
-_children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info)
+_children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info, int error)
 {
    int *idx = (int*)event_info;
    fprintf(stdout, "Child received: child=%p, idx=%d\n", child, *idx);
@@ -125,7 +125,7 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
 }
 
 static void
-_child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info)
+_child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info, int error)
 {
    Eo *child = (Eo *)event_info;
    if(-1 == reqs.child_del) reqs.child_del = 1;
@@ -149,28 +149,31 @@ _null_cb(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info
 }
 
 static void
-_emodel_child_add_cb(void *data, Eo *obj, void *event_info)
+_emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
 {
    const char *name = (const char *)data;
    Eo *child = (Eo*)event_info;
    static int del = 0;
 
-   fprintf(stdout, "Child add: parent=%p, child=%p path=%s\n", obj, child, name);
+   fprintf(stdout, "Child add: parent=%p, child=%p path=%s error=%d\n", obj, child, name, error);
 
    if(-1 == reqs.child_add) reqs.child_add = 1;
 
-   eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
-   eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
-
-   if(!del)
+   if(error == 0)
      {
-        /**
-         * This test means that you would not see one
-         * of previously added directories because we'll
-         * delete it as soon as add_cb is notified.
-         */
-        del = 1;
-//        eo_do(obj, emodel_child_del(_child_del_cb, child));
+        eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
+        eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
+
+        if(!del)
+          {
+             /**
+              * This test means that you would not see one
+              * of previously added directories because we'll
+              * delete it as soon as add_cb is notified.
+              */
+             del = 1;
+             eo_do(obj, emodel_child_del(_child_del_cb, child));
+          }
      }
 }
 
