@@ -243,7 +243,7 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
 
     if((priv->cb_count_child_add == 0) && (priv->cb_count_child_del == 0))
       {
-        // eio_monitor_del(priv->monitor);
+         eio_monitor_del(priv->monitor);
       }
 
     return EO_CALLBACK_CONTINUE;
@@ -798,10 +798,11 @@ _emodel_eio_add(Eo *obj , Emodel_Eio_Data *_pd, const char *path, Eo *root)
 static void
 _emodel_eio_eo_base_destructor(Eo *obj , Emodel_Eio_Data *_pd EINA_UNUSED)
 {
-   //TODO/FIXME: free data - LEAK
-   
-
-
+   Emodel_Eio_Data *priv = _pd;
+   if(priv && priv->monitor)
+     {
+        eio_monitor_del(priv->monitor);
+     }
 
    eo_do_super(obj, MY_CLASS, eo_destructor());
 }
