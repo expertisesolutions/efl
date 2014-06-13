@@ -68,7 +68,7 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
    Emodel_Property_EVT evt;
    Emodel_Eio_Data *priv = data;
 
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
    evt.value = _emodel_property_value_get(priv, evt.prop);
    eina_value_set(evt.value, priv->path);
    eio_file_direct_stat(priv->path, _eio_stat_done_cb, _eio_property_set_error_cb, priv);
@@ -457,6 +457,14 @@ _emodel_eio_emodel_property_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const
         return;
      }
 
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
+   if (!strncmp(property, evt.prop, strlen(evt.prop)))
+     {
+        evt.value = _emodel_property_value_get(priv, evt.prop);
+        eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
+        return;
+     }
+
    priv->file = eio_file_direct_stat(priv->path, _eio_stat_done_cb, _eio_error_cb, priv);
 }
 
@@ -473,7 +481,7 @@ _emodel_eio_emodel_property_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const
    EINA_SAFETY_ON_NULL_RETURN(value);
    EINA_SAFETY_ON_NULL_RETURN(property);
 
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &prop);
+   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &prop);
    EINA_SAFETY_ON_NULL_RETURN(prop);
 
    if (!strncmp(property, prop, strlen(prop)))
@@ -756,6 +764,7 @@ _priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
 
    priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 0);
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
+   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_PATH, "path");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_LNK, "is_lnk");
    eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
@@ -766,6 +775,10 @@ _priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
      {
         switch(i) {
             case EMODEL_EIO_PROP_FILENAME:
+                v = eina_value_new(EINA_VALUE_TYPE_STRING);
+                eina_value_set(v, basename(path));
+                break;
+            case EMODEL_EIO_PROP_PATH:
                 v = eina_value_new(EINA_VALUE_TYPE_STRING);
                 eina_value_set(v, path);
                 break;

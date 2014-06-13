@@ -1,7 +1,7 @@
 #ifndef _EMODEL_EIO_PRIVATE_H
 #define _EMODEL_EIO_PRIVATE_H
 
-#define PROP_LIST_SIZE 6
+#define PROP_LIST_SIZE 7
 
 typedef struct _Emodel_Eio_Data                 Emodel_Eio_Data;
 typedef struct _Emodel_Eio_Properties           Emodel_Eio_Properties;
@@ -32,6 +32,7 @@ struct _Emodel_Eio_Monitor_Data
 
 enum {
    EMODEL_EIO_PROP_FILENAME,
+   EMODEL_EIO_PROP_PATH,
    EMODEL_EIO_PROP_IS_DIR,
    EMODEL_EIO_PROP_IS_LNK,
    EMODEL_EIO_PROP_SIZE,
