@@ -126,10 +126,9 @@ _eio_done_error_mkdir_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, 
 static Eina_Bool
  _emodel_evt_added_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
-  Eina_Bool ret;
-  Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
-  Emodel_Eio_Data *priv = data;
-  Emodel_Children_EVT cevt;
+   Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
+   Emodel_Eio_Data *priv = data;
+   Emodel_Children_EVT cevt;
    Eo *root = priv->rootmodel;
 
    if (root == NULL)
@@ -139,8 +138,7 @@ static Eina_Bool
    cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(evt->filename, root));
    cevt.idx = -1;
 
-  ret = eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_ADD, &cevt));
-  return ret;
+   return eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_ADD, &cevt));
 }
 
 static Eina_Bool
@@ -157,38 +155,54 @@ _emodel_evt_deleted_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void 
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_DEL, &cevt));
 }
 
+static void
+_eio_monitors_list_load(Emodel_Eio_Data *_pd)
+{
+   Emodel_Eio_Data *priv = _pd;
+   priv->mon.mon_event_child_add[0] = EIO_MONITOR_DIRECTORY_CREATED;
+   priv->mon.mon_event_child_add[1] = EIO_MONITOR_FILE_CREATED;
+   priv->mon.mon_event_child_add[2] = EIO_MONITOR_ERROR;
+   priv->mon.mon_event_child_del[0] = EIO_MONITOR_DIRECTORY_DELETED;
+   priv->mon.mon_event_child_del[1] = EIO_MONITOR_FILE_DELETED;
+   priv->mon.mon_event_child_del[2] = EIO_MONITOR_ERROR;
+}
+
 Eina_Bool
 _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
     Emodel_Eio_Data *priv = eo_data_scope_get(obj, MY_CLASS);
     const Eo_Callback_Array_Item *callback_array = event_info;
+    unsigned int i;
 
-    if((priv->mon.cb_count_child_add == 0) && (priv->mon.cb_count_child_del == 0))
+    if((callback_array->desc != EMODEL_EVENT_CHILD_ADD) && (callback_array->desc != EMODEL_EVENT_CHILD_DEL))
+         return EO_CALLBACK_CONTINUE;
+
+    if((priv->cb_count_child_add == 0) && (priv->cb_count_child_del == 0))
       {
-         priv->monitor = eio_monitor_add(priv->path);
+         Eio_Monitor *_mon  = eio_monitor_add(priv->path);
+         if(!_mon) return EO_CALLBACK_CONTINUE;
+         priv->monitor = _mon;
       }
 
     if(callback_array->desc == EMODEL_EVENT_CHILD_ADD)
       {
-         if(priv->mon.cb_count_child_add == 0)
+         for(i = 0; priv->mon.mon_event_child_add[i] != EIO_MONITOR_ERROR ; ++i)
            {
-             priv->ecore_child_add_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_CREATED, _emodel_evt_added_ecore_cb, priv);
+              priv->mon.ecore_child_add_handler[i] =
+                  ecore_event_handler_add(priv->mon.mon_event_child_add[i], _emodel_evt_added_ecore_cb, priv);
            }
-         priv->mon.cb_count_child_add++;
-         return EO_CALLBACK_CONTINUE;
+         priv->cb_count_child_add++;
       }
     else if(callback_array->desc == EMODEL_EVENT_CHILD_DEL)
       {
-         if(priv->mon.cb_count_child_del == 0)
+         for(i = 0; priv->mon.mon_event_child_del[i] != EIO_MONITOR_ERROR ; ++i)
            {
-             priv->ecore_child_del_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_DELETED, _emodel_evt_deleted_ecore_cb, priv);
+              priv->mon.ecore_child_add_handler[i] =
+                  ecore_event_handler_add(priv->mon.mon_event_child_del[i], _emodel_evt_deleted_ecore_cb, priv);
            }
-         priv->mon.cb_count_child_del++;
-         return EO_CALLBACK_CONTINUE;
+         priv->cb_count_child_del++;
       }
-
-    // EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h
-    return EINA_TRUE;
+    return EO_CALLBACK_CONTINUE;
 }
 
 Eina_Bool
@@ -196,38 +210,43 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
 {
     Emodel_Eio_Data *priv = eo_data_scope_get(obj, MY_CLASS);
     const Eo_Callback_Array_Item *callback_array = event_info;
+    unsigned int i;
+
+    if((callback_array->desc != EMODEL_EVENT_CHILD_ADD) && (callback_array->desc != EMODEL_EVENT_CHILD_DEL))
+         return EO_CALLBACK_CONTINUE;
+
+    if(!priv->monitor)
+        return EO_CALLBACK_CONTINUE;
 
     if(callback_array->desc == EMODEL_EVENT_CHILD_ADD)
       {
-         priv->mon.cb_count_child_add--;
-         if(priv->mon.cb_count_child_add == 0)
+         if(priv->cb_count_child_add > 0)
            {
-             if(ecore_event_handler_del(priv->ecore_child_add_handler) == NULL)
-               {
-                  fprintf(stderr, "Error deleting ecore_event_handler : %p\n", priv->ecore_child_add_handler);
-               }
+              for(i = 0; priv->mon.mon_event_child_add[i] != EIO_MONITOR_ERROR ; ++i)
+                {
+                   ecore_event_handler_del(priv->mon.ecore_child_add_handler[i]);
+                }
+              priv->cb_count_child_add--;
            }
-         return EO_CALLBACK_CONTINUE;
       }
     else if(callback_array->desc == EMODEL_EVENT_CHILD_DEL)
       {
-         priv->mon.cb_count_child_del--;
-         if(priv->mon.cb_count_child_del == 0)
+         if(priv->cb_count_child_del > 0)
            {
-             if(ecore_event_handler_del(priv->ecore_child_del_handler) == NULL)
-               {
-                  fprintf(stderr, "Error deleting ecore_event_handler : %p\n", priv->ecore_child_del_handler);
-               }
+              for(i = 0; priv->mon.mon_event_child_del[i] != EIO_MONITOR_ERROR ; ++i)
+                {
+                   ecore_event_handler_del(priv->mon.ecore_child_del_handler[i]);
+                }
+              priv->cb_count_child_del--;
            }
-         return EO_CALLBACK_CONTINUE;
       }
 
-    if((priv->mon.cb_count_child_add == 0) && (priv->mon.cb_count_child_del == 0))
+    if((priv->cb_count_child_add == 0) && (priv->cb_count_child_del == 0))
       {
-         eio_monitor_del(priv->monitor);
+        // eio_monitor_del(priv->monitor);
       }
 
-    return EINA_TRUE;
+    return EO_CALLBACK_CONTINUE;
 }
 
 /*
@@ -362,21 +381,32 @@ static void
 _eio_progress_child_del_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, const Eio_Progress *info EINA_UNUSED)
 {}
 
+static Eina_Bool
+_null_cb(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info)
+{
+   (void) desc;
+   (void) obj;
+   (void) data;
+   (void) event_info;
+   return EO_CALLBACK_CONTINUE;
+}
+
 static void
 _eio_done_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
-   Emodel_Eio_Data *priv = data;
+   Emodel_Eio_Data *priv = (Emodel_Eio_Data *)data;
 
    EINA_SAFETY_ON_NULL_RETURN(priv);
    EINA_SAFETY_ON_NULL_RETURN(priv->obj);
    EINA_SAFETY_ON_NULL_RETURN(priv->emodel_cb);
 
-   // TODO: fix this callback call, same reference twice?
-   // TODO: First argument should not be NULL
-   priv->emodel_cb(NULL, priv->obj, priv->obj);
+   /** use dummy callback */
+   eo_do(priv->obj, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
+   eo_do(priv->obj, eo_event_callback_del(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
+   eo_do(priv->obj, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
+   eo_do(priv->obj, eo_event_callback_del(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
 
-   // destruct / unref?
-   //eo_do_super(priv->obj, MY_CLASS, eo_destructor());
+   priv->emodel_cb(NULL, priv->obj, priv->obj);
 }
 
 static void
@@ -522,14 +552,6 @@ _emodel_eio_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child
    EINA_SAFETY_ON_NULL_RETURN(priv);
    EINA_SAFETY_ON_NULL_RETURN(priv->emodel_cb);
 
-   /*
-    * TODO:
-    * eio_file_unlink can't delete directories
-    * In order to use a more correct approach I need
-    * einther to find proper EIO API or implement
-    * verification by hand (hmm bad).
-    * !! this will delete directories recursively too !!
-    */
    eio_dir_unlink(priv->path,
                   _eio_filter_child_del_cb,
                   _eio_progress_child_del_cb,
@@ -661,7 +683,7 @@ _emodel_eio_emodel_child_select_set(Eo *obj, Emodel_Eio_Data *_pd, Eo *child)
    cevt.idx = 0;
    cevt.data = NULL;
 
-   eo_do(cevt.child, emodel_eio_children_filter_set(priv->filter_cb, priv->filter_userdata)); //XXX: set parent filter to child
+   eo_do(cevt.child, emodel_eio_children_filter_set(priv->filter_cb, priv->filter_userdata));
    eo_do(obj, eo_event_callback_call(EMODEL_EVENT_CHILD_SELECTED, &cevt));
 }
 
@@ -686,7 +708,7 @@ _emodel_eio_emodel_child_select_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
          cevt.idx = 0;
          cevt.data = NULL;
 
-         eo_do(cevt.child, emodel_eio_children_filter_set(priv->filter_cb, priv->filter_userdata)); //XXX: set parent filter to child
+         eo_do(cevt.child, emodel_eio_children_filter_set(priv->filter_cb, priv->filter_userdata));
          eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_SELECTED, &cevt));
      }
 }
@@ -754,9 +776,9 @@ _priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
         priv->proplist[i].prop = prop;
      }
 
-   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL),
-         eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
-
+   _eio_monitors_list_load(priv);
+   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL));
+   eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
    priv->obj = obj;
 }
 
@@ -776,8 +798,11 @@ _emodel_eio_add(Eo *obj , Emodel_Eio_Data *_pd, const char *path, Eo *root)
 static void
 _emodel_eio_eo_base_destructor(Eo *obj , Emodel_Eio_Data *_pd EINA_UNUSED)
 {
-   //TODO: free data
-   eio_shutdown();
+   //TODO/FIXME: free data - LEAK
+   
+
+
+
    eo_do_super(obj, MY_CLASS, eo_destructor());
 }
 
