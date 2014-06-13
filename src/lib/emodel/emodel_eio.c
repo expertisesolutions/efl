@@ -108,19 +108,22 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    _data->child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(_data->fullpath, root));
    eo_do(_data->child, emodel_eio_children_filter_set(_data->priv->filter_cb, _data->priv->filter_userdata)); //XXX: set parent filter to child
    /* dispatch callback for user */
-   _data->callback(_data->name, parent, _data->child);
+   _data->callback(_data->name, parent, _data->child, 0);
    _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
 }
 
 static void
-_eio_done_error_mkdir_cb(void *data, Eio_File *handler, int error)
+_eio_done_error_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED, int error)
 {
-   if(error == 17) /**< File/Directory exists so we want to listen anyway */
-     {
-        _eio_done_mkdir_cb(data, handler);
-        return;
-     }
    fprintf(stderr, "%s: err=%d\n", __FUNCTION__, error);
+   Emodel_Eio_Child_Add *_data = (Emodel_Eio_Child_Add *)data;
+   Eo *parent = _data->priv->obj;
+
+   EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
+   /* save child object in userdata, callback can ignore this field */
+
+   _data->callback(_data->name, parent, NULL, error);
+   _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
 }
 
 
@@ -273,7 +276,7 @@ _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_
 
    child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(info->path, root));
    eo_do(child, emodel_eio_children_filter_set(cdata->priv->filter_cb, cdata->priv->filter_userdata)); //XXX: set parent filter to child
-   cdata->callback(cdata->data, child, &cdata->cidx);
+   cdata->callback(cdata->data, child, &cdata->cidx, 0);
    cdata->cidx++;
 }
 
@@ -411,7 +414,7 @@ _eio_done_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
    eo_do(priv->obj, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
    eo_do(priv->obj, eo_event_callback_del(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
 
-   priv->emodel_cb(NULL, priv->obj, priv->obj);
+   priv->emodel_cb(NULL, priv->obj, priv->obj, 0);
 }
 
 static void
