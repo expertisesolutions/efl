@@ -132,6 +132,22 @@ _child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info)
    fprintf(stdout, "Deleted child=%p\n", child);
 }
 
+static Eina_Bool
+_null_cb(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info)
+{
+   Eo *child = (Eo *)event_info;
+   const Eo_Callback_Array_Item *callback_array = event_info;
+
+   if((callback_array->desc == EMODEL_EVENT_CHILD_ADD) || (callback_array->desc == EMODEL_EVENT_CHILD_DEL))
+     fprintf(stdout, "Got event from child '%p'\n", child);
+
+   (void) desc;
+   (void) obj;
+   (void) data;
+   (void) event_info;
+   return EO_CALLBACK_CONTINUE;
+}
+
 static void
 _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 {
@@ -143,6 +159,9 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
 
    if(-1 == reqs.child_add) reqs.child_add = 1;
 
+   eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
+   eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
+
    if(!del)
      {
         /**
@@ -151,7 +170,7 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info)
          * delete it as soon as add_cb is notified.
          */
         del = 1;
-        eo_do(obj, emodel_child_del(_child_del_cb, child));
+//        eo_do(obj, emodel_child_del(_child_del_cb, child));
      }
 }
 
@@ -222,10 +241,11 @@ START_TEST(emodel_test_test_file)
 
    handler = ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_func, NULL);
    _initial_time = ecore_time_get();
-   timer1 = ecore_timer_add(3, _try_quit, NULL);
+   timer1 = ecore_timer_add(13, _try_quit, NULL);
    ecore_main_loop_begin();
-   ecore_shutdown();
    eo_unref(filemodel);
+   ecore_shutdown();
+   eio_shutdown();
 }
 END_TEST
 
