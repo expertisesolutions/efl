@@ -26,7 +26,7 @@ class Emodel (Eo_Base)
          * @in child
          */
         params {
-            Eo *child;
+            Eo *child; /*@ Child to be selected */
         }
     }
     child_select_get {
@@ -54,7 +54,7 @@ class Emodel (Eo_Base)
          *
          */
          params {
-           const char* property;
+           const char* property; /*@ Property name */
          }
     }
     property_set {
@@ -68,8 +68,8 @@ class Emodel (Eo_Base)
          *
          */
          params {
-           const char* property;
-           Eina_Value* value;
+           const char* property; /*@  Property name */
+           Eina_Value* value; /*@ New value */
          }
     }
     child_del {
@@ -79,11 +79,11 @@ class Emodel (Eo_Base)
         * @since 1.10
         *
         * @in child_del_cb
-        * @in child
+        * @in child Child
         */
         params {
-          Emodel_Cb child_del_cb;
-          Eo* child;
+          Emodel_Cb child_del_cb; /*@  Emodel callback */
+          Eo* child; /*@ Child to be deleted */
         }
     }
     children_get {
@@ -96,8 +96,8 @@ class Emodel (Eo_Base)
          * @in data
          */
          params {
-           Emodel_Cb children_get_cb;
-           void* data;
+           Emodel_Cb children_get_cb; /*@ Emodel callback */
+           void* data; /*@ Event data */
          }
     }
     children_slice_get {
@@ -112,10 +112,10 @@ class Emodel (Eo_Base)
          * @in data
          */
          params {
-           Emodel_Cb children_slice_get_cb;
-           int       start;
-           int       count;
-           void     *data;
+           Emodel_Cb children_slice_get_cb; /*@ Emodel callback */
+           int       start; /*@  Range begin */
+           int       count; /*@  Range size */
+           void     *data; /*@ Child's data */
          }
     }
     children_count_get {

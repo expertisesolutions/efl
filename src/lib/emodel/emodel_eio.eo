@@ -4,8 +4,14 @@ class Emodel_Eio (Eo_Base, Emodel)
     constructors {
        constructor {
           /*@ Contructor with parameters for Emodel EIO. */
+          /**
+           * @def emodel_eio_constructor
+           * @since 1.10
+           *
+           * @in path
+           */
           params {
-             @in const char *path;
+             @in const char *path; /*@ Rootpath */
           }
        }
     }
@@ -16,10 +22,10 @@ class Emodel_Eio (Eo_Base, Emodel)
              * @def emodel_eio_child_del
              * @since 1.10
              *
-             * @in child_del_cb;
+             * @in child_del_cb
              */
              params {
-                 Emodel_Cb child_del_cb;
+                 Emodel_Cb child_del_cb; /*@  Emodel callback */
              }
        }
        add {
@@ -32,8 +38,8 @@ class Emodel_Eio (Eo_Base, Emodel)
              * @in root
              */
              params {
-                 const char *path;
-                 Eo *root;
+                 const char *path; /*@ Root path */
+                 Eo *root; /*@ Parent */
              }
        }
        dir_add {
@@ -47,8 +53,8 @@ class Emodel_Eio (Eo_Base, Emodel)
              *
              */
             params {
-                Emodel_Cb child_add_cb;
-                const char *name;
+                Emodel_Cb child_add_cb; /*@  Emodel callback */
+                const char *name; /*@  Directory name */
             }
        }
        children_filter_set {
@@ -62,8 +68,8 @@ class Emodel_Eio (Eo_Base, Emodel)
              *
              */
              params {
-                 Eio_Filter_Direct_Cb filter_cb;
-                 void *userdata;
+                 Eio_Filter_Direct_Cb filter_cb; /*@  Filter callback */
+                 void *userdata; /*@  Userdata */
              }
        }
        path_get {
@@ -75,7 +81,7 @@ class Emodel_Eio (Eo_Base, Emodel)
              * @out path
              */
              params {
-                 const char **path;
+                 const char **path; /*@ Returned path */
              }
        }
     }
