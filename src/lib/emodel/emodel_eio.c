@@ -175,7 +175,6 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
              priv->ecore_child_add_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_CREATED, _emodel_evt_added_ecore_cb, priv);
            }
          priv->mon.cb_count_child_add++;
-         return EO_CALLBACK_CONTINUE;
       }
     else if(callback_array->desc == EMODEL_EVENT_CHILD_DEL)
       {
@@ -184,11 +183,9 @@ _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Descri
              priv->ecore_child_del_handler = ecore_event_handler_add(EIO_MONITOR_DIRECTORY_DELETED, _emodel_evt_deleted_ecore_cb, priv);
            }
          priv->mon.cb_count_child_del++;
-         return EO_CALLBACK_CONTINUE;
       }
 
-    // EO_CALLBACK_CONTINUE is defined to EINA_TRUE, @see Eo.h
-    return EINA_TRUE;
+    return EO_CALLBACK_CONTINUE;
 }
 
 Eina_Bool
