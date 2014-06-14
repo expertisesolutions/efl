@@ -204,7 +204,6 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
                   fprintf(stderr, "Error deleting ecore_event_handler : %p\n", priv->ecore_child_add_handler);
                }
            }
-         return EO_CALLBACK_CONTINUE;
       }
     else if(callback_array->desc == EMODEL_EVENT_CHILD_DEL)
       {
@@ -216,7 +215,6 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
                   fprintf(stderr, "Error deleting ecore_event_handler : %p\n", priv->ecore_child_del_handler);
                }
            }
-         return EO_CALLBACK_CONTINUE;
       }
 
     if((priv->mon.cb_count_child_add == 0) && (priv->mon.cb_count_child_del == 0))
@@ -224,7 +222,7 @@ _eio_monitor_evt_deleted_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Desc
          eio_monitor_del(priv->monitor);
       }
 
-    return EINA_TRUE;
+    return EO_CALLBACK_CONTINUE;
 }
 
 /*
