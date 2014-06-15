@@ -61,7 +61,6 @@ TESTS += tests/emodel/emodel_suite
 
 tests_emodel_emodel_suite_SOURCES = \
 tests/emodel/emodel_suite.c \
-tests/emodel/emodel_test_inherit.c \
 tests/emodel/emodel_test_file.c
 
 tests_emodel_emodel_suite_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
