@@ -30,18 +30,24 @@ static struct reqs_t reqs;
 static double _initial_time = 0;
 Ecore_Timer         *timer1     = NULL;
 Ecore_Event_Handler *handler   = NULL;
+Eo* childs[4] = {NULL, NULL, NULL, NULL};
 
 static Eina_Bool
-__attribute__((unused))_try_quit(void *data EINA_UNUSED)
+_try_quit(void *data EINA_UNUSED)
 {
-   printf("Timer1 expired after %0.3f seconds.\n", ecore_time_get() - _initial_time);
-   printf("Try quit: filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d, child_add=%d, child_del=%d\n",
+   fprintf(stdout, "Timer1 expired after %0.3f seconds.\n", ecore_time_get() - _initial_time);
+   fprintf(stdout, "Try quit: filename=%d, size=%d, properties=%d, propset=%d, count=%d, children=%d, child_add=%d, child_del=%d\n",
           reqs.filename, reqs.size, reqs.properties, reqs.propset, reqs.count, reqs.children, reqs.child_add, reqs.child_del);
+   fflush(stdout);
 
    fail_if((reqs.filename == -1) || (reqs.size == -1) || (reqs.properties == -1)
-           || (reqs.propset == -1)  || (reqs.count == -1) || (reqs.children == -1)
+#ifdef _RUN_LOCAL_TEST
+           || (reqs.propset == -1)
+#endif
+           || (reqs.count == -1) || (reqs.children == -1)
            || reqs.child_add == -1 || reqs.child_del == -1);
 
+   ecore_main_loop_quit();
    return ECORE_CALLBACK_CANCEL;
 }
 
@@ -174,6 +180,11 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
              del = 1;
              eo_do(obj, emodel_child_del(_child_del_cb, child));
           }
+        else
+          {
+            int i = 0; for(;childs[i];++i);
+            childs[i] = child;
+          }
      }
 }
 
@@ -246,6 +257,14 @@ START_TEST(emodel_test_test_file)
    _initial_time = ecore_time_get();
    timer1 = ecore_timer_add(13, _try_quit, NULL);
    ecore_main_loop_begin();
+
+   // Remove all added childs
+   for(i = 0; childs[i]; ++i)
+   {
+     eo_do(filemodel, emodel_child_del(_child_del_cb, childs[i]));
+   }
+   fail_if(i != 3);
+
    eo_unref(filemodel);
    ecore_shutdown();
    eio_shutdown();
