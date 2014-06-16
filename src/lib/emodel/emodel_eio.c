@@ -186,38 +186,39 @@ _eio_monitors_list_load(Emodel_Eio_Data *_pd)
 Eina_Bool
 _eio_monitor_evt_added_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-    Emodel_Eio_Data *priv = eo_data_scope_get(obj, MY_CLASS);
-    const Eo_Callback_Array_Item *callback_array = event_info;
-    unsigned int i;
+   Emodel_Eio_Data *priv = eo_data_scope_get(obj, MY_CLASS);
+   const Eo_Callback_Array_Item *callback_array = event_info;
+   unsigned int i;
 
-    if((callback_array->desc != EMODEL_EVENT_CHILD_ADD) && (callback_array->desc != EMODEL_EVENT_CHILD_DEL))
-         return EO_CALLBACK_CONTINUE;
+   if((callback_array->desc != EMODEL_EVENT_CHILD_ADD) && (callback_array->desc != EMODEL_EVENT_CHILD_DEL))
+     return EO_CALLBACK_CONTINUE;
 
-    if((priv->cb_count_child_add == 0) && (priv->cb_count_child_del == 0))
-      {
-         Eio_Monitor *_mon  = eio_monitor_add(priv->path);
-         if(!_mon) return EO_CALLBACK_CONTINUE;
-         priv->monitor = _mon;
-      }
+   if((priv->cb_count_child_add == 0) && (priv->cb_count_child_del == 0))
+     {
+        Eio_Monitor *_mon  = eio_monitor_add(priv->path);
+        if(!_mon) return EO_CALLBACK_CONTINUE;
+        priv->monitor = _mon;
+     }
 
-    if(callback_array->desc == EMODEL_EVENT_CHILD_ADD)
-      {
-         for(i = 0; priv->mon.mon_event_child_add[i] != EIO_MONITOR_ERROR ; ++i)
-           {
-              priv->mon.ecore_child_add_handler[i] =
-                  ecore_event_handler_add(priv->mon.mon_event_child_add[i], _emodel_evt_added_ecore_cb, priv);
-           }
-         priv->cb_count_child_add++;
-      }
-    else if(callback_array->desc == EMODEL_EVENT_CHILD_DEL)
-      {
-         for(i = 0; priv->mon.mon_event_child_del[i] != EIO_MONITOR_ERROR ; ++i)
-           {
-              priv->mon.ecore_child_add_handler[i] =
-                  ecore_event_handler_add(priv->mon.mon_event_child_del[i], _emodel_evt_deleted_ecore_cb, priv);
-           }
-         priv->cb_count_child_del++;
-      }
+   if(callback_array->desc == EMODEL_EVENT_CHILD_ADD)
+     {
+        for(i = 0; priv->mon.mon_event_child_add[i] != EIO_MONITOR_ERROR ; ++i)
+          {
+             priv->mon.ecore_child_add_handler[i] =
+                 ecore_event_handler_add(priv->mon.mon_event_child_add[i], _emodel_evt_added_ecore_cb, priv);
+          }
+        priv->cb_count_child_add++;
+     }
+   else if(callback_array->desc == EMODEL_EVENT_CHILD_DEL)
+     {
+        for(i = 0; priv->mon.mon_event_child_del[i] != EIO_MONITOR_ERROR ; ++i)
+          {
+             priv->mon.ecore_child_add_handler[i] =
+                 ecore_event_handler_add(priv->mon.mon_event_child_del[i], _emodel_evt_deleted_ecore_cb, priv);
+          }
+        priv->cb_count_child_del++;
+     }
+
     return EO_CALLBACK_CONTINUE;
 }
 
