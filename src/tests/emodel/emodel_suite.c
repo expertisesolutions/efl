@@ -9,7 +9,6 @@
 
 #include <check.h>
 
-void emodel_test_inherit(TCase* tc);
 void emodel_test_file(TCase* tc);
 
 typedef struct _Emodel_Test_Case Emodel_Test_Case;
@@ -20,7 +19,6 @@ struct _Emodel_Test_Case
 };
 
 static const Emodel_Test_Case etc[] = {
-   { "Inherit", emodel_test_inherit },
    { "File", emodel_test_file },
    { NULL, NULL }
 };
