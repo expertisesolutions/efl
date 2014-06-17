@@ -9,11 +9,13 @@
 #include <Ecore.h>
 #include <Emodel.h>
 #include <emodel_eio.eo.h>
+#include <ecore_timer.eo.h>
 #include <stdio.h>
 
 #include <check.h>
 
 #define EMODEL_TEST_FILENAME_PATH "/tmp"
+#define EMODEL_MAX_TEST_CHILDS 16
 
 struct reqs_t {
    int filename;
@@ -30,7 +32,7 @@ static struct reqs_t reqs;
 static double _initial_time = 0;
 Ecore_Timer         *timer1     = NULL;
 Ecore_Event_Handler *handler   = NULL;
-Eo* childs[4] = {NULL, NULL, NULL, NULL};
+static Eo* childs[EMODEL_MAX_TEST_CHILDS];
 
 static Eina_Bool
 _try_quit(void *data EINA_UNUSED)
@@ -160,6 +162,7 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
    const char *name = (const char *)data;
    Eo *child = (Eo*)event_info;
    static int del = 0;
+   static int idx_child = 0;
 
    fprintf(stdout, "Child add: parent=%p, child=%p path=%s error=%d\n", obj, child, name, error);
 
@@ -170,6 +173,8 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
         eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
         eo_do(child, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
 
+        if(idx_child < EMODEL_MAX_TEST_CHILDS) childs[idx_child++] = child;
+
         if(!del)
           {
              /**
@@ -179,11 +184,6 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
               */
              del = 1;
              eo_do(obj, emodel_child_del(_child_del_cb, child));
-          }
-        else
-          {
-            int i = 0; for(;childs[i];++i);
-            childs[i] = child;
           }
      }
 }
@@ -209,14 +209,21 @@ START_TEST(emodel_test_test_file)
 {
    Eo *filemodel;
    int i;
-   static const char *dirs[] = {"emodel_test_dir_00", "emodel_test_dir_01", "emodel_test_dir_02", "emodel_test_dir_03", NULL};
+   static const char *dirs[] = {
+        "emodel_test_dir_00",
+        "emodel_test_dir_01",
+        "emodel_test_dir_02",
+        "emodel_test_dir_03",
+        NULL};
 
    memset(&reqs, -1, sizeof(struct reqs_t));
 
+   fail_if(!eina_init(), "ERROR: Cannot init Eina!\n");
    fail_if(!ecore_init(), "ERROR: Cannot init Ecore!\n");
    fail_if(!eio_init(), "ERROR: Cannot init EIO!\n");
 
    filemodel = eo_add_custom(EMODEL_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
+
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTY_CHANGE, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTIES_CHANGE, _properties_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILDREN_COUNT_GET, _children_count_cb, NULL));
@@ -234,7 +241,7 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 20,5, NULL));
 
    // here we set the callback for child add
-   for(i=0; dirs[i] != NULL; ++i)
+   for(i = 0; dirs[i] != NULL; ++i)
      {
          eo_do(filemodel, emodel_eio_dir_add(_emodel_child_add_cb, dirs[i]));
      }
@@ -255,15 +262,14 @@ START_TEST(emodel_test_test_file)
 
    handler = ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_func, NULL);
    _initial_time = ecore_time_get();
-   timer1 = ecore_timer_add(13, _try_quit, NULL);
+   timer1 = ecore_timer_add(1, _try_quit, filemodel);
    ecore_main_loop_begin();
 
    // Remove all added childs
    for(i = 0; childs[i]; ++i)
    {
      eo_do(filemodel, emodel_child_del(_child_del_cb, childs[i]));
-   }
-   fail_if(i != 3);
+   } sleep(1); /**< EIO is asynchrounous so I must give some time for deletions to execute */
 
    eo_unref(filemodel);
    ecore_shutdown();
