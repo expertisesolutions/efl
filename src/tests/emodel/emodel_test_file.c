@@ -33,6 +33,7 @@ static double _initial_time = 0;
 Ecore_Timer         *timer1     = NULL;
 Ecore_Event_Handler *handler   = NULL;
 static Eo* childs[EMODEL_MAX_TEST_CHILDS];
+static int idx_child;
 
 static Eina_Bool
 _try_quit(void *data EINA_UNUSED)
@@ -162,7 +163,6 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
    const char *name = (const char *)data;
    Eo *child = (Eo*)event_info;
    static int del = 0;
-   static int idx_child = 0;
 
    fprintf(stdout, "Child add: parent=%p, child=%p path=%s error=%d\n", obj, child, name, error);
 
@@ -269,7 +269,8 @@ START_TEST(emodel_test_test_file)
    for(i = 0; childs[i]; ++i)
    {
      eo_do(filemodel, emodel_child_del(_child_del_cb, childs[i]));
-   } sleep(1); /**< EIO is asynchrounous so I must give some time for deletions to execute */
+   } fail_if(i != idx_child);
+   sleep(1); /**< EIO is asynchrounous so I must give some time for deletions to execute */
 
    eo_unref(filemodel);
    ecore_shutdown();
