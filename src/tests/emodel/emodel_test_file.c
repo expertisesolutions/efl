@@ -17,6 +17,14 @@
 #define EMODEL_TEST_FILENAME_PATH "/tmp"
 #define EMODEL_MAX_TEST_CHILDS 16
 
+/**
+ * The following test works however
+ * it is going to rename (move) the original directory to
+ * new one so '/tmp' as root dir doesn't work , you'll need to use
+ * '/tmp/some_other_dir' as root instead.
+ */
+/* #define _RUN_LOCAL_TEST */
+
 struct reqs_t {
    int filename;
    int size;
@@ -114,7 +122,7 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 }
 
 static void
-_children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info, int error)
+_children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info, int error EINA_UNUSED)
 {
    int *idx = (int*)event_info;
    fprintf(stdout, "Child received: child=%p, idx=%d\n", child, *idx);
@@ -134,7 +142,7 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
 }
 
 static void
-_child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info, int error)
+_child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info, int error EINA_UNUSED)
 {
    Eo *child = (Eo *)event_info;
    if(-1 == reqs.child_del) reqs.child_del = 1;
@@ -246,13 +254,6 @@ START_TEST(emodel_test_test_file)
          eo_do(filemodel, emodel_eio_dir_add(_emodel_child_add_cb, dirs[i]));
      }
 
-   /**
-    * The following test works however
-    * it is going to rename (move) the original directory to
-    * new one so '/tmp' doesn't work , you'll need to use
-    * '/tmp/some_other_dir' instead as source.
-    */
-//#define _RUN_LOCAL_TEST
 #ifdef _RUN_LOCAL_TEST
    Eina_Value *nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
    eina_value_set(nameset, "/tmp/emodel_test");
