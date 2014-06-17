@@ -37,9 +37,9 @@ struct reqs_t {
 };
 
 static struct reqs_t reqs;
-static double _initial_time = 0;
-Ecore_Timer         *timer1     = NULL;
-Ecore_Event_Handler *handler   = NULL;
+static double _initial_time;
+static Ecore_Timer   *timer;
+static Ecore_Event_Handler *handler;
 static Eo* childs[EMODEL_MAX_TEST_CHILDS];
 static int idx_child;
 
@@ -215,7 +215,7 @@ _child_del_evt_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_De
 
 START_TEST(emodel_test_test_file)
 {
-   Eo *filemodel;
+   Eo *filemodel = NULL;
    int i;
    static const char *dirs[] = {
         "emodel_test_dir_00",
@@ -231,6 +231,12 @@ START_TEST(emodel_test_test_file)
    fail_if(!eio_init(), "ERROR: Cannot init EIO!\n");
 
    filemodel = eo_add_custom(EMODEL_EIO_CLASS, NULL, emodel_eio_constructor(EMODEL_TEST_FILENAME_PATH));
+   fail_if(!filemodel, "ERROR: Cannot init model!\n");
+
+   handler = ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_func, NULL);
+   _initial_time = ecore_time_get();
+   timer = ecore_timer_add(5, _try_quit, filemodel);
+   fail_if(!timer, "ERROR: Cannot init timer!\n");
 
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTY_CHANGE, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTIES_CHANGE, _properties_cb, NULL));
@@ -261,9 +267,6 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_property_get("filename"));
 #endif
 
-   handler = ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_func, NULL);
-   _initial_time = ecore_time_get();
-   timer1 = ecore_timer_add(1, _try_quit, filemodel);
    ecore_main_loop_begin();
 
    // Remove all added childs
@@ -275,6 +278,7 @@ START_TEST(emodel_test_test_file)
 
    eo_unref(filemodel);
    ecore_shutdown();
+   eina_shutdown();
    eio_shutdown();
 }
 END_TEST
