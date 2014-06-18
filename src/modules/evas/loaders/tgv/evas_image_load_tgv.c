@@ -15,6 +15,9 @@
 #include "rg_etc1.h"
 #include "Evas_Loader.h"
 
+#ifdef BUILD_NEON
+#include <arm_neon.h>
+#endif
 /**************************************************************
  * The TGV file format is oriented around compression mecanism
  * that hardware are good at decompressing. We do still provide
@@ -270,7 +273,7 @@ evas_image_load_file_data_tgv(void *loader_data,
    const char *m;
    unsigned int *p = pixels;
    unsigned char *p_etc = pixels;
-   char *buffer;
+   char *buffer = NULL;
    Eina_Rectangle master;
    unsigned int block_length;
    unsigned int length, offset;
@@ -326,12 +329,18 @@ evas_image_load_file_data_tgv(void *loader_data,
       default: abort();
      }
 
+   if (prop->cspace != EVAS_COLORSPACE_ARGB8888 && prop->cspace != loader->cspace)
+     {
+        if (!((prop->cspace == EVAS_COLORSPACE_RGB8_ETC2) &&
+              (loader->cspace == EVAS_COLORSPACE_ETC1)))
+          goto on_error;
+        // else: ETC2 is compatible with ETC1 and is preferred
+     }
+
    // Allocate space for each ETC block (8 or 16 bytes per 4 * 4 pixels group)
    block_count = loader->block.width * loader->block.height / (4 * 4);
    if (loader->compress)
      buffer = alloca(etc_block_size * block_count);
-   else
-     buffer = NULL;
 
    for (y = 0; y < loader->size.height + 2; y += loader->block.height)
      for (x = 0; x < loader->size.width + 2; x += loader->block.width)
@@ -375,7 +384,7 @@ evas_image_load_file_data_tgv(void *loader_data,
             for (j = 0; j < loader->block.width; j += 4, it += etc_block_size)
               {
                  Eina_Rectangle current_etc;
-                 unsigned int temporary[4 * 4] = { 0 };
+                 unsigned int temporary[4 * 4];
                  unsigned int offset_x, offset_y;
                  int k;
 
@@ -408,6 +417,30 @@ evas_image_load_file_data_tgv(void *loader_data,
 
                        offset_x = current_etc.x - x - j;
                        offset_y = current_etc.y - y - i;
+#ifdef BUILD_NEON
+                       if (evas_common_cpu_has_feature(CPU_FEATURE_NEON))
+                         {
+                            uint32_t *dst = &p[current_etc.x - 1 + (current_etc.y - 1) * master.w];
+                            uint32_t *src = &temporary[offset_x + offset_y * 4];
+                            for (k = 0; k < current_etc.h; k++)
+                              {
+                                 if (current_etc.w == 4)
+                                   vst1q_u32(dst, vld1q_u32(src));
+                                 else if (current_etc.w == 3)
+                                   {
+                                      vst1_u32(dst, vld1_u32(src));
+                                      *(dst + 2) = *(src + 2);
+                                   }
+                                 else if (current_etc.w == 2)
+                                   vst1_u32(dst, vld1_u32(src));
+                                 else
+                                   *dst = *src;
+                                 dst += master.w;
+                                 src += 4;
+                              }
+                         }
+                       else
+#endif
                        for (k = 0; k < current_etc.h; k++)
                          {
                             memcpy(&p[current_etc.x - 1 +

@@ -97,7 +97,7 @@ static Ecore_Evas *
 _ecore_evas_cocoa_match(void)
 {
   DBG("Match");
-  return ecore_evases;
+  return eina_list_nth(ecore_evases, 0);
 }
 
 static int
@@ -174,12 +174,13 @@ static int
 _ecore_evas_idle_enter(void *data EINA_UNUSED)
 {
   Ecore_Evas  *ee;
+  Eina_List *l;
   double       t1 = 0.;
   double       t2 = 0.;
 
   DBG("Idle enter");
 
-  EINA_INLIST_FOREACH(ecore_evases, ee)
+  EINA_LIST_FOREACH(ecore_evases, l, ee)
     {
       if (ee->visible)
 	evas_render(ee->evas);
@@ -193,9 +194,11 @@ _ecore_evas_idle_enter(void *data EINA_UNUSED)
 static int
 _ecore_evas_cocoa_event(void *data)
 {
-  //  ecore_cocoa_feed_events();
+  Ecore_Evas *ee = data;
 
   DBG("Cocoa Event");
+
+  ecore_cocoa_feed_events();
 
   return 1;
 }
@@ -207,26 +210,29 @@ _ecore_evas_cocoa_init(void)
   _ecore_evas_init_count++;
   if (_ecore_evas_init_count > 1) 
     return _ecore_evas_init_count;
+    
+  ecore_event_evas_init();
 
   ecore_evas_event_handlers[0] = ecore_event_handler_add(ECORE_COCOA_EVENT_GOT_FOCUS, _ecore_evas_cocoa_event_got_focus, NULL);
   ecore_evas_event_handlers[1] = ecore_event_handler_add(ECORE_COCOA_EVENT_LOST_FOCUS, _ecore_evas_cocoa_event_lost_focus, NULL);
   ecore_evas_event_handlers[2] = ecore_event_handler_add(ECORE_COCOA_EVENT_RESIZE, _ecore_evas_cocoa_event_video_resize, NULL);
   ecore_evas_event_handlers[3] = ecore_event_handler_add(ECORE_COCOA_EVENT_EXPOSE, _ecore_evas_cocoa_event_video_expose, NULL);
 
-  ecore_event_evas_init();  
   return _ecore_evas_init_count;
 }
 
 static int
 _ecore_evas_cocoa_shutdown(void)
 {
+    Ecore_Evas *ee;
   DBG("Cocoa SHutodwn");
   _ecore_evas_init_count--;
   if (_ecore_evas_init_count == 0)
     {
       int i;
 
-      while (ecore_evases) _ecore_evas_free(ecore_evases);
+      EINA_LIST_FREE(ecore_evases, ee)
+         _ecore_evas_free(ee);
 
       for (i = 0; i < sizeof (ecore_evas_event_handlers) / sizeof (Ecore_Event_Handler*); i++)
 	ecore_event_handler_del(ecore_evas_event_handlers[i]);
@@ -246,7 +252,7 @@ static void
 _ecore_evas_cocoa_free(Ecore_Evas *ee)
 {
   DBG("Cocoa Free");
-  ecore_evases = (Ecore_Evas *) eina_inlist_remove(EINA_INLIST_GET(ecore_evases), EINA_INLIST_GET(ee));
+  ecore_evases = eina_list_remove(ecore_evases, ee);
   ecore_event_window_unregister(0);
   _ecore_evas_cocoa_shutdown();
   ecore_cocoa_shutdown();
@@ -257,6 +263,8 @@ _ecore_evas_resize(Ecore_Evas *ee, int w, int h)
 {
   DBG("Resize");
   if ((w == ee->w) && (h == ee->h)) return;
+  ee->req.w = w;
+  ee->req.h = h;
   ee->w = w;
   ee->h = h;
 
@@ -275,9 +283,17 @@ static void
 _ecore_evas_move_resize(Ecore_Evas *ee, int x, int y, int w, int h)
 {
   DBG("Move Resize");
-  if ((w == ee->w) && (h == ee->h)) return;
+  if ((ee->w == w) && (ee->h == h) && (x == ee->x) && (y == ee->y))
+    return;
+
+  ee->req.x = x;
+  ee->req.y = y;
+  ee->req.w = w;
+  ee->req.h = h;
   ee->w = w;
   ee->h = h;
+  ee->x = x;
+  ee->y = y;
 
   ecore_cocoa_window_move_resize(ee->prop.window, x, y, w, h);
 
@@ -338,45 +354,36 @@ _ecore_evas_object_cursor_del(void *data, Evas *e, Evas_Object *obj, void *event
 static void
 _ecore_evas_object_cursor_set(Ecore_Evas *ee, Evas_Object *obj, int layer, int hot_x, int hot_y)
 {
-   int x, y;
-   Evas_Object *old;
-   DBG("Cursor Set");
+  int x, y;
+  DBG("Cursor Set");
+  if (ee->prop.cursor.object) evas_object_del(ee->prop.cursor.object);
 
-   old = ee->prop.cursor.object;
-   if (obj == NULL)
-     {
-        ee->prop.cursor.object = NULL;
-        ee->prop.cursor.layer = 0;
-        ee->prop.cursor.hot.x = 0;
-        ee->prop.cursor.hot.y = 0;
-        goto end;
-     }
-   
-   ee->prop.cursor.object = obj;
-   ee->prop.cursor.layer = layer;
-   ee->prop.cursor.hot.x = hot_x;
-   ee->prop.cursor.hot.y = hot_y;
-   
-   if (obj != old)
-     {
-        evas_pointer_output_xy_get(ee->evas, &x, &y);
-        evas_object_layer_set(ee->prop.cursor.object, ee->prop.cursor.layer);
-        evas_object_pass_events_set(ee->prop.cursor.object, 1);
-        if (evas_pointer_inside_get(ee->evas))
-          evas_object_show(ee->prop.cursor.object);
-        evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
-                                       _ecore_evas_object_cursor_del, ee);
-     }
+  if (obj == NULL)
+    {
+      ee->prop.cursor.object = NULL;
+      ee->prop.cursor.layer = 0;
+      ee->prop.cursor.hot.x = 0;
+      ee->prop.cursor.hot.y = 0;
+      return;
+    }
+
+  ee->prop.cursor.object = obj;
+  ee->prop.cursor.layer = layer;
+  ee->prop.cursor.hot.x = hot_x;
+  ee->prop.cursor.hot.y = hot_y;
+
+  evas_pointer_output_xy_get(ee->evas, &x, &y);
+  evas_object_layer_set(ee->prop.cursor.object, ee->prop.cursor.layer);
   evas_object_move(ee->prop.cursor.object,
 		   x - ee->prop.cursor.hot.x,
 		   y - ee->prop.cursor.hot.y);
-end:
-   if ((old) && (obj != old))
-     {
-        evas_object_event_callback_del_full
-          (old, EVAS_CALLBACK_DEL, _ecore_evas_object_cursor_del, ee);
-        evas_object_del(old);
-     }
+
+  evas_object_pass_events_set(ee->prop.cursor.object, 1);
+
+  if (evas_pointer_inside_get(ee->evas))
+    evas_object_show(ee->prop.cursor.object);
+
+  evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL, _ecore_evas_object_cursor_del, ee);
 }
 
 static int
@@ -418,6 +425,15 @@ _ecore_evas_engine_cocoa_init(Ecore_Evas *ee)
      }
 
    return 1;
+}
+
+static void
+_ecore_evas_screen_geometry_get(const Ecore_Evas *ee EINA_UNUSED, int *x, int *y, int *w, int *h)
+{
+   if (x) *x = 0;
+   if (y) *y = 0;
+   ecore_cocoa_screen_size_get(NULL, w, h);
+   printf("screen geometry_get  %dx%d\n", w, h);
 }
 
 static Ecore_Evas_Engine_Func _ecore_cocoa_engine_func =
@@ -479,20 +495,10 @@ static Ecore_Evas_Engine_Func _ecore_cocoa_engine_func =
      NULL,
 
      NULL, // render
-     NULL,
+     _ecore_evas_screen_geometry_get,
      NULL, // screen_dpi_get
      NULL,
-     NULL, // msg_send
-
-     NULL, // pointer_xy_get
-     NULL, // pointer_warp
-
-     NULL, // wm_rot_preferred_rotation_set
-     NULL, // wm_rot_available_rotations_set
-     NULL, // wm_rot_manual_rotation_done_set
-     NULL, // wm_rot_manual_rotation_done
-
-     NULL  // aux_hints_set
+     NULL  // msg_send
   };
 
 EAPI Ecore_Evas *
@@ -500,7 +506,6 @@ ecore_evas_cocoa_new_internal(Ecore_Cocoa_Window *parent, int x, int y, int w, i
 {
   Evas_Engine_Info_GL_Cocoa *einfo;
   Ecore_Evas           *ee;
-  int                  rmethod;
 
   DBG("Cocoa new");
 
@@ -516,6 +521,14 @@ ecore_evas_cocoa_new_internal(Ecore_Cocoa_Window *parent, int x, int y, int w, i
   _ecore_evas_cocoa_init();
 
   ee->engine.func = (Ecore_Evas_Engine_Func *)&_ecore_cocoa_engine_func;
+  
+  /* this is pretty bad: poller? and set poll time? pol time is meant to be
+   * adjustable for things like polling battery state, or amoutn of spare
+   * memory etc. I know it's bad but cedric did it for ecore_evas_sdl
+   * so why not me ? BTW why 0.006s ?
+   */
+  ecore_evas_event = ecore_poller_add(ECORE_POLLER_CORE, 1, _ecore_evas_cocoa_event, ee);
+  ecore_poller_poll_interval_set(ECORE_POLLER_CORE, 0.006);
 
   if (w < 1) w = 1;
   if (h < 1) h = 1;
@@ -547,7 +560,6 @@ ecore_evas_cocoa_new_internal(Ecore_Cocoa_Window *parent, int x, int y, int w, i
     goto free_name;
 
   evas_data_attach_set(ee->evas, ee);
-  evas_output_method_set(ee->evas, rmethod);
   evas_output_size_set(ee->evas, w, h);
   evas_output_viewport_set(ee->evas, 0, 0, w, h);
 
@@ -572,10 +584,17 @@ ecore_evas_cocoa_new_internal(Ecore_Cocoa_Window *parent, int x, int y, int w, i
   
   ee->engine.func->fn_render = _ecore_evas_cocoa_render;
   _ecore_evas_register(ee);
-  ecore_event_window_register(0, ee, ee->evas, NULL, NULL, NULL, NULL);
-  
+  ecore_event_window_register(ee->prop.window, ee, ee->evas,
+                              (Ecore_Event_Mouse_Move_Cb)_ecore_evas_mouse_move_process,
+                              (Ecore_Event_Multi_Move_Cb)_ecore_evas_mouse_multi_move_process,
+                              (Ecore_Event_Multi_Down_Cb)_ecore_evas_mouse_multi_down_process,
+                              (Ecore_Event_Multi_Up_Cb)_ecore_evas_mouse_multi_up_process);
+
   evas_event_feed_mouse_in(ee->evas, (unsigned int)((unsigned long long)(ecore_time_get() * 1000.0) & 0xffffffff), NULL);
   printf("Ecore Evas returned : %p\n", ee);
+
+  ecore_evases = eina_list_append(ecore_evases, ee);
+
   return ee;
   
  free_window:

@@ -30,10 +30,6 @@ GLboolean  (*glsym_glUnmapBuffer)          (GLenum a) = NULL;
 void       (*glsym_glStartTiling)          (GLuint a, GLuint b, GLuint c, GLuint d, GLuint e) = NULL;
 void       (*glsym_glEndTiling)            (GLuint a) = NULL;
 
-void       (*glsym_glCompressedTexImage2d) (GLenum target, GLint level, GLenum internalformat,
-                                            GLsizei width, GLsizei height, GLint border, GLsizei imageSize,
-                                            const GLvoid * data) = NULL;
-
 #ifdef GL_GLES
 // just used for finding symbols :)
 typedef void (*_eng_fn) (void);
@@ -215,8 +211,6 @@ gl_symbols(void)
 
    FINDSYM(secsym_eglGetImageAttribSEC, "eglGetImageAttribSEC", secsym_func_uint);
 #endif
-   FINDSYM(glsym_glCompressedTexImage2d, "glCompressedTexImage2D", glsym_func_void);
-   FINDSYM2(glsym_glCompressedTexImage2d, "glCompressedTexImage2D", glsym_func_void);
 }
 
 static void shader_array_flush(Evas_Engine_GL_Context *gc);
@@ -629,7 +623,7 @@ evas_gl_common_context_new(void)
                  (strstr((char *)ext, "GL_EXT_texture_format_BGRA8888")))
                shared->info.bgra = 1;
 #endif
-             if (glsym_glCompressedTexImage2d && strstr((char *)ext, "OES_compressed_ETC1_RGB8_texture"))
+             if (strstr((char *)ext, "OES_compressed_ETC1_RGB8_texture"))
                shared->info.etc1 = 1;
 #ifdef GL_GLES
              // FIXME: there should be an extension name/string to check for
@@ -726,7 +720,6 @@ evas_gl_common_context_new(void)
 
 #ifdef GL_GLES
         // Detect ECT2 support. We need both RGB and RGBA formats.
-        if (glsym_glCompressedTexImage2d)
           {
              GLint texFormatCnt = 0;
              glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &texFormatCnt);
@@ -746,6 +739,10 @@ evas_gl_common_context_new(void)
                          }
                        shared->info.etc2 = (cnt == 2);
                        free(texFormats);
+
+                       // Note: If we support ETC2 we'll try to always use ETC2 even when the
+                       // image has colorspace ETC1 (backwards compatibility).
+                       shared->info.etc1_subimage = shared->info.etc2;
 
                        // FIXME: My NVIDIA driver advertises ETC2 texture formats
                        // but does not support them. Driver bug? Logic bug?
@@ -3212,7 +3209,7 @@ shader_array_flush(Evas_Engine_GL_Context *gc)
                   glDisableVertexAttribArray(SHAD_TEXUV3);
                   GLERR(__FUNCTION__, __FILE__, __LINE__, "");
                }
-             if (dbgflushnum)
+             if (dbgflushnum == 1)
                {
                   const char *types[6] =
                     {"----", "RECT", "IMAG", "FONT", "YUV-", "MAP"};
@@ -3292,7 +3289,7 @@ shader_array_flush(Evas_Engine_GL_Context *gc)
         gc->pipe[i].region.type = 0;
      }
    gc->state.top_pipe = 0;
-   if (dbgflushnum)
+   if (dbgflushnum == 1)
      {
         if (done > 0) printf("DONE (pipes): %i\n", done);
      }
@@ -3349,7 +3346,7 @@ evas_gl_common_buffer_dump(Evas_Engine_GL_Context *gc, const char* dname, const 
         im->image.data = data2;
         if (im->image.data)
           {
-             ok = evas_common_save_image_to_file(im, fname, NULL, 0, 0);
+             ok = evas_common_save_image_to_file(im, fname, NULL, 0, 0, NULL);
 
              if (!ok) ERR("Error Saving file.");
           }

@@ -2,10 +2,60 @@
 # include <config.h>
 #endif
 
-#include <Cocoa/Cocoa.h>
+#import "ecore_cocoa_window.h"
+
+@implementation EcoreCocoaWindow
+
+@synthesize ecore_window_data;
+
+- (id) initWithContentRect: (NSRect) contentRect
+                 styleMask: (unsigned int) aStyle
+                   backing: (NSBackingStoreType) bufferingType
+                     defer: (BOOL) flag
+{
+    if (![super initWithContentRect: contentRect 
+                          styleMask: aStyle 
+                            backing: bufferingType 
+                              defer: flag]) return nil;
+
+    [self setBackgroundColor: [NSColor whiteColor]];
+    [self makeKeyWindow];
+    [self setDelegate:self];
+    [self setAcceptsMouseMovedEvents:YES];
+
+    return self;
+}
+
+- (BOOL)acceptsFirstResponder
+{
+   return YES;
+}
+
+- (BOOL)canBecomeKeyWindow
+{
+    return YES;
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+	NSLog(@"window is going to be closed");
+}
+
+@end
 
 #include "Ecore_Cocoa.h"
 #include "ecore_cocoa_private.h"
+
+static float _title_bar_height(void)
+{
+  NSRect frame = NSMakeRect (0, 0, 100, 100);
+  NSRect contentRect;
+
+  contentRect = [NSWindow contentRectForFrameRect: frame
+			  styleMask: NSTitledWindowMask];
+
+  return (frame.size.height - contentRect.size.height);
+}
 
 Ecore_Cocoa_Window *
 ecore_cocoa_window_new(int x,
@@ -15,25 +65,31 @@ ecore_cocoa_window_new(int x,
 {
   Ecore_Cocoa_Window *w;
 
-  NSWindow *window = [[NSWindow alloc]
-             initWithContentRect:NSMakeRect(x, y, width, height)
-             styleMask:(NSTitledWindowMask |
-			NSClosableWindowMask |
-                        NSResizableWindowMask |
-                        NSMiniaturizableWindowMask)
-             backing:NSBackingStoreBuffered
-             defer:NO
-             screen:nil
-            ];
+  EcoreCocoaWindow *window = [[EcoreCocoaWindow alloc] 
+  								initWithContentRect:NSMakeRect(x, y, width, height)
+  									      styleMask:(NSTitledWindowMask |
+  									      			 NSClosableWindowMask |
+  									      			 NSResizableWindowMask |
+  									      			 NSMiniaturizableWindowMask)
+  									      	backing:NSBackingStoreBuffered
+  									      	  defer:NO];
 
   if (!window)
     return NULL;
 
-  [window setBackgroundColor:[NSColor whiteColor]];
+  //Set the process to be a foreground process,
+  //without that it prevents the window to become the key window and
+  //receive all mouse mouve events.  
+  ProcessSerialNumber psn;
+  GetCurrentProcess(&psn);
+  TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+  SetFrontProcess(&psn);
 
   w = calloc(1, sizeof(Ecore_Cocoa_Window));
   w->window = window;
   w->borderless = 0;
+
+  window.ecore_window_data = w;
 
   return w;
 }
@@ -79,7 +135,7 @@ ecore_cocoa_window_resize(Ecore_Cocoa_Window *window,
     return;
 
   win_frame = [window->window frame];
-  win_frame.size.height = height;
+  win_frame.size.height = height + _title_bar_height();
   win_frame.size.width = width;
 
   [window->window setFrame:win_frame display:YES];
@@ -101,7 +157,7 @@ ecore_cocoa_window_move_resize(Ecore_Cocoa_Window *window,
     return;
 
   win_frame = [window->window frame];
-  win_frame.size.height = height;
+  win_frame.size.height = height + _title_bar_height();
   win_frame.size.width = width;
   win_frame.origin.x = x;
   win_frame.origin.y = y;
@@ -158,6 +214,16 @@ ecore_cocoa_window_view_set(Ecore_Cocoa_Window *window,
   if (!window || !view)
     return;
 
-  [[window->window contentView] addSubview:view];
+  //[[window->window contentView] addSubview:view];
+  [window->window setContentView:view];
 
+  NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:[view frame]
+                                                      options:NSTrackingMouseMoved | 
+                                                              NSTrackingActiveInActiveApp |
+                                                              NSTrackingInVisibleRect
+                                                        owner:view
+                                                     userInfo:nil];
+  [view addTrackingArea:area];
+  
+  [area release];
 }

@@ -236,6 +236,7 @@ eng_output_redraws_next_update_get(void *data, int *x, int *y, int *w, int *h, i
 
    re = (Render_Engine *)data;
    evas_gl_common_context_flush(re->win->gl_context);
+   evas_gl_common_context_newframe(re->win->gl_context);
    /* get the upate rect surface - return engine data as dummy */
    if (!re->win->draw.redraw)
      {
@@ -330,7 +331,7 @@ eng_context_cutout_clear(void *data EINA_UNUSED, void *context)
 }
 
 static void
-eng_rectangle_draw(void *data, void *context, void *surface, int x, int y, int w, int h)
+eng_rectangle_draw(void *data, void *context, void *surface, int x, int y, int w, int h, Eina_Bool do_async EINA_UNUSED)
 {
    Render_Engine *re;
 
@@ -342,7 +343,7 @@ eng_rectangle_draw(void *data, void *context, void *surface, int x, int y, int w
 }
 
 static void
-eng_line_draw(void *data, void *context, void *surface, int x1, int y1, int x2, int y2)
+eng_line_draw(void *data, void *context, void *surface, int p1x, int p1y, int p2x, int p2y, Eina_Bool do_async EINA_UNUSED)
 {
    Render_Engine *re;
 
@@ -350,7 +351,7 @@ eng_line_draw(void *data, void *context, void *surface, int x1, int y1, int x2, 
    eng_window_use(re->win);
    evas_gl_common_context_target_surface_set(re->win->gl_context, surface);
    re->win->gl_context->dc = context;
-   evas_gl_common_line_draw(re->win->gl_context, x1, y1, x2, y2);
+   evas_gl_common_line_draw(re->win->gl_context, p1x, p1y, p2x, p2y);
 }
 
 static void *
@@ -372,7 +373,7 @@ eng_polygon_points_clear(void *data, void *context EINA_UNUSED, void *polygon)
 }
 
 static void
-eng_polygon_draw(void *data, void *context, void *surface EINA_UNUSED, void *polygon, int x, int y)
+eng_polygon_draw(void *data, void *context, void *surface EINA_UNUSED, void *polygon, int x, int y, Eina_Bool do_async EINA_UNUSED)
 {
    Render_Engine *re;
 
@@ -406,20 +407,6 @@ eng_image_colorspace_get(void *data EINA_UNUSED, void *image)
    im = image;
    return im->cs.space;
 }
-
-static void
-eng_image_mask_create(void *data EINA_UNUSED, void *image)
-{
-   Evas_GL_Image *im;
-
-   if (!image) return;
-   im = image;
-   if (!im->im->image.data)
-      evas_cache_image_load_data(&im->im->cache_entry);
-   if (!im->tex)
-      im->tex = evas_gl_common_texture_new(im->gc, im->im);
-}
-
 
 static void *
 eng_image_alpha_set(void *data, void *image, int has_alpha)
@@ -538,6 +525,9 @@ eng_image_colorspace_set(void *data, void *image, Evas_Colorspace cspace)
 	break;
       case EVAS_COLORSPACE_YCBCR422P601_PL:
       case EVAS_COLORSPACE_YCBCR422P709_PL:
+      case EVAS_COLORSPACE_YCBCR422601_PL:
+      case EVAS_COLORSPACE_YCBCR420NV12601_PL:
+      case EVAS_COLORSPACE_YCBCR420TM12601_PL:
         if (im->tex) evas_gl_common_texture_free(im->tex, EINA_TRUE);
         im->tex = NULL;
 	if (im->cs.data)
@@ -676,6 +666,7 @@ eng_image_size_set(void *data, void *image, int w, int h)
       case EVAS_COLORSPACE_YCBCR420NV12601_PL:
       case EVAS_COLORSPACE_YCBCR420TM12601_PL:
         w &= ~0x1;
+      default:
         break;
      }
 
@@ -770,6 +761,9 @@ eng_image_data_get(void *data, void *image, int to_write, DATA32 **image_data, i
 	break;
       case EVAS_COLORSPACE_YCBCR422P601_PL:
       case EVAS_COLORSPACE_YCBCR422P709_PL:
+      case EVAS_COLORSPACE_YCBCR422601_PL:
+      case EVAS_COLORSPACE_YCBCR420NV12601_PL:
+      case EVAS_COLORSPACE_YCBCR420TM12601_PL:
 	*image_data = im->cs.data;
 	break;
       default:
@@ -878,7 +872,7 @@ eng_image_data_preload_cancel(void *data EINA_UNUSED, void *image, const Eo *tar
 }
 
 static Eina_Bool
-eng_image_draw(void *data, void *context, void *surface, void *image, int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, int dst_w, int dst_h, int smooth)
+eng_image_draw(void *data, void *context, void *surface, void *image, int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, int dst_w, int dst_h, int smooth, Eina_Bool do_async EINA_UNUSED)
 {
    Render_Engine *re;
 
@@ -909,7 +903,7 @@ eng_image_scale_hint_get(void *data EINA_UNUSED, void *image)
 }
 
 static Eina_Bool
-eng_image_map_draw(void *data EINA_UNUSED, void *context, void *surface, void *image, RGBA_Map *m, int smooth, int level)
+eng_image_map_draw(void *data, void *context, void *surface, void *image, RGBA_Map *m, int smooth, int level, Eina_Bool do_async)
 {
    Evas_GL_Image *gim = image;
    Render_Engine *re;
@@ -950,7 +944,7 @@ eng_image_map_draw(void *data EINA_UNUSED, void *context, void *surface, void *i
         dw = (m->pts[2].x >> FP) - dx;
         dh = (m->pts[2].y >> FP) - dy;
         eng_image_draw(data, context, surface, image,
-                       0, 0, gim->w, gim->h, dx, dy, dw, dh, smooth);
+                       0, 0, gim->w, gim->h, dx, dy, dw, dh, smooth, do_async);
      }
    else
      {
@@ -1043,30 +1037,29 @@ eng_image_stride_get(void *data EINA_UNUSED, void *image, int *stride)
 }
 
 static Eina_Bool
-eng_font_draw(void *data, void *context, void *surface, Evas_Font_Set *font, int x, int y, int w EINA_UNUSED, int h EINA_UNUSED, int ow EINA_UNUSED, int oh EINA_UNUSED, Evas_Text_Props *intl_props)
+eng_font_draw(void *data, void *context, void *surface, Evas_Font_Set *font EINA_UNUSED, int x, int y, int w EINA_UNUSED, int h EINA_UNUSED, int ow EINA_UNUSED, int oh EINA_UNUSED, Evas_Text_Props *intl_props, Eina_Bool do_async EINA_UNUSED)
 {
-   Render_Engine *re;
-
-   re = (Render_Engine *)data;
+   Render_Engine *re = data;
    eng_window_use(re->win);
+
    evas_gl_common_context_target_surface_set(re->win->gl_context, surface);
    re->win->gl_context->dc = context;
      {
         // FIXME: put im into context so we can free it
-	static RGBA_Image *im = NULL;
+	    static RGBA_Image *im = NULL;
         
         if (!im)
           im = (RGBA_Image *)evas_cache_image_empty(evas_common_image_cache_get());
-        im->cache_entry.w = re->win->width;
-        im->cache_entry.h = re->win->height;
+        im->cache_entry.w = re->win->gl_context->shared->w;
+        im->cache_entry.h = re->win->gl_context->shared->h;
         evas_common_draw_context_font_ext_set(context,
    					      re->win->gl_context,
    					      evas_gl_font_texture_new,
    					      evas_gl_font_texture_free,
    					      evas_gl_font_texture_draw);
-	evas_common_font_draw_prepare(intl_props);
-	evas_common_font_draw(im, context, x, y, intl_props);
-	evas_common_draw_context_font_ext_set(context,
+	    evas_common_font_draw_prepare(intl_props);
+	    evas_common_font_draw(im, context, x, y, intl_props->glyphs);
+	    evas_common_draw_context_font_ext_set(context,
 					      NULL,
 					      NULL,
 					      NULL,
@@ -1348,6 +1341,7 @@ static int
 module_open(Evas_Module *em)
 {
    if (!em) return 0;
+   if (!evas_gl_common_module_open()) return 0;
    /* get whatever engine module we inherit from */
    if (!_evas_module_engine_inherit(&pfunc, "software_generic")) return 0;
    _evas_engine_gl_cocoa_log_dom = eina_log_domain_register("EvasGLCocoa", EVAS_DEFAULT_LOG_COLOR);
@@ -1404,7 +1398,6 @@ module_open(Evas_Module *em)
    ORD(image_format_get);
    ORD(image_colorspace_set);
    ORD(image_colorspace_get);
-   ORD(image_mask_create);
    //   ORD(image_native_set);
    //   ORD(image_native_get);
    
@@ -1435,9 +1428,10 @@ module_open(Evas_Module *em)
 }
 
 static void
-module_close(Evas_Module *em)
+module_close(Evas_Module *em EINA_UNUSED)
 {
   eina_log_domain_unregister(_evas_engine_gl_cocoa_log_dom);
+  evas_gl_common_module_close();
 }
 
 static Evas_Module_Api evas_modapi =

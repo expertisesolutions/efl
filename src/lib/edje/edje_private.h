@@ -350,8 +350,9 @@ typedef struct _Edje_Signal_Callback_Custom Edje_Signal_Callback_Custom;
 #define EDJE_IMAGE_SOURCE_TYPE_INLINE_PERFECT       1
 #define EDJE_IMAGE_SOURCE_TYPE_INLINE_LOSSY         2
 #define EDJE_IMAGE_SOURCE_TYPE_INLINE_LOSSY_ETC1    3
-#define EDJE_IMAGE_SOURCE_TYPE_EXTERNAL             4
-#define EDJE_IMAGE_SOURCE_TYPE_LAST                 5
+#define EDJE_IMAGE_SOURCE_TYPE_INLINE_LOSSY_ETC2    4
+#define EDJE_IMAGE_SOURCE_TYPE_EXTERNAL             5
+#define EDJE_IMAGE_SOURCE_TYPE_LAST                 6
 
 #define EDJE_SOUND_SOURCE_TYPE_NONE           0
 #define EDJE_SOUND_SOURCE_TYPE_INLINE_RAW     1
@@ -794,6 +795,14 @@ typedef enum {
   EDJE_PART_LIMIT_ZERO,
   EDJE_PART_LIMIT_OVER
 } Edje_Part_Limit_State;
+
+typedef enum {
+  EDJE_STATE_LIMIT_NONE   = 0,
+  EDJE_STATE_LIMIT_WIDTH  = 1,
+  EDJE_STATE_LIMIT_HEIGHT = 2,
+  EDJE_STATE_LIMIT_BOTH   = 3,
+  EDJE_STATE_LIMIT_LAST   = 4
+} Edje_Edit_State_Limit;
 
 #ifdef HAVE_EPHYSICS
 typedef enum {
@@ -1803,7 +1812,8 @@ struct _Edje_Message
 typedef enum _Edje_Fill
 {
    EDJE_FILL_TYPE_SCALE = 0,
-     EDJE_FILL_TYPE_TILE
+   EDJE_FILL_TYPE_TILE  = 1,
+   EDJE_FILL_TYPE_LAST  = 2
 } Edje_Fill;
 
 typedef enum _Edje_Match_Error

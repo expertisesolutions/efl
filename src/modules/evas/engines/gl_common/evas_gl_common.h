@@ -378,6 +378,7 @@ struct _Evas_GL_Shared
       Eina_Bool unpack_row_length : 1;
       Eina_Bool etc1 : 1;
       Eina_Bool etc2 : 1;
+      Eina_Bool etc1_subimage : 1;
       // tuning params - per gpu/cpu combo?
 #define MAX_CUTOUT             512
 #define DEF_CUTOUT                  512
@@ -425,7 +426,7 @@ struct _Evas_GL_Shared
 
    struct {
       Eina_List       *whole;
-      Eina_List       *atlas[33][5];
+      Eina_List       *atlas[33][6];
    } tex;
 
    Eina_Hash          *native_pm_hash;
@@ -575,6 +576,7 @@ struct _Evas_GL_Texture_Pool
    Eina_Bool        render : 1;
    Eina_Bool        native : 1;
    Eina_Bool        dynamic : 1;
+   Eina_Bool        comptex_ready : 1;
 };
 
 struct _Evas_GL_Texture_Alloca
@@ -859,14 +861,7 @@ extern void       (*glsym_glProgramParameteri)    (GLuint a, GLuint b, GLint d);
 extern void       (*glsym_glReleaseShaderCompiler)(void);
 extern void      *(*glsym_glMapBuffer)            (GLenum a, GLenum b);
 extern GLboolean  (*glsym_glUnmapBuffer)          (GLenum a);
-extern void       (*glsym_glCompressedTexImage2d) (GLenum target,
-                                                   GLint level,
-                                                   GLenum internalformat,
-                                                   GLsizei width,
-                                                   GLsizei height,
-                                                   GLint border,
-                                                   GLsizei imageSize,
-                                                   const GLvoid * data);
+
 #ifdef GL_GLES
 extern void          *(*secsym_eglCreateImage)               (void *a, void *b, GLenum c, void *d, const int *e);
 extern unsigned int   (*secsym_eglDestroyImage)              (void *a, void *b);
