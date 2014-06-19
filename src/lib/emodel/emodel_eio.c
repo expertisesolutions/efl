@@ -29,6 +29,16 @@ _stat_pro_set(Emodel_Eio_Data *priv, int prop_id, int pvalue)
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
 }
 
+static void
+_emodel_eio_root_set(Eo *model, Eo *root)
+{
+   EINA_SAFETY_ON_NULL_RETURN(model);
+   EINA_SAFETY_ON_NULL_RETURN(root);
+   Emodel_Eio_Data *priv = eo_data_scope_get(model, MY_CLASS);
+
+   EINA_SAFETY_ON_NULL_RETURN(priv);
+   priv->rootmodel = root;
+}
 
 /**
  *  Callbacks
@@ -110,7 +120,8 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    if (root == NULL)
      root = parent;
 
-   _data->child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(_data->fullpath, root));
+   _data->child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(_data->fullpath));
+   _emodel_eio_root_set(_data->child, root);
    eo_do(_data->child, emodel_eio_children_filter_set(_data->priv->filter_cb, _data->priv->filter_userdata)); //XXX: set parent filter to child
    /* dispatch callback for user */
    _data->callback(_data->name, parent, _data->child, 0);
@@ -134,7 +145,6 @@ _eio_done_error_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED, int error)
      }
 }
 
-
 /**
  *  Callbacks
  *  Ecore Events
@@ -151,7 +161,8 @@ static Eina_Bool
      root = priv->obj;
 
    cevt.data = (void*)evt->filename;
-   cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(evt->filename, root));
+   cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(evt->filename));
+   _emodel_eio_root_set(cevt.child, root);
    cevt.idx = -1;
 
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_ADD, &cevt));
@@ -172,9 +183,8 @@ _emodel_evt_deleted_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void 
 }
 
 static void
-_eio_monitors_list_load(Emodel_Eio_Data *_pd)
+_eio_monitors_list_load(Emodel_Eio_Data *priv)
 {
-   Emodel_Eio_Data *priv = _pd;
    priv->mon.mon_event_child_add[0] = EIO_MONITOR_DIRECTORY_CREATED;
    priv->mon.mon_event_child_add[1] = EIO_MONITOR_FILE_CREATED;
    priv->mon.mon_event_child_add[2] = EIO_MONITOR_ERROR;
@@ -283,7 +293,8 @@ _eio_main_children_get_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_
    if (root == NULL)
      root = cdata->priv->obj;
 
-   child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(info->path, root));
+   child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(info->path));
+   _emodel_eio_root_set(child, root);
    eo_do(child, emodel_eio_children_filter_set(cdata->priv->filter_cb, cdata->priv->filter_userdata)); //XXX: set parent filter to child
    cdata->callback(cdata->data, child, &cdata->cidx, 0);
    cdata->cidx++;
@@ -577,7 +588,7 @@ cleanup_bottom:
 }
 
 static void
-_emodel_eio_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_del_cb)
+_emodel_eio_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_del_cb)
 {
    Emodel_Eio_Data *priv = _pd;
    priv->emodel_cb = child_del_cb;
@@ -611,7 +622,7 @@ _emodel_eio_emodel_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUS
    EINA_SAFETY_ON_NULL_RETURN(cb);
    EINA_SAFETY_ON_NULL_RETURN(child);
 
-   eo_do(child, emodel_eio_child_del(cb));
+   eo_do(child, emodel_eio_del(cb));
 }
 
 /**
@@ -712,7 +723,8 @@ _emodel_eio_emodel_child_select_set(Eo *obj, Emodel_Eio_Data *_pd, Eo *child)
    free(priv->pathSelected);
    priv->pathSelected = strdup(path);
 
-   cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(path, obj));
+   cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(path));
+   _emodel_eio_root_set(cevt.child, obj);
    cevt.idx = 0;
    cevt.data = NULL;
 
@@ -724,9 +736,8 @@ _emodel_eio_emodel_child_select_set(Eo *obj, Emodel_Eio_Data *_pd, Eo *child)
  * Child select get
  */
 static void
-_emodel_eio_emodel_child_select_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
+_emodel_eio_emodel_child_select_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *priv)
 {
-   Emodel_Eio_Data *priv = _pd;
    Emodel_Children_EVT cevt;
 
    if (priv->rootmodel != NULL)
@@ -737,7 +748,8 @@ _emodel_eio_emodel_child_select_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 
    if (priv->pathSelected != NULL)
      {
-         cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_add(priv->path, obj));
+         cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(priv->path));
+         _emodel_eio_root_set(cevt.child, obj);
          cevt.idx = 0;
          cevt.data = NULL;
 
@@ -750,9 +762,8 @@ _emodel_eio_emodel_child_select_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
  * Path get
  */
 static void
-_emodel_eio_path_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char **path)
+_emodel_eio_path_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *priv, const char **path)
 {
-   Emodel_Eio_Data *priv = _pd;
    *path = priv->path;
 }
 
@@ -766,16 +777,15 @@ _emodel_eio_eo_base_constructor(Eo *obj, Emodel_Eio_Data *_pd EINA_UNUSED)
  * Class definitions
  */
 static void
-_priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
+_emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
 {
-   Emodel_Eio_Data *priv = _pd;
    const char *prop;
    Eina_Value *v;
    size_t i;
 
    eo_do_super(obj, MY_CLASS, eo_constructor());
 
-   priv->rootmodel = root;
+   priv->rootmodel = NULL;
    priv->path = strdup(path);
    priv->pathSelected = NULL;
 
@@ -790,7 +800,8 @@ _priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
 
    for (i = 0; i != PROP_LIST_SIZE; i++)
      {
-        switch(i) {
+        switch(i)
+          {
             case EMODEL_EIO_PROP_FILENAME:
                 v = eina_value_new(EINA_VALUE_TYPE_STRING);
                 eina_value_set(v, basename(path));
@@ -807,7 +818,7 @@ _priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
                 break;
             default:
                 v = eina_value_new(EINA_VALUE_TYPE_INT);
-        }
+          }
 
         eina_value_array_get(priv->properties, i, &prop);
         priv->proplist[i].v = v;
@@ -821,22 +832,8 @@ _priv_construct(Eo *obj, Emodel_Eio_Data *_pd, const char *path, Eo *root)
 }
 
 static void
-_emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *_pd, const char *path)
+_emodel_eio_eo_base_destructor(Eo *obj , Emodel_Eio_Data *priv)
 {
-   _priv_construct(obj, _pd, path, NULL);
-}
-
-static void
-_emodel_eio_add(Eo *obj , Emodel_Eio_Data *_pd, const char *path, Eo *root)
-{
-   _priv_construct(obj, _pd, path, root);
-}
-
-
-static void
-_emodel_eio_eo_base_destructor(Eo *obj , Emodel_Eio_Data *_pd EINA_UNUSED)
-{
-   Emodel_Eio_Data *priv = _pd;
    if(priv && priv->monitor)
      {
         eio_monitor_del(priv->monitor);

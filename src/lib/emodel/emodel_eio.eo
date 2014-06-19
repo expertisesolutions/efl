@@ -16,30 +16,16 @@ class Emodel_Eio (Eo_Base, Emodel)
        }
     }
     methods {
-       child_del {
-            /*@ Delete child */
+       del {
+            /*@ Delete File */
             /**
-             * @def emodel_eio_child_del
+             * @def emodel_eio_del
              * @since 1.10
              *
              * @in child_del_cb
              */
              params {
                  Emodel_Cb child_del_cb; /*@  Emodel callback */
-             }
-       }
-       add {
-           /*@ Constructor wrapper */
-            /**
-             * @def emodel_eio_add
-             * @since 1.10
-             *
-             * @in path
-             * @in root
-             */
-             params {
-                 const char *path; /*@ Root path */
-                 Eo *root; /*@ Parent */
              }
        }
        dir_add {
@@ -50,7 +36,6 @@ class Emodel_Eio (Eo_Base, Emodel)
              *
              * @in child_add_cb
              * @in name
-             *
              */
             params {
                 Emodel_Cb child_add_cb; /*@  Emodel callback */
