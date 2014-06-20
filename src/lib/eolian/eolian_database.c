@@ -1,5 +1,5 @@
 #include <Eina.h>
-#include "eo_lexer.h"
+#include "eo_parser.h"
 #include "eolian_database.h"
 
 #define PROP_GET_RETURN_DFLT_VAL "property_get_return_dflt_val"
@@ -237,12 +237,12 @@ database_class_add(const char *class_name, Eolian_Class_Type type)
    cl->type = type;
    do
      {
-        colon = strstr(colon, "::");
+        colon = strchr(colon, '.');
         if (colon)
           {
              *colon = '\0';
              cl->namespaces = eina_list_append(cl->namespaces, eina_stringshare_add(name));
-             colon += 2;
+             colon += 1;
              name = colon;
           }
      }
@@ -318,7 +318,7 @@ Eina_Bool database_class_name_validate(const char *class_name, Eolian_Class *cla
    if (class) *class = NULL;
    do
      {
-        colon = strstr(colon, "::");
+        colon = strchr(colon, '.');
         if (colon) *colon = '\0';
         candidate = eolian_class_find_by_name(name);
         if (candidate)
@@ -333,7 +333,7 @@ Eina_Bool database_class_name_validate(const char *class_name, Eolian_Class *cla
                }
              found_class = candidate;
           }
-        if (colon) *colon++ = ':';
+        if (colon) *colon++ = '.';
      }
    while(colon);
    if (class) *class = found_class;
@@ -582,14 +582,14 @@ eolian_implement_information_get(const Eolian_Implement impl, Eolian_Class *clas
    const char *class_name = ((_Class_Desc *)class)->full_name;
    if (class_out) *class_out = class;
 
-   char *func_name = strdup(_impl->full_name + strlen(class_name) + 2);
-   char *colon = strstr(func_name, "::");
+   char *func_name = strdup(_impl->full_name + strlen(class_name) + 1);
+   char *colon = strchr(func_name, '.');
    Eolian_Function_Type type = EOLIAN_UNRESOLVED;
    if (colon)
      {
         *colon = '\0';
-        if (!strcmp(colon+2, "set")) type = EOLIAN_PROP_SET;
-        else if (!strcmp(colon+2, "get")) type = EOLIAN_PROP_GET;
+        if (!strcmp(colon+1, "set")) type = EOLIAN_PROP_SET;
+        else if (!strcmp(colon+1, "get")) type = EOLIAN_PROP_GET;
      }
 
    Eolian_Function fid = eolian_class_function_find_by_name(class, func_name, type);
@@ -1389,6 +1389,22 @@ eolian_directory_scan(const char *dir)
    return EINA_TRUE;
 }
 
+static char *
+_eolian_class_to_filename(const char *filename)
+{
+   char *ret;
+   Eina_Strbuf *strbuf = eina_strbuf_new();
+   eina_strbuf_append(strbuf, filename);
+   eina_strbuf_replace_all(strbuf, ".", "_");
+
+   ret = eina_strbuf_string_steal(strbuf);
+   eina_strbuf_free(strbuf);
+
+   eina_str_tolower(&ret);
+
+   return ret;
+}
+
 EAPI Eina_Bool eolian_eo_file_parse(const char *filepath)
 {
    const Eina_List *itr;
@@ -1397,7 +1413,7 @@ EAPI Eina_Bool eolian_eo_file_parse(const char *filepath)
    Eolian_Implement impl;
    if (!class)
      {
-        if (!eo_tokenizer_database_fill(filepath)) return EINA_FALSE;
+        if (!eo_parser_database_fill(filepath)) return EINA_FALSE;
         class = eolian_class_find_by_file(filepath);
         if (!class)
           {
@@ -1409,8 +1425,7 @@ EAPI Eina_Bool eolian_eo_file_parse(const char *filepath)
      {
         if (!eolian_class_find_by_name(inherit_name))
           {
-             char *filename = strdup(inherit_name);
-             eina_str_tolower(&filename);
+             char *filename = _eolian_class_to_filename(inherit_name);
              filepath = eina_hash_find(_filenames, filename);
              if (!filepath)
                {

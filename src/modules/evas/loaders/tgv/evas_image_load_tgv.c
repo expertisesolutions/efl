@@ -10,7 +10,6 @@
 # include <winsock2.h>
 #endif /* ifdef _WIN32 */
 
-// rg_etc1.h must define HAVE_ETC2_DECODER if there is ETC2 support
 #include "lz4.h"
 #include "rg_etc1.h"
 #include "Evas_Loader.h"
@@ -18,6 +17,7 @@
 #ifdef BUILD_NEON
 #include <arm_neon.h>
 #endif
+
 /**************************************************************
  * The TGV file format is oriented around compression mecanism
  * that hardware are good at decompressing. We do still provide
@@ -44,7 +44,8 @@
  **************************************************************/
 
 // FIXME: wondering if we should support mipmap
-// FIXME: instead of the complete size, maybe just the usefull left over byte + number of block (cedric) -- Nope, the real size is much better (jpeg)
+// TODO: support ETC1+ETC2 images (RGB only)
+// TODO: support ETC1 RGB + ETC1 Alpha (2 textures for ETC1 RGBA)
 
 typedef struct _Evas_Loader_Internal Evas_Loader_Internal;
 struct _Evas_Loader_Internal
@@ -161,7 +162,8 @@ evas_image_load_file_head_tgv(void *loader_data,
                               int *error)
 {
    Evas_Loader_Internal *loader = loader_data;
-   const char *m;
+   Eina_Bool ret = EINA_FALSE;
+   char *m;
 
    m = eina_file_map_all(loader->f, EINA_FILE_SEQUENTIAL);
    if (!m)
@@ -173,7 +175,7 @@ evas_image_load_file_head_tgv(void *loader_data,
    if (strncmp(m, "TGV1", 4) != 0)
      {
         *error = EVAS_LOAD_ERROR_CORRUPT_FILE;
-        return EINA_FALSE;
+        goto on_error;
      }
 
    switch (m[OFFSET_ALGORITHM] & 0xFF)
@@ -195,7 +197,7 @@ evas_image_load_file_head_tgv(void *loader_data,
         break;
       default:
         *error = EVAS_LOAD_ERROR_CORRUPT_FILE;
-        return EINA_FALSE;
+        goto on_error;
      }
 
    loader->compress = m[OFFSET_OPTIONS] & 0x1;
@@ -231,14 +233,18 @@ evas_image_load_file_head_tgv(void *loader_data,
         if (!eina_rectangle_intersection(&loader->region, &r))
           {
              *error = EVAS_LOAD_ERROR_GENERIC;
-             return EINA_FALSE;
+             goto on_error;
           }
      }
 
    prop->w = loader->size.width;
    prop->h = loader->size.height;
 
-   return EINA_TRUE;
+   ret = EINA_TRUE;
+
+on_error:
+   eina_file_map_free(loader->f, m);
+   return ret;
 }
 
 static inline unsigned int
