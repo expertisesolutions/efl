@@ -71,18 +71,18 @@ class Emodel_Eio (Eo_Base, Emodel)
        }
     }
    implements {
-      Eo_Base::destructor;
-      Eo_Base::constructor;
-      Emodel::properties_get;
-      Emodel::property_get;
-      Emodel::property_set;
-      Emodel::load;
-      Emodel::unload;
-      Emodel::child_del;
-      Emodel::children_get;
-      Emodel::children_slice_get;
-      Emodel::children_count_get;
-      Emodel::child_select_get;
-      Emodel::child_select_set;
+      Eo_Base.destructor;
+      Eo_Base.constructor;
+      Emodel.properties_get;
+      Emodel.property_get;
+      Emodel.property_set;
+      Emodel.load;
+      Emodel.unload;
+      Emodel.child_del;
+      Emodel.children_get;
+      Emodel.children_slice_get;
+      Emodel.children_count_get;
+      Emodel.child_select_get;
+      Emodel.child_select_set;
    }
 }
