@@ -5,15 +5,14 @@ class Emodel (Eo_Base)
 
     load {
         /*@ Load emodel.
-         *
-         * By convention this means loading data from an external source and populating
-         * the models properties and children with it. For example in the case of file
-         * system backed model, this means opening the relevant files and reading the
-         * data from them(creating the properties and children from it).
-         * @warning This convention should be followed, but no guarantees of behaviour
-         * by user defined types can be given.
-         * @see emodel_unload
-         * */
+          By convention this means loading data from an external source and populating
+          the models properties and children with it. For example in the case of file
+          system backed model, this means opening the relevant files and reading the
+          data from them(creating the properties and children from it).
+          @warning This convention should be followed, but no guarantees of behaviour
+          by user defined types can be given.
+          @see emodel_unload
+          */
         /**
          * @def emodel_load
          * @since 1.11
@@ -21,14 +20,14 @@ class Emodel (Eo_Base)
     }
     unload {
         /*@ Unload emodel.
-         *
-         * By convention this means releasing data gotten from an external source. For
-         * example of a database backed model this might mean releasing the iterator for
-         * the currently loaded data or deleting a temporary table.
-         * @warning This convention should be followed, but no guarantees of behaviour
-         * by user defined types can be given.
-         * @see emodel_load
-         * */
+
+          By convention this means releasing data gotten from an external source. For
+          example of a database backed model this might mean releasing the iterator for
+          the currently loaded data or deleting a temporary table.
+          @warning This convention should be followed, but no guarantees of behaviour
+          by user defined types can be given.
+          @see emodel_load
+          */
         /**
          * @def emodel_unload
          * @since 1.11
@@ -36,7 +35,7 @@ class Emodel (Eo_Base)
     }
     child_select_set {
         /*@ Select a child.
-         * @see EMODEL_EVENT_CHILD_SELECTED */
+          @see EMODEL_EVENT_CHILD_SELECTED */
         /**
          * @def emodel_child_select_set
          * @since 1.11
@@ -49,7 +48,7 @@ class Emodel (Eo_Base)
     }
     child_select_get {
         /*@ Get current selected child.
-         * @see EMODEL_EVENT_CHILD_SELECTED */
+          @see EMODEL_EVENT_CHILD_SELECTED */
         /**
          * @def emodel_child_select_get
          * @since 1.11
@@ -58,8 +57,8 @@ class Emodel (Eo_Base)
     }
     properties_get {
         /*@ Get properties list from model.
-         * Properties are functionalities especific of concrete implementation.
-         * @see EMODEL_EVENT_PROPERTIES_CHANGE */
+          Properties are functionalities especific of concrete implementation.
+          @see EMODEL_EVENT_PROPERTIES_CHANGE */
         /**
          * @def emodel_properties_get
          * @since 1.11
@@ -67,7 +66,7 @@ class Emodel (Eo_Base)
     }
     property_get {
         /*@ Get property from given property name.
-         * @see EMODEL_EVENT_PROPERTY_CHANGE */
+          @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
          * @def emodel_property_get
          * @since 1.11
@@ -81,7 +80,7 @@ class Emodel (Eo_Base)
     }
     property_set {
         /*@ Get property value from given property name.
-         * @see EMODEL_EVENT_PROPERTY_CHANGE */
+          @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
          * @def emodel_property_set
          * @since 1.11
@@ -96,8 +95,9 @@ class Emodel (Eo_Base)
          }
     }
     child_del {
-       /*@ Delete child. What exactly the child is will be defined by concrete implementation.
-        * @see EMODEL_EVENT_CHILD_DEL */
+       /*@ Delete child. What exactly the child is
+         will be defined by concrete implementation.
+         @see EMODEL_EVENT_CHILD_DEL */
        /**
         * @def emodel_child_del
         * @since 1.11
@@ -112,7 +112,7 @@ class Emodel (Eo_Base)
     }
     children_get {
         /*@ Get children.
-         * Children will be available from the callback function. */
+          Children will be available from the callback function. */
         /**
          * @def emodel_children_get
          * @since 1.11
@@ -127,24 +127,22 @@ class Emodel (Eo_Base)
     }
     children_slice_get {
         /*@ Get children slice.
-         * 'slice' is a range, for example if we have 20 childs a slice could be 
-         * the range from 5(start) to 10(count), see:
-         * 
-         * child 0  [no]
-         * child 1  [no]
-         * child 2  [no]
-         * child 3  [no]
-         * child 4  [yes]
-         * child 5  [yes]
-         * child 6  [yes]
-         * child 7  [yes]
-         * child 8  [yes]
-         * child 9  [no]
-         * child 10 [no]
-         * child 11 [no]
-         * ...
-         * @see Emodel_Cb
-         * */
+          'slice' is a range, for example if we have 20 childs a slice could be 
+          the range from 5(start) to 10(count), see:
+          child 0  [no]
+          child 1  [no]
+          child 2  [no]
+          child 3  [no]
+          child 4  [yes]
+          child 5  [yes]
+          child 6  [yes]
+          child 7  [yes]
+          child 8  [yes]
+          child 9  [no]
+          child 10 [no]
+          child 11 [no]
+          @see Emodel_Cb
+          */
         /**
          * @def emodel_children_slice_get
          * @since 1.11
@@ -163,7 +161,7 @@ class Emodel (Eo_Base)
     }
     children_count_get {
         /*@ Count the number of children from model.
-         * @see EMODEL_EVENT_CHILDREN_COUNT_GET */
+          @see EMODEL_EVENT_CHILDREN_COUNT_GET */
         /**
          * @def emodel_children_count_get
          * @since 1.11
