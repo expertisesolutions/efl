@@ -3,36 +3,24 @@ class Emodel_Eio (Eo_Base, Emodel)
     legacy_prefix: null;
     constructors {
        constructor {
-          /*@ Contructor with parameters for Emodel EIO. */
+          /*@ Custom Emodel_Eio constructor. */
           /**
            * @def emodel_eio_constructor
-           * @since 1.10
+           * @since 1.11
            *
            * @in path
            */
           params {
-             @in const char *path; /*@ Rootpath */
+             @in const char *path; /*@ Root path provided by caller */
           }
        }
     }
     methods {
-       del {
-            /*@ Delete File */
-            /**
-             * @def emodel_eio_del
-             * @since 1.10
-             *
-             * @in child_del_cb
-             */
-             params {
-                 Emodel_Cb child_del_cb; /*@  Emodel callback */
-             }
-       }
        dir_add {
             /*@ Create new empty directory setting mode from umask */
             /**
              * @def emodel_eio_dir_add
-             * @since 1.10
+             * @since 1.11
              *
              * @in child_add_cb
              * @in name
@@ -46,7 +34,7 @@ class Emodel_Eio (Eo_Base, Emodel)
             /*@ Set children filter callback */
             /**
              * @def emodel_eio_children_filter_set
-             * @since 1.10
+             * @since 1.11
              *
              * @in filter_cb
              * @in userdata
@@ -61,7 +49,7 @@ class Emodel_Eio (Eo_Base, Emodel)
             /*@ Get path */
             /**
              * @def emodel_eio_path_get
-             * @since 1.10
+             * @since 1.11
              *
              * @out path
              */

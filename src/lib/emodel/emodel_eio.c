@@ -588,23 +588,6 @@ cleanup_bottom:
 }
 
 static void
-_emodel_eio_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_del_cb)
-{
-   Emodel_Eio_Data *priv = _pd;
-   priv->emodel_cb = child_del_cb;
-
-   EINA_SAFETY_ON_NULL_RETURN(priv);
-   EINA_SAFETY_ON_NULL_RETURN(priv->emodel_cb);
-
-   eio_dir_unlink(priv->path,
-                  _eio_filter_child_del_cb,
-                  _eio_progress_child_del_cb,
-                  _eio_done_unlink_cb,
-                  _eio_error_unlink_cb,
-                  priv);
-}
-
-static void
 _emodel_eio_children_filter_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Eio_Filter_Direct_Cb filter_cb, void *data)
 {
    Emodel_Eio_Data *priv = _pd;
@@ -622,7 +605,18 @@ _emodel_eio_emodel_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUS
    EINA_SAFETY_ON_NULL_RETURN(cb);
    EINA_SAFETY_ON_NULL_RETURN(child);
 
-   eo_do(child, emodel_eio_del(cb));
+   Emodel_Eio_Data *child_priv = eo_data_scope_get(child, MY_CLASS);
+   EINA_SAFETY_ON_NULL_RETURN(child_priv);
+
+   child_priv->emodel_cb = cb;
+   EINA_SAFETY_ON_NULL_RETURN(child_priv->emodel_cb);
+
+   eio_dir_unlink(child_priv->path,
+                  _eio_filter_child_del_cb,
+                  _eio_progress_child_del_cb,
+                  _eio_done_unlink_cb,
+                  _eio_error_unlink_cb,
+                  child_priv);
 }
 
 /**
