@@ -33,11 +33,11 @@ class Emodel (Eo_Base)
          * @since 1.11
          */
     }
-    child_select_set {
+    child_select {
         /*@ Select a child.
           @see EMODEL_EVENT_CHILD_SELECTED */
         /**
-         * @def emodel_child_select_set
+         * @def emodel_child_select
          * @since 1.11
          *
          * @in child
@@ -46,29 +46,29 @@ class Emodel (Eo_Base)
             Eo *child; /*@ Child to be selected from the model. */
         }
     }
-    child_select_get {
+    child_select_eval {
         /*@ Get current selected child.
           @see EMODEL_EVENT_CHILD_SELECTED */
         /**
-         * @def emodel_child_select_get
+         * @def emodel_child_select_eval
          * @since 1.11
          *
          */
     }
-    properties_get {
+    prop_list {
         /*@ Get properties list from model.
           Properties are functionalities especific of concrete implementation.
           @see EMODEL_EVENT_PROPERTIES_CHANGE */
         /**
-         * @def emodel_properties_get
+         * @def emodel_prop_list
          * @since 1.11
          */
     }
-    property_get {
+    prop_fetch {
         /*@ Get property from given property name.
           @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
-         * @def emodel_property_get
+         * @def emodel_prop_fetch
          * @since 1.11
          *
          * @in property
@@ -78,11 +78,11 @@ class Emodel (Eo_Base)
            const char* property; /*@ Property name */
          }
     }
-    property_set {
+    prop_set {
         /*@ Get property value from given property name.
           @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
-         * @def emodel_property_set
+         * @def emodel_prop_set
          * @since 1.11
          *
          * @in property
@@ -110,22 +110,22 @@ class Emodel (Eo_Base)
           Eo* child; /*@ Child to be deleted */
         }
     }
-    children_get {
+    children_fetch {
         /*@ Get children.
           Children will be available from the callback function. */
         /**
-         * @def emodel_children_get
+         * @def emodel_children_fetch
          * @since 1.11
          *
-         * @in children_get_cb
+         * @in children_fetch_cb
          * @in data
          */
          params {
-           Emodel_Cb children_get_cb; /*@ Emodel callback */
+           Emodel_Cb children_fetch_cb; /*@ Emodel callback */
            void* data; /*@ Event data */
          }
     }
-    children_slice_get {
+    children_slice_fetch {
         /*@ Get children slice.
           'slice' is a range, for example if we have 20 childs a slice could be 
           the range from 5(start) to 10(count), see:
@@ -144,16 +144,16 @@ class Emodel (Eo_Base)
           @see Emodel_Cb
           */
         /**
-         * @def emodel_children_slice_get
+         * @def emodel_children_slice_fetch
          * @since 1.11
          *
-         * @in children_slice_get_cb
+         * @in children_slice_fetch_cb
          * @in start
          * @in count
          * @in data
          */
          params {
-           Emodel_Cb children_slice_get_cb; /*@ Emodel notification callback. */
+           Emodel_Cb children_slice_fetch_cb; /*@ Emodel notification callback. */
            int       start; /*@  Range begin - start from here. */
            int       count; /*@  Range size - up to here.*/
            void     *data; /*@ The child. */
@@ -169,14 +169,14 @@ class Emodel (Eo_Base)
     }
   }
   events {
-      properties_change(void); /*@ @see emodel_properties_get */
-      property_change(void); /*@ @see emodel_property_get
-      @see emodel_property_set */
+      properties_change(void); /*@ @see emodel_prop_list */
+      property_change(void); /*@ @see emodel_prop_fetch
+      @see emodel_prop_set */
       child_add(void);
       child_del(void); /*@ @see emodel_child_del */
-      child_selected(void); /*@ @see emodel_child_select_set
-      @see emodel_child_select_get */
-      children_get(void);
+      child_selected(void); /*@ @see emodel_child_select
+      @see emodel_child_select_eval */
+      children_fetch(void);
       children_count_get(void); /*@see emodel_children_count_get */
   }
 }

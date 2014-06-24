@@ -122,12 +122,12 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 }
 
 static void
-_children_get_cb(void *data EINA_UNUSED, Eo *child, void *event_info, int error EINA_UNUSED)
+_children_fetch_cb(void *data EINA_UNUSED, Eo *child, void *event_info, int error EINA_UNUSED)
 {
    int *idx = (int*)event_info;
    fprintf(stdout, "Child received: child=%p, idx=%d\n", child, *idx);
    eo_do(child, eo_event_callback_add(EMODEL_EVENT_PROPERTY_CHANGE, _prop_change_cb, NULL));
-   eo_do(child, emodel_property_get("filename"));
+   eo_do(child, emodel_prop_fetch("filename"));
 }
 
 static Eina_Bool
@@ -246,13 +246,13 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _child_add_evt_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _child_del_evt_cb, NULL));
 
-   eo_do(filemodel, emodel_property_get("filename"));
-   eo_do(filemodel, emodel_property_get("size"));
-   eo_do(filemodel, emodel_properties_get());
-   eo_do(filemodel, emodel_children_get(_children_get_cb, NULL));
+   eo_do(filemodel, emodel_prop_fetch("filename"));
+   eo_do(filemodel, emodel_prop_fetch("size"));
+   eo_do(filemodel, emodel_prop_list());
+   eo_do(filemodel, emodel_children_fetch(_children_fetch_cb, NULL));
    eo_do(filemodel, emodel_children_count_get());
-   eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 0,15, NULL));
-   eo_do(filemodel, emodel_children_slice_get(_children_get_cb, 20,5, NULL));
+   eo_do(filemodel, emodel_children_slice_fetch(_children_fetch_cb, 0,15, NULL));
+   eo_do(filemodel, emodel_children_slice_fetch(_children_fetch_cb, 20,5, NULL));
 
    // here we set the callback for child add
    for(i = 0; dirs[i] != NULL; ++i)
@@ -263,8 +263,8 @@ START_TEST(emodel_test_test_file)
 #ifdef _RUN_LOCAL_TEST
    Eina_Value *nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
    eina_value_set(nameset, "/tmp/emodel_test");
-   eo_do(filemodel, emodel_property_set("filename", nameset));
-   eo_do(filemodel, emodel_property_get("filename"));
+   eo_do(filemodel, emodel_prop_set("filename", nameset));
+   eo_do(filemodel, emodel_prop_fetch("filename"));
 #endif
 
    ecore_main_loop_begin();

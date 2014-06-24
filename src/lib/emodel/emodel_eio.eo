@@ -43,7 +43,7 @@ class Emodel_Eio (Eo_Base, Emodel)
               callback we can decide, by returning either EINA_FALSE, to abort
               the notification or EINA_TRUE to keep it.
               @see Eio.h
-              @see emodel_eio_emodel_children_slice_get
+              @see emodel_eio_emodel_children_slice_fetch
              */
             /**
              * @def emodel_eio_children_filter_set
@@ -77,16 +77,16 @@ class Emodel_Eio (Eo_Base, Emodel)
    implements {
       Eo_Base.destructor;
       Eo_Base.constructor;
-      Emodel.properties_get;
-      Emodel.property_get;
-      Emodel.property_set;
+      Emodel.prop_list;
+      Emodel.prop_fetch;
+      Emodel.prop_set;
       Emodel.load;
       Emodel.unload;
       Emodel.child_del;
-      Emodel.children_get;
-      Emodel.children_slice_get;
+      Emodel.children_fetch;
+      Emodel.children_slice_fetch;
       Emodel.children_count_get;
-      Emodel.child_select_get;
-      Emodel.child_select_set;
+      Emodel.child_select;
+      Emodel.child_select_eval;
    }
 }
