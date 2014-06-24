@@ -1,8 +1,25 @@
 class Emodel (Eo_Base)
 {
   legacy_prefix: null;
+  constructors {
+      constructor {
+        /*@ Default Emodel constructor. */
+        /**
+         * @def emodel_constructor
+         * @since 1.11
+         *
+         */
+      }
+      destructor {
+        /*@ Default Emodel destructor */
+        /**
+         * @def emodel_destructor
+         * @since 1.11
+         *
+         */
+      }
+  }
   methods {
-
     load {
         /*@ Load emodel.
           By convention this means loading data from an external source and populating

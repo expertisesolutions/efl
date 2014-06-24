@@ -465,7 +465,7 @@ _emodel_eio_emodel_prop_list(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 }
 
 /**
- * Property Get
+ * Property Fetch
  */
 static void
 _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property)
@@ -762,10 +762,10 @@ _emodel_eio_path_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *priv, const char **pa
 }
 
 static void
-_emodel_eio_eo_base_constructor(Eo *obj, Emodel_Eio_Data *_pd EINA_UNUSED)
+_emodel_eio_emodel_constructor(Eo *obj, Emodel_Eio_Data *_pd EINA_UNUSED)
 {
+   fprintf(stderr, "Error: Implement this '%s' default class constructor.", MY_CLASS_NAME);
    eo_error_set(obj);
-   fprintf(stderr, "only custom constructor can be used with '%s' class", MY_CLASS_NAME);
 }
 /**
  * Class definitions
@@ -826,7 +826,7 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
 }
 
 static void
-_emodel_eio_eo_base_destructor(Eo *obj , Emodel_Eio_Data *priv)
+_emodel_eio_emodel_destructor(Eo *obj , Emodel_Eio_Data *priv)
 {
    if(priv && priv->monitor)
      {

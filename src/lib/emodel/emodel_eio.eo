@@ -75,8 +75,8 @@ class Emodel_Eio (Eo_Base, Emodel)
        }
     }
    implements {
-      Eo_Base.destructor;
-      Eo_Base.constructor;
+      Emodel.destructor;
+      Emodel.constructor;
       Emodel.prop_list;
       Emodel.prop_fetch;
       Emodel.prop_set;

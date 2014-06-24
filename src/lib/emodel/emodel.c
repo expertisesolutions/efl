@@ -14,6 +14,12 @@ struct _Emodel_Data
 typedef struct _Emodel_Data Emodel_Data;
 
 static void
+_emodel_constructor(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
+
+static void
+_emodel_destructor(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
+
+static void
 _emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, const char *property EINA_UNUSED, Eina_Value *value EINA_UNUSED){}
 
 static void
