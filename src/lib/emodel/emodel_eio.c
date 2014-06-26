@@ -472,25 +472,38 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
 {
    Emodel_Property_EVT evt;
    Emodel_Eio_Data *priv = _pd;
+   size_t proplen;
 
    EINA_SAFETY_ON_NULL_RETURN(property);
    EINA_SAFETY_ON_NULL_RETURN(priv);
    EINA_SAFETY_ON_NULL_RETURN(priv->obj);
 
+   proplen = strlen(property);
+
+   evt.prop = NULL;
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
-   if (!strncmp(property, evt.prop, strlen(evt.prop)))
+   EINA_SAFETY_ON_NULL_RETURN(evt.prop);
+   if(proplen == strlen(evt.prop))
      {
-        evt.value = _emodel_property_value_get(priv, evt.prop);
-        eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
-        return;
+        if(!strcmp(property, evt.prop))
+          {
+             evt.value = _emodel_property_value_get(priv, evt.prop);
+             eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
+             return;
+          }
      }
 
+   evt.prop = NULL;
    eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
-   if (!strncmp(property, evt.prop, strlen(evt.prop)))
+   EINA_SAFETY_ON_NULL_RETURN(evt.prop);
+   if(proplen == strlen(evt.prop))
      {
-        evt.value = _emodel_property_value_get(priv, evt.prop);
-        eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
-        return;
+        if(!strcmp(property, evt.prop))
+          {
+             evt.value = _emodel_property_value_get(priv, evt.prop);
+             eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
+             return;
+          }
      }
 
    priv->file = eio_file_direct_stat(priv->path, _eio_stat_done_cb, _eio_error_cb, priv);
