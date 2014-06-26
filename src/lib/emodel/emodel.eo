@@ -108,7 +108,7 @@ class Emodel (Eo_Base)
          */
          params {
            const char* property; /*@  Property name */
-           Eina_Value* value; /*@ New value */
+           const Eina_Value* value; /*@ New value */
          }
     }
     child_del {

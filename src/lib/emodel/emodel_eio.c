@@ -501,7 +501,7 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
  * Property Set
  */
 static void
-_emodel_eio_emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property, Eina_Value *value)
+_emodel_eio_emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property, const Eina_Value *value)
 {
    Emodel_Eio_Data *priv = _pd;
    const char *dest, *prop = NULL;
