@@ -565,16 +565,14 @@ _emodel_eio_dir_add(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_a
    child->fullpath = calloc(1, len+2);
    EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
 
-   //gets current mask
-   mode_t mode = umask(0);
-   umask(mode);
-
    //_eio_done_mkdir_cb frees memory
    strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
    strncat(child->fullpath, "/", 1);
    strncat(child->fullpath, child->name, strlen(child->name));
 
-   eio_file_mkdir(child->fullpath, (0777 - mode),
+   /*  read/write/search permissions for owner and group,
+    * and with read/search permissions for others */
+   eio_file_mkdir(child->fullpath, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH,
                   _eio_done_mkdir_cb, _eio_done_error_mkdir_cb, child);
 
    // Ok */
