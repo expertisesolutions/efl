@@ -470,9 +470,10 @@ _emodel_eio_emodel_prop_list(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 static void
 _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property)
 {
+   Eina_Bool check;
    Emodel_Property_EVT evt;
-   Emodel_Eio_Data *priv = _pd;
    size_t proplen;
+   Emodel_Eio_Data *priv = _pd;
 
    EINA_SAFETY_ON_NULL_RETURN(property);
    EINA_SAFETY_ON_NULL_RETURN(priv);
@@ -481,9 +482,8 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
    proplen = strlen(property);
 
    evt.prop = NULL;
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
-   EINA_SAFETY_ON_NULL_RETURN(evt.prop);
-   if(proplen == strlen(evt.prop))
+   check = eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
+   if((check == EINA_TRUE) && (proplen == strlen(evt.prop)))
      {
         if(!strcmp(property, evt.prop))
           {
@@ -494,9 +494,8 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
      }
 
    evt.prop = NULL;
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
-   EINA_SAFETY_ON_NULL_RETURN(evt.prop);
-   if(proplen == strlen(evt.prop))
+   check = eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
+   if((check == EINA_TRUE) && (proplen == strlen(evt.prop)))
      {
         if(!strcmp(property, evt.prop))
           {
