@@ -632,7 +632,7 @@ _emodel_eio_emodel_child_del(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUS
  * Children Get
  */
 static void
-_emodel_eio_emodel_children_fetch(Eo *obj , Emodel_Eio_Data *_pd, Emodel_Cb callback, void *data)
+_emodel_eio_emodel_children_fetch(Eo *obj , Emodel_Eio_Data *_pd, Emodel_Cb callback, const void *data)
 {
    EINA_SAFETY_ON_NULL_RETURN(callback);
 
@@ -658,7 +658,8 @@ _emodel_eio_emodel_children_fetch(Eo *obj , Emodel_Eio_Data *_pd, Emodel_Cb call
  * Children Slice Get
  */
 static void
-_emodel_eio_emodel_children_slice_fetch(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb children_slice_fetch_cb, int start, int count, void *data)
+_emodel_eio_emodel_children_slice_fetch(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb children_slice_fetch_cb,
+                                        int start, int count, const void *data)
 {
     Emodel_Eio_Children_Data *cdata;
 

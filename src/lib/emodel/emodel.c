@@ -26,7 +26,7 @@ static void
 _emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, const char *property EINA_UNUSED){}
 
 static void
-_emodel_children_slice_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb children_slice_fetch_cb EINA_UNUSED, int start EINA_UNUSED, int count EINA_UNUSED, void *data EINA_UNUSED){}
+_emodel_children_slice_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb children_slice_fetch_cb EINA_UNUSED, int start EINA_UNUSED, int count EINA_UNUSED, const void *data EINA_UNUSED){}
 
 static void
 _emodel_child_del(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb child_del_cb EINA_UNUSED, Eo *child EINA_UNUSED){}
@@ -41,7 +41,7 @@ static void
 _emodel_unload(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
 
 static void
-_emodel_children_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb children_fetch_cb EINA_UNUSED, void *data EINA_UNUSED){}
+_emodel_children_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb children_fetch_cb EINA_UNUSED, const void *data EINA_UNUSED){}
 
 static void
 _emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}

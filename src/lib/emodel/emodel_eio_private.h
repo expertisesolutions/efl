@@ -78,7 +78,7 @@ struct _Emodel_Eio_Children_Data
 {
    Emodel_Eio_Data *priv;
    Eio_File *lsref;
-   void *data;
+   const void *data;
    Emodel_Cb callback;
    Eina_Bool dispatch;
    int start;

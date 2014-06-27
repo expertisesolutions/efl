@@ -122,7 +122,7 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
 }
 
 static void
-_children_fetch_cb(void *data EINA_UNUSED, Eo *child, void *event_info, int error EINA_UNUSED)
+_Emodel_Cb_Impl_children_fetch_cb(const void *data EINA_UNUSED, Eo *child, void *event_info, int error EINA_UNUSED)
 {
    int *idx = (int*)event_info;
    fprintf(stdout, "Child received: child=%p, idx=%d\n", child, *idx);
@@ -142,7 +142,7 @@ _children_count_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_D
 }
 
 static void
-_child_del_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info, int error EINA_UNUSED)
+_Emodel_Cb_Impl_child_del_cb(const void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info, int error EINA_UNUSED)
 {
    Eo *child = (Eo *)event_info;
    if(-1 == reqs.child_del) reqs.child_del = 1;
@@ -165,8 +165,11 @@ _null_cb(void *data, Eo *obj, const Eo_Event_Description *desc, void *event_info
    return EO_CALLBACK_CONTINUE;
 }
 
+/**
+ * Emodel_Cb
+ */
 static void
-_emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
+_Emodel_Cb_Impl_child_add_cb(const void *data, Eo *obj, void *event_info, int error)
 {
    const char *name = (const char *)data;
    Eo *child = (Eo*)event_info;
@@ -191,7 +194,7 @@ _emodel_child_add_cb(void *data, Eo *obj, void *event_info, int error)
               * delete it as soon as add_cb is notified.
               */
              del = 1;
-             eo_do(obj, emodel_child_del(_child_del_cb, child));
+             eo_do(obj, emodel_child_del(_Emodel_Cb_Impl_child_del_cb, child));
           }
      }
 }
@@ -249,15 +252,15 @@ START_TEST(emodel_test_test_file)
    eo_do(filemodel, emodel_prop_fetch("filename"));
    eo_do(filemodel, emodel_prop_fetch("size"));
    eo_do(filemodel, emodel_prop_list());
-   eo_do(filemodel, emodel_children_fetch(_children_fetch_cb, NULL));
+   eo_do(filemodel, emodel_children_fetch(_Emodel_Cb_Impl_children_fetch_cb, NULL));
    eo_do(filemodel, emodel_children_count_get());
-   eo_do(filemodel, emodel_children_slice_fetch(_children_fetch_cb, 0,15, NULL));
-   eo_do(filemodel, emodel_children_slice_fetch(_children_fetch_cb, 20,5, NULL));
+   eo_do(filemodel, emodel_children_slice_fetch(_Emodel_Cb_Impl_children_fetch_cb, 0,15, NULL));
+   eo_do(filemodel, emodel_children_slice_fetch(_Emodel_Cb_Impl_children_fetch_cb, 20,5, NULL));
 
    // here we set the callback for child add
    for(i = 0; dirs[i] != NULL; ++i)
      {
-         eo_do(filemodel, emodel_eio_dir_add(_emodel_child_add_cb, dirs[i]));
+         eo_do(filemodel, emodel_eio_dir_add(_Emodel_Cb_Impl_child_add_cb, dirs[i]));
      }
 
 #ifdef _RUN_LOCAL_TEST
@@ -272,7 +275,7 @@ START_TEST(emodel_test_test_file)
    // Remove all added childs
    for(i = 0; childs[i]; ++i)
    {
-     eo_do(filemodel, emodel_child_del(_child_del_cb, childs[i]));
+     eo_do(filemodel, emodel_child_del(_Emodel_Cb_Impl_child_del_cb, childs[i]));
    } fail_if(i != idx_child);
    sleep(1); /**< EIO is asynchrounous so I must give some time for deletions to execute */
 

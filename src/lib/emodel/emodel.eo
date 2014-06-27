@@ -139,7 +139,7 @@ class Emodel (Eo_Base)
          */
          params {
            Emodel_Cb children_fetch_cb; /*@ Emodel callback */
-           void* data; /*@ Event data */
+           const void* data; /*@ Event data */
          }
     }
     children_slice_fetch {
@@ -171,9 +171,9 @@ class Emodel (Eo_Base)
          */
          params {
            Emodel_Cb children_slice_fetch_cb; /*@ Emodel notification callback. */
-           int       start; /*@  Range begin - start from here. */
-           int       count; /*@  Range size - up to here.*/
-           void     *data; /*@ The child. */
+           int          start; /*@  Range begin - start from here. */
+           int          count; /*@  Range size - up to here.*/
+           const void   *data; /*@ The child. */
          }
     }
     children_count_get {

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-typedef void (*Emodel_Cb)(void *data, Eo *child, void *event_info, int error);
+typedef void (*Emodel_Cb)(const void *data, Eo *child, void *event_info, int error);
 
 struct _Emodel_Property_EVT
 {
