@@ -200,7 +200,7 @@ static Eina_Bool
 _child_add_evt_cb(void *data EINA_UNUSED, Eo *obj, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
-   fprintf(stdout, "Child add event: parent=%p, child=%p index=%d dir=%s\n", obj, evt->child, evt->idx, (char*)evt->data);
+   fprintf(stdout, "Child add event: parent=%p, child=%p index=%d dir=FIXME!\n", obj, evt->child, evt->idx);
    return EINA_TRUE;
 }
 static Eina_Bool
@@ -208,7 +208,7 @@ _child_del_evt_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_De
 {
    Emodel_Children_EVT *evt = (Emodel_Children_EVT*)event_info;
    //child is NULL (already removed)
-   fprintf(stdout, "Child del event: parent=%p, index=%d dir=%s\n", obj, evt->idx, (char*)evt->data);
+   fprintf(stdout, "Child del event: parent=%p, index=%d dir=FIXME\n", obj, evt->idx);
    return EINA_TRUE;
 }
 

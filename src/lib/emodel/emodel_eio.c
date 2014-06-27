@@ -160,10 +160,10 @@ static Eina_Bool
    if (root == NULL)
      root = priv->obj;
 
-   cevt.data = (void*)evt->filename;
    cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(evt->filename));
-   _emodel_eio_root_set(cevt.child, root);
    cevt.idx = -1;
+
+   _emodel_eio_root_set(cevt.child, root);
 
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_ADD, &cevt));
 }
@@ -171,12 +171,11 @@ static Eina_Bool
 static Eina_Bool
 _emodel_evt_deleted_ecore_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event EINA_UNUSED)
 {
-   Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
+   //Eio_Monitor_Event *evt = (Eio_Monitor_Event*)event;
    Emodel_Eio_Data *priv = data;
    Emodel_Children_EVT cevt;
 
-   cevt.data = (void*)evt->filename;
-   cevt.child = NULL; /* FIXME */
+   cevt.child = NULL;
    cevt.idx = -1;
 
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_DEL, &cevt));
@@ -730,7 +729,6 @@ _emodel_eio_emodel_child_select(Eo *obj, Emodel_Eio_Data *_pd, Eo *child)
    cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(path));
    _emodel_eio_root_set(cevt.child, obj);
    cevt.idx = 0;
-   cevt.data = NULL;
 
    eo_do(cevt.child, emodel_eio_children_filter_set(priv->filter_cb, priv->filter_userdata));
    eo_do(obj, eo_event_callback_call(EMODEL_EVENT_CHILD_SELECTED, &cevt));
@@ -755,7 +753,6 @@ _emodel_eio_emodel_child_select_eval(Eo *obj EINA_UNUSED, Emodel_Eio_Data *priv)
          cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(priv->path));
          _emodel_eio_root_set(cevt.child, obj);
          cevt.idx = 0;
-         cevt.data = NULL;
 
          eo_do(cevt.child, emodel_eio_children_filter_set(priv->filter_cb, priv->filter_userdata));
          eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_SELECTED, &cevt));

@@ -18,7 +18,6 @@ typedef struct _Emodel_Property_EVT Emodel_Property_EVT;
 struct _Emodel_Children_EVT
 {
    Eo *child; /**< child, for child_add */
-   void *data; /**< user provided data */
    int idx; /**< child index */
 };
 
