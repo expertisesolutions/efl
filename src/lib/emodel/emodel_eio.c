@@ -392,7 +392,13 @@ _eio_done_children_count_get_cb(void *data, Eio_File *handler EINA_UNUSED)
    Emodel_Eio_Children_Count *count_data = (Emodel_Eio_Children_Count *)data;
    EINA_SAFETY_ON_NULL_RETURN(count_data);
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(count_data->priv->obj));
-   eo_do(count_data->priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILDREN_COUNT_GET, &(count_data->total)));
+
+   if (count_data->priv->count != count_data->total)
+     {
+        count_data->priv->count = count_data->total;
+        eo_do(count_data->priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILDREN_COUNT_CHANGE, &(count_data->total)));
+     }
+
    _emodel_dealloc_memory(count_data, NULL);
 }
 
@@ -692,17 +698,19 @@ _emodel_eio_emodel_children_slice_fetch(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb
 /**
  * Children Count Get
  */
-static void
+static unsigned int
 _emodel_eio_emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 {
    Emodel_Eio_Data *priv = _pd;
    Emodel_Eio_Children_Count *count_data = calloc(1, sizeof(Emodel_Eio_Children_Count));
-   EINA_SAFETY_ON_NULL_RETURN(count_data);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(count_data, priv->count);
    count_data->priv = priv;
 
    eio_file_direct_ls(priv->path, _eio_filter_children_fetch_cb,
                       _eio_main_children_count_get_cb, _eio_done_children_count_get_cb,
                       _eio_error_children_count_get_cb, count_data);
+
+   return priv->count;
 }
 
 /**

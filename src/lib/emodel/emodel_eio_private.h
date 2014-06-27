@@ -57,6 +57,7 @@ struct _Emodel_Eio_Data
    void *filter_userdata;
    int cb_count_child_add; /**< monitor reference counter for child add event */
    int cb_count_child_del; /**< monitor reference counter for child del event*/
+   unsigned int count;
 };
 
 struct _Emodel_Eio_Child_Add

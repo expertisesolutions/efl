@@ -182,7 +182,10 @@ class Emodel (Eo_Base)
         /**
          * @def emodel_children_count_get
          * @since 1.11
+         *
+         * @return The total number of children in the model
          */
+         return unsigned int;
     }
   }
   events {
@@ -194,7 +197,7 @@ class Emodel (Eo_Base)
       child_selected(void); /*@ @see emodel_child_select
       @see emodel_child_select_eval */
       children_fetch(void);
-      children_count_get(void); /*@see emodel_children_count_get */
+      children_count_change(void); /*@see emodel_children_count_get */
   }
 }
 

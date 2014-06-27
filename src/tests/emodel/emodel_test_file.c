@@ -243,7 +243,7 @@ START_TEST(emodel_test_test_file)
 
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTY_CHANGE, _prop_change_cb, NULL));
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_PROPERTIES_CHANGE, _properties_cb, NULL));
-   eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILDREN_COUNT_GET, _children_count_cb, NULL));
+   eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILDREN_COUNT_CHANGE, _children_count_cb, NULL));
 
    // Listener for child add
    eo_do(filemodel, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _child_add_evt_cb, NULL));
