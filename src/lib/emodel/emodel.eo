@@ -173,7 +173,7 @@ class Emodel (Eo_Base)
            Emodel_Cb children_slice_fetch_cb; /*@ Emodel notification callback. */
            int          start; /*@  Range begin - start from here. */
            int          count; /*@  Range size - up to here.*/
-           const void   *data; /*@ The child. */
+           const void   *data; /*@ Userdata given to callback. */
          }
     }
     children_count_get {
