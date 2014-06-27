@@ -565,27 +565,25 @@ _emodel_eio_emodel_unload(Eo *obj  EINA_UNUSED, Emodel_Eio_Data *_pd EINA_UNUSED
 static void
 _emodel_eio_dir_add(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, Emodel_Cb child_add_cb, const char *name)
 {
-   size_t len;
+   size_t total_len, name_len;
    Emodel_Eio_Child_Add *child = calloc(1, sizeof(Emodel_Eio_Child_Add));
    EINA_SAFETY_ON_NULL_RETURN(child);
 
    child->callback = child_add_cb;
+   name_len = strlen(name);
 
-   child->name = calloc(1, strlen(name)+1);
+   child->name = calloc(1, name_len);
    EINA_SAFETY_ON_NULL_GOTO(child->name, cleanup_bottom);
 
-   strncpy(child->name, name, strlen(name));
+   strncpy(child->name, name, name_len);
    child->priv = _pd;
-   len = strlen(child->priv->path) + strlen(child->name);
+   total_len = strlen(child->priv->path) + name_len + 2; /**< +2 is: '/' + 0x00 */
 
-   // len + '/' + '\0'
-   child->fullpath = calloc(1, len+2);
+   child->fullpath = calloc(1, total_len);
    EINA_SAFETY_ON_NULL_GOTO(child->fullpath, cleanup_top);
 
    //_eio_done_mkdir_cb frees memory
-   strncpy(child->fullpath, child->priv->path, strlen(child->priv->path));
-   strncat(child->fullpath, "/", 1);
-   strncat(child->fullpath, child->name, strlen(child->name));
+   eina_str_join(child->fullpath, total_len, '/', child->priv->path, child->name);
 
    /*  read/write/search permissions for owner and group,
     * and with read/search permissions for others */
