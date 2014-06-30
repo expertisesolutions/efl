@@ -44,7 +44,7 @@ static void
 _emodel_children_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb children_fetch_cb EINA_UNUSED, const void *data EINA_UNUSED){}
 
 static unsigned int
-_emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
+_emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){ return 0;}
 
 static void
 _emodel_child_select(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Eo *child EINA_UNUSED){}
