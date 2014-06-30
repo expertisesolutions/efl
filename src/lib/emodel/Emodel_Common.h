@@ -9,7 +9,7 @@ typedef void (*Emodel_Cb)(const void *data, Eo *child, void *event_info, int err
 
 struct _Emodel_Property_EVT
 {
-   Eina_Value *value; /**< the property value */
+   Eina_Value value; /**< the property value */
    const char *prop; /**< the property name */ 
 };
 
