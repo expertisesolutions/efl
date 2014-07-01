@@ -95,7 +95,7 @@ static Eina_Bool
 _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Property_EVT *evt = event_info;
-   fprintf(stdout, "property \"%s\" changed to \"%s\"\n", evt->prop, eina_value_to_string(evt->value));
+   fprintf(stdout, "property \"%s\" changed to \"%s\"\n", evt->prop, eina_value_to_string(&evt->value));
 
    if (strncmp(evt->prop, "filename", strlen("filename")) == 0)
      {
