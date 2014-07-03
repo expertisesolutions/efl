@@ -232,7 +232,9 @@ EAPI char          **eina_str_split_full(const char *string, const char *delimit
  *
  * This function joins the strings @p a and @p b (in that order) and
  * separate them with @p sep. The result is stored in the buffer
- * @p dst and at most @p size - 1 characters will be written and the
+ * @p dst and at most @p size - 1 (@p size must also include
+ * @p sep byte plus the string delimiter '\0' byte)
+ * characters will be written and the
  * string is NULL-terminated. @p a_len is the length of @p a (not
  * including '\\0') and @p b_len is the length of @p b (not including
  * '\\0'). This function returns the number of characters printed (not

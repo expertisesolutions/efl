@@ -60,6 +60,9 @@ eina_strlen_bounded(const char *str, size_t maxlen)
  * This function is similar to eina_str_join_len(), but will compute
  * the length of @p a  and @p b using strlen().
  *
+ * @p size must also include @p sep byte and the string
+ * delimiter '\0' byte.
+ *
  * @see eina_str_join_len()
  * @see eina_str_join_static()
  */
