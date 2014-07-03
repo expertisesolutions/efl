@@ -190,6 +190,7 @@ class Emodel (Eo_Base)
   }
   events {
       loaded(void);
+      unloaded(void);
       properties_change(void); /*@ @see emodel_prop_list */
       property_change(void); /*@ @see emodel_prop_fetch
       @see emodel_prop_set */
