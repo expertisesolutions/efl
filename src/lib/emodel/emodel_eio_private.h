@@ -45,6 +45,7 @@ struct _Emodel_Eio_Data
    Eo *obj;
    Eo *rootmodel;
    Eina_Value *properties;
+   Eina_Value *eproperties;
    Eio_File *file;
    char *path;
    char *pathSelected;
