@@ -23,7 +23,7 @@
  * new one so '/tmp' as root dir doesn't work , you'll need to use
  * '/tmp/some_other_dir' as root instead.
  */
-/* #define _RUN_LOCAL_TEST */
+//#define _RUN_LOCAL_TEST 
 
 struct reqs_t {
    int filename;
@@ -95,7 +95,7 @@ static Eina_Bool
 _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Property_EVT *evt = event_info;
-   fprintf(stdout, "property \"%s\" changed to \"%s\"\n", evt->prop, eina_value_to_string(&evt->value));
+      fprintf(stdout, "property \"%s\" changed to \"%s\"\n", evt->prop, eina_value_to_string(&evt->value));
 
    if (strncmp(evt->prop, "filename", strlen("filename")) == 0)
      {
@@ -118,6 +118,7 @@ _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Desc
         reqs.propset = 1;
      }
 
+   eina_value_flush(&evt->value);
    return EINA_TRUE;
 }
 
@@ -266,8 +267,8 @@ START_TEST(emodel_test_test_file)
 #ifdef _RUN_LOCAL_TEST
    Eina_Value *nameset = eina_value_new(EINA_VALUE_TYPE_STRING);
    eina_value_set(nameset, "/tmp/emodel_test");
-   eo_do(filemodel, emodel_prop_set("filename", nameset));
-   eo_do(filemodel, emodel_prop_fetch("filename"));
+   eo_do(filemodel, emodel_prop_set("path", nameset));
+   eo_do(filemodel, emodel_prop_fetch("path"));
 #endif
 
    ecore_main_loop_begin();
