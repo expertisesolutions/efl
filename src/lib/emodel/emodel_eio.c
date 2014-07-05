@@ -14,7 +14,7 @@
 #define MY_CLASS EMODEL_EIO_CLASS
 #define MY_CLASS_NAME "Emodel_Eio"
 
-static Eina_Value_Struct_Desc *__PROP_DESC = NULL;
+static Eina_Value_Struct_Desc *EMODEL_EIO_PROPERTIES_DESC = NULL;
 static void _eio_prop_set_error_cb(void *, Eio_File *, int);
 
 static void
@@ -43,8 +43,8 @@ _stat_pro_set(Emodel_Eio_Data *priv, int prop_id, const char *prop_name, int pva
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
 
    /**
-    * Here property change event is dispatched because
-    * anyone can listen to these events
+    * Here property EMODEL_EVENT_PROPERTY_CHANGE is dispatched because
+    * anyone can listen to these events by using eo_event_callback_add().
     */
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
 }
@@ -76,8 +76,10 @@ _eio_stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *st
    _stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, "mtime", eio_file_mtime(stat));
 
    Emodel_Property_EVT evt;
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_ICON, &evt.prop);
+   
+   evt.prop = priv->prop_members[EMODEL_EIO_PROP_ICON].name;
    eina_value_setup(&evt.value, EINA_VALUE_TYPE_STRING);
+
    if (eio_file_is_dir(stat))
         eina_value_set(&evt.value, "icon folder");
    else
@@ -97,27 +99,32 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Property_EVT evt;
    Emodel_Eio_Data *priv = data;
-   Eina_Value *cvalue;
-
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
-   cvalue = _emodel_property_value_get(priv, evt.prop);
-   eina_value_set(cvalue, priv->path);
-   eina_value_copy(cvalue, &evt.value);
-   //eio_file_direct_stat(priv->path, _eio_stat_done_cb, _eio_prop_set_error_cb, priv);
 
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
+
+   /**
+    * When mv is executed we update our values and 
+    * notify both path and filename properties listeners.
+    */
+   evt.prop = priv->prop_members[EMODEL_EIO_PROP_PATH].name;
+   eina_value_struct_set(priv->properties, evt.prop, priv->path);
+   eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
 
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
-   cvalue = _emodel_property_value_get(priv, evt.prop);
-   eina_value_set(cvalue, basename(priv->path));
-   eina_value_copy(cvalue, &evt.value);
+   evt.prop = priv->prop_members[EMODEL_EIO_PROP_FILENAME].name;
+   eina_value_struct_set(priv->properties, evt.prop, basename(priv->path));
+   eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
 }
 
 static void
-_eio_error_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error EINA_UNUSED)
+_eio_error_cb(void *data EINA_UNUSED, Eio_File *handler EINA_UNUSED, int error)
 {
+   if(error != 0)
+     {
+        fprintf(stderr, "Error: %s : %d: %s\n", __FUNCTION__, error, strerror(errno));
+        EINA_SAFETY_ON_FALSE_RETURN(EINA_FALSE); /**< force check error only to be more verbose */
+     }
    fprintf(stdout, "%s : %d\n", __FUNCTION__, error);
 }
 
@@ -498,7 +505,6 @@ _emodel_eio_emodel_prop_list(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 static void
 _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property)
 {
-   Eina_Bool check;
    Emodel_Property_EVT evt;
    size_t proplen;
    Emodel_Eio_Data *priv = _pd;
@@ -509,25 +515,23 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
 
    proplen = strlen(property);
 
-   evt.prop = NULL;
-   check = eina_value_array_get(priv->properties, EMODEL_EIO_PROP_FILENAME, &evt.prop);
-   if((check == EINA_TRUE) && (proplen == strlen(evt.prop)))
+   evt.prop = priv->prop_members[EMODEL_EIO_PROP_FILENAME].name;
+   if((evt.prop != NULL) && (proplen == strlen(evt.prop)))
      {
         if(!strcmp(property, evt.prop))
           {
-             eina_value_copy(_emodel_property_value_get(priv, evt.prop), &evt.value);
+             eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
              eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
              return;
           }
      }
 
-   evt.prop = NULL;
-   check = eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &evt.prop);
-   if((check == EINA_TRUE) && (proplen == strlen(evt.prop)))
+   evt.prop = priv->prop_members[EMODEL_EIO_PROP_PATH].name;
+   if((evt.prop != NULL) && (proplen == strlen(evt.prop)))
      {
         if(!strcmp(property, evt.prop))
           {
-             eina_value_copy(_emodel_property_value_get(priv, evt.prop), &evt.value);
+             eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
              eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
              return;
           }
@@ -549,14 +553,18 @@ _emodel_eio_emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const cha
    EINA_SAFETY_ON_NULL_RETURN(value);
    EINA_SAFETY_ON_NULL_RETURN(property);
 
-   eina_value_array_get(priv->properties, EMODEL_EIO_PROP_PATH, &prop);
+   prop = priv->prop_members[EMODEL_EIO_PROP_PATH].name;
    EINA_SAFETY_ON_NULL_RETURN(prop);
 
-   if (!strncmp(property, prop, strlen(prop)))
+   /* Both strings must be equal in size as well.
+    * Case insensitive check 
+    */
+   if(strlen(property) != strlen(prop)) return;
+   
+   if (!strcmp(property, prop))
      {
         const char *src;
-        Eina_Value *cvalue = _emodel_property_value_get(priv, prop);
-        eina_value_get(cvalue, &src);
+        eina_value_struct_get(priv->properties, "path", &src);
         eina_value_get(value, &dest);
         _emodel_dealloc_memory(priv->path, NULL);
         priv->path = strdup(dest);
@@ -810,10 +818,6 @@ _emodel_eio_emodel_constructor(Eo *obj, Emodel_Eio_Data *_pd EINA_UNUSED)
 static void
 _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
 {
-   const char *prop;
-   Eina_Value *v;
-   size_t i;
-
    eo_do_super(obj, MY_CLASS, eo_constructor());
 
    priv->rootmodel = NULL;
@@ -840,13 +844,13 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
      EINA_VALUE_STRUCT_MEMBER(NULL, This_Eio_Properties, is_lnk),
      EINA_VALUE_STRUCT_MEMBER(NULL, This_Eio_Properties, size)
    };
-   prop_members[0].type = EINA_VALUE_TYPE_STRING;
-   prop_members[1].type = EINA_VALUE_TYPE_STRING;
-   prop_members[2].type = EINA_VALUE_TYPE_STRING;
-   prop_members[3].type = EINA_VALUE_TYPE_TIMEVAL;
-   prop_members[4].type = EINA_VALUE_TYPE_INT;
-   prop_members[5].type = EINA_VALUE_TYPE_INT;
-   prop_members[6].type = EINA_VALUE_TYPE_INT;
+   prop_members[EMODEL_EIO_PROP_FILENAME].type = EINA_VALUE_TYPE_STRING;
+   prop_members[EMODEL_EIO_PROP_PATH].type = EINA_VALUE_TYPE_STRING;
+   prop_members[EMODEL_EIO_PROP_ICON].type = EINA_VALUE_TYPE_STRING;
+   prop_members[EMODEL_EIO_PROP_MTIME].type = EINA_VALUE_TYPE_TIMEVAL;
+   prop_members[EMODEL_EIO_PROP_IS_DIR].type = EINA_VALUE_TYPE_INT;
+   prop_members[EMODEL_EIO_PROP_IS_LNK].type = EINA_VALUE_TYPE_INT;
+   prop_members[EMODEL_EIO_PROP_SIZE].type = EINA_VALUE_TYPE_INT;
    
    static Eina_Value_Struct_Desc prop_desc = {
      EINA_VALUE_STRUCT_DESC_VERSION,
@@ -855,46 +859,20 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
      EINA_C_ARRAY_LENGTH(prop_members),
      sizeof(This_Eio_Properties)
    };
-   __PROP_DESC = &prop_desc;
+   EMODEL_EIO_PROPERTIES_DESC = &prop_desc;
 
-   priv->properties = eina_value_array_new(EINA_VALUE_TYPE_STRING, 0);
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_FILENAME, "filename");
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_PATH, "path");
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_DIR, "is_dir");
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_IS_LNK, "is_lnk");
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_SIZE, "size");
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_MTIME, "mtime");
-   eina_value_array_insert(priv->properties, EMODEL_EIO_PROP_ICON, "icon");
+   priv->properties = eina_value_struct_new(EMODEL_EIO_PROPERTIES_DESC);
+   EINA_SAFETY_ON_NULL_RETURN(priv->properties);
 
-   priv->eproperties = eina_value_struct_new(__PROP_DESC);
+   eina_value_struct_set(priv->properties, "path", path);
+   eina_value_struct_set(priv->properties, "filename", basename(path));
+
+   /* We can access member's 
+    * identifiers (property name) by checking its index. 
+    * @see _emodel_eio_emodel_prop_set
+    */
+   priv->prop_members = (Eina_Value_Struct_Member*)&prop_members;
    
-   for (i = 0; i != PROP_LIST_SIZE; i++)
-     {
-        switch(i)
-          {
-            case EMODEL_EIO_PROP_FILENAME:
-                v = eina_value_new(EINA_VALUE_TYPE_STRING);
-                eina_value_set(v, basename(path));
-                break;
-            case EMODEL_EIO_PROP_PATH:
-                v = eina_value_new(EINA_VALUE_TYPE_STRING);
-                eina_value_set(v, path);
-                break;
-            case EMODEL_EIO_PROP_MTIME:
-                v = eina_value_new(EINA_VALUE_TYPE_TIMEVAL);
-                break;
-            case EMODEL_EIO_PROP_ICON:
-                v = eina_value_new(EINA_VALUE_TYPE_STRING);
-                break;
-            default:
-                v = eina_value_new(EINA_VALUE_TYPE_INT);
-          }
-
-        eina_value_array_get(priv->properties, i, &prop);
-        priv->proplist[i].v = v;
-        priv->proplist[i].prop = prop;
-     }
-
    _eio_monitors_list_load(priv);
    eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL));
    eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
@@ -910,7 +888,6 @@ _emodel_eio_emodel_destructor(Eo *obj , Emodel_Eio_Data *priv)
      }
 
    eina_value_free(priv->properties);
-   eina_value_free(priv->eproperties);
 
    eo_do_super(obj, MY_CLASS, eo_destructor());
 }

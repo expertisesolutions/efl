@@ -78,16 +78,23 @@ static Eina_Bool
 static Eina_Bool
 _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
+   (void)event_info;
+   /* XXX: FIXME
+    * Must adjust this code for the new data from Eina_Value_Struct_Desc
+    * Test is going to fail because of reqs.properties not set here yet.
+    */
+#if 0 
+   reqs.properties = 1;
    Eina_Value *properties = event_info;
    const char *prop;
    unsigned int i;
 
-   reqs.properties = 1;
    for (i = 0; i < eina_value_array_count(properties); i++)
      {
         eina_value_array_get(properties, i, &prop);
-        fprintf(stdout, "property %d: %s\n", i, prop);
+        //fprintf(stdout, "property %d: %s\n", i, prop);
      }
+#endif
    return EINA_TRUE;
 }
 
@@ -95,7 +102,7 @@ static Eina_Bool
 _prop_change_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
    Emodel_Property_EVT *evt = event_info;
-      fprintf(stdout, "property \"%s\" changed to \"%s\"\n", evt->prop, eina_value_to_string(&evt->value));
+   fprintf(stdout, "property \"%s\" changed to \"%s\"\n", evt->prop, eina_value_to_string(&evt->value));
 
    if (strncmp(evt->prop, "filename", strlen("filename")) == 0)
      {

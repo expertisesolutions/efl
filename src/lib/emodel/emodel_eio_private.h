@@ -30,14 +30,19 @@ struct _Emodel_Eio_Monitor_Data
    int mon_event_child_del[3]; /**< plus EIO_MONITOR_ERROR */
 };
 
+/**
+ * !! Warning: Do not change enum's order
+ * before checking _emodel_eio_constructor.
+ * @see Eina_Value_Struct_Member.
+ */
 enum {
-   EMODEL_EIO_PROP_FILENAME,
+   EMODEL_EIO_PROP_FILENAME = 0,
    EMODEL_EIO_PROP_PATH,
+   EMODEL_EIO_PROP_ICON,
+   EMODEL_EIO_PROP_MTIME,
    EMODEL_EIO_PROP_IS_DIR,
    EMODEL_EIO_PROP_IS_LNK,
-   EMODEL_EIO_PROP_SIZE,
-   EMODEL_EIO_PROP_MTIME,
-   EMODEL_EIO_PROP_ICON
+   EMODEL_EIO_PROP_SIZE
 };
 
 struct _Emodel_Eio_Data
@@ -45,7 +50,7 @@ struct _Emodel_Eio_Data
    Eo *obj;
    Eo *rootmodel;
    Eina_Value *properties;
-   Eina_Value *eproperties;
+   Eina_Value_Struct_Member *prop_members;
    Eio_File *file;
    char *path;
    char *pathSelected;
@@ -102,20 +107,6 @@ _emodel_dealloc_memory(void *ptr, ...)
         data = NULL;
      }
    va_end(al);
-}
-
-static inline Eina_Value*
-_emodel_property_value_get(const Emodel_Eio_Data *priv, const char *prop)
-{
-   if((NULL == priv) || (NULL == prop)) return NULL;
-   for(unsigned int i = 0; i != PROP_LIST_SIZE; ++i)
-     {
-        if(!strncmp(priv->proplist[i].prop, prop, strlen(priv->proplist[i].prop)))
-          {
-             return priv->proplist[i].v;
-          }
-     }
-   return NULL;
 }
 
 #endif
