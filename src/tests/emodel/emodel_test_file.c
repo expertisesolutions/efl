@@ -78,23 +78,18 @@ static Eina_Bool
 static Eina_Bool
 _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   (void)event_info;
-   /* XXX: FIXME
-    * Must adjust this code for the new data from Eina_Value_Struct_Desc
-    * Test is going to fail because of reqs.properties not set here yet.
-    */
-#if 0 
-   reqs.properties = 1;
-   Eina_Value *properties = event_info;
-   const char *prop;
+   Eina_Value *v = (Eina_Value *)event_info;
+   Eina_Value_Struct st;
    unsigned int i;
+      
+   reqs.properties = 1;
+   memset(&st, 0, sizeof(Eina_Value_Struct));
+   eina_value_pget(v, &st);
 
-   for (i = 0; i < eina_value_array_count(properties); i++)
+   for(i = 0; i < st.desc->member_count; ++i)
      {
-        eina_value_array_get(properties, i, &prop);
-        //fprintf(stdout, "property %d: %s\n", i, prop);
+        fprintf(stdout, "property list %d: %s\n", i, st.desc->members[i].name);
      }
-#endif
    return EINA_TRUE;
 }
 

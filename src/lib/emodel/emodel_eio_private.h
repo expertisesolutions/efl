@@ -50,7 +50,6 @@ struct _Emodel_Eio_Data
    Eo *obj;
    Eo *rootmodel;
    Eina_Value *properties;
-   Eina_Value_Struct_Member *prop_members;
    Eio_File *file;
    char *path;
    char *pathSelected;

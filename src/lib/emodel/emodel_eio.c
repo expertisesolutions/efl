@@ -68,6 +68,7 @@ static void
 _eio_stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *stat)
 {
    Emodel_Eio_Data *priv = data;
+   Eina_Value_Struct st;
    priv->stat = stat;
 
    _stat_pro_set(priv, EMODEL_EIO_PROP_IS_DIR, "is_dir", eio_file_is_dir(stat));
@@ -77,7 +78,10 @@ _eio_stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *st
 
    Emodel_Property_EVT evt;
    
-   evt.prop = priv->prop_members[EMODEL_EIO_PROP_ICON].name;
+   memset(&st, 0, sizeof(Eina_Value_Struct));
+   eina_value_pget(priv->properties, &st);
+
+   evt.prop = st.desc->members[EMODEL_EIO_PROP_ICON].name;
    eina_value_setup(&evt.value, EINA_VALUE_TYPE_STRING);
 
    if (eio_file_is_dir(stat))
@@ -98,20 +102,25 @@ static void
 _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
 {
    Emodel_Property_EVT evt;
+   Eina_Value_Struct st;
    Emodel_Eio_Data *priv = data;
 
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
+
+   memset(&st, 0, sizeof(Eina_Value_Struct));
+   eina_value_pget(priv->properties, &st);
 
    /**
     * When mv is executed we update our values and 
     * notify both path and filename properties listeners.
     */
-   evt.prop = priv->prop_members[EMODEL_EIO_PROP_PATH].name;
+   
+   evt.prop = st.desc->members[EMODEL_EIO_PROP_PATH].name;
    eina_value_struct_set(priv->properties, evt.prop, priv->path);
    eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
 
-   evt.prop = priv->prop_members[EMODEL_EIO_PROP_FILENAME].name;
+   evt.prop = st.desc->members[EMODEL_EIO_PROP_FILENAME].name;
    eina_value_struct_set(priv->properties, evt.prop, basename(priv->path));
    eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
    eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTY_CHANGE, &evt));
@@ -506,6 +515,7 @@ static void
 _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property)
 {
    Emodel_Property_EVT evt;
+   Eina_Value_Struct st;
    size_t proplen;
    Emodel_Eio_Data *priv = _pd;
 
@@ -514,8 +524,11 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
    EINA_SAFETY_ON_NULL_RETURN(priv->obj);
 
    proplen = strlen(property);
+   
+   memset(&st, 0, sizeof(Eina_Value_Struct));
+   eina_value_pget(priv->properties, &st);
 
-   evt.prop = priv->prop_members[EMODEL_EIO_PROP_FILENAME].name;
+   evt.prop = st.desc->members[EMODEL_EIO_PROP_FILENAME].name;
    if((evt.prop != NULL) && (proplen == strlen(evt.prop)))
      {
         if(!strcmp(property, evt.prop))
@@ -526,7 +539,7 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
           }
      }
 
-   evt.prop = priv->prop_members[EMODEL_EIO_PROP_PATH].name;
+   evt.prop = st.desc->members[EMODEL_EIO_PROP_PATH].name;
    if((evt.prop != NULL) && (proplen == strlen(evt.prop)))
      {
         if(!strcmp(property, evt.prop))
@@ -547,13 +560,17 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
 static void
 _emodel_eio_emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const char *property, const Eina_Value *value)
 {
+   Eina_Value_Struct st;
    Emodel_Eio_Data *priv = _pd;
    const char *dest, *prop = NULL;
 
    EINA_SAFETY_ON_NULL_RETURN(value);
    EINA_SAFETY_ON_NULL_RETURN(property);
+   
+   memset(&st, 0, sizeof(Eina_Value_Struct));
+   eina_value_pget(priv->properties, &st);
 
-   prop = priv->prop_members[EMODEL_EIO_PROP_PATH].name;
+   prop = st.desc->members[EMODEL_EIO_PROP_PATH].name;
    EINA_SAFETY_ON_NULL_RETURN(prop);
 
    /* Both strings must be equal in size as well.
@@ -867,12 +884,6 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
    eina_value_struct_set(priv->properties, "path", path);
    eina_value_struct_set(priv->properties, "filename", basename(path));
 
-   /* We can access member's 
-    * identifiers (property name) by checking its index. 
-    * @see _emodel_eio_emodel_prop_set
-    */
-   priv->prop_members = (Eina_Value_Struct_Member*)&prop_members;
-   
    _eio_monitors_list_load(priv);
    eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_ADD, _eio_monitor_evt_added_cb, NULL));
    eo_do(obj, eo_event_callback_add(EO_EV_CALLBACK_DEL, _eio_monitor_evt_deleted_cb, NULL));
