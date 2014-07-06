@@ -74,7 +74,13 @@ class Emodel (Eo_Base)
     }
     prop_list {
         /*@ Get properties list from model.
-          Properties are functionalities especific of concrete implementation.
+
+          Models implementing prop_list may have a known list of
+          properties and prop_list is due to provide
+          callers a way the fetch the current
+          properties implemented/used by the model.
+          Before being able to fetch the properties the caller must 
+          add, beforehand, itself as EMODEL_EVENT_PROPERTIES_CHANGE event listener.
           @see EMODEL_EVENT_PROPERTIES_CHANGE */
         /**
          * @def emodel_prop_list
@@ -83,6 +89,17 @@ class Emodel (Eo_Base)
     }
     prop_fetch {
         /*@ Get property from given property name.
+
+          The caller firtly call emodel_prop_list
+          int order to fetch the current properties
+          implemented/used by the model. Properties list
+          will be provided by EMODEL_EVENT_PROPERTIES_CHANGE event.
+          At this point the caller is free to fetch values from
+          properties.
+          The event EMODEL_EVENT_PROPERTY_CHANGE is raised in order
+          to notify listeners of the property/value pair. 
+
+          @see emodel_prop_list
           @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
          * @def emodel_prop_fetch
@@ -198,8 +215,8 @@ class Emodel (Eo_Base)
       loaded(void);
       unloaded(void);
       properties_change(void); /*@ @see emodel_prop_list */
-      property_change(void); /*@ @see emodel_prop_fetch
-      @see emodel_prop_set */
+      property_change(void); /*@ If a property value is
+      fetched or changed this event is raised. */
       child_add(void);
       child_del(void); /*@ @see emodel_child_del */
       child_selected(void); /*@ @see emodel_child_select
