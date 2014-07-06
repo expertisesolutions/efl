@@ -98,7 +98,6 @@ class Emodel (Eo_Base)
           properties.
           The event EMODEL_EVENT_PROPERTY_CHANGE is raised in order
           to notify listeners of the property/value pair. 
-
           @see emodel_prop_list
           @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
@@ -113,7 +112,17 @@ class Emodel (Eo_Base)
          }
     }
     prop_set {
-        /*@ Get property value from given property name.
+        /*@ Set a new value to property.
+          
+          The caller must ensure to call at least 
+          emodel_prop_list before being able to se properties.
+          This function sets a new property value into given
+          property name. Once the operation is completed the
+          concrete implementation should raise
+          EMODEL_EVENT_PROPERTY_CHANGE event in order
+          to notify listeners of the new property's value.
+          @see emodel_prop_list
+          @see emodel_prop_fetch
           @see EMODEL_EVENT_PROPERTY_CHANGE */
         /**
          * @def emodel_prop_set
@@ -129,8 +138,12 @@ class Emodel (Eo_Base)
          }
     }
     child_del {
-       /*@ Delete child. What exactly the child is
-         will be defined by concrete implementation.
+       /*@ Delete child.
+         
+         When the child is effectively deleted the 
+         event EMODEL_EVENT_CHILD_DEL is then raised
+         to give a chance for listeners to perform
+         any cleanup and/or update references.
          @see EMODEL_EVENT_CHILD_DEL */
        /**
         * @def emodel_child_del
@@ -214,15 +227,17 @@ class Emodel (Eo_Base)
   events {
       loaded(void);
       unloaded(void);
-      properties_change(void); /*@ @see emodel_prop_list */
+      properties_change(void); /*@ Event dispatched when 
+      list of properties is available. */
       property_change(void); /*@ If a property value is
       fetched or changed this event is raised. */
       child_add(void);
-      child_del(void); /*@ @see emodel_child_del */
+      child_del(void); /*@ Event dispatched when child is deleted. */
       child_selected(void); /*@ @see emodel_child_select
       @see emodel_child_select_eval */
       children_fetch(void);
-      children_count_change(void); /*@ Event dispatched when children count is finished. */
+      children_count_change(void); /*@ Event dispatched when 
+      children count is finished. */
   }
 }
 

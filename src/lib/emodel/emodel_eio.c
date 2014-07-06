@@ -162,7 +162,7 @@ _eio_done_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED)
    _data->child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(_data->fullpath));
    _emodel_eio_root_set(_data->child, root);
    eo_do(_data->child, emodel_eio_children_filter_set(_data->priv->filter_cb, _data->priv->filter_userdata)); //XXX: set parent filter to child
-   /* dispatch callback for user */
+   /* dispatch callback to user */
    _data->callback(_data->name, parent, _data->child, 0);
    _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
 }
@@ -178,7 +178,6 @@ _eio_done_error_mkdir_cb(void *data, Eio_File *handler EINA_UNUSED, int error)
 
         EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(parent));
         /* save child object in userdata, callback can ignore this field */
-
         _data->callback(_data->name, parent, NULL, error);
         _emodel_dealloc_memory(_data->fullpath, _data->name, _data, NULL);
      }
@@ -201,7 +200,6 @@ static Eina_Bool
 
    cevt.child = eo_add_custom(MY_CLASS, NULL, emodel_eio_constructor(evt->filename));
    cevt.idx = -1;
-
    _emodel_eio_root_set(cevt.child, root);
 
    return eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_CHILD_ADD, &cevt));
@@ -481,6 +479,11 @@ _eio_done_unlink_cb(void *data, Eio_File *handler EINA_UNUSED)
    EINA_SAFETY_ON_NULL_RETURN(priv->emodel_cb);
 
    /** use dummy callback */
+   /**
+    * We generate these events here because _eio_monitor_evt_added_cb and
+    * _eio_monitor_evt_deleted_cb can add or delete, respectively,
+    * I/O event handlers for directories.
+    */
    eo_do(priv->obj, eo_event_callback_add(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
    eo_do(priv->obj, eo_event_callback_del(EMODEL_EVENT_CHILD_ADD, _null_cb, NULL));
    eo_do(priv->obj, eo_event_callback_add(EMODEL_EVENT_CHILD_DEL, _null_cb, NULL));
