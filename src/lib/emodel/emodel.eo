@@ -178,7 +178,13 @@ class Emodel (Eo_Base)
     }
     children_count_get {
         /*@ Count the number of children from model.
-          @see EMODEL_EVENT_CHILDREN_COUNT_GET */
+
+          Counts the number of children from given model.
+          The previous number of children is returned immediately.
+          When the count is finished children_count_get 
+          implementation should raise EMODEL_EVENT_CHILDREN_COUNT_CHANGE
+          event so listeners will be informed of the new value.
+          @see EMODEL_EVENT_CHILDREN_COUNT_CHANGE */
         /**
          * @def emodel_children_count_get
          * @since 1.11
@@ -199,7 +205,7 @@ class Emodel (Eo_Base)
       child_selected(void); /*@ @see emodel_child_select
       @see emodel_child_select_eval */
       children_fetch(void);
-      children_count_change(void); /*@see emodel_children_count_get */
+      children_count_change(void); /*@ Event dispatched when children count is finished. */
   }
 }
 
