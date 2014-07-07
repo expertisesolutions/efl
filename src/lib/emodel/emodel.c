@@ -43,7 +43,7 @@ _emodel_unload(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){}
 static void
 _emodel_children_fetch(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED, Emodel_Cb children_fetch_cb EINA_UNUSED, const void *data EINA_UNUSED){}
 
-static unsigned int
+static int /**< XXX: unsigned int */
 _emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Data *pd EINA_UNUSED){ return 0;}
 
 static void

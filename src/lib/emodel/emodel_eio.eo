@@ -1,17 +1,14 @@
-class Emodel_Eio (Eo_Base, Emodel)
+class Emodel.Eio (Eo.Base, Emodel)
 {
     legacy_prefix: null;
     constructors {
        constructor {
-          /*@ Custom Emodel_Eio constructor. */
-          /**
-           * @def emodel_eio_constructor
-           * @since 1.11
-           *
-           * @in path
-           */
+          /*@ Custom Emodel_Eio constructor.
+            @def emodel_eio_constructor
+            @since 1.11
+            @in path */
           params {
-             @in const char *path; /*@ Root path provided by caller */
+             @in const(char)* path; /*@ Root path provided by caller */
           }
        }
     }
@@ -22,17 +19,13 @@ class Emodel_Eio (Eo_Base, Emodel)
               the rule (mode & ~umask & 0777).
               The directory is a new child.
               @see Eio.h
-              */
-            /**
-             * @def emodel_eio_dir_add
-             * @since 1.11
-             *
-             * @in child_add_cb
-             * @in name
-             */
+              @def emodel_eio_dir_add
+              @since 1.11
+              @in child_add_cb
+              @in name */
             params {
                 Emodel_Cb child_add_cb; /*@  Emodel notification callback. */
-                const char *name; /*@  Directory name to be created. */
+                const(char)* name; /*@  Directory name to be created. */
             }
        }
        children_filter_set {
@@ -44,15 +37,10 @@ class Emodel_Eio (Eo_Base, Emodel)
               the notification or EINA_TRUE to keep it.
               @see Eio.h
               @see emodel_eio_emodel_children_slice_fetch
-             */
-            /**
-             * @def emodel_eio_children_filter_set
-             * @since 1.11
-             *
-             * @in filter_cb
-             * @in userdata
-             *
-             */
+              @def emodel_eio_children_filter_set
+              @since 1.11
+              @in filter_cb
+              @in userdata */
              params {
                  Eio_Filter_Direct_Cb filter_cb; /*@  Filter callback */
                  void *userdata; /*@  User's private data */
@@ -62,15 +50,11 @@ class Emodel_Eio (Eo_Base, Emodel)
             /*@ Get path.
               Get the object's path.
               @see emodel_eio_constructor
-              */
-            /**
-             * @def emodel_eio_path_get
-             * @since 1.11
-             *
-             * @out path
-             */
+              @def emodel_eio_path_get
+              @since 1.11
+              @out path */
              params {
-                 const char **path; /*@ Path is saved here. */
+                 const(char)** path; /*@ Path is saved here. */
              }
        }
     }

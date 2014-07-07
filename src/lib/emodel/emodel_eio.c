@@ -745,7 +745,7 @@ _emodel_eio_emodel_children_slice_fetch(Eo *obj, Emodel_Eio_Data *_pd, Emodel_Cb
 /**
  * Children Count Get
  */
-static unsigned int
+static int /**< XXX: unsigned int */
 _emodel_eio_emodel_children_count_get(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
 {
    Emodel_Eio_Data *priv = _pd;

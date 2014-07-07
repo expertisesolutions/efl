@@ -1,22 +1,16 @@
-class Emodel (Eo_Base)
+class Emodel (Eo.Base)
 {
   legacy_prefix: null;
   constructors {
       constructor {
-        /*@ Default Emodel constructor. */
-        /**
-         * @def emodel_constructor
-         * @since 1.11
-         *
-         */
+        /*@ Default Emodel constructor.
+         @def emodel_constructor
+         @since 1.11 */
       }
       destructor {
-        /*@ Default Emodel destructor */
-        /**
-         * @def emodel_destructor
-         * @since 1.11
-         *
-         */
+        /*@ Default Emodel destructor
+        @def emodel_destructor
+        @since 1.11 */
       }
   }
   methods {
@@ -29,11 +23,8 @@ class Emodel (Eo_Base)
           @warning This convention should be followed, but no guarantees of behaviour
           by user defined types can be given.
           @see emodel_unload
-          */
-        /**
-         * @def emodel_load
-         * @since 1.11
-         */
+          @def emodel_load
+          @since 1.11 */
     }
     unload {
         /*@ Unload emodel.
@@ -44,33 +35,24 @@ class Emodel (Eo_Base)
           @warning This convention should be followed, but no guarantees of behaviour
           by user defined types can be given.
           @see emodel_load
-          */
-        /**
-         * @def emodel_unload
-         * @since 1.11
-         */
+          @def emodel_unload
+          @since 1.11 */
     }
     child_select {
         /*@ Select a child.
-          @see EMODEL_EVENT_CHILD_SELECTED */
-        /**
-         * @def emodel_child_select
-         * @since 1.11
-         *
-         * @in child
-         */
-        params {
-            Eo *child; /*@ Child to be selected from the model. */
-        }
+          @see EMODEL_EVENT_CHILD_SELECTED
+          @def emodel_child_select
+          @since 1.11
+          @in child */
+          params {
+              Eo *child; /*@ Child to be selected from the model. */
+          }
     }
     child_select_eval {
         /*@ Get current selected child.
-          @see EMODEL_EVENT_CHILD_SELECTED */
-        /**
-         * @def emodel_child_select_eval
-         * @since 1.11
-         *
-         */
+          @see EMODEL_EVENT_CHILD_SELECTED
+          @def emodel_child_select_eval
+          @since 1.11 */
     }
     prop_list {
         /*@ Get properties list from model.
@@ -81,11 +63,9 @@ class Emodel (Eo_Base)
           properties implemented/used by the model.
           Before being able to fetch the properties the caller must
           add, beforehand, itself as EMODEL_EVENT_PROPERTIES_CHANGE event listener.
-          @see EMODEL_EVENT_PROPERTIES_CHANGE */
-        /**
-         * @def emodel_prop_list
-         * @since 1.11
-         */
+          @see EMODEL_EVENT_PROPERTIES_CHANGE
+          @def emodel_prop_list
+          @since 1.11 */
     }
     prop_fetch {
         /*@ Get property from given property name.
@@ -99,16 +79,12 @@ class Emodel (Eo_Base)
           The event EMODEL_EVENT_PROPERTY_CHANGE is raised in order
           to notify listeners of the property/value pair.
           @see emodel_prop_list
-          @see EMODEL_EVENT_PROPERTY_CHANGE */
-        /**
-         * @def emodel_prop_fetch
-         * @since 1.11
-         *
-         * @in property
-         *
-         */
-         params {
-           const char* property; /*@ Property name */
+          @see EMODEL_EVENT_PROPERTY_CHANGE
+          @def emodel_prop_fetch
+          @since 1.11
+          @in property */
+        params {
+           @in const(char)* property; /*@ Property name */
          }
     }
     prop_set {
@@ -123,35 +99,27 @@ class Emodel (Eo_Base)
           to notify listeners of the new property's value.
           @see emodel_prop_list
           @see emodel_prop_fetch
-          @see EMODEL_EVENT_PROPERTY_CHANGE */
-        /**
-         * @def emodel_prop_set
-         * @since 1.11
-         *
-         * @in property
-         * @in value
-         *
-         */
+          @see EMODEL_EVENT_PROPERTY_CHANGE
+          @def emodel_prop_set
+          @since 1.11
+          @in property
+          @in value */
          params {
-           const char* property; /*@  Property name */
-           const Eina_Value* value; /*@ New value */
+           const(char)* property; /*@  Property name */
+           const(Eina_Value)* value; /*@ New value */
          }
     }
     child_del {
        /*@ Delete child.
-
          When the child is effectively deleted the
          event EMODEL_EVENT_CHILD_DEL is then raised
          to give a chance for listeners to perform
          any cleanup and/or update references.
-         @see EMODEL_EVENT_CHILD_DEL */
-       /**
-        * @def emodel_child_del
-        * @since 1.11
-        *
-        * @in child_del_cb
-        * @in child Child
-        */
+         @see EMODEL_EVENT_CHILD_DEL
+         @def emodel_child_del
+         @since 1.11
+         @in child_del_cb
+         @in child Child */
         params {
           Emodel_Cb child_del_cb; /*@  Emodel callback */
           Eo* child; /*@ Child to be deleted */
@@ -159,17 +127,14 @@ class Emodel (Eo_Base)
     }
     children_fetch {
         /*@ Get children.
-          Children will be available from the callback function. */
-        /**
-         * @def emodel_children_fetch
-         * @since 1.11
-         *
-         * @in children_fetch_cb
-         * @in data
-         */
+          Children will be available from the callback function.
+          @def emodel_children_fetch
+          @since 1.11
+          @in children_fetch_cb
+          @in data */
          params {
            Emodel_Cb children_fetch_cb; /*@ Emodel callback */
-           const void* data; /*@ Event data */
+           const(void)* data; /*@ Event data */
          }
     }
     children_slice_fetch {
@@ -189,54 +154,38 @@ class Emodel (Eo_Base)
           child 10 [no]
           child 11 [no]
           @see Emodel_Cb
-          */
-        /**
-         * @def emodel_children_slice_fetch
-         * @since 1.11
-         *
-         * @in children_slice_fetch_cb
-         * @in start
-         * @in count
-         * @in data
-         */
+
+         @def emodel_children_slice_fetch
+         @since 1.11
+
+         @in children_slice_fetch_cb
+         @in start
+         @in count
+         @in data */
          params {
            Emodel_Cb children_slice_fetch_cb; /*@ Emodel notification callback. */
            int          start; /*@  Range begin - start from here. */
            int          count; /*@  Range size - up to here.*/
-           const void   *data; /*@ Userdata given to callback. */
+           const(void)* data; /*@ Userdata given to callback. */
          }
     }
     children_count_get {
-        /*@ Count the number of children from model.
-
-          Counts the number of children from given model.
-          The previous number of children is returned immediately.
-          When the count is finished children_count_get
-          implementation should raise EMODEL_EVENT_CHILDREN_COUNT_CHANGE
-          event so listeners will be informed of the new value.
-          @see EMODEL_EVENT_CHILDREN_COUNT_CHANGE */
-        /**
-         * @def emodel_children_count_get
-         * @since 1.11
-         *
-         * @return The total number of children in the model
-         */
-         return unsigned int;
+          return int; /*@ XXX: Should return unsigned int. eolian parser changes. */
     }
   }
   events {
-      loaded(void);
-      unloaded(void);
-      properties_change(void); /*@ Event dispatched when
+      loaded;
+      unloaded;
+      properties,change; /*@ Event dispatched when
       list of properties is available. */
-      property_change(void); /*@ If a property value is
+      property_change; /*@ If a property value is
       fetched or changed this event is raised. */
-      child_add(void);
-      child_del(void); /*@ Event dispatched when child is deleted. */
-      child_selected(void); /*@ @see emodel_child_select
+      child,add;
+      child,del; /*@ Event dispatched when child is deleted. */
+      child,selected; /*@ @see emodel_child_select
       @see emodel_child_select_eval */
-      children_fetch(void);
-      children_count_change(void); /*@ Event dispatched when
+      children,fetch;
+      children,count,change; /*@ Event dispatched when
       children count is finished. */
   }
 }
