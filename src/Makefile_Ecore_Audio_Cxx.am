@@ -12,16 +12,20 @@ lib/ecore_audio/ecore_audio_out_sndfile.eo.hh \
 lib/ecore_audio/ecore_audio_out_pulse.eo.hh \
 lib/ecore_audio/ecore_audio_in_tone.eo.hh
 
-lib/ecore_audio/Ecore_Audio.hh:
+lib/ecore_audio/Ecore_Audio.hh: $(generated_ecore_audio_cxx_bindings)
 	@echo -e "#ifndef EFL_CXX_ECORE_AUDIO_HH\n#define EFL_CXX_ECORE_AUDIO_HH\n" > $(top_builddir)/src/lib/ecore_audio/Ecore_Audio.hh
 	@echo -e "#ifdef EFL_BETA_API_SUPPORT" >> $(top_builddir)/src/lib/ecore_audio/Ecore_Audio.hh
 	@for i in $(generated_ecore_audio_cxx_bindings); do echo "#include <$$(basename $$i)>" >> $(top_builddir)/src/lib/ecore_audio/Ecore_Audio.hh; done
 	@echo -e "#endif\n\n#endif\n" >> $(top_builddir)/src/lib/ecore_audio/Ecore_Audio.hh
 
+generated_ecore_audio_cxx_all = \
+	$(generated_ecore_audio_cxx_bindings) \
+	lib/ecore_audio/Ecore_Audio.hh
+
+CLEANFILES += $(generated_ecore_audio_cxx_all)
+
 installed_ecoreaudiocxxmainheadersdir = $(includedir)/ecore-audio-cxx-@VMAJ@
-nodist_installed_ecoreaudiocxxmainheaders_DATA = \
-lib/ecore_audio/Ecore_Audio.hh \
-$(generated_ecore_audio_cxx_bindings)
+nodist_installed_ecoreaudiocxxmainheaders_DATA = $(generated_ecore_audio_cxx_all)
 
 ### Unit tests
 
@@ -38,7 +42,7 @@ tests_ecore_audio_cxx_cxx_compile_test_CPPFLAGS = \
 -I$(srcdir)/src/lib/efl \
 -DTESTS_WD=\"`pwd`\" \
 -DTESTS_SRC_DIR=\"$(top_srcdir)/src/tests/ecore_audio_cxx\" \
--DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/ecore_audio_cxx\" \
+-DPACKAGE_BUILD_DIR=\"$(abs_top_builddir)/src/tests/ecore_audio_cxx\" \
 -DTESTS_BUILD_DIR=\"$(top_builddir)/src/tests/ecore_audio_cxx\" \
 @CHECK_CFLAGS@ @ECORE_CFLAGS@ @EINA_CFLAGS@ @EO_CFLAGS@ @ECORE_AUDIO_CFLAGS@ \
 @ECORE_CXX_CFLAGS@ @EINA_CXX_CFLAGS@ @EO_CXX_CFLAGS@ @ECORE_AUDIO_CXX_CFLAGS@

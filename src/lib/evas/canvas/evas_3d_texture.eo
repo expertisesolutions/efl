@@ -1,4 +1,4 @@
-class Evas_3D_Texture (Evas_3D_Object, Evas_Common_Interface)
+class Evas_3D_Texture (Evas_3D_Object, Evas.Common_Interface)
 {
    legacy_prefix: null;
    data : Evas_3D_Texture_Data;
@@ -47,7 +47,7 @@ class Evas_3D_Texture (Evas_3D_Object, Evas_Common_Interface)
             @in Evas_3D_Pixel_Format pixel_format; /*@ Pixel format of the data. */
             @in int w; /*@ Width of the data. */
             @in int h; /*@ Height of the data. */
-            @in const void *data; /*@ Pointer to the data. */
+            @in const(void)* data; /*@ Pointer to the data. */
          }
       }
 
@@ -60,10 +60,9 @@ class Evas_3D_Texture (Evas_3D_Object, Evas_Common_Interface)
            @ingroup Evas_3D_Texture
           */
 
-         return void ;
          params {
-            @in const char *file; /*@ Path to the image file. */
-            @in const char *key; /*@ Key in the image file. */
+            @in const(char)* file; /*@ Path to the image file. */
+            @in const(char)* key; /*@ Key in the image file. */
          }
       }
 
@@ -79,7 +78,6 @@ class Evas_3D_Texture (Evas_3D_Object, Evas_Common_Interface)
            @ingroup Evas_3D_Texture
           */
 
-         return void ;
          params {
             @in Evas_Object *source; /*@ Source evas object to be used as the texture data. */
          }
@@ -147,7 +145,6 @@ class Evas_3D_Texture (Evas_3D_Object, Evas_Common_Interface)
            @ingroup Evas_3D_Texture
           */
 
-         return void ;
          params {
             @out Evas_3D_Wrap_Mode s; /*@ Pointer to receive S-axis wrap mode. */
             @out Evas_3D_Wrap_Mode t; /*@ Pointer to receive T-axis wrap mode. */
@@ -191,8 +188,8 @@ class Evas_3D_Texture (Evas_3D_Object, Evas_Common_Interface)
    }
 
    implements {
-      Eo_Base.constructor;
-      Eo_Base.destructor;
+      Eo.Base.constructor;
+      Eo.Base.destructor;
       Evas_3D_Object.update_notify;
       Evas_3D_Object.change_notify;
    }

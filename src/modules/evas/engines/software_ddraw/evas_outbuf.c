@@ -4,8 +4,9 @@
 
 static Eina_List *ddpool = NULL;
 static int ddsize = 0;
-static int ddmemlimit = 10 * 1024 * 1024;
-static int ddcountlimit = 32;
+
+#define ddmemlimit 10 * 1024 * 1024
+#define ddcountlimit 32
 
 static DD_Output_Buffer *
 _find_ddob(int depth, int w, int h, void *data)
@@ -69,7 +70,7 @@ _unfind_ddob(DD_Output_Buffer *ddob)
 }
 
 static void
-_clear_ddob(int sync)
+_clear_ddob(int sync EINA_UNUSED)
 {
    while (ddpool)
      {
@@ -193,7 +194,7 @@ evas_software_ddraw_outbuf_reconfigure(Outbuf      *buf,
    evas_software_ddraw_surface_resize(buf);
 }
 
-RGBA_Image *
+void *
 evas_software_ddraw_outbuf_new_region_for_update(Outbuf *buf,
                                                  int     x,
                                                  int     y,
@@ -348,14 +349,14 @@ evas_software_ddraw_outbuf_push_updated_region(Outbuf     *buf,
 }
 
 void
-evas_software_ddraw_outbuf_free_region_for_update(Outbuf     *buf,
-                                                  RGBA_Image *update)
+evas_software_ddraw_outbuf_free_region_for_update(Outbuf     *buf EINA_UNUSED,
+                                                  RGBA_Image *update EINA_UNUSED)
 {
    /* no need to do anything - they are cleaned up on flush */
 }
 
 void
-evas_software_ddraw_outbuf_flush(Outbuf *buf)
+evas_software_ddraw_outbuf_flush(Outbuf *buf, Tilebuf_Rect *rects EINA_UNUSED, Evas_Render_Mode render_mode)
 {
    Eina_List *l;
    RGBA_Image       *im;
@@ -365,6 +366,8 @@ evas_software_ddraw_outbuf_flush(Outbuf *buf)
    int        ddraw_height;
    int        ddraw_pitch;
    int        ddraw_depth;
+
+   if (render_mode == EVAS_RENDER_MODE_ASYNC_INIT) return;
 
    /* lock the back surface */
    if (!(ddraw_data = evas_software_ddraw_lock(buf,

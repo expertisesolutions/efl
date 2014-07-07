@@ -39,9 +39,9 @@ EAPI Eina_Error EDJE_EDIT_ERROR_GROUP_DOES_NOT_EXIST = 0;
 /* Get ed(Edje*) from obj(Evas_Object*) */
 #define GET_ED_OR_RETURN(RET) \
    Edje *ed; \
-   if (!eo_isa(obj, EDJE_CLASS)) \
+   if (!eo_isa(obj, EDJE_OBJECT_CLASS)) \
      return RET; \
-   ed = eo_data_scope_get(obj, EDJE_CLASS);
+   ed = eo_data_scope_get(obj, EDJE_OBJECT_CLASS);
 
 /* Get rp(Edje_Real_Part*) from obj(Evas_Object*) and part(char*) */
 #define GET_RP_OR_RETURN(RET) \
@@ -167,7 +167,7 @@ _edje_edit_program_script_free(Program_Script *ps)
 }
 
 EOLIAN static Eina_Bool
-_edje_edit_edje_file_set(Eo *obj, Edje_Edit *eed, const char *file, const char *group)
+_edje_edit_edje_object_file_set(Eo *obj, Edje_Edit *eed, const char *file, const char *group)
 {
    Eina_Bool ret;
    Eet_File *ef;
@@ -239,7 +239,7 @@ edje_edit_object_add(Evas *evas)
 EOLIAN static void
 _edje_edit_eo_base_constructor(Eo *obj, Edje_Edit *eed)
 {
-   eed->base = eo_data_ref(obj, EDJE_CLASS);
+   eed->base = eo_data_ref(obj, EDJE_OBJECT_CLASS);
 
    eo_do_super(obj, MY_CLASS, eo_constructor());
 }
@@ -506,6 +506,21 @@ _edje_part_id_find(Edje *ed, const char *part)
 	  return id;
      }
    return -1;
+}
+
+static const char *
+_edje_part_name_find(Edje *ed, int id)
+{
+   unsigned int i;
+   if (id < 0) return NULL;
+
+   for (i = 0; i < ed->table_parts_size; i++)
+     {
+        Edje_Real_Part *rp = ed->table_parts[i];
+        if (rp->part->id == id)
+          return rp->part->name;
+     }
+   return NULL;
 }
 
 static void
@@ -911,7 +926,7 @@ edje_edit_compiler_get(Evas_Object *obj)
 /****************/
 
 EAPI Eina_List *
-edje_edit_sounds_samples_list_get(Evas_Object *obj)
+edje_edit_sound_samples_list_get(Evas_Object *obj)
 {
    Eina_List *sounds_samples = NULL;
    unsigned int i;
@@ -929,7 +944,7 @@ edje_edit_sounds_samples_list_get(Evas_Object *obj)
 }
 
 EAPI Eina_List *
-edje_edit_sounds_tones_list_get(Evas_Object *obj)
+edje_edit_sound_tones_list_get(Evas_Object *obj)
 {
    Eina_List *sounds_tones = NULL;
    unsigned int i;
@@ -967,17 +982,23 @@ _delete_play_actions(Evas_Object *obj, const char* name, int action_type, Eet_Fi
           continue;
 
         eeo = edje_edit_object_add(ed->base->evas);
-        if (!eo_isa(eeo, EDJE_CLASS))
+        if (!eo_isa(eeo, EDJE_OBJECT_CLASS))
           return EINA_FALSE;
 
         if (!edje_object_file_set(eeo, ed->file->path, pce->entry))
-          continue;
+          {
+             evas_object_del(eeo);
+             continue;
+          }
 
         programs_list = edje_edit_programs_list_get(eeo);
         if (!programs_list)
-          continue;
+          {
+             evas_object_del(eeo);
+             continue;
+          }
 
-        eed = eo_data_scope_get(eeo, EDJE_CLASS);
+        eed = eo_data_scope_get(eeo, EDJE_OBJECT_CLASS);
         for (i = 0; i < eed->collection->patterns.table_programs_size; i++)
           {
              Edje_Program *program;
@@ -1008,7 +1029,10 @@ _delete_play_actions(Evas_Object *obj, const char* name, int action_type, Eet_Fi
           }
         if (is_collection_changed)
           _edje_edit_collection_save(eetf, eed->collection);
+        evas_object_del(eeo);
      }
+
+   eina_iterator_free(it);
    return EINA_TRUE;
 }
 
@@ -1181,6 +1205,51 @@ edje_edit_sound_sample_del(Evas_Object *obj, const char* name)
 
    return EINA_TRUE;
 }
+
+EAPI Eina_Bool
+edje_edit_sound_tone_add(Evas_Object *obj, const char* name, int frequency)
+{
+   if (!name) return EINA_FALSE;
+   if ((frequency < 20) || (frequency > 20000))
+     return EINA_FALSE;
+
+   GET_ED_OR_RETURN(EINA_FALSE);
+
+   Edje_Sound_Tone *sound_tone = NULL;
+   Edje_Sound_Tone *sound_tones_array = NULL;
+   unsigned int i = 0;
+   int id = 0;
+
+   _initialize_sound_dir(ed);
+
+   for (i = 0; i < ed->file->sound_dir->tones_count; ++i)
+     {
+        sound_tone = ed->file->sound_dir->tones + i;
+        if (!strcmp(name, sound_tone->name))
+          {
+             WRN("Can not add new tone because"
+                 "tone named \"%s\" already exists.", name);
+             return EINA_FALSE;
+          }
+     }
+   ed->file->sound_dir->tones_count++;
+
+   sound_tones_array = realloc(ed->file->sound_dir->tones,
+                               sizeof(Edje_Sound_Tone) *
+                               ed->file->sound_dir->tones_count);
+   if (sound_tones_array)
+     ed->file->sound_dir->tones = sound_tones_array;
+   else return EINA_FALSE;
+
+   sound_tone = ed->file->sound_dir->tones +
+                ed->file->sound_dir->tones_count - 1;
+   sound_tone->name = (char*)eina_stringshare_add(name);
+   sound_tone->value = frequency;
+   sound_tone->id = id;
+
+   return EINA_TRUE;
+}
+
 
 EAPI Eina_Bool
 edje_edit_sound_tone_del(Evas_Object *obj, const char* name)
@@ -1801,6 +1870,101 @@ edje_edit_group_broadcast_signal_set(Evas_Object *obj, Eina_Bool bs)
    if (!ed->collection) return EINA_FALSE;
    ed->collection->broadcast_signal = bs ? 1 : 0;
    return EINA_TRUE;
+}
+
+#define LIMITS(TYPE) \
+EAPI Eina_List * \
+edje_edit_group_limits_##TYPE##_list_get(Evas_Object * obj) \
+{ \
+   Eina_List *limits = NULL; \
+   unsigned int i; \
+   Edje_Edit_Limit *lim; \
+ \
+   GET_ED_OR_RETURN(NULL); \
+ \
+   if (!ed->file || !ed->collection) \
+     return NULL; \
+   lim = calloc(ed->collection->limits.TYPE##_count, sizeof(Edje_Edit_Limit)); \
+   for(i = 0; i < ed->collection->limits.TYPE##_count; i++) \
+     { \
+        lim[i].name = eina_stringshare_add(ed->collection->limits.TYPE[i]->name); \
+        lim[i].value = ed->collection->limits.TYPE[i]->value; \
+        limits = eina_list_append(limits, &lim[i]); \
+     } \
+ \
+   return limits; \
+} \
+ \
+EAPI Eina_Bool \
+edje_edit_group_limits_##TYPE##_del(Evas_Object * obj, const char * name, int value) \
+{ \
+   unsigned int i; \
+   unsigned int new_count; \
+ \
+   if ((!name) || (value < 1)) \
+     return EINA_FALSE; \
+   GET_ED_OR_RETURN(EINA_FALSE); \
+   GET_EED_OR_RETURN(EINA_FALSE); \
+ \
+   new_count = ed->collection->limits.TYPE##_count - 1; \
+   for(i = 0; i < ed->collection->limits.TYPE##_count; i++) \
+     if ((ed->collection->limits.TYPE[i]->value == value) \
+         && (!strcmp(ed->collection->limits.TYPE[i]->name, name))) \
+       { \
+          _edje_if_string_free(ed, ed->collection->limits.TYPE[i]->name); \
+          free(ed->collection->limits.TYPE[i]); \
+          if (i < new_count) \
+            { \
+               ed->collection->limits.TYPE[i] = \
+                   ed->collection->limits.TYPE[ed->collection->limits.TYPE##_count - 1]; \
+            } \
+          ed->collection->limits.TYPE = realloc(ed->collection->limits.TYPE, \
+                                                    new_count * sizeof(Edje_Limit *)); \
+          --ed->collection->limits.TYPE##_count; \
+          _edje_edit_flag_script_dirty(eed, EINA_TRUE); \
+ \
+          return EINA_TRUE; \
+       } \
+   return EINA_FALSE; \
+} \
+ \
+EAPI Eina_Bool \
+edje_edit_group_limits_##TYPE##_add(Evas_Object * obj, const char * name, int value) \
+{ \
+   unsigned int i; \
+   unsigned int new_count; \
+ \
+   if ((!name) || (value < 1)) \
+     return EINA_FALSE; \
+   GET_ED_OR_RETURN(EINA_FALSE); \
+ \
+   for(i = 0; i < ed->collection->limits.TYPE##_count; i++) \
+     if ((ed->collection->limits.TYPE[i]->value == value) \
+         && (!strcmp(ed->collection->limits.TYPE[i]->name, name))) \
+       { \
+          return EINA_FALSE; \
+       } \
+   new_count = ed->collection->limits.TYPE##_count + 1; \
+   ed->collection->limits.TYPE = realloc(ed->collection->limits.TYPE, \
+                                             new_count * sizeof(Edje_Limit *)); \
+   ed->collection->limits.TYPE[new_count-1] = malloc(sizeof(Edje_Limit)); \
+   ed->collection->limits.TYPE[new_count-1]->name = eina_stringshare_add(name); \
+   ed->collection->limits.TYPE[new_count-1]->value = value; \
+   ++ed->collection->limits.TYPE##_count; \
+   return EINA_TRUE; \
+}
+
+LIMITS(vertical);
+LIMITS(horizontal);
+
+EAPI void
+edje_edit_limits_list_free(Eina_List *list)
+{
+   Edje_Edit_Limit *lim = eina_list_data_get(list);
+   Edje_Edit_Limit *item;
+   EINA_LIST_FREE(list, item)
+     eina_stringshare_del(item->name);
+   free(lim);
 }
 
 /****************/
@@ -3512,13 +3676,13 @@ edje_edit_part_access_get(Evas_Object *obj, const char *part)
 }
 
 EAPI Eina_Bool
-edje_edit_part_access_set(Evas_Object *obj, const char *part, Eina_Bool access)
+edje_edit_part_access_set(Evas_Object *obj, const char *part, Eina_Bool access_mode)
 {
    GET_RP_OR_RETURN(EINA_FALSE);
 
    if (!rp->object) return EINA_FALSE;
 
-   rp->part->access = access;
+   rp->part->access = access_mode;
    return EINA_TRUE;
 }
 
@@ -3901,6 +4065,59 @@ edje_edit_part_items_list_get(Evas_Object *obj, const char *part)
 }
 
 EAPI Eina_Bool
+edje_edit_part_item_del(Evas_Object *obj, const char *part, const char* name)
+{
+   Edje_Part *ep;
+   Edje_Pack_Element *item;
+   unsigned int i;
+   GET_RP_OR_RETURN(EINA_FALSE);
+   /* There is only Box and Table is allowed. */
+   if ((rp->part->type != EDJE_PART_TYPE_BOX) &&
+      (rp->part->type != EDJE_PART_TYPE_TABLE))
+     return EINA_FALSE;
+   ep = rp->part;
+   if (!ed->file) return EINA_FALSE;
+
+   for (i = 0; i < ep->items_count; ++i)
+     {
+        item = ep->items[i];
+        if (!strcmp(name, item->name))
+           break;
+     }
+   if (i == ep->items_count)
+     {
+        WRN("Unable to delete item \"%s\". It does not exist.", name);
+        return EINA_FALSE;
+     }
+
+   {
+      Edje_Pack_Element **tmp;
+      _edje_if_string_free(ed, item->name);
+      --ep->items_count;
+
+      while (i < ep->items_count)
+        {
+           ep->items[i] = ep->items[i + 1];
+           i++;
+        }
+
+      tmp = realloc(ep->items, sizeof(Edje_Pack_Element *) * ep->items_count);
+      if (!tmp)
+        {
+           free(item);
+           return EINA_FALSE;
+        }
+      ep->items = tmp;
+   }
+
+   GET_EED_OR_RETURN(EINA_FALSE);
+   _edje_edit_flag_script_dirty(eed, EINA_TRUE);
+
+   return EINA_TRUE;
+}
+
+
+EAPI Eina_Bool
 edje_edit_part_item_source_set(Evas_Object *obj, const char *part, const char *item_name, const char *source_group)
 {
    Edje_Part *ep;
@@ -4028,6 +4245,67 @@ FUNC_PART_ITEM_INT(aspect, h, 0);
 FUNC_PART_ITEM_INT(prefer, w, 0);
 FUNC_PART_ITEM_INT(prefer, h, 0);
 
+EAPI Edje_Aspect_Control
+edje_edit_part_item_aspect_mode_get(Evas_Object *obj, const char *part, const char *item_name)
+{
+   Edje_Part *ep;
+   unsigned int i;
+   Edje_Pack_Element *item = NULL;
+
+   if ((!obj) || (!part) || (!item_name))
+     return EDJE_ASPECT_CONTROL_NONE;
+
+   GET_RP_OR_RETURN(EDJE_ASPECT_CONTROL_NONE);
+
+   ep = rp->part;
+   for (i = 0; i < ep->items_count; ++i)
+     {
+        if (ep->items[i]->name && (!strcmp(ep->items[i]->name, item_name)))
+          {
+             item = ep->items[i];
+             break;
+          }
+     }
+   if (!item) return EDJE_ASPECT_CONTROL_NONE;
+
+   return item->aspect.mode;
+
+}
+
+EAPI Eina_Bool
+edje_edit_part_item_aspect_mode_set(Evas_Object *obj, const char *part, const char *item_name, Edje_Aspect_Control mode)
+{
+   Edje_Part *ep;
+   unsigned int i;
+   Edje_Pack_Element *item = NULL;
+
+   if ((!obj) || (!part) || (!item_name))
+     return EINA_FALSE;
+
+   GET_RP_OR_RETURN(EINA_FALSE);
+
+   if ((rp->part->type != EDJE_PART_TYPE_BOX) &&
+       (rp->part->type != EDJE_PART_TYPE_TABLE))
+     return EINA_FALSE;
+
+   ep = rp->part;
+
+   for (i = 0; i < ep->items_count; ++i)
+     {
+        if (ep->items[i]->name && (!strcmp(ep->items[i]->name, item_name)))
+          {
+             item = ep->items[i];
+             break;
+          }
+     }
+   if (!item) return EINA_FALSE;
+
+   item->aspect.mode = mode;
+
+   return EINA_TRUE;
+
+}
+
 EAPI Eina_Bool
 edje_edit_part_item_padding_get(Evas_Object *obj, const char *part, const char *item_name, int *l, int *r, int *t, int *b)
 {
@@ -4094,7 +4372,7 @@ edje_edit_part_item_padding_set(Evas_Object *obj, const char *part, const char *
    return EINA_TRUE;
 }
 
-#define FUNC_PART_ITEM_DOUBLE(Name, Value)				\
+#define FUNC_PART_ITEM_DOUBLE(Name, Value, Min, Max)			\
   EAPI double								\
   edje_edit_part_item_##Name##_get(Evas_Object *obj, const char *part, const char *item_name) \
   {									\
@@ -4124,7 +4402,7 @@ edje_edit_part_item_padding_set(Evas_Object *obj, const char *part, const char *
      Edje_Pack_Element *item = NULL;					\
      if ((!obj) || (!part) || (!item_name))				\
        return EINA_FALSE;						\
-     if ((v < -1.0) || (v > 1.0))					\
+     if ((v < Min) || (v > Max))					\
        return EINA_FALSE;						\
      GET_RP_OR_RETURN(EINA_FALSE);					\
      ep = rp->part;							\
@@ -4144,10 +4422,67 @@ edje_edit_part_item_padding_set(Evas_Object *obj, const char *part, const char *
      return EINA_TRUE;                                                  \
   }
 
-FUNC_PART_ITEM_DOUBLE(align_x, align.x);
-FUNC_PART_ITEM_DOUBLE(align_y, align.y);
+FUNC_PART_ITEM_DOUBLE(align_x, align.x, -1.0, 1.0);
+FUNC_PART_ITEM_DOUBLE(align_y, align.y, -1.0, 1.0);
+FUNC_PART_ITEM_DOUBLE(weight_x, weight.x, 0.0, 99999.990);
+FUNC_PART_ITEM_DOUBLE(weight_y, weight.y, 0.0, 99999.990);
 
 #undef FUNC_PART_ITEM_DOUBLE
+
+EAPI Eina_Bool
+edje_edit_part_item_position_get(Evas_Object *obj, const char *part,
+                                 const char *item_name,
+                                 unsigned short *col,
+                                 unsigned short *row)
+  {
+     Edje_Part *ep;
+     unsigned int i;
+     Edje_Pack_Element *item = NULL;
+     if ((!obj) || (!part) || (!item_name))
+       return EINA_FALSE;
+     GET_RP_OR_RETURN(EINA_FALSE);
+     ep = rp->part;
+     for (i = 0; i < ep->items_count; ++i)
+       {
+          if (ep->items[i]->name && (!strcmp(ep->items[i]->name, item_name)))
+            {
+               item = ep->items[i];
+               break;
+            }
+       }
+     if (!item) return EINA_FALSE;
+     *col = item->col;
+     *row = item->row;
+     return EINA_TRUE;
+  }
+EAPI Eina_Bool
+edje_edit_part_item_position_set(Evas_Object *obj, const char *part,
+                                 const char *item_name,
+                                 unsigned short col,
+                                 unsigned short row)
+  {
+     Edje_Part *ep;
+     unsigned int i;
+     Edje_Pack_Element *item = NULL;
+     if ((!obj) || (!part) || (!item_name))
+       return EINA_FALSE;
+     GET_RP_OR_RETURN(EINA_FALSE);
+     ep = rp->part;
+     if (rp->part->type != EDJE_PART_TYPE_TABLE)
+       return EINA_FALSE;
+     for (i = 0; i < ep->items_count; ++i)
+       {
+          if (ep->items[i]->name && (!strcmp(ep->items[i]->name, item_name)))
+            {
+               item = ep->items[i];
+               break;
+            }
+       }
+     if (!item) return EINA_FALSE;
+     item->col = col;
+     item->row = row;
+     return EINA_TRUE;
+  }
 
 /*********************/
 /*  PART STATES API  */
@@ -5678,6 +6013,9 @@ edje_edit_state_limit_get(Evas_Object *obj, const char *part, const char *state,
    return pd->limit;
 }
 
+/**************/
+/*  MAP API */
+/**************/
 
 EAPI const char *
 edje_edit_state_map_light_get(Evas_Object *obj, const char *part, const char *state, double value)
@@ -5708,6 +6046,145 @@ edje_edit_state_map_rotation_center_get(Evas_Object *obj, const char *part, cons
 }
 
 EAPI Eina_Bool
+edje_edit_state_map_backface_cull_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return pd->map.backcull;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_backface_cull_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool bool)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->map.backcull = bool;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_on_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return pd->map.persp_on;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_on_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool bool)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->map.persp_on = bool;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_alpha_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return pd->map.alpha;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_alpha_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool bool)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->map.alpha = bool;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_smooth_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool bool)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->map.smooth = bool;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_smooth_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return pd->map.smooth;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_rotation_set(Evas_Object *obj, const char *part, const char *state, double value, double x, double y, double z)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->map.rot.x = FROM_DOUBLE(x);
+   pd->map.rot.y = FROM_DOUBLE(y);
+   pd->map.rot.z = FROM_DOUBLE(z);
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_rotation_get(Evas_Object *obj, const char *part, const char *state, double value, double *x, double *y, double *z)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   *x = TO_DOUBLE(pd->map.rot.x);
+   *y = TO_DOUBLE(pd->map.rot.y);
+   *z = TO_DOUBLE(pd->map.rot.z);
+
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_zplane_set(Evas_Object *obj, const char *part, const char *state, double value, int zplane)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->persp.zplane = zplane;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_zplane_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return pd->persp.zplane;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_focal_set(Evas_Object *obj, const char *part, const char *state, double value, int focal)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->persp.focal = focal;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_focal_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return pd->persp.focal;
+}
+
+EAPI Eina_Bool
 edje_edit_state_map_light_set(Evas_Object *obj, const char *part, const char *state, double value, const char *source_part)
 {
    if (!source_part) return EINA_FALSE;
@@ -5726,6 +6203,136 @@ edje_edit_state_map_rotation_center_set(Evas_Object *obj, const char *part, cons
    GET_PD_OR_RETURN(EINA_FALSE);
 
    pd->map.rot.id_center = _edje_part_id_find(ed, source_part);
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_point_color_get(Evas_Object *obj, const char *part, const char *state, double value, int idx, int *r, int *g, int *b, int *a)
+{
+   Edje_Map_Color *color = NULL;
+   unsigned int i;
+
+   if ((!obj) || (!part) || (!state))
+     return EINA_FALSE;
+
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   /* check if current color is exists and get it. */
+   for (i = 0; i < pd->map.colors_count; ++i)
+     {
+        if (pd->map.colors[i]->idx == idx)
+          {
+             color = pd->map.colors[i];
+             break;
+          }
+     }
+   if (!color)
+     {
+        if (r) *r = 255;
+        if (g) *g = 255;
+        if (b) *b = 255;
+        if (a) *a = 255;
+     }
+   else
+     {
+        if (r) *r = color->r;
+        if (g) *g = color->g;
+        if (b) *b = color->b;
+        if (a) *a = color->a;
+     }
+
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_point_color_set(Evas_Object *obj, const char *part, const char *state, double value, int idx, int r, int g, int b, int a)
+{
+   Edje_Map_Color *color = NULL;
+   unsigned int i;
+
+   if ((!obj) || (!part) || (!state))
+     return EINA_FALSE;
+
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   /* check if current color is exists and get it. */
+   for (i = 0; i < pd->map.colors_count; ++i)
+     {
+        if (pd->map.colors[i]->idx == idx)
+          {
+             color = pd->map.colors[i];
+             break;
+          }
+     }
+
+   if (!color)
+     {
+        color = _alloc(sizeof(Edje_Map_Color));
+        pd->map.colors_count++;
+        pd->map.colors =
+           realloc(pd->map.colors,
+                   sizeof(Edje_Map_Color*) * pd->map.colors_count);
+        pd->map.colors[pd->map.colors_count - 1] = color;
+     }
+
+   color->idx = idx;
+   if ((r > -1) && (r < 256)) color->r = r;
+   else return EINA_FALSE;
+   if ((g > -1) && (g < 256)) color->g = g;
+   else return EINA_FALSE;
+   if ((b > -1) && (b < 256)) color->b = b;
+   else return EINA_FALSE;
+   if ((a > -1) && (a < 256)) color->a = a;
+   else return EINA_FALSE;
+
+   return EINA_TRUE;
+}
+
+EAPI const char *
+edje_edit_state_map_perspective_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   Edje_Real_Part *erl;
+
+   GET_PD_OR_RETURN(NULL);
+
+   erl = ed->table_parts[pd->map.id_persp % ed->table_parts_size];
+   if (erl->part->name)
+     return eina_stringshare_add(erl->part->name);
+
+   return NULL;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_perspective_set(Evas_Object *obj, const char *part, const char *state, double value, const char *source_part)
+{
+   int src_id;
+
+   if (!source_part) return EINA_FALSE;
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   src_id = _edje_part_id_find(ed, source_part);
+   pd->map.id_persp = src_id;
+
+   edje_object_calc_force(obj);
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_on_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   return  pd->map.on;
+}
+
+EAPI Eina_Bool
+edje_edit_state_map_on_set(Evas_Object *obj, const char *part, const char *state, double value, Eina_Bool on)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+
+   pd->map.on = on;
 
    edje_object_calc_force(obj);
    return EINA_TRUE;
@@ -6355,6 +6962,41 @@ edje_edit_state_text_size_range_min_max_set(Evas_Object *obj, const char *part, 
 
    edje_object_calc_force(obj);
    return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_state_proxy_source_set(Evas_Object *obj, const char *part, const char *state, double value, const char *source_name)
+{
+   GET_PD_OR_RETURN(EINA_FALSE);
+   if (rp->part->type != EDJE_PART_TYPE_PROXY)
+     return EINA_FALSE;
+
+   Edje_Part_Description_Proxy *proxy_part = (Edje_Part_Description_Proxy*) pd;
+
+   if (source_name)
+     {
+        int source_id = _edje_part_id_find(ed, source_name);
+        if (source_id < 0)
+          return EINA_FALSE;
+        proxy_part->proxy.id = source_id;
+     }
+   else proxy_part->proxy.id = -1;
+
+   return EINA_TRUE;
+}
+
+EAPI Eina_Stringshare *
+edje_edit_state_proxy_source_get(Evas_Object *obj, const char *part, const char *state, double value)
+{
+   GET_PD_OR_RETURN(NULL);
+   if (rp->part->type != EDJE_PART_TYPE_PROXY)
+     return NULL;
+
+   Edje_Part_Description_Proxy *proxy_part = (Edje_Part_Description_Proxy*) pd;
+   const char * source_name;
+   source_name = _edje_part_name_find(ed, proxy_part->proxy.id);
+
+   return eina_stringshare_add(source_name);
 }
 
 /****************/
@@ -8614,6 +9256,7 @@ static const char *effects[] = {"NONE", "PLAIN", "OUTLINE", "SOFT_OUTLINE", "SHA
 static const char *shadow_direction[] = {"BOTTOM_RIGHT", "BOTTOM", "BOTTOM_LEFT", "LEFT", "TOP_LEFT", "TOP", "TOP_RIGHT", "RIGHT"};
 static const char *prefers[] = {"NONE", "VERTICAL", "HORIZONTAL", "BOTH"};
 static const char *entry_mode[] = {"NONE", "PLAIN", "EDITABLE", "PASSWORD"};
+static const char *aspect_mode[] = {"NONE", "NEITHER", "HORIZONTAL", "VERTICAL", "BOTH"};
 
 static Eina_Bool
 _edje_generate_source_of_group(Edje *ed, Edje_Part_Collection_Directory_Entry *pce, Eina_Strbuf *buf);
@@ -8965,7 +9608,7 @@ _edje_generate_source_of_program(Evas_Object *obj, const char *program, Eina_Str
      case EDJE_ACTION_TYPE_SOUND_SAMPLE:
        {
           BUF_APPEND(I4"action: PLAY_SAMPLE ");
-          BUF_APPENDF("\"%s\" %.000f", epr->sample_name, epr->speed);
+          BUF_APPENDF("\"%s\" %.4f", epr->sample_name, epr->speed);
           switch (epr->channel)
             {
              case EDJE_CHANNEL_BACKGROUND:
@@ -9007,7 +9650,7 @@ _edje_generate_source_of_program(Evas_Object *obj, const char *program, Eina_Str
      case EDJE_ACTION_TYPE_SOUND_TONE:
        {
           BUF_APPEND(I4"action: PLAY_TONE ");
-          BUF_APPENDF("\"%s\" %.000f\n;", epr->tone_name, epr->duration);
+          BUF_APPENDF("\"%s\" %.4f\n;", epr->tone_name, epr->duration);
           break;
        }
      //TODO Support Drag
@@ -9102,6 +9745,7 @@ _edje_generate_source_of_state(Evas_Object *obj, const char *part, const char *s
 {
    Eina_List *l, *ll;
    Eina_Bool ret = EINA_TRUE;
+   unsigned int i;
 
    GET_PD_OR_RETURN(EINA_FALSE);
 
@@ -9221,6 +9865,65 @@ _edje_generate_source_of_state(Evas_Object *obj, const char *part, const char *s
 	BUF_APPEND(I5"}\n");//rel2
      }
 
+   //Map
+   if ((pd->map.id_persp != -1) || (pd->map.id_light != -1) ||
+       (pd->map.rot.id_center != -1) || (TO_DOUBLE(pd->map.rot.x) != 0) ||
+       (TO_DOUBLE(pd->map.rot.y) != 0) || (TO_DOUBLE(pd->map.rot.z) != 0) ||
+       (pd->map.colors_count != 0) || (pd->map.backcull) || (pd->map.on) ||
+       (pd->map.persp_on) || (!pd->map.smooth) || (!pd->map.alpha))
+     {
+	BUF_APPEND(I5"map {\n");
+
+        if (pd->map.id_persp != -1)
+	  BUF_APPENDF(I6"perspective: \"%s\";\n", _edje_part_name_find(ed, pd->map.id_persp));
+        if (pd->map.id_light != -1)
+	  BUF_APPENDF(I6"light: \"%s\";\n", _edje_part_name_find(ed, pd->map.id_light));
+
+        if (pd->map.backcull)
+          BUF_APPEND(I6"backface_cull: 1;\n");
+        if (pd->map.on)
+          BUF_APPEND(I6"on: 1;\n");
+        if (pd->map.persp_on)
+          BUF_APPEND(I6"perspective_on: 1;\n");
+        if (!pd->map.smooth)
+          BUF_APPEND(I6"smooth: 0;\n");
+        if (!pd->map.alpha)
+          BUF_APPEND(I6"alpha: 0;\n");
+
+        if (pd->map.colors_count > 0)
+          {
+             for (i = 0; i < pd->map.colors_count; ++i)
+               {
+                  if ((pd->map.colors[i]->r != 255) || (pd->map.colors[i]->g != 255) ||
+                      (pd->map.colors[i]->b != 255) || (pd->map.colors[i]->b != 255))
+                    BUF_APPENDF(I6"color: %d %d %d %d %d;\n", pd->map.colors[i]->idx,
+                                pd->map.colors[i]->r, pd->map.colors[i]->g,
+                                pd->map.colors[i]->b, pd->map.colors[i]->a);
+               }
+          }
+
+        if ((pd->map.rot.id_center != -1) || (pd->map.rot.x != 0) ||
+            (pd->map.rot.y != 0) || (pd->map.rot.z != 0))
+          {
+             BUF_APPEND(I6"rotation {\n");
+
+             if (pd->map.rot.id_center != -1)
+               BUF_APPENDF(I7"center: \"%s\";\n", _edje_part_name_find(ed, pd->map.rot.id_center));
+             if (TO_DOUBLE(pd->map.rot.x) != 0.0)
+               BUF_APPENDF(I7"x: %g;\n", TO_DOUBLE(pd->map.rot.x));
+             if (TO_DOUBLE(pd->map.rot.y) != 0.0)
+               BUF_APPENDF(I7"y: %g;\n", TO_DOUBLE(pd->map.rot.y));
+             if (TO_DOUBLE(pd->map.rot.x) != 0.0)
+               BUF_APPENDF(I7"z: %g;\n", TO_DOUBLE(pd->map.rot.z));
+
+             BUF_APPEND(I6"}\n");
+          }
+
+        BUF_APPEND(I5"}\n");
+     }
+
+
+
    //Image
    if (rp->part->type == EDJE_PART_TYPE_IMAGE)
      {
@@ -9288,7 +9991,8 @@ _edje_generate_source_of_state(Evas_Object *obj, const char *part, const char *s
                  BUF_APPENDF(I7"offset: %d %d;\n", img->image.fill.abs_x, img->image.fill.abs_y);
                BUF_APPEND(I6"}\n");
            }
-         BUF_APPEND(I6"type: TILE;\n");
+         if (img->image.fill.type == EDJE_FILL_TYPE_TILE)
+           BUF_APPEND(I6"type: TILE;\n");
 
          BUF_APPEND(I5"}\n");
       }
@@ -9299,6 +10003,14 @@ _edje_generate_source_of_state(Evas_Object *obj, const char *part, const char *s
 	Edje_Part_Description_Proxy *pro;
 
 	pro = (Edje_Part_Description_Proxy *) pd;
+
+        if (pro->proxy.id >= 0)
+          {
+             const char * source_name;
+             source_name = _edje_part_name_find(ed, pro->proxy.id);
+             if (source_name)
+               BUF_APPENDF(I5"source: \"%s\";\n", source_name);
+          }
 
 	//Fill
 
@@ -9543,7 +10255,8 @@ _edje_generate_source_of_part(Evas_Object *obj, Edje_Part *ep, Eina_Strbuf *buf)
                     BUF_APPENDF(I7"min: %d %d;\n", item->min.h, item->min.h);
                   if ((item->max.w != -1) || (item->max.h != -1))
                     BUF_APPENDF(I7"max: %d %d;\n", item->max.h, item->max.h);
-                  //TODO aspect mode
+                  if (item->aspect.mode)
+                    BUF_APPENDF(I7"aspect_mode: \"%s\";\n", aspect_mode[item->aspect.mode]);
                   if ((item->aspect.w != 0) || (item->aspect.h != 0))
                     BUF_APPENDF(I7"aspect: %d %d;\n", item->aspect.h, item->aspect.h);
                   if ((item->prefer.w != 0) || (item->prefer.h != 0))
@@ -9558,10 +10271,11 @@ _edje_generate_source_of_part(Evas_Object *obj, Edje_Part *ep, Eina_Strbuf *buf)
 
                   if (TO_DOUBLE(item->align.x) != 0.5 || TO_DOUBLE(item->align.y) != 0.5)
                     BUF_APPENDF(I7"align: %g %g;\n", TO_DOUBLE(item->align.x), TO_DOUBLE(item->align.y));
+
+                  if (edje_edit_part_type_get(obj, part) == EDJE_PART_TYPE_TABLE)
+                    BUF_APPENDF(I7"position: %d %d;\n", item->col, item->row);
                   //TODO weight
                   //TODO options
-                  //TODO col
-                  //TODO row
                   //TODO colspan
                   //TODO rowspan
                   BUF_APPEND(I6"}\n");
@@ -10303,6 +11017,87 @@ _edje_edit_internal_save(Evas_Object *obj, int current_only, Eina_Bool generate_
    }
 
    INF("***********  Saving DONE ******************");
+   return EINA_TRUE;
+}
+
+EAPI Eina_Bool
+edje_edit_clean_save_as(Evas_Object *obj, const char* new_file_name)
+{
+   Eet_File *ef, *ef_out;
+   GET_ED_OR_RETURN(EINA_FALSE);
+   GET_EED_OR_RETURN(EINA_FALSE);
+
+   if (!ed->file) return EINA_FALSE;
+
+   if (ecore_file_exists(new_file_name))
+     {
+        ERR("Error. file \"%s\" allready exists",
+            new_file_name);
+        return EINA_FALSE;
+     }
+   ef = eet_open(ed->file->path, EET_FILE_MODE_READ);
+   if (!ef)
+     {
+        ERR("Error. unable to open \"%s\" for reading",
+            ed->file->path);
+        return EINA_FALSE;
+     }
+   ef_out = eet_open(new_file_name, EET_FILE_MODE_WRITE);
+   if (!ef_out)
+     {
+        ERR("Error. unable to open \"%s\" for writing output",
+            new_file_name);
+        eet_close(ef);
+        return EINA_FALSE;
+     }
+
+   /* copying file structure */
+   _edje_edit_edje_file_save(ef_out, ed->file);
+
+   int count = 0;
+   char **ent = eet_list(ef, "*", &count);
+   int i;
+   int size = 0;
+   const void * data;
+
+   /* copying data */
+   for (i = 0; i < count; i++)
+     {
+        /* Skiping entries that need special saving */
+        if (!strcmp(ent[i], "edje/file")) continue;
+        if (!strcmp(ent[i], "edje_sources")) continue;
+        if (strstr(ent[i], "collection")) continue;
+
+        data = eet_read_direct(ef, ent[i], &size);
+        if (data) eet_write(ef_out, ent[i], data, size, 0);
+        else
+          {
+             data = eet_read(ef, ent[i], &size);
+             eet_write(ef_out, ent[i], data, size, 1);
+          }
+     }
+   free(ent);
+
+   /* copying groups */
+   Edje_Part_Collection_Directory_Entry *ce;
+   Evas_Object *part_obj;
+   part_obj = edje_edit_object_add(ed->base->evas);
+   Eina_Iterator *it = eina_hash_iterator_data_new(ed->file->collection);
+   EINA_ITERATOR_FOREACH(it, ce)
+     {
+        /* forcing collection load into memory */
+        edje_object_file_set(part_obj, ed->file->path, ce->entry);
+
+        _edje_edit_collection_save(ef_out, ce->ref);
+     }
+   eina_iterator_free(it);
+
+   /* generating source code */
+   _edje_edit_source_save(ef_out, obj);
+
+   eet_close(ef);
+   eet_close(ef_out);
+
    return EINA_TRUE;
 }
 

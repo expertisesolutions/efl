@@ -1,4 +1,4 @@
-class Ecore_Idler (Eo_Base)
+class Ecore.Idler (Eo.Base)
 {
    eo_prefix: ecore_idler;
    constructors {
@@ -6,12 +6,12 @@ class Ecore_Idler (Eo_Base)
          /*@ Contructor. */
          params {
             @in Ecore_Task_Cb func;
-            @in const void *data;
+            @in const(void)* data;
          }
       }
    }
    implements {
-      Eo_Base.constructor;
-      Eo_Base.destructor;
+      Eo.Base.constructor;
+      Eo.Base.destructor;
    }
 }

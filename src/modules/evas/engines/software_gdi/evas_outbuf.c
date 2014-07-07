@@ -120,7 +120,7 @@ evas_software_gdi_outbuf_free(Outbuf *buf)
 	free(obr);
      }
    evas_software_gdi_outbuf_idle_flush(buf);
-   evas_software_gdi_outbuf_flush(buf);
+   evas_software_gdi_outbuf_flush(buf, NULL, MODE_FULL);
 
    evas_software_gdi_shutdown(buf);
    free(buf);
@@ -227,7 +227,7 @@ evas_software_gdi_outbuf_reconfigure(Outbuf      *buf,
    buf->priv.region_built = 0;
 }
 
-RGBA_Image *
+void *
 evas_software_gdi_outbuf_new_region_for_update(Outbuf *buf,
                                                int     x,
                                                int     y,
@@ -423,8 +423,6 @@ evas_software_gdi_outbuf_push_updated_region(Outbuf     *buf,
         DATA32 *tmp;
         int i;
         int j;
-        int ww;
-        int wh;
         int dx;
         int dy;
         int xmin;
@@ -432,9 +430,6 @@ evas_software_gdi_outbuf_push_updated_region(Outbuf     *buf,
 
         if (!GetClientRect(buf->priv.gdi.window, &rect))
           return;
-
-        ww = rect.right - rect.left;
-        wh = rect.bottom - rect.top;
 
         if (!GetWindowRect(buf->priv.gdi.window, &rect))
           return;
@@ -568,11 +563,13 @@ evas_software_gdi_outbuf_free_region_for_update(Outbuf     *buf EINA_UNUSED,
 }
 
 void
-evas_software_gdi_outbuf_flush(Outbuf *buf)
+evas_software_gdi_outbuf_flush(Outbuf *buf, Tilebuf_Rect *rects EINA_UNUSED, Evas_Render_Mode render_mode)
 {
    Eina_List     *l;
    RGBA_Image    *im;
    Outbuf_Region *obr;
+
+   if (render_mode == EVAS_RENDER_MODE_ASYNC_INIT) return;
 
    /* copy safely the images that need to be drawn onto the back surface */
    EINA_LIST_FOREACH(buf->priv.pending_writes, l, im)

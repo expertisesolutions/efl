@@ -61,14 +61,6 @@ edje_init(void)
 	goto shutdown_embryo;
      }
 
-#ifdef HAVE_EIO
-   if (!eio_init())
-     {
-        ERR("Eio init failed");
-        goto shutdown_eet;
-     }
-#endif
-
    _edje_scale = FROM_DOUBLE(1.0);
 
    _edje_edd_init();
@@ -119,10 +111,6 @@ edje_init(void)
    _edje_text_class_members_free();
    _edje_text_class_hash_free();
    _edje_edd_shutdown();
-#ifdef HAVE_EIO
-   eio_shutdown();
- shutdown_eet:
-#endif
    eet_shutdown();
  shutdown_embryo:
    embryo_shutdown();
@@ -176,9 +164,6 @@ _edje_shutdown_core(void)
      ecore_imf_shutdown();
 #endif
 
-#ifdef HAVE_EIO
-   eio_shutdown();
-#endif
    eet_shutdown();
    embryo_shutdown();
    ecore_shutdown();
@@ -222,31 +207,6 @@ edje_shutdown(void)
 }
 
 /* Private Routines */
-static void
-_class_member_free(Eina_Hash *hash,
-                   void (*_edje_class_member_direct_del)(const char *class, void *l))
-{
-   const char *color_class;
-   Eina_Iterator *it;
-   Eina_List *class_kill = NULL;
-
-   if (hash)
-     {
-        it = eina_hash_iterator_key_new(hash);
-        EINA_ITERATOR_FOREACH(it, color_class)
-          class_kill = eina_list_append(class_kill, color_class);
-        eina_iterator_free(it);
-        EINA_LIST_FREE(class_kill, color_class)
-          {
-             void *l;
-
-             l = eina_hash_find(hash, color_class);
-             _edje_class_member_direct_del(color_class, l);
-          }
-        eina_hash_free(hash);
-     }
-}
-
 void
 _edje_del(Edje *ed)
 {
@@ -294,8 +254,8 @@ _edje_del(Edje *ed)
         free(cb);
      }
 
-   _class_member_free(ed->members.text_class, _edje_text_class_member_direct_del);
-   _class_member_free(ed->members.color_class, _edje_color_class_member_direct_del);
+   _edje_color_class_member_clean(ed);
+   _edje_text_class_members_clean(ed);
 }
 
 void

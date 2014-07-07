@@ -8,9 +8,7 @@ dist_installed_eetcxxmainheaders_DATA = bindings/eet_cxx/Eet.hh
 installed_eetcxxheadersdir = $(includedir)/eet-cxx-@VMAJ@/eet-cxx
 dist_installed_eetcxxheaders_DATA = \
 bindings/eet_cxx/eet_composite.hh \
-bindings/eet_cxx/eet_fold.hh \
 bindings/eet_cxx/eet_register.hh \
-bindings/eet_cxx/eet_tuple.hh \
 bindings/eet_cxx/eet_type.hh
 
 ### Unit tests
@@ -27,7 +25,7 @@ tests_eet_cxx_eet_cxx_suite_CPPFLAGS = 	\
 -I$(top_builddir)/src/lib/efl \
 -DTESTS_WD=\"`pwd`\" \
 -DTESTS_SRC_DIR=\"$(top_srcdir)/src/tests/eet_cxx\" \
--DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)/src/tests/eet_cxx\" \
+-DPACKAGE_BUILD_DIR=\"$(abs_top_builddir)/src/tests/eet_cxx\" \
 -DTESTS_BUILD_DIR=\"$(top_builddir)/src/tests/eet_cxx\" \
 @CHECK_CFLAGS@ @EET_CXX_CFLAGS@ @EINA_CXX_CFLAGS@ @EET_CFLAGS@ @EINA_CFLAGS@
 tests_eet_cxx_eet_cxx_suite_LDADD = @CHECK_LIBS@ @USE_EET_LIBS@

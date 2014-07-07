@@ -57,7 +57,6 @@ struct _Ecore_Win32_Callback_Data
    unsigned long timestamp;
    int           x;
    int           y;
-   Eina_Bool     discard_ctrl;
 };
 
 struct _Ecore_Win32_Window
@@ -115,13 +114,15 @@ struct _Ecore_Win32_Window
    } shape;
 
    struct {
-      DWORD        type;
+      DWORD type;
       int x;
       int y;
       int w;
       int h;
       int px;
       int py;
+      int current_mouse_x;
+      int current_mouse_y;
       unsigned int dragging : 1;
    } drag;
 
@@ -135,7 +136,7 @@ extern unsigned long       _ecore_win32_event_last_time;
 extern Ecore_Win32_Window *_ecore_win32_event_last_window;
 
 
-void  _ecore_win32_event_handle_key_press(Ecore_Win32_Callback_Data *msg, int is_keystroke);
+void  _ecore_win32_event_handle_key_press(Ecore_Win32_Callback_Data *msg);
 void  _ecore_win32_event_handle_key_release(Ecore_Win32_Callback_Data *msg);
 void  _ecore_win32_event_handle_button_press(Ecore_Win32_Callback_Data *msg, int button);
 void  _ecore_win32_event_handle_button_release(Ecore_Win32_Callback_Data *msg, int button);

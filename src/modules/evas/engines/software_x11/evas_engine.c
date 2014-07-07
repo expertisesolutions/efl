@@ -163,6 +163,7 @@ _output_xlib_setup(int w, int h, int rot, Display *disp, Drawable draw,
    if (!evas_render_engine_software_generic_init(&re->generic, ob, NULL,
                                                  evas_software_xlib_outbuf_get_rot,
                                                  evas_software_xlib_outbuf_reconfigure,
+                                                 NULL,
                                                  evas_software_xlib_outbuf_new_region_for_update,
                                                  evas_software_xlib_outbuf_push_updated_region,
                                                  evas_software_xlib_outbuf_free_region_for_update,
@@ -207,6 +208,7 @@ _output_swapbuf_setup(int w, int h, int rot, Display *disp, Drawable draw,
                                                  evas_software_xlib_swapbuf_buffer_state_get,
                                                  evas_software_xlib_swapbuf_get_rot,
                                                  evas_software_xlib_swapbuf_reconfigure,
+                                                 NULL,
                                                  evas_software_xlib_swapbuf_new_region_for_update,
                                                  evas_software_xlib_swapbuf_push_updated_region,
                                                  evas_software_xlib_swapbuf_free_region_for_update,
@@ -262,6 +264,7 @@ _output_xcb_setup(int w, int h, int rot, xcb_connection_t *conn,
    if (!evas_render_engine_software_generic_init(re, ob, NULL,
                                                  evas_software_xcb_outbuf_rotation_get,
                                                  evas_software_xcb_outbuf_reconfigure,
+                                                 NULL,
                                                  evas_software_xcb_outbuf_new_region_for_update,
                                                  evas_software_xcb_outbuf_push_updated_region,
                                                  evas_software_xcb_outbuf_free_region_for_update,
@@ -419,7 +422,7 @@ eng_info_free(Evas *eo_e EINA_UNUSED, void *info)
 static int
 eng_setup(Evas *eo_e, void *in)
 {
-   Evas_Public_Data *e = eo_data_scope_get(eo_e, EVAS_CLASS);
+   Evas_Public_Data *e = eo_data_scope_get(eo_e, EVAS_CANVAS_CLASS);
    Evas_Engine_Info_Software_X11 *info;
    Render_Engine *re = NULL;
 
@@ -568,7 +571,7 @@ eng_setup(Evas *eo_e, void *in)
 
         if (ob)
           {
-             evas_render_engine_software_generic_update(&re->generic, ob);
+             evas_render_engine_software_generic_update(&re->generic, ob, e->output.w, e->output.h);
           }
 
         /* if ((re) && (re->ob)) re->ob->onebuf = ponebuf; */

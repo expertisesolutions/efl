@@ -4,8 +4,9 @@
 #include <Eet.h>
 
 #include <eet_type.hh>
-#include <eet_fold.hh>
 #include <eet_register.hh>
+
+#include <eina_fold.hh>
 
 #include <type_traits>
 #include <cassert>
@@ -36,10 +37,10 @@ struct descriptor_type
   struct push_back
   {
     template <typename A, typename B>
-    struct apply : _mpl::push_back<A, typename _detail::member_type<typename B::member_type>::type> {};
+    struct apply : eina::_mpl::push_back<A, typename _detail::member_type<typename B::member_type>::type> {};
   };
 
-  typedef typename _mpl::fold< std::tuple<Args...>, push_back
+  typedef typename eina::_mpl::fold< std::tuple<Args...>, push_back
     , descriptor<T> >::type type;
 };
 
@@ -83,9 +84,9 @@ struct descriptor
   typedef T object_type;
 
   descriptor() : _descriptor(nullptr) {}
-  descriptor( ::Eet_Data_Descriptor* descriptor
+  descriptor( ::Eet_Data_Descriptor* descriptor_
               , std::array<_detail::member_desc_info, sizeof...(Args)> member_info)
-    : _descriptor(descriptor), _member_info(member_info)
+    : _descriptor(descriptor_), _member_info(member_info)
   {
   }
   descriptor(descriptor&& other)

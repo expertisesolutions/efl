@@ -532,6 +532,7 @@ struct _Image_Entry_Flags
    Eina_Bool given_mmap    : 1;
 
    Eina_Bool updated_data  : 1;
+   Eina_Bool flipped       : 1;
 };
 
 struct _Image_Entry_Frame
@@ -606,6 +607,11 @@ struct _Image_Entry
         unsigned int w;
         unsigned int h;
      } allocated;
+
+   struct
+     {
+        unsigned char l, r, t, b;
+     } borders; // Duplicated borders for use by GL engines.
 
    struct
      {

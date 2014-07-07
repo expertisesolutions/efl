@@ -54,7 +54,7 @@ typedef struct _Function_Id* Eolian_Function;
  *
  * @ingroup Eolian
  */
-typedef Eina_Inlist* Eolian_Type;
+typedef struct _Parameter_Type* Eolian_Type;
 
 /* Class function parameter information
  *
@@ -113,6 +113,15 @@ typedef enum
    EOLIAN_SCOPE_PROTECTED
 } Eolian_Function_Scope;
 
+typedef enum
+{
+   EOLIAN_TYPE_UNKNOWN_TYPE,
+   EOLIAN_TYPE_VOID,
+   EOLIAN_TYPE_REGULAR,
+   EOLIAN_TYPE_POINTER,
+   EOLIAN_TYPE_FUNCTION
+} Eolian_Type_Type;
+
 /*
  * @brief Parse a given .eo file and fill the database.
  *
@@ -120,10 +129,21 @@ typedef enum
  * all the information related to this class.
  *
  * @param[in] filename Name of the file to parse.
+ * @see eolian_eot_file_parse
  *
  * @ingroup Eolian
  */
 EAPI Eina_Bool eolian_eo_file_parse(const char *filename);
+
+/*
+ * @brief Parse a given .eot file and fill the database.
+ *
+ * @param[in] filename Name of the file to parse.
+ * @see eolian_eo_file_parse
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Bool eolian_eot_file_parse(const char *filepath);
 
 /*
  * @brief Init Eolian.
@@ -140,7 +160,8 @@ EAPI int eolian_init(void);
 EAPI int eolian_shutdown(void);
 
 /*
- * @brief Scan the given directory and search for .eo files.
+ * @brief Scan the given directory (recursively) and search for .eo and
+ * .eot files.
  *
  * The found files are just open to extract the class name.
  *
@@ -152,16 +173,30 @@ EAPI int eolian_shutdown(void);
 EAPI Eina_Bool eolian_directory_scan(const char *dir);
 
 /*
- * @brief Force parsing of all the files located in the directories
+ * @brief Force parsing of all the .eo files located in the directories
  * given in eolian_directory_scan..
  *
  * @return EINA_TRUE on success, EINA_FALSE otherwise.
  *
  * @see eolian_directory_scan
+ * @see eolian_all_eot_files_parse
  *
  * @ingroup Eolian
  */
 EAPI Eina_Bool eolian_all_eo_files_parse();
+
+/*
+ * @brief Force parsing of all the .eot files located in the directories
+ * given in eolian_directory_scan..
+ *
+ * @return EINA_TRUE on success, EINA_FALSE otherwise.
+ *
+ * @see eolian_directory_scan
+ * @see eolian_all_eo_files_parse
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Bool eolian_all_eot_files_parse();
 
 /*
  * @brief Show information about a given class.
@@ -255,14 +290,13 @@ eolian_class_namespaces_list_get(const Eolian_Class klass);
 EAPI Eolian_Class_Type eolian_class_type_get(const Eolian_Class klass);
 
 /*
- * @brief Returns the names list of all the classes stored into the database.
+ * @brief Returns a list of all the classes stored into the database.
  *
  * @return the list
  *
  * @ingroup Eolian
  */
-/* Returns the list of class names of the database */
-EAPI const Eina_List *eolian_class_names_list_get(void);
+EAPI const Eina_List *eolian_all_classes_list_get(void);
 
 /*
  * @brief Returns the description of a class.
@@ -355,6 +389,19 @@ EAPI Eolian_Function_Scope eolian_function_scope_get(Eolian_Function function_id
  * @ingroup Eolian
  */
 EAPI const char *eolian_function_name_get(Eolian_Function function_id);
+
+/*
+ * @brief Returns the full C name of a function (with prefix). It's here
+ * because the C API names are deduplicated (prefix of function and suffix
+ * of prefix merge if applicable) and this helps generators not write the
+ * same code over and over.
+ *
+ * @param[in] function_id Id of the function
+ * @return the function name
+ *
+ * @ingroup Eolian
+ */
+EAPI const char *eolian_function_full_c_name_get(Eolian_Function function_id, const char *prefix);
 
 /*
  * @brief Find a function in a class by its name and type
@@ -452,23 +499,7 @@ EAPI const Eina_List *eolian_parameters_list_get(Eolian_Function function_id);
  *
  * @ingroup Eolian
  */
-EAPI void eolian_parameter_information_get(const Eolian_Function_Parameter param_desc, Eolian_Parameter_Dir *param_dir, const char **type, const char **name, const char **description);
-
-/*
- * @brief Get information on given type.
- *
- * An Eolian type is an inlist of basic C types. For example:
- * Eina_List * <Eo *> contains two basic types.
- * The first Eolian type of the list stores Eina_List *, the next one Eo *.
- *
- * @param[in] etype Eolian type
- * @param[out] type C type
- * @param[out] own indicates if the ownership has to pass to the caller/callee.
- * @return the next type of the list.
- *
- * @ingroup Eolian
- */
-EAPI Eolian_Type eolian_type_information_get(Eolian_Type etype, const char **type, Eina_Bool *own);
+EAPI void eolian_parameter_information_get(const Eolian_Function_Parameter param_desc, Eolian_Parameter_Dir *param_dir, Eolian_Type *type, const char **name, const char **description);
 
 /*
  * @brief Get type of a parameter
@@ -478,17 +509,7 @@ EAPI Eolian_Type eolian_type_information_get(Eolian_Type etype, const char **typ
  *
  * @ingroup Eolian
  */
-EAPI Eina_Stringshare *eolian_parameter_type_get(const Eolian_Function_Parameter param);
-
-/*
- * @brief Get a list of all the types of a parameter
- *
- * @param[in] param_desc parameter handle
- * @return the types of the parameter
- *
- * @ingroup Eolian
- */
-EAPI Eolian_Type eolian_parameter_types_list_get(const Eolian_Function_Parameter param);
+EAPI Eolian_Type eolian_parameter_type_get(const Eolian_Function_Parameter param);
 
 /*
  * @brief Get name of a parameter
@@ -536,19 +557,7 @@ EAPI Eina_Bool eolian_parameter_is_nonull(Eolian_Function_Parameter param_desc);
  *
  * @ingroup Eolian
  */
-EAPI const char *eolian_function_return_type_get(Eolian_Function function_id, Eolian_Function_Type ftype);
-
-/*
- * @brief Get a list of all the types of a function return
- *
- * @param[in] foo_id Function Id
- * @param[in] ftype Function Type
- * @return the types of the function return
- *
- * @ingroup Eolian
- */
-EAPI Eolian_Type
-eolian_function_return_types_list_get(Eolian_Function foo_id, Eolian_Function_Type ftype);
+EAPI Eolian_Type eolian_function_return_type_get(Eolian_Function function_id, Eolian_Function_Type ftype);
 
 /*
  * @brief Get the return default value of a function.
@@ -691,8 +700,129 @@ EAPI Eina_Bool eolian_class_dtor_enable_get(const Eolian_Class klass);
  *
  * @ingroup Eolian
  */
-EAPI Eolian_Type
-eolian_type_find_by_alias(const char *alias);
+EAPI Eolian_Type eolian_type_find_by_alias(const char *alias);
+
+/*
+ * @brief Get the type of a type (regular, function, pointer)
+ *
+ * @param[in] tp the type.
+ * @return EOLIAN_TYPE_UNKNOWN_TYPE when @c tp is NULL, otherwise
+ * EOLIAN_TYPE_REGULAR, EOLIAN_TYPE_POINTER or EOLIAN_TYPE_FUNCTION.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eolian_Type_Type eolian_type_type_get(Eolian_Type tp);
+
+/*
+ * @brief Get an iterator to all arguments of a function type.
+ *
+ * @param[in] tp the type.
+ * @return the iterator when @c tp is an EOLIAN_TYPE_FUNCTION, NULL otherwise.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Iterator *eolian_type_arguments_list_get(Eolian_Type tp);
+
+/*
+ * @brief Get an iterator to all subtypes of a type.
+ *
+ * @param[in] tp the type.
+ * @return the iterator when @c tp is an EOLIAN_TYPE_REGULAR or
+ * EOLIAN_TYPE_POINTER and has subtypes, NULL otherwise.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Iterator *eolian_type_subtypes_list_get(Eolian_Type tp);
+
+/*
+ * @brief Get the return type of a function type.
+ *
+ * @param[in] tp the type.
+ * @return the return type when @c tp is an EOLIAN_TYPE_FUNCTION, NULL otherwise.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eolian_Type eolian_type_return_type_get(Eolian_Type tp);
+
+/*
+ * @brief Get the base type of a function type.
+ *
+ * @param[in] tp the type.
+ * @return the base type when @c tp is an EOLIAN_TYPE_POINTER, NULL otherwise.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eolian_Type eolian_type_base_type_get(Eolian_Type tp);
+
+/*
+ * @brief Get whether the given type is @own.
+ *
+ * @param[in] tp the type.
+ * @return EINA_TRUE when @c tp is a non-function type and not NULL,
+ * EINA_FALSE otherwise.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Bool eolian_type_is_own(Eolian_Type tp);
+
+/*
+ * @brief Get whether the given type is const.
+ *
+ * @param[in] tp the type.
+ * @return EINA_TRUE when @c tp is a non-function type and not NULL,
+ * EINA_FALSE otherwise.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Bool eolian_type_is_const(Eolian_Type tp);
+
+/*
+ * @brief Get the full C type name of the given type with a name.
+ *
+ * @param[in] tp the type.
+ * @param[in] name the name.
+ * @return The C type name assuming @c tp is not NULL.
+ *
+ * Providing the name is useful for function types, as in C a function
+ * pointer type alone is not valid syntax. For non-function types, the
+ * name is simply appended to the type (with a space). C type names do
+ * not include subtypes as C doesn't support them.
+ *
+ * Keep in mind that if @c name is NULL, the name won't be included.
+ *
+ * @see eolian_type_c_type_get
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Stringshare *eolian_type_c_type_named_get(Eolian_Type tp, const char *name);
+
+/*
+ * @brief Get the full C type name of the given type without a name.
+ *
+ * @param[in] tp the type.
+ * @return The C type name assuming @c tp is not NULL.
+ *
+ * This behaves exactly like eolian_type_c_type_named_get when name is NULL.
+ * Keep in mind that this is not useful for function types as a function
+ * pointer type in C cannot be used without a name.
+ *
+ * @see eolian_type_c_type_named_get
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Stringshare *eolian_type_c_type_get(Eolian_Type tp);
+
+/*
+ * @brief Get the type name of the given type. You have to manually delete
+ * the stringshare.
+ *
+ * @param[in] tp the type.
+ * @return the name assuming @c tp is an EOLIAN_TYPE_REGULAR, NULL otherwise.
+ * The name may include a "struct" keyword.
+ *
+ * @ingroup Eolian
+ */
+EAPI Eina_Stringshare *eolian_type_name_get(Eolian_Type tp);
 
 #endif
 

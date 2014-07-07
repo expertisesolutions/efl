@@ -823,7 +823,7 @@ _ecore_evas_win32_cursor_set(Ecore_Evas *ee, Evas_Object *obj, int layer, int ho
 {
    int x, y;
    Evas_Object *old;
-   
+
    old = ee->prop.cursor.object;
    if (obj == NULL)
      {
@@ -833,16 +833,17 @@ _ecore_evas_win32_cursor_set(Ecore_Evas *ee, Evas_Object *obj, int layer, int ho
         ee->prop.cursor.hot.y = 0;
         goto end;
      }
-   
+
    ee->prop.cursor.object = obj;
    ee->prop.cursor.layer = layer;
    ee->prop.cursor.hot.x = hot_x;
    ee->prop.cursor.hot.y = hot_y;
 
+   evas_pointer_output_xy_get(ee->evas, &x, &y);
+
    if (obj != old)
      {
 //        ecore_win32_window_cursor_show(ee->prop.window, 0);
-        evas_pointer_output_xy_get(ee->evas, &x, &y);
         evas_object_layer_set(ee->prop.cursor.object, ee->prop.cursor.layer);
         evas_object_pass_events_set(ee->prop.cursor.object, 1);
         if (evas_pointer_inside_get(ee->evas))
@@ -850,9 +851,10 @@ _ecore_evas_win32_cursor_set(Ecore_Evas *ee, Evas_Object *obj, int layer, int ho
         evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
                                        _ecore_evas_object_cursor_del, ee);
      }
-   evas_object_move(ee->prop.cursor.object,
-                    x - ee->prop.cursor.hot.x,
+
+   evas_object_move(ee->prop.cursor.object, x - ee->prop.cursor.hot.x,
                     y - ee->prop.cursor.hot.y);
+
 end:
    if ((old) && (obj != old))
      {
@@ -974,7 +976,8 @@ _ecore_evas_win32_fullscreen_set(Ecore_Evas *ee, Eina_Bool on)
 static void
 _ecore_evas_win32_alpha_set(Ecore_Evas *ee, int alpha)
 {
-   Ecore_Evas_Engine_Data_Win32 *wdata = ee->engine.data;
+#warning "We need to handle window with alpha channel."
+   /* Ecore_Evas_Engine_Data_Win32 *wdata = ee->engine.data; */
    alpha = !!alpha;
    if ((ee->alpha == alpha)) return;
 

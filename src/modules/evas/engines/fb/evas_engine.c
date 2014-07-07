@@ -57,6 +57,7 @@ _output_setup(int w, int h, int rot, int vt, int dev, int refresh)
    if (!evas_render_engine_software_generic_init(&re->generic, ob, NULL,
                                                  evas_fb_outbuf_fb_get_rot,
                                                  evas_fb_outbuf_fb_reconfigure,
+                                                 NULL,
                                                  evas_fb_outbuf_fb_new_region_for_update,
                                                  evas_fb_outbuf_fb_push_updated_region,
                                                  evas_fb_outbuf_fb_free_region_for_update,
@@ -102,7 +103,7 @@ eng_info_free(Evas *eo_e EINA_UNUSED, void *info)
 static int
 eng_setup(Evas *eo_e, void *in)
 {
-   Evas_Public_Data *e = eo_data_scope_get(eo_e, EVAS_CLASS);
+   Evas_Public_Data *e = eo_data_scope_get(eo_e, EVAS_CANVAS_CLASS);
    Render_Engine *re;
    Evas_Engine_Info_FB *info;
 

@@ -39,6 +39,11 @@ static const GLenum etc1_fmt       = GL_ETC1_RGB8_OES;
 static const GLenum etc2_rgb_fmt   = GL_COMPRESSED_RGB8_ETC2;
 static const GLenum etc2_rgba_fmt  = GL_COMPRESSED_RGBA8_ETC2_EAC;
 
+static const GLenum s3tc_rgb_dxt1_fmt   = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+static const GLenum s3tc_rgba_dxt1_fmt  = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+static const GLenum s3tc_rgba_dxt23_fmt = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+static const GLenum s3tc_rgba_dxt45_fmt = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+
 static struct {
    struct {
       int num, pix;
@@ -74,7 +79,20 @@ static const struct {
   { EINA_TRUE, EINA_TRUE, EVAS_COLORSPACE_RGBA8_ETC2_EAC, &etc2_rgba_fmt, &etc2_rgba_fmt },
   // images marked as no alpha but format supports it (RGBA8_ETC2_EAC):
   { EINA_FALSE, EINA_FALSE, EVAS_COLORSPACE_RGBA8_ETC2_EAC, &etc2_rgba_fmt, &etc2_rgba_fmt },
-  { EINA_FALSE, EINA_TRUE, EVAS_COLORSPACE_RGBA8_ETC2_EAC, &etc2_rgba_fmt, &etc2_rgba_fmt }
+  { EINA_FALSE, EINA_TRUE, EVAS_COLORSPACE_RGBA8_ETC2_EAC, &etc2_rgba_fmt, &etc2_rgba_fmt },
+  // S3TC support
+  { EINA_FALSE, EINA_FALSE, EVAS_COLORSPACE_RGB_S3TC_DXT1, &s3tc_rgb_dxt1_fmt, &s3tc_rgb_dxt1_fmt },
+  { EINA_FALSE, EINA_TRUE, EVAS_COLORSPACE_RGB_S3TC_DXT1, &s3tc_rgb_dxt1_fmt, &s3tc_rgb_dxt1_fmt },
+  { EINA_TRUE, EINA_FALSE, EVAS_COLORSPACE_RGBA_S3TC_DXT1, &s3tc_rgba_dxt1_fmt, &s3tc_rgba_dxt1_fmt },
+  { EINA_TRUE, EINA_TRUE, EVAS_COLORSPACE_RGBA_S3TC_DXT1, &s3tc_rgba_dxt1_fmt, &s3tc_rgba_dxt1_fmt },
+  { EINA_TRUE, EINA_FALSE, EVAS_COLORSPACE_RGBA_S3TC_DXT2, &s3tc_rgba_dxt23_fmt, &s3tc_rgba_dxt23_fmt },
+  { EINA_TRUE, EINA_TRUE, EVAS_COLORSPACE_RGBA_S3TC_DXT2, &s3tc_rgba_dxt23_fmt, &s3tc_rgba_dxt23_fmt },
+  { EINA_TRUE, EINA_FALSE, EVAS_COLORSPACE_RGBA_S3TC_DXT3, &s3tc_rgba_dxt23_fmt, &s3tc_rgba_dxt23_fmt },
+  { EINA_TRUE, EINA_TRUE, EVAS_COLORSPACE_RGBA_S3TC_DXT3, &s3tc_rgba_dxt23_fmt, &s3tc_rgba_dxt23_fmt },
+  { EINA_TRUE, EINA_FALSE, EVAS_COLORSPACE_RGBA_S3TC_DXT4, &s3tc_rgba_dxt45_fmt, &s3tc_rgba_dxt45_fmt },
+  { EINA_TRUE, EINA_TRUE, EVAS_COLORSPACE_RGBA_S3TC_DXT4, &s3tc_rgba_dxt45_fmt, &s3tc_rgba_dxt45_fmt },
+  { EINA_TRUE, EINA_FALSE, EVAS_COLORSPACE_RGBA_S3TC_DXT5, &s3tc_rgba_dxt45_fmt, &s3tc_rgba_dxt45_fmt },
+  { EINA_TRUE, EINA_TRUE, EVAS_COLORSPACE_RGBA_S3TC_DXT5, &s3tc_rgba_dxt45_fmt, &s3tc_rgba_dxt45_fmt }
 };
 
 static const GLenum matching_rgb[] = { GL_RGB4, GL_RGB8, GL_RGB12, GL_RGB16, 0x0 };
@@ -130,8 +148,8 @@ _evas_gl_texture_search_format(Eina_Bool alpha, Eina_Bool bgra, Evas_Colorspace 
          matching_format[i].cspace == cspace)
        return i;
 
-   abort();
-   return 0;
+   CRI("Texture doesn't support the image format! colorspace(%d) alpha(%d) bgra(%d)", cspace, alpha, bgra);
+   return -1;
 }
 
 static void
@@ -206,17 +224,25 @@ _tex_format_index(GLuint format)
         return 4;
       case GL_COMPRESSED_RGBA8_ETC2_EAC:
         return 5;
+      case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
+        return 6;
+      case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+        return 7;
+      case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT: // dxt2 as well
+        return 8;
+      case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT: // dxt4 as well
+        return 9;
       case GL_LUMINANCE: // never used in atlas
       case GL_LUMINANCE4:
       case GL_LUMINANCE8:
       case GL_LUMINANCE12:
       case GL_LUMINANCE16:
-        return 6;
+        return 10;
       case GL_LUMINANCE4_ALPHA4:
       case GL_LUMINANCE8_ALPHA8:
       case GL_LUMINANCE12_ALPHA12:
       case GL_LUMINANCE16_ALPHA16:
-        return 7;
+        return 11;
       default:
         // abort?
         return 0;
@@ -224,16 +250,57 @@ _tex_format_index(GLuint format)
    return 0;
 }
 
+static inline int
+_evas_gl_texture_size_get(int w, int h, int intfmt, Eina_Bool *comp)
+{
+   if (comp) *comp = EINA_FALSE;
+   switch (intfmt)
+     {
+      case GL_RGBA:
+      case GL_BGRA:
+      case GL_RGB:
+        return w * h * 4;
+      case GL_ALPHA:
+        return w * h * 1;
+      case GL_ALPHA4:
+        return w * h / 2; // TODO: Check this
+      case GL_LUMINANCE:
+        return w * h * 1;
+      case GL_LUMINANCE_ALPHA:
+        return w * h * 2;
+      case GL_ETC1_RGB8_OES:
+      case GL_COMPRESSED_RGB8_ETC2:
+      case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
+      case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+        if (comp) *comp = EINA_TRUE;
+        return ((w + 3) >> 2) * ((h + 3) >> 2) * 8;
+      case GL_COMPRESSED_RGBA8_ETC2_EAC:
+      case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
+      case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
+        if (comp) *comp = EINA_TRUE;
+        return ((w + 3) >> 2) * ((h + 3) >> 2) * 16;
+      default:
+        return 0;
+     }
+}
+
 static Eina_Bool
 _tex_2d(Evas_Engine_GL_Context *gc, int intfmt, int w, int h, int fmt, int type)
 {
+   Eina_Bool comp;
+   int sz;
+
    if ((w > gc->shared->info.max_texture_size) ||
        (h > gc->shared->info.max_texture_size))
      {
         ERR("Fail tex too big %ix%i", w, h);
         return EINA_FALSE;
      }
-   glTexImage2D(GL_TEXTURE_2D, 0, intfmt, w, h, 0, fmt, type, NULL);
+   sz = _evas_gl_texture_size_get(w, h, intfmt, &comp);
+   if (!comp)
+     glTexImage2D(GL_TEXTURE_2D, 0, intfmt, w, h, 0, fmt, type, NULL);
+   else
+     glCompressedTexImage2D(GL_TEXTURE_2D, 0, intfmt, w, h, 0, sz, NULL);
    GLERR(__FUNCTION__, __FILE__, __LINE__, "");
 #ifdef GL_TEXTURE_INTERNAL_FORMAT
 # ifdef GL_GLES
@@ -435,35 +502,39 @@ evas_gl_common_texture_new(Evas_Engine_GL_Context *gc, RGBA_Image *im)
 {
    Evas_GL_Texture *tex;
    GLsizei w, h;
-   int u = 0, v = 0, yoffset = 0;
+   int u = 0, v = 0, xoffset = 1, yoffset = 1;
    int lformat;
+
+   lformat = _evas_gl_texture_search_format(im->cache_entry.flags.alpha, gc->shared->info.bgra, im->cache_entry.space);
+   if (lformat < 0) return NULL;
 
    tex = evas_gl_common_texture_alloc(gc, im->cache_entry.w, im->cache_entry.h, im->cache_entry.flags.alpha);
    if (!tex) return NULL;
 
-#define TEX_HREP 1
-#define TEX_VREP 1
-
-   lformat = _evas_gl_texture_search_format(im->cache_entry.flags.alpha, gc->shared->info.bgra, im->cache_entry.space);
    switch (im->cache_entry.space)
      {
       case EVAS_COLORSPACE_ETC1:
       case EVAS_COLORSPACE_RGB8_ETC2:
       case EVAS_COLORSPACE_RGBA8_ETC2_EAC:
+      case EVAS_COLORSPACE_RGB_S3TC_DXT1:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT1:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT2:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT3:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT4:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT5:
         // Add border to avoid artifacts
-        w = im->cache_entry.w + 2;
-        h = im->cache_entry.h + 2;
-        yoffset = 1;
-
-        // Adjust w and h for ETC1/2 formats (multiple of 4 pixels on both axes)
-        w = ((w >> 2) + (w & 0x3 ? 1 : 0)) << 2;
-        h = ((h >> 2) + (h & 0x3 ? 1 : 0)) << 2;
+        w = im->cache_entry.w + im->cache_entry.borders.l + im->cache_entry.borders.r;
+        h = im->cache_entry.h + im->cache_entry.borders.t + im->cache_entry.borders.b;
+        EINA_SAFETY_ON_FALSE_RETURN_VAL(!(w & 0x3) && !(h & 0x3), NULL);
+        xoffset = im->cache_entry.borders.l;
+        yoffset = im->cache_entry.borders.t;
         break;
 
      default:
-        /* This need to be adjusted if we do something else than strip allocation */
-        w = im->cache_entry.w + TEX_HREP + 2; /* one pixel stop gap and two pixels for the border */
-        h = im->cache_entry.h + TEX_VREP + 2; /* only one added border for security down */
+        // One pixel gap and two pixels for duplicated borders
+        w = im->cache_entry.w + 3;
+        h = im->cache_entry.h + 3;
+        break;
      }
 
    tex->pt = _pool_tex_find(gc, w, h,
@@ -476,7 +547,7 @@ evas_gl_common_texture_new(Evas_Engine_GL_Context *gc, RGBA_Image *im)
         evas_gl_common_texture_light_free(tex);
         return NULL;
      }
-   tex->x = u + 1;
+   tex->x = u + xoffset;
    tex->y = v + yoffset;
 
    tex->pt->references++;
@@ -928,6 +999,7 @@ evas_gl_common_texture_dynamic_new(Evas_Engine_GL_Context *gc, Evas_GL_Image *im
    if (!tex) return NULL;
 
    lformat = _evas_gl_texture_search_format(tex->alpha, gc->shared->info.bgra, EVAS_COLORSPACE_ARGB8888);
+
    tex->pt = _pool_tex_dynamic_new(gc, tex->w, tex->h,
                                    *matching_format[lformat].intformat,
                                    *matching_format[lformat].format);
@@ -1073,17 +1145,19 @@ evas_gl_common_texture_upload(Evas_GL_Texture *tex, RGBA_Image *im, unsigned int
 void
 evas_gl_common_texture_update(Evas_GL_Texture *tex, RGBA_Image *im)
 {
-   unsigned int bytes_count;
+   unsigned int bytes_count, bsize = 8;
 
    if (tex->alpha != im->cache_entry.flags.alpha)
      {
         int lformat;
 
+        lformat = _evas_gl_texture_search_format(tex->alpha, tex->gc->shared->info.bgra, im->cache_entry.space);
+        if (lformat < 0) return;
+
         tex->pt->allocations = eina_list_remove(tex->pt->allocations, tex->apt);
         if (tex->apt)
           eina_rectangle_pool_release(tex->apt);
 
-        lformat = _evas_gl_texture_search_format(tex->alpha, tex->gc->shared->info.bgra, im->cache_entry.space);
         // FIXME: why a 'render' new here ??? Should already have been allocated, quite a weird path.
         tex->pt = _pool_tex_render_new(tex->gc, tex->w, tex->h,
                                        *matching_format[lformat].intformat,
@@ -1098,9 +1172,18 @@ evas_gl_common_texture_update(Evas_GL_Texture *tex, RGBA_Image *im)
       case EVAS_COLORSPACE_ARGB8888: bytes_count = 4; break;
       case EVAS_COLORSPACE_GRY8: bytes_count = 1; break;
       case EVAS_COLORSPACE_AGRY88: bytes_count = 2; break;
+      // Compressed texture formats: S3TC and ETC1/2
+      case EVAS_COLORSPACE_RGBA8_ETC2_EAC:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT2:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT3:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT4:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT5:
+        bsize = 16;
+        // fallthrough
+      case EVAS_COLORSPACE_RGB_S3TC_DXT1:
+      case EVAS_COLORSPACE_RGBA_S3TC_DXT1:
       case EVAS_COLORSPACE_ETC1:
       case EVAS_COLORSPACE_RGB8_ETC2:
-      case EVAS_COLORSPACE_RGBA8_ETC2_EAC:
         {
            /*
              ETC1/2 can't be scaled down on the fly and interpolated, like it is
@@ -1111,17 +1194,12 @@ evas_gl_common_texture_update(Evas_GL_Texture *tex, RGBA_Image *im)
            */
            GLsizei width, height;
            GLint x, y;
-           int etc_block_size = 8;
 
-           if (im->cache_entry.space == EVAS_COLORSPACE_RGBA8_ETC2_EAC)
-             etc_block_size = 16;
-
-           x = tex->x - 1;
-           y = tex->y - 1;
-           width = im->cache_entry.w + 2;
-           height = im->cache_entry.h + 2;
-           width = ((width >> 2) + (width & 0x3 ? 1 : 0)) << 2;
-           height = ((height >> 2) + (height & 0x3 ? 1 : 0)) << 2;
+           x = tex->x - im->cache_entry.borders.l;
+           y = tex->y - im->cache_entry.borders.t;
+           width = im->cache_entry.w + im->cache_entry.borders.l + im->cache_entry.borders.r;
+           height = im->cache_entry.h + im->cache_entry.borders.t + im->cache_entry.borders.b;
+           EINA_SAFETY_ON_FALSE_RETURN(!(width & 0x3) && !(height & 0x3));
 
            glBindTexture(GL_TEXTURE_2D, tex->pt->texture);
            GLERR(__FUNCTION__, __FILE__, __LINE__, "");
@@ -1130,32 +1208,19 @@ evas_gl_common_texture_update(Evas_GL_Texture *tex, RGBA_Image *im)
                (im->cache_entry.space != EVAS_COLORSPACE_ETC1))
                && (tex->pt->w != width || tex->pt->h != height))
              {
-                int glerr;
-                glerr = glGetError();
-
-                if (!tex->pt->comptex_ready)
-                  {
-                     GLsizei tw, th;
-                     tw = ((tex->pt->w >> 2) + (tex->pt->w & 0x3 ? 1 : 0)) << 2;
-                     th = ((tex->pt->h >> 2) + (tex->pt->h & 0x3 ? 1 : 0)) << 2;
-                     glCompressedTexImage2D(GL_TEXTURE_2D, 0, tex->pt->format,
-                                            tw, th, 0,
-                                            ((tw * th) >> 4) * etc_block_size,
-                                            NULL);
-                     GLERR(__FUNCTION__, __FILE__, __LINE__, "");
-                     tex->pt->comptex_ready = EINA_TRUE;
-                  }
+                int err;
+                err = glGetError();
 
                 glCompressedTexSubImage2D(GL_TEXTURE_2D, 0,
                                           x, y, width, height,
                                           tex->pt->format,
-                                          ((width * height) >> 4) * etc_block_size,
+                                          ((width * height) >> 4) * bsize,
                                           im->image.data);
 
-                glerr = glGetError();
-                if (glerr != GL_NO_ERROR)
+                err = glGetError();
+                if (err != GL_NO_ERROR)
                   {
-                     ERR("glCompressedTexSubImage2D failed with ETC1/2: %d", glerr);
+                     glerr(err, __FILE__, __FUNCTION__, __LINE__, "glCompressedTexSubImage2D");
 
                      // FIXME: Changing settings on the fly.
                      // The first texture will be black.
@@ -1168,7 +1233,7 @@ evas_gl_common_texture_update(Evas_GL_Texture *tex, RGBA_Image *im)
              {
                 glCompressedTexImage2D(GL_TEXTURE_2D, 0, tex->pt->format,
                                        width, height, 0,
-                                       ((width * height) >> 4) * etc_block_size,
+                                       ((width * height) >> 4) * bsize,
                                        im->image.data);
                 GLERR(__FUNCTION__, __FILE__, __LINE__, "");
              }
@@ -1228,6 +1293,8 @@ evas_gl_common_texture_update(Evas_GL_Texture *tex, RGBA_Image *im)
 
         // Creating the mini picture texture
         lformat = _evas_gl_texture_search_format(tex->alpha, tex->gc->shared->info.bgra, im->cache_entry.space);
+        if (lformat < 0) return;
+
         tex->ptt = _pool_tex_find(tex->gc, EVAS_GL_TILE_SIZE, EVAS_GL_TILE_SIZE,
                                   *matching_format[lformat].intformat,
                                   *matching_format[lformat].format,

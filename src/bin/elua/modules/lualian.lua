@@ -170,7 +170,7 @@ local Method = Node:clone {
         local allocs = {}
         proto.allocs = allocs
 
-        proto.full_name = self.parent_node.prefix .. "_" .. proto.name
+        proto.full_name = meth:full_c_name_get(self.parent_node.prefix)
 
         local dirs = eolian.parameter_dir
 
@@ -266,7 +266,7 @@ local Property = Method:clone {
         local allocs = {}
         proto.allocs = allocs
 
-        proto.full_name = self.parent_node.prefix .. "_" .. proto.name
+        proto.full_name = prop:full_c_name_get(self.parent_node.prefix)
             .. proto.suffix
 
         local dirs = eolian.parameter_dir
@@ -675,6 +675,10 @@ M.include_dir = function(dir)
     if not eolian.directory_scan(dir) then
         error("Failed including directory: " .. dir)
     end
+end
+
+M.load_eot_files = function()
+    return eolian.all_eot_files_parse()
 end
 
 M.generate = function(fname, modname, libname, fstream)

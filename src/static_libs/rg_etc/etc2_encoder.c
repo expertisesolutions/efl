@@ -88,41 +88,53 @@ static const int kBlockWalk[16] = {
    (((byteval) >> (bit)) & 0x1)
 
 // Real clamp
-#define CLAMP(a) ({ int _b = (a); (((_b) >= 0) ? (((_b) < 256) ? (_b) : 255) : 0); })
-
-// Simple min
-#define MIN(a,b) ({ int _z = (a), _y = (b); ((_z <= _y) ? _z : _y); })
-
-// Simple max
-#define MAX(a,b) ({ int __z = (a), __y = (b); ((__z > __y) ? __z : __y); })
+static inline int
+clampi(int a)
+{
+   if (EINA_LIKELY(!(a & ~0xFF)))
+     return a;
+   else if (a < 0)
+     return 0;
+   else
+     return 0xFF;
+}
 
 // Simple clamp between two values
-#define MINMAX(a,b,c) (MIN(c,MAX(a,b)))
+static inline int
+minmaxi(int val, int m, int M)
+{
+   if (EINA_LIKELY((val >= m) && (val <= M)))
+     return val;
+   else if (val < m)
+     return m;
+   else
+     return M;
+}
 
 // Simple abs
-#define ABS(a) ({ int _a = (a); ((_a >= 0) ? _a : (-_a)); })
+static inline int
+absi(int a)
+{
+   if (EINA_LIKELY(a >= 0))
+     return a;
+   else
+     return (-a);
+}
 
 // Write a BGRA value for output to Evas
 #define BGRA(r,g,b,a) ((a << 24) | (r << 16) | (g << 8) | b)
 
+#define A_VAL(v) ((uint8_t) ((v & 0xFF000000) >> 24))
+#define R_VAL(v) ((uint8_t) ((v & 0x00FF0000) >> 16))
+#define G_VAL(v) ((uint8_t) ((v & 0x0000FF00) >> 8))
+#define B_VAL(v) ((uint8_t) ((v & 0x000000FF)))
+
 #ifndef WORDS_BIGENDIAN
-/* x86 */
-#define A_VAL(p) (((uint8_t *)(p))[3])
-#define R_VAL(p) (((uint8_t *)(p))[2])
-#define G_VAL(p) (((uint8_t *)(p))[1])
-#define B_VAL(p) (((uint8_t *)(p))[0])
-#define R_IDX 2
-#define G_IDX 1
-#define B_IDX 0
+# define RGB_START 0
+# define RGB_END   2
 #else
-/* ppc */
-#define A_VAL(p) (((uint8_t *)(p))[0])
-#define R_VAL(p) (((uint8_t *)(p))[1])
-#define G_VAL(p) (((uint8_t *)(p))[2])
-#define B_VAL(p) (((uint8_t *)(p))[3])
-#define R_IDX 1
-#define G_IDX 2
-#define B_IDX 3
+# define RGB_START 1
+# define RGB_END   3
 #endif
 
 #ifndef DBG
@@ -158,14 +170,14 @@ _etc2_alpha_block_pack(uint8_t *etc2_alpha,
    // Compute alphas now
    for (int i = 0; i < 16; i++)
      {
-        const int realA = A_VAL(bgra + kBlockWalk[i]);
+        const int realA = A_VAL(bgra[kBlockWalk[i]]);
         int minErr = INT_MAX, idx = 0;
 
         // Brute force -- find modifier index
         for (int k = 0; (k < 8) && minErr; k++)
           {
-             int tryA = CLAMP(base_codeword + alphaModifiers[k] * multiplier);
-             int err = ABS(realA - tryA);
+             int tryA = clampi(base_codeword + alphaModifiers[k] * multiplier);
+             int err = absi(realA - tryA);
              if (err < minErr)
                {
                   minErr = err;
@@ -206,20 +218,21 @@ _etc2_alpha_encode(uint8_t *etc2_alpha, const uint32_t *bgra,
    int base_codeword;
    int multiplier, bestMult = 0;
    int modifierIdx, bestIdx = 0, bestBase = 128;
-   int err, base_range, base_step = 1, max_error = 0;
+   int err, base_range = 40, base_step = 4, max_error = 0;
 
    // Try to select the best alpha value (avg)
    for (int i = 0; i < 16; i++)
      {
-        alphas[i] = A_VAL(bgra + kBlockWalk[i]);
+        alphas[i] = A_VAL(bgra[kBlockWalk[i]]);
         avg += alphas[i];
      }
    avg /= 16;
 
    for (int i = 0; i < 16; i++)
      {
-        int thisDiff = ABS(alphas[i] - avg);
-        maxDiff = MAX(thisDiff, maxDiff);
+        int thisDiff = absi(alphas[i] - avg);
+        if (thisDiff > maxDiff)
+          maxDiff = thisDiff;
         diff += thisDiff;
      }
 
@@ -254,13 +267,13 @@ _etc2_alpha_encode(uint8_t *etc2_alpha, const uint32_t *bgra,
 
    // for loop avg, avg-1, avg+1, avg-2, avg+2, ...
    for (int step = 0; step < base_range; step += base_step)
-     for (base_codeword = CLAMP(avg - step);
-          base_codeword <= CLAMP(avg + step);)
+     for (base_codeword = clampi(avg - step);
+          base_codeword <= clampi(avg + step);)
        {
           for (modifierIdx = 0; modifierIdx < 16; modifierIdx++)
             for (multiplier = 0; multiplier < 16; multiplier++)
               {
-                 if ((ABS(multiplier * kAlphaModifiers[modifierIdx][3]) + ABS(base_codeword - avg)) < maxDiff)
+                 if ((absi(multiplier * kAlphaModifiers[modifierIdx][3]) + absi(base_codeword - avg)) < maxDiff)
                    continue;
 
                  err = _etc2_alpha_block_pack(etc2_alpha, base_codeword,
@@ -278,7 +291,7 @@ _etc2_alpha_encode(uint8_t *etc2_alpha, const uint32_t *bgra,
               }
           if (step <= 0) break;
           if (base_codeword < 255)
-            base_codeword = CLAMP(base_codeword + 2 * step);
+            base_codeword = clampi(base_codeword + 2 * step);
           else
             break;
        }
@@ -294,12 +307,12 @@ _etc2_t_mode_header_pack(uint8_t *etc2,
                          uint32_t color1, uint32_t color2, int distance)
 {
    // 4 bit colors
-   int r1_4 = R_VAL(&color1) >> 4;
-   int g1_4 = G_VAL(&color1) >> 4;
-   int b1_4 = B_VAL(&color1) >> 4;
-   int r2_4 = R_VAL(&color2) >> 4;
-   int g2_4 = G_VAL(&color2) >> 4;
-   int b2_4 = B_VAL(&color2) >> 4;
+   int r1_4 = R_VAL(color1) >> 4;
+   int g1_4 = G_VAL(color1) >> 4;
+   int b1_4 = B_VAL(color1) >> 4;
+   int r2_4 = R_VAL(color2) >> 4;
+   int g2_4 = G_VAL(color2) >> 4;
+   int b2_4 = B_VAL(color2) >> 4;
    int distanceIdx, R, dR;
 
    for (distanceIdx = 0; distanceIdx < 8; distanceIdx++)
@@ -365,25 +378,25 @@ _etc2_h_mode_header_pack(uint8_t *etc2, Eina_Bool *swap_colors,
    // Note: if c1 == c2, no big deal because H is not the best choice of mode
    if (distanceSpecialBit)
      {
-        c1 = MAX(color1, color2);
-        c2 = MIN(color1, color2);
+        c1 = (color1 > color2) ? color1 : color2;
+        c2 = (color1 <= color2) ? color1 : color2;
      }
    else
      {
-        c1 = MIN(color1, color2);
-        c2 = MAX(color1, color2);
+        c1 = (color1 <= color2) ? color1 : color2;
+        c2 = (color1 > color2) ? color1 : color2;
      }
 
    // Return flag so we use the proper colors when packing the block
    *swap_colors = (c1 != color1);
 
    // 4 bit colors
-   r1_4 = R_VAL(&c1) >> 4;
-   g1_4 = G_VAL(&c1) >> 4;
-   b1_4 = B_VAL(&c1) >> 4;
-   r2_4 = R_VAL(&c2) >> 4;
-   g2_4 = G_VAL(&c2) >> 4;
-   b2_4 = B_VAL(&c2) >> 4;
+   r1_4 = R_VAL(c1) >> 4;
+   g1_4 = G_VAL(c1) >> 4;
+   b1_4 = B_VAL(c1) >> 4;
+   r2_4 = R_VAL(c2) >> 4;
+   g2_4 = G_VAL(c2) >> 4;
+   b2_4 = B_VAL(c2) >> 4;
 
    // R1 + G1a. R + [dR] must be inside [0..31]. Scanning all values. Not smart.
    R  = r1_4;
@@ -431,67 +444,78 @@ _etc2_h_mode_header_pack(uint8_t *etc2, Eina_Bool *swap_colors,
 static inline int
 _rgb_distance_percept(uint32_t color1, uint32_t color2)
 {
-   int R = R_VAL(&color1) - R_VAL(&color2);
-   int G = G_VAL(&color1) - G_VAL(&color2);
-   int B = B_VAL(&color1) - B_VAL(&color2);
+   int R = R_VAL(color1) - R_VAL(color2);
+   int G = G_VAL(color1) - G_VAL(color2);
+   int B = B_VAL(color1) - B_VAL(color2);
    return (R * R * R_WEIGHT) + (G * G * G_WEIGHT) + (B * B * B_WEIGHT);
 }
 
 static inline int
 _rgb_distance_euclid(uint32_t color1, uint32_t color2)
 {
-   int R = R_VAL(&color1) - R_VAL(&color2);
-   int G = G_VAL(&color1) - G_VAL(&color2);
-   int B = B_VAL(&color1) - B_VAL(&color2);
+   int R = R_VAL(color1) - R_VAL(color2);
+   int G = G_VAL(color1) - G_VAL(color2);
+   int B = B_VAL(color1) - B_VAL(color2);
    return (R * R) + (G * G) + (B * B);
 }
 
 static unsigned int
 _etc2_th_mode_block_pack(uint8_t *etc2, Eina_Bool h_mode,
-                         uint32_t color1, uint32_t color2, int distance,
+                         uint32_t c1, uint32_t c2, int distance,
                          const uint32_t *bgra, Eina_Bool write,
                          Eina_Bool *swap_colors)
 {
-   uint8_t paint_colors[4][4];
+   union {
+      uint8_t c[4];
+      uint32_t v;
+   } paint_colors[4], color1, color2;
    int errAcc = 0;
+
+   paint_colors[0].v = 0;
+   paint_colors[1].v = 0;
+   paint_colors[2].v = 0;
+   paint_colors[3].v = 0;
+   color1.v = c1;
+   color2.v = c2;
 
    if (write)
      {
         memset(etc2 + 4, 0, 4);
         if (!h_mode)
           {
-             if (!_etc2_t_mode_header_pack(etc2, color1, color2, distance))
+             if (!_etc2_t_mode_header_pack(etc2, color1.v, color2.v, distance))
                return INT_MAX; // assert
           }
         else
           {
              if (!_etc2_h_mode_header_pack(etc2, swap_colors,
-                                           color1, color2, distance))
+                                           color1.v, color2.v, distance))
                return INT_MAX; // assert
              if (*swap_colors)
                {
-                  uint32_t tmp = color1;
-                  color1 = color2;
-                  color2 = tmp;
+                  uint32_t tmp = color1.v;
+                  color1.v = color2.v;
+                  color2.v = tmp;
                }
           }
      }
 
-   for (int k = 0; k < 4; k++)
+   // Set paint_colors using R,G,B values (byte order is preserved)
+   for (int k = RGB_START; k <= RGB_END; k++)
      {
         if (!h_mode)
           {
-             paint_colors[0][k] = ((uint8_t *) &color1)[k];
-             paint_colors[1][k] = CLAMP(((uint8_t *) &color2)[k] + distance);
-             paint_colors[2][k] = ((uint8_t *) &color2)[k];
-             paint_colors[3][k] = CLAMP(((uint8_t *) &color2)[k] - distance);
+             paint_colors[0].c[k] = color1.c[k];
+             paint_colors[1].c[k] = clampi(color2.c[k] + distance);
+             paint_colors[2].c[k] = color2.c[k];
+             paint_colors[3].c[k] = clampi(color2.c[k] - distance);
           }
         else
           {
-             paint_colors[0][k] = CLAMP(((uint8_t *) &color1)[k] + distance);
-             paint_colors[1][k] = CLAMP(((uint8_t *) &color1)[k] - distance);
-             paint_colors[2][k] = CLAMP(((uint8_t *) &color2)[k] + distance);
-             paint_colors[3][k] = CLAMP(((uint8_t *) &color2)[k] - distance);
+             paint_colors[0].c[k] = clampi(color1.c[k] + distance);
+             paint_colors[1].c[k] = clampi(color1.c[k] - distance);
+             paint_colors[2].c[k] = clampi(color2.c[k] + distance);
+             paint_colors[3].c[k] = clampi(color2.c[k] - distance);
           }
      }
 
@@ -503,7 +527,7 @@ _etc2_th_mode_block_pack(uint8_t *etc2, Eina_Bool h_mode,
 
         for (int idx = 0; idx < 4; idx++)
           {
-             int dist = _rgb_distance_euclid(pixel, *((uint32_t *) paint_colors[idx]));
+             int dist = _rgb_distance_euclid(pixel, paint_colors[idx].v);
              if (dist < bestDist)
                {
                   bestDist = dist;
@@ -527,9 +551,9 @@ _etc2_th_mode_block_pack(uint8_t *etc2, Eina_Bool h_mode,
 static uint32_t
 _color_reduce_444(uint32_t color)
 {
-   int R = R_VAL(&color);
-   int G = G_VAL(&color);
-   int B = B_VAL(&color);
+   int R = R_VAL(color);
+   int G = G_VAL(color);
+   int B = B_VAL(color);
    int R1, R2, G1, G2, B1, B2;
 
    R1 = (R & 0xF0) | (R >> 4);
@@ -539,9 +563,9 @@ _color_reduce_444(uint32_t color)
    B1 = (B & 0xF0) | (B >> 4);
    B2 = ((B & 0xF0) + 0x10) | ((B >> 4) + 1);
 
-   R = (ABS(R - R1) <= ABS(R - R2)) ? R1 : R2;
-   G = (ABS(G - G1) <= ABS(G - G2)) ? G1 : G2;
-   B = (ABS(B - B1) <= ABS(B - B2)) ? B1 : B2;
+   R = (absi(R - R1) <= absi(R - R2)) ? R1 : R2;
+   G = (absi(G - G1) <= absi(G - G2)) ? G1 : G2;
+   B = (absi(B - B1) <= absi(B - B2)) ? B1 : B2;
 
    return BGRA(R, G, B, 255);
 }
@@ -549,9 +573,9 @@ _color_reduce_444(uint32_t color)
 static uint32_t
 _color_reduce_676(uint32_t color)
 {
-   int R = R_VAL(&color);
-   int G = G_VAL(&color);
-   int B = B_VAL(&color);
+   int R = R_VAL(color);
+   int G = G_VAL(color);
+   int B = B_VAL(color);
    int R1, G1, B1;
 
    // FIXME: Do we have better candidates to try?
@@ -628,16 +652,16 @@ _block_main_colors_find(uint32_t *color1_out, uint32_t *color2_out,
         // k-means update step
         for (int k = 0; k < cluster1_cnt; k++)
           {
-             r1 += R_VAL(bgra + cluster1[k]);
-             g1 += G_VAL(bgra + cluster1[k]);
-             b1 += B_VAL(bgra + cluster1[k]);
+             r1 += R_VAL(bgra[cluster1[k]]);
+             g1 += G_VAL(bgra[cluster1[k]]);
+             b1 += B_VAL(bgra[cluster1[k]]);
           }
 
         for (int k = 0; k < cluster2_cnt; k++)
           {
-             r2 += R_VAL(bgra + cluster2[k]);
-             g2 += G_VAL(bgra + cluster2[k]);
-             b2 += B_VAL(bgra + cluster2[k]);
+             r2 += R_VAL(bgra[cluster2[k]]);
+             g2 += G_VAL(bgra[cluster2[k]]);
+             b2 += B_VAL(bgra[cluster2[k]]);
           }
 
         r1 /= cluster1_cnt;
@@ -859,15 +883,15 @@ _etc2_planar_mode_block_pack(uint8_t *etc2,
    unsigned int err = 0;
    uint32_t RO, RH, RV, GO, GH, GV, BO, BH, BV;
 
-   RO = R_VAL(&Ocol);
-   RH = R_VAL(&Hcol);
-   RV = R_VAL(&Vcol);
-   GO = G_VAL(&Ocol);
-   GH = G_VAL(&Hcol);
-   GV = G_VAL(&Vcol);
-   BO = B_VAL(&Ocol);
-   BH = B_VAL(&Hcol);
-   BV = B_VAL(&Vcol);
+   RO = R_VAL(Ocol);
+   RH = R_VAL(Hcol);
+   RV = R_VAL(Vcol);
+   GO = G_VAL(Ocol);
+   GH = G_VAL(Hcol);
+   GV = G_VAL(Vcol);
+   BO = B_VAL(Ocol);
+   BH = B_VAL(Hcol);
+   BV = B_VAL(Vcol);
 
    if (write)
      {
@@ -880,9 +904,9 @@ _etc2_planar_mode_block_pack(uint8_t *etc2,
    for (int y = 0; y < 4; y++)
      for (int x = 0; x < 4; x++)
        {
-          const int R = CLAMP(((x * (RH - RO)) + y * (RV - RO) + 4 * RO + 2) >> 2);
-          const int G = CLAMP(((x * (GH - GO)) + y * (GV - GO) + 4 * GO + 2) >> 2);
-          const int B = CLAMP(((x * (BH - BO)) + y * (BV - BO) + 4 * BO + 2) >> 2);
+          const int R = clampi(((x * (RH - RO)) + y * (RV - RO) + 4 * RO + 2) >> 2);
+          const int G = clampi(((x * (GH - GO)) + y * (GV - GO) + 4 * GO + 2) >> 2);
+          const int B = clampi(((x * (BH - BO)) + y * (BV - BO) + 4 * BO + 2) >> 2);
           uint32_t color = BGRA(R, G, B, 255);
 
           err += _rgb_distance_euclid(color, bgra[x + y * 4]);
@@ -908,19 +932,19 @@ _etc2_planar_mode_block_encode(uint8_t *etc2, const uint32_t *bgra,
     * We extrapolate the values from (0,3) and (3,0).
     */
 
-   RO = R_VAL(&(bgra[0]));
-   GO = G_VAL(&(bgra[0]));
-   BO = B_VAL(&(bgra[0]));
+   RO = R_VAL((bgra[0]));
+   GO = G_VAL((bgra[0]));
+   BO = B_VAL((bgra[0]));
    Ocol = _color_reduce_676(bgra[0]);
 
-   Rx = CLAMP(RO + (4 * (R_VAL(&(bgra[3])) - RO)) / 3);
-   Gx = CLAMP(GO + (4 * (G_VAL(&(bgra[3])) - GO)) / 3);
-   Bx = CLAMP(BO + (4 * (B_VAL(&(bgra[3])) - BO)) / 3);
+   Rx = clampi(RO + (4 * (R_VAL((bgra[3])) - RO)) / 3);
+   Gx = clampi(GO + (4 * (G_VAL((bgra[3])) - GO)) / 3);
+   Bx = clampi(BO + (4 * (B_VAL((bgra[3])) - BO)) / 3);
    Hcol = _color_reduce_676(BGRA(Rx, Gx, Bx, 0xFF));
 
-   Rx = CLAMP(RO + (4 * (R_VAL(&(bgra[12])) - RO)) / 3);
-   Gx = CLAMP(GO + (4 * (G_VAL(&(bgra[12])) - GO)) / 3);
-   Bx = CLAMP(BO + (4 * (B_VAL(&(bgra[12])) - BO)) / 3);
+   Rx = clampi(RO + (4 * (R_VAL((bgra[12])) - RO)) / 3);
+   Gx = clampi(GO + (4 * (G_VAL((bgra[12])) - GO)) / 3);
+   Bx = clampi(BO + (4 * (B_VAL((bgra[12])) - BO)) / 3);
    Vcol = _color_reduce_676(BGRA(Rx, Gx, Bx, 0xFF));
 
    err = _etc2_planar_mode_block_pack(etc2, Ocol, Hcol, Vcol, bgra, EINA_TRUE);
@@ -961,7 +985,7 @@ etc2_rgba8_block_pack(unsigned char *etc2, const unsigned int *bgra,
 #endif
 
    safe_params.m_dithering = !!params->m_dithering;
-   safe_params.m_quality = MINMAX(params->m_quality, 0, 2);
+   safe_params.m_quality = minmaxi(params->m_quality, 0, 2);
 
    errors[0] = rg_etc1_pack_block(etc2_try[0], bgra, &safe_params);
    errors[1] = _etc2_th_mode_block_encode(etc2_try[1], bgra, &safe_params);
@@ -1017,7 +1041,7 @@ etc2_rgb8_block_pack(unsigned char *etc2, const unsigned int *bgra,
   int bestSolution = 0;
 
   safe_params.m_dithering = !!params->m_dithering;
-  safe_params.m_quality = MINMAX(params->m_quality, 0, 2);
+  safe_params.m_quality = minmaxi(params->m_quality, 0, 2);
 
   errors[0] = rg_etc1_pack_block(etc2_try[0], bgra, &safe_params);
   errors[1] = _etc2_th_mode_block_encode(etc2_try[1], bgra, &safe_params);

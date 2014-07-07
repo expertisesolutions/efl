@@ -73,14 +73,14 @@ static int _sort_defined_boxes(const void *a, const void *b);
 /************************** API Routines **************************/
 
 EOLIAN void
-_edje_file_get(Eo *obj EINA_UNUSED, Edje *ed, const char **file, const char **group)
+_edje_object_file_get(Eo *obj EINA_UNUSED, Edje *ed, const char **file, const char **group)
 {
    if (file) *file = ed->path;
    if (group) *group = ed->group;
 }
 
 EOLIAN Edje_Load_Error
-_edje_load_error_get(Eo *obj EINA_UNUSED, Edje *ed)
+_edje_object_load_error_get(Eo *obj EINA_UNUSED, Edje *ed)
 {
    return ed->load_error;
 }
@@ -1427,9 +1427,6 @@ _edje_file_del(Edje *ed)
      }
    if (ed->file)
      {
-#ifdef HAVE_EIO
-        ed->file->edjes = eina_list_remove(ed->file->edjes, ed);
-#endif
         _edje_cache_file_unref(ed->file);
         ed->file = NULL;
      }
@@ -1472,9 +1469,6 @@ void
 _edje_file_free(Edje_File *edf)
 {
    Edje_Color_Class *ecc;
-#ifdef HAVE_EIO
-   Ecore_Event_Handler *event;
-#endif
 
 #define HASH_FREE(Hash)                         \
    if (Hash) eina_hash_free(Hash);              \
@@ -1561,12 +1555,6 @@ _edje_file_free(Edje_File *edf)
      }
 
    if (edf->collection_patterns) edje_match_patterns_free(edf->collection_patterns);
-#ifdef HAVE_EIO
-   if (edf->timeout) ecore_timer_del(edf->timeout);
-   EINA_LIST_FREE(edf->handlers, event)
-      ecore_event_handler_del(event);
-   eio_monitor_del(edf->monitor);
-#endif
    if (edf->path) eina_stringshare_del(edf->path);
    if (edf->free_strings && edf->compiler) eina_stringshare_del(edf->compiler);
    _edje_textblock_style_cleanup(edf);

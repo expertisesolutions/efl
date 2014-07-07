@@ -625,6 +625,9 @@ evas_gl_common_context_new(void)
 #endif
              if (strstr((char *)ext, "OES_compressed_ETC1_RGB8_texture"))
                shared->info.etc1 = 1;
+             if (strstr((char *)ext, "GL_EXT_texture_compression_s3tc") ||
+                 strstr((char *)ext, "GL_S3_s3tc"))
+               shared->info.s3tc = 1;
 #ifdef GL_GLES
              // FIXME: there should be an extension name/string to check for
              // not just symbols in the lib
@@ -761,6 +764,7 @@ evas_gl_common_context_new(void)
                    "bgra : %i\n"
                    "etc1 : %i\n"
                    "etc2 : %i%s\n"
+                   "s3tc : %i\n"
                    "max ansiotropic filtering: %3.3f\n"
                    "egl sec map image: %i\n"
                    "max vertex count: %i\n"
@@ -781,6 +785,7 @@ evas_gl_common_context_new(void)
                    (int)shared->info.bgra,
                    (int)shared->info.etc1,
                    (int)shared->info.etc2, shared->info.etc2 ? " (GL_COMPRESSED_RGB8_ETC2, GL_COMPRESSED_RGBA8_ETC2_EAC)" : "",
+                   (int)shared->info.s3tc,
                    (double)shared->info.anisotropic,
                    (int)shared->info.sec_image_map,
                    (int)shared->info.max_vertex_elements,
@@ -855,9 +860,6 @@ evas_gl_common_context_new(void)
 
         SHADER_TEXTURE_ADD(shared, NV12_NOMUL, tex);
         SHADER_TEXTURE_ADD(shared, NV12_NOMUL, texuv);
-
-        SHADER_TEXTURE_ADD(shared, IMG_MASK, tex);
-        SHADER_TEXTURE_ADD(shared, IMG_MASK, texm);
 
         if (gc->state.current.cur_prog == PRG_INVALID)
            glUseProgram(shared->shader[0].prog);
@@ -943,6 +945,7 @@ evas_gl_common_context_free(Evas_Engine_GL_Context *gc)
           }
         EINA_LIST_FOREACH(gc->shared->tex.whole, l, pt)
            evas_gl_texture_pool_empty(pt);
+        eina_list_free(gc->shared->info.cspaces);
         eina_list_free(gc->shared->tex.whole);
         eina_hash_free(gc->shared->native_pm_hash);
         eina_hash_free(gc->shared->native_tex_hash);
@@ -1857,6 +1860,19 @@ evas_gl_common_context_image_push(Evas_Engine_GL_Context *gc,
         ty2 = ((double)(offsety) + sy + sh) / (double)pt->h;
      }
 
+   /* To avoid texture bleeding in the texture atlas,
+      we adjust texture uv point as much as a half uv point.
+      Especially, This improves the rendering quality when the image has the
+      border area. */
+   if (smooth)
+     {
+        GLfloat txhu, txhv;   //texture uv half point
+        txhu = (0.5f * (tx2 - tx1)) / (GLfloat) sw;
+        txhv = (0.5f * (ty2 - ty1)) / (GLfloat) sh;
+        tx1 += txhu; tx2 -= txhu;
+        ty1 += txhv; ty2 -= txhv;
+     }
+
    PUSH_VERTEX(pn, x    , y    , 0);
    PUSH_VERTEX(pn, x + w, y    , 0);
    PUSH_VERTEX(pn, x    , y + h, 0);
@@ -1893,134 +1909,6 @@ evas_gl_common_context_image_push(Evas_Engine_GL_Context *gc,
         PUSH_COLOR(pn, r, g, b, a);
      }
 }
-
-void
-evas_gl_common_context_image_mask_push(Evas_Engine_GL_Context *gc,
-                                  Evas_GL_Texture *tex,
-                                  Evas_GL_Texture *texm,
-                                  double sx, double sy, double sw, double sh,
-                                  double sxm, double sym, double swm,double shm,
-                                  int x, int y, int w, int h,
-                                  int r, int g, int b, int a,
-                                  Eina_Bool smooth)
-{
-   int pnum, nv, nc, nu, nm, i;
-   GLfloat tx1, tx2, ty1, ty2;
-   GLfloat txm1, txm2, tym1, tym2;
-   Eina_Bool blend = 1;
-   GLuint prog = gc->shared->shader[SHADER_IMG_MASK].prog;
-   int pn = 0;
-
-#if 0
-   if (tex->gc->shared->info.bgra)
-   {
-      prog = gc->shared->shader[SHADER_IMG_MASK].prog;
-   }
-   else
-   {
-#warning Nash: FIXME: Need two shaders?
-	   printf("Not good: Need other texture\n");
-	   prog = gc->shared->shader[SHADER_IMG].prog;
-   }
-#endif
-
-   pn = _evas_gl_common_context_push(RTYPE_IMASK,
-                                     gc, tex, texm,
-                                     prog,
-                                     x, y, w, h,
-                                     blend,
-                                     smooth,
-                                     0, 0, 0, 0, 0);
-
-   gc->pipe[pn].region.type = RTYPE_IMASK;
-   gc->pipe[pn].shader.cur_tex = tex->pt->texture;
-   gc->pipe[pn].shader.cur_texm = texm->pt->texture;
-   gc->pipe[pn].shader.cur_prog = prog;
-   gc->pipe[pn].shader.smooth = smooth;
-   gc->pipe[pn].shader.blend = blend;
-   gc->pipe[pn].shader.render_op = gc->dc->render_op;
-   gc->pipe[pn].shader.clip = 0;
-   gc->pipe[pn].shader.cx = 0;
-   gc->pipe[pn].shader.cy = 0;
-   gc->pipe[pn].shader.cw = 0;
-   gc->pipe[pn].shader.ch = 0;
-   gc->pipe[pn].array.line = 0;
-   gc->pipe[pn].array.use_vertex = 1;
-   // if nomul... dont need this
-   gc->pipe[pn].array.use_color = 1;
-   gc->pipe[pn].array.use_texuv = 1;
-   gc->pipe[pn].array.use_texuv2 = 0;
-   gc->pipe[pn].array.use_texuv3 = 0;
-   gc->pipe[pn].array.use_texm = 1;
-   gc->pipe[pn].array.use_texsam = 0;
-
-   pipe_region_expand(gc, pn, x, y, w, h);
-
-   pnum = gc->pipe[pn].array.num;
-   nv = pnum * 3; nc = pnum * 4; nm = pnum * 2; nu = pnum * 2;
-   gc->pipe[pn].array.num += 6;
-   array_alloc(gc, pn);
-
-   if ((tex->im) && (tex->im->native.data) && (!tex->im->native.yinvert))
-     {
-        tx1 = ((double)(tex->x) + sx) / (double)tex->pt->w;
-        ty1 = ((double)(tex->y) + sy + sh) / (double)tex->pt->h;
-        tx2 = ((double)(tex->x) + sx + sw) / (double)tex->pt->w;
-        ty2 = ((double)(tex->y) + sy) / (double)tex->pt->h;
-
-        txm1 = ((double)(texm->x) + sxm) / (double)texm->pt->w;
-        tym1 = ((double)(texm->y) + sym + shm) / (double)texm->pt->h;
-        txm2 = ((double)(texm->x) + sxm + swm) / (double)texm->pt->w;
-        tym2 = ((double)(texm->y) + sym) / (double)texm->pt->h;
-     }
-   else
-     {
-        tx1 = ((double)(tex->x) + sx) / (double)tex->pt->w;
-        ty1 = ((double)(tex->y) + sy) / (double)tex->pt->h;
-        tx2 = ((double)(tex->x) + sx + sw) / (double)tex->pt->w;
-        ty2 = ((double)(tex->y) + sy + sh) / (double)tex->pt->h;
-
-        txm1 = (texm->x + sxm) / (double)texm->pt->w;
-        tym1 = (texm->y + sym) / (double)texm->pt->h;
-        txm2 = (texm->x + sxm + swm) / (double)texm->pt->w;
-        tym2 = (texm->y + sym + shm) / (double)texm->pt->h;
-     }
- // printf(" %3.6lf %3.6lf %3.6lf %3.6lf\n",sx,sy,sw,sh);
- //  printf("m%3.6lf %3.6lf %3.6lf %3.6lf\n",sxm,sym,swm,shm);
- // printf(" %3f %3f %3f %3f\n",tx1,ty1,tx2,ty2);
- // printf("m%3f %3f %3f %3f\n",txm1,tym1,txm2,tym2);
-
-   PUSH_VERTEX(pn, x    , y    , 0);
-   PUSH_VERTEX(pn, x + w, y    , 0);
-   PUSH_VERTEX(pn, x    , y + h, 0);
-
-   PUSH_TEXUV(pn, tx1, ty1);
-   PUSH_TEXUV(pn, tx2, ty1);
-   PUSH_TEXUV(pn, tx1, ty2);
-
-   PUSH_TEXM(pn, txm1, tym1);
-   PUSH_TEXM(pn, txm2, tym1);
-   PUSH_TEXM(pn, txm1, tym2);
-
-   PUSH_VERTEX(pn, x + w, y    , 0);
-   PUSH_VERTEX(pn, x + w, y + h, 0);
-   PUSH_VERTEX(pn, x    , y + h, 0);
-
-   PUSH_TEXUV(pn, tx2, ty1);
-   PUSH_TEXUV(pn, tx2, ty2);
-   PUSH_TEXUV(pn, tx1, ty2);
-
-   PUSH_TEXM(pn, txm2, tym1);
-   PUSH_TEXM(pn, txm2, tym2);
-   PUSH_TEXM(pn, txm1, tym2);
-
-   // if nomul... dont need this
-   for (i = 0; i < 6; i++)
-     {
-        PUSH_COLOR(pn, r, g, b, a);
-     }
-}
-
 
 void
 evas_gl_common_context_font_push(Evas_Engine_GL_Context *gc,

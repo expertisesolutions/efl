@@ -38,6 +38,8 @@
 # include <windows.h>
 # undef WIN32_LEAN_AND_MEAN
 
+#include <process.h>
+
 typedef struct _Eina_TLS_Cbs_Win32 Eina_TLS_Cbs_Win32;
 struct _Eina_TLS_Cbs_Win32
 {
@@ -172,7 +174,7 @@ _eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
    return EINA_FALSE;
 }
 
-static DWORD WINAPI
+static unsigned int WINAPI
 _eina_thread_win32_cb(LPVOID lpParam)
 {
    Eina_Thread_Win32 *tw = lpParam;

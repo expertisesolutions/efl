@@ -37,7 +37,6 @@ include Makefile_Eo.am
 include Makefile_Eet.am
 include Makefile_Eolian.am
 include Makefile_Ecore.am
-include Makefile_Ecore_Cxx.am
 include Makefile_Ecore_Con.am
 include Makefile_Ecore_Ipc.am
 include Makefile_Ecore_File.am
@@ -78,6 +77,8 @@ include Makefile_Evas_Cxx.am
 endif
 
 include Makefile_Eina_Cxx.am
+include Makefile_Ecore_Cxx.am
+include Makefile_Eldbus_Cxx.am
 include Makefile_Eolian_Cxx.am
 include Makefile_Eet_Cxx.am
 include Makefile_Eo_Cxx.am
@@ -146,5 +147,10 @@ clean-local:
 	find . -type f -name check-results.xml -delete
 
 install-exec-hook:
-	for i in $(lib_LTLIBRARIES); do sed -i "s/-luuid//" $(DESTDIR)$(libdir)/`echo $$i | sed "s#lib/.*/##"`; done
+	for i in $(lib_LTLIBRARIES); do \
+	   FNAME="$(DESTDIR)$(libdir)/`echo $$i | sed "s#lib/.*/##"`"; \
+	   FNAMEEXT="$$FNAME.$$$$"; \
+	   sed "s/-luuid//" $$FNAME > $$FNAMEEXT; \
+	   mv $$FNAMEEXT $$FNAME; \
+	done
 	$(EFL_INSTALL_EXEC_HOOK)

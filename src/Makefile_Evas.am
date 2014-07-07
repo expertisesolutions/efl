@@ -37,9 +37,9 @@ BUILT_SOURCES += \
                  lib/evas/canvas/evas_object.eo.c \
                  lib/evas/canvas/evas_object.eo.h \
                  lib/evas/canvas/evas_object.eo.legacy.h \
-                 lib/evas/canvas/evas.eo.c \
-                 lib/evas/canvas/evas.eo.h \
-                 lib/evas/canvas/evas.eo.legacy.h \
+                 lib/evas/canvas/evas_canvas.eo.c \
+                 lib/evas/canvas/evas_canvas.eo.h \
+                 lib/evas/canvas/evas_canvas.eo.legacy.h \
                  lib/evas/canvas/evas_grid.eo.c \
                  lib/evas/canvas/evas_grid.eo.h \
                  lib/evas/canvas/evas_grid.eo.legacy.h \
@@ -93,7 +93,7 @@ evaseolianfiles_DATA = \
               lib/evas/canvas/evas_smart_clipped.eo \
               lib/evas/canvas/evas_table.eo \
               lib/evas/canvas/evas_common_interface.eo \
-              lib/evas/canvas/evas.eo \
+              lib/evas/canvas/evas_canvas.eo \
               lib/evas/canvas/evas_grid.eo \
               lib/evas/canvas/evas_image.eo \
               lib/evas/canvas/evas_out.eo \
@@ -141,7 +141,7 @@ nodist_installed_evascanvasheaders_DATA = \
                                         lib/evas/canvas/evas_table.eo.h \
                                         lib/evas/canvas/evas_common_interface.eo.h \
                                         lib/evas/canvas/evas_object.eo.h \
-                                        lib/evas/canvas/evas.eo.h \
+                                        lib/evas/canvas/evas_canvas.eo.h \
                                         lib/evas/canvas/evas_grid.eo.h \
                                         lib/evas/canvas/evas_image.eo.h \
                                         lib/evas/canvas/evas_out.eo.h \
@@ -166,7 +166,7 @@ nodist_installed_evascanvasheaders_DATA = \
                                         lib/evas/canvas/evas_image.eo.legacy.h \
                                         lib/evas/canvas/evas_out.eo.legacy.h \
                                         lib/evas/canvas/evas_box.eo.legacy.h \
-                                        lib/evas/canvas/evas.eo.legacy.h \
+                                        lib/evas/canvas/evas_canvas.eo.legacy.h \
                                         lib/evas/canvas/evas_3d_camera.eo.h \
                                         lib/evas/canvas/evas_3d_light.eo.h \
                                         lib/evas/canvas/evas_3d_material.eo.h \
@@ -390,7 +390,7 @@ lib_evas_libevas_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
 -DPACKAGE_BIN_DIR=\"$(bindir)\" \
 -DPACKAGE_LIB_DIR=\"$(libdir)\" \
 -DPACKAGE_DATA_DIR=\"$(datadir)/evas\" \
--DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)\" \
+-DPACKAGE_BUILD_DIR=\"$(abs_top_builddir)\" \
 @EVAS_CFLAGS@ \
 @VALGRIND_CFLAGS@ \
 @ALTIVEC_CFLAGS@
@@ -709,8 +709,6 @@ modules/evas/engines/gl_common/shader/img_bgra_nomul_frag.h \
 modules/evas/engines/gl_common/shader/img_bgra_nomul_vert.h \
 modules/evas/engines/gl_common/shader/img_bgra_vert.h \
 modules/evas/engines/gl_common/shader/img_frag.h \
-modules/evas/engines/gl_common/shader/img_mask_frag.h \
-modules/evas/engines/gl_common/shader/img_mask_vert.h \
 modules/evas/engines/gl_common/shader/img_nomul_frag.h \
 modules/evas/engines/gl_common/shader/img_nomul_vert.h \
 modules/evas/engines/gl_common/shader/img_vert.h \
@@ -803,8 +801,6 @@ modules/evas/engines/gl_common/shader/img_bgra_nomul_frag.shd \
 modules/evas/engines/gl_common/shader/img_bgra_nomul_vert.shd \
 modules/evas/engines/gl_common/shader/img_bgra_vert.shd \
 modules/evas/engines/gl_common/shader/img_frag.shd \
-modules/evas/engines/gl_common/shader/img_mask_frag.shd \
-modules/evas/engines/gl_common/shader/img_mask_vert.shd \
 modules/evas/engines/gl_common/shader/img_nomul_frag.shd \
 modules/evas/engines/gl_common/shader/img_nomul_vert.shd \
 modules/evas/engines/gl_common/shader/img_vert.shd \
@@ -1211,9 +1207,11 @@ modules_evas_engines_drm_module_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
 -I$(top_srcdir)/src/lib/evas/include \
 -I$(top_srcdir)/src/lib/evas/cserve2 \
 @EVAS_CFLAGS@ \
+@ECORE_DRM_CFLAGS@ \
 @evas_engine_drm_cflags@
 modules_evas_engines_drm_module_la_LIBADD = \
 @USE_EVAS_LIBS@ \
+@ECORE_DRM_LIBS@ \
 @evas_engine_drm_libs@
 modules_evas_engines_drm_module_la_DEPENDENCIES = @USE_EVAS_INTERNAL_LIBS@
 modules_evas_engines_drm_module_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
@@ -1316,7 +1314,7 @@ bin_evas_evas_cserve2_slave_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
 -DPACKAGE_BIN_DIR=\"$(bindir)\" \
 -DPACKAGE_LIB_DIR=\"$(libdir)\" \
 -DPACKAGE_DATA_DIR=\"$(datadir)/evas\" \
--DPACKAGE_BUILD_DIR=\"`pwd`/$(top_builddir)\" \
+-DPACKAGE_BUILD_DIR=\"$(abs_top_builddir)\" \
 -DEVAS_MODULE_NO_ENGINES=1 \
 -DEVAS_MODULE_NO_IMAGE_SAVERS=1 \
 @EVAS_CFLAGS@
@@ -1367,6 +1365,42 @@ modules_evas_loaders_bmp_module_la_LIBADD = \
 modules_evas_loaders_bmp_module_la_DEPENDENCIES = @USE_EVAS_INTERNAL_LIBS@
 modules_evas_loaders_bmp_module_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
 modules_evas_loaders_bmp_module_la_LIBTOOLFLAGS = --tag=disable-static
+endif
+endif
+
+if BUILD_LOADER_DDS
+if EVAS_STATIC_BUILD_DDS
+lib_evas_libevas_la_SOURCES += \
+modules/evas/loaders/dds/evas_image_load_dds.c \
+modules/evas/loaders/dds/s3tc_decoder.c \
+modules/evas/loaders/dds/s3tc.h
+lib_evas_libevas_la_CPPFLAGS += @evas_image_loader_dds_cflags@
+lib_evas_libevas_la_LIBADD += @evas_image_loader_dds_libs@
+if EVAS_CSERVE2
+bin_evas_evas_cserve2_slave_SOURCES += \
+modules/evas/loaders/dds/evas_image_load_dds.c \
+modules/evas/loaders/dds/s3tc_decoder.c \
+modules/evas/loaders/dds/s3tc.h
+bin_evas_evas_cserve2_slave_CPPFLAGS += @evas_image_loader_dds_cflags@
+bin_evas_evas_cserve2_slave_LDADD += @evas_image_loader_dds_libs@
+endif
+else
+loaderddspkgdir = $(libdir)/evas/modules/loaders/dds/$(MODULE_ARCH)
+loaderddspkg_LTLIBRARIES = modules/evas/loaders/dds/module.la
+modules_evas_loaders_dds_module_la_SOURCES = \
+modules/evas/loaders/dds/evas_image_load_dds.c \
+modules/evas/loaders/dds/s3tc_decoder.c \
+modules/evas/loaders/dds/s3tc.h
+modules_evas_loaders_dds_module_la_CPPFLAGS = -I$(top_builddir)/src/lib/efl \
+-I$(top_srcdir)/src/lib/evas/include \
+@EVAS_CFLAGS@ \
+@evas_image_loader_dds_cflags@
+modules_evas_loaders_dds_module_la_LIBADD = \
+@USE_EVAS_LIBS@ \
+@evas_image_loader_dds_libs@
+modules_evas_loaders_dds_module_la_DEPENDENCIES = @USE_EVAS_INTERNAL_LIBS@
+modules_evas_loaders_dds_module_la_LDFLAGS = -module @EFL_LTMODULE_FLAGS@
+modules_evas_loaders_dds_module_la_LIBTOOLFLAGS = --tag=disable-static
 endif
 endif
 
@@ -1928,6 +1962,10 @@ tests/evas/images/HM7Y9233-50.tgv \
 tests/evas/images/HM7Y9233.jpg \
 tests/evas/images/Light-50.tgv \
 tests/evas/images/Light.jpg \
+tests/evas/images/Light_exif.jpg \
+tests/evas/images/Light_exif_90.jpg \
+tests/evas/images/Light_exif_180.jpg \
+tests/evas/images/Light_exif_270.jpg \
 tests/evas/images/Pic1-10.tgv \
 tests/evas/images/Pic1-100.tgv \
 tests/evas/images/Pic1-50.tgv \

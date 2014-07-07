@@ -43,7 +43,8 @@ ecore_win32_window_internal_new(Ecore_Win32_Window *parent,
    RECT                rect;
    Ecore_Win32_Window *w;
    int                 minimal_width;
-   int                 minimal_height;
+#warning "We need to handle minimal_height for window like we do with width."
+   /* int                 minimal_height; */
 
    w = (Ecore_Win32_Window *)calloc(1, sizeof(Ecore_Win32_Window));
    if (!w)
@@ -64,7 +65,7 @@ ecore_win32_window_internal_new(Ecore_Win32_Window *parent,
      }
 
    minimal_width = GetSystemMetrics(SM_CXMIN);
-   minimal_height = GetSystemMetrics(SM_CYMIN);
+   /* minimal_height = GetSystemMetrics(SM_CYMIN); */
 /*    if (((rect.right - rect.left) < minimal_width) || */
 /*        ((rect.bottom - rect.top) < minimal_height)) */
 /*      { */
@@ -137,6 +138,13 @@ ecore_win32_window_internal_new(Ecore_Win32_Window *parent,
    w->borderless    = 0;
    w->iconified     = 0;
    w->fullscreen    = 0;
+
+   w->drag.x = x;
+   w->drag.y = y;
+   w->drag.w = rect.right - rect.left;
+   w->drag.h = rect.bottom - rect.top;
+   w->drag.current_mouse_x = -32768;
+   w->drag.current_mouse_y = -32768;
 
    return w;
 }
@@ -815,7 +823,7 @@ ecore_win32_window_raise(Ecore_Win32_Window *window)
 
    if (!SetWindowPos(window->window,
                      HWND_TOP, 0, 0, 0, 0,
-                     SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE))
+                     SWP_NOMOVE | SWP_NOSIZE))
      {
         ERR("SetWindowPos() failed");
      }

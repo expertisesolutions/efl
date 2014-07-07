@@ -2,146 +2,11 @@
 #include <linux/vt.h>
 #include <linux/kd.h>
 #include <sys/mman.h>
+#include <Ecore_Drm.h>
 
 /* NB: REALLY hate to store this here, but sigaction signal handlers cannot 
  * pass any 'user data' to the signal handlers :( */
 static Evas_Engine_Info_Drm *siginfo;
-
-static char *
-_evas_drm_card_driver_get(const char *dev)
-{
-   struct stat st;
-   int maj, min;
-   char *path, path_link[PATH_MAX + 1] = "";
-   char *drv;
-
-   if (stat(dev, &st) < 0) return NULL;
-
-   if (!S_ISCHR(st.st_mode)) return NULL;
-
-   maj = major(st.st_rdev);
-   min = minor(st.st_rdev);
-
-   asprintf(&path, "/sys/dev/char/%d:%d/device/driver", maj, min);
-   if (readlink(path, path_link, sizeof(path_link) - 1) < 0)
-     {
-        free(path);
-        return NULL;
-     }
-
-   free(path);
-
-   if (!(drv = strrchr(path_link, '/'))) return NULL;
-   return strdup(drv + strlen("/"));
-}
-
-static int 
-_evas_drm_card_open(int card)
-{
-   char dev[32], *driver;
-   int fd = -1;
-   uint64_t dumb;
-
-   sprintf(dev, DRM_DEV_NAME, DRM_DIR_NAME, card);
-
-   driver = _evas_drm_card_driver_get(dev);
-   DBG("Drm Device Driver: %s", driver);
-
-   if ((fd = drmOpen(driver, NULL)) < 0)
-     {
-        CRI("Could not open drm device %s: %m", dev);
-        return -1;
-     }
-
-   /* if ((fd = open(dev, (O_RDWR | O_CLOEXEC))) < 0) */
-   /*   { */
-   /*      CRI("Could not open drm device %s: %m", dev); */
-   /*      return -1; */
-   /*   } */
-
-   /* drmVersionPtr ver; */
-   /* if ((ver = drmGetVersion(fd))) */
-   /*   { */
-   /*      DBG("Drm Driver Name: %s", ver->name); */
-   /*      drmFreeVersion(ver); */
-   /*   } */
-
-   /* check for dumb buffer support
-    * 
-    * NB: This checks that we can at least support software rendering */
-   if ((drmGetCap(fd, DRM_CAP_DUMB_BUFFER, &dumb) < 0) || (!dumb))
-     {
-        CRI("Drm Device %s does not support software rendering", dev);
-
-        /* close the card */
-        close(fd);
-
-        /* return failure */
-        return -1;
-     }
-
-   DBG("Opened Drm Card %s: %d", dev, fd);
-
-   /* return opened card */
-   return fd;
-}
-
-static int 
-_evas_drm_tty_open(Evas_Engine_Info_Drm *info)
-{
-   int tty = STDIN_FILENO;
-
-   /* check if the current stdin is a valid tty */
-   if (!isatty(tty))
-     {
-        /* if not, try to open the curren tty */
-        if ((tty = open("/dev/tty", (O_RDWR | O_CLOEXEC))) < 0)
-          {
-             int tty0 = -1, num = -1;
-             char name[16];
-
-             /* if that fails, try tty0 */
-             if ((tty0 = open("/dev/tty0", (O_WRONLY | O_CLOEXEC))) < 0)
-               {
-                  CRI("Could not open tty0: %m");
-                  return -1;
-               }
-
-             /* try to find a non-opened tty */
-             if ((ioctl(tty0, VT_OPENQRY, &num) < 0) || (num < 0))
-               {
-                  CRI("Could not find a non-opened tty");
-                  close(tty0);
-                  return -1;
-               }
-
-             snprintf(name, sizeof(name), "/dev/tty%d", num);
-
-             /* try to open this tty */
-             if ((tty = open(name, (O_RDWR | O_CLOEXEC))) < 0)
-               {
-                  CRI("Could not open tty: %s", name);
-                  close(tty0);
-                  return -1;
-               }
-
-             /* set flag that evas should close this tty */
-             info->info.own_tty = EINA_TRUE;
-
-             /* close /dev/tty0 */
-             close(tty0);
-          }
-     }
-   else
-     {
-        /* set flag that evas should close this tty */
-        info->info.own_tty = EINA_TRUE;
-     }
-
-   DBG("Opened Tty %d", tty);
-
-   return tty;
-}
 
 static int 
 _evas_drm_crtc_find(int fd, drmModeRes *res, drmModeConnector *conn)
@@ -386,52 +251,18 @@ _evas_drm_outbuf_planes_setup(Outbuf *ob, drmModePlaneResPtr pres)
    return EINA_TRUE;
 }
 
-Eina_Bool 
-evas_drm_init(Evas_Engine_Info_Drm *info, int card)
+Eina_Bool
+evas_drm_init(Evas_Engine_Info_Drm *info)
 {
+
    /* check for valid engine info */
    if (!info) return EINA_FALSE;
 
    setvbuf(stdout, NULL, _IONBF, 0);
 
-   /* check if we already opened the card */
-   if (info->info.fd < 0)
-     {
-        /* try to open the drm card */
-        if ((info->info.fd = _evas_drm_card_open(card)) < 0) 
-          return EINA_FALSE;
-
-        /* set flag to indicate that evas opened the card and we should 
-         * be the one to close it */
-        info->info.own_fd = EINA_TRUE;
-     }
-
-   /* check if we already opened the tty */
-   if (info->info.tty < 0)
-     {
-        /* try to open the current tty */
-        if ((info->info.tty = _evas_drm_tty_open(info)) < 0) 
-          {
-             /* check if we already opened the card. if so, close it */
-             if ((info->info.fd >= 0) && (info->info.own_fd))
-               {
-                  close(info->info.fd);
-                  info->info.fd = -1;
-               }
-
-             return EINA_FALSE;
-          }
-     }
-
    /* with the tty opened, we need to set it up */
    if (!_evas_drm_tty_setup(info))
      {
-        /* setup of tty failed, close it */
-        if ((info->info.tty >= 0) && (info->info.own_tty))
-          close(info->info.tty);
-
-        /* FIXME: Close card also ?? */
-
         return EINA_FALSE;
      }
 
@@ -443,20 +274,6 @@ evas_drm_shutdown(Evas_Engine_Info_Drm *info)
 {
    /* check for valid engine info */
    if (!info) return EINA_TRUE;
-
-   /* check if we already opened the tty. if so, close it */
-   if ((info->info.tty >= 0) && (info->info.own_tty))
-     {
-        close(info->info.tty);
-        info->info.tty = -1;
-     }
-
-   /* check if we already opened the card. if so, close it */
-   if ((info->info.fd >= 0) && (info->info.own_fd))
-     {
-        close(info->info.fd);
-        info->info.fd = -1;
-     }
 
    return EINA_TRUE;
 }

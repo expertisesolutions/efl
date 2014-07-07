@@ -76,76 +76,20 @@ _ecore_win32_window_procedure(HWND   window,
    coord = GetMessagePos();
    data->x = GET_X_LPARAM(coord);
    data->y = GET_Y_LPARAM(coord);
-   data->discard_ctrl = EINA_FALSE;
 
    switch (data->message)
      {
        /* Keyboard input notifications */
      case WM_KEYDOWN:
      case WM_SYSKEYDOWN:
-       if ((data->message == WM_KEYDOWN) &&
-           (data->window_param == VK_CONTROL) &&
-           ((HIWORD(data->data_param) & KF_EXTENDED) == 0))
-         {
-            /* Ctrl left key is pressed */
-            BOOL res;
-            MSG next_msg;
-
-            /*
-             * we check if the next message
-             * - is a WM_KEYDOWN
-             * - has the same timestamp than the Ctrl one
-             * - is the key press of the right Alt key
-             */
-            res = PeekMessage(&next_msg, data->window,
-                              WM_KEYDOWN, WM_KEYDOWN,
-                              PM_NOREMOVE);
-            if (res &&
-                (next_msg.wParam == VK_MENU) &&
-                (next_msg.time == data->timestamp) &&
-                (HIWORD(next_msg.lParam) & KF_EXTENDED))
-              {
-                 INF("discard left Ctrl key press (sent by AltGr key press)");
-                 data->discard_ctrl = EINA_TRUE;
-              }
-         }
-       _ecore_win32_event_handle_key_press(data, 1);
+       INF("key down message");
+       _ecore_win32_event_handle_key_press(data);
        return 0;
-     case WM_CHAR:
-     case WM_SYSCHAR:
-       INF("char message");
-       _ecore_win32_event_handle_key_press(data, 0);
-       return 0;
+     /* case WM_CHAR: */
+     /* case WM_SYSCHAR: */
      case WM_KEYUP:
      case WM_SYSKEYUP:
-       INF("keyup message");
-       if ((data->window_param == VK_CONTROL) &&
-           ((HIWORD(data->data_param) & KF_EXTENDED) == 0))
-         {
-            /* Ctrl left key is pressed */
-            BOOL res;
-            MSG next_msg;
-
-            /*
-             * we check if the next message
-             * - is a WM_KEYUP or WM_SYSKEYUP
-             * - has the same timestamp than the Ctrl one
-             * - is the key release of the right Alt key
-             */
-            res = PeekMessage(&next_msg, data->window,
-                              WM_KEYUP, WM_SYSKEYUP,
-                              PM_NOREMOVE);
-            if (res &&
-                ((next_msg.message == WM_KEYUP) ||
-                 (next_msg.message == WM_SYSKEYUP)) &&
-                (next_msg.wParam == VK_MENU) &&
-                (next_msg.time == data->timestamp) &&
-                (HIWORD(next_msg.lParam) & KF_EXTENDED))
-              {
-                 INF("discard left Ctrl key release (sent by AltGr key release)");
-                 data->discard_ctrl = EINA_TRUE;
-              }
-         }
+       INF("key up message");
        _ecore_win32_event_handle_key_release(data);
        return 0;
      case WM_SETFOCUS:
@@ -200,9 +144,21 @@ _ecore_win32_window_procedure(HWND   window,
           RECT                rect;
           Ecore_Win32_Window *w = NULL;
 
-          INF("moue move message");
-
           w = (Ecore_Win32_Window *)GetWindowLongPtr(window, GWLP_USERDATA);
+
+          /*
+           * Windows can send several WM_MOUSEMOVE messages, see:
+           * http://blogs.msdn.com/b/oldnewthing/archive/2003/10/01/55108.aspx
+           * so we discard those which have the same mouse coordinates
+           */
+          if ((w->drag.current_mouse_x == GET_X_LPARAM(data_param)) &&
+              (w->drag.current_mouse_y == GET_Y_LPARAM(data_param)))
+            return 0;
+
+          w->drag.current_mouse_x = GET_X_LPARAM(data_param);
+          w->drag.current_mouse_y = GET_Y_LPARAM(data_param);
+
+          INF("mouse move message");
 
           if (w->drag.dragging)
             {
@@ -481,6 +437,8 @@ _ecore_win32_window_procedure(HWND   window,
            w->drag.px = GET_X_LPARAM(data_param);
            w->drag.py = GET_Y_LPARAM(data_param);
            w->drag.dragging = 1;
+           if ((DWORD)window_param == HTCAPTION)
+             ecore_win32_window_raise(w);
            return 0;
          }
        return DefWindowProc(window, message, window_param, data_param);
@@ -500,8 +458,6 @@ _ecore_win32_window_procedure(HWND   window,
          }
        return DefWindowProc(window, message, window_param, data_param);
        /* GDI notifications */
-     case WM_ERASEBKGND:
-       return 1;
      case WM_PAINT:
        {
          RECT rect;
@@ -511,12 +467,13 @@ _ecore_win32_window_procedure(HWND   window,
          if (GetUpdateRect(window, &rect, FALSE))
            {
               PAINTSTRUCT ps;
-              HDC         hdc;
 
-              hdc = BeginPaint(window, &ps);
-              data->update = rect;
-              _ecore_win32_event_handle_expose(data);
-              EndPaint(window, &ps);
+              if (BeginPaint(window, &ps))
+                {
+                   data->update = rect;
+                   _ecore_win32_event_handle_expose(data);
+                   EndPaint(window, &ps);
+                }
            }
          return 0;
        }
@@ -667,7 +624,7 @@ ecore_win32_init()
 
    memset (&wc, 0, sizeof (WNDCLASSEX));
    wc.cbSize = sizeof (WNDCLASSEX);
-   wc.style = CS_HREDRAW | CS_VREDRAW;
+   wc.style = 0;
    wc.lpfnWndProc = _ecore_win32_window_procedure;
    wc.cbClsExtra = 0;
    wc.cbWndExtra = 0;

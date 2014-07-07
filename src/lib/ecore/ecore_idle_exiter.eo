@@ -1,4 +1,4 @@
-class Ecore_Idle_Exiter (Eo_Base)
+class Ecore.Idle.Exiter (Eo.Base)
 {
    eo_prefix: ecore_idle_exiter;
    constructors {
@@ -6,12 +6,12 @@ class Ecore_Idle_Exiter (Eo_Base)
          /*@ Contructor. */
          params {
             @in Ecore_Task_Cb func;
-            @in const void *data;
+            @in const(void)* data;
          }
       }
    }
    implements {
-      Eo_Base.constructor;
-      Eo_Base.destructor;
+      Eo.Base.constructor;
+      Eo.Base.destructor;
    }
 }

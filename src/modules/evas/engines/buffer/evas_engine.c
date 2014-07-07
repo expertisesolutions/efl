@@ -107,6 +107,7 @@ _output_setup(int w,
                                                  evas_buffer_outbuf_buf_swap_mode_get,
                                                  evas_buffer_outbuf_buf_rot_get,
                                                  evas_buffer_outbuf_reconfigure,
+                                                 NULL,
                                                  evas_buffer_outbuf_buf_new_region_for_update,
                                                  evas_buffer_outbuf_buf_push_updated_region,
                                                  evas_buffer_outbuf_buf_free_region_for_update,
@@ -146,7 +147,7 @@ eng_info_free(Evas *eo_e EINA_UNUSED, void *info)
 static int
 eng_setup(Evas *eo_e, void *in)
 {
-   Evas_Public_Data *e = eo_data_scope_get(eo_e, EVAS_CLASS);
+   Evas_Public_Data *e = eo_data_scope_get(eo_e, EVAS_CANVAS_CLASS);
    Render_Engine *re;
    Evas_Engine_Info_Buffer *info;
 

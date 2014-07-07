@@ -2,12 +2,24 @@
 #include <stdlib.h>
 
 #include "eo_definitions.h"
-#include "eolian_database.h"
+
+static void
+eo_definitions_type_free(Eo_Type_Def *tp)
+{
+   Eo_Type_Def *stp;
+   if (tp->name) eina_stringshare_del(tp->name);
+   /* for function types, this will map to arguments and ret_type */
+   if (tp->subtypes) EINA_LIST_FREE(tp->subtypes, stp)
+     eo_definitions_type_free(stp);
+   if (tp->base_type)
+     eo_definitions_type_free(tp->base_type);
+   free(tp);
+}
 
 static void
 eo_definitions_ret_free(Eo_Ret_Def *ret)
 {
-   if (ret->type) database_type_del(ret->type);
+   if (ret->type) eo_definitions_type_free(ret->type);
    if (ret->comment) eina_stringshare_del(ret->comment);
    if (ret->dflt_ret_val) eina_stringshare_del(ret->dflt_ret_val);
    free(ret);
@@ -16,7 +28,7 @@ eo_definitions_ret_free(Eo_Ret_Def *ret)
 static void
 eo_definitions_param_free(Eo_Param_Def *param)
 {
-   if (param->type) database_type_del(param->type);
+   if (param->type) eo_definitions_type_free(param->type);
    if (param->name) eina_stringshare_del(param->name);
    if (param->comment) eina_stringshare_del(param->comment);
    free(param);
@@ -26,7 +38,6 @@ static void
 eo_definitions_accessor_param_free(Eo_Accessor_Param *param)
 {
    if (param->name) eina_stringshare_del(param->name);
-   if (param->attrs) eina_stringshare_del(param->attrs);
    free(param);
 }
 
@@ -41,10 +52,10 @@ eo_definitions_accessor_free(Eo_Accessor_Def *accessor)
 
    Eo_Accessor_Param *param;
    EINA_LIST_FREE(accessor->params, param)
-      eo_definitions_accessor_param_free(param);
+     eo_definitions_accessor_param_free(param);
 
    if (accessor->ret)
-      eo_definitions_ret_free(accessor->ret);
+     eo_definitions_ret_free(accessor->ret);
 
    free(accessor);
 }
@@ -59,13 +70,13 @@ eo_definitions_property_def_free(Eo_Property_Def *prop)
      eina_stringshare_del(prop->name);
 
    EINA_LIST_FREE(prop->keys, param)
-      eo_definitions_param_free(param);
+     eo_definitions_param_free(param);
 
    EINA_LIST_FREE(prop->values, param)
-      eo_definitions_param_free(param);
+     eo_definitions_param_free(param);
 
    EINA_LIST_FREE(prop->accessors, accessor)
-      eo_definitions_accessor_free(accessor);
+     eo_definitions_accessor_free(accessor);
 
    free(prop);
 }
@@ -76,7 +87,7 @@ eo_definitions_method_def_free(Eo_Method_Def *meth)
    Eo_Param_Def *param;
 
    if (meth->ret)
-      eo_definitions_ret_free(meth->ret);
+     eo_definitions_ret_free(meth->ret);
 
    if (meth->name)
      eina_stringshare_del(meth->name);
@@ -86,7 +97,7 @@ eo_definitions_method_def_free(Eo_Method_Def *meth)
      eina_stringshare_del(meth->legacy);
 
    EINA_LIST_FREE(meth->params, param)
-      eo_definitions_param_free(param);
+     eo_definitions_param_free(param);
 
    free(meth);
 }
@@ -114,13 +125,13 @@ eo_definitions_impl_def_free(Eo_Implement_Def *impl)
 }
 
 void
-eo_definitions_type_def_free(Eo_Type_Def *type)
+eo_definitions_typedef_def_free(Eo_Typedef_Def *type)
 {
    if (type->alias)
      eina_stringshare_del(type->alias);
 
    if (type->type)
-     database_type_del(type->type);
+     eo_definitions_type_free(type->type);
 
    free(type);
 }
@@ -146,22 +157,22 @@ eo_definitions_class_def_free(Eo_Class_Def *kls)
      eina_stringshare_del(kls->data_type);
 
    EINA_LIST_FREE(kls->inherits, s)
-      if (s) eina_stringshare_del(s);
+     if (s) eina_stringshare_del(s);
 
    EINA_LIST_FREE(kls->implements, impl)
-      eo_definitions_impl_def_free(impl);
+     eo_definitions_impl_def_free(impl);
 
    EINA_LIST_FREE(kls->constructors, meth)
-      eo_definitions_method_def_free(meth);
+     eo_definitions_method_def_free(meth);
 
    EINA_LIST_FREE(kls->properties, prop)
-      eo_definitions_property_def_free(prop);
+     eo_definitions_property_def_free(prop);
 
    EINA_LIST_FREE(kls->methods, meth)
-      eo_definitions_method_def_free(meth);
+     eo_definitions_method_def_free(meth);
 
    EINA_LIST_FREE(kls->events, sgn)
-      eo_definitions_event_def_free(sgn);
+     eo_definitions_event_def_free(sgn);
 
    free(kls);
 }
@@ -174,47 +185,47 @@ eo_definitions_temps_free(Eo_Lexer_Temps *tmp)
    const char *s;
 
    EINA_LIST_FREE(tmp->str_bufs, buf)
-      eina_strbuf_free(buf);
+     eina_strbuf_free(buf);
 
    EINA_LIST_FREE(tmp->params, par)
-      eo_definitions_param_free(par);
+     eo_definitions_param_free(par);
 
    if (tmp->legacy_def)
-      eina_stringshare_del(tmp->legacy_def);
+     eina_stringshare_del(tmp->legacy_def);
 
    if (tmp->kls)
-      eo_definitions_class_def_free(tmp->kls);
+     eo_definitions_class_def_free(tmp->kls);
 
    if (tmp->ret_def)
-      eo_definitions_ret_free(tmp->ret_def);
+     eo_definitions_ret_free(tmp->ret_def);
+
+   if (tmp->typedef_def)
+     eo_definitions_typedef_def_free(tmp->typedef_def);
 
    if (tmp->type_def)
-      eo_definitions_type_def_free(tmp->type_def);
+     eo_definitions_type_free(tmp->type_def);
 
    if (tmp->prop)
-      eo_definitions_property_def_free(tmp->prop);
+     eo_definitions_property_def_free(tmp->prop);
 
    if (tmp->meth)
-      eo_definitions_method_def_free(tmp->meth);
+     eo_definitions_method_def_free(tmp->meth);
 
    if (tmp->param)
-      eo_definitions_param_free(tmp->param);
+     eo_definitions_param_free(tmp->param);
 
    if (tmp->accessor)
-      eo_definitions_accessor_free(tmp->accessor);
+     eo_definitions_accessor_free(tmp->accessor);
 
    if (tmp->accessor_param)
-      eo_definitions_accessor_param_free(tmp->accessor_param);
+     eo_definitions_accessor_param_free(tmp->accessor_param);
 
    EINA_LIST_FREE(tmp->str_items, s)
-      if (s) eina_stringshare_del(s);
+     if (s) eina_stringshare_del(s);
 
    if (tmp->event)
-      eo_definitions_event_def_free(tmp->event);
+     eo_definitions_event_def_free(tmp->event);
 
    if (tmp->impl)
-      eo_definitions_impl_def_free(tmp->impl);
-
-   if (tmp->type)
-      database_type_del(tmp->type);
+     eo_definitions_impl_def_free(tmp->impl);
 }
