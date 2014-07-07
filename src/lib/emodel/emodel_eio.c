@@ -28,10 +28,10 @@ _stat_pro_set(Emodel_Eio_Data *priv, int prop_id, const char *prop_name, int pva
       case EMODEL_EIO_PROP_IS_DIR:
       case EMODEL_EIO_PROP_IS_LNK:
       case EMODEL_EIO_PROP_SIZE:
-         eina_value_setup(&evt.value, EINA_VALUE_TYPE_INT); 
+         eina_value_setup(&evt.value, EINA_VALUE_TYPE_INT);
          break;
       case EMODEL_EIO_PROP_MTIME:
-         eina_value_setup(&evt.value, EINA_VALUE_TYPE_TIMEVAL); 
+         eina_value_setup(&evt.value, EINA_VALUE_TYPE_TIMEVAL);
          break;
       default:
          EINA_SAFETY_ON_NULL_RETURN(NULL); /**< error */
@@ -39,7 +39,7 @@ _stat_pro_set(Emodel_Eio_Data *priv, int prop_id, const char *prop_name, int pva
 
    evt.prop = prop_name;
    eina_value_set(&evt.value, pvalue); /**< caller must call eina_value_flush */
-   
+
    EINA_SAFETY_ON_FALSE_RETURN(eo_ref_get(priv->obj));
 
    /**
@@ -77,7 +77,7 @@ _eio_stat_done_cb(void *data, Eio_File *handler EINA_UNUSED, const Eina_Stat *st
    _stat_pro_set(priv, EMODEL_EIO_PROP_MTIME, "mtime", eio_file_mtime(stat));
 
    Emodel_Property_EVT evt;
-   
+
    memset(&st, 0, sizeof(Eina_Value_Struct));
    eina_value_pget(priv->properties, &st);
 
@@ -111,10 +111,10 @@ _eio_move_done_cb(void *data, Eio_File *handler EINA_UNUSED)
    eina_value_pget(priv->properties, &st);
 
    /**
-    * When mv is executed we update our values and 
+    * When mv is executed we update our values and
     * notify both path and filename properties listeners.
     */
-   
+
    evt.prop = st.desc->members[EMODEL_EIO_PROP_PATH].name;
    eina_value_struct_set(priv->properties, evt.prop, priv->path);
    eina_value_struct_value_get(priv->properties, evt.prop, &evt.value);
@@ -527,7 +527,6 @@ _emodel_eio_emodel_prop_fetch(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const c
    EINA_SAFETY_ON_NULL_RETURN(priv->obj);
 
    proplen = strlen(property);
-   
    memset(&st, 0, sizeof(Eina_Value_Struct));
    eina_value_pget(priv->properties, &st);
 
@@ -569,7 +568,7 @@ _emodel_eio_emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const cha
 
    EINA_SAFETY_ON_NULL_RETURN(value);
    EINA_SAFETY_ON_NULL_RETURN(property);
-   
+
    memset(&st, 0, sizeof(Eina_Value_Struct));
    eina_value_pget(priv->properties, &st);
 
@@ -580,7 +579,6 @@ _emodel_eio_emodel_prop_set(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd, const cha
     * Case insensitive check 
     */
    if(strlen(property) != strlen(prop)) return;
-   
    if (!strcmp(property, prop))
      {
         const char *src;
@@ -854,7 +852,7 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
         int is_lnk;
         int size;
      } This_Eio_Properties;
-   
+
    static Eina_Value_Struct_Member prop_members[] = {
      EINA_VALUE_STRUCT_MEMBER(NULL, This_Eio_Properties, filename),
      EINA_VALUE_STRUCT_MEMBER(NULL, This_Eio_Properties, path),
@@ -871,7 +869,7 @@ _emodel_eio_constructor(Eo *obj , Emodel_Eio_Data *priv, const char *path)
    prop_members[EMODEL_EIO_PROP_IS_DIR].type = EINA_VALUE_TYPE_INT;
    prop_members[EMODEL_EIO_PROP_IS_LNK].type = EINA_VALUE_TYPE_INT;
    prop_members[EMODEL_EIO_PROP_SIZE].type = EINA_VALUE_TYPE_INT;
-   
+
    static Eina_Value_Struct_Desc prop_desc = {
      EINA_VALUE_STRUCT_DESC_VERSION,
      NULL, // no special operations
