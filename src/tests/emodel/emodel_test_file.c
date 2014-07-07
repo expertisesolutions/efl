@@ -66,7 +66,7 @@ static Eina_Bool
  exit_func(void *data EINA_UNUSED, int ev_type EINA_UNUSED, void *ev)
  {
     Ecore_Event_Signal_Exit *e;
- 
+
     e = (Ecore_Event_Signal_Exit *)ev;
     if (e->interrupt)      fprintf(stdout, "Exit: interrupt\n");
     else if (e->quit)      fprintf(stdout, "Exit: quit\n");
@@ -81,7 +81,7 @@ _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Descr
    Eina_Value *v = (Eina_Value *)event_info;
    Eina_Value_Struct st;
    unsigned int i;
-      
+
    reqs.properties = 1;
    memset(&st, 0, sizeof(Eina_Value_Struct));
    eina_value_pget(v, &st);
