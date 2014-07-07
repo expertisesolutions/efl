@@ -24,7 +24,7 @@ struct _Emodel_Eio_Properties
 
 struct _Emodel_Eio_Monitor_Data
 {
-   Ecore_Event_Handler *ecore_child_add_handler[2];
+   Ecore_Event_Handler *ecore_child_add_handler[3];
    Ecore_Event_Handler *ecore_child_del_handler[3];
    int mon_event_child_add[3]; /**< plus EIO_MONITOR_ERROR */
    int mon_event_child_del[3]; /**< plus EIO_MONITOR_ERROR */
