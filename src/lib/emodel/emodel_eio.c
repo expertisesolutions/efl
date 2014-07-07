@@ -508,7 +508,16 @@ _emodel_eio_emodel_prop_list(Eo *obj EINA_UNUSED, Emodel_Eio_Data *_pd)
    Emodel_Eio_Data *priv = _pd;
    EINA_SAFETY_ON_NULL_RETURN(priv);
    EINA_SAFETY_ON_NULL_RETURN(priv->obj);
-   eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTIES_CHANGE, priv->properties));
+   Eina_Value_Struct st;
+   unsigned int i;
+
+   memset(&st, 0, sizeof(Eina_Value_Struct));
+   eina_value_pget(priv->properties, &st);
+   char **array = calloc(st.desc->member_count+1, sizeof(char*));
+   for(i=0; i<st.desc->member_count;++i)
+        array[i] = (char*)st.desc->members[i].name;
+   eo_do(priv->obj, eo_event_callback_call(EMODEL_EVENT_PROPERTIES_CHANGE, array));
+   free(array);
 }
 
 /**

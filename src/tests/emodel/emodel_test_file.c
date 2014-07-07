@@ -78,18 +78,11 @@ static Eina_Bool
 static Eina_Bool
 _properties_cb(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, const Eo_Event_Description *desc EINA_UNUSED, void *event_info)
 {
-   Eina_Value *v = (Eina_Value *)event_info;
-   Eina_Value_Struct st;
+   char **array = (char **)event_info;
    unsigned int i;
-
    reqs.properties = 1;
-   memset(&st, 0, sizeof(Eina_Value_Struct));
-   eina_value_pget(v, &st);
-
-   for(i = 0; i < st.desc->member_count; ++i)
-     {
-        fprintf(stdout, "property list %d: %s\n", i, st.desc->members[i].name);
-     }
+   for(i=0; array[i] != NULL; ++i)
+        fprintf(stdout, "property list %d: %s\n", i, array[i]);
    return EINA_TRUE;
 }
 
