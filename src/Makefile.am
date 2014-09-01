@@ -78,6 +78,8 @@ include Makefile_Eolian_Cxx.am
 include Makefile_Eet_Cxx.am
 include Makefile_Eo_Cxx.am
 
+include Makefile_Eina_Js.am
+
 include Makefile_Elua.am
 
 .PHONY: benchmark examples
