@@ -222,6 +222,7 @@ public:
   using _base_type::max_size;
   using _base_type::native_handle;
   using _base_type::accessor;
+  using _base_type::release_native_handle;
 };
 
 template <typename T, typename CloneAllocator>
@@ -293,6 +294,7 @@ public:
   using _base_type::get_clone_allocator;
   using _base_type::pop_back;
   using _base_type::pop_front;
+  using _base_type::release_native_handle;
 
   void push_back(const_reference w)
   {
@@ -437,7 +439,6 @@ public:
   typedef typename _base_type::const_pointer const_pointer;
   typedef typename _base_type::size_type size_type;
   typedef typename _base_type::difference_type difference_type;
-  typedef typename _base_type::clone_allocator_type clone_allocator_type;
 
   typedef typename _base_type::reverse_iterator reverse_iterator;
   typedef typename _base_type::const_reverse_iterator const_reverse_iterator;
@@ -445,17 +446,8 @@ public:
   range_list& operator=(range_list&& other) = default;
 
   using _base_type::_base_type;
-  using _base_type::clear;
   using _base_type::size;
   using _base_type::empty;
-  using _base_type::get_clone_allocator;
-  using _base_type::push_back;
-  using _base_type::push_front;
-  using _base_type::pop_back;
-  using _base_type::pop_front;
-  using _base_type::insert;
-  using _base_type::erase;
-  using _base_type::assign;
   using _base_type::back;
   using _base_type::front;
   using _base_type::begin;
@@ -466,14 +458,7 @@ public:
   using _base_type::cend;
   using _base_type::crbegin;
   using _base_type::crend;
-  using _base_type::ibegin;
-  using _base_type::iend;
-  using _base_type::cibegin;
-  using _base_type::ciend;
-  using _base_type::swap;
-  using _base_type::max_size;
   using _base_type::native_handle;
-  using _base_type::accessor;
 };
 
 template <typename T>
