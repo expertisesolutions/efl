@@ -3920,6 +3920,14 @@ fi
 
 #### End of Ecore_Evas
 
+#### Emodel
+EFL_LIB_START([Emodel])
+EFL_ADD_LIBS([EMODEL], [])
+EFL_INTERNAL_DEPEND_PKG([EMODEL], [eo])
+EFL_INTERNAL_DEPEND_PKG([EMODEL], [eina])
+EFL_LIB_END([Emodel])
+#### End of Emodel
+
 #### Eio
 EFL_LIB_START([Eio])
 
@@ -3933,6 +3941,7 @@ EFL_LIB_START([Eio])
 EFL_PLATFORM_DEPEND([EIO], [evil])
 
 ### Checks for libraries
+EFL_INTERNAL_DEPEND_PKG([EIO], [emodel])
 EFL_INTERNAL_DEPEND_PKG([EIO], [ecore])
 EFL_INTERNAL_DEPEND_PKG([EIO], [eet])
 EFL_INTERNAL_DEPEND_PKG([EIO], [eo])
@@ -4513,6 +4522,8 @@ pc/eolian.pc
 pc/eolian-cxx.pc
 pc/efl.pc
 pc/efl-cxx.pc
+pc/emodel.pc
+pc/emodel-cxx.pc
 pc/evas-fb.pc
 pc/evas-opengl-x11.pc
 pc/evas-opengl-sdl.pc
@@ -4551,6 +4562,7 @@ pc/ecore-audio-cxx.pc
 pc/ecore-avahi.pc
 pc/embryo.pc
 pc/eio.pc
+pc/eio-cxx.pc
 pc/eldbus.pc
 pc/efreet.pc
 pc/efreet-mime.pc
