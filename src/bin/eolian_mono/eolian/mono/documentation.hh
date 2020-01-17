@@ -315,7 +315,9 @@ struct documentation_generator
    template<typename OutputIterator, typename Context>
    bool generate_opening_tag(OutputIterator sink, std::string const& tag, Context const& context, std::string tag_params = "") const
    {
-      return as_generator("<" << tag << tag_params << ">").generate(sink, attributes::unused, context);
+      auto tag_separator = tag_params.empty() ? "" : " ";
+
+      return as_generator("<" << tag << tag_separator << tag_params << ">").generate(sink, attributes::unused, context);
    }
 
    template<typename OutputIterator, typename Context>
@@ -461,6 +463,53 @@ struct documentation_generator
        return generate_tag_example(sink, klass_name, context);
    }
 
+   // Generates documentation for tuple-value properties.
+   //
+   // Example:
+   //
+   // <value>A tuple containing the following information:
+   // <list type="bullet">
+   // <item><description><c>a</c>: Parameter a.</description></item>
+   // <item><description><c>b</c>: Parameter b.</description></item>
+   // </list></value>
+   template<typename OutputIterator, typename Context>
+   bool generate_tuple_property_doc(OutputIterator sink,
+                                    attributes::property_def const& prop,
+                                    Context const& context) const
+   {
+       if (!(as_generator(scope_tab(scope_size) << "/// ")
+              .generate(sink, attributes::unused, context)
+             && generate_opening_tag(sink, "value", context)
+             && as_generator(
+                 "A tuple containing the following information:\n"
+                 << scope_tab(scope_size) << "/// "
+                ).generate(sink, attributes::unused, context)
+             && generate_opening_tag(sink, "list", context, "type=\"bullet\"")
+             && as_generator("\n" << scope_tab(scope_size) << "/// ")
+                .generate(sink, attributes::unused, context)))
+         return false;
+
+       for (auto const& param: prop.setter->parameters)
+         {
+           if (!(generate_opening_tag(sink, "item", context)
+                 && generate_opening_tag(sink, "description", context)
+                 && generate_opening_tag(sink, "c", context)
+                 && as_generator(param.param_name).generate(sink, attributes::unused, context)
+                 && generate_closing_tag(sink, "c", context)
+                 && generate_escaped_content(sink, ": " + param.documentation.full_text, context)
+                 && generate_closing_tag(sink, "description", context)
+                 && generate_closing_tag(sink, "item", context)
+                 && as_generator("\n" << scope_tab(scope_size) << "/// ")
+                .generate(sink, attributes::unused, context)))
+             return false;
+         }
+
+       return generate_closing_tag(sink, "list", context)
+              && generate_closing_tag(sink, "value", context)
+              && as_generator("\n")
+                 .generate(sink, attributes::unused, context);
+   }
+
    template<typename OutputIterator, typename Context>
    bool generate(OutputIterator sink, attributes::property_def const& prop, Context const& context) const
    {
@@ -483,12 +532,22 @@ struct documentation_generator
 
        text = "";
        if (prop.setter.is_engaged())
-         text = prop.setter->parameters[0].documentation.full_text;
+         {
+            if (prop.setter.is_engaged() && prop.setter->parameters.size() > 1)
+              {
+                  if (!generate_tuple_property_doc(sink, prop, context)) return false;
+              }
+            else
+              text = prop.setter->parameters[0].documentation.full_text;
+         }
        else if (prop.getter.is_engaged())
          text = prop.getter->return_documentation.full_text;
        // If there are no docs at all, do not generate <value> tag
        if (!text.empty())
-         if (!generate_tag_value(sink, text, context)) return false;
+         if (!generate_tag_value(
+             sink,
+             text,
+             context)) return false;
 
        return generate_all_tag_examples(sink,
                                         name_helpers::klass_full_concrete_or_interface_name(prop.klass),
