@@ -549,8 +549,6 @@ struct documentation_generator
        text = "";
        if (prop.setter.is_engaged())
          {
-            // TODO: Ensure tuple-values are correctly recognized.
-            // TODO: Ensure it works for tuple-keys too.
             if (prop.setter.is_engaged() && prop.setter->values.size() > 1u)
               {
                   if (!(
