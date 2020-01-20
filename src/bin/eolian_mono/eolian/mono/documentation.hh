@@ -559,7 +559,7 @@ struct documentation_generator
                     && generate_opening_tag(sink, "value", context)
                     && as_generator("\n")
                        .generate(sink, attributes::unused, context)
-                    && generate_tuple_parameters_doc(sink, prop.setter->parameters, context)
+                    && generate_tuple_parameters_doc(sink, prop.setter->parameters, context, true)
                     && as_generator(scope_tab(scope_size) << "/// ")
                      .generate(sink, attributes::unused, context)
                     && generate_closing_tag(sink, "value", context)
