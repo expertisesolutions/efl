@@ -16,6 +16,7 @@
 
 #define DUMMY_TEST_IFACE_PROTECTED
 
+#include <assert.h>
 #include "libefl_mono_native_test.h"
 
 typedef struct Dummy_Test_Object_Data
@@ -4602,6 +4603,56 @@ Dummy_MyInt _dummy_test_object_bypass_typedef(EINA_UNUSED Eo *obj, EINA_UNUSED D
     return data;
 }
 
+// Success Flag definitions
+Eina_Success_Flag _dummy_test_object_success_get_check_prop_get(Eo const* obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED,
+                                                                int* prop1)
+{
+  *prop1 = 20;
+  return EINA_TRUE;
+}                                                            
+
+void _dummy_test_object_success_get_check_prop_set(Eo* obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED, int prop1)
+{
+   assert (prop1 == 20);
+}                                                            
+
+Eina_Success_Flag _dummy_test_object_success_set_check_prop_set(Eo *obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED, int prop1)
+{
+  assert (prop1 == 20);
+  return EINA_TRUE;
+}
+
+int _dummy_test_object_success_set_check_prop_get(const Eo *obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED)
+{
+  return 20;
+}
+
+Eina_Success_Flag _dummy_test_object_success_both_check_prop_set(Eo *obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED, int prop1)
+{
+  assert (prop1 == 20);
+  return EINA_TRUE;
+}
+
+Eina_Success_Flag _dummy_test_object_success_both_check_prop_get(const Eo *obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED, int* prop1)
+{
+  *prop1 = 20;
+  return EINA_TRUE;
+}
+
+Eina_Success_Flag _dummy_test_object_success_set_keyed_check_prop_set(Eo *obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED, int key1, int prop1)
+{
+  assert (key1 == 1);
+  assert (prop1 == 20);
+  return EINA_TRUE;
+}
+
+int _dummy_test_object_success_set_keyed_check_prop_get(const Eo *obj EINA_UNUSED, Dummy_Test_Object_Data* pd EINA_UNUSED, int key1)
+{
+  assert (key1 == 1);
+  return 20;
+}
+
+// Multi valued definitions
 void _dummy_test_object_multi_valued_prop_get(Eo const* obj EINA_UNUSED, Dummy_Test_Object_Data* pd, int* prop1, int* prop2)
 {
     *prop1 = pd->prop1;
