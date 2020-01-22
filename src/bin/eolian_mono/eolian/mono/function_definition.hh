@@ -390,7 +390,8 @@ struct property_wrapper_definition_generator
         return true;
 
       auto setter = *property.setter;
-      auto name = name_helpers::managed_method_name(setter);
+      auto managed_method_name = name_helpers::managed_method_name(setter);
+      auto has_error_check = setter.explicit_return_type.c_type == "Eina_Success_Flag";
 
       if (is_interface)
       {
@@ -401,15 +402,45 @@ struct property_wrapper_definition_generator
       }
       else if (params.size() == 1)
       {
-        if (!as_generator(scope_tab(2) << scope_tab << scope <<  "set { " << name << "(" << dir_mod << "value); }\n"
-            ).generate(sink, attributes::unused, context))
-          return false;
+        if (has_error_check) 
+        {
+           if (!as_generator(
+               scope_tab(3) << scope <<  "set {\n"
+               << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << "value);\n"
+               << scope_tab(4) << "if (!success) {\n"
+               << scope_tab(5) << "throw new Efl.EflException(\"Native call returned error when setting property value\");\n"
+               << scope_tab(4) << "}\n"
+               << scope_tab(3) << "}\n"
+              ).generate(sink, params, context))
+             return false;
+        } else {
+           if (!as_generator(
+               scope_tab(3) << scope <<  "set { " << managed_method_name << "(" << dir_mod << "value); }\n"
+               ).generate(sink, attributes::unused, context))
+             return false;
+        }
       }
       else if (params.size() > 1)
       {
-        if (!as_generator(scope_tab(2) << scope_tab << scope <<  "set " << ("{ " + name + "(" + dir_mod) << ((" value.Item" << counter(1)) % ", ") << "); }" << "\n"
-           ).generate(sink, params, context))
-          return false;
+        if (has_error_check) 
+        {
+           if (!as_generator(
+               scope_tab(3) << scope <<  "set {\n"
+               << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");\n"
+               << scope_tab(4) << "if (!success) {\n"
+               << scope_tab(5) << "throw new Efl.EflException(\"Native call returned error when setting property value\");\n"
+               << scope_tab(4) << "}\n"
+               << scope_tab(3) << "}\n"
+              ).generate(sink, params, context))
+             return false;
+        } else {
+           if (!as_generator(
+               scope_tab(3) << scope <<  "set { /* " << setter.explicit_return_type.c_type << " */ "
+               << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");"
+               "}" << "\n"
+              ).generate(sink, params, context))
+             return false;
+        }
       }
 
       return true;

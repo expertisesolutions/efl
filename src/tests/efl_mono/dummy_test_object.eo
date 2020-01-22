@@ -1572,6 +1572,53 @@ class Dummy.Test_Object extends Efl.Object implements Dummy.Test_Iface {
          return: Dummy.MyInt;
       }
 
+      @property success_get_check_prop {
+        get {
+          return: Eina.Success_Flag;
+        }
+        set {}
+        values {
+          prop1: int;
+        }
+      }
+
+      @property success_set_check_prop {
+        get {
+        }
+        set {
+          return: Eina.Success_Flag;
+        }
+        values {
+          prop1: int;
+        }
+      }
+
+      @property success_both_check_prop {
+        get {
+          return: Eina.Success_Flag;
+        }
+        set {
+          return: Eina.Success_Flag;
+        }
+        values {
+          prop1: int;
+        }
+      }
+
+      @property success_set_keyed_check_prop {
+        get {
+        }
+        set {
+          return: Eina.Success_Flag;
+        }
+        values {
+          prop1: int;
+        }
+        keys {
+          key1: int;
+        }
+      }
+
       @property multi_valued_prop {
          get {}
          set {}

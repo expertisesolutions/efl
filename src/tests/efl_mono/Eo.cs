@@ -460,6 +460,44 @@ class TestCsharpProperties
         obj.Dispose();
     }
 
+    // Success Flag Tests
+    public static void test_csharp_success_get_check_prop()
+    {
+        var obj = new Dummy.TestObject();
+        obj.SuccessGetCheckProp = 20;
+        var ret = obj.SuccessGetCheckProp;
+        Test.AssertEquals(ret, 20);
+        obj.Dispose();
+    }
+
+    public static void test_csharp_success_set_check_prop()
+    {
+        var obj = new Dummy.TestObject();
+        obj.SuccessSetCheckProp = 20;
+        var ret = obj.SuccessSetCheckProp;
+        Test.AssertEquals(ret, 20);
+        obj.Dispose();
+    }
+
+    public static void test_csharp_success_both_check_prop()
+    {
+        var obj = new Dummy.TestObject();
+        obj.SuccessBothCheckProp = 20;
+        var ret = obj.SuccessBothCheckProp;
+        Test.AssertEquals(ret, 20);
+        obj.Dispose();
+    }
+
+    public static void test_csharp_success_set_keyed_check_prop()
+    {
+        var obj = new Dummy.TestObject();
+        obj.SetSuccessSetKeyedCheckProp(1, 20);
+        var ret = obj.GetSuccessSetKeyedCheckProp(1);
+        Test.AssertEquals(ret, 20);
+        obj.Dispose();
+    }
+
+    // Multi-valued tests
     public static void test_csharp_multi_valued_prop()
     {
         var obj = new Dummy.TestObject();
