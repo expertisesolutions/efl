@@ -325,6 +325,18 @@ property_extension_method_definition_generator property_extension_method_definit
 struct property_wrapper_definition_generator
 {
    template<typename OutputIterator, typename Context>
+   bool generate_success_check(OutputIterator sink
+                               , int scope_size
+                               , Context context) const
+   {
+      return as_generator(""
+               << scope_tab(scope_size) << "if (!success) {\n"
+               << scope_tab(scope_size + 1) << "throw new Efl.EflException(\"Native call returned error when setting property value\");\n"
+               << scope_tab(scope_size) << "}\n"
+             ).generate(sink, attributes::unused, context);
+   }
+
+   template<typename OutputIterator, typename Context>
    bool generate_get(OutputIterator sink
                      , attributes::property_def const& property
                      , bool is_interface
@@ -338,7 +350,8 @@ struct property_wrapper_definition_generator
         return true;
 
       auto getter = *property.getter;
-      auto name = name_helpers::managed_method_name(getter);
+      auto managed_method_name = name_helpers::managed_method_name(getter);
+      auto has_error_check = getter.explicit_return_type.c_type == "Eina_Success_Flag";
 
       if (is_interface)
       {
@@ -349,26 +362,47 @@ struct property_wrapper_definition_generator
       }
       else if (getter.parameters.size() == 0)
       {
-        if (!as_generator
-            (scope_tab(2) << scope_tab
-             << scope << "get { return " + name + "(); }\n"
-            ).generate(sink, attributes::unused, context))
-          return false;
+        if (has_error_check)
+        {
+           if (!(as_generator(
+                   scope_tab(3) << scope << "get {\n"
+                   << scope_tab(4) << "var success = " + managed_method_name + "(); }\n"
+                 ).generate(sink, attributes::unused, context)
+                 && generate_success_check(sink, 4, params)
+                 && as_generator(
+                   scope_tab(4) << "return success;"
+                 ).generate(sink, attributes::unused, context)))
+             return false;
+        } else {
+           if (!as_generator(
+                 scope_tab(3) << scope << "get { return " + managed_method_name + "(); }\n"
+                ).generate(sink, attributes::unused, context))
+             return false;
+        }
       }
       else if (params.size() >= 1)
       {
-        if (!as_generator
-                 (scope_tab(2) << scope_tab << scope << "get "
-                  << "{\n"
-                  << *attribute_reorder<1, -1, 1>
-                    (scope_tab(4) << type(true) << " _out_"
-                     << argument(false) << " = default(" << type(true) << ");\n"
-                    )
-                  << scope_tab(4) << name
-                  << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
-                  << scope_tab(4) << "return (" << (("_out_"<< argument(false)) % ", ") << ");\n"
-                  << scope_tab(3) << "}" << "\n"
-                 ).generate(sink, std::make_tuple(params, params, params), context))
+        if (!as_generator(
+                scope_tab(2) << scope_tab << scope << "get "
+                << "{\n"
+                << *attribute_reorder<1, -1, 1>
+                  (scope_tab(4) << type(true) << " _out_"
+                   << argument(false) << " = default(" << type(true) << ");\n"
+                  )
+               ).generate(sink, std::make_tuple(params, params), context))
+          return false;
+
+        if (has_error_check)
+          if (!(as_generator(""
+                << scope_tab(4) << "var success = " << managed_method_name << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
+                ).generate(sink, params, context)
+                && generate_success_check(sink, 4, context)))
+            return false;
+
+        if (!as_generator(""
+                << scope_tab(4) << "return (" << (("_out_"<< argument(false)) % ", ") << ");\n"
+                << scope_tab(3) << "}" << "\n"
+               ).generate(sink, params, context))
           return false;
       }
 
@@ -404,14 +438,14 @@ struct property_wrapper_definition_generator
       {
         if (has_error_check) 
         {
-           if (!as_generator(
-               scope_tab(3) << scope <<  "set {\n"
-               << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << "value);\n"
-               << scope_tab(4) << "if (!success) {\n"
-               << scope_tab(5) << "throw new Efl.EflException(\"Native call returned error when setting property value\");\n"
-               << scope_tab(4) << "}\n"
-               << scope_tab(3) << "}\n"
-              ).generate(sink, params, context))
+           if (!(as_generator(
+                  scope_tab(3) << scope <<  "set {\n"
+                  << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << "value);\n"
+                 ).generate(sink, params, context)
+                 && generate_success_check(sink, 4, params)
+                 && as_generator(""
+                  << scope_tab(3) << "}\n"
+                 ).generate(sink, params, context)))
              return false;
         } else {
            if (!as_generator(
@@ -424,14 +458,14 @@ struct property_wrapper_definition_generator
       {
         if (has_error_check) 
         {
-           if (!as_generator(
-               scope_tab(3) << scope <<  "set {\n"
-               << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");\n"
-               << scope_tab(4) << "if (!success) {\n"
-               << scope_tab(5) << "throw new Efl.EflException(\"Native call returned error when setting property value\");\n"
-               << scope_tab(4) << "}\n"
-               << scope_tab(3) << "}\n"
-              ).generate(sink, params, context))
+           if (!(as_generator(
+                  scope_tab(3) << scope <<  "set {\n"
+                  << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");\n"
+                 ).generate(sink, params, context)
+                 && generate_success_check(sink, 4, params)
+                 && as_generator(""
+                  << scope_tab(3) << "}\n"
+                 ).generate(sink, params, context)))
              return false;
         } else {
            if (!as_generator(
