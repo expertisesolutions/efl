@@ -326,12 +326,15 @@ struct property_wrapper_definition_generator
 {
    template<typename OutputIterator, typename Context>
    bool generate_success_check(OutputIterator sink
+                               , std::string const& property_name
                                , int scope_size
                                , Context context) const
    {
+      auto error_msg = "\"Call of native function for " + property_name + " returned an error.\"";
+
       return as_generator(""
                << scope_tab(scope_size) << "if (!success) {\n"
-               << scope_tab(scope_size + 1) << "throw new Efl.EflException(\"Native call returned error when setting property value\");\n"
+               << scope_tab(scope_size + 1) << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
                << scope_tab(scope_size) << "}\n"
              ).generate(sink, attributes::unused, context);
    }
@@ -368,7 +371,7 @@ struct property_wrapper_definition_generator
                    scope_tab(3) << scope << "get {\n"
                    << scope_tab(4) << "var success = " + managed_method_name + "(); }\n"
                  ).generate(sink, attributes::unused, context)
-                 && generate_success_check(sink, 4, params)
+                 && generate_success_check(sink, managed_method_name, 4, params)
                  && as_generator(
                    scope_tab(4) << "return success;"
                  ).generate(sink, attributes::unused, context)))
@@ -393,11 +396,20 @@ struct property_wrapper_definition_generator
           return false;
 
         if (has_error_check)
-          if (!(as_generator(""
-                << scope_tab(4) << "var success = " << managed_method_name << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
-                ).generate(sink, params, context)
-                && generate_success_check(sink, 4, context)))
-            return false;
+          {
+             if (!(as_generator(""
+                     << scope_tab(4) << "var success = " << managed_method_name << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
+                   ).generate(sink, params, context)
+                   && generate_success_check(sink, managed_method_name, 4, context)))
+               return false;
+          }
+        else
+          {
+             if (!as_generator(""
+                    << scope_tab(4) << managed_method_name << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
+                  ).generate(sink, params, context))
+               return false;
+          }
 
         if (!as_generator(""
                 << scope_tab(4) << "return (" << (("_out_"<< argument(false)) % ", ") << ");\n"
@@ -442,7 +454,7 @@ struct property_wrapper_definition_generator
                   scope_tab(3) << scope <<  "set {\n"
                   << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << "value);\n"
                  ).generate(sink, params, context)
-                 && generate_success_check(sink, 4, params)
+                 && generate_success_check(sink, managed_method_name, 4, params)
                  && as_generator(""
                   << scope_tab(3) << "}\n"
                  ).generate(sink, params, context)))
@@ -462,7 +474,7 @@ struct property_wrapper_definition_generator
                   scope_tab(3) << scope <<  "set {\n"
                   << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");\n"
                  ).generate(sink, params, context)
-                 && generate_success_check(sink, 4, params)
+                 && generate_success_check(sink, managed_method_name, 4, params)
                  && as_generator(""
                   << scope_tab(3) << "}\n"
                  ).generate(sink, params, context)))
