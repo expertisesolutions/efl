@@ -328,19 +328,19 @@ struct property_wrapper_definition_generator
    bool generate_get(OutputIterator sink
                      , attributes::property_def const& property
                      , bool is_interface
+                     , std::string scope
                      , std::vector<attributes::parameter_def> const& params
                      , Context context) const
    {
       using efl::eolian::grammar::attribute_reorder;
 
       auto getter = *property.getter;
-      auto scope = eolian_mono::function_scope_get(getter);
       auto name = name_helpers::managed_method_name(getter);
 
       if (is_interface)
       {
          if (getter.scope == attributes::member_scope::scope_public
-             && !as_generator(scope_tab(2) << scope_tab << "get;\n")
+             && !as_generator(scope_tab(2) << scope_tab << scope << "get;\n")
                  .generate(sink, attributes::unused, context))
              return false;
       }
@@ -348,14 +348,14 @@ struct property_wrapper_definition_generator
       {
         if (!as_generator
             (scope_tab(2) << scope_tab
-             << "get { return " + name + "(); }\n"
+             << scope << "get { return " + name + "(); }\n"
             ).generate(sink, attributes::unused, context))
           return false;
       }
       else if (params.size() >= 1)
       {
         if (!as_generator
-                 (scope_tab(2) << scope_tab << "get "
+                 (scope_tab(2) << scope_tab << scope << "get "
                   << "{\n"
                   << *attribute_reorder<1, -1, 1>
                     (scope_tab(4) << type(true) << " _out_"
@@ -374,7 +374,7 @@ struct property_wrapper_definition_generator
 
    template<typename OutputIterator, typename Context>
    bool generate_set(OutputIterator sink
-                     , attributes::function_def const& setter
+                     , attributes::property_def const& property
                      , bool is_interface
                      , std::string dir_mod
                      , std::string scope
@@ -383,7 +383,7 @@ struct property_wrapper_definition_generator
    {
       using efl::eolian::grammar::counter;
 
-      //auto scope = eolian_mono::function_scope_get(setter);
+      auto setter = *property.setter;
       auto name = name_helpers::managed_method_name(setter);
 
       if (is_interface)
@@ -568,6 +568,7 @@ struct property_wrapper_definition_generator
           if (!generate_get(sink
                             , property
                             , is_interface
+                            , get_scope
                             , parameters
                             , context))
             return false;
@@ -576,7 +577,7 @@ struct property_wrapper_definition_generator
       if (property.setter.is_engaged())
       {
           if (!generate_set(sink
-                            , *property.setter
+                            , property
                             , is_interface
                             , dir_mod
                             , set_scope
