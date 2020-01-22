@@ -334,6 +334,9 @@ struct property_wrapper_definition_generator
    {
       using efl::eolian::grammar::attribute_reorder;
 
+      if (!property.getter)
+        return true;
+
       auto getter = *property.getter;
       auto name = name_helpers::managed_method_name(getter);
 
@@ -382,6 +385,9 @@ struct property_wrapper_definition_generator
                      , Context context) const
    {
       using efl::eolian::grammar::counter;
+
+      if (!property.setter)
+        return true;
 
       auto setter = *property.setter;
       auto name = name_helpers::managed_method_name(setter);
@@ -563,28 +569,22 @@ struct property_wrapper_definition_generator
           return false;
       }
 
-      if (property.getter.is_engaged())
-      {
-          if (!generate_get(sink
-                            , property
-                            , is_interface
-                            , get_scope
-                            , parameters
-                            , context))
-            return false;
-      }
+      if (!generate_get(sink
+                        , property
+                        , is_interface
+                        , get_scope
+                        , parameters
+                        , context))
+        return false;
 
-      if (property.setter.is_engaged())
-      {
-          if (!generate_set(sink
-                            , property
-                            , is_interface
-                            , dir_mod
-                            , set_scope
-                            , parameters
-                            , context))
-            return false;
-      }
+      if (!generate_set(sink
+                        , property
+                        , is_interface
+                        , dir_mod
+                        , set_scope
+                        , parameters
+                        , context))
+        return false;
 
       if (!as_generator(scope_tab(2) << "}\n\n").generate(sink, attributes::unused, context))
         return false;
