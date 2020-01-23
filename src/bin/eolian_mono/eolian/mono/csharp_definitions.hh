@@ -27,10 +27,11 @@
 #ifndef EOLIAN_MONO_CSHARP_DEFINITIONS_HH
 #define EOLIAN_MONO_CSHARP_DEFINITIONS_HH
 
-#include <optional>
 #include <string>
 #include <variant>
 #include <vector>
+
+#include <Eina.hh>
 
 namespace eolian_mono {
 
@@ -44,6 +45,7 @@ using TupleType = std::vector<std::string>;
 using Type = std::variant<std::string, TupleType>; 
 
 enum class CSharp_Modifiers {
+    NONE,
     PUBLIC,
     PRIVATE,
     PROTECTED,
@@ -72,10 +74,33 @@ struct CSharp_Property {
         GETTER_AND_SETTER,
     };
 
-    Decl decl;
-    Options options = Options::GETTER_AND_SETTER;
+    struct Getter {
+        CSharp_Modifiers modifiers = CSharp_Modifiers::NONE;
+    };
 
-    CSharp_Property() = default;
+    struct Setter {
+        CSharp_Modifiers modifiers = CSharp_Modifiers::NONE;
+    };
+
+    Decl decl;
+    efl::eina::optional<Getter> getter = {};
+    efl::eina::optional<Setter> setter = {};
+
+    CSharp_Property(Decl decl, Getter getter):
+        decl{decl},
+        getter{getter}
+    {}
+
+    CSharp_Property(Decl decl, Setter setter):
+        decl{decl},
+        setter{setter}
+    {}
+
+    CSharp_Property(Decl decl, Getter getter, Setter setter):
+        decl{decl},
+        getter{getter},
+        setter{setter}
+    {}
 };
 
 struct CSharp_Klass {
