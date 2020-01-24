@@ -42,7 +42,13 @@ namespace csharp_conversion {
 using TupleType = std::vector<std::string>;
 
 // TODO: Remember possible return types :P
-using Type = std::variant<std::string, TupleType>; 
+struct Type {
+    TupleType types;
+
+    auto is_tuple() const -> bool {
+        return types.size() > 1;
+    }
+};
 
 enum class CSharp_Modifiers {
     NONE,
@@ -68,18 +74,14 @@ struct CSharp_Function {
 };
 
 struct CSharp_Property {
-    enum class Options {
-        SETTER_ONLY,
-        GETTER_ONLY,
-        GETTER_AND_SETTER,
-    };
-
     struct Getter {
         CSharp_Modifiers modifiers = CSharp_Modifiers::NONE;
+        bool calls_native = false;
     };
 
     struct Setter {
         CSharp_Modifiers modifiers = CSharp_Modifiers::NONE;
+        bool calls_native = false;
     };
 
     Decl decl;
@@ -105,13 +107,97 @@ struct CSharp_Property {
 
 struct CSharp_Klass {
     std::string name;
-    std::vector<CSharp_Property> properties;
+    std::vector<CSharp_Function> constructors;
+
     std::vector<Decl> attributes;
-    std::vector<Decl> functions;
+    std::vector<CSharp_Property> properties;
+    std::vector<CSharp_Function> functions;
+
 };
 
+struct CSharp_Variable {
+    CSharp_Variable(std::string name):
+        name{std::move(name)}
+    {}
+
+    std::string name;
+    bool initialized = false;
+};
+
+// Straight forward generators - to be moved (TODO).
+struct CSharp_Code_Terminal {
+    struct Generator {
+        template<typename OutputIterator, typename Context>
+        bool generate(OutputIterator sink, CSharp_Function const& function, Context const& context) const
+        {
+            return true;
+        }
+    };
+} const CSharp_Code;
+
+struct Assign_Terminal {
+    struct Generator {
+        Generator(CSharp_Variable& var, std::string expr):
+            var{var},
+            expr{std::move(expr)}
+        {}
+
+        template<typename OutputIterator, typename Context>
+        bool generate(OutputIterator sink, attributes::unused_type, Context const& context) const
+        {
+            if (!as_generator(
+                   (!var.initialized ? "var " : "") << var.name << " = " << expr
+                 ).generate(sink, attributes::unused, context))
+              return false;
+
+            var.initialized = true;
+
+            return true;
+        }
+
+        CSharp_Variable& var;
+        std::string expr;
+    };
+
+    auto operator()(CSharp_Variable var, std::string expr) const -> Generator {
+        return {var, expr};
+    }
+} const Assign;
+
 }
 
 }
+
+namespace efl { namespace eolian { namespace grammar {
+
+template <>
+struct is_generator<::eolian_mono::csharp_conversion::CSharp_Code_Terminal> : std::true_type {};
+template <>
+struct is_generator<::eolian_mono::csharp_conversion::CSharp_Code_Terminal::Generator> : std::true_type {};
+
+template <>
+struct is_eager_generator<::eolian_mono::csharp_conversion::CSharp_Code_Terminal> : std::true_type {};
+template <>
+struct is_eager_generator<::eolian_mono::csharp_conversion::CSharp_Code_Terminal::Generator> : std::true_type {};
+
+
+template <>
+struct is_generator<::eolian_mono::csharp_conversion::Assign_Terminal> : std::true_type {};
+template <>
+struct is_generator<::eolian_mono::csharp_conversion::Assign_Terminal::Generator> : std::true_type {};
+
+template <>
+struct is_eager_generator<::eolian_mono::csharp_conversion::Assign_Terminal> : std::true_type {};
+template <>
+struct is_eager_generator<::eolian_mono::csharp_conversion::Assign_Terminal::Generator> : std::true_type {};
+
+namespace type_traits {
+
+template <>
+struct attributes_needed<::eolian_mono::csharp_conversion::CSharp_Code_Terminal> : std::integral_constant<int, 1> {};
+template <>
+struct attributes_needed<::eolian_mono::csharp_conversion::CSharp_Code_Terminal::Generator> : std::integral_constant<int, 1> {};
+
+}}}}
 
 #endif
