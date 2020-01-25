@@ -39,6 +39,8 @@
 #include "generation_contexts.hh"
 #include "blacklist.hh"
 
+#include "csharp_definitions.hh"
+
 namespace eolian_mono {
 
 struct native_function_definition_generator
@@ -481,7 +483,7 @@ struct property_wrapper_definition_generator
              return false;
         } else {
            if (!as_generator(
-               scope_tab(3) << scope <<  "set { /* " << setter.explicit_return_type.c_type << " */ "
+               scope_tab(3) << scope <<  "set { "
                << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");"
                "}" << "\n"
               ).generate(sink, params, context))
@@ -626,6 +628,18 @@ struct property_wrapper_definition_generator
            set_scope = "";
         }
 
+
+      // ---------------
+      // Code generation
+      // ---------------
+      
+      if (auto csharp_property = csharp_definitions::conversors::from_property(property, context))
+        if (!as_generator("/* Test: */ " << csharp_definitions::Definition)
+               .generate(sink, *csharp_property, context))
+          return false;
+      return true;
+
+      as_generator("/*\n").generate(sink, attributes::unused, context);
       if (parameters.size() == 1)
       {
         if (!as_generator(
@@ -640,7 +654,7 @@ struct property_wrapper_definition_generator
             (
              documentation(2)
              << scope_tab(2) << scope << (is_static ? "static (" : "(")
-             << (attribute_reorder<1, -1>(type(true) /*<< " " << argument*/) % ", ") << ") "
+             << (attribute_reorder<1>(type(true)) % ", ") << ") "
              << managed_name << " {\n"
             ).generate(sink, std::make_tuple(property, parameters), context))
           return false;
@@ -665,6 +679,7 @@ struct property_wrapper_definition_generator
 
       if (!as_generator(scope_tab(2) << "}\n\n").generate(sink, attributes::unused, context))
         return false;
+      as_generator("*/").generate(sink, attributes::unused, context);
 
       return true;
    }
