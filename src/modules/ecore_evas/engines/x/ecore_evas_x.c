@@ -3790,10 +3790,10 @@ _search_fitting_type(Eina_Array *arr, Ecore_Evas_Selection_Buffer selection, Eco
              if (mime_type == acceptable_type)
                HANDLE_TYPE()
 
-             //if there is no available type yet, check if we can convert to the desiared type via this type
+             //if there is no available type yet, check if we can convert to the desired type via this type
              if (!found_conversion)
                {
-                  Eina_Iterator *iter = eina_content_converter_possible_converstions(mime_type);
+                  Eina_Iterator *iter = eina_content_converter_possible_conversions(mime_type);
                   EINA_ITERATOR_FOREACH(iter, acceptable_type)
                     {
                        if (mime_type == acceptable_type)
