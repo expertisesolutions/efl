@@ -600,7 +600,7 @@ struct property_wrapper_definition_generator
       if (is_interface && (!is_get_public && !is_set_public))
           return true;
 
-      // Do not generate set-only proeprty
+      // Do not generate set-only property
       if (property.setter.is_engaged() && !property.getter.is_engaged())
           return true;
 
@@ -633,11 +633,10 @@ struct property_wrapper_definition_generator
       // Code generation
       // ---------------
       
-      if (auto csharp_property = csharp_definitions::conversors::from_property(property, context))
+      if (auto csharp_property = csharp_definitions::conversors::to_property(property, context))
         if (!as_generator("/* Test: */ " << csharp_definitions::Definition)
                .generate(sink, *csharp_property, context))
-          return false;
-      return true;
+            return false;
 
       as_generator("/*\n").generate(sink, attributes::unused, context);
       if (parameters.size() == 1)

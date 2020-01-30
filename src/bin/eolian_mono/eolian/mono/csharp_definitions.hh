@@ -37,16 +37,23 @@
 #include "grammar/generator.hpp"
 #include "grammar/klass_def.hpp"
 
-#include "grammar/optional.hpp"
-#include "grammar/eps.hpp"
-#include "grammar/indentation.hpp"
 #include "grammar/alternative.hpp"
 #include "grammar/attribute_conditional.hpp"
+#include "grammar/eps.hpp"
+#include "grammar/indentation.hpp"
+#include "grammar/optional.hpp"
 #include "type.hh"
 
 namespace eolian_mono {
 
 namespace attributes = efl::eolian::grammar::attributes;
+
+template<typename T>
+auto or_default(efl::eina::optional<T> const& optional, T default_value) -> T {
+    if (optional)
+        return *optional;
+    return default_value;
+}
 
 // Temporary namespace (just to prevent accidental name clashes while in
 // first development)
@@ -67,6 +74,8 @@ constexpr auto value_of(Enum e) -> typename std::underlying_type<Enum>::type
 
 }
 
+using efl::eina::optional;
+
 using SingleType = attributes::type_def;
 using TupleType = std::vector<SingleType>;
 
@@ -82,10 +91,6 @@ struct Type {
         types{type}
     {}
 };
-
-auto is_tuple(Type const& type) -> bool {
-    return type.types.size() > 1;
-}
 
 
 enum class CSharp_Modifiers {
@@ -140,23 +145,23 @@ struct CSharp_Function {
 struct CSharp_Property {
     struct Getter {
         CSharp_Modifiers modifiers;
-        bool calls_native;
+        optional<CSharp_Function> native_call;
 
         Getter(CSharp_Modifiers mods = CSharp_Modifiers::NONE
-               , bool calls_native = false):
+               , optional<CSharp_Function> native_call = {}):
             modifiers{mods},
-            calls_native{calls_native}
+            native_call{native_call}
         {}
     };
 
     struct Setter {
         CSharp_Modifiers modifiers;
-        bool calls_native;
+        efl::eina::optional<CSharp_Function> native_call;
 
         Setter(CSharp_Modifiers mods = CSharp_Modifiers::NONE
-               , bool calls_native = false):
+               , optional<CSharp_Function> native_call = {}):
             modifiers{mods},
-            calls_native{calls_native}
+            native_call{native_call}
         {}
     };
 
@@ -209,12 +214,6 @@ struct CSharp_Variable {
  */
 namespace conversors {
 
-struct Conversion_Failed: public std::invalid_argument {
-    Conversion_Failed(std::string const& msg):
-        std::invalid_argument{msg}
-    {}
-};
-
 auto to_decl(attributes::parameter_def const& param) -> Decl {
     auto modifiers = CSharp_Modifiers::NONE;
 
@@ -225,22 +224,102 @@ auto to_decl(attributes::parameter_def const& param) -> Decl {
     return {modifiers, param.type, param.param_name};
 }
 
+
+auto to_modifiers(attributes::member_scope scope) -> CSharp_Modifiers {
+    using attributes::member_scope;
+    switch (scope) {
+        case member_scope::scope_public:
+            return CSharp_Modifiers::PUBLIC;
+        case member_scope::scope_private:
+            return CSharp_Modifiers::PRIVATE;
+        case member_scope::scope_protected:
+            return CSharp_Modifiers::PROTECTED;
+        default:
+            return CSharp_Modifiers::NONE;
+    }
+}
+
+
+auto will_generate_property(attributes::property_def const& eolian_property
+                            , bool is_interface
+                            , bool is_concrete
+                            , optional<attributes::member_scope> get_scope
+                            , optional<attributes::member_scope> set_scope) -> bool {
+    using attributes::member_scope;
+
+    auto is_static = (eolian_property.getter.is_engaged() && eolian_property.getter->is_static)
+                     || (eolian_property.setter.is_engaged() && eolian_property.setter->is_static);
+
+    // Cannot generate properties without getter.
+    if (!eolian_property.getter) {
+        return false; 
+    }
+
+    // Do not generate if no accessor is public
+    if (is_interface
+        && (get_scope && *get_scope != member_scope::scope_public)
+        && (set_scope && *set_scope != member_scope::scope_public))
+        return false;
+
+    // ???
+    if ((is_concrete || is_interface) && is_static)
+        return false;
+
+    return true;
+}
+
+auto extract_parameters(attributes::property_def const& eolian_property) -> std::vector<Decl>
+{
+    using attributes::parameter_direction;
+
+    auto parameters = std::vector<Decl>{};
+
+    if (eolian_property.setter) {
+        auto setter_params = eolian_property.setter->parameters;
+        std::transform(std::begin(setter_params), std::end(setter_params),
+                       std::back_inserter(parameters),
+                       [] (attributes::parameter_def p) -> Decl
+                       {
+                           return to_decl(p);
+                       });
+    } else if (eolian_property.getter) {
+        auto getter_params = eolian_property.getter->parameters;
+
+        if (getter_params.size() == 0) {
+            parameters.push_back(to_decl({parameter_direction::in
+                                          , eolian_property.getter->return_type
+                                          , "propertyResult"
+                                          , {}
+                                          , eolian_property.getter->unit}));
+        } else {
+            std::transform(std::begin(getter_params), std::end(getter_params),
+                           std::back_inserter(parameters),
+                           [] (attributes::parameter_def p) -> Decl
+                           {
+                               p.direction = parameter_direction::in;
+                               return to_decl(p);
+                           });
+        }
+    }
+
+    return parameters;
+}
+
 template <typename Context>
-auto from_property(attributes::property_def const& original, Context const& context) -> efl::eina::optional<CSharp_Property> {
+auto to_property(attributes::property_def const& eolian_property, Context const& context) -> efl::eina::optional<CSharp_Property> {
     using efl::eina::optional;
     using efl::eolian::grammar::context_find_tag;
     using attributes::member_scope;
-    using attributes::parameter_direction;
 
     auto is_interface = context_find_tag<class_context>(context).current_wrapper_kind == class_context::interface;
+    auto is_concrete = context_find_tag<class_context>(context).current_wrapper_kind == class_context::concrete;
 
     auto scope = optional<member_scope>{member_scope::scope_public};
-    auto get_scope = original.getter ? optional<member_scope>{original.getter->scope} : optional<member_scope>{};
-    auto set_scope = original.setter ? optional<member_scope>{original.setter->scope} : optional<member_scope>{};
+    auto get_scope = eolian_property.getter ? optional<member_scope>{eolian_property.getter->scope} : optional<member_scope>{};
+    auto set_scope = eolian_property.setter ? optional<member_scope>{eolian_property.setter->scope} : optional<member_scope>{};
 
-    if (!original.getter) {
-        return {}; // Cannot generate properties without getter.
-    }
+    if (!will_generate_property(eolian_property, is_interface, is_concrete, get_scope, set_scope))
+        return {};
 
     // No explicit scope for interfaces in MCS!
     if (is_interface) {
@@ -254,53 +333,19 @@ auto from_property(attributes::property_def const& original, Context const& cont
         get_scope = {};
         set_scope = {};
     // No setter, but property has the same scope of get? No need to specify get, then.
-    } else if (!original.setter || get_scope == scope) {
+    } else if (!eolian_property.setter || get_scope == scope) {
         get_scope = {};
     // No getter, but property has the same scope of set? No need to specify set, then.
-    } else if (!original.getter || set_scope == scope) {
+    } else if (!eolian_property.getter || set_scope == scope) {
         set_scope = {};
     }
 
-    std::vector<Decl> parameters;
-
-    if (original.setter) {
-        auto setter_params = original.setter->parameters;
-        std::transform(std::begin(setter_params), std::end(setter_params),
-                       std::back_inserter(parameters),
-                       [] (attributes::parameter_def p) -> Decl
-                       {
-                           return to_decl(p);
-                       });
-    } else if (original.getter) {
-        auto getter_params = original.getter->parameters;
-
-        if (getter_params.size() == 0) {
-            parameters.push_back(to_decl({parameter_direction::in
-                                          , original.getter->return_type
-                                          , "propertyResult"
-                                          , {}
-                                          , original.getter->unit}));
-        } else {
-            std::transform(std::begin(getter_params), std::end(getter_params),
-                           std::back_inserter(parameters),
-                           [] (attributes::parameter_def p) -> Decl
-                           {
-                               p.direction = parameter_direction::in;
-                               return to_decl(p);
-                           });
-        }
-    }
+    auto parameters = extract_parameters(eolian_property);
 
     auto modifiers = CSharp_Modifiers::NONE;
 
     if (scope) {
-        auto _scope = *scope;
-        if (_scope == member_scope::scope_public)
-            modifiers |= CSharp_Modifiers::PUBLIC;
-        else if (_scope == member_scope::scope_protected)
-            modifiers |= CSharp_Modifiers::PROTECTED;
-        else if (_scope == member_scope::scope_private)
-            modifiers |= CSharp_Modifiers::PRIVATE;
+        modifiers |= to_modifiers(*scope);
     }
 
     auto return_type = Type{TupleType{}};
@@ -314,13 +359,19 @@ auto from_property(attributes::property_def const& original, Context const& cont
     auto decl = Decl{
         modifiers,
         return_type,
-        "PropertyTestName"
+        name_helpers::property_managed_name(eolian_property),
     };
 
-    if (original.getter) {
+    if (eolian_property.getter) {
         getter = CSharp_Property::Getter{
-            CSharp_Modifiers::NONE,
-            false,
+            get_scope ? to_modifiers(*get_scope) : CSharp_Modifiers::NONE,
+            {},
+        };
+    }
+    if (eolian_property.setter) {
+        setter = CSharp_Property::Setter{
+            set_scope ? to_modifiers(*set_scope) : CSharp_Modifiers::NONE,
+            {},
         };
     }
 
@@ -341,6 +392,66 @@ auto from_property(attributes::property_def const& original, Context const& cont
  */
 
 using namespace efl::eolian::grammar;
+
+// Function calls
+struct Call_Terminal
+{
+    struct Generator {
+        Generator() = default;
+        Generator(std::vector<std::string> args):
+            args{args}
+        {}
+
+        template <typename OutputIterator, typename Context>
+        bool generate(OutputIterator sink, CSharp_Function const& function, Context const& context) const
+        {
+            return as_generator(
+                        function.decl.name << "(" << (string % ", ") << ")"
+                    ).generate(sink, args, context);
+        }
+
+        std::vector<std::string> args;
+    };
+
+    auto operator()() const -> Generator {
+        return {};
+    }
+
+    auto operator()(std::vector<std::string> args) const -> Generator {
+        return {args};
+    }
+} const Call;
+
+auto as_generator(Call_Terminal) -> Call_Terminal::Generator {
+    return {{}};
+}
+
+}}
+
+namespace efl::eolian::grammar {
+
+template <>
+struct is_eager_generator<::eolian_mono::csharp_definitions::Call_Terminal> : std::true_type {};
+template <>
+struct is_generator<::eolian_mono::csharp_definitions::Call_Terminal> : std::true_type {};
+template <>
+struct is_eager_generator<::eolian_mono::csharp_definitions::Call_Terminal::Generator> : std::true_type {};
+template <>
+struct is_generator<::eolian_mono::csharp_definitions::Call_Terminal::Generator> : std::true_type {};
+
+namespace type_traits {
+
+template <>
+struct attributes_needed<::eolian_mono::csharp_definitions::Call_Terminal> : std::integral_constant<int, 1> {};
+template <>
+struct attributes_needed<::eolian_mono::csharp_definitions::Call_Terminal::Generator> : std::integral_constant<int, 1> {};
+
+}
+
+}
+
+// General C# code (TODO: Specify to Block?)
+namespace eolian_mono::csharp_definitions {
 
 // Every possible C# declaration (but not definitions)
 struct Decl_Terminal {
@@ -383,14 +494,13 @@ struct Decl_Terminal {
     bool generate(OutputIterator sink, CSharp_Property::Getter const& getter, Context const& context) const
     {
         auto const& indent = current_indentation(context);
-        if (!as_generator(lit("")
-                << "get" <<
-                (attribute_conditional([](bool b) { return b; }) 
-                 << ("{\n"
-                 << indent << "return NativeFunctionCallForThisGetter();\n"
+        if (!as_generator(
+                "get" <<
+                ((!("{\n"
+                 << indent << "return " << Call() << ";\n"
                  << "}\n"
-                 ) | lit(";"))
-            ).generate(sink, getter.calls_native, context))
+                 )) | lit(";"))
+            ).generate(sink, getter.native_call, context))
             return false;
         return true;
     }
@@ -398,11 +508,20 @@ struct Decl_Terminal {
     template<typename OutputIterator, typename Context>
     bool generate(OutputIterator sink, CSharp_Property::Setter const& setter, Context const& context) const
     {
+        auto const& indent = current_indentation(context);
+        if (!as_generator(
+                "set" <<
+                ((!("{\n"
+                 << indent << Call({"value"}) << ";\n"
+                 << "}\n"
+                 )) | lit(";"))
+            ).generate(sink, setter.native_call, context))
+            return false;
         return true;
     }
 } const Decl {};
 
-}}
+}
 
 namespace efl::eolian::grammar {
 
@@ -443,11 +562,11 @@ struct Definition_Terminal {
         template<typename OutputIterator, typename Context>
         bool generate(OutputIterator sink, csharp_definitions::CSharp_Property const& property, Context const& context) const
         {
-            return as_generator(scope_tab(indent)
-                << Decl << " {\n"
-                << (!(scope_tab(indent + 1) << Decl << "\n") | eps) // property.getter
-                << (!(scope_tab(indent + 1) << Decl << "\n") | eps) // property.setter
-                << "}\n")
+            return as_generator(
+                scope_tab(indent) << Decl << " {\n" <<
+                (!(scope_tab(indent + 1) << Decl << "\n") | eps) << // property.getter
+                (!(scope_tab(indent + 1) << Decl << "\n") | eps) << // property.setter
+                scope_tab(indent) << "}\n")
                 .generate(sink
                           , std::make_tuple(property.decl, property.getter, property.setter)
                           , context);
