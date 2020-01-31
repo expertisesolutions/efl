@@ -102,6 +102,7 @@ enum class CSharp_Modifiers {
 
     CONST,
     STATIC,
+    READ_ONLY,
 
     OUT,
     REF,
@@ -119,6 +120,10 @@ auto operator&(CSharp_Modifiers lhs, CSharp_Modifiers rhs) -> CSharp_Modifiers {
 auto operator|=(CSharp_Modifiers& lhs, CSharp_Modifiers rhs) -> CSharp_Modifiers& {
     lhs = lhs | rhs;
     return lhs;
+}
+
+auto has_any(CSharp_Modifiers mod) -> bool {
+    return mod != CSharp_Modifiers::NONE;
 }
 
 // Removes every modifier that is not scope.
@@ -243,12 +248,10 @@ auto to_modifiers(attributes::member_scope scope) -> CSharp_Modifiers {
 auto will_generate_property(attributes::property_def const& eolian_property
                             , bool is_interface
                             , bool is_concrete
+                            , bool is_static
                             , optional<attributes::member_scope> get_scope
                             , optional<attributes::member_scope> set_scope) -> bool {
     using attributes::member_scope;
-
-    auto is_static = (eolian_property.getter.is_engaged() && eolian_property.getter->is_static)
-                     || (eolian_property.setter.is_engaged() && eolian_property.setter->is_static);
 
     // Cannot generate properties without getter.
     if (!eolian_property.getter) {
@@ -313,12 +316,14 @@ auto to_property(attributes::property_def const& eolian_property, Context const&
 
     auto is_interface = context_find_tag<class_context>(context).current_wrapper_kind == class_context::interface;
     auto is_concrete = context_find_tag<class_context>(context).current_wrapper_kind == class_context::concrete;
+    auto is_static = (eolian_property.getter.is_engaged() && eolian_property.getter->is_static)
+                     || (eolian_property.setter.is_engaged() && eolian_property.setter->is_static);
 
     auto scope = optional<member_scope>{member_scope::scope_public};
     auto get_scope = eolian_property.getter ? optional<member_scope>{eolian_property.getter->scope} : optional<member_scope>{};
     auto set_scope = eolian_property.setter ? optional<member_scope>{eolian_property.setter->scope} : optional<member_scope>{};
 
-    if (!will_generate_property(eolian_property, is_interface, is_concrete, get_scope, set_scope))
+    if (!will_generate_property(eolian_property, is_interface, is_concrete, is_static, get_scope, set_scope))
         return {};
 
     // No explicit scope for interfaces in MCS!
@@ -346,6 +351,10 @@ auto to_property(attributes::property_def const& eolian_property, Context const&
 
     if (scope) {
         modifiers |= to_modifiers(*scope);
+    }
+
+    if (is_static) {
+        modifiers |= CSharp_Modifiers::STATIC;
     }
 
     auto return_type = Type{TupleType{}};
@@ -450,11 +459,9 @@ struct attributes_needed<::eolian_mono::csharp_definitions::Call_Terminal::Gener
 
 }
 
-// General C# code (TODO: Specify to Block?)
 namespace eolian_mono::csharp_definitions {
 
-// Every possible C# declaration (but not definitions)
-struct Decl_Terminal {
+struct Type_Generator {
     template<typename OutputIterator, typename Context>
     bool generate(OutputIterator sink, Type const& _type, Context const& context) const
     {
@@ -466,26 +473,72 @@ struct Decl_Terminal {
                           , std::make_tuple(_type.types, _type.types)
                           , context);
     }
+};
 
+}
+
+namespace efl::eolian::grammar {
+
+template <>
+struct is_eager_generator<::eolian_mono::csharp_definitions::Type_Generator> : std::true_type {};
+template <>
+struct is_generator<::eolian_mono::csharp_definitions::Type_Generator> : std::true_type {};
+
+namespace type_traits {
+
+template <>
+struct attributes_needed<::eolian_mono::csharp_definitions::Type_Generator> : std::integral_constant<int, 1> {};
+
+}
+
+}
+
+namespace eolian_mono::csharp_definitions {
+
+Type_Generator const Type_Gen = {};
+
+auto split_as_str(CSharp_Modifiers modifiers) -> std::vector<std::string> {
+    auto mods = std::vector<std::string>{};
+
+    if (has_any(modifiers & CSharp_Modifiers::PUBLIC)) {
+        mods.push_back("public");
+    } else if (has_any(modifiers & CSharp_Modifiers::PRIVATE)) {
+        mods.push_back("private");
+    } else if (has_any(modifiers & CSharp_Modifiers::PROTECTED)) {
+        mods.push_back("protected");
+    } else if (has_any(modifiers & CSharp_Modifiers::INTERNAL)) {
+        mods.push_back("internal");
+    }
+
+    if (has_any(modifiers & CSharp_Modifiers::STATIC)) {
+        mods.push_back("static");
+    }
+    else if (has_any(modifiers & CSharp_Modifiers::CONST)) {
+        mods.push_back("const");
+    }
+
+    /*
+    if (has_any(modifiers & CSharp_Modifiers::READ_ONLY)) {
+        mods.push_back("readonly");
+    }
+    */
+
+    return mods;
+}
+
+// Every possible C# declaration (but not definitions)
+struct Decl_Terminal {
     template<typename OutputIterator, typename Context>
     bool generate(OutputIterator sink, Decl const& decl, Context const& context) const
     {
-        auto scope_str = [&]() -> std::string {
-            switch (scope(decl.modifiers)) {
-                case CSharp_Modifiers::PUBLIC:
-                    return "public";
-                case CSharp_Modifiers::PRIVATE:
-                    return "private";
-                case CSharp_Modifiers::PROTECTED:
-                    return "protected";
-                case CSharp_Modifiers::INTERNAL:
-                    return "internal";
-                default:
-                    return "";
-            }
-        }();
+        auto mods = split_as_str(decl.modifiers);
 
-        if (!as_generator(scope_str << " " << Decl_Terminal{} << " " << decl.name).generate(sink, decl.type, context))
+        if (!as_generator((string % " "))
+             .generate(sink, mods, context))
+            return false;
+
+        if (!as_generator(" " << Type_Gen << " " << decl.name)
+             .generate(sink, decl.type, context))
             return false;
         return true;
     }
