@@ -94,19 +94,19 @@ struct Type {
 
 
 enum class CSharp_Modifiers {
-    NONE,
-    PUBLIC,
-    PRIVATE,
-    PROTECTED,
-    INTERNAL,
+    NONE      = 0,
+    PUBLIC    = 1 << 0,
+    PRIVATE   = 1 << 1,
+    PROTECTED = 1 << 2,
+    INTERNAL  = 1 << 3,
 
-    CONST,
-    STATIC,
-    READ_ONLY,
+    CONST     = 1 << 4,
+    STATIC    = 1 << 5,
+    READ_ONLY = 1 << 6,
 
-    OUT,
-    REF,
-    DYN,
+    OUT       = 1 << 7,
+    REF       = 1 << 8,
+    DYN       = 1 << 9,
 };
 
 auto operator|(CSharp_Modifiers lhs, CSharp_Modifiers rhs) -> CSharp_Modifiers {
@@ -122,8 +122,8 @@ auto operator|=(CSharp_Modifiers& lhs, CSharp_Modifiers rhs) -> CSharp_Modifiers
     return lhs;
 }
 
-auto has_any(CSharp_Modifiers mod) -> bool {
-    return mod != CSharp_Modifiers::NONE;
+auto contains(CSharp_Modifiers lhs, CSharp_Modifiers rhs) -> bool {
+    return (lhs & rhs) != CSharp_Modifiers::NONE;
 }
 
 // Removes every modifier that is not scope.
@@ -500,28 +500,26 @@ Type_Generator const Type_Gen = {};
 auto split_as_str(CSharp_Modifiers modifiers) -> std::vector<std::string> {
     auto mods = std::vector<std::string>{};
 
-    if (has_any(modifiers & CSharp_Modifiers::PUBLIC)) {
+    if (contains(modifiers, CSharp_Modifiers::PUBLIC)) {
         mods.push_back("public");
-    } else if (has_any(modifiers & CSharp_Modifiers::PRIVATE)) {
+    } else if (contains(modifiers, CSharp_Modifiers::PRIVATE)) {
         mods.push_back("private");
-    } else if (has_any(modifiers & CSharp_Modifiers::PROTECTED)) {
+    } else if (contains(modifiers, CSharp_Modifiers::PROTECTED)) {
         mods.push_back("protected");
-    } else if (has_any(modifiers & CSharp_Modifiers::INTERNAL)) {
+    } else if (contains(modifiers, CSharp_Modifiers::INTERNAL)) {
         mods.push_back("internal");
     }
 
-    if (has_any(modifiers & CSharp_Modifiers::STATIC)) {
+    if (contains(modifiers, CSharp_Modifiers::STATIC)) {
         mods.push_back("static");
     }
-    else if (has_any(modifiers & CSharp_Modifiers::CONST)) {
+    else if (contains(modifiers, CSharp_Modifiers::CONST)) {
         mods.push_back("const");
     }
 
-    /*
-    if (has_any(modifiers & CSharp_Modifiers::READ_ONLY)) {
+    if (contains(modifiers, CSharp_Modifiers::READ_ONLY)) {
         mods.push_back("readonly");
     }
-    */
 
     return mods;
 }
