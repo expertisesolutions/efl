@@ -168,11 +168,11 @@ struct Decl_Terminal {
     {
         auto mods = utils::split_as_str(decl.modifiers);
 
-        if (!as_generator((string % " "))
+        if (!as_generator(*(string << " "))
              .generate(sink, mods, context))
             return false;
 
-        if (!as_generator(" " << Type_Gen << " " << decl.name)
+        if (!as_generator(Type_Gen << " " << decl.name)
              .generate(sink, decl.type, context))
             return false;
         return true;

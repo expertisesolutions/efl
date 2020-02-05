@@ -69,16 +69,18 @@ auto to_modifiers(attributes::member_scope scope) -> CSharp_Modifiers {
 }
 
 
-auto will_generate_property(attributes::property_def const& eolian_property
+auto will_generate_property(attributes::property_def const& property
                             , bool is_interface
                             , bool is_concrete
                             , bool is_static
                             , optional<attributes::member_scope> get_scope
                             , optional<attributes::member_scope> set_scope) -> bool {
     using attributes::member_scope;
+    using attributes::parameter_def;
+    using attributes::parameter_direction;
 
     // Cannot generate properties without getter.
-    if (!eolian_property.getter) {
+    if (!property.getter) {
         return false; 
     }
 
@@ -91,6 +93,24 @@ auto will_generate_property(attributes::property_def const& eolian_property
     // ???
     if ((is_concrete || is_interface) && is_static)
         return false;
+
+    if (property.getter
+        && std::find_if(property.getter->parameters.begin()
+                        , property.getter->parameters.end()
+                        , [] (attributes::parameter_def const& p)
+                        {
+                          return p.direction != parameter_direction::out;
+                        }) != property.getter->parameters.end())
+      return true;
+
+    if (property.setter
+        && std::find_if(property.setter->parameters.begin()
+                        , property.setter->parameters.end()
+                        , [] (parameter_def const& p)
+                        {
+                          return p.direction != parameter_direction::in;
+                        }) != property.setter->parameters.end())
+      return true;
 
     return true;
 }

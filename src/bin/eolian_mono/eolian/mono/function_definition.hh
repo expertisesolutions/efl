@@ -359,25 +359,6 @@ struct property_wrapper_definition_generator
            return false;
         }
 
-      if (property.getter
-          && std::find_if (property.getter->parameters.begin()
-                           , property.getter->parameters.end()
-                           , [] (parameter_def const& p)
-                           {
-                             return p.direction != parameter_direction::out;
-                           }) != property.getter->parameters.end())
-        return true;
-
-      if (property.setter
-          && std::find_if (property.setter->parameters.begin()
-                           , property.setter->parameters.end()
-                           , [] (parameter_def const& p)
-                           {
-                             return p.direction != parameter_direction::in;
-                           }) != property.setter->parameters.end())
-        return true;
-
-
       if (property.getter && property.setter)
       {
         if (property.getter->parameters.size() != 0 && property.setter->parameters.size() != property.getter->parameters.size())
