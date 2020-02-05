@@ -343,159 +343,6 @@ struct property_wrapper_definition_generator
    }
 
    template<typename OutputIterator, typename Context>
-   bool generate_get(OutputIterator sink
-                     , attributes::property_def const& property
-                     , bool is_interface
-                     , std::string scope
-                     , std::vector<attributes::parameter_def> const& params
-                     , Context context) const
-   {
-      using efl::eolian::grammar::attribute_reorder;
-
-      if (!property.getter)
-        return true;
-
-      auto getter = *property.getter;
-      auto managed_method_name = name_helpers::managed_method_name(getter);
-      auto has_error_check = getter.explicit_return_type.c_type == "Eina_Success_Flag";
-
-      if (is_interface)
-      {
-         if (getter.scope == attributes::member_scope::scope_public
-             && !as_generator(scope_tab(2) << scope_tab << scope << "get;\n")
-                 .generate(sink, attributes::unused, context))
-             return false;
-      }
-      else if (getter.parameters.size() == 0)
-      {
-        if (has_error_check)
-        {
-           if (!(as_generator(
-                   scope_tab(3) << scope << "get {\n"
-                   << scope_tab(4) << "var success = " + managed_method_name + "(); }\n"
-                 ).generate(sink, attributes::unused, context)
-                 && generate_success_check(sink, managed_method_name, 4, params)
-                 && as_generator(
-                   scope_tab(4) << "return success;"
-                 ).generate(sink, attributes::unused, context)))
-             return false;
-        } else {
-           if (!as_generator(
-                 scope_tab(3) << scope << "get { return " + managed_method_name + "(); }\n"
-                ).generate(sink, attributes::unused, context))
-             return false;
-        }
-      }
-      else if (params.size() >= 1)
-      {
-        if (!as_generator(
-                scope_tab(2) << scope_tab << scope << "get "
-                << "{\n"
-                << *attribute_reorder<1, -1, 1>
-                  (scope_tab(4) << type(true) << " _out_"
-                   << argument(false) << " = default(" << type(true) << ");\n"
-                  )
-               ).generate(sink, std::make_tuple(params, params), context))
-          return false;
-
-        if (has_error_check)
-          {
-             if (!(as_generator(""
-                     << scope_tab(4) << "var success = " << managed_method_name << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
-                   ).generate(sink, params, context)
-                   && generate_success_check(sink, managed_method_name, 4, context)))
-               return false;
-          }
-        else
-          {
-             if (!as_generator(""
-                    << scope_tab(4) << managed_method_name << "(" << (("out _out_" << argument(false)) % ", ") << ");\n"
-                  ).generate(sink, params, context))
-               return false;
-          }
-
-        if (!as_generator(""
-                << scope_tab(4) << "return (" << (("_out_"<< argument(false)) % ", ") << ");\n"
-                << scope_tab(3) << "}" << "\n"
-               ).generate(sink, params, context))
-          return false;
-      }
-
-      return true;
-   }
-
-   template<typename OutputIterator, typename Context>
-   bool generate_set(OutputIterator sink
-                     , attributes::property_def const& property
-                     , bool is_interface
-                     , std::string dir_mod
-                     , std::string scope
-                     , std::vector<attributes::parameter_def> const& params
-                     , Context context) const
-   {
-      using efl::eolian::grammar::counter;
-
-      if (!property.setter)
-        return true;
-
-      auto setter = *property.setter;
-      auto managed_method_name = name_helpers::managed_method_name(setter);
-      auto has_error_check = setter.explicit_return_type.c_type == "Eina_Success_Flag";
-
-      if (is_interface)
-      {
-        if (setter.scope == attributes::member_scope::scope_public)
-          if (!as_generator(scope_tab(2) << scope_tab << scope <<  "set;\n"
-                            ).generate(sink, attributes::unused, context))
-            return false;
-      }
-      else if (params.size() == 1)
-      {
-        if (has_error_check) 
-        {
-           if (!(as_generator(
-                  scope_tab(3) << scope <<  "set {\n"
-                  << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << "value);\n"
-                 ).generate(sink, params, context)
-                 && generate_success_check(sink, managed_method_name, 4, params)
-                 && as_generator(""
-                  << scope_tab(3) << "}\n"
-                 ).generate(sink, params, context)))
-             return false;
-        } else {
-           if (!as_generator(
-               scope_tab(3) << scope <<  "set { " << managed_method_name << "(" << dir_mod << "value); }\n"
-               ).generate(sink, attributes::unused, context))
-             return false;
-        }
-      }
-      else if (params.size() > 1)
-      {
-        if (has_error_check) 
-        {
-           if (!(as_generator(
-                  scope_tab(3) << scope <<  "set {\n"
-                  << scope_tab(4) << "var success = " << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");\n"
-                 ).generate(sink, params, context)
-                 && generate_success_check(sink, managed_method_name, 4, params)
-                 && as_generator(""
-                  << scope_tab(3) << "}\n"
-                 ).generate(sink, params, context)))
-             return false;
-        } else {
-           if (!as_generator(
-               scope_tab(3) << scope <<  "set { "
-               << managed_method_name << "(" << dir_mod << ((" value.Item" << counter(1)) % ", ") << ");"
-               "}" << "\n"
-              ).generate(sink, params, context))
-             return false;
-        }
-      }
-
-      return true;
-   }
-
-   template<typename OutputIterator, typename Context>
    bool generate(OutputIterator sink, attributes::property_def const& property, Context const& context) const
    {
       using efl::eolian::grammar::attribute_reorder;
@@ -506,26 +353,11 @@ struct property_wrapper_definition_generator
       if (blacklist::is_property_blacklisted(property, *implementing_klass, context))
         return true;
 
-      bool is_interface = context_find_tag<class_context>(context).current_wrapper_kind == class_context::interface;
-      bool is_static = (property.getter.is_engaged() && property.getter->is_static)
-                       || (property.setter.is_engaged() && property.setter->is_static);
-      bool is_concrete = context_find_tag<class_context>(context).current_wrapper_kind == class_context::concrete;
-
-
-      if ((is_concrete || is_interface) && is_static)
-        return true;
-
-      auto get_params = property.getter.is_engaged() ? property.getter->parameters.size() : 0;
-      //auto set_params = property.setter.is_engaged() ? property.setter->parameters.size() : 0;
-
-      // C# properties must have a single value.
-      //
-      // Single values in getters are automatically converted to return_type,
-      // meaning they should have 0 parameters.
-      //
-      // For setters, we ignore the return type - usually boolean.
-      // if (get_params > 0 || set_params > 1)
-      //   return true;
+      if (!(property.getter || property.setter))
+        {
+           EINA_CXX_DOM_LOG_ERR(eolian_mono::domain) << "Property must have either a getter or a setter." << std::endl;
+           return false;
+        }
 
       if (property.getter
           && std::find_if (property.getter->parameters.begin()
@@ -535,6 +367,7 @@ struct property_wrapper_definition_generator
                              return p.direction != parameter_direction::out;
                            }) != property.getter->parameters.end())
         return true;
+
       if (property.setter
           && std::find_if (property.setter->parameters.begin()
                            , property.setter->parameters.end()
@@ -544,142 +377,27 @@ struct property_wrapper_definition_generator
                            }) != property.setter->parameters.end())
         return true;
 
+
       if (property.getter && property.setter)
       {
-        if (get_params != 0 && property.setter->parameters.size() != property.getter->parameters.size())
+        if (property.getter->parameters.size() != 0 && property.setter->parameters.size() != property.getter->parameters.size())
           return true;
       }
 
-      std::vector<attributes::parameter_def> parameters;
 
-      if (property.setter.is_engaged())
-      {
-        std::transform (property.setter->parameters.begin(), property.setter->parameters.end()
-                        , std::back_inserter(parameters)
-                        , [] (parameter_def p) -> parameter_def
-                        {
-                          //p.direction = efl::eolian::attributes::parameter_direction::in;
-                          return p;
-                        });
-      }
-      else if (property.getter.is_engaged())
-      {
-        // if getter has parameters, then we ignore return type, otherwise
-        // we use the return type.
-        if (get_params == 0)
-          parameters.push_back({parameter_direction::in
-                , property.getter->return_type, "propertyResult", {}
-                , property.getter->unit});
-        else
-          std::transform (property.getter->parameters.begin(), property.getter->parameters.end()
-                          , std::back_inserter(parameters)
-                          , [] (parameter_def p) -> parameter_def
-                          {
-                            p.direction = parameter_direction::in;
-                            return p;
-                          });
-      }
-        else
-        {
-           EINA_CXX_DOM_LOG_ERR(eolian_mono::domain) << "Property must have either a getter or a setter." << std::endl;
-           return false;
-        }
-
-      std::string dir_mod;
-      if (property.setter.is_engaged())
-        dir_mod = direction_modifier(property.setter->parameters[0]);
-
-      std::string managed_name = name_helpers::property_managed_name(property);
-
-      std::string scope = "public ";
-      std::string get_scope = property.getter.is_engaged() ? eolian_mono::function_scope_get(*property.getter) : "";
-      bool is_get_public = get_scope == "public ";
-      std::string set_scope = property.setter.is_engaged() ? eolian_mono::function_scope_get(*property.setter) : "";
-      bool is_set_public = set_scope == "public ";
-
-      // No need to generate this wrapper as no accessor is public.
-      if (is_interface && (!is_get_public && !is_set_public))
-          return true;
-
-      // Do not generate set-only property
-      if (property.setter.is_engaged() && !property.getter.is_engaged())
-          return true;
-
-      // C# interface members are declared automatically as public
-      if (is_interface)
-        {
-           scope = "";
-           get_scope = "";
-           set_scope = "";
-        }
-      else if ((get_scope != "") && (get_scope == set_scope))
-        {
-           scope = get_scope;
-           get_scope = "";
-           set_scope = "";
-        }
-      else if (!property.setter.is_engaged() || (get_scope == scope))
-        {
-           scope = get_scope;
-           get_scope = "";
-        }
-      else if (!property.getter.is_engaged() || (set_scope == scope))
-        {
-           scope = set_scope;
-           set_scope = "";
-        }
-
-
+      
       // ---------------
       // Code generation
       // ---------------
-      
-      if (auto csharp_property = csharp_definitions::conversors::to_property(property, context))
-        if (!as_generator("/* Test: */\n" << csharp_definitions::Definition(2))
+ 
+      if (auto csharp_property = csharp_definitions::conversors::to_property(property, context)) {
+        if (!as_generator(documentation(2))
+               .generate(sink, property, context))
+            return false;
+        if (!as_generator(csharp_definitions::Definition(2))
                .generate(sink, *csharp_property, context))
             return false;
-
-      as_generator("/*\n").generate(sink, attributes::unused, context);
-      if (parameters.size() == 1)
-      {
-        if (!as_generator(
-                    documentation(2)
-                    << scope_tab(2) << scope << (is_static ? "static " : "") << type(true) << " " << managed_name << " {\n"
-              ).generate(sink, std::make_tuple(property, parameters[0].type), context))
-          return false;
       }
-      else
-      {
-        if (!as_generator
-            (
-             documentation(2)
-             << scope_tab(2) << scope << (is_static ? "static (" : "(")
-             << (attribute_reorder<1>(type(true)) % ", ") << ") "
-             << managed_name << " {\n"
-            ).generate(sink, std::make_tuple(property, parameters), context))
-          return false;
-      }
-
-      if (!generate_get(sink
-                        , property
-                        , is_interface
-                        , get_scope
-                        , parameters
-                        , context))
-        return false;
-
-      if (!generate_set(sink
-                        , property
-                        , is_interface
-                        , dir_mod
-                        , set_scope
-                        , parameters
-                        , context))
-        return false;
-
-      if (!as_generator(scope_tab(2) << "}\n\n").generate(sink, attributes::unused, context))
-        return false;
-      as_generator("*/").generate(sink, attributes::unused, context);
 
       return true;
    }

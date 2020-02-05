@@ -34,11 +34,11 @@ auto to_decl(attributes::parameter_def const& param) -> Decl {
     if (param.direction == efl::eolian::grammar::attributes::parameter_direction::out) {
         modifiers |= CSharp_Modifiers::OUT;
     }
-
+    
     // stolen from direction_modifier for setters
     if (param.direction == attributes::parameter_direction::inout) {
         modifiers |= CSharp_Modifiers::REF;
-    } else if (param.direction == attributes::parameter_direction::in) {
+    } else if (param.direction != attributes::parameter_direction::in) {
         if (param.type.c_type == "Eina_Slice" || param.type.c_type == "Eina_Rw_Slice") {
             modifiers |= CSharp_Modifiers::REF;
         } else {
@@ -226,17 +226,27 @@ auto to_property(attributes::property_def const& eolian_property, Context const&
             native_call,
         };
     }
+
     if (eolian_property.setter) {
         auto eo_setter = *eolian_property.setter;
-        auto managed_method_name = name_helpers::managed_method_name(eo_setter);
-        auto native_call = is_interface
-                           ? optional<CSharp_Function>{} 
-                           : native_call_from(eo_setter, managed_method_name);
+        if (is_interface) {
+            if (eo_setter.scope == member_scope::scope_public) {
+                setter = CSharp_Property::Setter{
+                    set_scope ? to_modifiers(*set_scope) : CSharp_Modifiers::NONE,
+                    {},
+                };
+            }
+        } else {
+            auto managed_method_name = name_helpers::managed_method_name(eo_setter);
+            auto native_call = is_interface
+                               ? optional<CSharp_Function>{} 
+                               : native_call_from(eo_setter, managed_method_name);
 
-        setter = CSharp_Property::Setter{
-            set_scope ? to_modifiers(*set_scope) : CSharp_Modifiers::NONE,
-            native_call,
-        };
+            setter = CSharp_Property::Setter{
+                set_scope ? to_modifiers(*set_scope) : CSharp_Modifiers::NONE,
+                native_call,
+            };
+        }
     }
 
     if (getter && setter)

@@ -202,11 +202,12 @@ struct Decl_Terminal {
                 get_args.push_back(get_arg);
             }
 
-            if (!as_generator(lit(" {\n")).generate(sink, attributes::unused, context))
+            if (!as_generator(lit(" {")).generate(sink, attributes::unused, context))
                 return false;
 
             if (f.parameters.size() >= 1) {
                 if (!as_generator(
+                        "\n" <<
                         *attribute_reorder<0, 1, 0>(
                             scope_tab(4) << type(true) << " " << string << " = default(" << type(true) << ");\n"
                         )
@@ -232,15 +233,15 @@ struct Decl_Terminal {
                         scope_tab(4) << "return (" << (attribute_reorder<1>(string) % ", ") << ");\n"
                     ).generate(sink, param_pair, context))
                     return false;
+
+                if (!as_generator(scope_tab(3) << "}\n").generate(sink, attributes::unused, context))
+                    return false;
             } else {
                 if (!as_generator(
-                         scope_tab(4) << "return " << Call() << ";\n"
+                         " return " << Call() << "; }\n"
                     ).generate(sink, f, context))
                     return false;
             }
-
-            if (!as_generator(scope_tab(3) << "}\n").generate(sink, attributes::unused, context))
-                return false;
         } else {
             if (!as_generator(lit(";"))
                  .generate(sink, attributes::unused, context))
@@ -272,14 +273,33 @@ struct Decl_Terminal {
             }
         }
 
-        if (!as_generator(
-                "set" <<
-                ((!(" {\n"
-                 << scope_tab(4) << Call(set_args) << ";\n"
-                 << scope_tab(3) << "}\n"
-                 )) | lit(";"))
-            ).generate(sink, setter.native_call, context))
+        auto splitted_modifiers = utils::split_as_str(setter.modifiers);
+        if (!as_generator(*(string << " ") << lit("set")).generate(sink, splitted_modifiers, context))
             return false;
+
+        if (setter.native_call) {
+            auto f = *setter.native_call;
+
+            if (f.decl.type.types[0].c_type == "Eina_Success_Flag") {
+                auto error_msg = "\"Call of native function for " + f.decl.name + " returned an error.\"";
+                if (!as_generator(
+                        " {\n"
+                        << scope_tab(4) << "var success = " << Call(set_args) << ";\n"
+                        << scope_tab(4) << "if (!success) {\n"
+                        << scope_tab(5) << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
+                        << scope_tab(4) << "}\n"
+                        << scope_tab(3) << "}\n"
+                    ).generate(sink, f, context))
+                return false;
+            } else {
+                if (!as_generator(" { " << Call(set_args) << "; }\n")
+                     .generate(sink, f, context))
+                    return false;
+            }
+        } else {
+            if (!as_generator(lit(";\n")).generate(sink, attributes::unused, context))
+                return false;
+        }
         return true;
     }
 } const Decl {};
