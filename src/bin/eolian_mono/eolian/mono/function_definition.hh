@@ -39,7 +39,8 @@
 #include "generation_contexts.hh"
 #include "blacklist.hh"
 
-#include "csharp_definitions.hh"
+#include "csharp_conversors.hh"
+#include "csharp_generators.hh"
 
 namespace eolian_mono {
 
@@ -634,7 +635,7 @@ struct property_wrapper_definition_generator
       // ---------------
       
       if (auto csharp_property = csharp_definitions::conversors::to_property(property, context))
-        if (!as_generator("/* Test: */ " << csharp_definitions::Definition)
+        if (!as_generator("/* Test: */\n" << csharp_definitions::Definition(2))
                .generate(sink, *csharp_property, context))
             return false;
 
