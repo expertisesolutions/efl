@@ -328,21 +328,6 @@ property_extension_method_definition_generator property_extension_method_definit
 struct property_wrapper_definition_generator
 {
    template<typename OutputIterator, typename Context>
-   bool generate_success_check(OutputIterator sink
-                               , std::string const& property_name
-                               , int scope_size
-                               , Context context) const
-   {
-      auto error_msg = "\"Call of native function for " + property_name + " returned an error.\"";
-
-      return as_generator(""
-               << scope_tab(scope_size) << "if (!success) {\n"
-               << scope_tab(scope_size + 1) << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
-               << scope_tab(scope_size) << "}\n"
-             ).generate(sink, attributes::unused, context);
-   }
-
-   template<typename OutputIterator, typename Context>
    bool generate(OutputIterator sink, attributes::property_def const& property, Context const& context) const
    {
       using efl::eolian::grammar::attribute_reorder;
@@ -360,25 +345,22 @@ struct property_wrapper_definition_generator
         }
 
       if (property.getter && property.setter)
-      {
-        if (property.getter->parameters.size() != 0 && property.setter->parameters.size() != property.getter->parameters.size())
-          return true;
-      }
-
-
+        {
+           if (property.getter->parameters.size() != 0
+               && property.setter->parameters.size() != property.getter->parameters.size())
+             return true;
+        }
       
       // ---------------
       // Code generation
       // ---------------
  
-      if (auto csharp_property = csharp_definitions::conversors::to_property(property, context)) {
-        if (!as_generator(documentation(2))
-               .generate(sink, property, context))
-            return false;
-        if (!as_generator(csharp_definitions::Definition(2))
-               .generate(sink, *csharp_property, context))
-            return false;
-      }
+      if (auto csharp_property = csharp_definitions::conversors::to_property(property, context)) 
+        {
+           if (!as_generator(documentation(2) << csharp_definitions::Definition(2))
+                  .generate(sink, std::make_tuple(property, *csharp_property), context))
+               return false;
+        }
 
       return true;
    }
