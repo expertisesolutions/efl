@@ -355,10 +355,13 @@ struct property_wrapper_definition_generator
       // Code generation
       // ---------------
  
+      auto const& indent = current_indentation(context);
       if (auto csharp_property = csharp_definitions::conversors::to_property(property, context)) 
         {
-           if (!as_generator(documentation(2) << csharp_definitions::Definition(2))
-                  .generate(sink, std::make_tuple(property, *csharp_property), context))
+           if (!as_generator(
+                       indent << documentation(indent.n + 2)
+                       << indent << csharp_definitions::Definition << "\n"
+                ).generate(sink, std::make_tuple(property, *csharp_property), change_indentation(indent.inc(2), context)))
                return false;
         }
 

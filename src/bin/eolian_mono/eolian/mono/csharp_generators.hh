@@ -1,7 +1,7 @@
 #ifndef EOLIAN_MONO_CSHARP_GENERATORS_HH
 #define EOLIAN_MONO_CSHARP_GENERATORS_HH
 
-
+#include "generation_contexts.hh"
 #include "csharp_definitions.hh"
 
 namespace eolian_mono::csharp_definitions::utils {
@@ -181,6 +181,8 @@ struct Decl_Terminal {
     template<typename OutputIterator, typename Context>
     bool generate(OutputIterator sink, CSharp_Property::Getter const& getter, Context const& context) const
     {
+        auto const& indent = current_indentation(context);
+
         if (!as_generator(lit("get")).generate(sink, attributes::unused, context))
             return false;
 
@@ -206,39 +208,41 @@ struct Decl_Terminal {
                 return false;
 
             if (f.parameters.size() >= 1) {
+                auto block_context = change_indentation(indent.inc(), context);
+                auto const& indent = current_indentation(block_context);
                 if (!as_generator(
                         "\n" <<
                         *attribute_reorder<0, 1, 0>(
-                            scope_tab(4) << type(true) << " " << string << " = default(" << type(true) << ");\n"
+                            indent << scope_tab << type(true) << " " << string << " = default(" << type(true) << ");\n"
                         )
-                    ).generate(sink, param_pair, context))
+                    ).generate(sink, param_pair, block_context))
                     return false;
                 if (f.decl.type.types[0].c_type == "Eina_Success_Flag") {
                     auto error_msg = "\"Call of native function for " + f.decl.name + " returned an error.\"";
-                    if (!as_generator(
-                            scope_tab(4) << "var success = " << Call(get_args) << ";\n"
-                            << scope_tab(4) << "if (!success) {\n"
-                            << scope_tab(5) << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
-                            << scope_tab(4) << "}\n"
-                        ).generate(sink, f, context))
+                    if (!as_generator(""
+                            << indent << scope_tab << "var success = " << Call(get_args) << ";\n"
+                            << indent << scope_tab << "if (!success) {\n"
+                            << indent << scope_tab << scope_tab << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
+                            << indent << scope_tab << "}\n"
+                        ).generate(sink, f, block_context))
                     return false;
                 } else {
                     if (!as_generator(
-                            scope_tab(4) << Call(get_args) << ";\n"
-                        ).generate(sink, f, context))
+                            indent << scope_tab << Call(get_args) << ";\n"
+                        ).generate(sink, f, block_context))
                         return false;
                 }
 
                 if (!as_generator(
-                        scope_tab(4) << "return (" << (attribute_reorder<1>(string) % ", ") << ");\n"
-                    ).generate(sink, param_pair, context))
+                        indent << scope_tab << "return (" << (attribute_reorder<1>(string) % ", ") << ");\n"
+                    ).generate(sink, param_pair, block_context))
                     return false;
 
-                if (!as_generator(scope_tab(3) << "}\n").generate(sink, attributes::unused, context))
+                if (!as_generator(indent << "}").generate(sink, attributes::unused, block_context))
                     return false;
             } else {
                 if (!as_generator(
-                         " return " << Call() << "; }\n"
+                         " return " << Call() << "; }"
                     ).generate(sink, f, context))
                     return false;
             }
@@ -254,6 +258,7 @@ struct Decl_Terminal {
     template<typename OutputIterator, typename Context>
     bool generate(OutputIterator sink, CSharp_Property::Setter const& setter, Context const& context) const
     {
+        auto const& indent = current_indentation(context);
         auto set_args = std::vector<Decl>{};
         if (setter.native_call) {
             auto f = *setter.native_call;
@@ -281,23 +286,26 @@ struct Decl_Terminal {
             auto f = *setter.native_call;
 
             if (f.decl.type.types[0].c_type == "Eina_Success_Flag") {
+                auto block_context = change_indentation(indent.inc(), context);
+                auto const& indent = current_indentation(block_context);
+
                 auto error_msg = "\"Call of native function for " + f.decl.name + " returned an error.\"";
                 if (!as_generator(
                         " {\n"
-                        << scope_tab(4) << "var success = " << Call(set_args) << ";\n"
-                        << scope_tab(4) << "if (!success) {\n"
-                        << scope_tab(5) << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
-                        << scope_tab(4) << "}\n"
-                        << scope_tab(3) << "}\n"
-                    ).generate(sink, f, context))
+                        << indent << scope_tab << "var success = " << Call(set_args) << ";\n"
+                        << indent << scope_tab << "if (!success) {\n"
+                        << indent << scope_tab << scope_tab << "throw new Efl.EflException(" << error_msg.c_str() << ");\n"
+                        << indent << scope_tab << "}\n"
+                        << indent << "}"
+                    ).generate(sink, f, block_context))
                 return false;
             } else {
-                if (!as_generator(" { " << Call(set_args) << "; }\n")
+                if (!as_generator(" { " << Call(set_args) << "; }")
                      .generate(sink, f, context))
                     return false;
             }
         } else {
-            if (!as_generator(lit(";\n")).generate(sink, attributes::unused, context))
+            if (!as_generator(lit(";")).generate(sink, attributes::unused, context))
                 return false;
         }
         return true;
@@ -331,40 +339,31 @@ struct Definition_Terminal {
     static const Definition_Terminal Definition;
 
     struct Generator {
-        constexpr Generator() = default;
-        constexpr Generator(int indent_level):
-            indent{indent_level}
-        {}
-
         template<typename OutputIterator, typename Context>
         bool generate(OutputIterator sink, csharp_definitions::CSharp_Function const& function, Context const& context) const
         {
+            // TODO
             return true;
         }
 
         template<typename OutputIterator, typename Context>
         bool generate(OutputIterator sink, csharp_definitions::CSharp_Property const& property, Context const& context) const
         {
+            auto const& indent = current_indentation(context);
             return as_generator(
-                scope_tab(indent) << Decl << " {\n" <<
-                (!(scope_tab(indent + 1) << Decl << "\n") | eps) << // property.getter
-                (!(scope_tab(indent + 1) << Decl << "\n") | eps) << // property.setter
-                scope_tab(indent) << "}\n")
+                indent << Decl << " {\n" <<
+                ((!(indent << scope_tab << Decl << "\n")) | eps) << // getter
+                ((!(indent << scope_tab << Decl << "\n")) | eps) << // setter
+                indent << "}\n")
                 .generate(sink
                           , std::make_tuple(property.decl, property.getter, property.setter)
                           , context);
         }
-
-        int indent = 0;
     };
-
-    auto operator()(int indent_level) const -> Generator {
-        return {indent_level};
-    }
 };
 
 auto as_generator(Definition_Terminal) -> Definition_Terminal::Generator const {
-    return {0};
+    return {};
 }
 
 }
