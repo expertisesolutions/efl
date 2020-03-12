@@ -107,7 +107,7 @@ static int _mt_enabled = 0;
 
 #ifdef EFL_HAVE_THREADS
 EAPI int _eina_threads_debug = 0;
-EAPI pthread_mutex_t _eina_tracking_lock;
+EAPI Eina_Lock _eina_tracking_lock;
 EAPI Eina_Inlist *_eina_tracking = NULL;
 extern Eina_Lock       _sysmon_lock;
 #endif
@@ -229,7 +229,7 @@ _eina_threads_do_shutdown(void)
 #ifdef EINA_HAVE_DEBUG_THREADS
    const Eina_Lock *lk;
 
-   pthread_mutex_lock(&_eina_tracking_lock);
+   eina_lock_take(&_eina_tracking_lock);
    if (_eina_tracking)
      {
        if (((Eina_Lock*)_eina_tracking != (&_sysmon_lock)) || (_eina_tracking->next))
@@ -247,7 +247,7 @@ _eina_threads_do_shutdown(void)
             abort();
          }
      }
-   pthread_mutex_unlock(&_eina_tracking_lock);
+   eina_lock_release(&_eina_tracking_lock);
 #endif
 
    eina_share_common_threads_shutdown();
@@ -316,7 +316,7 @@ eina_init(void)
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   pthread_mutex_init(&_eina_tracking_lock, NULL);
+   eina_lock_new(&_eina_tracking_lock);
 
    if (getenv("EINA_DEBUG_THREADS"))
      _eina_threads_debug = atoi(getenv("EINA_DEBUG_THREADS"));
@@ -366,7 +366,7 @@ eina_shutdown(void)
         if (_eina_threads_activated && (!_eina_main_thread_count))
           _eina_threads_do_shutdown();
 #ifdef EINA_HAVE_DEBUG_THREADS
-	pthread_mutex_destroy(&_eina_tracking_lock);
+	eina_lock_free(&_eina_tracking_lock);
 #endif
         eina_freeq_free(eina_freeq_main_get());
 #ifdef MT
