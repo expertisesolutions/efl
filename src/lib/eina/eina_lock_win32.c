@@ -107,6 +107,7 @@ _eina_barrier_new(Eina_Barrier *barrier, int needed)
    return EINA_FALSE;
 #else
    // TODO condition variable
+   return EINA_TRUE;
 #endif
 }
 

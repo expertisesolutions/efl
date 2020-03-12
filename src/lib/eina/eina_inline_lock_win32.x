@@ -113,7 +113,7 @@ eina_lock_take_try(Eina_Lock *mutex)
         eina_lock_debug(mutex);
         ret = EINA_LOCK_DEADLOCK;
      }
-   else if (err != ERROR_TIMEOUT) EINA_LOCK_ABORT_DEBUG(err, trylock, mutex);
+   else if (err != ERROR_TIMEOUT) EINA_LOCK_ABORT_DEBUG((int)err, trylock, mutex);
 #ifdef EINA_HAVE_DEBUG_THREADS
    if (ret == EINA_LOCK_SUCCEED)
      {
@@ -188,7 +188,7 @@ eina_lock_take(Eina_Lock *mutex)
         if (_eina_threads_debug) abort();
 #endif
      }
-   else if (ok != ERROR_TIMEOUT) EINA_LOCK_ABORT_DEBUG(ok, lock, mutex);
+   else if (ok != ERROR_TIMEOUT) EINA_LOCK_ABORT_DEBUG((int)ok, lock, mutex);
 
 #ifdef EINA_HAVE_DEBUG_THREADS
    /* recursive locks can't make use of any of this */
@@ -239,7 +239,7 @@ eina_lock_release(Eina_Lock *mutex)
    LeaveCriticalSection(&(mutex->mutex));
    ok = GetLastError();
    if (ok == ERROR_SUCCESS) ret = EINA_LOCK_SUCCEED;
-   else if (ok != ERROR_ACCESS_DENIED) EINA_LOCK_ABORT_DEBUG(ok, unlock, mutex);
+   else if (ok != ERROR_ACCESS_DENIED) EINA_LOCK_ABORT_DEBUG((int)ok, unlock, mutex);
    return ret;
 }
 
@@ -263,7 +263,7 @@ eina_condition_wait(Eina_Condition *cond)
    DWORD err = GetLastError();
    if (ok != 0) r = EINA_TRUE;
    else if (err != ERROR_ACCESS_DENIED)
-      EINA_LOCK_ABORT_DEBUG(ok, cond_wait, cond);
+      EINA_LOCK_ABORT_DEBUG((int)ok, cond_wait, cond);
 
 #ifdef EINA_HAVE_DEBUG_THREADS
    EnterCriticalSection(&_eina_tracking_lock);
@@ -295,7 +295,7 @@ eina_condition_broadcast(Eina_Condition *cond)
    ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
 
-   EINA_LOCK_ABORT_DEBUG(ok, cond_broadcast, cond);
+   EINA_LOCK_ABORT_DEBUG((int)ok, cond_broadcast, cond);
    return EINA_FALSE;
 }
 
@@ -311,7 +311,7 @@ eina_condition_signal(Eina_Condition *cond)
    ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
 
-   EINA_LOCK_ABORT_DEBUG(ok, cond_signal, cond);
+   EINA_LOCK_ABORT_DEBUG((int)ok, cond_signal, cond);
    return EINA_FALSE;
 }
 
@@ -336,7 +336,7 @@ eina_rwlock_take_read(Eina_RWLock *mutex)
       return EINA_LOCK_FAIL;
    } else if (ok == ERROR_POSSIBLE_DEADLOCK) {
       EINA_LOCK_DEADLOCK_DEBUG(rwlock_rdlock, mutex);
-   } else EINA_LOCK_ABORT_DEBUG(ok, rwlock_rdlock, mutex);
+   } else EINA_LOCK_ABORT_DEBUG((int)ok, rwlock_rdlock, mutex);
    return EINA_LOCK_FAIL;
 }
 
@@ -361,7 +361,7 @@ eina_rwlock_take_write(Eina_RWLock *mutex)
       return EINA_LOCK_FAIL;
    } else if (ok == ERROR_POSSIBLE_DEADLOCK) {
       EINA_LOCK_DEADLOCK_DEBUG(rwlock_rdlock, mutex);
-   } else EINA_LOCK_ABORT_DEBUG(ok, rwlock_rdlock, mutex);
+   } else EINA_LOCK_ABORT_DEBUG((int)ok, rwlock_rdlock, mutex);
    return EINA_LOCK_FAIL;
 }
 
@@ -386,7 +386,7 @@ eina_rwlock_release(Eina_RWLock *mutex)
    }
    if (ok  == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
    else if (ok == ERROR_ACCESS_DENIED) return EINA_LOCK_FAIL;
-   EINA_LOCK_ABORT_DEBUG(ok, rwlock_unlock, mutex);
+   EINA_LOCK_ABORT_DEBUG((int)ok, rwlock_unlock, mutex);
 
    return EINA_LOCK_FAIL;
 }
@@ -441,7 +441,7 @@ eina_barrier_wait(Eina_Barrier *barrier)
                               SYNCHRONIZATION_BARRIER_FLAGS_BLOCK_ONLY);
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
-   else EINA_LOCK_ABORT_DEBUG(ok, barrier_wait, barrier);
+   else EINA_LOCK_ABORT_DEBUG((int)ok, barrier_wait, barrier);
    return EINA_TRUE;
 }
 
@@ -456,7 +456,7 @@ eina_spinlock_take_try(Eina_Spinlock *spinlock)
    else if (t == 0) return EINA_LOCK_FAIL;
    else {
       DWORD err = GetLastError();
-      EINA_LOCK_ABORT_DEBUG(err, spin_trylock, spinlock);
+      EINA_LOCK_ABORT_DEBUG((int)err, spin_trylock, spinlock);
    }
    return EINA_LOCK_FAIL;
 #else
@@ -480,7 +480,7 @@ eina_spinlock_take(Eina_Spinlock *spinlock)
         if (t != 0) break;
         else {
            DWORD ok = GetLastError();
-           EINA_LOCK_ABORT_DEBUG(ok, spin_lock, spinlock);
+           EINA_LOCK_ABORT_DEBUG((int)ok, spin_lock, spinlock);
         }
      }
 
@@ -498,7 +498,7 @@ eina_spinlock_release(Eina_Spinlock *spinlock)
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
    else if (ok == ERROR_ACCESS_DENIED) return EINA_LOCK_FAIL;
-   else EINA_LOCK_ABORT_DEBUG(ok, spin_unlock, spinlock);
+   else EINA_LOCK_ABORT_DEBUG((int)ok, spin_unlock, spinlock);
    return EINA_LOCK_FAIL;
 #else
    return eina_lock_release(spinlock);
@@ -526,6 +526,7 @@ eina_semaphore_lock(Eina_Semaphore *sem)
 
           }
      }
+   return EINA_FALSE;
 }
 
 
