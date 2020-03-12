@@ -151,8 +151,6 @@ sources = [
 'eina_iterator.c',
 'eina_lalloc.c',
 'eina_list.c',
-'eina_lock_posix.c',
-'eina_lock_win32.c',
 'eina_log.c',
 'eina_magic.c',
 'eina_main.c',
@@ -202,8 +200,10 @@ sources = [
 
 if sys_windows == true
   sources += 'eina_file_win32.c'
+  sources += 'eina_lock_win32.c'
 else
   sources += 'eina_file.c'
+  sources += 'eina_lock_posix.c'
 endif
 
 eina_config = configuration_data()
