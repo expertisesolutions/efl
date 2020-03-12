@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sched.h>
+//#include <sched.h>
 #include <unistd.h>
 #include <sys/time.h>
 
@@ -76,13 +76,6 @@ EAPI extern int _eina_threads_debug;
 EAPI extern Eina_Inlist *_eina_tracking;
 #endif
 
-#ifdef _WIN32
-#include <eina_inline_lock_win32.x>
-#else
-#include <eina_inline_lock_posix.x>
-#endif
-
-
 EAPI Eina_Bool _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive);
 EAPI void      _eina_lock_free(Eina_Lock *mutex);
 EAPI Eina_Bool _eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
@@ -91,6 +84,13 @@ EAPI Eina_Bool _eina_rwlock_new(Eina_RWLock *mutex);
 EAPI void      _eina_rwlock_free(Eina_RWLock *mutex);
 EAPI Eina_Bool _eina_spinlock_new(Eina_Spinlock *spinlock);
 EAPI void      _eina_spinlock_free(Eina_Spinlock *spinlock);
+
+#ifdef _WIN32
+#include <eina_inline_lock_win32.x>
+#else
+#include <eina_inline_lock_posix.x>
+#endif
+
 EAPI Eina_Bool _eina_semaphore_new(Eina_Semaphore *sem, int count_init);
 EAPI Eina_Bool _eina_semaphore_free(Eina_Semaphore *sem);
 
