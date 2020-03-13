@@ -43,7 +43,7 @@ eina_lock_debug(const Eina_Lock *mutex)
 EAPI Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
-   InitializeCriticalSection(&(mutex->mutex));
+   InitializeCriticalSection((mutex->mutex));
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
    return EINA_FALSE;
@@ -55,7 +55,7 @@ _eina_lock_free(Eina_Lock *mutex)
 {
    DWORD ok;
 
-   DeleteCriticalSection(&(mutex->mutex));
+   DeleteCriticalSection((mutex->mutex));
    ok = GetLastError();
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG(ok, mutex_destroy, mutex);
 }
@@ -78,7 +78,7 @@ _eina_rwlock_new(Eina_RWLock *mutex)
 {
    DWORD ok;
 
-   InitializeSRWLock(&(mutex->mutex));
+   InitializeSRWLock((mutex->mutex));
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
    else if ((ok == ERROR_NOT_ENOUGH_MEMORY) ||
             (ok == ERROR_ACCESS_DENIED) || (ok == ERROR_OUTOFMEMORY))
@@ -157,7 +157,9 @@ _eina_semaphore_new(Eina_Semaphore *sem, int count_init)
 {
    if (sem && (count_init >= 0))
      {
-        return (sem_init(sem, 0, count_init) == 0) ? EINA_TRUE : EINA_FALSE;
+        sem = CreateSemaphoreA(NULL, count_init, count_init, NULL);
+        DWORD ok = GetLastError();
+        if (ok == ERROR_SUCCESS) return EINA_TRUE;
      }
    return EINA_FALSE;
 }
@@ -167,7 +169,9 @@ _eina_semaphore_free(Eina_Semaphore *sem)
 {
    if (sem)
      {
-        return (sem_destroy(sem) == 0) ? EINA_TRUE : EINA_FALSE;
+        CloseHandle(sem);
+        DWORD ok = GetLastError();
+        if (ok == ERROR_SUCCESS) return EINA_TRUE;
      }
    return EINA_FALSE;
 }

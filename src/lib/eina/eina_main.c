@@ -1,3 +1,4 @@
+
 /* EINA - EFL data type library
  * Copyright (C) 2008 Cedric Bail
  *
@@ -65,6 +66,7 @@
 #include "eina_freeq.h"
 #include "eina_slstr.h"
 #include "eina_vpath.h"
+#include "eina_thread.h"
 
 /*============================================================================*
 *                                  Local                                     *
@@ -98,7 +100,7 @@ EAPI Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
 EAPI unsigned int eina_seed = 0;
 
 #ifdef EFL_HAVE_THREADS
-EAPI pthread_t _eina_main_loop;
+EAPI Eina_Thread _eina_main_loop; //EAPI pthread_t _eina_main_loop;
 #endif
 
 #ifdef MT
@@ -296,7 +298,8 @@ eina_init(void)
 #endif
 
 #ifdef EFL_HAVE_THREADS
-   _eina_main_loop = pthread_self();
+   //_eina_main_loop = pthread_self();
+   _eina_main_loop = eina_thread_self();
 #endif
 
    eina_freeq_main_set(eina_freeq_new(EINA_FREEQ_DEFAULT));
@@ -389,7 +392,8 @@ eina_threads_init(void)
    int ret;
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   assert(pthread_equal(_eina_main_loop, pthread_self()));
+   //assert(pthread_equal(_eina_main_loop, pthread_self()));
+   assert(eina_thread_equal(_eina_main_loop, eina_thread_self()));
 #endif
 
    ++_eina_main_thread_count;
@@ -415,7 +419,8 @@ eina_threads_shutdown(void)
    int ret;
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   assert(pthread_equal(_eina_main_loop, pthread_self()));
+   //assert(pthread_equal(_eina_main_loop, pthread_self()));
+   assert(eina_thread_equal(_eina_main_loop, eina_thread_self()));
    assert(_eina_main_thread_count > 0);
 #endif
 
@@ -439,10 +444,12 @@ eina_main_loop_is(void)
 # ifdef __GNUC__
    /* pthread_self() can't be optimized, it's a single asm "movl" */
    if (__builtin_types_compatible_p(pthread_t, unsigned long int))
-     return (pthread_self() == _eina_main_loop);
+     //return (pthread_self() == _eina_main_loop);
+     return (eina_thread_self() == _eina_main_loop);
    else
 # endif
-   if (pthread_equal(_eina_main_loop, pthread_self()))
+   //if (pthread_equal(_eina_main_loop, pthread_self()))
+   if (eina_thread_equal(_eina_main_loop, eina_thread_self()))
      return EINA_TRUE;
 #endif
    return EINA_FALSE;
@@ -453,10 +460,8 @@ EAPI void
 eina_main_loop_define(void)
 {
 #ifdef EFL_HAVE_THREADS
-   _eina_main_loop = pthread_self();
+   //_eina_main_loop = pthread_self();
+   _eina_main_loop = eina_thread_self();
 #endif
 }
 
-/**
- * @}
- */
