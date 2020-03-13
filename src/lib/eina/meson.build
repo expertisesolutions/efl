@@ -1,11 +1,11 @@
-if not sys_windows
-  eina_deps = [dl]
-else
+if sys_windows
   eina_deps = []
+else
+  eina_deps = [dl]
 endif
-eina_pub_deps = [thread_dep]
 
-if sys_windows == true
+eina_pub_deps = [thread_dep]
+if sys_windows
    eina_pub_deps += [evil]
 endif
 

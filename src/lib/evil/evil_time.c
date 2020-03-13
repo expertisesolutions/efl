@@ -11,8 +11,9 @@
 #include <Windows.h>
 
 #include "evil_private.h"
+#include "evil_time.h"
 
-inline struct tm *localtime_r(const time_t * time, struct tm * result)
+UNIMPLEMENTED inline struct tm *localtime_r(const time_t * time, struct tm * result)
 {
     return NULL;
 }
@@ -133,6 +134,7 @@ conv_num(const unsigned char *buf, int *dest, unsigned int llim, unsigned int ul
    return buf;
 }
 
+#if false
 char *
 strptime(const char *buf, const char *fmt, struct tm *tm)
 {
@@ -605,3 +607,4 @@ strptime(const char *buf, const char *fmt, struct tm *tm)
 
    return (char *)bp;
 }
+#endif

@@ -14,6 +14,7 @@
 
 #include "evil_private.h"
 
+#if false
 /*
  * Environment variable related functions
  *
@@ -253,3 +254,5 @@ realpath(const char *file_name, char *resolved_name)
 
    return retname;
 }
+
+#endif

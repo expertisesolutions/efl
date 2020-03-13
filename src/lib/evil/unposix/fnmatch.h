@@ -1,6 +1,8 @@
 #ifndef UNPOSIX_FNMATCH_H
 #define UNPOSIX_FNMATCH_H
 
+#include "unimplemented.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -14,7 +16,11 @@ extern "C" {
 // Leading <period> in string must be exactly matched by <period> in pattern.
 #define FNM_PERIOD (1 << 2)
 
-int fnmatch(const char *, const char *, int);
+UNIMPLEMENTED int fnmatch(const char * a, const char * b, int c)
+{
+    #warning fnmatch is not implemented
+    return 0;
+}
 
 #ifdef __cplusplus
 }

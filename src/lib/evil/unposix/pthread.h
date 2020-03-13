@@ -245,6 +245,12 @@ UNIMPLEMENTED inline int pthread_attr_init(void* a, ...)
     return 0;
 }
 
+UNIMPLEMENTED inline int pthread_attr_destroy(void* a, ...)
+{
+    #warning pthread_attr_destroy is not implemented.
+    return 0;
+}
+
 UNIMPLEMENTED inline int pthread_join(void* a, ...)
 {
     #warning pthread_join is not implemented.

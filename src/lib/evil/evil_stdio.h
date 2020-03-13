@@ -1,6 +1,8 @@
 #ifndef __EVIL_STDIO_H__
 #define __EVIL_STDIO_H__
 
+#include <stdio.h>
+#include <unistd.h>
 
 /**
  * @file evil_stdio.h
@@ -42,10 +44,6 @@
  * @since 1.8
  */
 EAPI int evil_rename(const char *src, const char *dst);
-
-#ifndef HAVE_CYGWIN
-typedef int mode_t;
-#endif
 
 /**
  * @brief Wrap the _mkdir() function on Windows.

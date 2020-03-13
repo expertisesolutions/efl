@@ -7,15 +7,18 @@
 #endif
 
 #include <BaseTsd.h>
+#include <crtdefs.h>
+
+#include_next <sys/types.h>
+
 typedef SSIZE_T ssize_t;
+
 #endif
 
 
 #include <stdint.h>
 #include <time.h>
 #include <wchar.h>
-#include <crtdefs.h>
-#include_next <sys/types.h>
 
 typedef int clockid_t;
 typedef int gid_t;

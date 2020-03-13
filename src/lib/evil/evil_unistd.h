@@ -1,6 +1,7 @@
 #ifndef __EVIL_UNISTD_H__
 #define __EVIL_UNISTD_H__
 
+#include "unimplemented.h"
 #include "evil_eapi.h"
 
 /**
@@ -35,7 +36,11 @@
  *
  * Supported OS: Windows XP.
  */
-EAPI double evil_time_get(void);
+UNIMPLEMENTED inline EAPI double evil_time_get(void)
+{
+    #warning evil_time_get is not implemented
+    return 0.0;
+}
 
 /*
  * Sockets and pipe related functions

@@ -73,7 +73,11 @@ EAPI int unsetenv(const char *name);
  *
  * @since 1.8.0
  */
-EAPI char *mkdtemp(char *__template);
+UNIMPLEMENTED inline EAPI char *mkdtemp(char *__template)
+{
+    #warning mkdtemp is not implemented
+    return 0;
+}
 
 /**
  * @brief Create a unique temporary file name with a suffix.
@@ -84,7 +88,11 @@ EAPI char *mkdtemp(char *__template);
  *
  * @since 1.10.0
  */
-EAPI int mkstemps(char *__template, int suffixlen);
+UNIMPLEMENTED inline EAPI int mkstemps(char *__template, int suffixlen)
+{
+    #warning mkstemps is not implemented
+    return 0;
+}
 
 /**
  * @brief Return an absolute or full path name for a specified relative path name.
@@ -115,7 +123,12 @@ EAPI int mkstemps(char *__template, int suffixlen);
  *
  * Supported OS: Windows XP.
  */
-EAPI char *realpath(const char *file_name, char *resolved_name);
+UNIMPLEMENTED inline EAPI char *realpath(const char *file_name, char *resolved_name)
+{
+    #warning realpath is not implemented
+    return 0;
+}
+
 #ifndef HAVE_REALPATH
 # define HAVE_REALPATH 1
 #endif
