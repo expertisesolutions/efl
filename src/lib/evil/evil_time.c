@@ -11,11 +11,7 @@
 #include <Windows.h>
 
 #include "evil_private.h"
-
-inline struct tm *localtime_r(const time_t * time, struct tm * result)
-{
-    return NULL;
-}
+#include "evil_time.h"
 
 /*
  * strptime

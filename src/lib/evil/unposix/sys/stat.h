@@ -7,9 +7,15 @@
 # endif
 # include <windows.h>
 #endif
-#include <../ucrt/sys/types.h>
+#include <sys/types.h>
 #include_next <sys/stat.h>
 #include <corecrt.h>
+
+#include <evil_macro_wrapper.h>
+
+#ifndef stat64
+#define stat64 _stat64
+#endif
 
 // Missing definitions:
 // Note: some pieces of code were based on LibreSSL-Portable's compat lib and
@@ -28,5 +34,21 @@
 # define S_IWOTH  0                           /* Write others */
 # define S_IXOTH  0                           /* Execute others */
 #endif
+
+
+// Stolen from LibreSSL
+/*
+ * File type macros.  Note that block devices, sockets and links cannot be
+ * distinguished on Windows and the macros S_ISBLK, S_ISSOCK and S_ISLNK are
+ * only defined for compatibility.  These macros should always return false
+ * on Windows.
+ */
+#define	S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
+#define	S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+#define	S_ISREG(mode)  (((mode) & S_IFMT) == S_IFREG)
+#define	S_ISLNK(mode)  (((mode) & S_IFMT) == S_IFLNK)
+#define	S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
+#define	S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
+#define	S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
 
 #endif

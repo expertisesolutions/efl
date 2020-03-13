@@ -4,10 +4,9 @@
 
 #include <stdlib.h>
 
-#include "evil_private.h"
+#include "evil_dlfcn.h"
 
 #include <psapi.h> /*  EnumProcessModules(Ex) */
-
 
 static char *_dl_err = NULL;
 static int _dl_err_viewed = 0;

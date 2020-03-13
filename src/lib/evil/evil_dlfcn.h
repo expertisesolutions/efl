@@ -1,9 +1,7 @@
 #ifndef __EVIL_DLFCN_H__
 #define __EVIL_DLFCN_H__
 
-
 #include <limits.h>
-
 
 /**
  * @file evil_dlfcn.h
@@ -143,9 +141,11 @@ struct Dl_info
  * @ingroup Evil_Dlfcn
  */
 EAPI void *dlopen(const char* path, int mode);
+
 #ifndef HAVE_DLOPEN
 # define HAVE_DLOPEN 1
 #endif
+
 /**
  * @brief Close a dynamic-link library.
  *
@@ -193,6 +193,7 @@ EAPI int dlclose(void* handle);
  * @ingroup Evil_Dlfcn
  */
 EAPI void *dlsym(void* handle, const char* symbol);
+
 #ifndef HAVE_DLSYM
 #define HAVE_DLSYM 1
 #endif
@@ -221,7 +222,8 @@ EAPI void *dlsym(void* handle, const char* symbol);
  *
  * @ingroup Evil_Dlfcn
  */
-EAPI int dladdr (const void *addr, Dl_info *info);
+EAPI int dladdr(const void *addr, Dl_info *info);
+
 #ifndef HAVE_DLADDR
 #define HAVE_DLADDR 1
 #endif
@@ -248,7 +250,7 @@ EAPI int dladdr (const void *addr, Dl_info *info);
  *
  * @ingroup Evil_Dlfcn
  */
-EAPI char *dlerror (void);
+EAPI char *dlerror(void);
 
 
 #endif /* __EVIL_DLFCN_H__ */

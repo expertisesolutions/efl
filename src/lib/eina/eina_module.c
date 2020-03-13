@@ -27,12 +27,8 @@
 #include <libgen.h>
 #include <unistd.h>
 
-#if defined HAVE_DLOPEN && ! defined _WIN32
+#if defined HAVE_DLOPEN
 # include <dlfcn.h>
-#endif
-
-#ifdef _WIN32
-# include <evil_private.h>
 #endif
 
 #include "eina_config.h"

@@ -2,7 +2,7 @@
 #define __EVIL_FCNTL_H__
 
 
-# include <sys/types.h>
+#include <sys/types.h>
 
 
 /**
@@ -10,13 +10,13 @@
  * Specifies that the file descriptor should be closed when an exec()
  * function is invoked.
  */
-# define FD_CLOEXEC 1
+#define FD_CLOEXEC 1
 
 /**
  * @def O_NONBLOCK
  * Specifies that the socket is in non-blocking mode.
  */
-# define O_NONBLOCK 04000
+#define O_NONBLOCK 04000
 
 /**
  * @def F_SETFD
@@ -37,12 +37,12 @@
  * can be satisfied.
  */
 
-# define F_GETFD    1
-# define F_SETFD    2
-# define F_GETFL    3
-# define F_SETFL    4
-# define F_SETLK    6
-# define F_SETLKW   7
+#define F_GETFD    1
+#define F_SETFD    2
+#define F_GETFL    3
+#define F_SETFL    4
+#define F_SETLK    6
+#define F_SETLKW   7
 
 /**
  * @def F_RDLCK
@@ -59,11 +59,11 @@
  * Remove lock
  */
 
-# ifndef F_RDLCK
-#  define F_RDLCK     0
-#  define F_WRLCK     1
-#  define F_UNLCK     2
-# endif /* ! F_RDLCK */
+#ifndef F_RDLCK
+# define F_RDLCK     0
+# define F_WRLCK     1
+# define F_UNLCK     2
+#endif /* ! F_RDLCK */
 
 /**
  * @struct flock

@@ -116,6 +116,7 @@ EAPI int mkstemps(char *__template, int suffixlen);
  * Supported OS: Windows XP.
  */
 EAPI char *realpath(const char *file_name, char *resolved_name);
+
 #ifndef HAVE_REALPATH
 # define HAVE_REALPATH 1
 #endif
