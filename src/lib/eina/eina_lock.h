@@ -19,6 +19,12 @@
 #ifndef EINA_LOCK_H_
 #define EINA_LOCK_H_
 
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+#endif
+
 #include "eina_config.h"
 #include "eina_types.h"
 #include "eina_error.h"

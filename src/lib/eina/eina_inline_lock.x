@@ -19,6 +19,12 @@
 #ifndef EINA_INLINE_LOCK_X_
 #define EINA_INLINE_LOCK_X_
 
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+#endif
+
 #ifdef _XOPEN_SOURCE
 # define EINA_XOPEN_SOURCE _XOPEN_SOURCE
 # undef _XOPEN_SOURCE

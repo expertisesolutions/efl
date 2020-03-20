@@ -1,3 +1,7 @@
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
+
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
