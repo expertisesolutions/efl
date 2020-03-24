@@ -27,6 +27,9 @@ inline int strncasecmp(const char *s1, const char *s2, size_t size)
 	lstrcpyA(n_bytes_s1, s1);
 	lstrcpyA(n_bytes_s2, s2);
 
+	free(n_bytes_s1);
+	free(n_bytes_s2);
+
 	return lstrcmpiA(n_bytes_s1, n_bytes_s2);
 }
 inline int strncasecmp_l(const char *s1, const char *s2, size_t size, locale_t locale);
