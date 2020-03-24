@@ -10,11 +10,8 @@ inline int ffs(int i)
     return 0;
 }
 
-inline int strcasecmp(const char* s1, const char* s2)
-{
-    #warning strcasecmp is not implemented.
-    return 0;
-}
+inline int strcasecmp(const char* s1, const char* s2);
+inline int strncasecmp(const char* s1, const char* s2, size_t size);
 
 inline int strcasecmp_l(const char* s1, const char* s2, locale_t locale)
 {
@@ -22,11 +19,7 @@ inline int strcasecmp_l(const char* s1, const char* s2, locale_t locale)
     return 0;
 }
 
-inline int strncasecmp(const char* s1, const char* s2, size_t size)
-{
-    #warning strncasecmp is not implemented.
-    return 0;
-}
+
 
 inline int strncasecmp_l(const char* s1, const char* s2, size_t size, locale_t locale)
 {
