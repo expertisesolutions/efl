@@ -21,7 +21,6 @@
 
 #include <semaphore.h>
 
-
 #ifdef EINA_HAVE_POSIX_SPINLOCK
 # include <sched.h>
 #endif
@@ -37,13 +36,6 @@
 #ifdef EINA_HAVE_OSX_SEMAPHORE
 # include <mach/mach.h>
 #endif
-
-#include <sys/time.h>
-
-#include <unistd.h>
-
-/* For cond_timedwait */
-#include <sys/time.h>
 
 typedef pthread_key_t Eina_TLS;
 

@@ -1,5 +1,5 @@
 /* EINA - EFL data type library
- * Copyright (C) 2011 Vincent Torri
+ * Copyright (C) 2020 Lucas Cavalcante de Sousa
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,11 +35,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-//#include <sched.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/time.h>
-
 #include <sys/types.h>
 
 #ifdef EINA_HAVE_DEBUG_THREADS
@@ -68,8 +66,9 @@ typedef struct _Eina_Lock Eina_Lock;
 typedef struct _Eina_RWLock Eina_RWLock;
 typedef struct _Eina_Condition Eina_Condition;
 
-#if !defined(EINA_HAVE_POSIX_SPINLOCK) && !defined(EINA_HAVE_WIN32_SPINLOCK) && \
-!defined(EINA_HAVE_OSX_SPINLOCK)
+#if !defined(EINA_HAVE_POSIX_SPINLOCK)\
+    && !defined(EINA_HAVE_WIN32_SPINLOCK)\
+    && !defined(EINA_HAVE_OSX_SPINLOCK)
 typedef Eina_Lock Eina_Spinlock;
 #endif
 
