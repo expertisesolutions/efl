@@ -24,8 +24,8 @@ inline int strncasecmp(const char *s1, const char *s2, size_t size)
 	LPTSTR *n_bytes_s1 = (LPTSTR)malloc(size + 1);
 	LPTSTR *n_bytes_s2 = (LPTSTR)malloc(size + 1);
 
-	lstrcpyA(n_bytes_s1, s1);
-	lstrcpyA(n_bytes_s2, s2);
+	lstrcpynA(n_bytes_s1, s1, size);
+	lstrcpynA(n_bytes_s2, s2, size);
 
 	free(n_bytes_s1);
 	free(n_bytes_s2);
