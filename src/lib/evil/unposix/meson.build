@@ -3,7 +3,9 @@ dir_package_include = '.'
 if target_machine.system() == 'windows'
   subdir('sys')
 
-  evil_unposix_src = []
+  evil_unposix_src = [
+    'locale.c',
+  ]
 
   evil_unposix_header_src = [
     'fnmatch.h',
