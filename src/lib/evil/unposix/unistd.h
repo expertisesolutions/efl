@@ -6,7 +6,6 @@
 #include <corecrt.h>
 #include <BaseTsd.h>
 #include <sys/types.h>
-#include <../ucrt/sys/types.h>
 #include <evil_unistd.h>
 
 #include <windows.h>
