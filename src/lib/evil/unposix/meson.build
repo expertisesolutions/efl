@@ -13,7 +13,6 @@ if target_machine.system() == 'windows'
     'locale.h',
     'math.h',
     'pthread.h',
-    'semaphore.h',
     'stdlib.h',
     'string.h',
     'strings.h',
