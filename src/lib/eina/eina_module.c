@@ -31,8 +31,6 @@
 # include <dlfcn.h>
 #endif
 
-#include <dlfcn.h>
-
 #include "eina_config.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
