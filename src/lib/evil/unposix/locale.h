@@ -1,21 +1,7 @@
 #ifndef UNPOSIX_LOCALE_H
 #define UNPOSIX_LOCALE_H
 
-/**
-* TODO:
-*  [x] locale_t
-*  [ ] setlocale
-*  [ ] localeconv
-*  [ ] lconv
-*/ 
-
-// TODO: create a cdefs.h with throw:
-#ifdef __cplusplus
-    #define __THROW throw()
-#else
-    #define __THROW
-#endif
- 
+#include "cdefs.h"
 
 #define LC_CTYPE            0
 #define LC_NUMERIC          1
