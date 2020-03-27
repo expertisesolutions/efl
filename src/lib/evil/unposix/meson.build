@@ -21,6 +21,7 @@ if target_machine.system() == 'windows'
     'strings.h',
     'unimplemented.h',
     'unistd.h',
+    'cdefs.h',
   ]
 
   evil_unposix_lib = library('evil_unposix', 
