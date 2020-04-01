@@ -1,7 +1,6 @@
 #ifndef __EVIL_SYS_MMAN_H__
 #define __EVIL_SYS_MMAN_H__
 
-#include "unimplemented.h"
 #include <sys/types.h>
 
 
@@ -108,16 +107,12 @@
  *
  * @ingroup Evil_Mman
  */
-UNIMPLEMENTED inline EAPI void *mmap(void   *addr,
+EAPI void *mmap(void   *addr,
                 size_t len,
                 int    prot,
                 int    flags,
                 int    fd,
-                off_t  offset)
-{
-    #warning mmap is not implemented
-    return 0;
-}
+                off_t  offset);
 
 #ifndef HAVE_MMAP
 # define HAVE_MMAP 1
@@ -143,12 +138,8 @@ UNIMPLEMENTED inline EAPI void *mmap(void   *addr,
  *
  * @ingroup Evil_Mman
  */
-UNIMPLEMENTED inline EAPI int   munmap(void  *addr,
-                  size_t len)
-{
-    #warning munmap is not implemented
-    return 0;
-}
+EAPI int   munmap(void  *addr,
+                  size_t len);
 
 /**
  * Changes protection for the calling process' address.
@@ -168,11 +159,7 @@ UNIMPLEMENTED inline EAPI int   munmap(void  *addr,
  *
  * @ingroup Evil_Mman
  */
-UNIMPLEMENTED inline EAPI int mprotect(void *addr, size_t len, int prot)
-{
-    #warning mprotect is not implemented
-    return 0;
-}
+EAPI int mprotect(void *addr, size_t len, int prot);
 
 
 #endif /* __EVIL_SYS_MMAN_H__ */

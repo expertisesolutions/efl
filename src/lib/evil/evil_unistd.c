@@ -51,7 +51,6 @@ _evil_systemtime_to_time(SYSTEMTIME st)
  *
  */
 
-#if false
 double
 evil_time_get(void)
 {
@@ -61,7 +60,6 @@ evil_time_get(void)
 
    return (double)_evil_time_second + (double)(count.QuadPart - _evil_time_count)/ (double)_evil_time_freq;
 }
-#endif
 
 
 /*

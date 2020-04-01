@@ -12,7 +12,6 @@
 
 #include "evil_private.h"
 
-#if false // To use UNIMPLEMENTED for a while
 /*
  * Possible values
  * PAGE_EXECUTE_READ (equivalent to PAGE_EXECUTE_WRITECOPY)
@@ -154,4 +153,3 @@ mprotect(void *addr, size_t len, int prot)
    DWORD old;
    return VirtualProtect(addr, len, _evil_mmap_protection_get(prot), &old) ? 0 : -1;
 }
-#endif

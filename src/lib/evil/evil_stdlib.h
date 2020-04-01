@@ -1,6 +1,8 @@
 #ifndef __EVIL_STDLIB_H__
 #define __EVIL_STDLIB_H__
 
+#include "unimplemented.h"
+
 #include <evil_private.h>
 
 /**

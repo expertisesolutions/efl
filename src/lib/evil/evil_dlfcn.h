@@ -142,14 +142,12 @@ struct Dl_info
  *
  * @ingroup Evil_Dlfcn
  */
-UNIMPLEMENTED inline EAPI void *dlopen(const char* path, int mode)
-{
-    #warning dlopen is not implemented
-    return 0;
-}
+EAPI void *dlopen(const char* path, int mode);
+
 #ifndef HAVE_DLOPEN
 # define HAVE_DLOPEN 1
 #endif
+
 /**
  * @brief Close a dynamic-link library.
  *
@@ -172,11 +170,7 @@ UNIMPLEMENTED inline EAPI void *dlopen(const char* path, int mode)
  *
  * @ingroup Evil_Dlfcn
  */
-UNIMPLEMENTED inline EAPI int dlclose(void* handle)
-{
-    #warning dlclose is not implemented
-    return 0;
-}
+EAPI int dlclose(void* handle);
 
 /**
  * @brief Get the address of a symbol.
@@ -200,11 +194,8 @@ UNIMPLEMENTED inline EAPI int dlclose(void* handle)
  *
  * @ingroup Evil_Dlfcn
  */
-UNIMPLEMENTED inline EAPI void *dlsym(void* handle, const char* symbol)
-{
-    #warning dlsym is not implemented
-    return 0;
-}
+EAPI void *dlsym(void* handle, const char* symbol);
+
 #ifndef HAVE_DLSYM
 #define HAVE_DLSYM 1
 #endif
@@ -233,11 +224,8 @@ UNIMPLEMENTED inline EAPI void *dlsym(void* handle, const char* symbol)
  *
  * @ingroup Evil_Dlfcn
  */
-UNIMPLEMENTED inline EAPI int dladdr (const void *addr, Dl_info *info)
-{
-    #warning dladdr is not implemented
-    return 0;
-}
+EAPI int dladdr(const void *addr, Dl_info *info);
+
 #ifndef HAVE_DLADDR
 #define HAVE_DLADDR 1
 #endif
@@ -264,11 +252,7 @@ UNIMPLEMENTED inline EAPI int dladdr (const void *addr, Dl_info *info)
  *
  * @ingroup Evil_Dlfcn
  */
-UNIMPLEMENTED inline EAPI char *dlerror (void)
-{
-    #warning dlerror is not implemented
-    return 0;
-}
+EAPI char *dlerror(void);
 
 
 #endif /* __EVIL_DLFCN_H__ */

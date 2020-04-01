@@ -1,6 +1,8 @@
 #ifndef UNPOSIX_SYS_TYPES_H
 #define UNPOSIX_SYS_TYPES_H
 
+#include_next <sys/types.h>
+
 #ifdef _MSC_VER
 #ifndef WIN32_LEAN_AND_MEAN
 # define WIN32_LEAN_AND_MEAN
@@ -9,9 +11,8 @@
 #include <BaseTsd.h>
 #include <crtdefs.h>
 
-#include_next <sys/types.h>
-
 typedef SSIZE_T ssize_t;
+typedef _off_t off_t;
 
 #endif
 

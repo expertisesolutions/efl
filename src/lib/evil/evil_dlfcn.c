@@ -8,8 +8,6 @@
 
 #include <psapi.h> /*  EnumProcessModules(Ex) */
 
-#if false
-
 static char *_dl_err = NULL;
 static int _dl_err_viewed = 0;
 
@@ -333,4 +331,3 @@ dladdr (const void *addr, Dl_info *info)
 }
 
 #endif /* _GNU_SOURCE */
-#endif

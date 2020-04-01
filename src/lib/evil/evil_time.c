@@ -134,7 +134,6 @@ conv_num(const unsigned char *buf, int *dest, unsigned int llim, unsigned int ul
    return buf;
 }
 
-#if false
 char *
 strptime(const char *buf, const char *fmt, struct tm *tm)
 {
@@ -607,4 +606,3 @@ strptime(const char *buf, const char *fmt, struct tm *tm)
 
    return (char *)bp;
 }
-#endif

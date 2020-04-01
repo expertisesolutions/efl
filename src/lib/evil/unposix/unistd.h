@@ -3,14 +3,19 @@
 
 #include "unimplemented.h"
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <corecrt.h>
 #include <BaseTsd.h>
-#include <sys/types.h>
-#include <evil_unistd.h>
 
 #include <windows.h>
 #include <corecrt_io.h>
 #include <process.h>
+
+#include <sys/types.h>
+#include <evil_unistd.h>
 
 #define F_OK 0
 #define W_OK 2
@@ -19,10 +24,6 @@
 
 UNIMPLEMENTED extern char *optarg;
 UNIMPLEMENTED extern int optind, opterr, optopt;
-
-typedef SSIZE_T ssize_t;
-typedef uint32_t mode_t;
-typedef _off_t off_t;
 
 UNIMPLEMENTED inline int getopt(int a, char * const b[], const char * c)
 {
