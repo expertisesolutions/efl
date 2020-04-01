@@ -34,7 +34,7 @@
 #endif
 
 #ifdef _WIN32
-# include <windows.h>
+# include <eina_private.h>
 #endif
 
 #ifdef HAVE_EXECINFO_H

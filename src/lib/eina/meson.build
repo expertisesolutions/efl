@@ -1,7 +1,7 @@
 if not sys_windows
   eina_deps = [dl]
 else
-  eina_deps = []
+  eina_deps = [pcre_dep]
 endif
 eina_pub_deps = [thread_dep]
 
@@ -109,7 +109,7 @@ public_sub_headers = [
 'eina_freeq.h',
 'eina_slstr.h',
 'eina_vpath.h',
-'eina_abstract_content.h'
+'eina_abstract_content.h',
 ]
 
 public_headers = [

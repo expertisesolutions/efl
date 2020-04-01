@@ -65,7 +65,7 @@ static FcConfig *fc_config = NULL;
 
 /* FIXME move these helper function to eina_file or eina_path */
 /* get the casefold feature! */
-#include <fnmatch.h>
+#include <Eina.h>
 #include <unistd.h>
 #include <sys/param.h>
 int

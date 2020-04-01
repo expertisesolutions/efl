@@ -1,6 +1,14 @@
 #ifndef __EVIL_MACRO_WRAPPER_H__
 #define __EVIL_MACRO_WRAPPER_H__
 
+/*
+ * evil_fnmatch.h
+ */
+#ifdef fnmatch
+# undef fnmatch
+#endif
+#define fnmatch(pattern, string, flags) evil_fnmatch(pattern, string, flags)
+
 
 /*
  * evil_locale.h

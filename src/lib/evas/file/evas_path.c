@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 /* get the casefold feature! */
-#include <fnmatch.h>
+#include <Eina.h>
 #include <unistd.h>
 #include <sys/param.h>
 

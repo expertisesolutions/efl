@@ -4,6 +4,7 @@ if target_machine.system() == 'windows'
   evil_src = [
     'evil_dlfcn.c',
     'evil_fcntl.c',
+    'evil_fnmatch.c',
     'evil_langinfo.c',
     'evil_locale.c',
     'evil_main.c',

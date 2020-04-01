@@ -281,6 +281,10 @@ extern "C" {
 #undef EAPI
 #define EAPI
 
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
+
 #ifdef __cplusplus
 }
 #endif

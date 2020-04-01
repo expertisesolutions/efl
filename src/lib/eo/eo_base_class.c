@@ -3,7 +3,6 @@
 #endif
 
 #include <Eina.h>
-#include <fnmatch.h>
 
 #include <Eo.h>
 
