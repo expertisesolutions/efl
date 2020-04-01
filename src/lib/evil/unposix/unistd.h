@@ -10,6 +10,8 @@
 #define W_OK 2
 #define R_OK 4
 
+int getopt(int argc, char * const argv[], const char *optstring);
+
 char *optarg = 0;
 int optind  = 1, opterr  = 0, optopt  = 0;
 
