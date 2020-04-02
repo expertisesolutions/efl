@@ -9,7 +9,6 @@ if sys_windows
     'math.h',
     'pthread.h',
     'stdlib.h',
-    'strings.h',
     'unimplemented.h',
     'unistd.h',
   ]
