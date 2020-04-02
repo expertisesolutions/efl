@@ -13,7 +13,6 @@
 
 #include <evil_macro_wrapper.h>
 
-
 #ifndef stat64
 #define stat64 _stat64
 #endif
