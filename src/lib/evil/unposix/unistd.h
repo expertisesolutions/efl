@@ -25,7 +25,8 @@
 UNIMPLEMENTED extern char *optarg;
 UNIMPLEMENTED extern int optind, opterr, optopt;
 
-UNIMPLEMENTED inline int getopt(int a, char * const b[], const char * c)
+UNIMPLEMENTED int getopt(int argc, char * const argv[],
+          const char *optstring)
 {
     #warning getopt is not implemented
     return 0;
