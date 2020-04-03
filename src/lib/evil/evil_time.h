@@ -2,7 +2,6 @@
 #define __EVIL_TIME_H__
 
 
-#include "unimplemented.h"
 #include <time.h>
 
 
@@ -35,10 +34,7 @@
  *
  * Supported OS: Windows XP.
  */
-UNIMPLEMENTED EAPI inline char *strptime(const char *buf, const char *fmt, struct tm *tm)
-{
-    return 0;
-}
+EAPI char *strptime(const char *buf, const char *fmt, struct tm *tm);
 
 
 /**

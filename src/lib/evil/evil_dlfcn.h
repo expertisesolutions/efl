@@ -1,8 +1,6 @@
 #ifndef __EVIL_DLFCN_H__
 #define __EVIL_DLFCN_H__
 
-#include "unimplemented.h"
-
 #include <limits.h>
 
 /**

@@ -1,8 +1,6 @@
 #ifndef __EVIL_STDLIB_H__
 #define __EVIL_STDLIB_H__
 
-#include "unimplemented.h"
-
 #include <evil_private.h>
 
 /**
@@ -75,11 +73,7 @@ EAPI int unsetenv(const char *name);
  *
  * @since 1.8.0
  */
-UNIMPLEMENTED inline EAPI char *mkdtemp(char *__template)
-{
-    #warning mkdtemp is not implemented
-    return 0;
-}
+EAPI char *mkdtemp(char *__template);
 
 /**
  * @brief Create a unique temporary file name with a suffix.
@@ -90,11 +84,7 @@ UNIMPLEMENTED inline EAPI char *mkdtemp(char *__template)
  *
  * @since 1.10.0
  */
-UNIMPLEMENTED inline EAPI int mkstemps(char *__template, int suffixlen)
-{
-    #warning mkstemps is not implemented
-    return 0;
-}
+EAPI int mkstemps(char *__template, int suffixlen);
 
 /**
  * @brief Return an absolute or full path name for a specified relative path name.
@@ -125,11 +115,7 @@ UNIMPLEMENTED inline EAPI int mkstemps(char *__template, int suffixlen)
  *
  * Supported OS: Windows XP.
  */
-UNIMPLEMENTED inline EAPI char *realpath(const char *file_name, char *resolved_name)
-{
-    #warning realpath is not implemented
-    return 0;
-}
+EAPI char *realpath(const char *file_name, char *resolved_name);
 
 #ifndef HAVE_REALPATH
 # define HAVE_REALPATH 1

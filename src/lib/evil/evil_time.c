@@ -13,11 +13,6 @@
 #include "evil_private.h"
 #include "evil_time.h"
 
-UNIMPLEMENTED inline struct tm *localtime_r(const time_t * time, struct tm * result)
-{
-    return NULL;
-}
-
 /*
  * strptime
  * based on http://cvsweb.netbsd.org/bsdweb.cgi/src/lib/libc/time/strptime.c?rev=HEAD
