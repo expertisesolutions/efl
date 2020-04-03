@@ -16,10 +16,9 @@ typedef _off_t off_t;
 
 #endif
 
-
-#include <stdint.h>
-#include <time.h>
-#include <wchar.h>
+//#include <stdint.h>
+//#include <time.h>
+//#include <wchar.h>
 
 typedef int clockid_t;
 typedef int gid_t;

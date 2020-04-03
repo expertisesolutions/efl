@@ -1,8 +1,6 @@
 #ifndef __EVIL_UNISTD_H__
 #define __EVIL_UNISTD_H__
 
-#include "evil_eapi.h"
-
 /**
  * @file evil_unistd.h
  * @brief The file that provides functions ported from Unix in unistd.h.
@@ -35,7 +33,7 @@
  *
  * Supported OS: Windows XP.
  */
-EAPI double evil_time_get(void);
+EVIL_API double evil_time_get(void);
 
 /*
  * Sockets and pipe related functions
@@ -54,7 +52,7 @@ EAPI double evil_time_get(void);
  *
  * Supported OS: Windows XP.
  */
-EAPI int evil_sockets_init(void);
+EVIL_API int evil_sockets_init(void);
 
 /**
  * @brief Shutdown the Windows socket system.
@@ -65,7 +63,7 @@ EAPI int evil_sockets_init(void);
  *
  * Supported OS: Windows XP.
  */
-EAPI void evil_sockets_shutdown(void);
+EVIL_API void evil_sockets_shutdown(void);
 
 /**
  * @brief Create a pair of sockets.
@@ -81,7 +79,7 @@ EAPI void evil_sockets_shutdown(void);
  *
  * Supported OS: Windows XP.
  */
-EAPI int evil_pipe(int *fds);
+EVIL_API int evil_pipe(int *fds);
 
 
 /**

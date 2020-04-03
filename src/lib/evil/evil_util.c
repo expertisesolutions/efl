@@ -2,13 +2,13 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include "evil_private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
 #include <wchar.h>
-
-#include "evil_private.h"
 
 DWORD _evil_tls_index;
 

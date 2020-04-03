@@ -2,7 +2,6 @@ dir_package_include = '.'
 
 if sys_windows
   evil_unposix_src = []
-
   evil_unposix_header_src = [
     'fnmatch.h',
     'libgen.h',
@@ -21,10 +20,10 @@ if sys_windows
 
   evil_unposix_lib = static_library('evil_unposix',
     evil_unposix_src,
+    c_args: ['-DUNPOSIX_SOURCE', '-DWIN32_LEAN_AND_MEAN'],
     include_directories: [include_directories('.'), config_dir],
     dependencies : [pcre_dep, getopt_dep],
     install: true,
-    version: meson.project_version(),
   )
 
   evil_unposix = declare_dependency(
@@ -39,5 +38,3 @@ if sys_windows
 else
   evil_unposix = declare_dependency()
 endif
-
-automatic_pkgfile = (sys_windows == false)

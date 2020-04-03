@@ -3,6 +3,8 @@
 
 #include "unimplemented.h"
 
+#include "unposix_api.h"
+
 #include_next <stdio.h>
 #include <unistd.h>
 
@@ -14,7 +16,7 @@
 #define pclose _pclose
 #endif
 
-UNIMPLEMENTED inline int vasprintf(char **str, const char *fmt, va_list ap)
+UNIMPLEMENTED inline UNPOSIX_API int vasprintf(char **str, const char *fmt, va_list ap)
 {
     #warning vasprintf is not implemented
     return 0;

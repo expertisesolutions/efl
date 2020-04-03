@@ -3,6 +3,8 @@
 
 #include "unimplemented.h"
 
+#include "unposix_api.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -16,7 +18,7 @@ extern "C" {
 // Leading <period> in string must be exactly matched by <period> in pattern.
 #define FNM_PERIOD (1 << 2)
 
-UNIMPLEMENTED int fnmatch(const char * a, const char * b, int c)
+UNIMPLEMENTED inline UNPOSIX_API int fnmatch(const char * a, const char * b, int c)
 {
     #warning fnmatch is not implemented
     return 0;

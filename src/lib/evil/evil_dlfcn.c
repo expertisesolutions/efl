@@ -2,9 +2,9 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <stdlib.h>
-
-#include "evil_dlfcn.h"
+#define DLFCN_C
+#include "evil_private.h"
+#undef DLFCN_C
 
 #include <psapi.h> /*  EnumProcessModules(Ex) */
 

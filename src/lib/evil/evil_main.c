@@ -2,9 +2,9 @@
 # include <config.h>
 #endif
 
-#include <stdio.h>
-
 #include "evil_private.h"
+
+#include <stdio.h>
 
 
 static int      _evil_init_count = 0;

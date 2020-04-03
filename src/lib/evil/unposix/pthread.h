@@ -3,11 +3,13 @@
 
 #include "unimplemented.h"
 
+#include "unposix_api.h"
+
 UNIMPLEMENTED typedef unsigned long long pthread_t;
 
 UNIMPLEMENTED_STRUCT_T(pthread_attr)
 
-UNIMPLEMENTED struct sched_param {
+UNIMPLEMENTED UNPOSIX_API struct sched_param {
     int sched_priority;
 };
 

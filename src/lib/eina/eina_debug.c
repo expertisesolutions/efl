@@ -54,7 +54,8 @@
 #include <fcntl.h>
 
 #ifdef _WIN32
-# include <ws2tcpip.h>
+# include <define_lean_and_mean.h>
+# include <require_lean_and_mean.h>
 # include <evil_private.h> /* fcntl */
 #endif
 

@@ -1,7 +1,6 @@
 #ifndef __EVIL_LOCALE_H__
 #define __EVIL_LOCALE_H__
 
-
 /**
  * @file evil_locale.h
  * @brief The file that provides functions ported from Unix in locale.h.
@@ -48,7 +47,7 @@
  *
  * @since 1.16
  */
-EAPI char *evil_setlocale(int category, const char *locale);
+EVIL_API char *evil_setlocale(int category, const char *locale);
 
 
 /**

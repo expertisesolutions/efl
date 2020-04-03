@@ -13,10 +13,10 @@
  * Wrapper around evil_setlocale().
  * @since 1.16
  */
-#ifdef setlocale /* libintl.h defines setlocale() but always returns "C" */
-# undef setlocale
-#endif
-#define setlocale(cat, loc) evil_setlocale(cat, loc)
+// #ifdef setlocale /* libintl.h defines setlocale() but always returns "C" */
+// # undef setlocale
+// #endif
+// #define setlocale(cat, loc) evil_setlocale(cat, loc)
 
 /*
  * evil_stdio.h
@@ -29,10 +29,10 @@
  *
  * @since 1.8
  */
-#ifdef rename
-# undef rename
-#endif
-#define rename(src, dst) evil_rename(src, dst)
+//#ifdef rename
+//# undef rename
+//#endif
+//#define rename(src, dst) evil_rename(src, dst)
 
 /**
  * @def mkdir(dirname, mode)

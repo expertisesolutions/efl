@@ -2,6 +2,8 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include "evil_private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -9,8 +11,6 @@
 #include <errno.h>
 
 #include <io.h>
-
-#include "evil_private.h"
 
 /*
  * Possible values

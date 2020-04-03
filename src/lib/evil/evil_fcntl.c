@@ -2,6 +2,8 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include <define_lean_and_mean.h>
+
 #include <stdio.h>
 #include <sys/locking.h>
 
@@ -9,6 +11,8 @@
 #include <io.h>
 
 #include "evil_private.h"
+
+#include <undefine_lean_and_mean.h>
 
 /* SOCKET is defined as a uintptr_t, so passing a fd (int) is not a problem */
 static int
@@ -25,7 +29,7 @@ _is_socket(SOCKET s)
    return select(1, &rfds, NULL, NULL, &tv) != SOCKET_ERROR;
 }
 
-
+#if false
 /*
  * port of fcntl function
  *
@@ -135,3 +139,4 @@ int fcntl(int fd, int cmd, ...)
 
    return res;
 }
+#endif

@@ -27,7 +27,9 @@ if target_machine.system() == 'windows'
   evil_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, evil_unposix]
   evil_pub_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, evil_unposix]
 
-  evil_lib = library('evil', evil_src,
+  evil_lib = library('evil',
+    evil_src,
+    c_args : ['-DEVIL_BUILD'],
     dependencies : evil_deps,
     include_directories : [config_dir],
     install: true,
@@ -37,7 +39,7 @@ if target_machine.system() == 'windows'
   evil = declare_dependency(
     include_directories: [include_directories('.')],
     dependencies : evil_pub_deps,
-    link_with: evil_lib,
+    link_with: [evil_lib, evil_unposix_lib],
   )
 else
   evil = declare_dependency()

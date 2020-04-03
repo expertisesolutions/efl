@@ -6,4 +6,3 @@
 #include <strings.h>
 
 #endif
-

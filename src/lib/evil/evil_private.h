@@ -1,6 +1,8 @@
 #ifndef __EVIL_PRIVATE_H__
 #define __EVIL_PRIVATE_H__
 
+#ifdef _WIN32
+
 #if _WIN32_WINNT < 0x0600
 # error Windows XP not supported anymore
 #endif
@@ -27,10 +29,11 @@ extern "C" {
 #include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
 
+#include <stdint.h> /* for mode_t in  */
 #include <sys/stat.h> /* for mkdir in evil_macro_wrapper */
+#include <sys/types.h> /* for mode_t in  */
 
-
-#include "evil_eapi.h"
+#include "evil_api.h"
 
 #ifndef PATH_MAX
 # define PATH_MAX MAX_PATH
@@ -53,12 +56,13 @@ extern "C" {
 
 #include "evil_macro_wrapper.h"
 
-#undef EAPI
-#define EAPI
+#undef EVIL_API
+#define EVIL_API
 
 #ifdef __cplusplus
 }
 #endif
 
+#endif
 
 #endif /* __EVIL_PRIVATE_H__ */
