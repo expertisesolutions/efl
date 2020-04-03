@@ -175,7 +175,9 @@ if sys_windows == true
       # ------------------------------------
       # Default flags for native compilation
       '-Wno-language-extension-token',
-      '-DWIN32_LEAN_AND_MEAN'
+      '-DWIN32_LEAN_AND_MEAN',
+      '-DSTATIC_GETOPT',
+
     ], language : 'c')
 endif
 
