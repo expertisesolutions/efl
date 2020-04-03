@@ -5,9 +5,7 @@
 
 #include <unistd.h>
 
-#include_next <getopt.h>
-
-UNIMPLEMENTED int getopt_long(int argc, char * const argv[],
+UNIMPLEMENTED inline int getopt_long(int argc, char * const argv[],
           const char *optstring,
           const struct option *longopts, int *longindex)
 {
