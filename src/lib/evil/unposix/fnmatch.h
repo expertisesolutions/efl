@@ -4,6 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <Shlwapi.h>
 
 // The string does not match the specified pattern.
 #define FNM_NOMATCH 1
@@ -13,6 +14,9 @@ extern "C" {
 #define FNM_NOESCAPE (1 << 1)
 // Leading <period> in string must be exactly matched by <period> in pattern.
 #define FNM_PERIOD (1 << 2)
+
+//#define FNM_IGNORECASE	# optional
+//#define FNM_CASEFOLD      	# optional
 
 int fnmatch(const char *, const char *, int);
 
