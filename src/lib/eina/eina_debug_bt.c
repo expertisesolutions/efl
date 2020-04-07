@@ -49,7 +49,7 @@
 // broken on OSX in that a HUP signal will maybe cause a crash... but compiling
 // with -pg would have guaranteed always caused a crash before anyway.
 // given OSX only supports "old-style" signals like:
-// 
+//
 // #define  SIGHUP     1 /* hangup */
 // #define  SIGINT     2 /* interrupt */
 // #define  SIGQUIT    3 /* quit */
@@ -90,7 +90,7 @@
 // #endif
 // #define  SIGUSR1   30 /* user defined signal 1 */
 // #define  SIGUSR2   31 /* user defined signal 2 */
-// 
+//
 // (excerpt from OSX's signal.h - found at:
 // http://github.com/st3fan/osx-10.9/blob/master/xnu-2422.1.72/bsd/sys/signal.h
 // pasting here due to how difficult it was to find a signal list for OSX)
@@ -197,7 +197,7 @@ _signal_handler(int sig EINA_UNUSED,
       siginfo_t *si EINA_UNUSED, void *foo EINA_UNUSED)
 {
    int i, slot = 0;
-   pthread_t self = pthread_self();
+   Eina_Thread self = pthread_self();
 #if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_SCHED_GETCPU) && defined(__clockid_t_defined)
    clockid_t cid;
 #endif
@@ -292,7 +292,7 @@ _signal_shutdown(void)
 }
 
 static void
-_collect_bt(pthread_t pth)
+_collect_bt(Eina_Thread pth)
 {
    // this async signals the thread to switch to the deebug signal handler
    // and collect a backtrace and other info from inside the thread
