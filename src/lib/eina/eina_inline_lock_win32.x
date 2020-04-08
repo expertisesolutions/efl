@@ -23,6 +23,8 @@
 # define WIN32_LEAN_AND_MEAN
 #endif
 
+#include "unimplemented.h"
+
 #include <Windows.h>
 #include <synchapi.h>
 
@@ -278,10 +280,11 @@ eina_condition_wait(Eina_Condition *cond)
    return r;
 }
 
-static inline Eina_Bool
+UNIMPLEMENTED static inline Eina_Bool
 eina_condition_timedwait(Eina_Condition *cond, double t)
 {
    //** TODO **//
+   #warning eina_condition_timedwait is not implemented
    return EINA_TRUE;
 }
 
@@ -394,10 +397,13 @@ eina_rwlock_release(Eina_RWLock *mutex)
    return EINA_LOCK_FAIL;
 }
 
-static inline Eina_Bool
+
+
+UNIMPLEMENTED static inline Eina_Bool
 eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb)
 {
    //** TODO **//
+   #warning eina_tls_cb_new is not implemented
    return EINA_TRUE;
 }
 
@@ -407,24 +413,27 @@ eina_tls_new(Eina_TLS *key)
    return eina_tls_cb_new(key, NULL);
 }
 
-static inline void
+UNIMPLEMENTED static inline void
 eina_tls_free(Eina_TLS key)
 {
    //** TODO **//
+   #warning eina_tls_free is not implemented
    return;
 }
 
-static inline void *
+UNIMPLEMENTED static inline void *
 eina_tls_get(Eina_TLS key)
 {
    //** TODO **//
+   #warning eina_tls_get is not implemented
    return (void*) 0;
 }
-
+UNIMPLEMENTED
 static inline Eina_Bool
 eina_tls_set(Eina_TLS key, const void *data)
 {
    //** TODO **//
+   #warning eina_tls_set is not implemented
    return EINA_TRUE;
 }
 

@@ -21,6 +21,8 @@
 # define WIN32_LEAN_AND_MEAN
 #endif
 
+#include "unimplemented.h"
+
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -83,10 +85,11 @@ _eina_lock_free(Eina_Lock *mutex)
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG(ok, mutex_destroy, mutex);
 }
 
-EAPI Eina_Bool
+UNIMPLEMENTED EAPI Eina_Bool
 _eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex)
 {
    // TODO
+   #warning eina_condition_new is not implemented
    return EINA_TRUE;
 }
 
@@ -116,7 +119,7 @@ _eina_rwlock_free(Eina_RWLock *mutex)
     return;
 }
 
-EAPI Eina_Bool
+UNIMPLEMENTED EAPI Eina_Bool
 _eina_barrier_new(Eina_Barrier *barrier, int needed)
 {
 #ifdef EINA_HAVE_WIN32_BARRIER
@@ -130,11 +133,12 @@ _eina_barrier_new(Eina_Barrier *barrier, int needed)
    return EINA_FALSE;
 #else
    // TODO condition variable
+   #warning eina_barrier_new needs condition variable that is not implemented
    return EINA_TRUE;
 #endif
 }
 
-EAPI void
+UNIMPLEMENTED EAPI void
 _eina_barrier_free(Eina_Barrier *barrier)
 {
 #ifdef EINA_HAVE_WIN32_BARRIER
@@ -143,6 +147,7 @@ _eina_barrier_free(Eina_Barrier *barrier)
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG(ok, barrier_destroy, barrier);
 #else
    // TODO condition variable
+   #warning eina_barrier_free needs condition variable that is not implemented
 #endif
 }
 
