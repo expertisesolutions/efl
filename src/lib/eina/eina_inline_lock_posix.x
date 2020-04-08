@@ -19,7 +19,11 @@
 #ifndef EINA_INLINE_LOCK_POSIX_X_
 #define EINA_INLINE_LOCK_POSIX_X_
 
-#include <semaphore.h>
+#ifdef _XOPEN_SOURCE
+# define EINA_XOPEN_SOURCE _XOPEN_SOURCE
+# undef _XOPEN_SOURCE
+#endif
+#define _XOPEN_SOURCE 600
 
 #ifdef EINA_HAVE_POSIX_SPINLOCK
 # include <sched.h>
@@ -32,6 +36,8 @@
 #else
 # include <pthread.h>
 #endif
+
+#include <semaphore.h>
 
 #ifdef EINA_HAVE_OSX_SEMAPHORE
 # include <mach/mach.h>
@@ -593,5 +599,11 @@ eina_semaphore_release(Eina_Semaphore *sem, int count_release EINA_UNUSED)
 #endif
    return EINA_FALSE;
 }
+
+#undef _XOPEN_SOURCE
+// This is necessary to let third party still define this macro
+#ifdef EINA_XOPEN_SOURCE
+# define _XOPEN_SOURCE EINA_XOPEN_SOURCE
+#endif
 
 #endif

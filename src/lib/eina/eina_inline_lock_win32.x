@@ -30,9 +30,6 @@
 
 typedef LPDWORD Eina_TLS;
 
-// for win32 spinlock use at least
-//#define _WIN32_WINNT 0x0403
-
 #if defined(EINA_HAVE_WIN32_SPINLOCK)
 typedef PCRITICAL_SECTION Eina_Spinlock;
 #endif

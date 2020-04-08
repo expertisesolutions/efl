@@ -291,6 +291,10 @@ if cc.has_header_symbol('pthread.h', 'pthread_barrier_init')
    eina_config.set('EINA_HAVE_PTHREAD_BARRIER', '1')
 endif
 
+if cc.has_header_symbol('synchapi.h', 'InitializeSynchronizationBarrier')
+   eina_config.set('EINA_HAVE_WIN32_BARRIER', '1')
+endif
+
 if sys_linux == true
    pthread_np_header_file = 'pthread.h'
    pthread_setname_np_api = 'pthread_setname_np'
@@ -338,6 +342,10 @@ endif
 
 if cc.has_header_symbol('pthread.h', 'pthread_spin_init')
    eina_config.set('EINA_HAVE_POSIX_SPINLOCK', '1')
+endif
+
+if cc.has_header_symbol('synchapi.h', 'SetCriticalSectionSpinCount')
+   eina_config.set('EINA_HAVE_WIN32_SPINLOCK', '1')
 endif
 
 if sys_osx == true

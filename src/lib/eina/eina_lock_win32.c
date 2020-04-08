@@ -132,9 +132,14 @@ _eina_barrier_new(Eina_Barrier *barrier, int needed)
    else EINA_LOCK_ABORT_DEBUG(ok, barrier_init, barrier);
    return EINA_FALSE;
 #else
-   // TODO condition variable
-   #warning eina_barrier_new needs condition variable that is not implemented
-   return EINA_TRUE;
+   barrier->needed = needed;
+   barrier->called = 0;
+   if (eina_lock_new(&(barrier->cond_lock)))
+     {
+        if (eina_condition_new(&(barrier->cond), &(barrier->cond_lock)))
+          return EINA_TRUE;
+     }
+   return EINA_FALSE;
 #endif
 }
 
@@ -146,8 +151,10 @@ _eina_barrier_free(Eina_Barrier *barrier)
    DWORD ok = GetLastError();
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG(ok, barrier_destroy, barrier);
 #else
-   // TODO condition variable
-   #warning eina_barrier_free needs condition variable that is not implemented
+   eina_condition_free(&(barrier->cond));
+   eina_lock_free(&(barrier->cond_lock));
+   barrier->needed = 0;
+   barrier->called = 0;
 #endif
 }
 
