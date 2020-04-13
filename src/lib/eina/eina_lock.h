@@ -117,7 +117,7 @@ EAPI extern Eina_Error EINA_ERROR_NOT_MAIN_LOOP;
  *
  * @see eina_lock_free()
  */
-static inline Eina_Bool eina_lock_new(Eina_Lock *mutex);
+EAPI Eina_Bool eina_lock_new(Eina_Lock *mutex);
 
 /**
  * @brief Initializes a new #Eina_Lock that is recursive.
@@ -133,7 +133,7 @@ static inline Eina_Bool eina_lock_new(Eina_Lock *mutex);
  * @see eina_lock_free()
  * @since 1.19
  */
-static inline Eina_Bool eina_lock_recursive_new(Eina_Lock *mutex);
+EAPI Eina_Bool eina_lock_recursive_new(Eina_Lock *mutex);
 
 /**
  * @brief Deallocates an #Eina_Lock.
@@ -144,7 +144,7 @@ static inline Eina_Bool eina_lock_recursive_new(Eina_Lock *mutex);
  *
  * @see eina_lock_new()
  */
-static inline void eina_lock_free(Eina_Lock *mutex);
+EAPI void eina_lock_free(Eina_Lock *mutex);
 
 /**
  * @brief Attempts to take a lock.
@@ -162,7 +162,7 @@ static inline void eina_lock_free(Eina_Lock *mutex);
  * @see eina_lock_take_try()
  * @see eina_lock_release()
  */
-static inline Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
+EAPI Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
 
 /**
  * @brief Attempts to take a lock if possible.
@@ -178,7 +178,7 @@ static inline Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
  * @see eina_lock_take()
  * @see eina_lock_release()
  */
-static inline Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EAPI Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
 
 /**
  * @brief Releases a lock.
@@ -194,7 +194,7 @@ static inline Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
  * @see eina_lock_take()
  * @see eina_lock_take_try()
  */
-static inline Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
+EAPI Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
 
 /**
  * @brief Prints debug information about a lock.
@@ -226,7 +226,7 @@ EAPI void eina_lock_debug(const Eina_Lock *mutex);
  *
  * @see eina_condition_free()
  */
-static inline Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
+EAPI Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
 
 /**
  * @brief Deallocates a condition variable.
@@ -237,7 +237,7 @@ static inline Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mute
  *
  * @see eina_condition_new()
  */
-static inline void eina_condition_free(Eina_Condition *cond);
+EAPI void eina_condition_free(Eina_Condition *cond);
 
 /**
  * @brief Causes a thread to wait until signaled by the condition.
@@ -249,7 +249,7 @@ static inline void eina_condition_free(Eina_Condition *cond);
  *
  * @see eina_condition_timedwait()
  */
-static inline Eina_Bool eina_condition_wait(Eina_Condition *cond);
+EAPI Eina_Bool eina_condition_wait(Eina_Condition *cond);
 
 /**
  * @brief Causes a thread to wait until signaled by the condition or a
@@ -265,7 +265,7 @@ static inline Eina_Bool eina_condition_wait(Eina_Condition *cond);
  *
  * @see eina_condition_wait()
  */
-static inline Eina_Bool eina_condition_timedwait(Eina_Condition *cond, double t);
+EAPI Eina_Bool eina_condition_timedwait(Eina_Condition *cond, double t);
 
 /**
  * @brief Signals all threads waiting for a condition.
@@ -279,7 +279,7 @@ static inline Eina_Bool eina_condition_timedwait(Eina_Condition *cond, double t)
  *
  * @see eina_condition_signal()
  */
-static inline Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
+EAPI Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 
 /**
  * @brief Signals a thread waiting for a condition.
@@ -296,7 +296,7 @@ static inline Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
  *
  * @see eina_condition_broadcast()
  */
-static inline Eina_Bool eina_condition_signal(Eina_Condition *cond);
+EAPI Eina_Bool eina_condition_signal(Eina_Condition *cond);
 
 
 /**
@@ -311,7 +311,7 @@ static inline Eina_Bool eina_condition_signal(Eina_Condition *cond);
  *
  * @see eina_rwlock_free()
  */
-static inline Eina_Bool eina_rwlock_new(Eina_RWLock *mutex);
+EAPI Eina_Bool eina_rwlock_new(Eina_RWLock *mutex);
 
 /**
  * @brief Deallocates an #Eina_RWLock.
@@ -322,7 +322,7 @@ static inline Eina_Bool eina_rwlock_new(Eina_RWLock *mutex);
  *
  * @see eina_rwlock_new()
  */
-static inline void eina_rwlock_free(Eina_RWLock *mutex);
+EAPI void eina_rwlock_free(Eina_RWLock *mutex);
 
 /**
  * @brief Attempts to take a read lock.
@@ -338,7 +338,7 @@ static inline void eina_rwlock_free(Eina_RWLock *mutex);
  *
  * @see eina_rwlock_release()
  */
-static inline Eina_Lock_Result eina_rwlock_take_read(Eina_RWLock *mutex);
+EAPI Eina_Lock_Result eina_rwlock_take_read(Eina_RWLock *mutex);
 
 /**
  * @brief Attempts to take a write lock.
@@ -354,7 +354,7 @@ static inline Eina_Lock_Result eina_rwlock_take_read(Eina_RWLock *mutex);
  *
  * @see eina_rwlock_release()
  */
-static inline Eina_Lock_Result eina_rwlock_take_write(Eina_RWLock *mutex);
+EAPI Eina_Lock_Result eina_rwlock_take_write(Eina_RWLock *mutex);
 
 /**
  * @brief Releases a lock.
@@ -368,7 +368,7 @@ static inline Eina_Lock_Result eina_rwlock_take_write(Eina_RWLock *mutex);
  * @see eina_rwlock_take_read()
  * @see eina_rwlock_take_write()
  */
-static inline Eina_Lock_Result eina_rwlock_release(Eina_RWLock *mutex);
+EAPI Eina_Lock_Result eina_rwlock_release(Eina_RWLock *mutex);
 
 /**
  * @brief Initializes a new #Eina_TLS, or thread level storage, to store thread
@@ -386,7 +386,7 @@ static inline Eina_Lock_Result eina_rwlock_release(Eina_RWLock *mutex);
  * @see eina_tls_cb_new()
  * @see eina_tls_free()
  */
-static inline Eina_Bool eina_tls_new(Eina_TLS *key);
+EAPI Eina_Bool eina_tls_new(Eina_TLS *key);
 
 /**
  * @brief Initializes a new #Eina_TLS, or thread level storage, to store thread
@@ -403,7 +403,7 @@ static inline Eina_Bool eina_tls_new(Eina_TLS *key);
  * @see eina_tls_new()
  * @see eina_tls_free()
  */
-static inline Eina_Bool eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb);
+EAPI Eina_Bool eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb);
 
 /**
  * @brief Frees an allocated #Eina_TLS.
@@ -415,7 +415,7 @@ static inline Eina_Bool eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete
  * @see eina_tls_new()
  * @see eina_tls_cb_new()
  */
-static inline void eina_tls_free(Eina_TLS key);
+EAPI void eina_tls_free(Eina_TLS key);
 
 /**
  * @brief Gets the value in #Eina_TLS for this thread.
@@ -428,7 +428,7 @@ static inline void eina_tls_free(Eina_TLS key);
  *
  * @see  eina_tls_set()
  */
-static inline void *eina_tls_get(Eina_TLS key);
+EAPI void *eina_tls_get(Eina_TLS key);
 
 /**
  * @brief Sets the value in Eina_TLS for this thread.
@@ -442,7 +442,7 @@ static inline void *eina_tls_get(Eina_TLS key);
  *
  * @see eina_tls_get()
  */
-static inline Eina_Bool eina_tls_set(Eina_TLS key, const void *data);
+EAPI Eina_Bool eina_tls_set(Eina_TLS key, const void *data);
 
 /**
  * @brief Initializes a new #Eina_Semaphore.
@@ -456,7 +456,7 @@ static inline Eina_Bool eina_tls_set(Eina_TLS key, const void *data);
  *
  * @see eina_semaphore_free()
  */
-static inline Eina_Bool eina_semaphore_new(Eina_Semaphore *sem, int count_init);
+EAPI Eina_Bool eina_semaphore_new(Eina_Semaphore *sem, int count_init);
 
 /**
  * @brief Frees an allocated #Eina_Semaphore.
@@ -469,7 +469,7 @@ static inline Eina_Bool eina_semaphore_new(Eina_Semaphore *sem, int count_init);
  *
  * @see eina_semaphore_new()
  */
-static inline Eina_Bool eina_semaphore_free(Eina_Semaphore *sem);
+EAPI Eina_Bool eina_semaphore_free(Eina_Semaphore *sem);
 
 /**
  * @brief Gets a lock on an #Eina_Semaphore.
@@ -482,7 +482,7 @@ static inline Eina_Bool eina_semaphore_free(Eina_Semaphore *sem);
  *
  * @see eina_semaphore_release()
  */
-static inline Eina_Bool eina_semaphore_lock(Eina_Semaphore *sem);
+EAPI Eina_Bool eina_semaphore_lock(Eina_Semaphore *sem);
 
 /**
  * @brief Releases a lock on an #Eina_Semaphore.
@@ -496,7 +496,7 @@ static inline Eina_Bool eina_semaphore_lock(Eina_Semaphore *sem);
  *
  * @see eina_semaphore_lock()
  */
-static inline Eina_Bool eina_semaphore_release(Eina_Semaphore *sem, int count_release);
+EAPI Eina_Bool eina_semaphore_release(Eina_Semaphore *sem, int count_release);
 
 /**
  * @brief Initializes a new #Eina_Barrier.
@@ -511,7 +511,7 @@ static inline Eina_Bool eina_semaphore_release(Eina_Semaphore *sem, int count_re
  *
  * @see eina_barrier_free()
  */
-static inline Eina_Bool eina_barrier_new(Eina_Barrier *barrier, int needed);
+EAPI Eina_Bool eina_barrier_new(Eina_Barrier *barrier, int needed);
 
 /**
  * @brief Frees an allocated #Eina_Barrier.
@@ -521,7 +521,7 @@ static inline Eina_Bool eina_barrier_new(Eina_Barrier *barrier, int needed);
  *
  * @see eina_barrier_new()
  */
-static inline void eina_barrier_free(Eina_Barrier *barrier);
+EAPI void eina_barrier_free(Eina_Barrier *barrier);
 
 /**
  * @brief Increments the count of threads that are waiting on @p barrier.
@@ -532,7 +532,7 @@ static inline void eina_barrier_free(Eina_Barrier *barrier);
  * @return #EINA_TRUE on success, else #EINA_FALSE otherwise.
  *
  */
-static inline Eina_Bool eina_barrier_wait(Eina_Barrier *barrier);
+EAPI Eina_Bool eina_barrier_wait(Eina_Barrier *barrier);
 
 
 /**
@@ -549,7 +549,7 @@ static inline Eina_Bool eina_barrier_wait(Eina_Barrier *barrier);
  *
  * @see eina_spinlock_free()
  */
-static inline Eina_Bool eina_spinlock_new(Eina_Spinlock *spinlock);
+EAPI Eina_Bool eina_spinlock_new(Eina_Spinlock *spinlock);
 
 /**
  * @brief Attempts to take a spinlock.
@@ -567,7 +567,7 @@ static inline Eina_Bool eina_spinlock_new(Eina_Spinlock *spinlock);
  * @see eina_spinlock_take_try()
  * @see eina_spinlock_release()
  */
-static inline Eina_Lock_Result eina_spinlock_take(Eina_Spinlock *spinlock);
+EAPI Eina_Lock_Result eina_spinlock_take(Eina_Spinlock *spinlock);
 
 /**
  * @brief Attempts to take a spinlock if possible.
@@ -583,7 +583,7 @@ static inline Eina_Lock_Result eina_spinlock_take(Eina_Spinlock *spinlock);
  * @see eina_spinlock_take_try()
  * @see eina_spinlock_release()
  */
-static inline Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
+EAPI Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
 
 /**
  * @brief Releases a spinlock.
@@ -599,7 +599,7 @@ static inline Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
  * @see eina_spinlock_take_try()
 
  */
-static inline Eina_Lock_Result eina_spinlock_release(Eina_Spinlock *spinlock);
+EAPI Eina_Lock_Result eina_spinlock_release(Eina_Spinlock *spinlock);
 
 /**
  * @brief Deallocates an #Eina_Spinlock.
@@ -609,7 +609,7 @@ static inline Eina_Lock_Result eina_spinlock_release(Eina_Spinlock *spinlock);
  * @param[in] spinlock The #Eina_Spinlock to be deallocated.
  *
  */
-static inline void eina_spinlock_free(Eina_Spinlock *spinlock);
+EAPI void eina_spinlock_free(Eina_Spinlock *spinlock);
 
 #ifdef EINA_HAVE_DEBUG_THREADS
 # define EINA_MAIN_LOOP_CHECK_RETURN_VAL(val)				\
