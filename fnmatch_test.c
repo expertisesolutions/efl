@@ -19,7 +19,7 @@ int test_normal_string(void)
     int ret = 0;
 
     ret |= fnmatch(pattern, string, flags);
-    printf("test normal string: %cok!\n", !ret?:'n');
+    printf("test normal string (T): %cok!\n", !ret?:'n');
 
     return ret;
 }
@@ -34,10 +34,10 @@ int test_unix_path(void)
     int ret = 0;
 
     ret |= fnmatch(pattern, string_valid, flags);
-    printf("test unix path: %cok!\n", !ret?:'n');
+    printf("test unix path (T): %cok!\n", !ret?:'n');
 
     ret |= !fnmatch(pattern, string_invalid, flags);
-    printf("test unix path: %cok!\n", !ret?:'n');
+    printf("test unix path (F): %cok!\n", !ret?:'n');
 
     return ret;
 }
@@ -52,10 +52,10 @@ int test_win_path(void)
     int ret = 0;
 
     ret |= fnmatch(pattern, string_valid, flags);
-    printf("test win path: %cok!\n", !ret?:'n');
+    printf("test win path (T): %cok!\n", !ret?:'n');
 
     ret |= !fnmatch(pattern, string_invalid, flags);
-    printf("test win path: %cok!\n", !ret?:'n');
+    printf("test win path (F): %cok!\n", !ret?:'n');
 
     return ret;
 }
@@ -70,16 +70,16 @@ int test_flag_pathname(void)
     int ret = 0;
 
     ret |= fnmatch(pattern_valid, string, 0);
-    printf("test FNM_PATHNAME flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME flag (T): %cok!\n", !ret?:'n');
     
     ret |= fnmatch(pattern_invalid, string, 0);
-    printf("test FNM_PATHNAME flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME flag (T): %cok!\n", !ret?:'n');
 
     ret |= fnmatch(pattern_valid, string, flags);
-    printf("test FNM_PATHNAME flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME flag (T): %cok!\n", !ret?:'n');
     
     ret |= !fnmatch(pattern_invalid, string, flags);
-    printf("test FNM_PATHNAME flag: %cok!\n", !ret?:'n'); 
+    printf("test FNM_PATHNAME flag (F): %cok!\n", !ret?:'n'); 
 
     return ret;
 }
@@ -94,16 +94,16 @@ int test_flag_period(void)
     int ret = 0;
 
     ret |= fnmatch(pattern_valid, string, 0);
-    printf("test FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PERIOD flag (T): %cok!\n", !ret?:'n');
     
     ret |= fnmatch(pattern_invalid, string, 0);
-    printf("test FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PERIOD flag (T): %cok!\n", !ret?:'n');
 
     ret |= fnmatch(pattern_valid, string, flags);
-    printf("test FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PERIOD flag (T): %cok!\n", !ret?:'n');
     
     ret |= !fnmatch(pattern_invalid, string, flags);
-    printf("test FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PERIOD flag (F): %cok!\n", !ret?:'n');
 
     return ret;
 } 
@@ -118,16 +118,16 @@ int test_flag_pathname_period(void)
     int ret = 0;
 
     ret |= fnmatch(pattern_valid, string, 0);
-    printf("test FNM_PATHNAME+FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME+FNM_PERIOD flag (T): %cok!\n", !ret?:'n');
     
     ret |= fnmatch(pattern_invalid, string, 0);
-    printf("test FNM_PATHNAME+FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME+FNM_PERIOD flag (T): %cok!\n", !ret?:'n');
 
     ret |= fnmatch(pattern_valid, string, flags);
-    printf("test FNM_PATHNAME+FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME+FNM_PERIOD flag (T): %cok!\n", !ret?:'n');
     
     ret |= !fnmatch(pattern_invalid, string, flags);
-    printf("test FNM_PATHNAME+FNM_PERIOD flag: %cok!\n", !ret?:'n');
+    printf("test FNM_PATHNAME+FNM_PERIOD flag (F): %cok!\n", !ret?:'n');
 
     return ret;
 }
@@ -140,11 +140,11 @@ int test_flag_noescape(void)
                                                              
     int ret = 0;
 
-    ret |= !fnmatch(pattern, string_valid, 0);
-    printf("test FNM_NOESCAPE flag: %cok!\n", !ret?:'n');
-    
     ret |= fnmatch(pattern, string_valid, flags);
-    printf("test FNM_NOESCAPE flag: %cok!\n", !ret?:'n');
+    printf("test FNM_NOESCAPE flag (T): %cok!\n", !ret?:'n');
+
+    ret |= !fnmatch(pattern, string_valid, 0);
+    printf("test FNM_NOESCAPE flag (F): %cok!\n", !ret?:'n');
  
     return ret;
 }
@@ -160,11 +160,11 @@ int main(void)
     printf("---\n");
     (test_flag_pathname_period() == 0);
     printf("---\n");
-//    (test_flag_noescape() == 0);
+    (test_flag_noescape() == 0);
     printf("---\n");
-//    (test_unix_path() == 0);
+    (test_unix_path() == 0);
     printf("---\n");
-//    (test_win_path() == 0);
+    (test_win_path() == 0);
 
     return 0;
 }       
