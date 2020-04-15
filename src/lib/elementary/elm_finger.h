@@ -38,7 +38,7 @@
  *
  * @ingroup Elm_Fingers
  */
-EAPI void       elm_coords_finger_size_adjust(int times_w, Evas_Coord *w, int times_h, Evas_Coord *h);
+ELEMENTARY_API void       elm_coords_finger_size_adjust(int times_w, Evas_Coord *w, int times_h, Evas_Coord *h);
 
 /**
  * @}

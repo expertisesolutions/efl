@@ -9,6 +9,6 @@
  *
  * @ingroup Elm_Clock
  */
-EAPI Evas_Object      *elm_clock_add(Evas_Object *parent);
+ELEMENTARY_API Evas_Object      *elm_clock_add(Evas_Object *parent);
 
 #include "elm_clock_eo.legacy.h"

@@ -23,7 +23,7 @@ typedef Eo Elm_Grid;
  *
  * @ingroup Elm_Grid_Group
  */
-EAPI void elm_grid_size_set(Elm_Grid *obj, int w, int h);
+ELEMENTARY_API void elm_grid_size_set(Elm_Grid *obj, int w, int h);
 
 /**
  * @brief Get the virtual size of the grid
@@ -34,7 +34,7 @@ EAPI void elm_grid_size_set(Elm_Grid *obj, int w, int h);
  *
  * @ingroup Elm_Grid_Group
  */
-EAPI void elm_grid_size_get(const Elm_Grid *obj, int *w, int *h);
+ELEMENTARY_API void elm_grid_size_get(const Elm_Grid *obj, int *w, int *h);
 
 /**
  * @brief Get the list of the children for the grid.
@@ -50,7 +50,7 @@ EAPI void elm_grid_size_get(const Elm_Grid *obj, int *w, int *h);
  *
  * @ingroup Elm_Grid_Group
  */
-EAPI Eina_List *elm_grid_children_get(const Elm_Grid *obj) EINA_WARN_UNUSED_RESULT;
+ELEMENTARY_API Eina_List *elm_grid_children_get(const Elm_Grid *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Faster way to remove all child objects from a grid object.
@@ -60,7 +60,7 @@ EAPI Eina_List *elm_grid_children_get(const Elm_Grid *obj) EINA_WARN_UNUSED_RESU
  *
  * @ingroup Elm_Grid_Group
  */
-EAPI void elm_grid_clear(Elm_Grid *obj, Eina_Bool clear);
+ELEMENTARY_API void elm_grid_clear(Elm_Grid *obj, Eina_Bool clear);
 
 /**
  * @brief Unpack a child from a grid object
@@ -70,7 +70,7 @@ EAPI void elm_grid_clear(Elm_Grid *obj, Eina_Bool clear);
  *
  * @ingroup Elm_Grid_Group
  */
-EAPI void elm_grid_unpack(Elm_Grid *obj, Efl_Canvas_Object *subobj);
+ELEMENTARY_API void elm_grid_unpack(Elm_Grid *obj, Efl_Canvas_Object *subobj);
 
 /**
  * @brief Pack child at given position and size
@@ -84,6 +84,6 @@ EAPI void elm_grid_unpack(Elm_Grid *obj, Efl_Canvas_Object *subobj);
  *
  * @ingroup Elm_Grid_Group
  */
-EAPI void elm_grid_pack(Elm_Grid *obj, Efl_Canvas_Object *subobj, int x, int y, int w, int h);
+ELEMENTARY_API void elm_grid_pack(Elm_Grid *obj, Efl_Canvas_Object *subobj, int x, int y, int w, int h);
 
 #endif

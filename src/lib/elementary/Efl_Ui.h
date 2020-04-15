@@ -73,8 +73,8 @@
 #include <Efl_Canvas.h>
 #include <Efl_Layout.h>
 
-#ifdef EAPI
-# undef EAPI
+#ifdef ELEMENTARY_API
+# undef ELEMENTARY_API
 #endif
 #ifdef EWAPI
 # undef EWAPI
@@ -83,39 +83,39 @@
 #ifdef _WIN32
 # ifdef EFL_BUILD
 #  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+#   define ELEMENTARY_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define ELEMENTARY_API
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define ELEMENTARY_API __declspec(dllimport)
 # endif
-# define EAPI_WEAK
+# define ELEMENTARY_API_WEAK
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#   define EAPI_WEAK __attribute__ ((weak))
+#   define ELEMENTARY_API __attribute__ ((visibility("default")))
+#   define ELEMENTARY_API_WEAK __attribute__ ((weak))
 #  else
-#   define EAPI
-#   define EAPI_WEAK
+#   define ELEMENTARY_API
+#   define ELEMENTARY_API_WEAK
 # endif
 # else
-#  define EAPI
-#  define EAPI_WEAK
+#  define ELEMENTARY_API
+#  define ELEMENTARY_API_WEAK
 # endif
 #endif
 
-#define EWAPI EAPI EAPI_WEAK
+#define EWAPI ELEMENTARY_API ELEMENTARY_API_WEAK
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern EAPI double _efl_startup_time;
+extern ELEMENTARY_API double _efl_startup_time;
 
 /** Successfully applied the requested style from the current theme. */
-extern EAPI Eina_Error EFL_UI_THEME_APPLY_ERROR_NONE;
+extern ELEMENTARY_API Eina_Error EFL_UI_THEME_APPLY_ERROR_NONE;
 
 // EO types. Defined for legacy-only builds as legacy uses typedef of EO types.
 #include "efl_ui.eot.h"
@@ -127,7 +127,7 @@ typedef Eo Efl_Ui_Focus_Manager;
 # include <efl_ui_focus_object.eo.h>
 # include <efl_ui_focus_manager.eo.h>
 # ifdef EFL_BETA_API_SUPPORT
-EAPI void efl_ui_focus_relation_free(Efl_Ui_Focus_Relations *rel);
+ELEMENTARY_API void efl_ui_focus_relation_free(Efl_Ui_Focus_Relations *rel);
 # endif
 # include <efl_ui_focus_manager_window_root.eo.h>
 # include <efl_ui_focus_manager_calc.eo.h>
@@ -200,7 +200,7 @@ EAPI void efl_ui_focus_relation_free(Efl_Ui_Focus_Relations *rel);
  *
  * @ingroup Efl_Ui_Win
  */
-EAPI void efl_ui_win_autodel_set(Efl_Ui_Win *obj, Eina_Bool autodel);
+ELEMENTARY_API void efl_ui_win_autodel_set(Efl_Ui_Win *obj, Eina_Bool autodel);
 
 /**
  * @brief Get the window's autodel state.
@@ -213,7 +213,7 @@ EAPI void efl_ui_win_autodel_set(Efl_Ui_Win *obj, Eina_Bool autodel);
  *
  * @ingroup Efl_Ui_Win
  */
-EAPI Eina_Bool efl_ui_win_autodel_get(const Efl_Ui_Win *obj);
+ELEMENTARY_API Eina_Bool efl_ui_win_autodel_get(const Efl_Ui_Win *obj);
 #endif
 # include <efl_ui_win_inlined.eo.h>
 # include <efl_ui_win_socket.eo.h>
@@ -341,7 +341,7 @@ typedef Eo Efl_Ui_Spotlight_Indicator;
  * macro. There is no need to use this if you use this macro (which
  * is highly advisable). An elm_main() should contain the entry
  * point code for your application, having the same prototype as
- * elm_init(), and @b not being static (putting the @c EAPI_MAIN symbol
+ * elm_init(), and @b not being static (putting the @c ELEMENTARY_API_MAIN symbol
  * in front of its type declaration is advisable). The @c
  * ELM_MAIN() call should be placed just after it.
  *
@@ -355,7 +355,7 @@ typedef Eo Efl_Ui_Spotlight_Indicator;
  * @see elm_shutdown().
  * @ingroup Elm_General
  */
-EAPI int       elm_init(int argc, char **argv);
+ELEMENTARY_API int       elm_init(int argc, char **argv);
 
 /**
  * Shut down Elementary
@@ -375,14 +375,14 @@ EAPI int       elm_init(int argc, char **argv);
  *
  * @ingroup Elm_General
  */
-EAPI int       elm_shutdown(void);
+ELEMENTARY_API int       elm_shutdown(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#undef EAPI
-#define EAPI
+#undef ELEMENTARY_API
+#define ELEMENTARY_API
 
 #endif
 

@@ -6,6 +6,6 @@
  *
  * @ingroup Elm_Label
  */
-EAPI Evas_Object                *elm_label_add(Evas_Object *parent);
+ELEMENTARY_API Evas_Object                *elm_label_add(Evas_Object *parent);
 
 #include "elm_label_eo.legacy.h"

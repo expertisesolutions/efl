@@ -7,6 +7,6 @@
  *
  * @ingroup Elm_Panel
  */
-EAPI Evas_Object                 *elm_panel_add(Evas_Object *parent);
+ELEMENTARY_API Evas_Object                 *elm_panel_add(Evas_Object *parent);
 
 #include "elm_panel_eo.legacy.h"

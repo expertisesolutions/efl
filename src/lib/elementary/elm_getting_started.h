@@ -6,7 +6,7 @@
  *
  * @code
  * #include <Elementary.h>
- * EAPI_MAIN int
+ * ELEMENTARY_API_MAIN int
  * elm_main(int argc, char **argv)
  * {
  *    // create window(s) here and do any application init
@@ -144,7 +144,7 @@
  *    elm_exit();
  * }
  *
- * EAPI_MAIN int
+ * ELEMENTARY_API_MAIN int
  * elm_main(int argc, char **argv)
  * {
  *    Evas_Object *win, *box, *lab, *btn;

@@ -6,6 +6,6 @@
  *
  * @ingroup Plug
  */
-EAPI Evas_Object    *elm_plug_add(Evas_Object *parent);
+ELEMENTARY_API Evas_Object    *elm_plug_add(Evas_Object *parent);
 
 #include "elm_plug_eo.legacy.h"

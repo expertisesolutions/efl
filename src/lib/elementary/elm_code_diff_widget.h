@@ -21,9 +21,9 @@ extern "C" {
  *
  */
 
-EAPI Evas_Object *elm_code_diff_widget_add(Evas_Object *parent, Elm_Code *code);
+ELEMENTARY_API Evas_Object *elm_code_diff_widget_add(Evas_Object *parent, Elm_Code *code);
 
-EAPI void elm_code_diff_widget_font_set(Evas_Object *widget, const char *name,
+ELEMENTARY_API void elm_code_diff_widget_font_set(Evas_Object *widget, const char *name,
                                         int size);
 
 /**

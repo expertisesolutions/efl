@@ -31,7 +31,7 @@ typedef Eo Elm_Index_Item;
  *
  * @ingroup Elm_Index_Item_Group
  */
-EAPI void elm_index_item_selected_set(Elm_Index_Item *obj, Eina_Bool selected);
+ELEMENTARY_API void elm_index_item_selected_set(Elm_Index_Item *obj, Eina_Bool selected);
 
 /**
  * @brief Sets the priority of an item.
@@ -48,7 +48,7 @@ EAPI void elm_index_item_selected_set(Elm_Index_Item *obj, Eina_Bool selected);
  *
  * @ingroup Elm_Index_Item_Group
  */
-EAPI void elm_index_item_priority_set(Elm_Index_Item *obj, int priority);
+ELEMENTARY_API void elm_index_item_priority_set(Elm_Index_Item *obj, int priority);
 
 /**
  * @brief Get the letter (string) set on a given index widget item.
@@ -59,6 +59,6 @@ EAPI void elm_index_item_priority_set(Elm_Index_Item *obj, int priority);
  *
  * @ingroup Elm_Index_Item_Group
  */
-EAPI const char *elm_index_item_letter_get(const Elm_Index_Item *obj);
+ELEMENTARY_API const char *elm_index_item_letter_get(const Elm_Index_Item *obj);
 
 #endif

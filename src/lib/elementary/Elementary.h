@@ -77,43 +77,43 @@
 #include <EMap.h>
 #endif
 
-#ifdef EAPI
-# undef EAPI
+#ifdef ELEMENTARY_API
+# undef ELEMENTARY_API
 #endif
 #ifdef EWAPI
 # undef EWAPI
 #endif
-#ifdef EAPI_WEAK
-# undef EAPI_WEAK
+#ifdef ELEMENTARY_API_WEAK
+# undef ELEMENTARY_API_WEAK
 #endif
 
 #ifdef _WIN32
 # ifdef EFL_BUILD
 #  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+#   define ELEMENTARY_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define ELEMENTARY_API
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define ELEMENTARY_API __declspec(dllimport)
 # endif
-# define EAPI_WEAK
+# define ELEMENTARY_API_WEAK
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#   define EAPI_WEAK __attribute__ ((weak))
+#   define ELEMENTARY_API __attribute__ ((visibility("default")))
+#   define ELEMENTARY_API_WEAK __attribute__ ((weak))
 #  else
-#   define EAPI
-#   define EAPI_WEAK
+#   define ELEMENTARY_API
+#   define ELEMENTARY_API_WEAK
 # endif
 # else
-#  define EAPI
-#  define EAPI_WEAK
+#  define ELEMENTARY_API
+#  define ELEMENTARY_API_WEAK
 # endif
 #endif
 
-#define EWAPI EAPI EAPI_WEAK
+#define EWAPI ELEMENTARY_API ELEMENTARY_API_WEAK
 
 
 /* allow usage from c++ */
@@ -138,7 +138,7 @@ typedef struct _Elm_Version
    int revision;
 } Elm_Version;
 
-EAPI extern Elm_Version *elm_version;
+ELEMENTARY_API extern Elm_Version *elm_version;
 
 
 /* include these first for general used definitions */
@@ -276,8 +276,8 @@ EAPI extern Elm_Version *elm_version;
 #endif
 
 #ifndef EFL_BUILD
-# undef EAPI
-# define EAPI
+# undef ELEMENTARY_API
+# define ELEMENTARY_API
 #endif
 
 #endif

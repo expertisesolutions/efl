@@ -9,7 +9,7 @@
  *
  * @ingroup Elm_Index
  */
-EAPI Evas_Object          *elm_index_add(Evas_Object *parent);
+ELEMENTARY_API Evas_Object          *elm_index_add(Evas_Object *parent);
 
 /**
  * @brief Enable or disable horizontal mode on the index object
@@ -25,7 +25,7 @@ EAPI Evas_Object          *elm_index_add(Evas_Object *parent);
  *
  * @ingroup Elm_Index
  */
-EAPI void elm_index_horizontal_set(Evas_Object *obj, Eina_Bool horizontal);
+ELEMENTARY_API void elm_index_horizontal_set(Evas_Object *obj, Eina_Bool horizontal);
 
 /**
  * @brief Get enable or disable status of horizontal mode on the index object.
@@ -41,7 +41,7 @@ EAPI void elm_index_horizontal_set(Evas_Object *obj, Eina_Bool horizontal);
  *
  * @ingroup Elm_Index
  */
-EAPI Eina_Bool elm_index_horizontal_get(const Evas_Object *obj);
+ELEMENTARY_API Eina_Bool elm_index_horizontal_get(const Evas_Object *obj);
 
 #include "elm_index_item_eo.legacy.h"
 #include "elm_index_eo.legacy.h"
