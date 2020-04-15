@@ -1272,21 +1272,21 @@ _ecore_main_loop_quit(Eo *obj, Efl_Loop_Data *pd)
 #endif
 }
 
-EAPI void
+void
 ecore_main_loop_iterate(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
    efl_loop_iterate(ML_OBJ);
 }
 
-EAPI int
+int
 ecore_main_loop_iterate_may_block(int may_block)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0);
    return efl_loop_iterate_may_block(ML_OBJ, may_block);
 }
 
-EAPI void
+void
 ecore_main_loop_begin(void)
 {
    DBG("ecore_main_loop_begin");
@@ -1296,7 +1296,7 @@ ecore_main_loop_begin(void)
    eina_evlog("-mainloop", NULL, 0.0, NULL);
 }
 
-EAPI void
+void
 ecore_main_loop_quit(void)
 {
    Eina_Value v = EINA_VALUE_EMPTY;
@@ -1307,27 +1307,27 @@ ecore_main_loop_quit(void)
    efl_loop_quit(ML_OBJ, v);
 }
 
-EAPI int
+int
 ecore_main_loop_nested_get(void)
 {
    return in_main_loop;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_main_loop_animator_ticked_get(void)
 {
    DBG("ecore_main_loop_animator_ticked_get");
    return _ecore_animator_run_get();
 }
 
-EAPI void
+void
 ecore_main_loop_select_func_set(Ecore_Select_Function func)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
    main_loop_select = func;
 }
 
-EAPI Ecore_Select_Function
+Ecore_Select_Function
 ecore_main_loop_select_func_get(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(NULL);
@@ -1424,7 +1424,7 @@ _ecore_main_fd_handler_del(Eo *obj EINA_UNUSED,
    return r;
 }
 
-EAPI Ecore_Fd_Handler *
+Ecore_Fd_Handler *
 ecore_main_fd_handler_add(int                    fd,
                           Ecore_Fd_Handler_Flags flags,
                           Ecore_Fd_Cb            func,
@@ -1441,7 +1441,7 @@ ecore_main_fd_handler_add(int                    fd,
    return fdh;
 }
 
-EAPI Ecore_Fd_Handler *
+Ecore_Fd_Handler *
 ecore_main_fd_handler_file_add(int                    fd,
                                Ecore_Fd_Handler_Flags flags,
                                Ecore_Fd_Cb            func,
@@ -1455,7 +1455,7 @@ ecore_main_fd_handler_file_add(int                    fd,
                                      buf_func, buf_data, EINA_TRUE);
 }
 
-EAPI void *
+void *
 ecore_main_fd_handler_del(Ecore_Fd_Handler *fd_handler)
 {
    if (!fd_handler) return NULL;
@@ -1471,7 +1471,7 @@ ecore_main_fd_handler_del(Ecore_Fd_Handler *fd_handler)
 }
 
 #ifdef _WIN32
-EAPI Ecore_Win32_Handler *
+Ecore_Win32_Handler *
 _ecore_main_win32_handler_add(Eo                    *obj,
                               Efl_Loop_Data         *pd,
                               Eo                    *handler,
@@ -1517,7 +1517,7 @@ _ecore_main_win32_handler_del(Eo *obj EINA_UNUSED,
    return win32_handler->data;
 }
 
-EAPI Ecore_Win32_Handler *
+Ecore_Win32_Handler *
 ecore_main_win32_handler_add(void                  *h,
                              Ecore_Win32_Handle_Cb  func,
                              const void            *data)
@@ -1526,7 +1526,7 @@ ecore_main_win32_handler_add(void                  *h,
    return _ecore_main_win32_handler_add(ML_OBJ, ML_DAT, NULL, h, func, data);
 }
 
-EAPI void *
+void *
 ecore_main_win32_handler_del(Ecore_Win32_Handler *win32_handler)
 {
    void *ret = NULL;
@@ -1543,7 +1543,7 @@ ecore_main_win32_handler_del(Ecore_Win32_Handler *win32_handler)
    return ret;
 }
 #else
-EAPI Ecore_Win32_Handler *
+Ecore_Win32_Handler *
 _ecore_main_win32_handler_add(Eo                    *obj EINA_UNUSED,
                               Efl_Loop_Data         *pd EINA_UNUSED,
                               Eo                    *handler EINA_UNUSED,
@@ -1562,7 +1562,7 @@ _ecore_main_win32_handler_del(Eo *obj EINA_UNUSED,
    return NULL;
 }
 
-EAPI Ecore_Win32_Handler *
+Ecore_Win32_Handler *
 ecore_main_win32_handler_add(void                  *h EINA_UNUSED,
                              Ecore_Win32_Handle_Cb  func EINA_UNUSED,
                              const void            *data EINA_UNUSED)
@@ -1570,14 +1570,14 @@ ecore_main_win32_handler_add(void                  *h EINA_UNUSED,
    return NULL;
 }
 
-EAPI void *
+void *
 ecore_main_win32_handler_del(Ecore_Win32_Handler *win32_handler EINA_UNUSED)
 {
    return NULL;
 }
 #endif
 
-EAPI void
+void
 ecore_main_fd_handler_prepare_callback_set(Ecore_Fd_Handler *fd_handler,
                                            Ecore_Fd_Prep_Cb  func,
                                            const void       *data)
@@ -1602,7 +1602,7 @@ ecore_main_fd_handler_prepare_callback_set(Ecore_Fd_Handler *fd_handler,
        (pd->fd_handlers_with_prep, fd_handler);
 }
 
-EAPI int
+int
 ecore_main_fd_handler_fd_get(Ecore_Fd_Handler *fd_handler)
 {
    if (!fd_handler) return -1;
@@ -1618,7 +1618,7 @@ ecore_main_fd_handler_fd_get(Ecore_Fd_Handler *fd_handler)
    return fd_handler->fd;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_main_fd_handler_active_get(Ecore_Fd_Handler      *fd_handler,
                                  Ecore_Fd_Handler_Flags flags)
 {
@@ -1638,7 +1638,7 @@ ecore_main_fd_handler_active_get(Ecore_Fd_Handler      *fd_handler,
    return ret;
 }
 
-EAPI void
+void
 ecore_main_fd_handler_active_set(Ecore_Fd_Handler      *fd_handler,
                                  Ecore_Fd_Handler_Flags flags)
 {

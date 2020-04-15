@@ -575,7 +575,7 @@ err:
    return EINA_FALSE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_buffer_init(Ecore_Wl2_Display *ewd, Ecore_Wl2_Buffer_Type types)
 {
    int fd = -1;
@@ -658,13 +658,13 @@ _buffer_manager_alloc(const char *name, int w, int h, unsigned long *stride, int
    return out;
 }
 
-EAPI struct wl_buffer *
+struct wl_buffer *
 ecore_wl2_buffer_wl_buffer_get(Ecore_Wl2_Buffer *buf)
 {
    return buf->wl_buffer;
 }
 
-EAPI void *
+void *
 ecore_wl2_buffer_map(Ecore_Wl2_Buffer *buf, int *w, int *h, int *stride)
 {
    void *out;
@@ -696,21 +696,21 @@ ecore_wl2_buffer_map(Ecore_Wl2_Buffer *buf, int *w, int *h, int *stride)
    return out;
 }
 
-EAPI void
+void
 ecore_wl2_buffer_unmap(Ecore_Wl2_Buffer *buf)
 {
    buffer_manager->unmap(buf);
    _buffer_manager_deref();
 }
 
-EAPI void
+void
 ecore_wl2_buffer_discard(Ecore_Wl2_Buffer *buf)
 {
    buffer_manager->discard(buf);
    _buffer_manager_deref();
 }
 
-EAPI void
+void
 ecore_wl2_buffer_lock(Ecore_Wl2_Buffer *b)
 {
    if (b->locked) ERR("Buffer already locked\n");
@@ -718,7 +718,7 @@ ecore_wl2_buffer_lock(Ecore_Wl2_Buffer *b)
    b->locked = EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_wl2_buffer_unlock(Ecore_Wl2_Buffer *b)
 {
    if (!b->locked) ERR("Buffer already unlocked\n");
@@ -726,7 +726,7 @@ ecore_wl2_buffer_unlock(Ecore_Wl2_Buffer *b)
    b->locked = EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_wl2_buffer_destroy(Ecore_Wl2_Buffer *b)
 {
    if (!b) return;
@@ -744,7 +744,7 @@ ecore_wl2_buffer_destroy(Ecore_Wl2_Buffer *b)
    free(b);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_buffer_busy_get(Ecore_Wl2_Buffer *buffer)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(buffer, EINA_FALSE);
@@ -752,7 +752,7 @@ ecore_wl2_buffer_busy_get(Ecore_Wl2_Buffer *buffer)
    return (buffer->locked) || (buffer->busy);
 }
 
-EAPI void
+void
 ecore_wl2_buffer_busy_set(Ecore_Wl2_Buffer *buffer)
 {
    EINA_SAFETY_ON_NULL_RETURN(buffer);
@@ -760,7 +760,7 @@ ecore_wl2_buffer_busy_set(Ecore_Wl2_Buffer *buffer)
    buffer->busy = EINA_TRUE;
 }
 
-EAPI int
+int
 ecore_wl2_buffer_age_get(Ecore_Wl2_Buffer *buffer)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(buffer, 0);
@@ -768,14 +768,14 @@ ecore_wl2_buffer_age_get(Ecore_Wl2_Buffer *buffer)
    return buffer->age;
 }
 
-EAPI void ecore_wl2_buffer_age_set(Ecore_Wl2_Buffer *buffer, int age)
+void ecore_wl2_buffer_age_set(Ecore_Wl2_Buffer *buffer, int age)
 {
    EINA_SAFETY_ON_NULL_RETURN(buffer);
 
    buffer->age = age;
 }
 
-EAPI void
+void
 ecore_wl2_buffer_age_inc(Ecore_Wl2_Buffer *buffer)
 {
    EINA_SAFETY_ON_NULL_RETURN(buffer);
@@ -794,7 +794,7 @@ ecore_wl2_buffer_age_inc(Ecore_Wl2_Buffer *buffer)
  * This is currently beta api - don't move it out of beta
  * with no users...
  */
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_buffer_fit(Ecore_Wl2_Buffer *b, int w, int h)
 {
    int stride;
@@ -834,7 +834,7 @@ _ecore_wl2_buffer_partial_create(int w, int h, Eina_Bool alpha)
    return out;
 }
 
-EAPI Ecore_Wl2_Buffer *
+Ecore_Wl2_Buffer *
 ecore_wl2_buffer_create(Ecore_Wl2_Display *ewd, int w, int h, Eina_Bool alpha)
 {
    Ecore_Wl2_Buffer *out;

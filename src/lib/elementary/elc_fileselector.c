@@ -47,8 +47,8 @@ typedef struct _Legacy_Event_Path_Then_Data
 static Elm_Genlist_Item_Class *list_itc[ELM_FILE_LAST];
 static Elm_Gengrid_Item_Class *grid_itc[ELM_FILE_LAST];
 
-EAPI Eina_Error ELM_FILESELECTOR_ERROR_UNKNOWN = 0;
-EAPI Eina_Error ELM_FILESELECTOR_ERROR_INVALID_MODEL = 0;
+Eina_Error ELM_FILESELECTOR_ERROR_UNKNOWN = 0;
+Eina_Error ELM_FILESELECTOR_ERROR_INVALID_MODEL = 0;
 
 static const char ELM_FILESELECTOR_ERROR_UNKNOWN_STR[]           = "Unknown Error";
 static const char ELM_FILESELECTOR_ERROR_INVALID_MODEL_STR[]     = "Model not set";
@@ -1884,7 +1884,7 @@ _elm_fileselector_efl_canvas_group_group_del(Eo *obj, Elm_Fileselector_Data *sd)
    _elm_fileselector_smart_del_do(obj, sd);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 elm_fileselector_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
@@ -1979,7 +1979,7 @@ _elm_fileselector_efl_object_event_callback_legacy_call(Eo *obj, Elm_Fileselecto
    return efl_event_callback_legacy_call(efl_super(obj, MY_CLASS), desc, event_info);
 }
 
-EAPI void
+void
 elm_fileselector_is_save_set(Evas_Object *obj,
                              Eina_Bool is_save)
 {
@@ -1998,7 +1998,7 @@ _elm_fileselector_elm_interface_fileselector_is_save_set(Eo *obj, Elm_Fileselect
    _focus_chain_update(obj, sd);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_is_save_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, EINA_FALSE);
@@ -2011,7 +2011,7 @@ _elm_fileselector_elm_interface_fileselector_is_save_get(const Eo *obj EINA_UNUS
    return !elm_object_disabled_get(sd->name_entry);
 }
 
-EAPI void
+void
 elm_fileselector_folder_only_set(Evas_Object *obj,
                                  Eina_Bool only)
 {
@@ -2031,7 +2031,7 @@ _elm_fileselector_elm_interface_fileselector_folder_only_set(Eo *obj, Elm_Filese
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_folder_only_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, EINA_FALSE);
@@ -2087,7 +2087,7 @@ _elm_fileselector_buttons_ok_cancel_get(const Eo *obj EINA_UNUSED, Elm_Fileselec
    return sd->ok_button ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 elm_fileselector_expandable_set(Evas_Object *obj,
                                 Eina_Bool expand)
 {
@@ -2106,7 +2106,7 @@ _elm_fileselector_elm_interface_fileselector_expandable_set(Eo *obj, Elm_Filesel
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_expandable_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, EINA_FALSE);
@@ -2119,7 +2119,7 @@ _elm_fileselector_elm_interface_fileselector_expandable_get(const Eo *obj EINA_U
    return sd->expand;
 }
 
-EAPI void
+void
 elm_fileselector_path_set(Evas_Object *obj,
                           const char *_path)
 {
@@ -2157,7 +2157,7 @@ _elm_fileselector_efl_ui_view_model_set(Eo *obj, Elm_Fileselector_Data *sd EINA_
    _populate(obj, model, NULL, NULL);
 }
 
-EAPI const char *
+const char *
 elm_fileselector_path_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, NULL);
@@ -2188,7 +2188,7 @@ _elm_fileselector_efl_ui_view_model_get(const Eo *obj EINA_UNUSED, Elm_Fileselec
    return sd->model;
 }
 
-EAPI void
+void
 elm_fileselector_mode_set(Evas_Object *obj,
                           Elm_Fileselector_Mode mode)
 {
@@ -2231,7 +2231,7 @@ _elm_fileselector_elm_interface_fileselector_mode_set(Eo *obj, Elm_Fileselector_
      }
 }
 
-EAPI Elm_Fileselector_Mode
+Elm_Fileselector_Mode
 elm_fileselector_mode_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, ELM_FILESELECTOR_LAST);
@@ -2244,7 +2244,7 @@ _elm_fileselector_elm_interface_fileselector_mode_get(const Eo *obj EINA_UNUSED,
    return sd->mode;
 }
 
-EAPI void
+void
 elm_fileselector_multi_select_set(Evas_Object *obj, Eina_Bool multi)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj);
@@ -2286,7 +2286,7 @@ _elm_fileselector_elm_interface_fileselector_multi_select_set(Eo *obj EINA_UNUSE
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_multi_select_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, EINA_FALSE);
@@ -2317,7 +2317,7 @@ _selected_item_data_get(Elm_Fileselector_Data *sd)
    return NULL;
 }
 
-EAPI const char *
+const char *
 elm_fileselector_selected_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, NULL);
@@ -2368,7 +2368,7 @@ _elm_fileselector_elm_interface_fileselector_selected_model_get(const Eo *fs EIN
    return sd->model;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_selected_set(Evas_Object *obj,
                               const char *_path)
 {
@@ -2579,7 +2579,7 @@ _elm_fileselector_elm_interface_fileselector_selected_model_set(Eo *obj, Elm_Fil
    return EINA_FALSE;
 }
 
-EAPI const Eina_List *
+const Eina_List *
 elm_fileselector_selected_paths_get(const Evas_Object* obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, NULL);
@@ -2639,7 +2639,7 @@ _elm_fileselector_elm_interface_fileselector_selected_models_get(const Eo *obj E
    return sd->multi_selection_tmp;
 }
 
-EAPI const char *
+const char *
 elm_fileselector_current_name_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, NULL);
@@ -2654,7 +2654,7 @@ _elm_fileselector_elm_interface_fileselector_current_name_get(const Eo *obj EINA
    return elm_object_text_get(sd->name_entry);
 }
 
-EAPI void
+void
 elm_fileselector_current_name_set(Evas_Object *obj,
                                   const char *name)
 {
@@ -2681,7 +2681,7 @@ _filter_add(Elm_Fileselector_Data *sd, const char *filter_name)
    return ff;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_mime_types_filter_append(Evas_Object *obj, const char *mime_type, const char *filter_name)
 {
    ELM_FILESELECTOR_CHECK(obj) EINA_FALSE;
@@ -2724,7 +2724,7 @@ _elm_fileselector_elm_interface_fileselector_mime_types_filter_append(Eo *obj, E
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_custom_filter_append(Evas_Object *obj, Elm_Fileselector_Filter_Func func, void *data, const char *filter_name)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, EINA_FALSE);
@@ -2776,7 +2776,7 @@ _elm_fileselector_elm_interface_fileselector_custom_filter_append(Eo *obj, Elm_F
    return EINA_TRUE;
 }
 
-EAPI void
+void
 elm_fileselector_filters_clear(Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj);
@@ -2811,7 +2811,7 @@ _elm_fileselector_elm_interface_fileselector_filters_clear(Eo *obj, Elm_Filesele
      }
 }
 
-EAPI void
+void
 elm_fileselector_hidden_visible_set(Evas_Object *obj, Eina_Bool visible)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj);
@@ -2833,7 +2833,7 @@ _elm_fileselector_elm_interface_fileselector_hidden_visible_set(Eo *obj EINA_UNU
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_fileselector_hidden_visible_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, EINA_FALSE);
@@ -2846,7 +2846,7 @@ _elm_fileselector_elm_interface_fileselector_hidden_visible_get(const Eo *obj EI
    return sd->hidden_visible;
 }
 
-EAPI void
+void
 elm_fileselector_thumbnail_size_set(Evas_Object *obj,
                                     Evas_Coord w,
                                     Evas_Coord h)
@@ -2875,7 +2875,7 @@ _elm_fileselector_elm_interface_fileselector_thumbnail_size_set(Eo *obj EINA_UNU
      }
 }
 
-EAPI void
+void
 elm_fileselector_thumbnail_size_get(const Evas_Object *obj,
                                     Evas_Coord *w,
                                     Evas_Coord *h)
@@ -2891,7 +2891,7 @@ _elm_fileselector_elm_interface_fileselector_thumbnail_size_get(const Eo *obj EI
    if (h) *h = sd->thumbnail_size.h;
 }
 
-EAPI void
+void
 elm_fileselector_sort_method_set(Evas_Object *obj, Elm_Fileselector_Sort sort)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj);
@@ -2941,7 +2941,7 @@ _elm_fileselector_elm_interface_fileselector_sort_method_set(Eo *obj EINA_UNUSED
      }
 }
 
-EAPI Elm_Fileselector_Sort
+Elm_Fileselector_Sort
 elm_fileselector_sort_method_get(const Evas_Object *obj)
 {
    ELM_FILESELECTOR_INTERFACE_CHECK(obj, ELM_FILESELECTOR_SORT_LAST);

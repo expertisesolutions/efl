@@ -45,9 +45,9 @@
 #endif
 
 static Ecore_Version _version = { VMAJ, VMIN, VMIC, VREV };
-EAPI Ecore_Version *ecore_version = &_version;
+Ecore_Version *ecore_version = &_version;
 
-EAPI double _efl_startup_time = 0;
+double _efl_startup_time = 0;
 
 #if defined(HAVE_MALLINFO) || defined(HAVE_MALLOC_INFO)
 #define KEEP_MAX(Global, Local) \
@@ -219,13 +219,13 @@ _efl_first_loop_iterate(void *data, const Efl_Event *event)
                           _efl_first_loop_iterate, data);
 }
 
-EAPI void
+void
 ecore_app_no_system_modules(void)
 {
    _no_system_modules = EINA_TRUE;
 }
 
-EAPI int
+int
 ecore_init(void)
 {
    if (++_ecore_init_count != 1)
@@ -369,7 +369,7 @@ shutdown_evil:
    return --_ecore_init_count;
 }
 
-EAPI int
+int
 ecore_shutdown(void)
 {
      Ecore_Pipe *p;
@@ -477,7 +477,7 @@ ecore_shutdown(void)
 
 static unsigned int _ecore_init_ex = 0;
 
-EAPI unsigned int
+unsigned int
 ecore_init_ex(int argc, char **argv)
 {
    if (_ecore_init_ex++ != 0) return _ecore_init_ex;
@@ -490,7 +490,7 @@ ecore_init_ex(int argc, char **argv)
    return _ecore_init_ex;
 }
 
-EAPI unsigned int
+unsigned int
 ecore_shutdown_ex(void)
 {
    if (--_ecore_init_ex != 0) return _ecore_init_ex;
@@ -512,7 +512,7 @@ typedef struct _Ecore_Fork_Cb Ecore_Fork_Cb;
 static int fork_cbs_walking = 0;
 static Eina_List *fork_cbs = NULL;
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_fork_reset_callback_add(Ecore_Cb func, const void *data)
 {
    Ecore_Fork_Cb *fcb;
@@ -526,7 +526,7 @@ ecore_fork_reset_callback_add(Ecore_Cb func, const void *data)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_fork_reset_callback_del(Ecore_Cb func, const void *data)
 {
    Eina_List *l;
@@ -549,7 +549,7 @@ ecore_fork_reset_callback_del(Ecore_Cb func, const void *data)
    return EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_fork_reset(void)
 {
    Eina_List *l, *ln;
@@ -604,7 +604,7 @@ ecore_fork_reset(void)
 #endif
 }
 
-EAPI void
+void
 ecore_main_loop_thread_safe_call_async(Ecore_Cb callback,
                                        void    *data)
 {
@@ -629,7 +629,7 @@ ecore_main_loop_thread_safe_call_async(Ecore_Cb callback,
    _ecore_main_loop_thread_safe_call(order);
 }
 
-EAPI void *
+void *
 ecore_main_loop_thread_safe_call_sync(Ecore_Data_Cb callback,
                                       void         *data)
 {
@@ -669,7 +669,7 @@ ecore_main_loop_thread_safe_call_sync(Ecore_Data_Cb callback,
    return ret;
 }
 
-EAPI void
+void
 ecore_main_loop_thread_safe_call_wait(double wait)
 {
    ecore_pipe_wait(_thread_call, 1, wait);
@@ -677,7 +677,7 @@ ecore_main_loop_thread_safe_call_wait(double wait)
 
 static Efl_Id_Domain _ecore_main_domain = EFL_ID_DOMAIN_INVALID;
 
-EAPI int
+int
 ecore_thread_main_loop_begin(void)
 {
    Ecore_Safe_Call *order;
@@ -727,7 +727,7 @@ ecore_thread_main_loop_begin(void)
    return _thread_loop;
 }
 
-EAPI int
+int
 ecore_thread_main_loop_end(void)
 {
    int current_id;
@@ -770,7 +770,7 @@ ecore_thread_main_loop_end(void)
    return 0;
 }
 
-EAPI void
+void
 ecore_print_warning(const char *function EINA_UNUSED,
                     const char *sparam EINA_UNUSED)
 {
@@ -783,7 +783,7 @@ ecore_print_warning(const char *function EINA_UNUSED,
    if (getenv("ECORE_ERROR_ABORT")) abort();
 }
 
-EAPI void
+void
 _ecore_magic_fail(const void *d,
                   Ecore_Magic m,
                   Ecore_Magic req_m,
@@ -1095,13 +1095,13 @@ _thread_callback(void        *data EINA_UNUSED,
    _ecore_main_call_flush();
 }
 
-EAPI Ecore_Power_State
+Ecore_Power_State
 ecore_power_state_get(void)
 {
    return _ecore_power_state;
 }
 
-EAPI void
+void
 ecore_power_state_set(Ecore_Power_State state)
 {
    if (_ecore_power_state == state) return;
@@ -1109,13 +1109,13 @@ ecore_power_state_set(Ecore_Power_State state)
    ecore_event_add(ECORE_EVENT_POWER_STATE, NULL, NULL, NULL);
 }
 
-EAPI Ecore_Memory_State
+Ecore_Memory_State
 ecore_memory_state_get(void)
 {
    return _ecore_memory_state;
 }
 
-EAPI void
+void
 ecore_memory_state_set(Ecore_Memory_State state)
 {
    if (_ecore_memory_state == state) return;

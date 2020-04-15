@@ -588,7 +588,7 @@ _drm2_atomic_state_free(Ecore_Drm2_Atomic_State *state)
    free(state);
 }
 
-EAPI Ecore_Drm2_Device *
+Ecore_Drm2_Device *
 ecore_drm2_device_open(const char *seat, unsigned int tty)
 {
    Ecore_Drm2_Device *device;
@@ -674,7 +674,7 @@ man_err:
    return NULL;
 }
 
-EAPI void
+void
 ecore_drm2_device_close(Ecore_Drm2_Device *device)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -690,7 +690,7 @@ ecore_drm2_device_close(Ecore_Drm2_Device *device)
    free(device);
 }
 
-EAPI int
+int
 ecore_drm2_device_clock_id_get(Ecore_Drm2_Device *device)
 {
    uint64_t caps;
@@ -705,7 +705,7 @@ ecore_drm2_device_clock_id_get(Ecore_Drm2_Device *device)
      return CLOCK_REALTIME;
 }
 
-EAPI void
+void
 ecore_drm2_device_cursor_size_get(Ecore_Drm2_Device *device, int *width, int *height)
 {
    uint64_t caps;
@@ -735,7 +735,7 @@ ecore_drm2_device_cursor_size_get(Ecore_Drm2_Device *device, int *width, int *he
      }
 }
 
-EAPI void
+void
 ecore_drm2_device_pointer_xy_get(Ecore_Drm2_Device *device, int *x, int *y)
 {
    if (x) *x = 0;
@@ -746,7 +746,7 @@ ecore_drm2_device_pointer_xy_get(Ecore_Drm2_Device *device, int *x, int *y)
    elput_input_pointer_xy_get(device->em, NULL, x, y);
 }
 
-EAPI void
+void
 ecore_drm2_device_pointer_warp(Ecore_Drm2_Device *device, int x, int y)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -754,7 +754,7 @@ ecore_drm2_device_pointer_warp(Ecore_Drm2_Device *device, int x, int y)
    elput_input_pointer_xy_set(device->em, NULL, x, y);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm2_device_pointer_left_handed_set(Ecore_Drm2_Device *device, Eina_Bool left)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(device, EINA_FALSE);
@@ -762,7 +762,7 @@ ecore_drm2_device_pointer_left_handed_set(Ecore_Drm2_Device *device, Eina_Bool l
    return elput_input_pointer_left_handed_set(device->em, NULL, left);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm2_device_pointer_rotation_set(Ecore_Drm2_Device *device, int rotation)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(device, EINA_FALSE);
@@ -770,7 +770,7 @@ ecore_drm2_device_pointer_rotation_set(Ecore_Drm2_Device *device, int rotation)
    return elput_input_pointer_rotation_set(device->em, rotation);
 }
 
-EAPI void
+void
 ecore_drm2_device_pointer_accel_speed_set(Ecore_Drm2_Device *device, double speed)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -778,7 +778,7 @@ ecore_drm2_device_pointer_accel_speed_set(Ecore_Drm2_Device *device, double spee
    elput_input_pointer_accel_speed_set(device->em, NULL, speed);
 }
 
-EAPI void
+void
 ecore_drm2_device_pointer_accel_profile_set(Ecore_Drm2_Device *device, uint32_t profile)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -786,7 +786,7 @@ ecore_drm2_device_pointer_accel_profile_set(Ecore_Drm2_Device *device, uint32_t 
    elput_input_pointer_accel_profile_set(device->em, NULL, profile);
 }
 
-EAPI void
+void
 ecore_drm2_device_touch_tap_to_click_enabled_set(Ecore_Drm2_Device *device, Eina_Bool enabled)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -794,7 +794,7 @@ ecore_drm2_device_touch_tap_to_click_enabled_set(Ecore_Drm2_Device *device, Eina
    elput_input_touch_tap_to_click_enabled_set(device->em, NULL, enabled);
 }
 
-EAPI void
+void
 ecore_drm2_device_window_set(Ecore_Drm2_Device *device, unsigned int window)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -802,7 +802,7 @@ ecore_drm2_device_window_set(Ecore_Drm2_Device *device, unsigned int window)
    elput_manager_window_set(device->em, window);
 }
 
-EAPI void
+void
 ecore_drm2_device_pointer_max_set(Ecore_Drm2_Device *device, int w, int h)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -811,7 +811,7 @@ ecore_drm2_device_pointer_max_set(Ecore_Drm2_Device *device, int w, int h)
    elput_input_pointer_max_set(device->em, w, h);
 }
 
-EAPI void
+void
 ecore_drm2_device_keyboard_info_set(Ecore_Drm2_Device *device, void *context, void *keymap, int group)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -819,7 +819,7 @@ ecore_drm2_device_keyboard_info_set(Ecore_Drm2_Device *device, void *context, vo
    elput_input_keyboard_info_set(device->em, context, keymap, group);
 }
 
-EAPI void
+void
 ecore_drm2_device_keyboard_group_set(Ecore_Drm2_Device *device, int group)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -827,7 +827,7 @@ ecore_drm2_device_keyboard_group_set(Ecore_Drm2_Device *device, int group)
    elput_input_keyboard_group_set(device->em, group);
 }
 
-EAPI unsigned int *
+unsigned int *
 ecore_drm2_device_crtcs_get(Ecore_Drm2_Device *device, int *num)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(device, NULL);
@@ -836,7 +836,7 @@ ecore_drm2_device_crtcs_get(Ecore_Drm2_Device *device, int *num)
    return device->crtcs;
 }
 
-EAPI void
+void
 ecore_drm2_device_screen_size_range_get(Ecore_Drm2_Device *device, int *minw, int *minh, int *maxw, int *maxh)
 {
    if (minw) *minw = 0;
@@ -852,7 +852,7 @@ ecore_drm2_device_screen_size_range_get(Ecore_Drm2_Device *device, int *minw, in
    if (maxh) *maxh = device->max.height;
 }
 
-EAPI void
+void
 ecore_drm2_device_calibrate(Ecore_Drm2_Device *device, int w, int h)
 {
    EINA_SAFETY_ON_NULL_RETURN(device);
@@ -860,7 +860,7 @@ ecore_drm2_device_calibrate(Ecore_Drm2_Device *device, int w, int h)
    elput_input_devices_calibrate(device->em, w, h);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm2_device_vt_set(Ecore_Drm2_Device *device, int vt)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(device, EINA_FALSE);
@@ -868,7 +868,7 @@ ecore_drm2_device_vt_set(Ecore_Drm2_Device *device, int vt)
    return elput_manager_vt_set(device->em, vt);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm2_device_prefer_shadow(Ecore_Drm2_Device *device)
 {
    uint64_t caps;
@@ -883,7 +883,7 @@ ecore_drm2_device_prefer_shadow(Ecore_Drm2_Device *device)
      return EINA_FALSE;
 }
 
-EAPI int
+int
 ecore_drm2_device_fd_get(Ecore_Drm2_Device *device)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(device, -1);
@@ -891,7 +891,7 @@ ecore_drm2_device_fd_get(Ecore_Drm2_Device *device)
    return device->fd;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm2_vblank_supported(Ecore_Drm2_Device *dev)
 {
    drmVBlank tmp;
@@ -909,5 +909,5 @@ ecore_drm2_vblank_supported(Ecore_Drm2_Device *dev)
 }
 
 /* prevent crashing with old apps compiled against these functions */
-EAPI void ecore_drm2_device_keyboard_cached_context_set(){};
-EAPI void ecore_drm2_device_keyboard_cached_keymap_set(){};
+void ecore_drm2_device_keyboard_cached_context_set(){};
+void ecore_drm2_device_keyboard_cached_keymap_set(){};

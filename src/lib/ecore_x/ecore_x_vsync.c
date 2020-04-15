@@ -747,7 +747,7 @@ _vsync_init(void)
    done = 1;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_x_vsync_animator_tick_source_set(Ecore_X_Window win)
 {
    Ecore_X_Window root;

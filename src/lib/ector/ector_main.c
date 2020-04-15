@@ -27,7 +27,7 @@ int _ector_log_dom_global = 0;
 
 static int _ector_main_count = 0;
 
-EAPI int
+int
 ector_init(void)
 {
    if (EINA_LIKELY(_ector_main_count > 0))
@@ -62,7 +62,7 @@ donothing(void)
 {
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ector_glsym_set(void *(*glsym)(void *lib, const char *name), void *lib)
 {
    Eina_Bool r = EINA_TRUE;
@@ -221,7 +221,7 @@ ector_glsym_set(void *(*glsym)(void *lib, const char *name), void *lib)
    return r;
 }
 
-EAPI int
+int
 ector_shutdown(void)
 {
    if (_ector_main_count <= 0)

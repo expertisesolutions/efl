@@ -537,7 +537,7 @@ _ecore_wl2_window_hide_send(Ecore_Wl2_Window *window)
    ecore_event_add(ECORE_WL2_EVENT_WINDOW_HIDE, ev, NULL, NULL);
 }
 
-EAPI Ecore_Wl2_Window *
+Ecore_Wl2_Window *
 ecore_wl2_window_new(Ecore_Wl2_Display *display, Ecore_Wl2_Window *parent, int x, int y, int w, int h)
 {
    Ecore_Wl2_Window *win;
@@ -572,7 +572,7 @@ ecore_wl2_window_new(Ecore_Wl2_Display *display, Ecore_Wl2_Window *parent, int x
    return win;
 }
 
-EAPI void
+void
 ecore_wl2_window_close_callback_set(Ecore_Wl2_Window *window, void (*cb) (void *data, Ecore_Wl2_Window *win), void *data)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -580,7 +580,7 @@ ecore_wl2_window_close_callback_set(Ecore_Wl2_Window *window, void (*cb) (void *
    window->cb_close_data = data;
 }
 
-EAPI struct wl_surface *
+struct wl_surface *
 ecore_wl2_window_surface_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -590,14 +590,14 @@ ecore_wl2_window_surface_get(Ecore_Wl2_Window *window)
    return window->surface;
 }
 
-EAPI int
+int
 ecore_wl2_window_surface_id_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, -1);
    return window->surface_id;
 }
 
-EAPI void
+void
 ecore_wl2_window_show(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -625,7 +625,7 @@ ecore_wl2_window_show(Ecore_Wl2_Window *window)
      _configure_complete(window);
 }
 
-EAPI void
+void
 ecore_wl2_window_hide(Ecore_Wl2_Window *window)
 {
    Ecore_Wl2_Subsurface *subsurf;
@@ -685,7 +685,7 @@ _ecore_wl2_window_aux_hint_free(Ecore_Wl2_Window *win)
      if (supported) eina_stringshare_del(supported);
 }
 
-EAPI void
+void
 ecore_wl2_window_free(Ecore_Wl2_Window *window)
 {
    Ecore_Wl2_Display *display;
@@ -727,7 +727,7 @@ ecore_wl2_window_free(Ecore_Wl2_Window *window)
    free(window);
 }
 
-EAPI void
+void
 ecore_wl2_window_move(Ecore_Wl2_Window *window, Ecore_Wl2_Input *input)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -749,7 +749,7 @@ ecore_wl2_window_move(Ecore_Wl2_Window *window, Ecore_Wl2_Input *input)
    _ecore_wl2_input_ungrab(input);
 }
 
-EAPI void
+void
 ecore_wl2_window_resize(Ecore_Wl2_Window *window, Ecore_Wl2_Input *input, int location)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -772,7 +772,7 @@ ecore_wl2_window_resize(Ecore_Wl2_Window *window, Ecore_Wl2_Input *input, int lo
    _ecore_wl2_input_ungrab(input);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_alpha_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
@@ -780,7 +780,7 @@ ecore_wl2_window_alpha_get(Ecore_Wl2_Window *window)
    return window->alpha;
 }
 
-EAPI void
+void
 ecore_wl2_window_alpha_set(Ecore_Wl2_Window *window, Eina_Bool alpha)
 {
    Ecore_Wl2_Surface *surf;
@@ -795,7 +795,7 @@ ecore_wl2_window_alpha_set(Ecore_Wl2_Window *window, Eina_Bool alpha)
      ecore_wl2_surface_reconfigure(surf, surf->w, surf->h, 0, alpha);
 }
 
-EAPI void
+void
 ecore_wl2_window_opaque_region_set(Ecore_Wl2_Window *window, int x, int y, int w, int h)
 {
    int nx = 0, ny = 0, nw = 0, nh = 0;
@@ -844,7 +844,7 @@ ecore_wl2_window_opaque_region_set(Ecore_Wl2_Window *window, int x, int y, int w
    window->pending.opaque = EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_wl2_window_opaque_region_get(Ecore_Wl2_Window *window, int *x, int *y, int *w, int *h)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -855,7 +855,7 @@ ecore_wl2_window_opaque_region_get(Ecore_Wl2_Window *window, int *x, int *y, int
    if (h) *h = window->opaque.h;
 }
 
-EAPI void
+void
 ecore_wl2_window_input_region_set(Ecore_Wl2_Window *window, int x, int y, int w, int h)
 {
    int nx = 0, ny = 0, nw = 0, nh = 0;
@@ -904,7 +904,7 @@ ecore_wl2_window_input_region_set(Ecore_Wl2_Window *window, int x, int y, int w,
    window->pending.input = EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_wl2_window_input_region_get(Ecore_Wl2_Window *window, int *x, int *y, int *w, int *h)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -915,7 +915,7 @@ ecore_wl2_window_input_region_get(Ecore_Wl2_Window *window, int *x, int *y, int 
    if (h) *h = window->input_rect.h;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_maximized_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
@@ -923,7 +923,7 @@ ecore_wl2_window_maximized_get(Ecore_Wl2_Window *window)
    return window->set_config.maximized;
 }
 
-EAPI void
+void
 ecore_wl2_window_maximized_set(Ecore_Wl2_Window *window, Eina_Bool maximized)
 {
    Eina_Bool prev;
@@ -961,7 +961,7 @@ ecore_wl2_window_maximized_set(Ecore_Wl2_Window *window, Eina_Bool maximized)
    ecore_wl2_display_flush(window->display);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_fullscreen_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
@@ -969,7 +969,7 @@ ecore_wl2_window_fullscreen_get(Ecore_Wl2_Window *window)
    return window->set_config.fullscreen;
 }
 
-EAPI void
+void
 ecore_wl2_window_fullscreen_set(Ecore_Wl2_Window *window, Eina_Bool fullscreen)
 {
    Eina_Bool prev;
@@ -1007,7 +1007,7 @@ ecore_wl2_window_fullscreen_set(Ecore_Wl2_Window *window, Eina_Bool fullscreen)
    ecore_wl2_display_flush(window->display);
 }
 
-EAPI int
+int
 ecore_wl2_window_rotation_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, -1);
@@ -1015,7 +1015,7 @@ ecore_wl2_window_rotation_get(Ecore_Wl2_Window *window)
    return window->rotation;
 }
 
-EAPI void
+void
 ecore_wl2_window_rotation_set(Ecore_Wl2_Window *window, int rotation)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1023,7 +1023,7 @@ ecore_wl2_window_rotation_set(Ecore_Wl2_Window *window, int rotation)
    window->rotation = rotation;
 }
 
-EAPI void
+void
 ecore_wl2_window_title_set(Ecore_Wl2_Window *window, const char *title)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1039,7 +1039,7 @@ ecore_wl2_window_title_set(Ecore_Wl2_Window *window, const char *title)
    ecore_wl2_display_flush(window->display);
 }
 
-EAPI const char *
+const char *
 ecore_wl2_window_title_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -1047,7 +1047,7 @@ ecore_wl2_window_title_get(Ecore_Wl2_Window *window)
    return window->title ? window->title : NULL;
 }
 
-EAPI void
+void
 ecore_wl2_window_class_set(Ecore_Wl2_Window *window, const char *clas)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1063,7 +1063,7 @@ ecore_wl2_window_class_set(Ecore_Wl2_Window *window, const char *clas)
    ecore_wl2_display_flush(window->display);
 }
 
-EAPI const char *
+const char *
 ecore_wl2_window_class_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -1071,7 +1071,7 @@ ecore_wl2_window_class_get(Ecore_Wl2_Window *window)
    return window->class ? window->class : NULL;
 }
 
-EAPI void
+void
 ecore_wl2_window_geometry_get(Ecore_Wl2_Window *window, int *x, int *y, int *w, int *h)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1082,7 +1082,7 @@ ecore_wl2_window_geometry_get(Ecore_Wl2_Window *window, int *x, int *y, int *w, 
    if (h) *h = window->set_config.geometry.h;
 }
 
-EAPI void
+void
 ecore_wl2_window_geometry_set(Ecore_Wl2_Window *window, int x, int y, int w, int h)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1100,7 +1100,7 @@ ecore_wl2_window_geometry_set(Ecore_Wl2_Window *window, int x, int y, int w, int
    window->pending.geom = EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_wl2_window_iconified_set(Ecore_Wl2_Window *window, Eina_Bool iconified)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1123,14 +1123,14 @@ ecore_wl2_window_iconified_set(Ecore_Wl2_Window *window, Eina_Bool iconified)
      }
 }
 
-EAPI void
+void
 ecore_wl2_window_type_set(Ecore_Wl2_Window *window, Ecore_Wl2_Window_Type type)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    window->type = type;
 }
 
-EAPI void
+void
 ecore_wl2_window_popup_input_set(Ecore_Wl2_Window *window, Ecore_Wl2_Input *input)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1139,7 +1139,7 @@ ecore_wl2_window_popup_input_set(Ecore_Wl2_Window *window, Ecore_Wl2_Input *inpu
    window->grab = input;
 }
 
-EAPI Ecore_Wl2_Input *
+Ecore_Wl2_Input *
 ecore_wl2_window_popup_input_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -1147,7 +1147,7 @@ ecore_wl2_window_popup_input_get(Ecore_Wl2_Window *window)
    return window->grab;
 }
 
-EAPI Ecore_Wl2_Display *
+Ecore_Wl2_Display *
 ecore_wl2_window_display_get(const Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -1158,21 +1158,21 @@ ecore_wl2_window_display_get(const Ecore_Wl2_Window *window)
    return window->display;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_shell_surface_exists(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
    return !!window->zxdg_surface || !!window->xdg_surface;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_activated_get(const Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
    return window->req_config.focused;
 }
 
-EAPI Ecore_Wl2_Output *
+Ecore_Wl2_Output *
 ecore_wl2_window_output_find(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -1180,7 +1180,7 @@ ecore_wl2_window_output_find(Ecore_Wl2_Window *window)
    return eina_list_data_get(window->outputs);
 }
 
-EAPI void
+void
 ecore_wl2_window_buffer_transform_set(Ecore_Wl2_Window *window, int transform)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1188,49 +1188,49 @@ ecore_wl2_window_buffer_transform_set(Ecore_Wl2_Window *window, int transform)
    wl_surface_set_buffer_transform(window->surface, transform);
 }
 
-EAPI void
+void
 ecore_wl2_window_wm_rotation_supported_set(Ecore_Wl2_Window *window, Eina_Bool enabled)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    window->wm_rot.supported = enabled;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_wm_rotation_supported_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
    return window->wm_rot.supported;
 }
 
-EAPI void
+void
 ecore_wl2_window_rotation_app_set(Ecore_Wl2_Window *window, Eina_Bool set)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    window->wm_rot.app_set = set;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_rotation_app_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
    return window->wm_rot.app_set;
 }
 
-EAPI void
+void
 ecore_wl2_window_preferred_rotation_set(Ecore_Wl2_Window *window, int rot)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    window->wm_rot.preferred_rot = rot;
 }
 
-EAPI int
+int
 ecore_wl2_window_preferred_rotation_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, 0);
    return window->wm_rot.preferred_rot;
 }
 
-EAPI void
+void
 ecore_wl2_window_available_rotations_set(Ecore_Wl2_Window *window, const int *rots, unsigned int count)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1238,7 +1238,7 @@ ecore_wl2_window_available_rotations_set(Ecore_Wl2_Window *window, const int *ro
    window->wm_rot.available_rots = (int *)rots;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_available_rotations_get(Ecore_Wl2_Window *window, int **rots, unsigned int *count)
 {
    unsigned int i = 0;
@@ -1264,7 +1264,7 @@ ecore_wl2_window_available_rotations_get(Ecore_Wl2_Window *window, int **rots, u
    return EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_wl2_window_rotation_change_prepare_send(Ecore_Wl2_Window *window, int rot, int w, int h, Eina_Bool resize)
 {
    Ecore_Wl2_Event_Window_Rotation_Change_Prepare *ev;
@@ -1283,7 +1283,7 @@ ecore_wl2_window_rotation_change_prepare_send(Ecore_Wl2_Window *window, int rot,
    ecore_event_add(ECORE_WL2_EVENT_WINDOW_ROTATION_CHANGE_PREPARE, ev, NULL, NULL);
 }
 
-EAPI void
+void
 ecore_wl2_window_rotation_change_prepare_done_send(Ecore_Wl2_Window *window, int rot)
 {
    Ecore_Wl2_Event_Window_Rotation_Change_Prepare_Done *ev;
@@ -1303,7 +1303,7 @@ ecore_wl2_window_rotation_change_prepare_done_send(Ecore_Wl2_Window *window, int
                    ev, NULL, NULL);
 }
 
-EAPI void
+void
 ecore_wl2_window_rotation_change_request_send(Ecore_Wl2_Window *window, int rot)
 {
    Ecore_Wl2_Event_Window_Rotation_Change_Request *ev;
@@ -1323,7 +1323,7 @@ ecore_wl2_window_rotation_change_request_send(Ecore_Wl2_Window *window, int rot)
                    ev, NULL, NULL);
 }
 
-EAPI void
+void
 ecore_wl2_window_rotation_change_done_send(Ecore_Wl2_Window *window, int rot, int w, int h)
 {
    Ecore_Wl2_Event_Window_Rotation_Change_Done *ev;
@@ -1343,7 +1343,7 @@ ecore_wl2_window_rotation_change_done_send(Ecore_Wl2_Window *window, int rot, in
                    ev, NULL, NULL);
 }
 
-EAPI Eina_List *
+Eina_List *
 ecore_wl2_window_aux_hints_supported_get(Ecore_Wl2_Window *win)
 {
    Eina_List *res = NULL;
@@ -1362,7 +1362,7 @@ ecore_wl2_window_aux_hints_supported_get(Ecore_Wl2_Window *win)
    return res;
 }
 
-EAPI void
+void
 ecore_wl2_window_aux_hint_add(Ecore_Wl2_Window *win, int id, const char *hint, const char *val)
 {
    if (!win) return;
@@ -1372,7 +1372,7 @@ ecore_wl2_window_aux_hint_add(Ecore_Wl2_Window *win, int id, const char *hint, c
    ecore_wl2_display_flush(win->display);
 }
 
-EAPI void
+void
 ecore_wl2_window_aux_hint_change(Ecore_Wl2_Window *win, int id, const char *val)
 {
    if (!win) return;
@@ -1382,7 +1382,7 @@ ecore_wl2_window_aux_hint_change(Ecore_Wl2_Window *win, int id, const char *val)
    ecore_wl2_display_flush(win->display);
 }
 
-EAPI void
+void
 ecore_wl2_window_aux_hint_del(Ecore_Wl2_Window *win, int id)
 {
    if (!win) return;
@@ -1392,28 +1392,28 @@ ecore_wl2_window_aux_hint_del(Ecore_Wl2_Window *win, int id)
    ecore_wl2_display_flush(win->display);
 }
 
-EAPI void
+void
 ecore_wl2_window_focus_skip_set(Ecore_Wl2_Window *window, Eina_Bool focus_skip)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    window->focus_skip = focus_skip;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_focus_skip_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
    return window->focus_skip;
 }
 
-EAPI void
+void
 ecore_wl2_window_role_set(Ecore_Wl2_Window *window, const char *role)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    eina_stringshare_replace(&window->role, role);
 }
 
-EAPI const char *
+const char *
 ecore_wl2_window_role_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, NULL);
@@ -1421,21 +1421,21 @@ ecore_wl2_window_role_get(Ecore_Wl2_Window *window)
    return window->role ? window->role : NULL;
 }
 
-EAPI void
+void
 ecore_wl2_window_floating_mode_set(Ecore_Wl2_Window *window, Eina_Bool floating)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
    window->floating = floating;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_floating_mode_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
    return window->floating;
 }
 
-EAPI void
+void
 ecore_wl2_window_aspect_set(Ecore_Wl2_Window *window, int w, int h, unsigned int aspect)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1457,7 +1457,7 @@ ecore_wl2_window_aspect_set(Ecore_Wl2_Window *window, int w, int h, unsigned int
    ecore_wl2_display_flush(window->display);
 }
 
-EAPI void
+void
 ecore_wl2_window_aspect_get(Ecore_Wl2_Window *window, int *w, int *h, unsigned int *aspect)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1467,7 +1467,7 @@ ecore_wl2_window_aspect_get(Ecore_Wl2_Window *window, int *w, int *h, unsigned i
    if (aspect) *aspect = window->aspect.aspect;
 }
 
-EAPI void
+void
 ecore_wl2_window_weight_set(Ecore_Wl2_Window *window, double w, double h)
 {
    int ww, hh;
@@ -1616,7 +1616,7 @@ out:
    if (region) wl_region_destroy(region);
 }
 
-EAPI void
+void
 ecore_wl2_window_commit(Ecore_Wl2_Window *window, Eina_Bool flush)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1690,7 +1690,7 @@ ecore_wl2_window_commit(Ecore_Wl2_Window *window, Eina_Bool flush)
       _ecore_wl2_window_configure_send(window);
 }
 
-EAPI void
+void
 ecore_wl2_window_false_commit(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1706,7 +1706,7 @@ ecore_wl2_window_false_commit(Ecore_Wl2_Window *window)
      window->commit_pending = EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_pending_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
@@ -1714,7 +1714,7 @@ ecore_wl2_window_pending_get(Ecore_Wl2_Window *window)
    return window->commit_pending;
 }
 
-EAPI Ecore_Wl2_Frame_Cb_Handle *
+Ecore_Wl2_Frame_Cb_Handle *
 ecore_wl2_window_frame_callback_add(Ecore_Wl2_Window *window, Ecore_Wl2_Frame_Cb cb, void *data)
 {
    Ecore_Wl2_Frame_Cb_Handle *callback;
@@ -1732,7 +1732,7 @@ ecore_wl2_window_frame_callback_add(Ecore_Wl2_Window *window, Ecore_Wl2_Frame_Cb
    return callback;
 }
 
-EAPI void
+void
 ecore_wl2_window_frame_callback_del(Ecore_Wl2_Frame_Cb_Handle *handle)
 {
    EINA_SAFETY_ON_NULL_RETURN(handle);
@@ -1742,7 +1742,7 @@ ecore_wl2_window_frame_callback_del(Ecore_Wl2_Frame_Cb_Handle *handle)
    free(handle);
 }
 
-EAPI void
+void
 ecore_wl2_window_buffer_attach(Ecore_Wl2_Window *win, void *buffer, int x, int y, Eina_Bool implicit)
 {
    EINA_SAFETY_ON_NULL_RETURN(win);
@@ -1757,7 +1757,7 @@ ecore_wl2_window_buffer_attach(Ecore_Wl2_Window *win, void *buffer, int x, int y
      win->has_buffer = EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_window_resizing_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, EINA_FALSE);
@@ -1765,7 +1765,7 @@ ecore_wl2_window_resizing_get(Ecore_Wl2_Window *window)
    return window->req_config.resizing;
 }
 
-EAPI void
+void
 ecore_wl2_window_update_begin(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1774,7 +1774,7 @@ ecore_wl2_window_update_begin(Ecore_Wl2_Window *window)
    window->updating = EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_wl2_window_damage(Ecore_Wl2_Window *window, Eina_Rectangle *rects, unsigned int count)
 {
    void (*damage)(struct wl_surface *, int32_t, int32_t, int32_t, int32_t);
@@ -1797,7 +1797,7 @@ ecore_wl2_window_damage(Ecore_Wl2_Window *window, Eina_Rectangle *rects, unsigne
      damage(window->surface, 0, 0, INT_MAX, INT_MAX);
 }
 
-EAPI void
+void
 ecore_wl2_window_surface_flush(Ecore_Wl2_Window *window, Eina_Bool purge)
 {
    EINA_SAFETY_ON_NULL_RETURN(window);
@@ -1806,14 +1806,14 @@ ecore_wl2_window_surface_flush(Ecore_Wl2_Window *window, Eina_Bool purge)
    ecore_wl2_surface_flush(window->wl2_surface, purge);
 }
 
-EAPI Ecore_Wl2_Window_Type
+Ecore_Wl2_Window_Type
 ecore_wl2_window_type_get(Ecore_Wl2_Window *window)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(window, ECORE_WL2_WINDOW_TYPE_NONE);
    return window->type;
 }
 
-EAPI Ecore_Wl2_Window *
+Ecore_Wl2_Window *
 ecore_wl2_window_surface_find(struct wl_surface *surface)
 {
    Ecore_Wl2_Display *ewd;

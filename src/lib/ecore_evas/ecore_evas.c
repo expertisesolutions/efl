@@ -55,8 +55,8 @@
        goto _label; \
     }
 
-EAPI Eina_Bool _ecore_evas_app_comp_sync = EINA_FALSE;
-EAPI int _ecore_evas_log_dom = -1;
+Eina_Bool _ecore_evas_app_comp_sync = EINA_FALSE;
+int _ecore_evas_log_dom = -1;
 static int _ecore_evas_init_count = 0;
 
 static Ecore_Idle_Exiter *ecore_evas_idle_exiter = NULL;
@@ -144,13 +144,13 @@ _ecore_evas_idle_exiter(void *data EINA_UNUSED)
    return ECORE_CALLBACK_RENEW;
 }
 
-EAPI void
+void
 ecore_evas_render_wait(Ecore_Evas *ee)
 {
    if (ee->in_async_render) evas_sync(ee->evas);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_render(Ecore_Evas *ee)
 {
    Eina_Bool rend = EINA_FALSE;
@@ -466,7 +466,7 @@ _ecore_evas_interface_get_internal(const Ecore_Evas *ee, const char *iname, Eina
    return NULL;
 }
 
-EAPI Ecore_Evas_Interface *
+Ecore_Evas_Interface *
 _ecore_evas_interface_get(const Ecore_Evas *ee, const char *iname)
 {
    return _ecore_evas_interface_get_internal(ee, iname, 1);
@@ -480,7 +480,7 @@ _ecore_evas_interface_get(const Ecore_Evas *ee, const char *iname)
  * Query if engine @param engine is supported by ecore_evas. 1 is returned if
  * it is, and 0 is returned if it is not supported.
  */
-EAPI int
+int
 ecore_evas_engine_type_supported_get(Ecore_Evas_Engine_Type engine)
 {
    /* It should be done reading the availables engines */
@@ -598,7 +598,7 @@ ecore_evas_engine_type_supported_get(Ecore_Evas_Engine_Type engine)
      };
 }
 
-EAPI int
+int
 ecore_evas_init(void)
 {
    Ecore_Evas_Object_Animator_Interface iface;
@@ -666,7 +666,7 @@ ecore_evas_init(void)
    return --_ecore_evas_init_count;
 }
 
-EAPI int
+int
 ecore_evas_shutdown(void)
 {
    if (--_ecore_evas_init_count != 0)
@@ -703,13 +703,13 @@ ecore_evas_shutdown(void)
    return _ecore_evas_init_count;
 }
 
-EAPI void
+void
 ecore_evas_app_comp_sync_set(Eina_Bool do_sync)
 {
    _ecore_evas_app_comp_sync = do_sync;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_app_comp_sync_get(void)
 {
    return _ecore_evas_app_comp_sync;
@@ -1024,13 +1024,13 @@ static const struct ecore_evas_engine _engines[] = {
   {NULL, NULL}
 };
 
-EAPI Eina_List *
+Eina_List *
 ecore_evas_engines_get(void)
 {
    return eina_list_clone(_ecore_evas_available_engines_get());
 }
 
-EAPI void
+void
 ecore_evas_engines_free(Eina_List *engines)
 {
    eina_list_free(engines);
@@ -1057,7 +1057,7 @@ _ecore_evas_new_auto_discover(int x, int y, int w, int h, const char *extra_opti
    return NULL;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_new(const char *engine_name, int x, int y, int w, int h, const char *extra_options)
 {
    const struct ecore_evas_engine *itr;
@@ -1084,7 +1084,7 @@ ecore_evas_new(const char *engine_name, int x, int y, int w, int h, const char *
    return NULL;
 }
 
-EAPI const char *
+const char *
 ecore_evas_engine_name_get(const Ecore_Evas *ee)
 {
    if (!ee)
@@ -1092,7 +1092,7 @@ ecore_evas_engine_name_get(const Ecore_Evas *ee)
    return ee->driver;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_ecore_evas_get(const Evas *e)
 {
    Ecore_Evas *ee = evas_data_attach_get(e);
@@ -1101,7 +1101,7 @@ ecore_evas_ecore_evas_get(const Evas *e)
    return ee;
 }
 
-EAPI void
+void
 ecore_evas_free(Ecore_Evas *ee)
 {
    if (!ee) return;
@@ -1110,7 +1110,7 @@ ecore_evas_free(Ecore_Evas *ee)
    return;
 }
 
-EAPI void *
+void *
 ecore_evas_data_get(const Ecore_Evas *ee, const char *key)
 {
    ECORE_EVAS_CHECK(ee, NULL);
@@ -1121,7 +1121,7 @@ ecore_evas_data_get(const Ecore_Evas *ee, const char *key)
    return eina_hash_find(ee->data, key);
 }
 
-EAPI void
+void
 ecore_evas_data_set(Ecore_Evas *ee, const char *key, const void *data)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1138,7 +1138,7 @@ ecore_evas_data_set(Ecore_Evas *ee, const char *key, const void *data)
      }
 }
 
-EAPI Evas *
+Evas *
 ecore_evas_object_evas_get(Evas_Object *obj)
 {
    Ecore_Evas *ee;
@@ -1149,7 +1149,7 @@ ecore_evas_object_evas_get(Evas_Object *obj)
    return ecore_evas_get(ee);
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_object_ecore_evas_get(Evas_Object *obj)
 {
    return evas_object_data_get(obj, "Ecore_Evas");
@@ -1158,7 +1158,7 @@ ecore_evas_object_ecore_evas_get(Evas_Object *obj)
 #define IFC(_ee, _fn)  if (_ee->engine.func->_fn) {_ee->engine.func->_fn
 #define IFE            return;}
 
-EAPI void
+void
 ecore_evas_callback_resize_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1167,7 +1167,7 @@ ecore_evas_callback_resize_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_resize = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_move_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1176,7 +1176,7 @@ ecore_evas_callback_move_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_move = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_show_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1185,7 +1185,7 @@ ecore_evas_callback_show_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_show = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_hide_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1194,7 +1194,7 @@ ecore_evas_callback_hide_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_hide = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_delete_request_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1203,7 +1203,7 @@ ecore_evas_callback_delete_request_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_delete_request = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_destroy_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1212,7 +1212,7 @@ ecore_evas_callback_destroy_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_destroy = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_focus_in_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1221,7 +1221,7 @@ ecore_evas_callback_focus_in_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_focus_in = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_focus_device_in_set(Ecore_Evas *ee,
                                         Ecore_Evas_Focus_Device_Event_Cb func)
 {
@@ -1231,7 +1231,7 @@ ecore_evas_callback_focus_device_in_set(Ecore_Evas *ee,
    ee->func.fn_focus_device_in = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_focus_out_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1240,7 +1240,7 @@ ecore_evas_callback_focus_out_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_focus_out = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_focus_device_out_set(Ecore_Evas *ee,
                                          Ecore_Evas_Focus_Device_Event_Cb func)
 {
@@ -1250,7 +1250,7 @@ ecore_evas_callback_focus_device_out_set(Ecore_Evas *ee,
    ee->func.fn_focus_device_out = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_sticky_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1259,7 +1259,7 @@ ecore_evas_callback_sticky_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_sticky = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_unsticky_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1268,7 +1268,7 @@ ecore_evas_callback_unsticky_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_unsticky = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_mouse_in_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1277,7 +1277,7 @@ ecore_evas_callback_mouse_in_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_mouse_in = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_mouse_out_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1286,7 +1286,7 @@ ecore_evas_callback_mouse_out_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_mouse_out = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_pre_render_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1295,7 +1295,7 @@ ecore_evas_callback_pre_render_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_pre_render = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_post_render_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1304,28 +1304,28 @@ ecore_evas_callback_post_render_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
    ee->func.fn_post_render = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_pre_free_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
    ee->func.fn_pre_free = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_state_change_set(Ecore_Evas *ee, Ecore_Evas_Event_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
    ee->func.fn_state_change = func;
 }
 
-EAPI Evas *
+Evas *
 ecore_evas_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
    return ee->evas;
 }
 
-EAPI void
+void
 ecore_evas_move(Ecore_Evas *ee, int x, int y)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1334,7 +1334,7 @@ ecore_evas_move(Ecore_Evas *ee, int x, int y)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_managed_move(Ecore_Evas *ee, int x, int y)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1342,7 +1342,7 @@ ecore_evas_managed_move(Ecore_Evas *ee, int x, int y)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_resize(Ecore_Evas *ee, int w, int h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1361,7 +1361,7 @@ ecore_evas_resize(Ecore_Evas *ee, int w, int h)
      }
 }
 
-EAPI void
+void
 ecore_evas_move_resize(Ecore_Evas *ee, int x, int y, int w, int h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1380,7 +1380,7 @@ ecore_evas_move_resize(Ecore_Evas *ee, int x, int y, int w, int h)
      }
 }
 
-EAPI void
+void
 ecore_evas_geometry_get(const Ecore_Evas *ee, int *x, int *y, int *w, int *h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1400,7 +1400,7 @@ ecore_evas_geometry_get(const Ecore_Evas *ee, int *x, int *y, int *w, int *h)
      }
 }
 
-EAPI void
+void
 ecore_evas_request_geometry_get(const Ecore_Evas *ee, int *x, int *y, int *w, int *h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1420,7 +1420,7 @@ ecore_evas_request_geometry_get(const Ecore_Evas *ee, int *x, int *y, int *w, in
      }
 }
 
-EAPI void
+void
 ecore_evas_rotation_set(Ecore_Evas *ee, int rot)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1433,7 +1433,7 @@ ecore_evas_rotation_set(Ecore_Evas *ee, int rot)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_rotation_with_resize_set(Ecore_Evas *ee, int rot)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1446,14 +1446,14 @@ ecore_evas_rotation_with_resize_set(Ecore_Evas *ee, int rot)
    IFE;
 }
 
-EAPI int
+int
 ecore_evas_rotation_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0);
    return ee->rotation;
 }
 
-EAPI void
+void
 ecore_evas_shaped_set(Ecore_Evas *ee, Eina_Bool shaped)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1461,14 +1461,14 @@ ecore_evas_shaped_set(Ecore_Evas *ee, Eina_Bool shaped)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_shaped_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->shaped ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_alpha_set(Ecore_Evas *ee, Eina_Bool alpha)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1476,14 +1476,14 @@ ecore_evas_alpha_set(Ecore_Evas *ee, Eina_Bool alpha)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_alpha_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->alpha ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_transparent_set(Ecore_Evas *ee, Eina_Bool transparent)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1491,14 +1491,14 @@ ecore_evas_transparent_set(Ecore_Evas *ee, Eina_Bool transparent)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_transparent_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->transparent ? EINA_TRUE : 0;
 }
 
-EAPI void
+void
 ecore_evas_show(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1506,7 +1506,7 @@ ecore_evas_show(Ecore_Evas *ee)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_hide(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1514,14 +1514,14 @@ ecore_evas_hide(Ecore_Evas *ee)
    IFE;
 }
 
- EAPI int
+ int
 ecore_evas_visibility_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0);
    return ee->visible ? 1:0;
 }
 
-EAPI void
+void
 ecore_evas_raise(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1529,7 +1529,7 @@ ecore_evas_raise(Ecore_Evas *ee)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_lower(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1537,7 +1537,7 @@ ecore_evas_lower(Ecore_Evas *ee)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_activate(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1545,7 +1545,7 @@ ecore_evas_activate(Ecore_Evas *ee)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_title_set(Ecore_Evas *ee, const char *t)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1553,14 +1553,14 @@ ecore_evas_title_set(Ecore_Evas *ee, const char *t)
    IFE;
 }
 
-EAPI const char *
+const char *
 ecore_evas_title_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
    return ee->prop.title;
 }
 
-EAPI void
+void
 ecore_evas_name_class_set(Ecore_Evas *ee, const char *n, const char *c)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1568,7 +1568,7 @@ ecore_evas_name_class_set(Ecore_Evas *ee, const char *n, const char *c)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_name_class_get(const Ecore_Evas *ee, const char **n, const char **c)
 {
    if (n) *n = NULL;
@@ -1578,7 +1578,7 @@ ecore_evas_name_class_get(const Ecore_Evas *ee, const char **n, const char **c)
    if (c) *c = ee->prop.clas;
 }
 
-EAPI void
+void
 ecore_evas_size_min_set(Ecore_Evas *ee, int w, int h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1596,7 +1596,7 @@ ecore_evas_size_min_set(Ecore_Evas *ee, int w, int h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_min_get(const Ecore_Evas *ee, int *w, int *h)
 {
    if (w) *w = 0;
@@ -1614,7 +1614,7 @@ ecore_evas_size_min_get(const Ecore_Evas *ee, int *w, int *h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_max_set(Ecore_Evas *ee, int w, int h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1632,7 +1632,7 @@ ecore_evas_size_max_set(Ecore_Evas *ee, int w, int h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_max_get(const Ecore_Evas *ee, int *w, int *h)
 {
    if (w) *w = 0;
@@ -1650,7 +1650,7 @@ ecore_evas_size_max_get(const Ecore_Evas *ee, int *w, int *h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_base_set(Ecore_Evas *ee, int w, int h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1668,7 +1668,7 @@ ecore_evas_size_base_set(Ecore_Evas *ee, int w, int h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_base_get(const Ecore_Evas *ee, int *w, int *h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1684,7 +1684,7 @@ ecore_evas_size_base_get(const Ecore_Evas *ee, int *w, int *h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_step_set(Ecore_Evas *ee, int w, int h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1702,7 +1702,7 @@ ecore_evas_size_step_set(Ecore_Evas *ee, int w, int h)
      }
 }
 
-EAPI void
+void
 ecore_evas_size_step_get(const Ecore_Evas *ee, int *w, int *h)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1718,7 +1718,7 @@ ecore_evas_size_step_get(const Ecore_Evas *ee, int *w, int *h)
      }
 }
 
-EAPI Evas_Object *
+Evas_Object *
 _ecore_evas_default_cursor_image_get(Ecore_Evas *ee)
 {
    Efl_Input_Device *pointer;
@@ -1730,7 +1730,7 @@ _ecore_evas_default_cursor_image_get(Ecore_Evas *ee)
    return cursor->object;
 }
 
-EAPI void
+void
 _ecore_evas_default_cursor_hide(Ecore_Evas *ee)
 {
    Efl_Input_Device *pointer;
@@ -1827,7 +1827,7 @@ end:
      }
 }
 
-EAPI void
+void
 ecore_evas_cursor_set(Ecore_Evas *ee, const char *file,
                       int layer, int hot_x, int hot_y)
 {
@@ -1849,14 +1849,14 @@ ecore_evas_cursor_set(Ecore_Evas *ee, const char *file,
    _ecore_evas_object_cursor_device_set(ee, NULL, obj, layer, hot_x, hot_y);
 }
 
-EAPI void
+void
 ecore_evas_object_cursor_set(Ecore_Evas *ee, Evas_Object *obj,
                              int layer, int hot_x, int hot_y)
 {
    _ecore_evas_object_cursor_device_set(ee, NULL, obj, layer, hot_x, hot_y);
 }
 
-EAPI void
+void
 ecore_evas_object_cursor_device_set(Ecore_Evas *ee, Efl_Input_Device *pointer,
                                     Evas_Object *obj, int layer,
                                     int hot_x, int hot_y)
@@ -1864,7 +1864,7 @@ ecore_evas_object_cursor_device_set(Ecore_Evas *ee, Efl_Input_Device *pointer,
    _ecore_evas_object_cursor_device_set(ee, pointer, obj, layer, hot_x, hot_y);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_cursor_device_get(const Ecore_Evas *ee, Efl_Input_Device *pointer,
                              Evas_Object **obj, int *layer,
                              int *hot_x, int *hot_y)
@@ -1906,13 +1906,13 @@ ecore_evas_cursor_device_get(const Ecore_Evas *ee, Efl_Input_Device *pointer,
    return EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_cursor_get(const Ecore_Evas *ee, Evas_Object **obj, int *layer, int *hot_x, int *hot_y)
 {
    ecore_evas_cursor_device_get(ee, NULL, obj, layer, hot_x, hot_y);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 ecore_evas_cursor_device_unset(Ecore_Evas *ee, Efl_Input_Device *pointer)
 {
    Ecore_Evas_Cursor *cursor = NULL;
@@ -1946,13 +1946,13 @@ ecore_evas_cursor_device_unset(Ecore_Evas *ee, Efl_Input_Device *pointer)
    return obj;
 }
 
-EAPI Evas_Object *
+Evas_Object *
 ecore_evas_cursor_unset(Ecore_Evas *ee)
 {
    return ecore_evas_cursor_device_unset(ee, NULL);
 }
 
-EAPI void
+void
 ecore_evas_layer_set(Ecore_Evas *ee, int layer)
 {
    ECORE_EVAS_CHECK(ee);
@@ -1961,14 +1961,14 @@ ecore_evas_layer_set(Ecore_Evas *ee, int layer)
    ee->prop.layer = layer;
 }
 
-EAPI int
+int
 ecore_evas_layer_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0);
    return ee->prop.layer;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_focus_device_get(const Ecore_Evas *ee, Efl_Input_Device *seat)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -1977,7 +1977,7 @@ ecore_evas_focus_device_get(const Ecore_Evas *ee, Efl_Input_Device *seat)
    return eina_list_data_find(ee->prop.focused_by, seat) ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 _ecore_evas_focus_device_set(Ecore_Evas *ee, Efl_Input_Device *seat,
                              Eina_Bool on)
 {
@@ -2016,7 +2016,7 @@ _ecore_evas_focus_device_set(Ecore_Evas *ee, Efl_Input_Device *seat,
      }
 }
 
-EAPI void
+void
 ecore_evas_focus_device_set(Ecore_Evas *ee, Efl_Input_Device *seat,
                             Eina_Bool on)
 {
@@ -2026,7 +2026,7 @@ ecore_evas_focus_device_set(Ecore_Evas *ee, Efl_Input_Device *seat,
    _ecore_evas_focus_device_set(ee, seat, on);
 }
 
-EAPI void
+void
 ecore_evas_focus_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2035,13 +2035,13 @@ ecore_evas_focus_set(Ecore_Evas *ee, Eina_Bool on)
    ecore_evas_focus_device_set(ee, NULL, on);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_focus_get(const Ecore_Evas *ee)
 {
    return ecore_evas_focus_device_get(ee, NULL);
 }
 
-EAPI void
+void
 ecore_evas_iconified_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2050,14 +2050,14 @@ ecore_evas_iconified_set(Ecore_Evas *ee, Eina_Bool on)
    ee->prop.iconified = !!on;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_iconified_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.iconified ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_borderless_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2066,14 +2066,14 @@ ecore_evas_borderless_set(Ecore_Evas *ee, Eina_Bool on)
    ee->prop.borderless = !!on;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_borderless_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.borderless ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_override_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2082,14 +2082,14 @@ ecore_evas_override_set(Ecore_Evas *ee, Eina_Bool on)
    ee->prop.override = !!on;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_override_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.override ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_maximized_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2097,21 +2097,21 @@ ecore_evas_maximized_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_maximized_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.maximized ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_window_profile_supported_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->profile_supported ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_window_profile_set(Ecore_Evas *ee, const char *profile)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2119,14 +2119,14 @@ ecore_evas_window_profile_set(Ecore_Evas *ee, const char *profile)
    IFE;
 }
 
-EAPI const char *
+const char *
 ecore_evas_window_profile_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
    return ee->prop.profile.name;
 }
 
-EAPI void
+void
 ecore_evas_window_available_profiles_set(Ecore_Evas *ee, const char **profiles, const unsigned int count)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2134,7 +2134,7 @@ ecore_evas_window_available_profiles_set(Ecore_Evas *ee, const char **profiles, 
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_window_available_profiles_get(Ecore_Evas *ee, char ***profiles, unsigned int *count)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -2150,14 +2150,14 @@ ecore_evas_window_available_profiles_get(Ecore_Evas *ee, char ***profiles, unsig
      return EINA_FALSE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_wm_rotation_supported_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.wm_rot.supported;
 }
 
-EAPI void
+void
 ecore_evas_wm_rotation_preferred_rotation_set(Ecore_Evas *ee, int rotation)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2182,14 +2182,14 @@ ecore_evas_wm_rotation_preferred_rotation_set(Ecore_Evas *ee, int rotation)
    IFE;
 }
 
-EAPI int
+int
 ecore_evas_wm_rotation_preferred_rotation_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, -1);
    return ee->prop.wm_rot.preferred_rot;
 }
 
-EAPI void
+void
 ecore_evas_wm_rotation_available_rotations_set(Ecore_Evas *ee, const int *rotations, unsigned int count)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2197,7 +2197,7 @@ ecore_evas_wm_rotation_available_rotations_set(Ecore_Evas *ee, const int *rotati
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_wm_rotation_available_rotations_get(const Ecore_Evas *ee, int **rotations, unsigned int *count)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -2216,7 +2216,7 @@ ecore_evas_wm_rotation_available_rotations_get(const Ecore_Evas *ee, int **rotat
    return EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_evas_wm_rotation_manual_rotation_done_set(Ecore_Evas *ee, Eina_Bool set)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2229,7 +2229,7 @@ ecore_evas_wm_rotation_manual_rotation_done_set(Ecore_Evas *ee, Eina_Bool set)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_wm_rotation_manual_rotation_done_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -2241,7 +2241,7 @@ ecore_evas_wm_rotation_manual_rotation_done_get(const Ecore_Evas *ee)
    return ee->prop.wm_rot.manual_mode.set;
 }
 
-EAPI void
+void
 ecore_evas_wm_rotation_manual_rotation_done(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2254,14 +2254,14 @@ ecore_evas_wm_rotation_manual_rotation_done(Ecore_Evas *ee)
    IFE;
 }
 
-EAPI const Eina_List *
+const Eina_List *
 ecore_evas_aux_hints_supported_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
    return ee->prop.aux_hint.supported_list;
 }
 
-EAPI Eina_List *
+Eina_List *
 ecore_evas_aux_hints_allowed_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
@@ -2279,7 +2279,7 @@ ecore_evas_aux_hints_allowed_get(const Ecore_Evas *ee)
    return list;
 }
 
-EAPI int
+int
 ecore_evas_aux_hint_add(Ecore_Evas *ee, const char *hint, const char *val)
 {
    ECORE_EVAS_CHECK(ee, -1);
@@ -2341,7 +2341,7 @@ ecore_evas_aux_hint_add(Ecore_Evas *ee, const char *hint, const char *val)
    return -1;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_aux_hint_del(Ecore_Evas *ee, const int id)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -2392,7 +2392,7 @@ ecore_evas_aux_hint_del(Ecore_Evas *ee, const int id)
    return EINA_FALSE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_aux_hint_val_set(Ecore_Evas *ee, const int id, const char *val)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -2441,7 +2441,7 @@ ecore_evas_aux_hint_val_set(Ecore_Evas *ee, const int id, const char *val)
    return EINA_FALSE;
 }
 
-EAPI const char *
+const char *
 ecore_evas_aux_hint_val_get(const Ecore_Evas *ee, int id)
 {
    ECORE_EVAS_CHECK(ee, NULL);
@@ -2456,7 +2456,7 @@ ecore_evas_aux_hint_val_get(const Ecore_Evas *ee, int id)
    return NULL;
 }
 
-EAPI int
+int
 ecore_evas_aux_hint_id_get(const Ecore_Evas *ee, const char *hint)
 {
    ECORE_EVAS_CHECK(ee, -1);
@@ -2471,7 +2471,7 @@ ecore_evas_aux_hint_id_get(const Ecore_Evas *ee, const char *hint)
    return -1;
 }
 
-EAPI void
+void
 ecore_evas_fullscreen_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2479,14 +2479,14 @@ ecore_evas_fullscreen_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_fullscreen_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.fullscreen ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_avoid_damage_set(Ecore_Evas *ee, Ecore_Evas_Avoid_Damage_Type on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2494,14 +2494,14 @@ ecore_evas_avoid_damage_set(Ecore_Evas *ee, Ecore_Evas_Avoid_Damage_Type on)
    IFE;
 }
 
-EAPI Ecore_Evas_Avoid_Damage_Type
+Ecore_Evas_Avoid_Damage_Type
 ecore_evas_avoid_damage_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, ECORE_EVAS_AVOID_DAMAGE_NONE);
    return ee->prop.avoid_damage;
 }
 
-EAPI void
+void
 ecore_evas_withdrawn_set(Ecore_Evas *ee, Eina_Bool withdrawn)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2509,14 +2509,14 @@ ecore_evas_withdrawn_set(Ecore_Evas *ee, Eina_Bool withdrawn)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_withdrawn_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.withdrawn ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_sticky_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2524,14 +2524,14 @@ ecore_evas_sticky_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_sticky_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.sticky ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_window_group_set(Ecore_Evas *ee, const Ecore_Evas *ee_group)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2539,14 +2539,14 @@ ecore_evas_window_group_set(Ecore_Evas *ee, const Ecore_Evas *ee_group)
    IFE;
 }
 
-EAPI const Ecore_Evas *
+const Ecore_Evas *
 ecore_evas_window_group_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
    return ee->prop.group_ee;
 }
 
-EAPI void
+void
 ecore_evas_aspect_set(Ecore_Evas *ee, double aspect)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2554,14 +2554,14 @@ ecore_evas_aspect_set(Ecore_Evas *ee, double aspect)
    IFE;
 }
 
-EAPI double
+double
 ecore_evas_aspect_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0.0);
    return ee->prop.aspect;
 }
 
-EAPI void
+void
 ecore_evas_urgent_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2569,14 +2569,14 @@ ecore_evas_urgent_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_urgent_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.urgent ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_modal_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2584,14 +2584,14 @@ ecore_evas_modal_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_modal_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.modal ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_demand_attention_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2599,14 +2599,14 @@ ecore_evas_demand_attention_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_demand_attention_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.demand_attention ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_focus_skip_set(Ecore_Evas *ee, Eina_Bool on)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2614,14 +2614,14 @@ ecore_evas_focus_skip_set(Ecore_Evas *ee, Eina_Bool on)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_focus_skip_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->prop.focus_skip ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_ignore_events_set(Ecore_Evas *ee, Eina_Bool ignore)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2629,14 +2629,14 @@ ecore_evas_ignore_events_set(Ecore_Evas *ee, Eina_Bool ignore)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_ignore_events_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->ignore_events ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_manual_render_set(Ecore_Evas *ee, Eina_Bool manual_render)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2656,14 +2656,14 @@ ecore_evas_manual_render_set(Ecore_Evas *ee, Eina_Bool manual_render)
      ee->engine.func->fn_animator_register(ee);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_manual_render_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return ee->manual_render ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_manual_render(Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2700,7 +2700,7 @@ ecore_evas_manual_render(Ecore_Evas *ee)
      }
 }
 
-EAPI void
+void
 ecore_evas_msg_parent_send(Ecore_Evas *ee, int msg_domain, int msg_id, void *data, int size)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2709,7 +2709,7 @@ ecore_evas_msg_parent_send(Ecore_Evas *ee, int msg_domain, int msg_id, void *dat
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_msg_send(Ecore_Evas *ee, int msg_domain, int msg_id, void *data, int size)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2718,7 +2718,7 @@ ecore_evas_msg_send(Ecore_Evas *ee, int msg_domain, int msg_id, void *data, int 
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_callback_msg_parent_handle_set(Ecore_Evas *ee, void (*func_parent_handle)(Ecore_Evas *ee, int msg_domain, int msg_id, void *data, int size))
 {
    ECORE_EVAS_CHECK(ee);
@@ -2726,7 +2726,7 @@ ecore_evas_callback_msg_parent_handle_set(Ecore_Evas *ee, void (*func_parent_han
    ee->func.fn_msg_parent_handle = func_parent_handle;
 }
 
-EAPI void
+void
 ecore_evas_callback_msg_handle_set(Ecore_Evas *ee, void (*func_handle)(Ecore_Evas *ee, int msg_domain, int msg_id, void *data, int size))
 {
    ECORE_EVAS_CHECK(ee);
@@ -2735,28 +2735,28 @@ ecore_evas_callback_msg_handle_set(Ecore_Evas *ee, void (*func_handle)(Ecore_Eva
 }
 
 
-EAPI void
+void
 ecore_evas_comp_sync_set(Ecore_Evas *ee, Eina_Bool do_sync)
 {
    ECORE_EVAS_CHECK(ee);
    ee->no_comp_sync = !do_sync;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_comp_sync_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
    return !ee->no_comp_sync;
 }
 
-EAPI Ecore_Window
+Ecore_Window
 ecore_evas_window_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0);
    return ee->prop.window;
 }
 
-EAPI void
+void
 ecore_evas_screen_geometry_get(const Ecore_Evas *ee, int *x, int *y, int *w, int *h)
 {
    if (x) *x = 0;
@@ -2768,7 +2768,7 @@ ecore_evas_screen_geometry_get(const Ecore_Evas *ee, int *x, int *y, int *w, int
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_screen_dpi_get(const Ecore_Evas *ee, int *xdpi, int *ydpi)
 {
    if (xdpi) *xdpi = 0;
@@ -2778,20 +2778,20 @@ ecore_evas_screen_dpi_get(const Ecore_Evas *ee, int *xdpi, int *ydpi)
    IFE;
 }
 
-EAPI void
+void
 ecore_evas_draw_frame_set(Ecore_Evas *ee EINA_UNUSED, Eina_Bool draw_frame EINA_UNUSED)
 {
    WRN("Calling deprecated function %s (not implemented)", __FUNCTION__);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_draw_frame_get(const Ecore_Evas *ee EINA_UNUSED)
 {
    WRN("Calling deprecated function %s (not implemented)", __FUNCTION__);
    return EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_shadow_geometry_set(Ecore_Evas *ee, int l, int r, int t, int b)
 {
    ECORE_EVAS_CHECK(ee);
@@ -2808,7 +2808,7 @@ ecore_evas_shadow_geometry_set(Ecore_Evas *ee, int l, int r, int t, int b)
    ee->shadow.changed = EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_evas_shadow_geometry_get(const Ecore_Evas *ee, int *l, int *r, int *t, int *b)
 {
    if (l) *l = 0;
@@ -2822,7 +2822,7 @@ ecore_evas_shadow_geometry_get(const Ecore_Evas *ee, int *l, int *r, int *t, int
    if (b) *b = ee->shadow.b;
 }
 
-EAPI void
+void
 ecore_evas_pointer_xy_get(const Ecore_Evas *ee, Evas_Coord *x, Evas_Coord *y)
 {
    if (x) *x = 0;
@@ -2832,7 +2832,7 @@ ecore_evas_pointer_xy_get(const Ecore_Evas *ee, Evas_Coord *x, Evas_Coord *y)
    IFE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_pointer_warp(const Ecore_Evas *ee, Evas_Coord x, Evas_Coord y)
 {
    ECORE_EVAS_CHECK(ee, EINA_FALSE);
@@ -2842,7 +2842,7 @@ ecore_evas_pointer_warp(const Ecore_Evas *ee, Evas_Coord x, Evas_Coord y)
    return EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_pointer_device_xy_get(const Ecore_Evas *ee,
                                  const Efl_Input_Device *pointer,
                                  Evas_Coord *x, Evas_Coord *y)
@@ -2882,7 +2882,7 @@ ecore_evas_pointer_device_xy_get(const Ecore_Evas *ee,
      }
 }
 
-EAPI void *
+void *
 ecore_evas_pixmap_visual_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
@@ -2909,7 +2909,7 @@ ecore_evas_pixmap_visual_get(const Ecore_Evas *ee)
    return NULL;
 }
 
-EAPI unsigned long
+unsigned long
 ecore_evas_pixmap_colormap_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0);
@@ -2936,7 +2936,7 @@ ecore_evas_pixmap_colormap_get(const Ecore_Evas *ee)
    return 0;
 }
 
-EAPI int
+int
 ecore_evas_pixmap_depth_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, 0);
@@ -2970,7 +2970,7 @@ static int _ecore_evas_fps_debug_init_count = 0;
 static int _ecore_evas_fps_debug_fd = -1;
 unsigned int *_ecore_evas_fps_rendertime_mmap = NULL;
 
-EAPI void
+void
 _ecore_evas_fps_debug_init(void)
 {
    char buf[4096];
@@ -3020,7 +3020,7 @@ _ecore_evas_fps_debug_init(void)
      }
 }
 
-EAPI void
+void
 _ecore_evas_fps_debug_shutdown(void)
 {
    _ecore_evas_fps_debug_init_count--;
@@ -3042,7 +3042,7 @@ _ecore_evas_fps_debug_shutdown(void)
      }
 }
 
-EAPI void
+void
 _ecore_evas_fps_debug_rendertime_add(double t)
 {
    static double rtime = 0.0;
@@ -3120,7 +3120,7 @@ _ecore_evas_animators_do(Ecore_Evas *ee)
      }
 }
 
-EAPI void
+void
 ecore_evas_animator_tick(Ecore_Evas *ee, Eina_Rectangle *viewport, double loop_time)
 {
    Ecore_Evas *subee;
@@ -3364,13 +3364,13 @@ EFL_CALLBACKS_ARRAY_DEFINE(animator_watch,
                           { EFL_EVENT_CALLBACK_ADD, _check_animator_event_catcher_add },
                           { EFL_EVENT_CALLBACK_DEL, _check_animator_event_catcher_del });
 
-EAPI void
+void
 _ecore_evas_register_animators(Ecore_Evas *ee)
 {
    efl_event_callback_array_add(ee->evas, animator_watch(), ee);
 }
 
-EAPI void
+void
 _ecore_evas_register(Ecore_Evas *ee)
 {
    if (ee->registered) return;
@@ -3388,7 +3388,7 @@ _ecore_evas_register(Ecore_Evas *ee)
                                       _evas_evas_buffer_rendered, ee);
 }
 
-EAPI void
+void
 _ecore_evas_subregister(Ecore_Evas *ee_target, Ecore_Evas *ee)
 {
    ee_target->sub_ecore_evas = eina_list_append(ee_target->sub_ecore_evas, ee);
@@ -3402,13 +3402,13 @@ _ecore_evas_subregister(Ecore_Evas *ee_target, Ecore_Evas *ee)
                                       _evas_evas_buffer_rendered, ee);
 }
 
-EAPI void
+void
 _ecore_evas_ref(Ecore_Evas *ee)
 {
    ee->refcount++;
 }
 
-EAPI void
+void
 _ecore_evas_unref(Ecore_Evas *ee)
 {
    ee->refcount--;
@@ -3432,7 +3432,7 @@ _ecore_evas_vnc_stop(Ecore_Evas *ee)
    return EINA_TRUE;
 }
 
-EAPI void
+void
 _ecore_evas_free(Ecore_Evas *ee)
 {
    Efl_Input_Device *dev;
@@ -3544,7 +3544,7 @@ _ecore_evas_cb_idle_flush(void *data)
    return ECORE_CALLBACK_CANCEL;
 }
 
-EAPI void
+void
 _ecore_evas_idle_timeout_update(Ecore_Evas *ee)
 {
    if (ee->engine.idle_flush_timer)
@@ -3652,14 +3652,14 @@ _ecore_evas_mouse_move_process_internal(Ecore_Evas *ee,
    efl_unref(evt);
 }
 
-EAPI void
+void
 _ecore_evas_mouse_move_process(Ecore_Evas *ee, int x, int y, unsigned int timestamp)
 {
    _ecore_evas_mouse_move_process_internal(ee, NULL, x, y, timestamp,
                                            EINA_TRUE);
 }
 
-EAPI void
+void
 _ecore_evas_mouse_device_move_process(Ecore_Evas *ee, Efl_Input_Device *pointer,
                                       int x, int y, unsigned int timestamp)
 {
@@ -3667,7 +3667,7 @@ _ecore_evas_mouse_device_move_process(Ecore_Evas *ee, Efl_Input_Device *pointer,
                                            EINA_TRUE);
 }
 
-EAPI void
+void
 _ecore_evas_mouse_multi_move_process(Ecore_Evas *ee, int device,
                                      int x, int y,
                                      double radius,
@@ -3715,7 +3715,7 @@ _ecore_evas_mouse_multi_move_process(Ecore_Evas *ee, int device,
                                  timestamp, NULL);
 }
 
-EAPI void
+void
 _ecore_evas_mouse_multi_down_process(Ecore_Evas *ee, int device,
                                      int x, int y,
                                      double radius,
@@ -3764,7 +3764,7 @@ _ecore_evas_mouse_multi_down_process(Ecore_Evas *ee, int device,
                                  flags, timestamp, NULL);
 }
 
-EAPI void
+void
 _ecore_evas_mouse_multi_up_process(Ecore_Evas *ee, int device,
                                    int x, int y,
                                    double radius,
@@ -3813,14 +3813,14 @@ _ecore_evas_mouse_multi_up_process(Ecore_Evas *ee, int device,
                                flags, timestamp, NULL);
 }
 
-EAPI void
+void
 _ecore_evas_window_profile_free(Ecore_Evas *ee)
 {
    if (ee->prop.profile.name)
      eina_stringshare_del(ee->prop.profile.name);
 }
 
-EAPI void
+void
 _ecore_evas_window_available_profiles_free(Ecore_Evas *ee)
 {
    if (ee->prop.profile.available_list)
@@ -3838,7 +3838,7 @@ _ecore_evas_window_available_profiles_free(Ecore_Evas *ee)
      }
 }
 
-EAPI Eina_List *
+Eina_List *
 ecore_evas_ecore_evas_list_get(void)
 {
    Ecore_Evas *ee;
@@ -3852,26 +3852,26 @@ ecore_evas_ecore_evas_list_get(void)
    return l;
 }
 
-EAPI Eina_List *
+Eina_List *
 ecore_evas_sub_ecore_evas_list_get(const Ecore_Evas *ee)
 {
    ECORE_EVAS_CHECK(ee, NULL);
    return ee->sub_ecore_evas;
 }
 
-EAPI void
+void
 ecore_evas_input_event_register(Ecore_Evas *ee)
 {
    ecore_evas_done(ee, EINA_FALSE);
 }
 
-EAPI void
+void
 ecore_evas_input_event_unregister(Ecore_Evas *ee)
 {
    ecore_event_window_unregister(ee->prop.window);
 }
 
-EAPI Eina_Strbuf *
+Eina_Strbuf *
 _ecore_evas_aux_hints_string_get(Ecore_Evas *ee)
 {
    Eina_Strbuf *buf = eina_strbuf_new();
@@ -3913,7 +3913,7 @@ _ecore_evas_aux_hint_free(Ecore_Evas *ee)
      }
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_fb_new(const char *disp_name, int rotation, int w, int h)
 {
    Ecore_Evas *ee;
@@ -3933,7 +3933,7 @@ ecore_evas_fb_new(const char *disp_name, int rotation, int w, int h)
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_software_x11_new(const char *disp_name, Ecore_X_Window parent, int x, int y, int w, int h)
 {
    Ecore_Evas *ee;
@@ -3953,7 +3953,7 @@ ecore_evas_software_x11_new(const char *disp_name, Ecore_X_Window parent, int x,
    return ee;
 }
 
-EAPI Ecore_X_Window
+Ecore_X_Window
 ecore_evas_software_x11_window_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Software_X11 *iface;
@@ -3963,7 +3963,7 @@ ecore_evas_software_x11_window_get(const Ecore_Evas *ee)
    return iface->window_get(ee);
 }
 
-EAPI void
+void
 ecore_evas_software_x11_direct_resize_set(Ecore_Evas *ee, Eina_Bool on)
 {
    Ecore_Evas_Interface_Software_X11 *iface;
@@ -3973,7 +3973,7 @@ ecore_evas_software_x11_direct_resize_set(Ecore_Evas *ee, Eina_Bool on)
    iface->resize_set(ee, on);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_software_x11_direct_resize_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Software_X11 *iface;
@@ -3983,7 +3983,7 @@ ecore_evas_software_x11_direct_resize_get(const Ecore_Evas *ee)
    return iface->resize_get(ee);
 }
 
-EAPI void
+void
 ecore_evas_software_x11_extra_event_window_add(Ecore_Evas *ee, Ecore_X_Window win)
 {
    Ecore_Evas_Interface_Software_X11 *iface;
@@ -3993,7 +3993,7 @@ ecore_evas_software_x11_extra_event_window_add(Ecore_Evas *ee, Ecore_X_Window wi
    iface->extra_event_window_add(ee, win);
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_software_x11_pixmap_new(const char *disp_name, Ecore_X_Window parent, int x, int y, int w, int h)
 {
    Ecore_Evas *ee;
@@ -4014,7 +4014,7 @@ ecore_evas_software_x11_pixmap_new(const char *disp_name, Ecore_X_Window parent,
 
 }
 
-EAPI Ecore_X_Pixmap
+Ecore_X_Pixmap
 ecore_evas_software_x11_pixmap_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Software_X11 *iface;
@@ -4027,7 +4027,7 @@ ecore_evas_software_x11_pixmap_get(const Ecore_Evas *ee)
    return 0;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_gl_x11_new(const char *disp_name, Ecore_X_Window parent, int x, int y, int w, int h)
 {
    Ecore_Evas *ee;
@@ -4048,7 +4048,7 @@ ecore_evas_gl_x11_new(const char *disp_name, Ecore_X_Window parent, int x, int y
 
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_gl_x11_options_new(const char *disp_name, Ecore_X_Window parent, int x, int y, int w, int h, const int *opt)
 {
    Ecore_Evas *ee;
@@ -4068,7 +4068,7 @@ ecore_evas_gl_x11_options_new(const char *disp_name, Ecore_X_Window parent, int 
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_gl_x11_pixmap_new(const char *disp_name, Ecore_X_Window parent, int x, int y, int w, int h)
 {
    Ecore_Evas *ee;
@@ -4089,7 +4089,7 @@ ecore_evas_gl_x11_pixmap_new(const char *disp_name, Ecore_X_Window parent, int x
 
 }
 
-EAPI Ecore_X_Pixmap
+Ecore_X_Pixmap
 ecore_evas_gl_x11_pixmap_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Gl_X11 *iface;
@@ -4102,7 +4102,7 @@ ecore_evas_gl_x11_pixmap_get(const Ecore_Evas *ee)
    return 0;
 }
 
-EAPI Ecore_X_Window
+Ecore_X_Window
 ecore_evas_gl_x11_window_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Gl_X11 *iface;
@@ -4112,7 +4112,7 @@ ecore_evas_gl_x11_window_get(const Ecore_Evas *ee)
    return iface->window_get(ee);
 }
 
-EAPI void
+void
 ecore_evas_gl_x11_direct_resize_set(Ecore_Evas *ee, Eina_Bool on)
 {
    Ecore_Evas_Interface_Gl_X11 *iface;
@@ -4122,7 +4122,7 @@ ecore_evas_gl_x11_direct_resize_set(Ecore_Evas *ee, Eina_Bool on)
    iface->resize_set(ee, on);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_gl_x11_direct_resize_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Gl_X11 *iface;
@@ -4132,7 +4132,7 @@ ecore_evas_gl_x11_direct_resize_get(const Ecore_Evas *ee)
    return iface->resize_get(ee);
 }
 
-EAPI void
+void
 ecore_evas_gl_x11_extra_event_window_add(Ecore_Evas *ee, Ecore_X_Window win)
 {
    Ecore_Evas_Interface_Gl_X11 *iface;
@@ -4142,7 +4142,7 @@ ecore_evas_gl_x11_extra_event_window_add(Ecore_Evas *ee, Ecore_X_Window win)
    iface->extra_event_window_add(ee, win);
 }
 
-EAPI void
+void
 ecore_evas_gl_x11_pre_post_swap_callback_set(const Ecore_Evas *ee, void *data, void (*pre_cb) (void *data, Evas *e), void (*post_cb) (void *data, Evas *e))
 {
    Ecore_Evas_Interface_Gl_X11 *iface;
@@ -4152,7 +4152,7 @@ ecore_evas_gl_x11_pre_post_swap_callback_set(const Ecore_Evas *ee, void *data, v
    iface->pre_post_swap_callback_set(ee, data, pre_cb, post_cb);
 }
 
-EAPI void
+void
 ecore_evas_x11_leader_set(Ecore_Evas *ee, Ecore_X_Window win)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4162,7 +4162,7 @@ ecore_evas_x11_leader_set(Ecore_Evas *ee, Ecore_X_Window win)
    iface->leader_set(ee, win);
 }
 
-EAPI Ecore_X_Window
+Ecore_X_Window
 ecore_evas_x11_leader_get(Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4172,7 +4172,7 @@ ecore_evas_x11_leader_get(Ecore_Evas *ee)
    return iface->leader_get(ee);
 }
 
-EAPI void
+void
 ecore_evas_x11_leader_default_set(Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4182,7 +4182,7 @@ ecore_evas_x11_leader_default_set(Ecore_Evas *ee)
    iface->leader_default_set(ee);
 }
 
-EAPI void
+void
 ecore_evas_x11_shape_input_rectangle_set(Ecore_Evas *ee, int x, int y, int w, int h)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4192,7 +4192,7 @@ ecore_evas_x11_shape_input_rectangle_set(Ecore_Evas *ee, int x, int y, int w, in
    iface->shape_input_rectangle_set(ee, x, y, w, h);
 }
 
-EAPI void
+void
 ecore_evas_x11_shape_input_rectangle_add(Ecore_Evas *ee, int x, int y, int w, int h)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4202,7 +4202,7 @@ ecore_evas_x11_shape_input_rectangle_add(Ecore_Evas *ee, int x, int y, int w, in
    iface->shape_input_rectangle_add(ee, x, y, w, h);
 }
 
-EAPI void
+void
 ecore_evas_x11_shape_input_rectangle_subtract(Ecore_Evas *ee, int x, int y, int w, int h)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4212,7 +4212,7 @@ ecore_evas_x11_shape_input_rectangle_subtract(Ecore_Evas *ee, int x, int y, int 
    iface->shape_input_rectangle_subtract(ee, x, y, w, h);
 }
 
-EAPI void
+void
 ecore_evas_x11_shape_input_empty(Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4222,7 +4222,7 @@ ecore_evas_x11_shape_input_empty(Ecore_Evas *ee)
    iface->shape_input_empty(ee);
 }
 
-EAPI void
+void
 ecore_evas_x11_shape_input_reset(Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4232,7 +4232,7 @@ ecore_evas_x11_shape_input_reset(Ecore_Evas *ee)
    iface->shape_input_reset(ee);
 }
 
-EAPI void
+void
 ecore_evas_x11_shape_input_apply(Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_X11 *iface;
@@ -4242,7 +4242,7 @@ ecore_evas_x11_shape_input_apply(Ecore_Evas *ee)
    iface->shape_input_apply(ee);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 ecore_evas_vnc_start(Ecore_Evas *ee, const char *addr, int port,
                      Ecore_Evas_Vnc_Client_Accept_Cb accept_cb,
                      Ecore_Evas_Vnc_Client_Disconnected_Cb disc_cb,
@@ -4274,7 +4274,7 @@ ecore_evas_vnc_start(Ecore_Evas *ee, const char *addr, int port,
    return r;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_extn_socket_new(int w, int h)
 {
    Ecore_Evas *ee;
@@ -4295,7 +4295,7 @@ ecore_evas_extn_socket_new(int w, int h)
 
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_extn_socket_listen(Ecore_Evas *ee, const char *svcname, int svcnum, Eina_Bool svcsys)
 {
    Ecore_Evas_Interface_Extn *iface;
@@ -4305,7 +4305,7 @@ ecore_evas_extn_socket_listen(Ecore_Evas *ee, const char *svcname, int svcnum, E
    return iface->listen(ee, svcname, svcnum, svcsys);
 }
 
-EAPI void
+void
 ecore_evas_extn_socket_events_block_set(Ecore_Evas *ee, Eina_Bool events_block)
 {
    void (*set)(Ecore_Evas*, Eina_Bool);
@@ -4319,7 +4319,7 @@ ecore_evas_extn_socket_events_block_set(Ecore_Evas *ee, Eina_Bool events_block)
    set(ee, events_block);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_extn_socket_events_block_get(Ecore_Evas *ee)
 {
    Eina_Bool (*get)(Ecore_Evas*);
@@ -4333,7 +4333,7 @@ ecore_evas_extn_socket_events_block_get(Ecore_Evas *ee)
    return get(ee);
 }
 
-EAPI void
+void
 ecore_evas_extn_plug_object_data_lock(Evas_Object *obj)
 {
    Ecore_Evas_Interface_Extn *iface;
@@ -4348,7 +4348,7 @@ ecore_evas_extn_plug_object_data_lock(Evas_Object *obj)
    iface->data_lock(ee);
 }
 
-EAPI void
+void
 ecore_evas_extn_plug_object_data_unlock(Evas_Object *obj)
 {
    Ecore_Evas_Interface_Extn *iface;
@@ -4363,7 +4363,7 @@ ecore_evas_extn_plug_object_data_unlock(Evas_Object *obj)
    iface->data_unlock(ee);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 ecore_evas_extn_plug_new(Ecore_Evas *ee_target)
 {
    Evas_Object *(*new)(Ecore_Evas *);
@@ -4376,7 +4376,7 @@ ecore_evas_extn_plug_new(Ecore_Evas *ee_target)
    return new(ee_target);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_extn_plug_connect(Evas_Object *obj, const char *svcname, int svcnum, Eina_Bool svcsys)
 {
    Ecore_Evas_Interface_Extn *iface;
@@ -4391,7 +4391,7 @@ ecore_evas_extn_plug_connect(Evas_Object *obj, const char *svcname, int svcnum, 
    return iface->connect(ee, svcname, svcnum, svcsys);
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_sdl_new(const char* name, int w, int h, int fullscreen,
 		   int hwsurface, int noframe, int alpha)
 {
@@ -4412,7 +4412,7 @@ ecore_evas_sdl_new(const char* name, int w, int h, int fullscreen,
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_sdl16_new(const char* name, int w, int h, int fullscreen,
 		     int hwsurface, int noframe, int alpha)
 {
@@ -4433,7 +4433,7 @@ ecore_evas_sdl16_new(const char* name, int w, int h, int fullscreen,
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_gl_sdl_new(const char* name, int w, int h, int fullscreen, int noframe)
 {
    Ecore_Evas *ee;
@@ -4453,7 +4453,7 @@ ecore_evas_gl_sdl_new(const char* name, int w, int h, int fullscreen, int nofram
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_wayland_shm_new(const char *disp_name, unsigned int parent,
 			   int x, int y, int w, int h, Eina_Bool frame)
 {
@@ -4476,7 +4476,7 @@ ecore_evas_wayland_shm_new(const char *disp_name, unsigned int parent,
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_wayland_egl_new(const char *disp_name, unsigned int parent,
 			   int x, int y, int w, int h, Eina_Bool frame)
 {
@@ -4541,7 +4541,7 @@ _wayland_egl_new(const char *disp_name, Ecore_Window parent,
    return ee;
 }
 
-EAPI void
+void
 ecore_evas_wayland_resize(Ecore_Evas *ee, int location)
 {
    Ecore_Evas_Interface_Wayland *iface;
@@ -4551,7 +4551,7 @@ ecore_evas_wayland_resize(Ecore_Evas *ee, int location)
    iface->resize(ee, location);
 }
 
-EAPI void
+void
 ecore_evas_wayland_move(Ecore_Evas *ee, int x, int y)
 {
    Ecore_Evas_Interface_Wayland *iface;
@@ -4561,7 +4561,7 @@ ecore_evas_wayland_move(Ecore_Evas *ee, int x, int y)
    iface->move(ee, x, y);
 }
 
-EAPI void
+void
 ecore_evas_wayland_pointer_set(Ecore_Evas *ee, int hot_x, int hot_y)
 {
    Ecore_Evas_Interface_Wayland *iface;
@@ -4571,7 +4571,7 @@ ecore_evas_wayland_pointer_set(Ecore_Evas *ee, int hot_x, int hot_y)
    iface->pointer_set(ee, hot_x, hot_y);
 }
 
-EAPI void
+void
 ecore_evas_wayland_type_set(Ecore_Evas *ee, int type)
 {
    Ecore_Evas_Interface_Wayland *iface;
@@ -4581,7 +4581,7 @@ ecore_evas_wayland_type_set(Ecore_Evas *ee, int type)
    iface->type_set(ee, type);
 }
 
-EAPI Ecore_Wl_Window *
+Ecore_Wl_Window *
 ecore_evas_wayland_window_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Wayland *iface;
@@ -4591,7 +4591,7 @@ ecore_evas_wayland_window_get(const Ecore_Evas *ee)
    return iface->window_get(ee);
 }
 
-EAPI Ecore_Cocoa_Window *
+Ecore_Cocoa_Window *
 ecore_evas_cocoa_window_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Cocoa *iface;
@@ -4600,7 +4600,7 @@ ecore_evas_cocoa_window_get(const Ecore_Evas *ee)
    return iface->window_get(ee);
 }
 
-EAPI Ecore_Wl2_Window *
+Ecore_Wl2_Window *
 ecore_evas_wayland2_window_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Wayland *iface;
@@ -4610,7 +4610,7 @@ ecore_evas_wayland2_window_get(const Ecore_Evas *ee)
    return iface->window2_get(ee);
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_drm_new(const char *disp_name, unsigned int parent,
                    int x, int y, int w, int h)
 {
@@ -4631,7 +4631,7 @@ ecore_evas_drm_new(const char *disp_name, unsigned int parent,
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_gl_drm_new(const char *disp_name, unsigned int parent,
                           int x, int y, int w, int h)
 {
@@ -4653,7 +4653,7 @@ ecore_evas_gl_drm_new(const char *disp_name, unsigned int parent,
 
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_software_gdi_new(Ecore_Win32_Window *parent,
 			    int                 x,
 			    int                 y,
@@ -4678,7 +4678,7 @@ ecore_evas_software_gdi_new(Ecore_Win32_Window *parent,
 
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_software_ddraw_new(Ecore_Win32_Window *parent,
 			      int                 x,
 			      int                 y,
@@ -4702,7 +4702,7 @@ ecore_evas_software_ddraw_new(Ecore_Win32_Window *parent,
    return ee;
 }
 
-EAPI Ecore_Win32_Window *
+Ecore_Win32_Window *
 ecore_evas_win32_window_get(const Ecore_Evas *ee)
 {
    Ecore_Evas_Interface_Win32 *iface;
@@ -4712,7 +4712,7 @@ ecore_evas_win32_window_get(const Ecore_Evas *ee)
    return iface->window_get(ee);
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_cocoa_new(Ecore_Cocoa_Window *parent, int x, int y, int w, int h)
 {
    Ecore_Evas *ee;
@@ -4732,7 +4732,7 @@ ecore_evas_cocoa_new(Ecore_Cocoa_Window *parent, int x, int y, int w, int h)
    return ee;
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_psl1ght_new(const char* name, int w, int h)
 {
    Ecore_Evas *ee;
@@ -5155,7 +5155,7 @@ _direct_key_updown_cb(Ecore_Evas *ee, const Ecore_Event_Key *info, Eina_Bool dow
    return processed;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 _ecore_evas_input_direct_cb(void *window, int type, const void *info)
 {
    Ecore_Evas *ee = window;
@@ -5187,7 +5187,7 @@ _ecore_evas_input_direct_cb(void *window, int type, const void *info)
      }
 }
 
-EAPI void
+void
 _ecore_evas_mouse_inout_set(Ecore_Evas *ee, Efl_Input_Device *mouse,
                             Eina_Bool in, Eina_Bool force_out)
 {
@@ -5218,7 +5218,7 @@ _ecore_evas_mouse_inout_set(Ecore_Evas *ee, Efl_Input_Device *mouse,
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 _ecore_evas_mouse_in_check(Ecore_Evas *ee, Efl_Input_Device *mouse)
 {
    if (!mouse)
@@ -5227,7 +5227,7 @@ _ecore_evas_mouse_in_check(Ecore_Evas *ee, Efl_Input_Device *mouse)
    return eina_list_data_find(ee->mice_in, mouse) ? EINA_TRUE : EINA_FALSE;
 }
 
-EAPI void
+void
 ecore_evas_callback_device_mouse_out_set(Ecore_Evas *ee,
                                          Ecore_Evas_Mouse_IO_Cb func)
 {
@@ -5237,7 +5237,7 @@ ecore_evas_callback_device_mouse_out_set(Ecore_Evas *ee,
    ee->func.fn_device_mouse_out = func;
 }
 
-EAPI void
+void
 ecore_evas_callback_device_mouse_in_set(Ecore_Evas *ee,
                                         Ecore_Evas_Mouse_IO_Cb func)
 {
@@ -5249,13 +5249,13 @@ ecore_evas_callback_device_mouse_in_set(Ecore_Evas *ee,
 
 static Evas *(*replacement_new)(int w, int h) = NULL;
 
-EAPI void
+void
 ecore_evas_callback_new_set(Evas *(*func)(int w, int h))
 {
    replacement_new = func;
 }
 
-EAPI Evas *
+Evas *
 ecore_evas_evas_new(Ecore_Evas *ee, int w, int h)
 {
    Evas *e;
@@ -5293,7 +5293,7 @@ _ecore_evas_event_del(void *data, const Efl_Event *ev EINA_UNUSED)
    ecore_evas_free(ee);
 }
 
-EAPI void
+void
 ecore_evas_done(Ecore_Evas *ee, Eina_Bool single_window)
 {
    _ecore_evas_register(ee);
@@ -5457,7 +5457,7 @@ _ecore_evas_animator_thaw(Ecore_Animator *in)
    _ticking_start(ee);
 }
 
-EAPI void
+void
 ecore_evas_callback_selection_changed_set(Ecore_Evas *ee, Ecore_Evas_Selection_Changed_Cb func)
 {
    ECORE_EVAS_CHECK(ee);
@@ -5559,7 +5559,7 @@ _iterator_to_array(Eina_Iterator *iter, const char *existing_type)
    return ret;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_selection_set(Ecore_Evas *ee, unsigned int seat, Ecore_Evas_Selection_Buffer buffer, Eina_Content *content)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(ee, EINA_FALSE);
@@ -5596,7 +5596,7 @@ ecore_evas_selection_set(Ecore_Evas *ee, unsigned int seat, Ecore_Evas_Selection
    return success;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_selection_exists(Ecore_Evas *ee, unsigned int seat, Ecore_Evas_Selection_Buffer buffer)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(ee, EINA_FALSE);
@@ -5629,7 +5629,7 @@ _iterator_to_array_stringshared(Eina_Iterator *iter)
    return ret;
 }
 
-EAPI Eina_Future*
+Eina_Future*
 ecore_evas_selection_get(Ecore_Evas *ee, unsigned int seat, Ecore_Evas_Selection_Buffer buffer, Eina_Iterator *acceptable_types)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(ee, NULL);
@@ -5640,7 +5640,7 @@ ecore_evas_selection_get(Ecore_Evas *ee, unsigned int seat, Ecore_Evas_Selection
    return CALL(selection_request)(ee, seat, buffer, _iterator_to_array_stringshared(acceptable_types));
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_drag_start(Ecore_Evas *ee, unsigned int seat, Eina_Content *content, Ecore_Evas *drag_rep, const char* action, Ecore_Evas_Drag_Finished_Cb terminate_cb, void *data)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(ee, EINA_FALSE);
@@ -5665,7 +5665,7 @@ ecore_evas_drag_start(Ecore_Evas *ee, unsigned int seat, Eina_Content *content, 
    return success;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_drag_cancel(Ecore_Evas *ee, unsigned int seat)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(ee, EINA_FALSE);
@@ -5675,21 +5675,21 @@ ecore_evas_drag_cancel(Ecore_Evas *ee, unsigned int seat)
    return CALL(dnd_stop)(ee, seat);
 }
 
-EAPI void
+void
 ecore_evas_callback_drop_motion_set(Ecore_Evas *ee, Ecore_Evas_Drag_Motion_Cb cb)
 {
    ECORE_EVAS_CHECK(ee);
    ee->func.fn_dnd_motion = cb;
 }
 
-EAPI void
+void
 ecore_evas_callback_drop_state_changed_set(Ecore_Evas *ee, Ecore_Evas_Drag_State_Changed_Cb cb)
 {
    ECORE_EVAS_CHECK(ee);
    ee->func.fn_dnd_state_change = cb;
 }
 
-EAPI void
+void
 ecore_evas_callback_drop_drop_set(Ecore_Evas *ee, Ecore_Evas_Drop_Cb cb)
 {
    ECORE_EVAS_CHECK(ee);
@@ -5708,7 +5708,7 @@ _ecore_evas_active_dnd_free(Ecore_Evas_Active_Dnd *dnd)
    free(dnd);
 }
 
-EAPI void
+void
 ecore_evas_dnd_enter(Ecore_Evas *ee, unsigned int seat, Eina_Iterator *available_types, Eina_Position2D pos)
 {
    Eina_Stringshare *s;
@@ -5734,7 +5734,7 @@ ecore_evas_dnd_enter(Ecore_Evas *ee, unsigned int seat, Eina_Iterator *available
      ee->func.fn_dnd_state_change(ee, seat, pos, EINA_TRUE);
 }
 
-EAPI void
+void
 ecore_evas_dnd_position_set(Ecore_Evas *ee, unsigned int seat, Eina_Position2D pos)
 {
    Ecore_Evas_Active_Dnd *dnd;
@@ -5748,7 +5748,7 @@ ecore_evas_dnd_position_set(Ecore_Evas *ee, unsigned int seat, Eina_Position2D p
      ee->func.fn_dnd_motion(ee, seat, pos);
 }
 
-EAPI void
+void
 ecore_evas_dnd_leave(Ecore_Evas *ee, unsigned int seat, Eina_Position2D pos)
 {
    Ecore_Evas_Active_Dnd *dnd;
@@ -5768,7 +5768,7 @@ ecore_evas_dnd_leave(Ecore_Evas *ee, unsigned int seat, Eina_Position2D pos)
      }
 }
 
-EAPI Eina_Position2D
+Eina_Position2D
 ecore_evas_dnd_pos_get(Ecore_Evas *ee, unsigned int seat)
 {
    Ecore_Evas_Active_Dnd *dnd;
@@ -5783,7 +5783,7 @@ err:
    return EINA_POSITION2D(0, 0);
 }
 
-EAPI Eina_Accessor*
+Eina_Accessor*
 ecore_evas_drop_available_types_get(Ecore_Evas *ee, unsigned int seat)
 {
    Ecore_Evas_Active_Dnd *dnd;

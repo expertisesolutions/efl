@@ -822,7 +822,7 @@ ELM_PART_OVERRIDE_CONTENT_SET_NO_SD(efl_ui_progressbar_legacy)
 
 /* Efl.Part for legacy end */
 
-EAPI Evas_Object *
+Evas_Object *
 elm_progressbar_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
@@ -832,7 +832,7 @@ elm_progressbar_add(Evas_Object *parent)
    return obj;
 }
 
-EAPI void
+void
 elm_progressbar_pulse_set(Evas_Object *obj, Eina_Bool pulse)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd);
@@ -844,14 +844,14 @@ elm_progressbar_pulse_set(Evas_Object *obj, Eina_Bool pulse)
    efl_ui_widget_theme_apply(obj);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_progressbar_pulse_get(const Evas_Object *obj)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd, EINA_FALSE);
    return sd->pulse;
 }
 
-EAPI void
+void
 elm_progressbar_pulse(Evas_Object *obj, Eina_Bool state)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd);
@@ -864,27 +864,27 @@ elm_progressbar_pulse(Evas_Object *obj, Eina_Bool state)
    _apply_pulse_state(obj, sd);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_progressbar_is_pulsing_get(const Evas_Object *obj)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd, EINA_FALSE);
    return (sd->pulse_state && sd->pulse);
 }
 
-EAPI void
+void
 elm_progressbar_part_value_set(Evas_Object *obj, const char *part, double val)
 {
    if (EINA_DBL_EQ(efl_ui_range_value_get(efl_part(obj, part)), val)) return;
    efl_ui_range_value_set(efl_part(obj, part), val);
 }
 
-EAPI double
+double
 elm_progressbar_part_value_get(const Evas_Object *obj, const char *part)
 {
    return efl_ui_range_value_get(efl_part(obj, part));
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_progressbar_horizontal_get(const Evas_Object *obj)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd, EINA_FALSE);
@@ -892,7 +892,7 @@ elm_progressbar_horizontal_get(const Evas_Object *obj)
    return _is_horizontal(sd->dir);
 }
 
-EAPI void
+void
 elm_progressbar_inverted_set(Evas_Object *obj, Eina_Bool inverted)
 {
    Efl_Ui_Layout_Orientation dir;
@@ -904,7 +904,7 @@ elm_progressbar_inverted_set(Evas_Object *obj, Eina_Bool inverted)
    efl_ui_layout_orientation_set(obj, dir);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_progressbar_inverted_get(const Evas_Object *obj)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd, EINA_FALSE);
@@ -912,7 +912,7 @@ elm_progressbar_inverted_get(const Evas_Object *obj)
    return efl_ui_layout_orientation_is_inverted(sd->dir);
 }
 
-EAPI void
+void
 elm_progressbar_horizontal_set(Evas_Object *obj, Eina_Bool horizontal)
 {
    Efl_Ui_Layout_Orientation dir;
@@ -957,7 +957,7 @@ _format_legacy_to_format_eo_free_cb(void *data)
    free(pfwd);
 }
 
-EAPI void
+void
 elm_progressbar_unit_format_function_set(Evas_Object *obj, progressbar_func_type func, progressbar_freefunc_type free_func)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd);
@@ -972,21 +972,21 @@ elm_progressbar_unit_format_function_set(Evas_Object *obj, progressbar_func_type
                           _format_legacy_to_format_eo_free_cb);
 }
 
-EAPI void
+void
 elm_progressbar_span_size_set(Evas_Object *obj, Evas_Coord size)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd);
    _progressbar_span_size_set(obj, sd, size);
 }
 
-EAPI Evas_Coord
+Evas_Coord
 elm_progressbar_span_size_get(const Evas_Object *obj)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd, 0);
    return sd->size;
 }
 
-EAPI void
+void
 elm_progressbar_unit_format_set(Evas_Object *obj, const char *units)
 {
    EFL_UI_PROGRESSBAR_DATA_GET_OR_RETURN(obj, sd);
@@ -995,7 +995,7 @@ elm_progressbar_unit_format_set(Evas_Object *obj, const char *units)
    efl_ui_format_string_set(obj, units, EFL_UI_FORMAT_STRING_TYPE_SIMPLE);
 }
 
-EAPI const char *
+const char *
 elm_progressbar_unit_format_get(const Evas_Object *obj)
 {
    const char *fmt = NULL;
@@ -1003,13 +1003,13 @@ elm_progressbar_unit_format_get(const Evas_Object *obj)
    return fmt;
 }
 
-EAPI void
+void
 elm_progressbar_value_set(Evas_Object *obj, double val)
 {
    efl_ui_range_value_set(obj, val);
 }
 
-EAPI double
+double
 elm_progressbar_value_get(const Evas_Object *obj)
 {
    return efl_ui_range_value_get(obj);

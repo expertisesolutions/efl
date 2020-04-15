@@ -171,31 +171,31 @@ _efl_canvas_vg_gradient_linear_efl_duplicate_duplicate(const Eo *obj, Efl_Canvas
    return cn;
 }
 
-EAPI void
+void
 evas_vg_gradient_linear_start_set(Evas_Vg_Gradient_Linear *obj, double x, double y)
 {
    efl_gfx_gradient_linear_start_set(obj, x, y);
 }
 
-EAPI void
+void
 evas_vg_gradient_linear_start_get(Evas_Vg_Gradient_Linear *obj, double *x, double *y)
 {
    efl_gfx_gradient_linear_start_get(obj, x, y);
 }
 
-EAPI void
+void
 evas_vg_gradient_linear_end_set(Evas_Vg_Gradient_Linear *obj, double x, double y)
 {
    efl_gfx_gradient_linear_end_set(obj, x, y);
 }
 
-EAPI void
+void
 evas_vg_gradient_linear_end_get(Evas_Vg_Gradient_Linear *obj, double *x, double *y)
 {
    efl_gfx_gradient_linear_end_get(obj, x, y);
 }
 
-EAPI Evas_Vg_Gradient_Linear *
+Evas_Vg_Gradient_Linear *
 evas_vg_gradient_linear_add(Evas_Vg_Container *parent)
 {
    return efl_add(EFL_CANVAS_VG_GRADIENT_LINEAR_CLASS, parent);

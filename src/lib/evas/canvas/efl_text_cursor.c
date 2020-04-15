@@ -417,7 +417,7 @@ _efl_text_cursor_range_delete(Eo *obj EINA_UNUSED, Efl_Text_Cursor_Data *pd, Efl
    evas_textblock_cursor_range_delete(pd->handle, efl_text_cursor_handle_get(cur2));
 }
 
-EAPI void
+void
 efl_text_cursor_handle_set(Eo *obj, Efl_Text_Cursor_Handle *handle)
 {
    Efl_Text_Cursor_Data *pd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -435,7 +435,7 @@ efl_text_cursor_handle_set(Eo *obj, Efl_Text_Cursor_Handle *handle)
      }
 }
 
-EAPI Efl_Text_Cursor_Handle *
+Efl_Text_Cursor_Handle *
 efl_text_cursor_handle_get(const Eo *obj)
 {
    Efl_Text_Cursor_Data *pd = efl_data_scope_safe_get(obj, MY_CLASS);

@@ -18,9 +18,9 @@
 #include "efreet_xml.h"
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI int efreet_cache_update = 1;
+int efreet_cache_update = 1;
 
 static int _efreet_init_count = 0;
 static int efreet_parsed_locale = 0;
@@ -36,7 +36,7 @@ static uid_t ruid;
 static uid_t rgid;
 #endif
 
-EAPI int
+int
 efreet_init(void)
 {
 #ifndef _WIN32
@@ -127,7 +127,7 @@ shutdown_eina:
    return --_efreet_init_count;
 }
 
-EAPI int
+int
 efreet_shutdown(void)
 {
    if (_efreet_init_count <= 0)
@@ -161,7 +161,7 @@ efreet_shutdown(void)
    return _efreet_init_count;
 }
 
-EAPI void
+void
 efreet_lang_reset(void)
 {
    IF_RELEASE(efreet_lang);
@@ -219,7 +219,7 @@ efreet_lang_modifier_get(void)
    return efreet_lang_modifier;
 }
 
-EAPI const char *
+const char *
 efreet_language_get(void)
 {
    if (efreet_parsed_locale) return efreet_language;
@@ -360,7 +360,7 @@ efreet_array_cat(char *buffer, size_t size, const char *strs[])
 }
 
 #ifndef _WIN32
-EAPI void
+void
 efreet_fsetowner(int fd)
 {
    struct stat st;
@@ -372,14 +372,14 @@ efreet_fsetowner(int fd)
    if (fchown(fd, ruid, rgid) != 0) return;
 }
 #else
-EAPI void
+void
 efreet_fsetowner(int fd EINA_UNUSED)
 {
 }
 #endif
 
 #ifndef _WIN32
-EAPI void
+void
 efreet_setowner(const char *path)
 {
    EINA_SAFETY_ON_NULL_RETURN(path);
@@ -392,7 +392,7 @@ efreet_setowner(const char *path)
    close(fd);
 }
 #else
-EAPI void
+void
 efreet_setowner(const char *path EINA_UNUSED)
 {
 }

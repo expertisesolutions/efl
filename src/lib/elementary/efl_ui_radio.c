@@ -416,14 +416,14 @@ ELM_PART_OVERRIDE_CONTENT_SET_NO_SD(efl_ui_radio_legacy)
 
 /* Efl.Part end */
 
-EAPI Evas_Object *
+Evas_Object *
 elm_radio_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
    return elm_legacy_add(EFL_UI_RADIO_LEGACY_CLASS, parent);
 }
 
-EAPI void
+void
 elm_radio_value_set(Evas_Object *obj, int value)
 {
    EINA_SAFETY_ON_FALSE_RETURN(elm_widget_is_legacy(obj));
@@ -435,7 +435,7 @@ elm_radio_value_set(Evas_Object *obj, int value)
    _state_set_all(sd, EINA_FALSE);
 }
 
-EAPI int
+int
 elm_radio_value_get(const Evas_Object *obj)
 {
    EINA_SAFETY_ON_FALSE_RETURN_VAL(elm_widget_is_legacy(obj), 0);
@@ -443,7 +443,7 @@ elm_radio_value_get(const Evas_Object *obj)
    return sd->group->value;
 }
 
-EAPI void
+void
 elm_radio_value_pointer_set(Efl_Ui_Radio *obj, int *valuep)
 {
    EINA_SAFETY_ON_FALSE_RETURN(elm_widget_is_legacy(obj));
@@ -461,7 +461,7 @@ elm_radio_value_pointer_set(Efl_Ui_Radio *obj, int *valuep)
    else sd->group->valuep = NULL;
 }
 
-EAPI Efl_Canvas_Object *
+Efl_Canvas_Object *
 elm_radio_selected_object_get(const Efl_Ui_Radio *obj)
 {
    EINA_SAFETY_ON_FALSE_RETURN_VAL(elm_widget_is_legacy(obj), NULL);
@@ -480,7 +480,7 @@ elm_radio_selected_object_get(const Efl_Ui_Radio *obj)
    return NULL;
 }
 
-EAPI void
+void
 elm_radio_group_add(Efl_Ui_Radio *obj, Efl_Ui_Radio *group)
 {
    EINA_SAFETY_ON_FALSE_RETURN(elm_widget_is_legacy(obj));

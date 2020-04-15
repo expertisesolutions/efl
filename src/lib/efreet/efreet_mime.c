@@ -348,7 +348,7 @@ _efreet_mimedb_glob_mime_get(unsigned int num)
 
 /** --------------------------------- **/
 
-EAPI int
+int
 efreet_mime_init(void)
 {
    if (++_efreet_mime_init_count != 1)
@@ -397,7 +397,7 @@ shutdown_ecore:
    return --_efreet_mime_init_count;
 }
 
-EAPI int
+int
 efreet_mime_shutdown(void)
 {
    if (_efreet_mime_init_count == 0)
@@ -435,7 +435,7 @@ efreet_mime_shutdown(void)
    return _efreet_mime_init_count;
 }
 
-EAPI const char *
+const char *
 efreet_mime_type_get(const char *file)
 {
    const char *type = NULL;
@@ -461,7 +461,7 @@ efreet_mime_type_get(const char *file)
    return efreet_mime_fallback_check(file);
 }
 
-EAPI const char *
+const char *
 efreet_mime_type_icon_get(const char *mime, const char *theme, unsigned int size)
 {
    const char *icon = NULL;
@@ -540,7 +540,7 @@ efreet_mime_type_icon_get(const char *mime, const char *theme, unsigned int size
    return icon;
 }
 
-EAPI void
+void
 efreet_mime_type_cache_clear(void)
 {
    if (mime_icons)
@@ -551,21 +551,21 @@ efreet_mime_type_cache_clear(void)
    mime_icons = eina_hash_stringshared_new(EINA_FREE_CB(efreet_mime_icon_entry_head_free));
 }
 
-EAPI void
+void
 efreet_mime_type_cache_flush(void)
 {
    efreet_mime_icons_flush(ecore_loop_time_get());
 }
 
 
-EAPI const char *
+const char *
 efreet_mime_magic_type_get(const char *file)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(file, NULL);
    return efreet_mime_magic_check_priority(file, 0, 0);
 }
 
-EAPI const char *
+const char *
 efreet_mime_globs_type_get(const char *file)
 {
    char *sl, *p;
@@ -612,14 +612,14 @@ efreet_mime_globs_type_get(const char *file)
    return NULL;
 }
 
-EAPI const char *
+const char *
 efreet_mime_special_type_get(const char *file)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(file, NULL);
    return efreet_mime_special_check(file);
 }
 
-EAPI const char *
+const char *
 efreet_mime_fallback_type_get(const char *file)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(file, NULL);

@@ -11,11 +11,11 @@
 #endif
 
 #ifdef _WIN32
-#  define EAPI __declspec(dllexport)
+#  define __declspec(dllexport)
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define __attribute__ ((visibility("default")))
 #  else
 #   define EAPI
 #  endif

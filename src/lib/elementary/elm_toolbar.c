@@ -2981,7 +2981,7 @@ _elm_toolbar_efl_ui_widget_focus_highlight_geometry_get(const Eo *obj, Elm_Toolb
    return r;
 }
 
-EAPI Evas_Object *
+Evas_Object *
 elm_toolbar_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
@@ -3439,7 +3439,7 @@ _elm_toolbar_shrink_mode_get(const Eo *obj EINA_UNUSED, Elm_Toolbar_Data *sd)
    return sd->shrink_mode;
 }
 
-EAPI void
+void
 elm_toolbar_transverse_expanded_set(Evas_Object *obj, Eina_Bool transverse_expanded)
 {
    ELM_TOOLBAR_CHECK(obj);
@@ -3451,7 +3451,7 @@ elm_toolbar_transverse_expanded_set(Evas_Object *obj, Eina_Bool transverse_expan
    _sizing_eval(obj);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_toolbar_transverse_expanded_get(const Evas_Object *obj)
 {
    ELM_TOOLBAR_CHECK(obj) EINA_FALSE;
@@ -3683,7 +3683,7 @@ _elm_toolbar_item_state_set(Eo *eo_item EINA_UNUSED, Elm_Toolbar_Item_Data *item
    return EINA_TRUE;
 }
 
-EAPI void
+void
 elm_toolbar_item_state_unset(Elm_Object_Item *it)
 {
    elm_obj_toolbar_item_state_set(it, NULL);
@@ -3755,7 +3755,7 @@ _elm_toolbar_efl_ui_layout_orientable_orientation_get(const Eo *obj EINA_UNUSED,
    return sd->dir;
 }
 
-EAPI void
+void
 elm_toolbar_horizontal_set(Evas_Object *obj, Eina_Bool horizontal)
 {
    Efl_Ui_Layout_Orientation dir;
@@ -3768,7 +3768,7 @@ elm_toolbar_horizontal_set(Evas_Object *obj, Eina_Bool horizontal)
    efl_ui_layout_orientation_set(obj, dir);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_toolbar_horizontal_get(const Evas_Object *obj)
 {
    ELM_TOOLBAR_DATA_GET_OR_RETURN_VAL(obj, sd, EINA_FALSE);
@@ -3818,7 +3818,7 @@ _elm_toolbar_select_mode_get(const Eo *obj EINA_UNUSED, Elm_Toolbar_Data *sd)
    return sd->select_mode;
 }
 
-EAPI void
+void
 elm_toolbar_reorder_mode_set(Evas_Object *obj,
                              Eina_Bool    reorder_mode)
 {
@@ -3828,7 +3828,7 @@ elm_toolbar_reorder_mode_set(Evas_Object *obj,
    sd->reorder_mode = !!reorder_mode;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_toolbar_reorder_mode_get(const Evas_Object *obj)
 {
    ELM_TOOLBAR_CHECK(obj) EINA_FALSE;
@@ -4031,14 +4031,14 @@ _elm_toolbar_efl_canvas_group_group_calculate(Eo *obj, Elm_Toolbar_Data *pd EINA
 
 /* Legacy deprecated functions */
 
-EAPI void
+void
 elm_toolbar_icon_order_lookup_set(Evas_Object *obj EINA_UNUSED,
                                    Elm_Icon_Lookup_Order order EINA_UNUSED)
 {
    // this method's behaviour has been overridden by elm_config_icon_theme_set
 }
 
-EAPI Elm_Icon_Lookup_Order
+Elm_Icon_Lookup_Order
 elm_toolbar_icon_order_lookup_get(const Evas_Object *obj EINA_UNUSED)
 {
    return ELM_ICON_LOOKUP_FDO_THEME;

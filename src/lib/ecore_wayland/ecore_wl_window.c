@@ -190,7 +190,7 @@ _ecore_wl_window_shell_surface_init(Ecore_Wl_Window *win)
      }
 }
 
-EAPI Ecore_Wl_Window *
+Ecore_Wl_Window *
 ecore_wl_window_new(Ecore_Wl_Window *parent, int x, int y, int w, int h, int buffer_type)
 {
    Ecore_Wl_Window *win;
@@ -231,7 +231,7 @@ ecore_wl_window_new(Ecore_Wl_Window *parent, int x, int y, int w, int h, int buf
    return win;
 }
 
-EAPI void
+void
 ecore_wl_window_free(Ecore_Wl_Window *win)
 {
    Ecore_Wl_Input *input;
@@ -280,7 +280,7 @@ ecore_wl_window_free(Ecore_Wl_Window *win)
    free(win);
 }
 
-EAPI void
+void
 ecore_wl_window_move(Ecore_Wl_Window *win, int x, int y)
 {
    Ecore_Wl_Input *input;
@@ -309,7 +309,7 @@ ecore_wl_window_move(Ecore_Wl_Window *win, int x, int y)
                            input->display->serial);
 }
 
-EAPI void
+void
 ecore_wl_window_resize(Ecore_Wl_Window *win, int w EINA_UNUSED, int h EINA_UNUSED, int location)
 {
    Ecore_Wl_Input *input;
@@ -338,7 +338,7 @@ ecore_wl_window_resize(Ecore_Wl_Window *win, int w EINA_UNUSED, int h EINA_UNUSE
                              input->display->serial, location);
 }
 
-EAPI void
+void
 ecore_wl_window_damage(Ecore_Wl_Window *win, int x, int y, int w, int h)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -348,7 +348,7 @@ ecore_wl_window_damage(Ecore_Wl_Window *win, int x, int y, int w, int h)
    if (win->surface) wl_surface_damage(win->surface, x, y, w, h);
 }
 
-EAPI void
+void
 ecore_wl_window_commit(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -359,7 +359,7 @@ ecore_wl_window_commit(Ecore_Wl_Window *win)
      wl_surface_commit(win->surface);
 }
 
-EAPI void
+void
 ecore_wl_window_buffer_attach(Ecore_Wl_Window *win, struct wl_buffer *buffer, int x, int y)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -388,7 +388,7 @@ ecore_wl_window_buffer_attach(Ecore_Wl_Window *win, struct wl_buffer *buffer, in
      }
 }
 
-EAPI struct wl_surface *
+struct wl_surface *
 ecore_wl_window_surface_create(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -415,7 +415,7 @@ ecore_wl_window_surface_create(Ecore_Wl_Window *win)
    return win->surface;
 }
 
-EAPI void
+void
 ecore_wl_window_show(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -427,7 +427,7 @@ ecore_wl_window_show(Ecore_Wl_Window *win)
    _ecore_wl_window_shell_surface_init(win);
 }
 
-EAPI void
+void
 ecore_wl_window_hide(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -447,7 +447,7 @@ ecore_wl_window_hide(Ecore_Wl_Window *win)
    win->surface = NULL;
 }
 
-EAPI void
+void
 ecore_wl_window_raise(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -459,7 +459,7 @@ ecore_wl_window_raise(Ecore_Wl_Window *win)
      wl_shell_surface_set_toplevel(win->shell_surface);
 }
 
-EAPI void
+void
 ecore_wl_window_maximized_set(Ecore_Wl_Window *win, Eina_Bool maximized)
 {
    Eina_Bool prev;
@@ -491,7 +491,7 @@ ecore_wl_window_maximized_set(Ecore_Wl_Window *win, Eina_Bool maximized)
    win->maximized = maximized;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl_window_maximized_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -501,7 +501,7 @@ ecore_wl_window_maximized_get(Ecore_Wl_Window *win)
    return win->maximized;
 }
 
-EAPI void
+void
 ecore_wl_window_fullscreen_set(Ecore_Wl_Window *win, Eina_Bool fullscreen)
 {
    Eina_Bool prev;
@@ -538,7 +538,7 @@ ecore_wl_window_fullscreen_set(Ecore_Wl_Window *win, Eina_Bool fullscreen)
    win->fullscreen = fullscreen;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl_window_fullscreen_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -548,7 +548,7 @@ ecore_wl_window_fullscreen_get(Ecore_Wl_Window *win)
    return win->fullscreen;
 }
 
-EAPI void
+void
 ecore_wl_window_transparent_set(Ecore_Wl_Window *win, Eina_Bool transparent)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -563,7 +563,7 @@ ecore_wl_window_transparent_set(Ecore_Wl_Window *win, Eina_Bool transparent)
      ecore_wl_window_opaque_region_set(win, win->opaque.x, win->opaque.y, 0, 0);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl_window_alpha_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -573,7 +573,7 @@ ecore_wl_window_alpha_get(Ecore_Wl_Window *win)
    return win->alpha;
 }
 
-EAPI void
+void
 ecore_wl_window_alpha_set(Ecore_Wl_Window *win, Eina_Bool alpha)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -588,7 +588,7 @@ ecore_wl_window_alpha_set(Ecore_Wl_Window *win, Eina_Bool alpha)
      ecore_wl_window_opaque_region_set(win, win->opaque.x, win->opaque.y, 0, 0);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl_window_transparent_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -598,7 +598,7 @@ ecore_wl_window_transparent_get(Ecore_Wl_Window *win)
    return win->transparent;
 }
 
-EAPI void
+void
 ecore_wl_window_update_size(Ecore_Wl_Window *win, int w, int h)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -619,7 +619,7 @@ ecore_wl_window_update_size(Ecore_Wl_Window *win, int w, int h)
                                      win->allocation.w, win->allocation.h);
 }
 
-EAPI void
+void
 ecore_wl_window_update_location(Ecore_Wl_Window *win, int x, int y)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -635,7 +635,7 @@ ecore_wl_window_update_location(Ecore_Wl_Window *win, int x, int y)
                                      win->allocation.w, win->allocation.h);
 }
 
-EAPI struct wl_surface *
+struct wl_surface *
 ecore_wl_window_surface_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -646,7 +646,7 @@ ecore_wl_window_surface_get(Ecore_Wl_Window *win)
 }
 
 /* @since 1.2 */
-EAPI struct wl_shell_surface *
+struct wl_shell_surface *
 ecore_wl_window_shell_surface_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -657,7 +657,7 @@ ecore_wl_window_shell_surface_get(Ecore_Wl_Window *win)
 }
 
 /* @since 1.11 */
-EAPI struct xdg_surface *
+struct xdg_surface *
 ecore_wl_window_xdg_surface_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -667,7 +667,7 @@ ecore_wl_window_xdg_surface_get(Ecore_Wl_Window *win)
    return win->xdg_surface;
 }
 
-EAPI Ecore_Wl_Window *
+Ecore_Wl_Window *
 ecore_wl_window_find(unsigned int id)
 {
    Ecore_Wl_Window *win = NULL;
@@ -677,7 +677,7 @@ ecore_wl_window_find(unsigned int id)
    return win;
 }
 
-EAPI void
+void
 ecore_wl_window_type_set(Ecore_Wl_Window *win, Ecore_Wl_Window_Type type)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -687,7 +687,7 @@ ecore_wl_window_type_set(Ecore_Wl_Window *win, Ecore_Wl_Window_Type type)
    win->type = type;
 }
 
-EAPI void
+void
 ecore_wl_window_pointer_set(Ecore_Wl_Window *win, struct wl_surface *surface, int hot_x, int hot_y)
 {
    Ecore_Wl_Input *input;
@@ -705,7 +705,7 @@ ecore_wl_window_pointer_set(Ecore_Wl_Window *win, struct wl_surface *surface, in
      ecore_wl_input_pointer_set(input, surface, hot_x, hot_y);
 }
 
-EAPI void
+void
 ecore_wl_window_cursor_from_name_set(Ecore_Wl_Window *win, const char *cursor_name)
 {
    Ecore_Wl_Input *input;
@@ -725,7 +725,7 @@ ecore_wl_window_cursor_from_name_set(Ecore_Wl_Window *win, const char *cursor_na
      ecore_wl_input_cursor_from_name_set(input, cursor_name);
 }
 
-EAPI void
+void
 ecore_wl_window_cursor_default_restore(Ecore_Wl_Window *win)
 {
    Ecore_Wl_Input *input;
@@ -741,7 +741,7 @@ ecore_wl_window_cursor_default_restore(Ecore_Wl_Window *win)
 }
 
 /* @since 1.2 */
-EAPI void
+void
 ecore_wl_window_parent_set(Ecore_Wl_Window *win, Ecore_Wl_Window *parent)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -752,7 +752,7 @@ ecore_wl_window_parent_set(Ecore_Wl_Window *win, Ecore_Wl_Window *parent)
 }
 
 /* @since 1.12 */
-EAPI void
+void
 ecore_wl_window_iconified_set(Ecore_Wl_Window *win, Eina_Bool iconified)
 {
    Eina_Bool prev;
@@ -795,7 +795,7 @@ ecore_wl_window_iconified_set(Ecore_Wl_Window *win, Eina_Bool iconified)
    win->minimized = iconified;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl_window_iconified_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -805,7 +805,7 @@ ecore_wl_window_iconified_get(Ecore_Wl_Window *win)
    return win->minimized;
 }
 
-EAPI Ecore_Wl_Window *
+Ecore_Wl_Window *
 ecore_wl_window_surface_find(struct wl_surface *surface)
 {
    Eina_Iterator *itr;
@@ -830,7 +830,7 @@ ecore_wl_window_surface_find(struct wl_surface *surface)
 }
 
 /* @since 1.8 */
-EAPI void
+void
 ecore_wl_window_input_region_set(Ecore_Wl_Window *win, int x, int y, int w, int h)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -871,7 +871,7 @@ ecore_wl_window_input_region_set(Ecore_Wl_Window *win, int x, int y, int w, int 
 }
 
 /* @since 1.8 */
-EAPI void
+void
 ecore_wl_window_opaque_region_set(Ecore_Wl_Window *win, int x, int y, int w, int h)
 {
    struct wl_region *region;
@@ -911,7 +911,7 @@ ecore_wl_window_opaque_region_set(Ecore_Wl_Window *win, int x, int y, int w, int
 }
 
 /* @since 1.8 */
-EAPI void
+void
 ecore_wl_window_rotation_set(Ecore_Wl_Window *win, int rotation)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -922,7 +922,7 @@ ecore_wl_window_rotation_set(Ecore_Wl_Window *win, int rotation)
 }
 
 /* @since 1.8 */
-EAPI int
+int
 ecore_wl_window_rotation_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -933,7 +933,7 @@ ecore_wl_window_rotation_get(Ecore_Wl_Window *win)
 }
 
 /* @since 1.8 */
-EAPI int
+int
 ecore_wl_window_id_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -944,7 +944,7 @@ ecore_wl_window_id_get(Ecore_Wl_Window *win)
 }
 
 /* @since 1.8 */
-EAPI int
+int
 ecore_wl_window_surface_id_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -955,7 +955,7 @@ ecore_wl_window_surface_id_get(Ecore_Wl_Window *win)
 }
 
 /* @since 1.8 */
-EAPI void
+void
 ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -971,7 +971,7 @@ ecore_wl_window_title_set(Ecore_Wl_Window *win, const char *title)
 }
 
 /* @since 1.8 */
-EAPI void
+void
 ecore_wl_window_class_name_set(Ecore_Wl_Window *win, const char *class_name)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -988,7 +988,7 @@ ecore_wl_window_class_name_set(Ecore_Wl_Window *win, const char *class_name)
 
 /* @since 1.8 */
 /* Maybe we need an ecore_wl_window_pointer_get() too */
-EAPI Ecore_Wl_Input *
+Ecore_Wl_Input *
 ecore_wl_window_keyboard_get(Ecore_Wl_Window *win)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);

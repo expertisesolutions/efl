@@ -195,7 +195,7 @@ _ecore_drm_device_cached_keymap_update(struct xkb_keymap *map)
  * the DRM device itself.
  */
 
-EAPI Ecore_Drm_Device *
+Ecore_Drm_Device *
 ecore_drm_device_find(const char *name, const char *seat)
 {
    Ecore_Drm_Device *dev = NULL;
@@ -294,7 +294,7 @@ out:
    return dev;
 }
 
-EAPI void 
+void 
 ecore_drm_device_free(Ecore_Drm_Device *dev)
 {
    unsigned int i = 0;
@@ -331,7 +331,7 @@ ecore_drm_device_free(Ecore_Drm_Device *dev)
    free(dev);
 }
 
-EAPI Eina_Bool 
+Eina_Bool 
 ecore_drm_device_open(Ecore_Drm_Device *dev)
 {
    uint64_t caps;
@@ -420,7 +420,7 @@ ecore_drm_device_open(Ecore_Drm_Device *dev)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm_device_close(Ecore_Drm_Device *dev)
 {
    /* check for valid device */
@@ -445,13 +445,13 @@ ecore_drm_device_close(Ecore_Drm_Device *dev)
    return EINA_TRUE;
 }
 
-EAPI const Eina_List *
+const Eina_List *
 ecore_drm_devices_get(void)
 {
    return drm_devices;
 }
 
-EAPI Eina_Bool 
+Eina_Bool 
 ecore_drm_device_master_get(Ecore_Drm_Device *dev)
 {
    drm_magic_t mag;
@@ -467,7 +467,7 @@ ecore_drm_device_master_get(Ecore_Drm_Device *dev)
    return EINA_FALSE;
 }
 
-EAPI Eina_Bool 
+Eina_Bool 
 ecore_drm_device_master_set(Ecore_Drm_Device *dev)
 {
    /* check for valid device */
@@ -480,7 +480,7 @@ ecore_drm_device_master_set(Ecore_Drm_Device *dev)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool 
+Eina_Bool 
 ecore_drm_device_master_drop(Ecore_Drm_Device *dev)
 {
    /* check for valid device */
@@ -493,14 +493,14 @@ ecore_drm_device_master_drop(Ecore_Drm_Device *dev)
    return EINA_TRUE;
 }
 
-EAPI int 
+int 
 ecore_drm_device_fd_get(Ecore_Drm_Device *dev)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(dev, -1);
    return dev->drm.fd;
 }
 
-EAPI void 
+void 
 ecore_drm_device_window_set(Ecore_Drm_Device *dev, unsigned int window)
 {
    /* check for valid device */
@@ -509,7 +509,7 @@ ecore_drm_device_window_set(Ecore_Drm_Device *dev, unsigned int window)
    dev->window = window;
 }
 
-EAPI const char *
+const char *
 ecore_drm_device_name_get(Ecore_Drm_Device *dev)
 {
    /* check for valid device */
@@ -518,7 +518,7 @@ ecore_drm_device_name_get(Ecore_Drm_Device *dev)
    return dev->drm.name;
 }
 
-EAPI void
+void
 ecore_drm_device_pointer_xy_get(Ecore_Drm_Device *dev, int *x, int *y)
 {
    Ecore_Drm_Seat *seat;
@@ -547,7 +547,7 @@ ecore_drm_device_pointer_xy_get(Ecore_Drm_Device *dev, int *x, int *y)
      }
 }
 
-EAPI void
+void
 ecore_drm_device_pointer_warp(Ecore_Drm_Device *dev, int x, int y)
 {
    Ecore_Drm_Seat *seat;
@@ -571,7 +571,7 @@ ecore_drm_device_pointer_warp(Ecore_Drm_Device *dev, int x, int y)
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm_device_software_setup(Ecore_Drm_Device *dev)
 {
    unsigned int i = 0;
@@ -618,7 +618,7 @@ err:
    return EINA_FALSE;
 }
 
-EAPI Ecore_Drm_Output *
+Ecore_Drm_Output *
 ecore_drm_device_output_find(Ecore_Drm_Device *dev, int x, int y)
 {
    Ecore_Drm_Output *output;
@@ -648,7 +648,7 @@ ecore_drm_device_output_find(Ecore_Drm_Device *dev, int x, int y)
    return NULL;
 }
 
-EAPI void
+void
 ecore_drm_screen_size_range_get(Ecore_Drm_Device *dev, int *minw, int *minh, int *maxw, int *maxh)
 {
    EINA_SAFETY_ON_NULL_RETURN(dev);
@@ -659,7 +659,7 @@ ecore_drm_screen_size_range_get(Ecore_Drm_Device *dev, int *minw, int *minh, int
    if (maxh) *maxh = dev->max_height;
 }
 
-EAPI Ecore_Drm_Output *
+Ecore_Drm_Output *
 ecore_drm_device_output_name_find(Ecore_Drm_Device *dev, const char *name)
 {
    Ecore_Drm_Output *output;
@@ -675,7 +675,7 @@ ecore_drm_device_output_name_find(Ecore_Drm_Device *dev, const char *name)
    return NULL;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_drm_device_pointer_left_handed_set(Ecore_Drm_Device *dev, Eina_Bool left_handed)
 {
    Ecore_Drm_Seat *seat = NULL;
@@ -709,7 +709,7 @@ ecore_drm_device_pointer_left_handed_set(Ecore_Drm_Device *dev, Eina_Bool left_h
    return EINA_TRUE;
 }
 
-EAPI void
+void
 ecore_drm_device_keyboard_cached_context_set(struct xkb_context *ctx)
 {
    EINA_SAFETY_ON_NULL_RETURN(ctx);
@@ -722,7 +722,7 @@ ecore_drm_device_keyboard_cached_context_set(struct xkb_context *ctx)
    cached_context = ctx;
 }
 
-EAPI void
+void
 ecore_drm_device_keyboard_cached_keymap_set(struct xkb_keymap *map)
 {
    EINA_SAFETY_ON_NULL_RETURN(map);

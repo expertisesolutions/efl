@@ -19,9 +19,9 @@ int _eeze_sensor_log_dom = -1;
 int _eeze_init_count = 0;
 
 static Eeze_Version _version = { VMAJ, VMIN, VMIC, VREV };
-EAPI Eeze_Version *eeze_version = &_version;
+Eeze_Version *eeze_version = &_version;
 
-EAPI int
+int
 eeze_init(void)
 {
    if (++_eeze_init_count != 1)
@@ -98,7 +98,7 @@ eina_fail:
    return --_eeze_init_count;
 }
 
-EAPI int
+int
 eeze_shutdown(void)
 {
    if (_eeze_init_count <= 0)
@@ -126,7 +126,7 @@ eeze_shutdown(void)
    return _eeze_init_count;
 }
 
-EAPI void *
+void *
 eeze_udev_get(void)
 {
    return udev;

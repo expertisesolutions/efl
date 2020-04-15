@@ -60,7 +60,7 @@ static void _elm_code_widget_resize(Elm_Code_Widget *widget, Elm_Code_Line *newl
 
 #include "elm_code_widget_legacy_eo.h"
 
-EAPI Evas_Object *
+Evas_Object *
 elm_code_widget_add(Evas_Object *parent, Elm_Code *code)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);

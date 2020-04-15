@@ -256,7 +256,7 @@ _evas_object_intercept_call_evas(Evas_Object_Protected_Data *obj,
 /* public calls */
 
 #define EVAS_OBJECT_INTERCEPT_CALLBACK_DEFINE(Up_Type, Lower_Type)      \
-  EAPI void                                                             \
+  void                                                             \
   evas_object_intercept_##Lower_Type##_callback_add(Evas_Object *eo_obj,\
                                                     Evas_Object_Intercept_##Up_Type##_Cb func, const void *data) \
   {                                                                     \
@@ -271,7 +271,7 @@ _evas_object_intercept_call_evas(Evas_Object_Protected_Data *obj,
      obj->interceptors->Lower_Type.data = (void *)data;                 \
   }                                                                     \
                                                                         \
-  EAPI void *                                                           \
+  void *                                                           \
   evas_object_intercept_##Lower_Type##_callback_del(Evas_Object *eo_obj,\
                                                     Evas_Object_Intercept_##Up_Type##_Cb func) \
   {                                                                     \

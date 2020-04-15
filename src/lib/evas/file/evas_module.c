@@ -38,7 +38,7 @@ struct _Evas_Module_Task
 
 static Eina_TLS task = 0;
 
-EAPI Eina_Bool
+Eina_Bool
 evas_module_task_cancelled(void)
 {
    Evas_Module_Task *t;
@@ -49,7 +49,7 @@ evas_module_task_cancelled(void)
    return t->cancelled(t->data);
 }
 
-EAPI void
+void
 evas_module_task_register(Eina_Bool (*cancelled)(void *data), void *data)
 {
    Evas_Module_Task *t;
@@ -63,7 +63,7 @@ evas_module_task_register(Eina_Bool (*cancelled)(void *data), void *data)
    eina_tls_set(task, t);
 }
 
-EAPI void
+void
 evas_module_task_unregister(void)
 {
     Evas_Module_Task *t;
@@ -795,7 +795,7 @@ evas_module_shutdown(void)
      }
 }
 
-EAPI int
+int
 _evas_module_engine_inherit(Evas_Func *funcs, char *name, size_t info)
 {
    Evas_Module *em;
@@ -816,7 +816,7 @@ _evas_module_engine_inherit(Evas_Func *funcs, char *name, size_t info)
    return 0;
 }
 
-EAPI const char *
+const char *
 _evas_module_libdir_get(void)
 {
    if (!pfx) pfx = eina_prefix_new
@@ -837,7 +837,7 @@ _evas_module_datadir_get(void)
 }
 
 /* deprecated */
-EAPI const char *
+const char *
 evas_cserve_path_get(void)
 {
    return NULL;

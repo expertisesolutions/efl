@@ -74,7 +74,7 @@ _default_seat(const Eo *obj)
    return evas_device_seat_id_get(evas_default_device_get(evas_object_evas_get(obj), EFL_INPUT_DEVICE_TYPE_SEAT));
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_cnp_selection_set(Evas_Object *obj, Elm_Sel_Type selection,
                                      Elm_Sel_Format format,
                                      const void *buf, size_t buflen)
@@ -111,7 +111,7 @@ elm_cnp_selection_set(Evas_Object *obj, Elm_Sel_Type selection,
    return ecore_evas_selection_set(ee, _default_seat(obj), _elm_sel_type_to_ee_type(selection), content);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_object_cnp_selection_clear(Evas_Object *obj,
                                               Elm_Sel_Type selection)
 {
@@ -121,7 +121,7 @@ elm_object_cnp_selection_clear(Evas_Object *obj,
    return ecore_evas_selection_set(ee, _default_seat(obj), _elm_sel_type_to_ee_type(selection), NULL);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_cnp_clipboard_selection_has_owner(Evas_Object *obj)
 {
    Ecore_Evas *ee;
@@ -160,7 +160,7 @@ _selection_changed_cb(void *data, const Efl_Event *ev)
    free(data);
 }
 
-EAPI void
+void
 elm_cnp_selection_loss_callback_set(Evas_Object *obj, Elm_Sel_Type type, Elm_Selection_Loss_Cb func, const void *data)
 {
    Sel_Lost_Data *ldata = calloc(1, sizeof(Sel_Lost_Data));
@@ -221,7 +221,7 @@ _callback_storage_free(Eo *obj EINA_UNUSED, void *data, const Eina_Future *dead_
    free(data);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_cnp_selection_get(const Evas_Object *obj, Elm_Sel_Type selection,
                                      Elm_Sel_Format format,
                                      Elm_Drop_Cb data_cb, void *udata)

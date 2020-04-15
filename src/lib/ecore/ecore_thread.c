@@ -653,7 +653,7 @@ _ecore_thread_shutdown(void)
    CDD(_ecore_thread_global_hash_cond);
 }
 
-EAPI Ecore_Thread *
+Ecore_Thread *
 ecore_thread_run(Ecore_Thread_Cb func_blocking,
                  Ecore_Thread_Cb func_end,
                  Ecore_Thread_Cb func_cancel,
@@ -736,7 +736,7 @@ retry:
    return (Ecore_Thread *)work;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_cancel(Ecore_Thread *thread)
 {
    Ecore_Pthread_Worker *volatile work = (Ecore_Pthread_Worker *)thread;
@@ -845,7 +845,7 @@ _ecore_thread_wait_end(void *data EINA_UNUSED, Ecore_Thread *thread)
    _ecore_thread_wait_reset(waiter, worker);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_wait(Ecore_Thread *thread, double wait)
 {
    Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
@@ -887,7 +887,7 @@ ecore_thread_wait(Ecore_Thread *thread, double wait)
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_check(Ecore_Thread *thread)
 {
    Ecore_Pthread_Worker *volatile worker = (Ecore_Pthread_Worker *)thread;
@@ -906,7 +906,7 @@ ecore_thread_check(Ecore_Thread *thread)
    return cancel;
 }
 
-EAPI Ecore_Thread *
+Ecore_Thread *
 ecore_thread_feedback_run(Ecore_Thread_Cb func_heavy,
                           Ecore_Thread_Notify_Cb func_notify,
                           Ecore_Thread_Cb func_end,
@@ -1032,7 +1032,7 @@ on_error:
    return (Ecore_Thread *)worker;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_feedback(Ecore_Thread *thread,
                       const void *data)
 {
@@ -1085,7 +1085,7 @@ ecore_thread_feedback(Ecore_Thread *thread,
 }
 
 #if 0
-EAPI Ecore_Thread *
+Ecore_Thread *
 ecore_thread_message_run(Ecore_Thread_Cb func_main,
                          Ecore_Thread_Notify_Cb func_notify,
                          Ecore_Thread_Cb func_end,
@@ -1144,7 +1144,7 @@ ecore_thread_message_run(Ecore_Thread_Cb func_main,
 
 #endif
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_reschedule(Ecore_Thread *thread)
 {
    Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
@@ -1157,14 +1157,14 @@ ecore_thread_reschedule(Ecore_Thread *thread)
    return EINA_TRUE;
 }
 
-EAPI int
+int
 ecore_thread_active_get(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0);
    return _ecore_thread_count;
 }
 
-EAPI int
+int
 ecore_thread_pending_get(void)
 {
    int ret;
@@ -1176,7 +1176,7 @@ ecore_thread_pending_get(void)
    return ret;
 }
 
-EAPI int
+int
 ecore_thread_pending_feedback_get(void)
 {
    int ret;
@@ -1188,7 +1188,7 @@ ecore_thread_pending_feedback_get(void)
    return ret;
 }
 
-EAPI int
+int
 ecore_thread_pending_total_get(void)
 {
    int ret;
@@ -1200,14 +1200,14 @@ ecore_thread_pending_total_get(void)
    return ret;
 }
 
-EAPI int
+int
 ecore_thread_max_get(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0);
    return _ecore_thread_count_max;
 }
 
-EAPI void
+void
 ecore_thread_max_set(int num)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
@@ -1218,14 +1218,14 @@ ecore_thread_max_set(int num)
    _ecore_thread_count_max = num;
 }
 
-EAPI void
+void
 ecore_thread_max_reset(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
    _ecore_thread_count_max = eina_cpu_count() * 4;
 }
 
-EAPI int
+int
 ecore_thread_available_get(void)
 {
    int ret;
@@ -1236,7 +1236,7 @@ ecore_thread_available_get(void)
    return ret;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_local_data_add(Ecore_Thread *thread,
                             const char *key,
                             void *value,
@@ -1274,7 +1274,7 @@ ecore_thread_local_data_add(Ecore_Thread *thread,
    return ret;
 }
 
-EAPI void *
+void *
 ecore_thread_local_data_set(Ecore_Thread *thread,
                             const char *key,
                             void *value,
@@ -1315,7 +1315,7 @@ ecore_thread_local_data_set(Ecore_Thread *thread,
    return NULL;
 }
 
-EAPI void *
+void *
 ecore_thread_local_data_find(Ecore_Thread *thread,
                              const char *key)
 {
@@ -1336,7 +1336,7 @@ ecore_thread_local_data_find(Ecore_Thread *thread,
    return NULL;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_local_data_del(Ecore_Thread *thread,
                             const char *key)
 {
@@ -1355,7 +1355,7 @@ ecore_thread_local_data_del(Ecore_Thread *thread,
    return r;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_global_data_add(const char *key,
                              void *value,
                              Eina_Free_Cb cb,
@@ -1394,7 +1394,7 @@ ecore_thread_global_data_add(const char *key,
    return ret;
 }
 
-EAPI void *
+void *
 ecore_thread_global_data_set(const char *key,
                              void *value,
                              Eina_Free_Cb cb)
@@ -1433,7 +1433,7 @@ ecore_thread_global_data_set(const char *key,
    return NULL;
 }
 
-EAPI void *
+void *
 ecore_thread_global_data_find(const char *key)
 {
    Ecore_Thread_Data *ret;
@@ -1451,7 +1451,7 @@ ecore_thread_global_data_find(const char *key)
    return NULL;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_thread_global_data_del(const char *key)
 {
    Eina_Bool ret;
@@ -1468,7 +1468,7 @@ ecore_thread_global_data_del(const char *key)
    return ret;
 }
 
-EAPI void *
+void *
 ecore_thread_global_data_wait(const char *key,
                               double seconds)
 {

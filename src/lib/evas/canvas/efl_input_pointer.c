@@ -43,7 +43,7 @@ _efl_input_pointer_class_destructor(Efl_Class *klass)
    efl_input_event_instance_clean(klass);
 }
 
-EAPI void
+void
 efl_input_pointer_finalize(Efl_Input_Pointer *obj)
 {
    const Evas_Pointer_Data *pdata;

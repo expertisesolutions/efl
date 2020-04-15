@@ -13,10 +13,10 @@
 #include "eo_private.h"
 #include "eina_promise_private.h"
 
-EAPI const Efl_Event_Description _EFL_EVENT_CALLBACK_ADD =
+const Efl_Event_Description _EFL_EVENT_CALLBACK_ADD =
     EFL_EVENT_DESCRIPTION_HOT("callback,add");
 
-EAPI const Efl_Event_Description _EFL_EVENT_CALLBACK_DEL =
+const Efl_Event_Description _EFL_EVENT_CALLBACK_DEL =
     EFL_EVENT_DESCRIPTION_HOT("callback,del");
 
 static int event_freeze_count = 0;
@@ -718,7 +718,7 @@ _efl_object_debug_name_override(Eo *obj_id EINA_UNUSED, Efl_Object_Data *pd EINA
 {
 }
 
-EAPI void
+void
 efl_del(const Eo *obj)
 {
    if (!obj) return ;
@@ -1164,7 +1164,7 @@ _wref_destruct(Efl_Object_Data *pd)
 /* XXX: Legacy support, remove when legacy is dead. */
 static Eina_Hash *_legacy_events_hash = NULL;
 
-EAPI const Efl_Event_Description *
+const Efl_Event_Description *
 efl_object_legacy_only_event_description_get(const char *_event_name)
 {
    Eina_Stringshare *event_name = eina_stringshare_add(_event_name);
@@ -2486,7 +2486,7 @@ _efl_object_composite_part_is(Eo *comp_obj_id EINA_UNUSED, Efl_Object_Data *pd)
 }
 
 /* Eo_Dbg */
-EAPI void
+void
 efl_dbg_info_free(Efl_Dbg_Info *info)
 {
    eina_value_flush(&(info->value));
@@ -2576,7 +2576,7 @@ static const Eina_Value_Type _EFL_DBG_INFO_TYPE = {
    _eo_dbg_info_pget
 };
 
-EAPI const Eina_Value_Type *EFL_DBG_INFO_TYPE = &_EFL_DBG_INFO_TYPE;
+const Eina_Value_Type *EFL_DBG_INFO_TYPE = &_EFL_DBG_INFO_TYPE;
 
 
 /* EOF event callbacks */
@@ -2798,7 +2798,7 @@ _efl_object_allow_parent_unref_get(const Eo *obj_id EINA_UNUSED, Efl_Object_Data
    return pd->allow_parent_unref;
 }
 
-EAPI void
+void
 ___efl_auto_unref_set(Eo *obj_id, Eina_Bool enable)
 {
    // Write-only property

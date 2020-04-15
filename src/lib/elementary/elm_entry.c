@@ -4144,7 +4144,7 @@ _elm_entry_efl_canvas_group_group_member_add(Eo *obj, Elm_Entry_Data *sd, Evas_O
      evas_object_raise(sd->hit_rect);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 elm_entry_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
@@ -4292,13 +4292,13 @@ _elm_entry_password_get(const Eo *obj EINA_UNUSED, Elm_Entry_Data *sd)
    return sd->password;
 }
 
-EAPI void
+void
 elm_entry_calc_force(Evas_Object *obj)
 {
    efl_layout_calc_force(obj);
 }
 
-EAPI void
+void
 elm_entry_entry_set(Evas_Object *obj,
                     const char *entry)
 {
@@ -4306,7 +4306,7 @@ elm_entry_entry_set(Evas_Object *obj,
    efl_text_set(efl_part(obj, "elm.text"), entry);
 }
 
-EAPI const char *
+const char *
 elm_entry_entry_get(const Evas_Object *obj)
 {
    ELM_ENTRY_CHECK(obj) NULL;
@@ -4693,14 +4693,14 @@ _elm_entry_context_menu_disabled_get(const Eo *obj EINA_UNUSED, Elm_Entry_Data *
    return !sd->context_menu;
 }
 
-EAPI const char *
+const char *
 elm_entry_context_menu_item_label_get(const Elm_Entry_Context_Menu_Item *item)
 {
    if (!item) return NULL;
    return item->label;
 }
 
-EAPI void
+void
 elm_entry_context_menu_item_icon_get(const Elm_Entry_Context_Menu_Item *item,
                                      const char **icon_file,
                                      const char **icon_group,
@@ -4806,7 +4806,7 @@ _elm_entry_markup_filter_remove(Eo *obj EINA_UNUSED, Elm_Entry_Data *sd, Elm_Ent
      }
 }
 
-EAPI char *
+char *
 elm_entry_markup_to_utf8(const char *s)
 {
    char *ss = _elm_util_mkup_to_text(s);
@@ -4814,7 +4814,7 @@ elm_entry_markup_to_utf8(const char *s)
    return ss;
 }
 
-EAPI char *
+char *
 elm_entry_utf8_to_markup(const char *s)
 {
    char *ss = _elm_util_text_to_mkup(s);
@@ -4828,7 +4828,7 @@ _text_get(const Evas_Object *obj)
    return elm_object_text_get(obj);
 }
 
-EAPI void
+void
 elm_entry_filter_limit_size(void *data,
                             Evas_Object *entry,
                             char **text)
@@ -4888,7 +4888,7 @@ elm_entry_filter_limit_size(void *data,
    free(utfstr);
 }
 
-EAPI void
+void
 elm_entry_filter_accept_set(void *data,
                             Evas_Object *entry,
                             char **text)
@@ -5016,7 +5016,7 @@ _elm_entry_file_text_format_set(Eo *obj EINA_UNUSED, Elm_Entry_Data *sd, Elm_Tex
    sd->format = format;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_entry_file_set(Evas_Object *obj, const char *file, Elm_Text_Format format)
 {
    Eina_Bool ret = EINA_FALSE;
@@ -5060,7 +5060,7 @@ _elm_entry_efl_file_file_set(Eo *obj, Elm_Entry_Data *sd, const char *file)
    return efl_file_set(efl_super(obj, MY_CLASS), file);
 }
 
-EAPI void
+void
 elm_entry_file_get(const Evas_Object *obj, const char **file, Elm_Text_Format *format)
 {
    if (file) *file = efl_file_get(obj);
@@ -5093,7 +5093,7 @@ _elm_entry_autosave_get(const Eo *obj EINA_UNUSED, Elm_Entry_Data *sd)
    return sd->auto_save;
 }
 
-EINA_DEPRECATED EAPI void
+EINA_DEPRECATED void
 elm_entry_cnp_textonly_set(Evas_Object *obj,
                            Eina_Bool textonly)
 {
@@ -5106,7 +5106,7 @@ elm_entry_cnp_textonly_set(Evas_Object *obj,
    elm_entry_cnp_mode_set(obj, cnp_mode);
 }
 
-EINA_DEPRECATED EAPI Eina_Bool
+EINA_DEPRECATED Eina_Bool
 elm_entry_cnp_textonly_get(const Evas_Object *obj)
 {
    ELM_ENTRY_CHECK(obj) EINA_FALSE;
@@ -5262,7 +5262,7 @@ _elm_entry_end_visible_set(Eo *obj, Elm_Entry_Data *sd, Eina_Bool setting)
    elm_layout_sizing_eval(obj);
 }
 
-EAPI void
+void
 elm_entry_scrollbar_policy_set(Evas_Object *obj,
                                Elm_Scroller_Policy h,
                                Elm_Scroller_Policy v)
@@ -5279,7 +5279,7 @@ _elm_entry_elm_interface_scrollable_policy_set(Eo *obj, Elm_Entry_Data *sd, Elm_
    elm_interface_scrollable_policy_set(efl_super(obj, MY_CLASS), sd->policy_h, sd->policy_v);
 }
 
-EAPI void
+void
 elm_entry_bounce_set(Evas_Object *obj,
                      Eina_Bool h_bounce,
                      Eina_Bool v_bounce)
@@ -5296,7 +5296,7 @@ _elm_entry_elm_interface_scrollable_bounce_allow_set(Eo *obj, Elm_Entry_Data *sd
    elm_interface_scrollable_bounce_allow_set(efl_super(obj, MY_CLASS), h_bounce, v_bounce);
 }
 
-EAPI void
+void
 elm_entry_bounce_get(const Evas_Object *obj,
                      Eina_Bool *h_bounce,
                      Eina_Bool *v_bounce)

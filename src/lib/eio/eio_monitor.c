@@ -302,19 +302,19 @@ _eio_monitor_rename(Eio_Monitor *monitor, const char *newpath)
  *                                   API                                      *
  *============================================================================*/
 
-EAPI int EIO_MONITOR_ERROR;
-EAPI int EIO_MONITOR_FILE_CREATED;
-EAPI int EIO_MONITOR_FILE_DELETED;
-EAPI int EIO_MONITOR_FILE_MODIFIED;
-EAPI int EIO_MONITOR_FILE_CLOSED;
-EAPI int EIO_MONITOR_DIRECTORY_CREATED;
-EAPI int EIO_MONITOR_DIRECTORY_DELETED;
-EAPI int EIO_MONITOR_DIRECTORY_MODIFIED;
-EAPI int EIO_MONITOR_DIRECTORY_CLOSED;
-EAPI int EIO_MONITOR_SELF_RENAME;
-EAPI int EIO_MONITOR_SELF_DELETED;
+int EIO_MONITOR_ERROR;
+int EIO_MONITOR_FILE_CREATED;
+int EIO_MONITOR_FILE_DELETED;
+int EIO_MONITOR_FILE_MODIFIED;
+int EIO_MONITOR_FILE_CLOSED;
+int EIO_MONITOR_DIRECTORY_CREATED;
+int EIO_MONITOR_DIRECTORY_DELETED;
+int EIO_MONITOR_DIRECTORY_MODIFIED;
+int EIO_MONITOR_DIRECTORY_CLOSED;
+int EIO_MONITOR_SELF_RENAME;
+int EIO_MONITOR_SELF_DELETED;
 
-EAPI Eio_Monitor *
+Eio_Monitor *
 eio_monitor_add(const char *path)
 {
    const char *tmp;
@@ -327,7 +327,7 @@ eio_monitor_add(const char *path)
    return ret;
 }
 
-EAPI Eio_Monitor *
+Eio_Monitor *
 eio_monitor_stringshared_add(const char *path)
 {
    Eio_Monitor *monitor;
@@ -397,7 +397,7 @@ eio_monitor_stringshared_add(const char *path)
    return monitor;
 }
 
-EAPI void
+void
 eio_monitor_del(Eio_Monitor *monitor)
 {
    if (!monitor) return;
@@ -405,7 +405,7 @@ eio_monitor_del(Eio_Monitor *monitor)
      _eio_monitor_free(monitor);
 }
 
-EAPI const char *
+const char *
 eio_monitor_path_get(Eio_Monitor *monitor)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(monitor, NULL);
@@ -413,7 +413,7 @@ eio_monitor_path_get(Eio_Monitor *monitor)
 }
 
 
-EAPI Eina_Bool
+Eina_Bool
 eio_monitor_has_context(const Eio_Monitor *monitor, const char *path)
 {
    if (monitor->fallback)

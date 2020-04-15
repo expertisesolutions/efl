@@ -37,19 +37,19 @@
 static int _ecore_ipc_log_dom = -1;
 
 /****** This swap function are around just for backward compatibility do not remove *******/
-EAPI unsigned short
+unsigned short
 _ecore_ipc_swap_16(unsigned short v)
 {
    return eina_swap16(v);
 }
 
-EAPI unsigned int
+unsigned int
 _ecore_ipc_swap_32(unsigned int v)
 {
    return eina_swap32(v);
 }
 
-EAPI unsigned long long
+unsigned long long
 _ecore_ipc_swap_64(unsigned long long v)
 {
    return eina_swap64(v);
@@ -213,12 +213,12 @@ static void _ecore_ipc_event_server_add_free(void *data, void *ev);
 static void _ecore_ipc_event_server_del_free(void *data, void *ev);
 static void _ecore_ipc_event_server_data_free(void *data, void *ev);
 
-EAPI int ECORE_IPC_EVENT_CLIENT_ADD = 0;
-EAPI int ECORE_IPC_EVENT_CLIENT_DEL = 0;
-EAPI int ECORE_IPC_EVENT_SERVER_ADD = 0;
-EAPI int ECORE_IPC_EVENT_SERVER_DEL = 0;
-EAPI int ECORE_IPC_EVENT_CLIENT_DATA = 0;
-EAPI int ECORE_IPC_EVENT_SERVER_DATA = 0;
+int ECORE_IPC_EVENT_CLIENT_ADD = 0;
+int ECORE_IPC_EVENT_CLIENT_DEL = 0;
+int ECORE_IPC_EVENT_SERVER_ADD = 0;
+int ECORE_IPC_EVENT_SERVER_DEL = 0;
+int ECORE_IPC_EVENT_CLIENT_DATA = 0;
+int ECORE_IPC_EVENT_SERVER_DATA = 0;
 
 static int                  _ecore_ipc_init_count = 0;
 static Eina_List           *servers = NULL;
@@ -303,7 +303,7 @@ ecore_ipc_client_add(Ecore_Ipc_Server *svr)
    return cl;
 }
 
-EAPI int
+int
 ecore_ipc_init(void)
 {
    if (++_ecore_ipc_init_count != 1)
@@ -334,7 +334,7 @@ ecore_ipc_init(void)
    return _ecore_ipc_init_count;
 }
 
-EAPI int
+int
 ecore_ipc_shutdown(void)
 {
    if (--_ecore_ipc_init_count != 0)
@@ -378,7 +378,7 @@ EFL_CALLBACKS_ARRAY_DEFINE(_ecore_ipc_server_cbs,
                            { EFL_NET_SERVER_EVENT_CLIENT_ADD, _ecore_ipc_server_client_add });
 
 /* FIXME: need to add protocol type parameter */
-EAPI Ecore_Ipc_Server *
+Ecore_Ipc_Server *
 ecore_ipc_server_add(Ecore_Ipc_Type type, const char *name, int port, const void *data)
 {
    Ecore_Ipc_Server *svr;
@@ -655,7 +655,7 @@ EFL_CALLBACKS_ARRAY_DEFINE(_ecore_ipc_dialer_copier_cbs,
                            { EFL_IO_COPIER_EVENT_ERROR, _ecore_ipc_dialer_copier_error });
 
 /* FIXME: need to add protocol type parameter */
-EAPI Ecore_Ipc_Server *
+Ecore_Ipc_Server *
 ecore_ipc_server_connect(Ecore_Ipc_Type type, char *name, int port, const void *data)
 {
    Ecore_Ipc_Server *svr;
@@ -803,7 +803,7 @@ ecore_ipc_server_connect(Ecore_Ipc_Type type, char *name, int port, const void *
    return NULL;
 }
 
-EAPI void *
+void *
 ecore_ipc_server_del(Ecore_Ipc_Server *svr)
 {
    void *data;
@@ -844,7 +844,7 @@ ecore_ipc_server_del(Ecore_Ipc_Server *svr)
    return data;
 }
 
-EAPI void *
+void *
 ecore_ipc_server_data_get(Ecore_Ipc_Server *svr)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -856,7 +856,7 @@ ecore_ipc_server_data_get(Ecore_Ipc_Server *svr)
    return svr->data;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_ipc_server_connected_get(Ecore_Ipc_Server *svr)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -872,7 +872,7 @@ ecore_ipc_server_connected_get(Ecore_Ipc_Server *svr)
    return EINA_FALSE;
 }
 
-EAPI Eina_List *
+Eina_List *
 ecore_ipc_server_clients_get(Ecore_Ipc_Server *svr)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -917,7 +917,7 @@ ecore_ipc_server_clients_get(Ecore_Ipc_Server *svr)
      }
 
 /* FIXME: this needs to become an ipc message */
-EAPI int
+int
 ecore_ipc_server_send(Ecore_Ipc_Server *svr, int major, int minor, int ref, int ref_to, int response, const void *data, int size)
 {
    Ecore_Ipc_Msg_Head msg;
@@ -1004,7 +1004,7 @@ ecore_ipc_server_send(Ecore_Ipc_Server *svr, int major, int minor, int ref, int 
    return 0;
 }
 
-EAPI void
+void
 ecore_ipc_server_client_limit_set(Ecore_Ipc_Server *svr, int client_limit, char reject_excess_clients)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -1020,7 +1020,7 @@ ecore_ipc_server_client_limit_set(Ecore_Ipc_Server *svr, int client_limit, char 
      }
 }
 
-EAPI void
+void
 ecore_ipc_server_data_size_max_set(Ecore_Ipc_Server *svr, int size)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -1032,7 +1032,7 @@ ecore_ipc_server_data_size_max_set(Ecore_Ipc_Server *svr, int size)
    svr->max_buf_size = size;
 }
 
-EAPI int
+int
 ecore_ipc_server_data_size_max_get(Ecore_Ipc_Server *svr)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -1044,7 +1044,7 @@ ecore_ipc_server_data_size_max_get(Ecore_Ipc_Server *svr)
    return svr->max_buf_size;
 }
 
-EAPI const char *
+const char *
 ecore_ipc_server_ip_get(Ecore_Ipc_Server *svr)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -1073,7 +1073,7 @@ ecore_ipc_server_ip_get(Ecore_Ipc_Server *svr)
    return NULL;
 }
 
-EAPI void
+void
 ecore_ipc_server_flush(Ecore_Ipc_Server *svr)
 {
    if (!ECORE_MAGIC_CHECK(svr, ECORE_MAGIC_IPC_SERVER))
@@ -1132,7 +1132,7 @@ ecore_ipc_server_flush(Ecore_Ipc_Server *svr)
      }
 
 /* FIXME: this needs to become an ipc message */
-EAPI int
+int
 ecore_ipc_client_send(Ecore_Ipc_Client *cl, int major, int minor, int ref, int ref_to, int response, const void *data, int size)
 {
    Ecore_Ipc_Msg_Head msg;
@@ -1221,7 +1221,7 @@ ecore_ipc_client_send(Ecore_Ipc_Client *cl, int major, int minor, int ref, int r
    return 0;
 }
 
-EAPI Ecore_Ipc_Server *
+Ecore_Ipc_Server *
 ecore_ipc_client_server_get(Ecore_Ipc_Client *cl)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1370,7 +1370,7 @@ _ecore_ipc_server_client_add(void *data, const Efl_Event *event)
    free(cl);
 }
 
-EAPI void *
+void *
 ecore_ipc_client_del(Ecore_Ipc_Client *cl)
 {
    void *data;
@@ -1399,7 +1399,7 @@ ecore_ipc_client_del(Ecore_Ipc_Client *cl)
    return data;
 }
 
-EAPI void
+void
 ecore_ipc_client_data_set(Ecore_Ipc_Client *cl, const void *data)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1411,7 +1411,7 @@ ecore_ipc_client_data_set(Ecore_Ipc_Client *cl, const void *data)
    cl->data = (void *)data;
 }
 
-EAPI void *
+void *
 ecore_ipc_client_data_get(Ecore_Ipc_Client *cl)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1423,7 +1423,7 @@ ecore_ipc_client_data_get(Ecore_Ipc_Client *cl)
    return cl->data;
 }
 
-EAPI void
+void
 ecore_ipc_client_data_size_max_set(Ecore_Ipc_Client *cl, int size)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1435,7 +1435,7 @@ ecore_ipc_client_data_size_max_set(Ecore_Ipc_Client *cl, int size)
    cl->max_buf_size = size;
 }
 
-EAPI int
+int
 ecore_ipc_client_data_size_max_get(Ecore_Ipc_Client *cl)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1447,7 +1447,7 @@ ecore_ipc_client_data_size_max_get(Ecore_Ipc_Client *cl)
    return cl->max_buf_size;
 }
 
-EAPI const char *
+const char *
 ecore_ipc_client_ip_get(Ecore_Ipc_Client *cl)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1469,7 +1469,7 @@ ecore_ipc_client_ip_get(Ecore_Ipc_Client *cl)
    return NULL;
 }
 
-EAPI void
+void
 ecore_ipc_client_flush(Ecore_Ipc_Client *cl)
 {
    if (!ECORE_MAGIC_CHECK(cl, ECORE_MAGIC_IPC_CLIENT))
@@ -1486,7 +1486,7 @@ ecore_ipc_client_flush(Ecore_Ipc_Client *cl)
      }
 }
 
-EAPI int
+int
 ecore_ipc_ssl_available_get(void)
 {
    return ecore_con_ssl_available_get();

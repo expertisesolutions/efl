@@ -39,7 +39,7 @@ struct bq_provider_listener _ecore_buffer_provider_listener =
    _ecore_buffer_provider_cb_add_buffer
 };
 
-EAPI Ecore_Buffer_Provider *
+Ecore_Buffer_Provider *
 ecore_buffer_provider_new(const char *name)
 {
    Ecore_Buffer_Provider *provider;
@@ -71,7 +71,7 @@ ecore_buffer_provider_new(const char *name)
    return provider;
 }
 
-EAPI void
+void
 ecore_buffer_provider_free(Ecore_Buffer_Provider *provider)
 {
    Eina_List *shared_buffers, *l;
@@ -94,7 +94,7 @@ ecore_buffer_provider_free(Ecore_Buffer_Provider *provider)
    free(provider);
 }
 
-EAPI Ecore_Buffer_Return
+Ecore_Buffer_Return
 ecore_buffer_provider_buffer_acquire(Ecore_Buffer_Provider *provider, Ecore_Buffer **ret_buf)
 {
    Shared_Buffer *sb;
@@ -134,7 +134,7 @@ ecore_buffer_provider_buffer_acquire(Ecore_Buffer_Provider *provider, Ecore_Buff
    return ret_flag;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_buffer_provider_buffer_enqueue(Ecore_Buffer_Provider *provider, Ecore_Buffer *buffer)
 {
    Shared_Buffer *sb;
@@ -188,7 +188,7 @@ ecore_buffer_provider_buffer_enqueue(Ecore_Buffer_Provider *provider, Ecore_Buff
    return EINA_TRUE;
 }
 
-EAPI Ecore_Buffer_Return
+Ecore_Buffer_Return
 ecore_buffer_provider_buffer_acquirable_check(Ecore_Buffer_Provider *provider)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(provider, EINA_FALSE);
@@ -204,7 +204,7 @@ ecore_buffer_provider_buffer_acquirable_check(Ecore_Buffer_Provider *provider)
    return ECORE_BUFFER_RETURN_NOT_EMPTY;
 }
 
-EAPI void
+void
 ecore_buffer_provider_consumer_add_cb_set(Ecore_Buffer_Provider *provider, Ecore_Buffer_Provider_Consumer_Add_Cb func, void *data)
 {
    EINA_SAFETY_ON_NULL_RETURN(provider);
@@ -213,7 +213,7 @@ ecore_buffer_provider_consumer_add_cb_set(Ecore_Buffer_Provider *provider, Ecore
    provider->cb.data = data;
 }
 
-EAPI void
+void
 ecore_buffer_provider_consumer_del_cb_set(Ecore_Buffer_Provider *provider, Ecore_Buffer_Provider_Consumer_Del_Cb func, void *data)
 {
    EINA_SAFETY_ON_NULL_RETURN(provider);
@@ -222,7 +222,7 @@ ecore_buffer_provider_consumer_del_cb_set(Ecore_Buffer_Provider *provider, Ecore
    provider->cb.data = data;
 }
 
-EAPI void
+void
 ecore_buffer_provider_buffer_released_cb_set(Ecore_Buffer_Provider *provider, Ecore_Buffer_Provider_Enqueue_Cb func, void *data)
 {
    EINA_SAFETY_ON_NULL_RETURN(provider);

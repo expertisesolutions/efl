@@ -1349,44 +1349,44 @@ _elm_spinner_efl_ui_widget_on_access_update(Eo *obj, Elm_Spinner_Data *_pd EINA_
    _access_spinner_register(obj, _elm_spinner_smart_focus_next_enable);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 elm_spinner_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
    return elm_legacy_add(MY_CLASS, parent);
 }
 
-EAPI void
+void
 elm_spinner_min_max_set(Evas_Object *obj, double min, double max)
 {
    efl_ui_range_limits_set(obj, min, max);
 }
 
-EAPI void
+void
 elm_spinner_min_max_get(const Evas_Object *obj, double *min, double *max)
 {
    efl_ui_range_limits_get(obj, min, max);
 }
 
-EAPI void
+void
 elm_spinner_step_set(Evas_Object *obj, double step)
 {
    efl_ui_range_step_set(obj, step);
 }
 
-EAPI double
+double
 elm_spinner_step_get(const Evas_Object *obj)
 {
    return efl_ui_range_step_get(obj);
 }
 
-EAPI void
+void
 elm_spinner_value_set(Evas_Object *obj, double val)
 {
    efl_ui_range_value_set(obj, val);
 }
 
-EAPI double
+double
 elm_spinner_value_get(const Evas_Object *obj)
 {
    return efl_ui_range_value_get(obj);
@@ -1537,7 +1537,7 @@ _elm_spinner_special_value_add(Eo *obj, Elm_Spinner_Data *sd, double value, cons
    _label_write(obj);
 }
 
-EAPI void
+void
 elm_spinner_special_value_del(Evas_Object *obj,
                               double value)
 {
@@ -1560,7 +1560,7 @@ elm_spinner_special_value_del(Evas_Object *obj,
      }
 }
 
-EAPI const char *
+const char *
 elm_spinner_special_value_get(Evas_Object *obj,
                               double value)
 {

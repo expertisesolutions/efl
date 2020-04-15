@@ -15,24 +15,24 @@
 #include "Ecore_Evas.h"
 #include "ecore_evas_private.h"
 
-EAPI int ECORE_EVAS_EWS_EVENT_MANAGER_CHANGE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_ADD = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_DEL = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_RESIZE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_MOVE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_SHOW = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_HIDE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_FOCUS = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_UNFOCUS = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_RAISE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_LOWER = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_ACTIVATE = 0;
+int ECORE_EVAS_EWS_EVENT_MANAGER_CHANGE = 0;
+int ECORE_EVAS_EWS_EVENT_ADD = 0;
+int ECORE_EVAS_EWS_EVENT_DEL = 0;
+int ECORE_EVAS_EWS_EVENT_RESIZE = 0;
+int ECORE_EVAS_EWS_EVENT_MOVE = 0;
+int ECORE_EVAS_EWS_EVENT_SHOW = 0;
+int ECORE_EVAS_EWS_EVENT_HIDE = 0;
+int ECORE_EVAS_EWS_EVENT_FOCUS = 0;
+int ECORE_EVAS_EWS_EVENT_UNFOCUS = 0;
+int ECORE_EVAS_EWS_EVENT_RAISE = 0;
+int ECORE_EVAS_EWS_EVENT_LOWER = 0;
+int ECORE_EVAS_EWS_EVENT_ACTIVATE = 0;
 
-EAPI int ECORE_EVAS_EWS_EVENT_ICONIFIED_CHANGE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_MAXIMIZED_CHANGE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_LAYER_CHANGE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_FULLSCREEN_CHANGE = 0;
-EAPI int ECORE_EVAS_EWS_EVENT_CONFIG_CHANGE = 0;
+int ECORE_EVAS_EWS_EVENT_ICONIFIED_CHANGE = 0;
+int ECORE_EVAS_EWS_EVENT_MAXIMIZED_CHANGE = 0;
+int ECORE_EVAS_EWS_EVENT_LAYER_CHANGE = 0;
+int ECORE_EVAS_EWS_EVENT_FULLSCREEN_CHANGE = 0;
+int ECORE_EVAS_EWS_EVENT_CONFIG_CHANGE = 0;
 
 #ifdef BUILD_ECORE_EVAS_EWS
 static int _ecore_evas_init_count = 0;
@@ -1091,7 +1091,7 @@ _ecore_evas_ews_cb_hide(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_U
 }
 #endif
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_ews_new(int x, int y, int w, int h)
 {
 // basically a copy of ecore_evas_buffer_new() keep in sync...
@@ -1263,7 +1263,7 @@ ecore_evas_ews_new(int x, int y, int w, int h)
 #endif
 }
 
-EAPI Evas_Object *
+Evas_Object *
 ecore_evas_ews_backing_store_get(const Ecore_Evas *ee)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1280,7 +1280,7 @@ ecore_evas_ews_backing_store_get(const Ecore_Evas *ee)
 #endif
 }
 
-EAPI void
+void
 ecore_evas_ews_delete_request(Ecore_Evas *ee)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1298,7 +1298,7 @@ ecore_evas_ews_delete_request(Ecore_Evas *ee)
 }
 
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_ews_engine_set(const char *engine, const char *options)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1328,7 +1328,7 @@ ecore_evas_ews_engine_set(const char *engine, const char *options)
 #endif
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_evas_ews_setup(int x, int y, int w, int h)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1370,7 +1370,7 @@ ecore_evas_ews_setup(int x, int y, int w, int h)
 #endif
 }
 
-EAPI Ecore_Evas *
+Ecore_Evas *
 ecore_evas_ews_ecore_evas_get(void)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1381,7 +1381,7 @@ ecore_evas_ews_ecore_evas_get(void)
 #endif
 }
 
-EAPI Evas *
+Evas *
 ecore_evas_ews_evas_get(void)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1391,7 +1391,7 @@ ecore_evas_ews_evas_get(void)
 #endif
 }
 
-EAPI Evas_Object *
+Evas_Object *
 ecore_evas_ews_background_get(void)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1410,7 +1410,7 @@ _ecore_evas_ews_background_free(void *data EINA_UNUSED, Evas *e EINA_UNUSED, Eva
 }
 #endif
 
-EAPI void
+void
 ecore_evas_ews_background_set(Evas_Object *o)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1459,7 +1459,7 @@ ecore_evas_ews_background_set(Evas_Object *o)
 }
 
 
-EAPI const Eina_List *
+const Eina_List *
 ecore_evas_ews_children_get(void)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1469,7 +1469,7 @@ ecore_evas_ews_children_get(void)
 #endif
 }
 
-EAPI void
+void
 ecore_evas_ews_manager_set(const void *manager)
 {
 #ifdef BUILD_ECORE_EVAS_EWS
@@ -1481,7 +1481,7 @@ ecore_evas_ews_manager_set(const void *manager)
 #endif
 }
 
-EAPI const void *
+const void *
 ecore_evas_ews_manager_get(void)
 {
 #ifdef BUILD_ECORE_EVAS_EWS

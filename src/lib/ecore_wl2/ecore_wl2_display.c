@@ -791,7 +791,7 @@ _ecore_wl2_display_window_surface_find(Ecore_Wl2_Display *display, struct wl_sur
    return NULL;
 }
 
-EAPI Ecore_Wl2_Display *
+Ecore_Wl2_Display *
 ecore_wl2_display_create(const char *name)
 {
    Ecore_Wl2_Display *ewd;
@@ -884,7 +884,7 @@ _ecore_wl2_display_sync_get(void)
    return !_server_displays || !eina_hash_population(_server_displays);
 }
 
-EAPI Ecore_Wl2_Display *
+Ecore_Wl2_Display *
 ecore_wl2_display_connect(const char *name)
 {
    Ecore_Wl2_Display *ewd;
@@ -961,7 +961,7 @@ found:
    return ewd;
 }
 
-EAPI void
+void
 ecore_wl2_display_disconnect(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN(display);
@@ -988,7 +988,7 @@ ecore_wl2_display_disconnect(Ecore_Wl2_Display *display)
      }
 }
 
-EAPI void
+void
 ecore_wl2_display_destroy(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN(display);
@@ -1011,35 +1011,35 @@ ecore_wl2_display_destroy(Ecore_Wl2_Display *display)
      }
 }
 
-EAPI void
+void
 ecore_wl2_display_terminate(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN(display);
    wl_display_terminate(display->wl.display);
 }
 
-EAPI struct wl_display *
+struct wl_display *
 ecore_wl2_display_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
    return display->wl.display;
 }
 
-EAPI struct wl_shm *
+struct wl_shm *
 ecore_wl2_display_shm_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
    return display->wl.shm;
 }
 
-EAPI void *
+void *
 ecore_wl2_display_dmabuf_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
    return display->wl.dmabuf;
 }
 
-EAPI Eina_Iterator *
+Eina_Iterator *
 ecore_wl2_display_globals_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
@@ -1048,7 +1048,7 @@ ecore_wl2_display_globals_get(Ecore_Wl2_Display *display)
    return eina_hash_iterator_data_new(display->globals);
 }
 
-EAPI void
+void
 ecore_wl2_display_screen_size_get(Ecore_Wl2_Display *display, int *w, int *h)
 {
    Ecore_Wl2_Output *output;
@@ -1081,7 +1081,7 @@ ecore_wl2_display_screen_size_get(Ecore_Wl2_Display *display, int *w, int *h)
    if (h) *h = oh;
 }
 
-EAPI struct wl_registry *
+struct wl_registry *
 ecore_wl2_display_registry_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
@@ -1089,7 +1089,7 @@ ecore_wl2_display_registry_get(Ecore_Wl2_Display *display)
    return display->wl.registry;
 }
 
-EAPI int
+int
 ecore_wl2_display_compositor_version_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, 0);
@@ -1097,7 +1097,7 @@ ecore_wl2_display_compositor_version_get(Ecore_Wl2_Display *display)
    return display->wl.compositor_version;
 }
 
-EAPI Eina_Iterator *
+Eina_Iterator *
 ecore_wl2_display_inputs_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
@@ -1105,7 +1105,7 @@ ecore_wl2_display_inputs_get(Ecore_Wl2_Display *display)
    return eina_inlist_iterator_new(display->inputs);
 }
 
-EAPI Ecore_Wl2_Input *
+Ecore_Wl2_Input *
 ecore_wl2_display_input_find(const Ecore_Wl2_Display *display, unsigned int id)
 {
    Ecore_Wl2_Input *input;
@@ -1117,7 +1117,7 @@ ecore_wl2_display_input_find(const Ecore_Wl2_Display *display, unsigned int id)
    return NULL;
 }
 
-EAPI Ecore_Wl2_Input *
+Ecore_Wl2_Input *
 ecore_wl2_display_input_find_by_name(const Ecore_Wl2_Display *display, const char *name)
 {
    Ecore_Wl2_Input *input;
@@ -1129,21 +1129,21 @@ ecore_wl2_display_input_find_by_name(const Ecore_Wl2_Display *display, const cha
    return NULL;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 ecore_wl2_display_sync_is_done(const Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, EINA_FALSE);
    return display->sync_done;
 }
 
-EAPI const char *
+const char *
 ecore_wl2_display_name_get(const Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);
    return display->name;
 }
 
-EAPI void
+void
 ecore_wl2_display_flush(Ecore_Wl2_Display *display)
 {
    int ret, code;
@@ -1164,13 +1164,13 @@ ecore_wl2_display_flush(Ecore_Wl2_Display *display)
    _begin_recovery_maybe(display, code);
 }
 
-EAPI Ecore_Wl2_Window *
+Ecore_Wl2_Window *
 ecore_wl2_display_window_find_by_surface(Ecore_Wl2_Display *display, struct wl_surface *surface)
 {
    return _ecore_wl2_display_window_surface_find(display, surface);
 }
 
-EAPI Ecore_Wl2_Display *
+Ecore_Wl2_Display *
 ecore_wl2_connected_display_get(const char *name)
 {
    Ecore_Wl2_Display *ewd;
@@ -1201,7 +1201,7 @@ ecore_wl2_connected_display_get(const char *name)
    return ewd;
 }
 
-EAPI struct wl_compositor *
+struct wl_compositor *
 ecore_wl2_display_compositor_get(Ecore_Wl2_Display *display)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(display, NULL);

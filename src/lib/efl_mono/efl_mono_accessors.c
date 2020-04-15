@@ -23,11 +23,11 @@
 #endif
 
 #ifdef _WIN32
-#  define EAPI __declspec(dllexport)
+#  define __declspec(dllexport)
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define __attribute__ ((visibility("default")))
 #  else
 #   define EAPI
 #  endif
@@ -70,7 +70,7 @@ static void eina_mono_owned_carray_free_cb(Eina_Mono_Owned_Accessor* accessor)
    free(accessor);
 }
 
-EAPI Eina_Accessor *eina_mono_owned_carray_length_accessor_new(void** array, unsigned int step, unsigned int length, Eina_Free_Cb free_cb, void *handle)
+Eina_Accessor *eina_mono_owned_carray_length_accessor_new(void** array, unsigned int step, unsigned int length, Eina_Free_Cb free_cb, void *handle)
 {
    Eina_Mono_Owned_Accessor *accessor = calloc(1, sizeof(Eina_Mono_Owned_Accessor));
    if (!accessor) return NULL;

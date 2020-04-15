@@ -73,7 +73,7 @@ struct _Eet_Key
 #endif /* ifdef HAVE_SIGNATURE */
 };
 
-EAPI Eet_Key *
+Eet_Key *
 eet_identity_open(const char               *certificate_file,
                   const char               *private_key_file,
                   Eet_Key_Password_Callback cb)
@@ -243,7 +243,7 @@ on_error:
    return NULL;
 }
 
-EAPI void
+void
 eet_identity_close(Eet_Key *key)
 {
    if (!emile_cipher_init()) return ;
@@ -265,7 +265,7 @@ eet_identity_close(Eet_Key *key)
 #endif /* ifdef HAVE_SIGNATURE */
 }
 
-EAPI void
+void
 eet_identity_print(Eet_Key *key,
                    FILE    *out)
 {
@@ -832,7 +832,7 @@ eet_identity_check(const void   *data_base,
 #endif /* ifdef HAVE_SIGNATURE */
 }
 
-EAPI void
+void
 eet_identity_certificate_print(const unsigned char *certificate,
                                int                  der_length,
                                FILE                *out)

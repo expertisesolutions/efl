@@ -32,7 +32,7 @@ static const char *efreet_trash_dir = NULL;
 # define getuid() GetCurrentProcessId()
 #endif
 
-EAPI int
+int
 efreet_trash_init(void)
 {
     if (++_efreet_trash_init_count != 1)
@@ -52,7 +52,7 @@ efreet_trash_init(void)
     return _efreet_trash_init_count;
 }
 
-EAPI int
+int
 efreet_trash_shutdown(void)
 {
     if (--_efreet_trash_init_count != 0)
@@ -66,7 +66,7 @@ efreet_trash_shutdown(void)
     return _efreet_trash_init_count;
 }
 
-EAPI const char*
+const char*
 efreet_trash_dir_get(const char *file)
 {
     char buf[PATH_MAX + PATH_MAX + 128];
@@ -161,7 +161,7 @@ efreet_trash_dir_get(const char *file)
     return trash_dir;
 }
 
-EAPI int
+int
 efreet_trash_delete_uri(Efreet_Uri *uri, int force_delete)
 {
     char dest[PATH_MAX];
@@ -248,7 +248,7 @@ efreet_trash_delete_uri(Efreet_Uri *uri, int force_delete)
     return 1;
 }
 
-EAPI int
+int
 efreet_trash_is_empty(void)
 {
     char buf[PATH_MAX];
@@ -259,7 +259,7 @@ efreet_trash_is_empty(void)
     return ecore_file_dir_is_empty(buf);
 }
 
-EAPI int
+int
 efreet_trash_empty_trash(void)
 {
     char buf[PATH_MAX];
@@ -276,7 +276,7 @@ efreet_trash_empty_trash(void)
     return 1;
 }
 
-EAPI Eina_List*
+Eina_List*
 efreet_trash_ls(void)
 {
     char *infofile;

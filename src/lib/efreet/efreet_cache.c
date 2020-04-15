@@ -102,9 +102,9 @@ static void *hash_array_string_add(void *hash, const char *key, void *data);
 static Eina_Bool disable_cache;
 static Eina_Bool run_in_tree;
 
-EAPI int EFREET_EVENT_ICON_CACHE_UPDATE = 0;
-EAPI int EFREET_EVENT_DESKTOP_CACHE_UPDATE = 0;
-EAPI int EFREET_EVENT_DESKTOP_CACHE_BUILD = 0;
+int EFREET_EVENT_ICON_CACHE_UPDATE = 0;
+int EFREET_EVENT_DESKTOP_CACHE_UPDATE = 0;
+int EFREET_EVENT_DESKTOP_CACHE_BUILD = 0;
 
 #define IPC_HEAD(_type) \
    Ecore_Ipc_Event_Server_##_type *e = event; \
@@ -276,7 +276,7 @@ _icon_desktop_cache_update_event_add(int event_type)
    ecore_event_add(event_type, ev, icon_cache_update_free, l);
 }
 
-EAPI void (*_efreet_mime_update_func) (void) = NULL;
+void (*_efreet_mime_update_func) (void) = NULL;
 
 static Eina_Bool
 _cb_server_data(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
@@ -464,9 +464,9 @@ efreet_cache_shutdown(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI const char *
+const char *
 efreet_icon_cache_file(const char *theme)
 {
     static char cache_file[PATH_MAX] = { '\0' };
@@ -482,9 +482,9 @@ efreet_icon_cache_file(const char *theme)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI const char *
+const char *
 efreet_icon_theme_cache_file(void)
 {
     char tmp[PATH_MAX] = { '\0' };
@@ -499,9 +499,9 @@ efreet_icon_theme_cache_file(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI const char *
+const char *
 efreet_desktop_util_cache_file(void)
 {
     char tmp[PATH_MAX] = { '\0' };
@@ -528,9 +528,9 @@ efreet_desktop_util_cache_file(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_version_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -550,9 +550,9 @@ efreet_version_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_hash_array_string_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -571,9 +571,9 @@ efreet_hash_array_string_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_hash_string_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -591,9 +591,9 @@ efreet_hash_string_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_array_string_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -610,9 +610,9 @@ efreet_array_string_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI const char *
+const char *
 efreet_desktop_cache_file(void)
 {
     char tmp[PATH_MAX] = { '\0' };
@@ -692,9 +692,9 @@ efreet_icon_directory_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_icon_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -733,9 +733,9 @@ efreet_icon_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_icon_theme_edd(Eina_Bool cache)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -797,9 +797,9 @@ efreet_icon_theme_edd(Eina_Bool cache)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_icon_fallback_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -817,9 +817,9 @@ efreet_icon_fallback_edd(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI Eet_Data_Descriptor *
+Eet_Data_Descriptor *
 efreet_desktop_edd(void)
 {
     Eet_Data_Descriptor_Class eddc;
@@ -1016,9 +1016,9 @@ efreet_cache_icon_theme_list(void)
 }
 
 /*
- * Needs EAPI because of helper binaries
+ * Needs because of helper binaries
  */
-EAPI void
+void
 efreet_cache_array_string_free(Efreet_Cache_Array_String *array)
 {
     if (!array) return;
@@ -1371,7 +1371,7 @@ hash_array_string_add(void *hash, const char *key, void *data)
     return hash;
 }
 
-EAPI void
+void
 efreet_cache_disable(void)
 {
    Eina_Bool prev = disable_cache;
@@ -1387,7 +1387,7 @@ efreet_cache_disable(void)
      }
 }
 
-EAPI void
+void
 efreet_cache_enable(void)
 {
    Eina_Bool prev = disable_cache;

@@ -147,7 +147,7 @@ static const struct wl_callback_listener _ecore_wl_pointer_surface_listener =
 /* local variables */
 static int _pointer_x, _pointer_y;
 
-EAPI void
+void
 ecore_wl_input_grab(Ecore_Wl_Input *input, Ecore_Wl_Window *win, unsigned int button)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -157,7 +157,7 @@ ecore_wl_input_grab(Ecore_Wl_Input *input, Ecore_Wl_Window *win, unsigned int bu
    input->grab_button = button;
 }
 
-EAPI void
+void
 ecore_wl_input_ungrab(Ecore_Wl_Input *input)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -201,7 +201,7 @@ _pointer_update_stop(Ecore_Wl_Input *input)
    input->cursor_timer = NULL;
 }
 
-EAPI void
+void
 ecore_wl_input_pointer_set(Ecore_Wl_Input *input, struct wl_surface *surface, int hot_x, int hot_y)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -214,7 +214,7 @@ ecore_wl_input_pointer_set(Ecore_Wl_Input *input, struct wl_surface *surface, in
                            surface, hot_x, hot_y);
 }
 
-EAPI void
+void
 ecore_wl_input_cursor_size_set(Ecore_Wl_Input *input, const int size)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -231,7 +231,7 @@ ecore_wl_input_cursor_size_set(Ecore_Wl_Input *input, const int size)
      wl_cursor_theme_load(NULL, input->cursor_size, input->display->wl.shm);
 }
 
-EAPI void
+void
 ecore_wl_input_cursor_theme_name_set(Ecore_Wl_Input *input, const char *cursor_theme_name)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -249,7 +249,7 @@ ecore_wl_input_cursor_theme_name_set(Ecore_Wl_Input *input, const char *cursor_t
                           input->display->wl.shm);
 }
 
-EAPI struct xkb_keymap *
+struct xkb_keymap *
 ecore_wl_input_keymap_get(Ecore_Wl_Input *input)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -303,7 +303,7 @@ _ecore_wl_input_cursor_update(void *data)
    return ECORE_CALLBACK_RENEW;
 }
 
-EAPI void
+void
 ecore_wl_input_cursor_from_name_set(Ecore_Wl_Input *input, const char *cursor_name)
 {
    struct wl_cursor *cursor;
@@ -343,7 +343,7 @@ ecore_wl_input_cursor_from_name_set(Ecore_Wl_Input *input, const char *cursor_na
    _ecore_wl_input_cursor_update(input);
 }
 
-EAPI void
+void
 ecore_wl_input_cursor_default_restore(Ecore_Wl_Input *input)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);
@@ -357,7 +357,7 @@ ecore_wl_input_cursor_default_restore(Ecore_Wl_Input *input)
 /**
  * @since 1.8
  */
-EAPI Ecore_Wl_Input *
+Ecore_Wl_Input *
 ecore_wl_input_get(void)
 {
    return _ecore_wl_disp->input;
@@ -366,7 +366,7 @@ ecore_wl_input_get(void)
 /**
  * @since 1.8
  */
-EAPI struct wl_seat *
+struct wl_seat *
 ecore_wl_input_seat_get(Ecore_Wl_Input *input)
 {
    LOGFN(__FILE__, __LINE__, __FUNCTION__);

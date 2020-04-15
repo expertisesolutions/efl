@@ -374,7 +374,7 @@ _elm_combobox_efl_ui_autorepeat_autorepeat_enabled_set(const Eo *obj EINA_UNUSED
    efl_ui_autorepeat_enabled_set(efl_super(obj, MY_CLASS), EINA_FALSE);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 elm_combobox_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
@@ -633,19 +633,19 @@ static const Efl_Class_Description _elm_combobox_class_desc = {
 
 EFL_DEFINE_CLASS(elm_combobox_class_get, &_elm_combobox_class_desc, EFL_UI_BUTTON_CLASS, EFL_ACCESS_WIDGET_ACTION_MIXIN, ELM_ENTRY_CLASS, ELM_GENLIST_CLASS, ELM_HOVER_CLASS, EFL_UI_LEGACY_INTERFACE, NULL);
 
-EAPI Eina_Bool
+Eina_Bool
 elm_combobox_expanded_get(const Elm_Combobox *obj)
 {
    return elm_obj_combobox_expanded_get(obj);
 }
 
-EAPI void
+void
 elm_combobox_hover_begin(Elm_Combobox *obj)
 {
    elm_obj_combobox_hover_begin(obj);
 }
 
-EAPI void
+void
 elm_combobox_hover_end(Elm_Combobox *obj)
 {
    elm_obj_combobox_hover_end(obj);

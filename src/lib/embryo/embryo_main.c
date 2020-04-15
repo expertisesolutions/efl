@@ -10,14 +10,14 @@
 #include "embryo_private.h"
 
 static Embryo_Version _version = { VMAJ, VMIN, VMIC, VREV };
-EAPI Embryo_Version * embryo_version = &_version;
+Embryo_Version * embryo_version = &_version;
 
 static int _embryo_init_count = 0;
 int _embryo_default_log_dom = -1;
 
 /*** EXPORTED CALLS ***/
 
-EAPI int
+int
 embryo_init(void)
 {
    if (++_embryo_init_count != 1)
@@ -47,7 +47,7 @@ shutdown_eina:
    return --_embryo_init_count;
 }
 
-EAPI int
+int
 embryo_shutdown(void)
 {
    if (_embryo_init_count <= 0)

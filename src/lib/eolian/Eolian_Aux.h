@@ -3,29 +3,29 @@
 
 #include <Eolian.h>
 
-#ifdef EAPI
-# undef EAPI
+#ifdef EOLIAN_EAPI
+# undef EOLIAN_EAPI
 #endif
 
 #ifdef _WIN32
-# ifdef EFL_BUILD
+# ifdef EOLIAN_BUILD
 #  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+#   define EOLIAN_EAPI __declspec(dllexport)
 #  else
-#   define EAPI
+#   define EOLIAN_EAPI
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define EOLIAN_EAPI __declspec(dllimport)
 # endif
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define EOLIAN_EAPI __attribute__ ((visibility("default")))
 #  else
-#   define EAPI
+#   define EOLIAN_EAPI
 #  endif
 # else
-#  define EAPI
+#  define EOLIAN_EAPI
 # endif
 #endif
 
@@ -73,7 +73,7 @@ extern "C" {
  *
  * @ingroup Eolian
  */
-EAPI Eina_Hash *eolian_aux_state_class_children_find(const Eolian_State *state);
+EOLIAN_EAPI Eina_Hash *eolian_aux_state_class_children_find(const Eolian_State *state);
 
 /**
  * @brief Get all APIs that are usable on the class.
@@ -100,7 +100,7 @@ EAPI Eina_Hash *eolian_aux_state_class_children_find(const Eolian_State *state);
  *
  * @ingroup Eolian
  */
-EAPI size_t eolian_aux_class_callables_get(const Eolian_Class *klass, Eina_List **funcs, Eina_List **events, size_t *ownfuncs, size_t *ownevs);
+EOLIAN_EAPI size_t eolian_aux_class_callables_get(const Eolian_Class *klass, Eina_List **funcs, Eina_List **events, size_t *ownfuncs, size_t *ownevs);
 
 /**
  * @brief Get all implementations of a function in a state.
@@ -117,7 +117,7 @@ EAPI size_t eolian_aux_class_callables_get(const Eolian_Class *klass, Eina_List 
  *
  * @ingroup Eolian
  */
-EAPI Eina_List *eolian_aux_function_all_implements_get(const Eolian_Function *func, Eina_Hash *class_children);
+EOLIAN_EAPI Eina_List *eolian_aux_function_all_implements_get(const Eolian_Function *func, Eina_Hash *class_children);
 
 /**
  * @brief Get previous implementation in the inheritance hierarchy.
@@ -131,7 +131,7 @@ EAPI Eina_List *eolian_aux_function_all_implements_get(const Eolian_Function *fu
  *
  * @ingroup Eolian
  */
-EAPI const Eolian_Implement *eolian_aux_implement_parent_get(const Eolian_Implement *impl);
+EOLIAN_EAPI const Eolian_Implement *eolian_aux_implement_parent_get(const Eolian_Implement *impl);
 
 /**
  * @brief Get documentation for an implementation.
@@ -147,7 +147,7 @@ EAPI const Eolian_Implement *eolian_aux_implement_parent_get(const Eolian_Implem
  *
  * @ingroup Eolian
  */
-EAPI const Eolian_Documentation *eolian_aux_implement_documentation_get(const Eolian_Implement *impl, Eolian_Function_Type ftype);
+EOLIAN_EAPI const Eolian_Documentation *eolian_aux_implement_documentation_get(const Eolian_Implement *impl, Eolian_Function_Type ftype);
 
 /**
  * @brief Get documentation fallback for an implementation.
@@ -162,7 +162,7 @@ EAPI const Eolian_Documentation *eolian_aux_implement_documentation_get(const Eo
  *
  * @ingroup Eolian
  */
-EAPI const Eolian_Documentation *eolian_aux_implement_documentation_fallback_get(const Eolian_Implement *impl);
+EOLIAN_EAPI const Eolian_Documentation *eolian_aux_implement_documentation_fallback_get(const Eolian_Implement *impl);
 
 #endif
 
@@ -174,7 +174,7 @@ EAPI const Eolian_Documentation *eolian_aux_implement_documentation_fallback_get
 } // extern "C" {
 #endif
 
-#undef EAPI
-#define EAPI
+#undef EOLIAN_EAPI
+#define EOLIAN_EAPI
 
 #endif

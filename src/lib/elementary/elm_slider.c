@@ -1429,34 +1429,34 @@ void _elm_slider_part_indicator_efl_ui_format_apply_formatted_value(Eo *obj EINA
 
 /* Legacy APIs */
 
-EAPI Evas_Object *
+Evas_Object *
 elm_slider_add(Evas_Object *parent)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
    return elm_legacy_add(MY_CLASS, parent);
 }
 
-EAPI void
+void
 elm_slider_span_size_set(Evas_Object *obj, Evas_Coord size)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
    _slider_span_size_set(obj, sd, size);
 }
 
-EAPI Evas_Coord
+Evas_Coord
 elm_slider_span_size_get(const Evas_Object *obj)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd, 0);
    return sd->size;
 }
 
-EAPI void
+void
 elm_slider_unit_format_set(Evas_Object *obj, const char *units)
 {
    efl_ui_format_string_set(obj, units, EFL_UI_FORMAT_STRING_TYPE_SIMPLE);
 }
 
-EAPI const char *
+const char *
 elm_slider_unit_format_get(const Evas_Object *obj)
 {
    const char* fmt = NULL;
@@ -1464,7 +1464,7 @@ elm_slider_unit_format_get(const Evas_Object *obj)
    return fmt;
 }
 
-EAPI void
+void
 elm_slider_horizontal_set(Evas_Object *obj, Eina_Bool horizontal)
 {
    Efl_Ui_Layout_Orientation dir;
@@ -1478,7 +1478,7 @@ elm_slider_horizontal_set(Evas_Object *obj, Eina_Bool horizontal)
    efl_ui_widget_theme_apply(obj);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_slider_horizontal_get(const Evas_Object *obj)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(obj, EINA_FALSE);
@@ -1487,7 +1487,7 @@ elm_slider_horizontal_get(const Evas_Object *obj)
    return _is_horizontal(sd->dir);
 }
 
-EAPI void
+void
 elm_slider_step_set(Evas_Object *obj, double step)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1502,14 +1502,14 @@ elm_slider_step_set(Evas_Object *obj, double step)
    sd->step = step;
 }
 
-EAPI double
+double
 elm_slider_step_get(const Evas_Object *obj)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd, 0.0);
    return sd->step;
 }
 
-EAPI void
+void
 elm_slider_value_set(Evas_Object *obj, double val)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1523,14 +1523,14 @@ elm_slider_value_set(Evas_Object *obj, double val)
    _val_set(obj);
 }
 
-EAPI double
+double
 elm_slider_value_get(const Evas_Object *obj)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd, 0.0);
    return sd->val;
 }
 
-EAPI void
+void
 elm_slider_inverted_set(Evas_Object *obj, Eina_Bool inverted)
 {
    Efl_Ui_Layout_Orientation dir;
@@ -1544,7 +1544,7 @@ elm_slider_inverted_set(Evas_Object *obj, Eina_Bool inverted)
    efl_ui_widget_theme_apply(obj);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_slider_inverted_get(const Evas_Object *obj)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd, EINA_FALSE);
@@ -1585,7 +1585,7 @@ _format_legacy_to_format_eo_free_cb(void *data)
    free(sfwd);
 }
 
-EAPI void
+void
 elm_slider_units_format_function_set(Evas_Object *obj, slider_func_type func, slider_freefunc_type free_func)
 {
    Slider_Format_Wrapper_Data *sfwd = malloc(sizeof(Slider_Format_Wrapper_Data));
@@ -1596,7 +1596,7 @@ elm_slider_units_format_function_set(Evas_Object *obj, slider_func_type func, sl
    efl_ui_format_func_set(obj, sfwd, _format_legacy_to_format_eo_cb, _format_legacy_to_format_eo_free_cb);
 }
 
-EAPI void
+void
 elm_slider_range_enabled_set(Evas_Object *obj, Eina_Bool enable)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1618,14 +1618,14 @@ elm_slider_range_enabled_set(Evas_Object *obj, Eina_Bool enable)
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_slider_range_enabled_get(const Evas_Object *obj)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, pd, EINA_FALSE);
    return pd->intvl_enable;
 }
 
-EAPI void
+void
 elm_slider_range_set(Evas_Object *obj, double from, double to)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1642,7 +1642,7 @@ elm_slider_range_set(Evas_Object *obj, double from, double to)
    _val_set(obj);
 }
 
-EAPI void
+void
 elm_slider_range_get(const Evas_Object *obj, double *from, double *to)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1651,7 +1651,7 @@ elm_slider_range_get(const Evas_Object *obj, double *from, double *to)
    if (to) *to = fmax(sd->intvl_from, sd->intvl_to);
 }
 
-EAPI void
+void
 elm_slider_min_max_set(Evas_Object *obj, double min, double max)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1675,7 +1675,7 @@ elm_slider_min_max_set(Evas_Object *obj, double min, double max)
    _val_set(obj);
 }
 
-EAPI void
+void
 elm_slider_min_max_get(const Evas_Object *obj, double *min, double *max)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1684,13 +1684,13 @@ elm_slider_min_max_get(const Evas_Object *obj, double *min, double *max)
    if (max) *max = sd->val_max;
 }
 
-EAPI void
+void
 elm_slider_indicator_format_set(Evas_Object *obj, const char *indicator)
 {
    efl_ui_format_string_set(efl_part(obj, "indicator"), indicator, EFL_UI_FORMAT_STRING_TYPE_SIMPLE);
 }
 
-EAPI const char *
+const char *
 elm_slider_indicator_format_get(const Evas *obj)
 {
    const char *fmt = NULL;
@@ -1698,7 +1698,7 @@ elm_slider_indicator_format_get(const Evas *obj)
    return fmt;
 }
 
-EAPI void
+void
 elm_slider_indicator_format_function_set(Evas_Object *obj, slider_func_type func, slider_freefunc_type free_func)
 {
    Slider_Format_Wrapper_Data *sfwd = malloc(sizeof(Slider_Format_Wrapper_Data));
@@ -1711,7 +1711,7 @@ elm_slider_indicator_format_function_set(Evas_Object *obj, slider_func_type func
                           _format_legacy_to_format_eo_free_cb);
 }
 
-EAPI void
+void
 elm_slider_indicator_show_on_focus_set(Evas_Object *obj, Eina_Bool flag)
 {
    elm_slider_part_indicator_visible_mode_set(efl_part(obj, "indicator"),
@@ -1719,14 +1719,14 @@ elm_slider_indicator_show_on_focus_set(Evas_Object *obj, Eina_Bool flag)
                                        : ELM_SLIDER_INDICATOR_VISIBLE_MODE_DEFAULT);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_slider_indicator_show_on_focus_get(const Evas_Object *obj)
 {
    return (elm_slider_part_indicator_visible_mode_get(efl_part(obj, "indicator"))
            == ELM_SLIDER_INDICATOR_VISIBLE_MODE_ON_FOCUS);
 }
 
-EAPI void
+void
 elm_slider_indicator_show_set(Evas_Object *obj, Eina_Bool show)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd);
@@ -1753,20 +1753,20 @@ elm_slider_indicator_show_set(Evas_Object *obj, Eina_Bool show)
    evas_object_smart_changed(obj);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 elm_slider_indicator_show_get(const Evas_Object *obj)
 {
    ELM_SLIDER_DATA_GET_OR_RETURN(obj, sd, EINA_FALSE);
    return sd->indicator_show;
 }
 
-EAPI void
+void
 elm_slider_indicator_visible_mode_set(Evas_Object *obj, Elm_Slider_Indicator_Visible_Mode indicator_visible_mode)
 {
    elm_slider_part_indicator_visible_mode_set(efl_part(obj, "indicator"), indicator_visible_mode);
 }
 
-EAPI Elm_Slider_Indicator_Visible_Mode
+Elm_Slider_Indicator_Visible_Mode
 elm_slider_indicator_visible_mode_get(const Evas_Object *obj)
 {
    return elm_slider_part_indicator_visible_mode_get(efl_part(obj, "indicator"));
