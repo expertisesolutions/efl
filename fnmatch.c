@@ -4,6 +4,18 @@
 #include <string.h>
 
 char * __wildcards_to_regex(const char *pattern, int flags);
+int __is_escapable(char c);
+
+inline int __is_escapable(char c)
+{
+    switch (c) {
+        case '[': case '|': case '(': case ')': case '*': case '?': 
+        case '!': case '^': case '$': case '.': case '+': case '\\':
+            return 1;
+        default:
+            return 0;
+    }
+}
 
 inline char * __wildcards_to_regex(const char *pattern, int flags)
 {
@@ -58,8 +70,19 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
   reg_pattern[0] = '^';
   int i = 1;
     for (int j = 0; j < pattern_length; ++j) {
-
-        if ( (pattern[j] == '*') || (pattern[j] == '?') ) { // '*' and '?'
+        if (pattern[j] == '\\') {                                 // '\'
+            if (flags && FNM_NOESCAPE) {
+                reg_pattern[i++] = '/';
+            } else {
+                if (__is_escapable(pattern[j+1])){
+                    reg_pattern[i++] = '\\';
+                    reg_pattern[i++] = pattern[++j];
+                } else {
+                    reg_pattern[i++] = '\\';
+                    reg_pattern[i++] = '/';
+                }
+            }
+        }else if ( (pattern[j] == '*') || (pattern[j] == '?') ) { // '*' and '?'
             if (flags & FNM_PATHNAME) {
                 if (flags & FNM_PERIOD) {                   // PATHNAME + PERIOD
                     if (pattern[j] == '*') {
@@ -115,15 +138,10 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
             if (flags & FNM_PERIOD) {                       // PERIOD
                 strcpy(reg_pattern+i, "[\\.]"); i+=4;
             }
+//        } else if (pattern[j] = '/')
         } else {                                        // OTHERS
-            if (pattern[j] == '\\') {
-                reg_pattern[i++] = '/';
-            } else {
-                reg_pattern[i++] = pattern[j];
-            }
-            
+            reg_pattern[i++] = pattern[j];
         }
-
     }
   strcpy(reg_pattern + i, "$\0");
 
