@@ -24,13 +24,13 @@
 #define __EINA_MODULE_UNIQUE_ID(id) _EINA_MODINFO_CONCAT(__EINA_MODULE_UNIQUE_ID_, id)
 
 #define _EINA_MODINFO(name, info) \
-  EAPI const char __EINA_MODULE_UNIQUE_ID(name)[] \
+  EINA_API const char __EINA_MODULE_UNIQUE_ID(name)[] \
 __attribute__((__used__)) __attribute__((unused, aligned(1))) = info;
 #define EINA_MODINFO(tag, info) _EINA_MODINFO(tag, info)
 
 /**
   * @defgroup Eina_Module_Group Module
-  *  
+  *
   * These macros allow you to define module informations like author/description/version/license.
   * eina_modinfo - shows information about an eina module.
   * eina_modinfo pulls out information from the eina modules given on command line.
@@ -43,16 +43,16 @@ __attribute__((__used__)) __attribute__((unused, aligned(1))) = info;
   *
   */
 
-/** 
+/**
   * @defgroup Eina_Module_Group Module
-  *  
+  *
   * This macro is used for defining license.
   *
   */
 #define EINA_MODULE_LICENSE(_license) EINA_MODINFO(license, _license)
 /**
   * @defgroup Eina_Module_Group Module
-  *  
+  *
   * This macro is used for defining author
   * Use "name <email>" or just "name"
   * for multiple authors, use multiple lines like below
@@ -62,13 +62,13 @@ __attribute__((__used__)) __attribute__((unused, aligned(1))) = info;
 #define EINA_MODULE_AUTHOR(_author) EINA_MODINFO(author, _author)
 /**
   * @defgroup Eina_Module_Group Module
-  *  
+  *
   * This macro is used for defining version.
   */
 #define EINA_MODULE_VERSION(_ver) EINA_MODINFO(ver, _ver)
 /**
   * @defgroup Eina_Module_Group Module
-  *  
+  *
   * This macro is used for defining description.
   * Explain what your module does.
   */

@@ -9,7 +9,7 @@
 
 Eina_Bool fork_resetting;
 
-EAPI void
+void
 _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr)
 {
    if (fork_resetting) return;
@@ -19,7 +19,7 @@ _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr)
 #endif
 }
 
-EAPI void
+void
 _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr)
 {
    fprintf(stderr, "EINA ERROR: DEADLOCK on %s %p\n", fn, ptr);
@@ -28,7 +28,7 @@ _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr)
 #endif
 }
 
-EAPI void
+void
 eina_lock_debug(const Eina_Lock *mutex)
 {
 #ifdef EINA_HAVE_DEBUG_THREADS
@@ -40,7 +40,8 @@ eina_lock_debug(const Eina_Lock *mutex)
 #endif
 }
 
-EAPI Eina_Bool eina_lock_new(Eina_Lock *mutex)
+Eina_Bool
+eina_lock_new(Eina_Lock *mutex)
 {
    Eina_Bool ret = _eina_lock_new(mutex, EINA_FALSE);
 #ifdef EINA_HAVE_DEBUG_THREADS
@@ -65,7 +66,7 @@ eina_lock_recursive_new(Eina_Lock *mutex)
    return ret;
 }
 
-EAPI void
+void
 eina_lock_free(Eina_Lock *mutex)
 {
    _eina_lock_free(mutex);
@@ -89,7 +90,7 @@ eina_lock_release(Eina_Lock *mutex)
    return _eina_lock_release(mutex);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex)
 {
    return _eina_condition_new(cond, mutex);
@@ -131,31 +132,31 @@ eina_rwlock_new(Eina_RWLock *mutex)
    return _eina_rwlock_new(mutex);
 }
 
-EAPI void
+void
 eina_rwlock_free(Eina_RWLock *mutex)
 {
    _eina_rwlock_free(mutex);
 }
 
-EAPI Eina_Lock_Result
+Eina_Lock_Result
 eina_rwlock_take_read(Eina_RWLock *mutex)
 {
    return _eina_rwlock_take_read(mutex);
 }
 
-EAPI Eina_Lock_Result
+Eina_Lock_Result
 eina_rwlock_take_write(Eina_RWLock *mutex)
 {
    return _eina_rwlock_take_write(mutex);
 }
 
-EAPI Eina_Lock_Result
+Eina_Lock_Result
 eina_rwlock_release(Eina_RWLock *mutex)
 {
    return _eina_rwlock_release(mutex);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb)
 {
    return _eina_tls_cb_new(key, delete_cb);
@@ -239,6 +240,7 @@ eina_semaphore_new(Eina_Semaphore *sem, int count_init)
    return _eina_semaphore_new(sem, count_init);
 }
 
+<<<<<<< HEAD
 EAPI Eina_Bool
 eina_semaphore_free(Eina_Semaphore *sem)
 {

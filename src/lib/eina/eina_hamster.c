@@ -53,7 +53,7 @@ static const int _eina_hamster =
 *                                   API                                      *
 *============================================================================*/
 
-EAPI int
+int
 eina_hamster_count(void)
 {
    return _eina_hamster;

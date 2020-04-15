@@ -8,36 +8,36 @@
  * not stable API.
  */
 
-#ifdef EAPI
-# undef EAPI
+#ifdef EINA_API
+# undef EINA_API
 #endif
 
 #ifdef _WIN32
 # ifdef EFL_BUILD
 #  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+#   define EINA_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define EINA_API
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define EINA_API __declspec(dllimport)
 # endif
-# define EAPI_WEAK
+# define EINA_API_WEAK
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#   define EAPI_WEAK __attribute__ ((weak))
+#   define EINA_API __attribute__ ((visibility("default")))
+#   define EINA_API_WEAK __attribute__ ((weak))
 #  else
-#   define EAPI
-#   define EAPI_WEAK
+#   define EINA_API
+#   define EINA_API_WEAK
 #  endif
 # else
 /**
- * @def EAPI
+ * @def EINA_API
  * @brief Used to export functions (by changing visibility).
  */
-#  define EAPI
+#  define EINA_API
 # endif
 #endif
 
@@ -70,9 +70,9 @@ struct _Eina_Vpath_Interface_User
  *
  * @internal
  */
-EAPI void __eina_promise_cancel_all(void);
+EINA_API void __eina_promise_cancel_all(void);
 
-EAPI void __eina_promise_cancel_data(void *data);
+EINA_API void __eina_promise_cancel_data(void *data);
 
 /**
  * Make the app specific paths accessible as virtual path
@@ -89,7 +89,7 @@ EAPI void __eina_promise_cancel_data(void *data);
  *
  * If you do NOT call this api the virtual paths for app.* will be unset
  */
-EAPI void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p);
+EINA_API void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p);
 
 /**
  * Create the desktop specific vpaths
@@ -98,11 +98,11 @@ EAPI void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p);
  *
  * If you do NOT call this api the virtual paths for usr.* will be unset.
  */
-EAPI void eina_vpath_interface_user_set(Eina_Vpath_Interface_User *user);
+EINA_API void eina_vpath_interface_user_set(Eina_Vpath_Interface_User *user);
 
 void eina_xdg_env_init(void);
 
-#undef EAPI
-#define EAPI
+#undef EINA_API
+#define EINA_API
 
 #endif

@@ -23,7 +23,7 @@
 #include <errno.h>
 #include <pthread.h>
 
-EAPI void
+void
 eina_sched_prio_drop(void)
 {
    struct sched_param param;
