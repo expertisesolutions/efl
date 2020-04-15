@@ -11,29 +11,29 @@
 
 #include <Efl_Canvas.h>
 
-#ifdef EAPI
-# undef EAPI
+#ifdef EDJE_API
+# undef EDJE_API
 #endif
 
 #ifdef _WIN32
 # ifdef EFL_BUILD
 #  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+#   define EDJE_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define EDJE_API
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define EDJE_API __declspec(dllimport)
 # endif
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define EDJE_API __attribute__ ((visibility("default")))
 #  else
-#   define EAPI
+#   define EDJE_API
 #  endif
 # else
-#  define EAPI
+#  define EDJE_API
 # endif
 #endif
 
@@ -60,6 +60,6 @@ extern "C" {
 }
 #endif
 
-#undef EAPI
+#undef EDJE_API
 
 #endif
