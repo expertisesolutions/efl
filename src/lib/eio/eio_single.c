@@ -21,6 +21,11 @@
 
 #ifdef _WIN32
 # include <evil_private.h> /* mkdir */
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <Windows.h>
+# undef _WIN32_LEAN_AND_MEAN
 #endif
 
 #include "eio_private.h"
@@ -251,10 +256,20 @@ _eio_file_chown(void *data, Ecore_Thread *thread)
 
    if (owner == (uid_t) -1 && group == (gid_t) -1)
      goto on_error;
-
+   #ifndef _WIN32
    if (chown(own->path, owner, group) != 0)
      eio_file_thread_error(&own->common, thread);
-
+   #else
+   PSECURITY_DESCRIPTOR pSecurityDescriptor = (SECURITY_DESCRIPTOR)malloc(sizeof(PSECURITY_DESCRIPTOR));
+   WORD lpnLengthNeeded;
+   if(GetFileSecurityA(own->path, OWNER_SECURITY_INFORMATION, pSecurityDescriptor,sizeof(pSecurityDescriptor),&lpnLengthNeeded) != 0 )
+      eio_file_thread_error(&own->common, thread);
+   pSecurityDescriptor->Owner = owner;
+   pSecurityDescriptor->Group = group;
+   if(SetFileSecurityA(own->path, OWNER_SECURITY_INFORMATION, pSecurityDescriptor) != 0 )
+      eio_file_thread_error(&own->common, thread);
+   free(pSecurityDescriptor);
+   #endif
    return;
 
  on_error:
