@@ -63,11 +63,26 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
             if (flags & FNM_PATHNAME) {
                 if (flags & FNM_PERIOD) {                   // PATHNAME + PERIOD
                     if (pattern[j] == '*') {
-                        strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
+                        if (j == 0) {
+                            strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
+                        } else {
+                            if (pattern[j-1] == '/') {
+                                strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
+                            } else {
+                                strcpy(reg_pattern+i, "[^/]*"); i+=5;
+                            }
+                        }
                     } else {
-                        strcpy(reg_pattern+i, "[^\\.][^/]"); i+=9;
+                        if (j == 0) {
+                            strcpy(reg_pattern+i, "[^\\.][^/]?"); i+=10;
+                        } else {
+                            if (pattern[j-1] == '/') {
+                                strcpy(reg_pattern+i, "[^\\.][^/]?"); i+=10;
+                            } else {
+                                strcpy(reg_pattern+i, "[^/]"); i+=4;
+                            }
+                        }
                     }
-
                 } else {                                    // PATHNAME
                     if (pattern[j] == '*') {
                         strcpy(reg_pattern+i, "[^/]*"); i+=5;
@@ -101,7 +116,12 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
                 strcpy(reg_pattern+i, "[\\.]"); i+=4;
             }
         } else {                                        // OTHERS
-            reg_pattern[i++] = pattern[j];
+            if (pattern[j] == '\\') {
+                reg_pattern[i++] = '/';
+            } else {
+                reg_pattern[i++] = pattern[j];
+            }
+            
         }
 
     }
@@ -128,18 +148,18 @@ int fnmatch (const char *pattern, const char *string, int flags)
     return FNM_NOMATCH;
   }
 
-/*  // Replaces '\\' with '/'
+  // Replaces '\\' with '/'
   char *unix_path = (char*) malloc(strlen(string) * sizeof(char));
   for (int i = 0; string[i] != '\0'; ++i)
     {
       unix_path[i] = (string[i] == '\\')? '/' : string[i];
     }
-*/
 
   // Executes regex
   printf("\tregex  : %s\n", reg_pattern);
   printf("\tstring : %s\n", string);
-  result = regexec(&regex, string, 0, NULL, 0);
+  printf("\tstring : %s\n", unix_path);
+  result = regexec(&regex, unix_path, 0, NULL, 0);
 
   // Cleans-up and returns
   //free(unix_path);
