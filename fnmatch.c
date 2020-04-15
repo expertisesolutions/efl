@@ -62,7 +62,7 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
         if (pattern[j] == '*') {                        // '*'
             if (flags & FNM_PATHNAME) {
                 if (flags & FNM_PERIOD) {                   // PATHNAME + PERIOD
-                    strcpy(reg_pattern+i, "[^\\./]*"); i+=7;
+                    strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
                 } else {                                    // PATHNAME
                     strcpy(reg_pattern+i, "[^/]*"); i+=5;
                 }
