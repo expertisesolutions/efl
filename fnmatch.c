@@ -3,21 +3,25 @@
 #include <stdio.h>
 #include <string.h>
 
-char * __wildcards_to_regex(const char *pattern, int flags);
-int __is_escapable(char c);
+static char * _wildcards_to_regex(const char *pattern, int flags);
 
-inline int __is_escapable(char c)
+static int _is_escapable(char c);
+
+inline static 
+int _is_escapable(char c)
 {
-    switch (c) {
-        case '[': case '|': case '(': case ')': case '*': case '?': 
-        case '!': case '^': case '$': case '.': case '+': case '\\':
-            return 1;
-        default:
-            return 0;
-    }
+    switch (c)
+     {
+       case '[': case '|': case '(': case ')': case '*': case '?': 
+       case '!': case '^': case '$': case '.': case '+': case '\\':
+         return 1;
+       default:
+         return 0;
+     }
 }
 
-inline char * __wildcards_to_regex(const char *pattern, int flags)
+inline static 
+char * _wildcards_to_regex(const char *pattern, int flags)
 {
 
   printf("\tflags  : ");
@@ -33,114 +37,212 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
 
   printf("\tpattern: %s\n", pattern);
 
-  // counts how many additional chars to be allocated
-  int count = 2; // starts with '^' and ends with '$'
-  for (int i = 0; pattern[i] != '\0'; ++i) 
-    {
-      if (pattern[i] == '*')
-        {
-          if (flags & FNM_PATHNAME) count += 7;
-          else count++;
-          if (flags & FNM_PERIOD)
-            {
-              if (!(flags & FNM_NOESCAPE)) count++;
-              count++;
-            }
-        }
-      else if(pattern[i] == '?')
-        {
-          if (flags & FNM_PATHNAME) count += 3;
-          else count++;
-          if (flags & FNM_PERIOD)
-            {
-              if (!(flags & FNM_NOESCAPE)) count++;
-              count++;
-            }
-        }
-      else if(pattern[i] == '.')
-      {
-        count += 4;
-      }
-    }
+  // Counts how many additional chars to be allocated
   int pattern_length = strlen(pattern);
+  int count = 2; // starts with '^' and ends with '$'
+  for (int j = 0; j < pattern_length; ++j)
+    {
+      if (pattern[j] == '\\')
+        {                                 
+          if (flags && FNM_NOESCAPE) count++;
+          else count += 2;
+        }
+      else if ( (pattern[j] == '*') || (pattern[j] == '?') )
+        { 
+          if (flags & FNM_PATHNAME)
+            {
+              if (flags & FNM_PERIOD) // PATHNAME + PERIOD
+                {                   
+                  if (pattern[j] == '*')
+                    {
+                      if (j == 0) count += 10;
+                      else
+                        {
+                          if (pattern[j - 1] == '/') count += 10;
+                          else count += 5;
+                        }
+                    }
+                  else
+                    {
+                      if (j == 0) count += 10;
+                      else
+                        {
+                          if (pattern[j - 1] == '/') count += 10;
+                          else count += 4;
+                        }
+                    }
+                }
+              else // PATHNAME
+                {                                    
+                  if (pattern[j] == '*') count += 5;
+                  else count += 4;
+                }
+            }
+          else if (flags & FNM_PERIOD)
+            {
+              if (j == 0) // period at init
+                {                                   
+                  if (pattern[j] == '*') count += 5;
+                  else count += 4;
+                }
+              else // period at other places
+                {                                        
+                  if (pattern[j] == '*') count += 2;
+                  else count++;
+                }
+            }
+          else // NORMAL
+            {                                        
+              if (pattern[j] == '*') count += 2;
+              else count++;
+            }
+        }
+      else if (pattern[j] == '.') count += 4;
+      else count++; // OTHERS
+    }
+
   int reg_length = pattern_length + count;
 
   // Translates wildcards to regex
   char *reg_pattern = (char*) malloc(reg_length * sizeof(char));
   reg_pattern[0] = '^';
-  int i = 1;
-    for (int j = 0; j < pattern_length; ++j) {
-        if (pattern[j] == '\\') {                                 // '\'
-            if (flags && FNM_NOESCAPE) {
-                reg_pattern[i++] = '/';
-            } else {
-                if (__is_escapable(pattern[j+1])){
-                    reg_pattern[i++] = '\\';
-                    reg_pattern[i++] = pattern[++j];
-                } else {
-                    reg_pattern[i++] = '\\';
-                    reg_pattern[i++] = '/';
+  int i = 1;                                      
+  for (int j = 0; j < pattern_length; ++j)
+    {
+      if (pattern[j] == '\\')
+        {                                 
+          if (flags && FNM_NOESCAPE)
+            {
+              reg_pattern[i++] = '/';
+            }
+          else
+            {
+              if (_is_escapable(pattern[j + 1]))
+                {
+                  reg_pattern[i++] = '\\';
+                  reg_pattern[i++] = pattern[++j];
+                }
+              else
+                {
+                  reg_pattern[i++] = '\\';
+                  reg_pattern[i++] = '/';
                 }
             }
-        }else if ( (pattern[j] == '*') || (pattern[j] == '?') ) { // '*' and '?'
-            if (flags & FNM_PATHNAME) {
-                if (flags & FNM_PERIOD) {                   // PATHNAME + PERIOD
-                    if (pattern[j] == '*') {
-                        if (j == 0) {
-                            strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
-                        } else {
-                            if (pattern[j-1] == '/') {
-                                strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
-                            } else {
-                                strcpy(reg_pattern+i, "[^/]*"); i+=5;
+        }
+      else if ( (pattern[j] == '*') || (pattern[j] == '?') )
+        { 
+          if (flags & FNM_PATHNAME)
+            {
+              if (flags & FNM_PERIOD) // PATHNAME + PERIOD
+                {                   
+                  if (pattern[j] == '*')
+                    {
+                      if (j == 0)
+                        {
+                          strcpy(reg_pattern + i, "[^\\.][^/]*");
+                          i += 10;
+                        }
+                      else
+                        {
+                          if (pattern[j - 1] == '/')
+                            {
+                              strcpy(reg_pattern + i, "[^\\.][^/]*");
+                              i += 10;
+                            }
+                          else
+                            {
+                              strcpy(reg_pattern + i, "[^/]*");
+                              i += 5;
                             }
                         }
-                    } else {
-                        if (j == 0) {
-                            strcpy(reg_pattern+i, "[^\\.][^/]?"); i+=10;
-                        } else {
-                            if (pattern[j-1] == '/') {
-                                strcpy(reg_pattern+i, "[^\\.][^/]?"); i+=10;
-                            } else {
-                                strcpy(reg_pattern+i, "[^/]"); i+=4;
+                    }
+                  else
+                    {
+                      if (j == 0)
+                        {
+                          strcpy(reg_pattern + i, "[^\\.][^/]?");
+                          i += 10;
+                        }
+                      else
+                        {
+                          if (pattern[j - 1] == '/')
+                            {
+                              strcpy(reg_pattern + i, "[^\\.][^/]?");
+                              i += 10;
+                            }
+                          else
+                            {
+                              strcpy(reg_pattern + i, "[^/]");
+                              i += 4;
                             }
                         }
                     }
-                } else {                                    // PATHNAME
-                    if (pattern[j] == '*') {
-                        strcpy(reg_pattern+i, "[^/]*"); i+=5;
-                    } else {
-                        strcpy(reg_pattern+i, "[^/]"); i+=4;
-                    }
                 }
-            } else if (flags & FNM_PERIOD) {                // PERIOD
-                if (j == 0) {                                   // at init
-                    if (pattern[j] == '*') {                    
-                        strcpy(reg_pattern+i, "[\\.]*"); i+=5;
-                    } else {
-                        strcpy(reg_pattern+i, "[\\.]"); i+=4;
+              else // PATHNAME
+                {                                    
+                  if (pattern[j] == '*')
+                    {
+                      strcpy(reg_pattern + i, "[^/]*");
+                      i += 5;
                     }
-                } else {                                        // other places
-                    if (pattern[j] == '*') {
-                        strcpy(reg_pattern+i, ".*"); i+=2;
-                    } else {
-                        strcpy(reg_pattern+i, "."); i+=1;
+                  else
+                    {
+                      strcpy(reg_pattern + i, "[^/]");
+                      i += 4;
                     }
-                }
-            } else {                                        // NORMAL
-                if (pattern[j] == '*') {
-                    strcpy(reg_pattern+i, ".*"); i+=2;
-                } else {
-                    strcpy(reg_pattern+i, "."); i+=1;
                 }
             }
-        } else if (pattern[j] == '.') {                 // '.'
-            if (flags & FNM_PERIOD) {                       // PERIOD
-                strcpy(reg_pattern+i, "[\\.]"); i+=4;
+          else if (flags & FNM_PERIOD)
+            {
+              if (j == 0) // period at init
+                {                                   
+                  if (pattern[j] == '*')
+                    {                    
+                      strcpy(reg_pattern + i, "[\\.]*");
+                      i += 5;
+                    }
+                  else
+                    {
+                      strcpy(reg_pattern + i, "[\\.]");
+                      i += 4;
+                    }
+                }
+              else // period at other places
+                {                                        
+                  if (pattern[j] == '*')
+                    {
+                      strcpy(reg_pattern + i, ".*");
+                      i += 2;
+                    }
+                  else
+                    {
+                      strcpy(reg_pattern + i, ".");
+                      i++;
+                    }
+                }
             }
-//        } else if (pattern[j] = '/')
-        } else {                                        // OTHERS
-            reg_pattern[i++] = pattern[j];
+          else // NORMAL
+            {                                        
+              if (pattern[j] == '*')
+                {
+                  strcpy(reg_pattern + i, ".*");
+                  i += 2;
+                }
+              else
+                {
+                  strcpy(reg_pattern + i, ".");
+                  i++;
+                }
+            }
+        }
+      else if (pattern[j] == '.')
+        {
+          strcpy(reg_pattern + i, "[\\.]");
+          i += 4;
+        }
+      else // OTHERS
+        {                                        
+          reg_pattern[i++] = pattern[j];
         }
     }
   strcpy(reg_pattern + i, "$\0");
@@ -148,30 +250,32 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
   return reg_pattern;
 }
 
-int fnmatch (const char *pattern, const char *string, int flags)
+int 
+fnmatch (const char *pattern, const char *string, int flags)
 {
   regex_t regex;          
   int result;
 
   // Converts wildcard pattern to regex pattern
-  char *reg_pattern = __wildcards_to_regex(pattern, flags);
+  char *reg_pattern = _wildcards_to_regex(pattern, flags);
  
   // Configures regex
   int regex_flags = (REG_NOSUB) // Report only success/fail in regexec()
     || ((flags & FNM_CASEFOLD)? REG_ICASE : 0) ;
 
   // Compiles regex
-  if (regcomp(&regex, reg_pattern, regex_flags)) {
+  if (regcomp(&regex, reg_pattern, regex_flags))
+  {
     regfree(&regex);
     return FNM_NOMATCH;
   }
 
   // Replaces '\\' with '/'
-  char *unix_path = (char*) malloc(strlen(string) * sizeof(char));
-  for (int i = 0; string[i] != '\0'; ++i)
-    {
+  int string_length = strlen(string);
+  char *unix_path = (char*) malloc(string_length * sizeof(char));
+  unix_path[string_length] = '\0';
+  for (int i = 0; i < string_length; ++i)
       unix_path[i] = (string[i] == '\\')? '/' : string[i];
-    }
 
   // Executes regex
   printf("\tregex  : %s\n", reg_pattern);
@@ -180,7 +284,7 @@ int fnmatch (const char *pattern, const char *string, int flags)
   result = regexec(&regex, unix_path, 0, NULL, 0);
 
   // Cleans-up and returns
-  //free(unix_path);
+  free(unix_path);
   free(reg_pattern);
   regfree(&regex);
   return result? FNM_NOMATCH : 0;
