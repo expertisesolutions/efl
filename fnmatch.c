@@ -59,34 +59,51 @@ inline char * __wildcards_to_regex(const char *pattern, int flags)
   int i = 1;
     for (int j = 0; j < pattern_length; ++j) {
 
-        if (pattern[j] == '*') {                        // '*'
+        if ( (pattern[j] == '*') || (pattern[j] == '?') ) { // '*' and '?'
             if (flags & FNM_PATHNAME) {
                 if (flags & FNM_PERIOD) {                   // PATHNAME + PERIOD
-                    strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
+                    if (pattern[j] == '*') {
+                        strcpy(reg_pattern+i, "[^\\.][^/]*"); i+=10;
+                    } else {
+                        strcpy(reg_pattern+i, "[^\\.][^/]"); i+=9;
+                    }
+
                 } else {                                    // PATHNAME
-                    strcpy(reg_pattern+i, "[^/]*"); i+=5;
+                    if (pattern[j] == '*') {
+                        strcpy(reg_pattern+i, "[^/]*"); i+=5;
+                    } else {
+                        strcpy(reg_pattern+i, "[^/]"); i+=4;
+                    }
                 }
             } else if (flags & FNM_PERIOD) {                // PERIOD
-                if (j == 0) {
-                    strcpy(reg_pattern+i, "[\\.]*"); i+=5;
-                } else {
-                    strcpy(reg_pattern+i, ".*"); i+=2;
+                if (j == 0) {                                   // at init
+                    if (pattern[j] == '*') {                    
+                        strcpy(reg_pattern+i, "[\\.]*"); i+=5;
+                    } else {
+                        strcpy(reg_pattern+i, "[\\.]"); i+=4;
+                    }
+                } else {                                        // other places
+                    if (pattern[j] == '*') {
+                        strcpy(reg_pattern+i, ".*"); i+=2;
+                    } else {
+                        strcpy(reg_pattern+i, "."); i+=1;
+                    }
                 }
             } else {                                        // NORMAL
-                strcpy(reg_pattern+i, ".*"); i+=2;
+                if (pattern[j] == '*') {
+                    strcpy(reg_pattern+i, ".*"); i+=2;
+                } else {
+                    strcpy(reg_pattern+i, "."); i+=1;
+                }
             }
         } else if (pattern[j] == '.') {                 // '.'
             if (flags & FNM_PERIOD) {                       // PERIOD
                 strcpy(reg_pattern+i, "[\\.]"); i+=4;
             }
-        } else if (pattern[j] == '?') {                 // '?'
-
         } else {                                        // OTHERS
             reg_pattern[i++] = pattern[j];
         }
 
-//        strcpy(reg_pattern + i, ".*");
-//        i += 4;
     }
   strcpy(reg_pattern + i, "$\0");
 
