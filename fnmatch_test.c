@@ -44,8 +44,8 @@ int test_unix_path(void)
 
 int test_win_path(void)
 {
-    const char * string_valid = "C:\\Program Files (x86)[1]<3>$4?!\\Git\\";
-    const char * string_invalid = "\\Program Files (x86)\\Git\\";
+    const char * string_valid = "C:\\Program Files (x86)[1]<3>$4?!\\Git";
+    const char * string_invalid = "\\Program Files (x86)\\Git";
     const char * pattern = "?:\\Program Files*\\Git";
     const int flags = FNM_PATHNAME | FNM_NOESCAPE | FNM_PERIOD;
                                                              
