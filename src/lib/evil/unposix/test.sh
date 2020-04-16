@@ -1,1 +1,2 @@
-\rm -f fnmatch_test.exe && clang-cl -w -o fnmatch_test.exe fnmatch_test.c fnmatch.c "/C/Program Files (x86)/Windows Kits/10/Lib/10.0.18362.0/um/x64/ShLwApi.Lib" && chmod +x fnmatch_test.exe && ./fnmatch_test.exe
+#\rm -f fnmatch_test && gcc -D ORIGINAL_FNMATCH fnmatch_test.c -o fnmatch_test && ./fnmatch_test
+\rm -f fnmatch_test && gcc fnmatch_test.c fnmatch.c -lpcreposix -lpcre -o fnmatch_test && ./fnmatch_test
