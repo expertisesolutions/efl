@@ -1,4 +1,6 @@
 #include "fnmatch.h"
+
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -100,6 +102,7 @@ _wildcards_to_regex(const char *pattern, int flags)
 
   // Translates wildcards to regex
   char *reg_pattern = (char*) malloc(reg_length * sizeof(char));
+  if (reg_pattern == NULL) exit(ENOMEM);
   reg_pattern[0] = '^';
   int i = 1;
   for (int j = 0; j < pattern_length; ++j)
@@ -258,6 +261,7 @@ fnmatch (const char *pattern, const char *string, int flags)
   // Replaces '\\' with '/'
   int string_length = strlen(string);
   char *unix_path = (char *)malloc(string_length * sizeof(char));
+  if (unix_path == NULL) exit(ENOMEM);
   unix_path[string_length] = '\0';
   for (int i = 0; i < string_length; ++i)
     unix_path[i] = (string[i] == '\\') ? '/' : string[i];
