@@ -1,5 +1,9 @@
-#ifndef FNMATCH_H
-#define FNMATCH_H
+#ifndef UNPOSIX_FNMATCH_H
+#define UNPOSIX_FNMATCH_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <pcreposix.h>
 
@@ -17,5 +21,9 @@
 
 int fnmatch (const char *pattern, const char *string, int flags);
 >>>>>>> b294ea595c... moving to the right place
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

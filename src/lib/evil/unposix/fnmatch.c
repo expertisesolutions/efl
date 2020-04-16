@@ -12,27 +12,19 @@ static int _is_escapable(char c);
 inline static int
 _is_escapable(char c)
 {
-    switch (c)
-     {
-       case '[': case '|': case '(': case ')': case '*': case '?':
-       case '!': case '^': case '$': case '.': case '+': case '\\':
-         return 1;
-       default:
-         return 0;
-     }
+  switch (c)
+   {
+     case '[': case '|': case '(': case ')': case '*': case '?':
+     case '!': case '^': case '$': case '.': case '+': case '\\':
+       return 1;
+     default:
+       return 0;
+   }
 }
 
 inline static char *
 _wildcards_to_regex(const char *pattern, int flags)
 {
-
-  printf("\tflags  : ");
-  if (flags & FNM_NOESCAPE) printf("FNM_NOESCAPE,");
-  if (flags & FNM_PERIOD) printf("FNM_PERIOD,");
-  if (flags & FNM_PATHNAME) printf("FNM_PATHNAME,");
-  if (flags & FNM_CASEFOLD) printf("FNM_CASEFOLD,");
-
-  printf("\n\tpattern: %s\n", pattern);
 
   // Counts how many additional chars needs to be allocated
   int pattern_length = strlen(pattern);
@@ -267,9 +259,6 @@ fnmatch (const char *pattern, const char *string, int flags)
     unix_path[i] = (string[i] == '\\') ? '/' : string[i];
 
   // Executes regex
-  printf("\tregex  : %s\n", reg_pattern);
-  printf("\tstring : %s\n", string);
-  printf("\tstring : %s\n", unix_path);
   result = regexec(&regex, unix_path, 0, NULL, 0);
 
   // Cleans-up and returns
