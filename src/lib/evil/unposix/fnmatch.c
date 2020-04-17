@@ -1,8 +1,6 @@
 #include "fnmatch.h"
 
 #include <errno.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 static char *_wildcards_to_regex(const char *pattern, int flags);
