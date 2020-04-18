@@ -18,8 +18,9 @@ vscprintf(const char *format, va_list ap)
 #else // WINDOWS
 
  #include "stdio.h"
+ #include <stdio.h>
   #define vscprintf _vscprintf
-  #define vsnprintf _vsprintf_s
+  #define vsnprintf _vsnprintf
  #endif
 
 #include <stdlib.h>
