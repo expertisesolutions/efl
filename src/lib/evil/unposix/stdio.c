@@ -1,7 +1,6 @@
 #include "stdio.h"
-
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 #define vscprintf _vscprintf
 #define vsnprintf _vsnprintf
