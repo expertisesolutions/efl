@@ -1,6 +1,10 @@
 #ifdef _WIN32
 # include <stdio.h>
-# include <windows.h>
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <Windows.h>
+# undef WIN32_LEAN_AND_MEAN
 # include <process.h>
 
 unsigned int
