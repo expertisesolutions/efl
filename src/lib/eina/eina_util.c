@@ -132,3 +132,12 @@ eina_environment_tmp_get(void)
    tmp = strdup(tmp);
    return tmp;
 }
+
+EAPI void eina_sleep(unsigned int seconds)
+{
+#ifdef _WIN32
+   Sleep(seconds * 1000);
+#else
+   sleep(seconds);
+#endif
+}

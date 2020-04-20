@@ -19,6 +19,15 @@
 #ifndef EINA_UTIL_H_
 #define EINA_UTIL_H_
 
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <Windows.h>
+# undef WIN32_LEAN_AND_MEAN
+#else
+# include <unistd.h>
+#endif
 #include <float.h>
 #include <math.h>
 
@@ -27,6 +36,14 @@
  *
  * @{
  */
+
+/**
+ * @brief Suspends the execution of calling thread until time specified by seconds.
+ * @param[in] Time in seconds for which execution is to be suspendend.
+ * 
+ * @since 1.15
+ */
+EAPI void eina_sleep(unsigned int seconds);
 
 /**
  * @brief Returns the content of the environment referred by HOME on this system.

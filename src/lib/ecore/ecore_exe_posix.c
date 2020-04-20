@@ -71,11 +71,11 @@ static int _ecore_exe_check_errno(int         result,
                                   int         line);
 
 #define E_IF_NO_ERRNO(result, foo, ok)                                                           \
-  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) sleep(1);  \
+  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) eina_sleep(1);  \
           if (ok)
 
 #define E_NO_ERRNO(result, foo, ok) \
-  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) sleep(1)
+  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) eina_sleep(1)
 
 #define E_IF_NO_ERRNO_NOLOOP(result, foo, ok) \
   if (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)))

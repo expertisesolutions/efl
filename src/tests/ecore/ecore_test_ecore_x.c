@@ -38,10 +38,10 @@ EFL_START_TEST(ecore_test_ecore_x_bell)
    printf("You should hear 3 beeps now.\n");
    for (i = 0; i < 3; i++)
      {
-	ret = ecore_x_bell(0);
-	fail_if(ret != EINA_TRUE);
-	ecore_x_sync();
-	sleep(1);
+	     ret = ecore_x_bell(0);
+	     fail_if(ret != EINA_TRUE);
+	     ecore_x_sync();
+	     eina_sleep(1);
      }
 
    ecore_x_shutdown();

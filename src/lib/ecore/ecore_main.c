@@ -231,7 +231,7 @@ _ecore_fd_valid(Eo *obj EINA_UNUSED, Efl_Loop_Data *pd EINA_UNUSED)
 #  ifdef HAVE_PAUSE
         pause();
 #  else
-        sleep(60);
+        eina_sleep(60);
 #  endif
      }
 # endif

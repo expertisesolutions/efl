@@ -163,7 +163,7 @@ proxy_lookup(void *data, Eina_Thread t)
    eina_spinlock_release(&pending_lock);
    // if there are no more pending threads doing work - sleep for the
    // timeout then check if we still are and if so - exit;
-   if (pending_local == 0) sleep(10);
+   if (pending_local == 0) eina_sleep(10);
    eina_spinlock_take(&pending_lock);
      {
         Eina_Thread *tt;
@@ -253,7 +253,7 @@ main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
         // Failed to init libproxy so report this before exit
         fprintf(stdout, "F\n");
         fflush(stdout);
-        for (;;) sleep(60 * 60 * 24);
+        for (;;) eina_sleep(60 * 60 * 24);
      }
    eina_shutdown();
    return 0;

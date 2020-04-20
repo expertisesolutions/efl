@@ -10,6 +10,6 @@
 int
 main(int arc, char *argv[])
 {
-   sleep(60);
+   eina_sleep(60);
    return 0;
 }
