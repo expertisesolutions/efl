@@ -15,6 +15,9 @@
 #include <process.h>
 
 #include <sys/types.h>
+
+#undef WIN32_LEAN_AND_MEAN
+
 #include <evil_unistd.h>
 
 #define F_OK 0

@@ -4,7 +4,11 @@
 #include "unimplemented.h"
 
 #include <sys/types.h>
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #include <corecrt_io.h>
+#undef WIN32_LEAN_AND_MEAN
+#endif
 #include_next <fcntl.h>
 
 UNIMPLEMENTED inline int fcntl(int a, int b, ...)

@@ -1,21 +1,28 @@
 #ifndef UNPOSIX_SYS_TYPES_H
 #define UNPOSIX_SYS_TYPES_H
 
+#ifndef _CRT_DECLARE_NONSTDC_NAMES
+#define _CRT_DECLARE_NONSTDC_NAMES
+#endif
+
 #include_next <sys/types.h>
 
-#ifdef _MSC_VER
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
+#ifdef _CRT_DECLARE_NONSTDC_NAMES
+#undef _CRT_DECLARE_NONSTDC_NAMES
 #endif
 
-#include <BaseTsd.h>
-#include <crtdefs.h>
+#ifdef WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+
+# include <BaseTsd.h>
+# include <crtdefs.h>
 
 typedef SSIZE_T ssize_t;
-typedef _off_t off_t;
 
+# undef WIN32_LEAN_AND_MEAN
 #endif
-
 
 #include <stdint.h>
 #include <time.h>

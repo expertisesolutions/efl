@@ -6,10 +6,18 @@
 #  define WIN32_LEAN_AND_MEAN
 # endif
 # include <windows.h>
+# undef WIN32_LEAN_AND_MEAN
 #endif
 #include <sys/types.h>
 #include_next <sys/stat.h>
-#include <corecrt.h>
+
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <corecrt.h>
+# undef WIN32_LEAN_AND_MEAN
+#endif
 
 #include <evil_macro_wrapper.h>
 
