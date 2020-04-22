@@ -19,17 +19,20 @@
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
-
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
 #ifdef _WIN32
 # include <string.h>
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <Windows.h>
+# undef _WIN32_LEAN_AND_MEAN
 #else
-# include <sys/types.h>
 # include <pwd.h>
 # include <string.h>
 #endif
-
 #include "eina_config.h"
 #include "eina_private.h"
 #include "eina_tmpstr.h"
@@ -133,11 +136,29 @@ eina_environment_tmp_get(void)
    return tmp;
 }
 
-EAPI void eina_sleep(unsigned int seconds)
+EAPI void
+eina_sleep(unsigned int seconds)
 {
 #ifdef _WIN32
    Sleep(seconds * 1000);
 #else
    sleep(seconds);
 #endif
+}
+
+EAPI int
+eina_chown(const char *pathname, uid_t owner, gid_t group)
+{
+   int ret;
+#ifdef _WIN32
+   SECURITY_DESCRIPTOR securityDescriptor;
+   DWORD lpnLengthNeeded;
+   GetFileSecurityA(pathname, OWNER_SECURITY_INFORMATION, &securityDescriptor,sizeof(securityDescriptor),&lpnLengthNeeded);
+   securityDescriptor.Owner = owner;
+   securityDescriptor.Group = group;
+   ret = (SetFileSecurityA(pathname, OWNER_SECURITY_INFORMATION, &securityDescriptor) != 0) ? 0 : -1;      
+#else
+   ret = chown(pathname, owner, group);
+#endif
+   return ret;
 }
