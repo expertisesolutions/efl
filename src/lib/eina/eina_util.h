@@ -20,16 +20,25 @@
 #define EINA_UTIL_H_
 
 #ifdef _WIN32
+# include <string.h>
 # ifndef WIN32_LEAN_AND_MEAN
 #  define WIN32_LEAN_AND_MEAN
 # endif
 # include <Windows.h>
 # undef WIN32_LEAN_AND_MEAN
 #else
-# include <unistd.h>
+# include <pwd.h>
 #endif
+#include <unistd.h>
 #include <float.h>
 #include <math.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+#include "eina_config.h"
+#include "eina_private.h"
+#include "eina_tmpstr.h"
 
 /**
  * @addtogroup Eina_Tools_Group Tools
@@ -44,6 +53,15 @@
  * @since 1.15
  */
 EAPI void eina_sleep(unsigned int seconds);
+/**
+ * @brief Changes the ownership of the file specified by pathname.
+ * @param[in] The directory path to change owner.
+ * @param[in] The new user to set.
+ * @param[in] The new group to set.
+ * 
+ * @since 1.15
+ */
+EAPI int eina_chown(const char *pathname, uid_t owner, gid_t group);
 
 /**
  * @brief Returns the content of the environment referred by HOME on this system.

@@ -19,23 +19,7 @@
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#ifdef _WIN32
-# include <string.h>
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <Windows.h>
-# undef _WIN32_LEAN_AND_MEAN
-#else
-# include <pwd.h>
-# include <string.h>
-#endif
-#include "eina_config.h"
-#include "eina_private.h"
-#include "eina_tmpstr.h"
+#include "eina_util.h"
 
 /*============================================================================*
  *                                  Local                                     *
