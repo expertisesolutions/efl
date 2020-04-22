@@ -31,7 +31,7 @@ _wildcards_to_regex(const char *pattern, int flags)
     {
        if (pattern[j] == '\\')
          {
-            if (flags && FNM_NOESCAPE) count++;
+            if (flags & FNM_NOESCAPE) count++;
             else                       count += 2;
          }
        else if ((pattern[j] == '*') || (pattern[j] == '?'))
@@ -99,7 +99,7 @@ _wildcards_to_regex(const char *pattern, int flags)
     {
        if (pattern[j] == '\\')
          {
-            if (flags && FNM_NOESCAPE)
+            if (flags & FNM_NOESCAPE)
                reg_pattern[i++] = '/';
             else
               {
