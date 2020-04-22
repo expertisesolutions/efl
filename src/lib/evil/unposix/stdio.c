@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#define vscprintf _vscprintf
-#define vsnprintf _vsnprintf
-
 
 int
 vasprintf(char **strp, const char *fmt, va_list ap)
