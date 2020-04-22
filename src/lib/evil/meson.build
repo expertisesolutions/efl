@@ -1,8 +1,7 @@
 evil_deps = []
 evil_pub_deps = []
-if target_machine.system() == 'windows'
-  subdir('unposix')
 
+if target_machine.system() == 'windows'
   evil_src = [
     'evil_dlfcn.c',
     'evil_fcntl.c',
@@ -41,6 +40,7 @@ if target_machine.system() == 'windows'
   )
 else
   evil = declare_dependency()
+  evil_unposix = declare_dependency()
 endif
 
 automatic_pkgfile = false
