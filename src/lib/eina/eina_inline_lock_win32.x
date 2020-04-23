@@ -508,7 +508,7 @@ _eina_rwlock_release(Eina_RWLock *mutex)
 static inline Eina_Bool
 _eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb)
 {
-   key = TlsAlloc();
+   * key = TlsAlloc();
    DWORD ok = GetLastError();
    if (key != TLS_OUT_OF_INDEXES || ok != ERROR_SUCCESS) return EINA_TRUE;
    else return EINA_FALSE;
@@ -532,6 +532,7 @@ _eina_tls_set(Eina_TLS key, const void *data)
    int ok;
    DWORD err;
    ok = TlsSetValue(key, (void *) data);
+   err = GetLastError();
    if (ok != 0 && err == ERROR_SUCCESS) return EINA_TRUE;
    else return EINA_TRUE;
 }
@@ -652,14 +653,11 @@ _eina_spinlock_take_try(Eina_Spinlock *spinlock)
 {
 #ifdef EINA_HAVE_WIN32_SPINLOCK
    int ok = TryEnterCriticalSection(spinlock);
-   if (ok != 0) return EINA_LOCK_SUCCEED;
-   else if (ok == 0) return EINA_LOCK_FAIL;
-   else
-    {
-       DWORD err = GetLastError();
-       EINA_LOCK_ABORT_DEBUG((int)err, spin_trylock, spinlock);
-    }
-   return EINA_LOCK_FAIL;
+   DWORD err = GetLastError();
+   if (err == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
+   else if (ok == 0 || err == ERROR_TIMEOUT) EINA_LOCK_FAIL;
+   else EINA_LOCK_ABORT_DEBUG((int)err, trylock, mutex);
+   return EINA_LOCK_FAIL
 #else
    return eina_lock_take_try(spinlock);
 #endif
@@ -735,11 +733,10 @@ _eina_semaphore_lock(Eina_Semaphore *sem)
 {
    if (sem)
      {
-        DWORD ok;
         for (;;)
           {
              WaitForSingleObject(sem, INFINITE);
-             ok = GetLastError();
+             DWORD ok = GetLastError();
              if (ok == ERROR_SUCCESS)
                 return EINA_TRUE;
              else if (ok == WAIT_OBJECT_0 || ok == WAIT_TIMEOUT)
