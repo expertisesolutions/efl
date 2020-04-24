@@ -98,3 +98,4 @@ efl_libs.csv
 
 #native windows files
 env.bat
+subprojects/
