@@ -3,7 +3,7 @@
 #endif /* ifdef HAVE_CONFIG_H */
 
 #include <string.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Eina.h>
 

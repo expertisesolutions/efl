@@ -13,7 +13,7 @@
 #include <Elementary.h>
 #include <Efl.h>
 #include <Eio.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 const char *subtexts[] = {
         "Captain",

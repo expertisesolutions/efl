@@ -43,7 +43,7 @@
 #endif
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>

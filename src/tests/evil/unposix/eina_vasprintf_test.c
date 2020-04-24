@@ -1,4 +1,4 @@
-#include "stdio.h"
+#include "eina_stdio.h"
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>

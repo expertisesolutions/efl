@@ -1,5 +1,5 @@
 #include "http_parser.h"
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 
 void

@@ -34,9 +34,9 @@
 #ifndef INTEL_BUFMGR_H
 #define INTEL_BUFMGR_H
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdint.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #if defined(__cplusplus)
 extern "C" {

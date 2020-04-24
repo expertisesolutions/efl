@@ -21,7 +21,7 @@
 #endif
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <direct.h>
 
 #include <evil_private.h>

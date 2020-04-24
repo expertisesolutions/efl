@@ -3,7 +3,7 @@
  *
  * Author: Marcel Hollerbach
  */
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eina.h>
 
 /*

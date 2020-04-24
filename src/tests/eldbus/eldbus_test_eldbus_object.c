@@ -1,7 +1,7 @@
 #include <Eldbus.h>
 #include <Ecore.h>
 #include <string.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eina.h>
 
 #include "eldbus_suite.h"

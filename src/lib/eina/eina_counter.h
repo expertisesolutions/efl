@@ -43,7 +43,7 @@
  *
  * @code
  * #include <stdlib.h>
- * #include <stdio.h>
+ * #include <eina_stdio.h>
  *
  * #include <eina_counter.h>
  *

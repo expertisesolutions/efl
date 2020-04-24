@@ -10,7 +10,7 @@
 #include <Elementary.h>
 #include <Efl.h>
 #include <Eio.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #define EFL_MODEL_TEST_FILENAME_PATH "/tmp"
 

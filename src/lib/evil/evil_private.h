@@ -44,7 +44,7 @@ extern "C" {
 #include "evil_main.h"
 #include "evil_mman.h"
 #include "evil_stdlib.h"
-#include "evil_stdio.h"
+#include "evil_eina_stdio.h"
 #include "evil_string.h"
 #include "evil_time.h"
 #include "evil_unistd.h"

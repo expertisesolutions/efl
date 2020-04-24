@@ -27,7 +27,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <errno.h>
 #include <ctype.h>
 

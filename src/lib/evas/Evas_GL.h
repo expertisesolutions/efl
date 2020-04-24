@@ -109,7 +109,7 @@ Much of it is from Mesa, so their copyright is included as well.
 #include <Ecore_Evas.h>
 #include <Ecore.h>
 #include <Evas_GL.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 // GL related data here..
 typedef struct _GLData

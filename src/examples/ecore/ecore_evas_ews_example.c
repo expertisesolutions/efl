@@ -12,7 +12,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <unistd.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <ctype.h>
 
 static Eina_Bool

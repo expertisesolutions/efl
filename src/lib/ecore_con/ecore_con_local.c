@@ -3,7 +3,7 @@
 #endif
 
 #include <errno.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <time.h>

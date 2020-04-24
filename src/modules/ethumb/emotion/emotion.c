@@ -9,7 +9,7 @@
 
 #define EDJE_EDIT_IS_UNSTABLE_AND_I_KNOW_ABOUT_IT 1
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <Eo.h>
 #include <Eina.h>

@@ -8,7 +8,7 @@
 #include <Eio.h>
 #include <Ecore.h>
 #include <Efl.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include "eio_suite.h"
 #define EFL_MODEL_TEST_FILENAME_PATH "/tmp"

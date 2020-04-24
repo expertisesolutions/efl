@@ -27,7 +27,7 @@
 #endif
 
 #include <Eina.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 
 #include "cpplib.h"

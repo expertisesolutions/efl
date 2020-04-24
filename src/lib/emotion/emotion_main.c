@@ -11,7 +11,7 @@
 # endif
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Ecore.h>
 

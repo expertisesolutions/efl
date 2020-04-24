@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -g eina_iterator_01.c -o eina_iterator_01 `pkg-config --cflags --libs eina`
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Eina.h>
 

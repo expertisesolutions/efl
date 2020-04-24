@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include "eina_config.h"
 #include "eina_private.h"

@@ -3,7 +3,7 @@
 #endif
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <unistd.h>
 
 #ifdef _WIN32

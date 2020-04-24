@@ -22,7 +22,7 @@
 
 #include <string.h>
 #include <stdint.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>

@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <png.h>
 #include <setjmp.h>
 

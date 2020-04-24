@@ -95,7 +95,7 @@
 #define _EET_H
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Efl_Config.h>
 #include <Eina.h>
 #include <Emile.h>

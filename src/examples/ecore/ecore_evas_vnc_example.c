@@ -1,7 +1,7 @@
 #define EFL_BETA_API_SUPPORT
 
 #include <Efl.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Ecore.h>
 #include <Evas.h>
 #include <Eina.h>

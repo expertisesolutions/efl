@@ -138,7 +138,7 @@ _elm_code_test_syntax_setup(Evas_Object *parent)
    efl_ui_code_widget_show_whitespace_set(widget, EINA_TRUE);
    efl_ui_code_widget_line_numbers_set(widget, EINA_TRUE);
 
-   _append_line(code->file, "#include <stdio.h>");
+   _append_line(code->file, "#include <eina_stdio.h>");
    _append_line(code->file, "int main(int argc, char **argv)");
    _append_line(code->file, "{");
    _append_line(code->file, "   // display a welcome greeting");
@@ -168,7 +168,7 @@ _elm_code_test_syntax_tabbed_setup(Evas_Object *parent)
    efl_ui_code_widget_line_numbers_set(widget, EINA_TRUE);
    efl_ui_code_widget_tab_inserts_spaces_set(widget, EINA_FALSE);
 
-   _append_line(code->file, "#include <stdio.h>");
+   _append_line(code->file, "#include <eina_stdio.h>");
    _append_line(code->file, "int main(int argc, char **argv)");
    _append_line(code->file, "{");
    _append_line(code->file, "\t// display a welcome greeting");

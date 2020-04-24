@@ -25,7 +25,7 @@
 /* Dump what the parser finds to stdout as it happen */
 
 #include "http_parser.h"
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -4,7 +4,7 @@
 
 #define EINA_SLSTR_INTERNAL
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

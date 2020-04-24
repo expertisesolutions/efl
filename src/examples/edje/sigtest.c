@@ -15,7 +15,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Edje.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #define WIDTH  (300)
 #define HEIGHT (300)

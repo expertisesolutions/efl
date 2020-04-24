@@ -19,7 +19,7 @@
 #ifndef EINA_LOG_H_
 #define EINA_LOG_H_
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <sys/types.h>

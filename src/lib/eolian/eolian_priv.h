@@ -2,7 +2,7 @@
 #define EOLIAN_PRIV_H
 
 #include <Eina.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdarg.h>
 
 static inline void _eolian_log_line(const char *file, int line, int column, const char *str) EINA_ARG_NONNULL(1, 4);

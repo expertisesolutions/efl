@@ -23,7 +23,7 @@
 #include "eina_private.h"
 
 #include <math.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include "eina_rectangle.h"
 #include "eina_quad.h"

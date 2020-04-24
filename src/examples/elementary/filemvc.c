@@ -10,7 +10,7 @@
 #include <Efl.h>
 #include <Eio.h>
 #include <efl_io_model.eo.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eio.h>
 #include <elm_view_form.h>
 

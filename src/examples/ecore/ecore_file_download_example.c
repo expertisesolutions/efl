@@ -1,7 +1,7 @@
 //Compile with:
 // gcc -o ecore_file_download_example ecore_file_download_example.c `pkg-config --libs --cflags ecore eina ecore-file`
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eina.h>
 #include <Ecore.h>
 #include <Ecore_File.h>

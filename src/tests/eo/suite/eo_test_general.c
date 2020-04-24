@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #ifndef _WIN32
 # include <signal.h>

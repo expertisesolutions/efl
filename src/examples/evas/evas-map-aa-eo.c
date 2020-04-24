@@ -19,7 +19,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include "evas-common.h"
 

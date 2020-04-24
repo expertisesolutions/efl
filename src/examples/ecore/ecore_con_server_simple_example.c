@@ -1,7 +1,7 @@
 //Compile with:
 // gcc -o ecore_con_server_simple_example ecore_con_server_simple_example.c `pkg-config --libs --cflags ecore ecore-con eina`
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
 

@@ -41,7 +41,7 @@
  * Creating an @ref Eina_List and adding elements to it is very easy and can be
  * understood from an example:
  * First thing is always to include Eina.h, for this example we also
- * include stdio.h so we can use printf.
+ * include eina_stdio.h so we can use printf.
  * @skip #include
  * @until Eina.h
  *

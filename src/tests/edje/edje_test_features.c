@@ -3,7 +3,7 @@
 #endif
 
 #include <unistd.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #ifdef _WIN32
 # include <evil_private.h> /* setenv realpath */

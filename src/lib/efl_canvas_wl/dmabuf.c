@@ -37,7 +37,7 @@
 
 #include "linux-dmabuf-unstable-v1-server-protocol.h"
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <unistd.h>
 #include "dmabuf.h"
 #include <Eina.h>

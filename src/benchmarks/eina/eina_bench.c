@@ -21,7 +21,7 @@
 #endif
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <limits.h>
 
 #include "eina_bench.h"

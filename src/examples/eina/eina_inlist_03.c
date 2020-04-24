@@ -2,7 +2,7 @@
 // gcc -g eina_inlist_03.c -o eina_inlist_03 `pkg-config --cflags --libs eina`
 
 #include <Eina.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 struct my_struct {
      EINA_INLIST;

@@ -11,7 +11,7 @@
 #include <Ecore_IMF.h>
 #include <Ecore_IMF_Evas.h>
 #include <Evas.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #define WIDTH 480
 #define HEIGHT 800

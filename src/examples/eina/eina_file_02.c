@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -g eina_file_02.c -o eina_file_02 `pkg-config --cflags --libs eina`
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eina.h>
 
 static Eina_Bool

@@ -17,7 +17,7 @@
  */
 #include <math.h>
 #include <float.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include "eina_private.h"
 #include "eina_bezier.h"

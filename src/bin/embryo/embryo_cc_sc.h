@@ -33,7 +33,7 @@
 
 #include <limits.h>
 #include <stdarg.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <setjmp.h>
 #include <stdint.h>
 

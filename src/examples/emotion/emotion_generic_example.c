@@ -8,7 +8,7 @@
 #include <Ecore_Evas.h>
 #include <Evas.h>
 #include <Emotion.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include <unistd.h>
 

@@ -2,7 +2,7 @@
 //gcc -Wall -o eina_log_03 eina_log_03.c `pkg-config --cflags --libs eina`
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Eina.h>
 

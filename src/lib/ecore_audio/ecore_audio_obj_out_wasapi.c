@@ -5,7 +5,7 @@
 #ifdef _WIN32
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 
 #include <Eo.h>

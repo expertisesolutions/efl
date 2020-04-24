@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <unistd.h>
 #include "eo_internal.h"
 #define EFL_NOLEGACY_API_SUPPORT

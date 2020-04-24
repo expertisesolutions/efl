@@ -15,7 +15,7 @@
 # include <sys/time.h>
 # include <sys/resource.h>
 # include <stdlib.h>
-# include <stdio.h>
+# include <eina_stdio.h>
 # include <string.h>
 # include <errno.h>
 # include <sys/types.h>

@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include "evas_common_private.h"
 #include "evas_private.h"

@@ -8,7 +8,7 @@
 /* Copyright (c) 1999 - Carsten Haitzler (The Rasterman)                */
 /* -------------------------------------------------------------------- */
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>

@@ -3,7 +3,7 @@
 #endif
 
 #include <stdlib.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Eina.h>
 #include <Eio.h>

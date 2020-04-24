@@ -13,7 +13,7 @@
 #include <Ecore_Evas.h>
 
 #include <time.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 

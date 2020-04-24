@@ -22,7 +22,7 @@
 
 #define DBL_EPSILON 0.0000001
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <math.h>
 
 #include <Eina.h>

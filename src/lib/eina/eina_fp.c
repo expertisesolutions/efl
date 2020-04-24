@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <math.h>
 
 #include "eina_types.h"

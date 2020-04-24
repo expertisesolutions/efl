@@ -3,7 +3,7 @@
 
 #include <Eina.h>
 #include <Eet.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>

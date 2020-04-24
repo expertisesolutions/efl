@@ -111,7 +111,7 @@
 #define LZ4F_STATIC_ASSERT(c)    { enum { LZ4F_static_assert = 1/(int)(!!(c)) }; }   /* use only *after* variable declarations */
 
 #if defined(LZ4_DEBUG) && (LZ4_DEBUG>=2) && !defined(DEBUGLOG)
-#  include <stdio.h>
+#  include <eina_stdio.h>
 static int g_debuglog_enable = 1;
 #  define DEBUGLOG(l, ...) {                                  \
                 if ((g_debuglog_enable) && (l<=LZ4_DEBUG)) {  \

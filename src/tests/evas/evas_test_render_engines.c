@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Evas.h>
 #include <Evas_Engine_Buffer.h>

@@ -16,7 +16,7 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <locale.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <unistd.h>
 
 #ifndef ENABLE_NLS

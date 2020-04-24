@@ -20,7 +20,7 @@
 #endif
 
 #include <Ecore_Evas.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #define WIDTH  (320)
 #define HEIGHT (240)

@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eina.h>
 #include <Ecore.h>
 #include <Ecore_Evas.h>

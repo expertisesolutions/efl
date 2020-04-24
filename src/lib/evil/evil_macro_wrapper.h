@@ -18,7 +18,7 @@
 #define setlocale(cat, loc) evil_setlocale(cat, loc)
 
 /*
- * evil_stdio.h
+ * evil_eina_stdio.h
  */
 
 /**

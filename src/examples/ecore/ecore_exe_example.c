@@ -2,7 +2,7 @@
    Compile with gcc -o ecore_exe_example ecore_exe_example.c `pkg-config --cflags --libs ecore`
  */
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include <Ecore.h>
 

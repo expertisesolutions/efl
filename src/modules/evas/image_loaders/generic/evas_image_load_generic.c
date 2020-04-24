@@ -5,7 +5,7 @@
 #include "evas_common_private.h"
 #include "evas_private.h"
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

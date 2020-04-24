@@ -32,7 +32,7 @@
 
 #include <Evas.h>
 #include <Evas_Engine_Buffer.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <errno.h>
 
 #define WIDTH (320)

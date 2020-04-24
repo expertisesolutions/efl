@@ -3,7 +3,7 @@
 #endif
 
 #include <stdbool.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <unistd.h>
 
 #include <Eina.h>

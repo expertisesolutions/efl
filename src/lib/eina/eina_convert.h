@@ -45,7 +45,7 @@
  *
  * @code
  * #include <stdlib.h>
- * #include <stdio.h>
+ * #include <eina_stdio.h>
  *
  * #include <Eina.h>
  *
@@ -107,7 +107,7 @@
  *
  * @code
  * #include <stdlib.h>
- * #include <stdio.h>
+ * #include <eina_stdio.h>
  * #include <math.h>
  *
  * #include <Eina.h>

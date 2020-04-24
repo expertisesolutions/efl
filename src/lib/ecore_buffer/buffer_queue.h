@@ -1,7 +1,7 @@
 #ifndef _BUFFER_QUEUE_H_
 #define _BUFFER_QUEUE_H_
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <Eina.h>
 
 #include "shared_buffer.h"

@@ -6,7 +6,7 @@
 # include <sys/types.h>
 #endif /* ifdef __OpenBSD__ */
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include <setjmp.h>
 #include <jpeglib.h>

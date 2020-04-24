@@ -2,7 +2,7 @@
 //gcc -Wall -o eina_simple_xml_parser_02 eina_simple_xml_parser_02.c `pkg-config --cflags --libs eina`
 
 #include <Eina.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 
 

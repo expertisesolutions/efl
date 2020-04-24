@@ -10,7 +10,7 @@
 #include <Ecore_Evas.h>
 #include <Evas.h>
 #include <Emotion.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #define WIDTH  (320)
 #define HEIGHT (240)

@@ -1,5 +1,5 @@
 #include <Efreet.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include "comp.h"
 
 int

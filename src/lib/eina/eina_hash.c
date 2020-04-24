@@ -21,7 +21,7 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>

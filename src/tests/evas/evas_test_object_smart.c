@@ -7,7 +7,7 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Eina.h>
 #include <Evas.h>

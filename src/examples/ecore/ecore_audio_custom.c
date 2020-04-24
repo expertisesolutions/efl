@@ -1,7 +1,7 @@
 // Compile with:
 // gcc -o ecore_audio_custom ecore_audio_custom.c `pkg-config --libs --cflags ecore ecore-audio`
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <termios.h>

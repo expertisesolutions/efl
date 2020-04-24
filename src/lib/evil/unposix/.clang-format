@@ -1,0 +1,60 @@
+﻿---
+BasedOnStyle: Mozilla
+Language: Cpp
+SortIncludes: 'false'
+IncludeBlocks: Preserve
+MaxEmptyLinesToKeep: 2
+
+AlignConsecutiveMacros: 'true'
+AlignConsecutiveDeclarations: 'false'
+AlignEscapedNewlines: Right
+AlignTrailingComments: 'true'
+AlignOperands: 'true'
+PointerAlignment: Right
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: AllDefinitions
+AlwaysBreakBeforeMultilineStrings: 'true'
+BreakBeforeTernaryOperators: 'true'
+BreakStringLiterals: 'true'
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterControlStatement: 'true'
+    AfterCaseLabel: 'true'
+    AfterClass: 'true'
+    AfterEnum: 'true'
+    AfterFunction: 'true'
+    AfterNamespace: 'true'
+    AfterStruct: 'true'
+    AfterUnion: 'true'
+    AfterExternBlock: 'true'
+    BeforeCatch: 'true'
+    BeforeElse: 'true'
+    IndentBraces: 'true'
+
+AllowAllConstructorInitializersOnNextLine: 'true'
+AllowAllParametersOfDeclarationOnNextLine: 'false'
+
+AllowShortBlocksOnASingleLine: 'true'
+AllowShortIfStatementsOnASingleLine: 'true'
+AllowShortCaseLabelsOnASingleLine: 'true'
+AllowShortLoopsOnASingleLine: 'true'
+AllowShortFunctionsOnASingleLine: Inline
+
+BinPackArguments: 'true'
+BinPackParameters: 'true'
+
+ColumnLimit: '80'
+UseTab: Never
+IndentWidth: '3'
+IndentCaseLabels: 'false'
+
+SpacesBeforeTrailingComments: '2'
+SpaceBeforeRangeBasedForLoopColon: 'false'
+SpaceInEmptyParentheses: 'false'
+SpacesInParentheses: 'false'
+SpacesInSquareBrackets: 'false'
+SpacesInAngles: 'false'
+
+
+...

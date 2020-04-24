@@ -1,7 +1,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#include <stdio.h>
+#include <eina_stdio.h>
 #include "shmfile.h"
 #include "timeout.h"
 

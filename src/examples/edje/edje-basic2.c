@@ -14,7 +14,7 @@
 #define PACKAGE_DATA_DIR "."
 #endif
 
-#include <stdio.h>
+#include <eina_stdio.h>
 
 #include <Eina.h>
 #include <Ecore.h>

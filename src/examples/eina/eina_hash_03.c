@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -g eina_hash_03.c -o eina_hash_03 `pkg-config --cflags --libs eina`
 
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <string.h>
 #include <Eina.h>
 

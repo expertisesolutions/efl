@@ -8,7 +8,7 @@
 #endif
 
 #include <stdint.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <inttypes.h>

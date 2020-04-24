@@ -109,6 +109,7 @@ public_sub_headers = [
 'eina_freeq.h',
 'eina_slstr.h',
 'eina_vpath.h',
+'eina_stdio.h',
 'eina_abstract_content.h'
 ]
 
@@ -199,6 +200,7 @@ if sys_windows == true
   public_sub_headers += 'eina_inline_thread_win32.x'
   sources += 'eina_file_win32.c'
   sources += 'eina_sched_win32.c'
+  sources += 'eina_stdio.c'
   public_sub_headers += 'eina_inline_lock_win32.x'
 else
   public_sub_headers += 'eina_thread_posix.h'

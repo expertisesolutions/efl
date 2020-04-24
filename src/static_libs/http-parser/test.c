@@ -21,7 +21,7 @@
 #include "http_parser.h"
 #include <stdlib.h>
 #include <assert.h>
-#include <stdio.h>
+#include <eina_stdio.h>
 #include <stdlib.h> /* rand */
 #include <string.h>
 #include <stdarg.h>
