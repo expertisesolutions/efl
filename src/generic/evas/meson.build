@@ -13,6 +13,7 @@ inc_dir = config_dir
 common_deps = generic_deps
 if sys_windows
   inc_dir = [inc_dir, zlib_include_dir]
+  common_deps = [common_deps, evil, evil_unposix]
 else
   common_deps = [generic_deps, rt]
 endif
