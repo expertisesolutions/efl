@@ -522,11 +522,7 @@ restart:
    SLKU(_ecore_pending_job_threads_mutex);
 
    /* Sleep a little to prevent premature death */
-#ifdef _WIN32
-   Sleep(1); /* around 50ms */
-#else
-   usleep(50);
-#endif
+   eina_usleep(50);
 
    SLKL(_ecore_pending_job_threads_mutex);
    if (_ecore_pending_job_threads || _ecore_pending_job_threads_feedback)
@@ -628,7 +624,7 @@ _ecore_thread_shutdown(void)
         if (test)
           {
              _ecore_main_call_flush();
-             usleep(1000);
+             eina_usleep(1000);
           }
      } while (test == EINA_TRUE && iteration < 50);
 

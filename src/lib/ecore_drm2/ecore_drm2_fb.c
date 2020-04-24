@@ -523,7 +523,7 @@ _fb_atomic_flip(Ecore_Drm2_Output *output)
                                   output);
         if (res == 0) break;
         else ERR("DRM atomic commit failed - retry #%i", i + 1);
-        usleep(100);
+        eina_usleep(100);
      }
 
    if (res < 0)
@@ -618,7 +618,7 @@ _fb_flip(Ecore_Drm2_Output *output)
                   ERR("Pageflip EBUSY for %i tries - give up", count);
                   break;
                }
-             usleep(100);
+             eina_usleep(100);
           }
         else
           {

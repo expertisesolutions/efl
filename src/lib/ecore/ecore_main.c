@@ -263,7 +263,7 @@ _throttle_do(Efl_Loop_Data *pd)
 {
    if (pd->throttle == 0) return;
    eina_evlog("+throttle", NULL, 0.0, NULL);
-   usleep(pd->throttle);
+   eina_usleep(pd->throttle);
    eina_evlog("-throttle", NULL, 0.0, NULL);
 }
 

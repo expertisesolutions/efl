@@ -53,6 +53,15 @@
  * @since 1.15
  */
 EAPI void eina_sleep(unsigned int seconds);
+
+/**
+ * @brief Suspends the execution of calling thread until time specified by microseconds.
+ * @param[in] Time in microseconds for which execution is to be suspendend.
+ * 
+ * @since 1.15
+ */
+EAPI void eina_usleep(unsigned int seconds);
+
 /**
  * @brief Changes the ownership of the file specified by pathname.
  * @param[in] The directory path to change owner.

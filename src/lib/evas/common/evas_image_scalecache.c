@@ -537,11 +537,7 @@ evas_common_rgba_image_scalecache_prepare(Image_Entry *ie, RGBA_Image *dst EINA_
         
         while (slpt < 500000)
           {
-#ifdef _WIN32
-             Sleep(slp / 1000);
-#else
-             usleep(slp);
-#endif
+             eina_usleep(slp);
              slpt += slp;
              slp++;
              ret = SLKT(im->cache.lock);

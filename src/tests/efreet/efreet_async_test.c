@@ -41,7 +41,7 @@ thread_cb(void *data EINA_UNUSED, Eina_Thread t EINA_UNUSED)
     int i;
     for (i = 0; i < MCOUNT; i++) {
         efreet_menu_async_parse(MENU, menu_cb, NULL);
-        usleep(1e5);
+        eina_usleep(1e5);
     }
     return NULL;
 }
@@ -55,7 +55,7 @@ create_threads(void)
     {
         if (!eina_thread_create(&threads[i], EINA_THREAD_NORMAL, -1, thread_cb, NULL))
             fprintf(stderr, "error: eina_thread_create\n");
-        usleep(1e5);
+        eina_usleep(1e5);
     }
 }
 

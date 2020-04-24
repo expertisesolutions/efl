@@ -130,6 +130,17 @@ eina_sleep(unsigned int seconds)
 #endif
 }
 
+EAPI void
+eina_usleep(unsigned int microseconds)
+{
+#ifdef _WIN32
+   DWORD us = microseconds / 1000;
+   Sleep(us);
+#else
+   usleep(microseconds);
+#endif
+}
+
 EAPI int
 eina_chown(const char *pathname, uid_t owner, gid_t group)
 {
