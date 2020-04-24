@@ -2,7 +2,6 @@
 //gcc eina_value_03.c -o eina_value_03 `pkg-config --cflags --libs eina`
 
 #include <Eina.h>
-#include <sys/time.h>
 
 static Eina_Bool
 _tz_setup(const Eina_Value_Type *type, void *mem)
@@ -158,7 +157,7 @@ int main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
    eina_value_setup(&vtv, EINA_VALUE_TYPE_TIMEVAL);
    eina_value_setup(&vtz, &TZ_TYPE);
 
-   gettimeofday(&tv, &tz);
+   eina_gettimeofday(&tv, &tz);
    eina_value_set(&vtv, tv);
    eina_value_set(&vtz, tz);
 

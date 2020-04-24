@@ -124,7 +124,7 @@ _ecore_avahi_timeval2double(const struct timeval *tv)
 
    if (!tv) return 3600;
 
-   gettimeofday(&now, NULL);
+   eina_gettimeofday(&now, NULL);
 
    tm = tv->tv_sec - now.tv_sec + (double) (tv->tv_usec - now.tv_usec) / 1000000;
    if (tm < 0) tm = 0.001;

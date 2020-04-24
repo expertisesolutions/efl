@@ -44,14 +44,14 @@ efl_main(void *data EINA_UNUSED, const Efl_Event *ev EINA_UNUSED)
    cal.select_mode_set(ELM_CALENDAR_SELECT_MODE_NONE);
    cal.eo_cxx::efl::Gfx::size_set({125,135});
    //bx.pack_end(cal); no matching function for call to ‘efl::ui::Box::pack_end(elm::Calendar&)’
-   //candidate: bool eo_cxx::efl::pack::Linear::pack_end(Efl_Gfx*) const 
+   //candidate: bool eo_cxx::efl::pack::Linear::pack_end(Efl_Gfx*) const
    //  inline bool eo_cxx::efl::pack::Linear::pack_end(Efl_Gfx * subobj_) const
 
    ::elm::Calendar cal2(instantiate, win);
    //cal2.size_hint_weight_set(EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    //cal2.size_hint_fill_set(true, true);
    current_time = time(NULL) +2 * SECS_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    // cal2.selected_time_set(&selected_time);
    cal2.eo_cxx::efl::Gfx::size_set({125,135});
    //bx.pack_end(cal2);

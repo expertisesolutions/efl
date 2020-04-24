@@ -2910,7 +2910,7 @@ _eo_log_time_now(void)
    {
       struct timeval timev;
 
-      gettimeofday(&timev, NULL);
+      eina_gettimeofday(&timev, NULL);
       return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000);
    }
 #endif

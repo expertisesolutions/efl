@@ -3,11 +3,11 @@
 #endif
 
 #include <stdlib.h>
-#include <sys/time.h>
 #include <assert.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <Eina.h>
 #include "Ecore.h"
 #include "ecore_private.h"
 

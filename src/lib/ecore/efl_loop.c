@@ -9,9 +9,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
-#include <sys/time.h>
 #include <errno.h>
 
+#include <Eina.h>
 #include "Ecore.h"
 #include "ecore_private.h"
 

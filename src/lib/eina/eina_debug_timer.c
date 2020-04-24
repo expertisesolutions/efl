@@ -24,6 +24,8 @@
 # include <config.h>
 #endif
 
+#include "eina_time.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -32,7 +34,6 @@
 #ifdef HAVE_SYS_EPOLL_H
 # include <sys/epoll.h>
 #endif
-#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>

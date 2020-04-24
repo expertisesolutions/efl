@@ -6,7 +6,6 @@
 #include <locale.h>
 #include <limits.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 
 #ifdef HAVE_SYS_RESOURCE_H
 # include <sys/resource.h>
@@ -15,6 +14,8 @@
 #ifdef _WIN32
 # include <evil_private.h> /* realpath */
 #endif
+
+#include <Eina.h> /* for eina_time.h */
 
 #include "edje_cc.h"
 int _edje_cc_log_dom = -1;

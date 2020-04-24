@@ -4,20 +4,20 @@
  * Based on CCCP program by by Paul Rubin, June 1986
  * Adapted to ANSI C, Richard Stallman, Jan 1987
  * Copyright (C) 2003-2011 Kim Woelders
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 2, or (at your option) any
  * later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * In other words, you are welcome to use, share and improve this program.
  * You are forbidden to forbid anyone else to use, share and improve
  * what you give them.   Help stamp out software-hoarding!  */
@@ -77,7 +77,6 @@ const char         *version_string = "0.0.0";
 #ifndef VMS
 #ifndef USG
 #include <time.h>
-#include <sys/time.h>		/* for __DATE__ and __TIME__ */
 #ifdef HAVE_SYS_RESOURCE_H
 # include <sys/resource.h>
 #endif
@@ -1198,7 +1197,7 @@ struct arglist {
  * in that list, or -1 for a macro name that wants no argument list.
  * MACRONAME is the macro name itself (so we can avoid recursive expansion)
  * and NAMELEN is its length in characters.
- * 
+ *
  * Note that comments, backslash-newlines, and leading white space
  * have already been deleted from the argument.  */
 
@@ -1279,7 +1278,7 @@ collect_expansion(cpp_reader * pfile, unsigned char *buf, unsigned char *limit,
              else
                 expected_delimiter = c;
              break;
-             
+
            case '\\':
              if (p < limit && expected_delimiter)
                {
@@ -1288,14 +1287,14 @@ collect_expansion(cpp_reader * pfile, unsigned char *buf, unsigned char *limit,
                   *exp_p++ = *p++;
                }
              break;
-             
+
            case '@':
              /* An '@' in a string or character constant stands for itself,
               * and does not need to be escaped. */
              if (!expected_delimiter)
                 *exp_p++ = c;
              break;
-             
+
            case '#':
              /* # is ordinary inside a string.  */
              if (expected_delimiter)
@@ -1431,7 +1430,7 @@ collect_expansion(cpp_reader * pfile, unsigned char *buf, unsigned char *limit,
 }
 
 /*
- * special extension string that can be added to the last macro argument to 
+ * special extension string that can be added to the last macro argument to
  * allow it to absorb the "rest" of the arguments when expanded.  Ex:
  *              #define wow(a, b...)            process (b, a, b)
  *              { wow (1, 2, 3); }      ->      { process (2, 3, 1, 2, 3); }
@@ -1446,7 +1445,7 @@ static char         rest_extension[] = "...";
 
 #define REST_EXTENSION_LENGTH	(sizeof (rest_extension) - 1)
 
-/* Create a DEFINITION node from a #define directive.  Arguments are 
+/* Create a DEFINITION node from a #define directive.  Arguments are
  * as for do_define. */
 static void
 create_definition(MACRODEF * mdef, unsigned char *buf, unsigned char *limit,
@@ -1864,7 +1863,7 @@ do_define(cpp_reader * pfile, struct directive *keyword,
  * `stringified_length' is the length the argument would have
  * if stringified.
  * `use_count' is the number of times this macro arg is substituted
- * into the macro.  If the actual use count exceeds 10, 
+ * into the macro.  If the actual use count exceeds 10,
  * the value stored is 10. */
 
 /* raw and expanded are relative to ARG_BASE */
@@ -1973,8 +1972,8 @@ cpp_expand_to_buffer(cpp_reader * pfile, unsigned char *buf, int length)
       unsigned char      *p1 = buf;
       unsigned char      *p2 = buf1;
       int                 in_string = 0;
-      
-#if 0 /* old behavior */ 
+
+#if 0 /* old behavior */
       while (p1 != limit) *p2++ = *p1++;
 #else /* new one - handle \ escapes if not in string */
       while (p1 != limit)
@@ -2676,7 +2675,7 @@ unsafe_chars(int c1, int c2)
  * HP points to the symbol that is the macro being called.
  * Put the result of expansion onto the input stack
  * so that subsequent input by our caller will use it.
- * 
+ *
  * If macro wants arguments, caller has already verified that
  * an argument list follows; arguments come from the input stack.  */
 
@@ -2731,7 +2730,7 @@ macroexpand(cpp_reader * pfile, HASHNODE * hp)
 	     if (i < nargs || (nargs == 0 && i == 0))
 	       {
                   unsigned char *bp;
-                  
+
 		  /* if we are working on last arg which absorbs rest of args... */
 		  if (i == nargs - 1 && defn->rest_args)
 		     rest_args = 1;
@@ -2748,7 +2747,7 @@ macroexpand(cpp_reader * pfile, HASHNODE * hp)
                        bp = ARG_BASE + args[i].raw + args[i].raw_length - 1;
                        while (is_space[(unsigned char)(*bp)])
                          {
-                            bp--; 
+                            bp--;
                             args[i].raw_length--;
                             if (args[i].raw_length < 1) break;
                          }
@@ -3096,17 +3095,17 @@ push_macro_expansion(cpp_reader * pfile, unsigned char *xbuf, int xbuf_len,
     * collect_expansion.  This is to prevent accidental token-pasting
     * between the text preceding the macro invocation, and the macro
     * expansion text.
-    * 
+    *
     * We would like to avoid adding unneeded spaces (for the sake of
     * tools that use cpp, such as imake).  In some common cases we can
     * tell that it is safe to omit the space.
-    * 
+    *
     * The character before the macro invocation cannot have been an
     * idchar (or else it would have been pasted with the idchars of
     * the macro name).  Therefore, if the first non-space character
     * of the expansion is an idchar, we do not need the extra space
     * to prevent token pasting.
-    * 
+    *
     * Also, we don't need the extra space if the first char is '(',
     * or some other (less common) characters.  */
 
@@ -3155,7 +3154,7 @@ get_directive_token(cpp_reader * pfile)
 
 /* Handle #include and #import.
  * This function expects to see "fname" or <fname> on the input.
- * 
+ *
  * The input is normally in part of the output_buffer following
  * CPP_WRITTEN, and will get overwritten by output_line_command.
  * I.e. in input file specification has been popped by handle_directive.
@@ -3575,7 +3574,7 @@ redundant_include_p(cpp_reader * pfile, char *name)
  * include file directory, or within any subdirectory thereof, then the
  * given file must be a "system" include file.  This function tells us
  * if we should suppress pedantic errors/warnings for the given FILENAME.
- * 
+ *
  * The value is 2 if the file is a C-language system header file
  * for which C++ should (on most systems) assume `extern "C"'.  */
 
@@ -4487,7 +4486,7 @@ do_endif(cpp_reader * pfile, struct directive *keyword EINA_UNUSED,
 		   * that contains all of the file (aside from whitespace).
 		   * Arrange not to include the file again
 		   * if the macro that was tested is defined.
-		   * 
+		   *
 		   * Do not do this for the top-level file in a -include or any
 		   * file in a -imacros.  */
 		  {
@@ -5565,7 +5564,7 @@ dos2unix(cpp_buffer *fp, int length)
 {
    unsigned char *tbuf;
    int nlen = 0, i;
-   
+
    tbuf = xmalloc(length + 4);
    if (!tbuf) return length;
    for (i = 0; i < length; i++)
@@ -5580,7 +5579,7 @@ dos2unix(cpp_buffer *fp, int length)
         nlen++;
      }
    tbuf[nlen] = 0;
-   
+
    free(fp->buf);
    fp->buf = tbuf;
    return nlen;
@@ -5594,7 +5593,7 @@ dos2unix(cpp_buffer *fp, int length)
  * DIRPTR is the link in the dir path through which this file was found,
  * or 0 if the file name was absolute or via the current directory.
  * Return 1 on success, 0 on failure.
- * 
+ *
  * The caller is responsible for the cpp_push_buffer.  */
 
 static int
@@ -5629,7 +5628,7 @@ finclude(cpp_reader * pfile, int f, const char *fname, int system_header_p,
 	 * on the number of bytes we can read.  */
 	length = safe_read(f, (char *)fp->buf, st_size);
         length = dos2unix(fp, length);
-        
+
 	fp->alimit = fp->buf + st_size + 2;
 	fp->cur = fp->buf;
 	fp->rlimit = fp->buf + length;
@@ -5675,7 +5674,7 @@ finclude(cpp_reader * pfile, int f, const char *fname, int system_header_p,
 	fp->buf[length++] = '\n';
      }
    fp->buf[length] = '\0';
-     
+
    fp->rlimit = fp->buf + length;
 
    /* Close descriptor now, so nesting does not use lots of descriptors.  */

@@ -4,13 +4,13 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/time.h>
 #include <sys/un.h>
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>
 
 #include <X11/Xlib.h>
+#include <Eina.h>
 #include <Ecore_X.h>
 #include <Ecore_Evas.h>
 

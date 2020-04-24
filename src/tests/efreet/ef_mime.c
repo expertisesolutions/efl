@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/time.h>
 
+#include <Eina.h>
 #include <Ecore.h>
 #include <Efreet.h>
 #include <Efreet_Mime.h>

@@ -4,7 +4,7 @@
 
 #include <errno.h>
 #include <direct.h>
-# include <sys/time.h>
+# include <time.h>
 
 #ifndef WIN32_LEAN_AND_MEAN
 # define WIN32_LEAN_AND_MEAN

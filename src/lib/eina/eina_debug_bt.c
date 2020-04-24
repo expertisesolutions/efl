@@ -34,6 +34,7 @@
 
 #include "eina_debug.h"
 #include "eina_debug_private.h"
+#include <eina_time.h> /* for eina_gettimeofday */
 
 #ifndef _WIN32
 # include <signal.h>
@@ -186,7 +187,7 @@ get_time(void)
    return (double)t.tv_sec + (((double)t.tv_nsec) / 1000000000.0);
 #else
    struct timeval timev;
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000.0);
 #endif
 }

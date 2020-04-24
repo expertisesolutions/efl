@@ -10,7 +10,6 @@
 #include <string.h> /* strcmp */
 #include <unistd.h> /* execvp */
 #include <errno.h> /* errno */
-#include <sys/time.h>
 
 #ifdef HAVE_FORK
 # ifdef HAVE_SYS_TYPES_H
@@ -203,7 +202,7 @@ _timing_time_get(void)
 {
    struct timeval timev;
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000);
 }
 

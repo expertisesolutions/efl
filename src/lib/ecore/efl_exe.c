@@ -6,13 +6,13 @@
 #define EFL_IO_WRITER_PROTECTED 1
 #define EFL_IO_CLOSER_PROTECTED 1
 
+#include <Eina.h>
 #include <Ecore.h>
 
 #include "ecore_private.h"
 
 #ifdef _WIN32
 #else
-# include <sys/time.h>
 # include <sys/resource.h>
 # include <stdlib.h>
 # include <stdio.h>

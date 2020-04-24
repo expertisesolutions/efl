@@ -3,6 +3,7 @@
 #endif
 
 #ifdef HAVE_PULSE
+#include <Eina.h> /* for eina_gettimeofday */
 #include "Ecore.h"
 #include "ecore_private.h"
 #include "Ecore_Audio.h"
@@ -10,7 +11,6 @@
 
 #include <pulse/pulseaudio.h>
 
-#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 
@@ -145,7 +145,7 @@ _ecore_pa_time_new(pa_mainloop_api *api, const struct timeval *tv, pa_time_event
    event->callback = cb;
    event->tv = *tv;
 
-   if (gettimeofday(&now, NULL) == -1)
+   if (eina_gettimeofday(&now, NULL) == -1)
      {
         ERR("Failed to get the current time!");
         free(event);
@@ -174,7 +174,7 @@ _ecore_pa_time_restart(pa_time_event *event, const struct timeval *tv)
 
    event->tv = *tv;
 
-   if (gettimeofday(&now, NULL) == -1)
+   if (eina_gettimeofday(&now, NULL) == -1)
      {
         ERR("Failed to get the current time!");
         return;

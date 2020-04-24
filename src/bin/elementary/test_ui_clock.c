@@ -1,6 +1,7 @@
 #ifdef HAVE_CONFIG_H
 #include "elementary_config.h"
 #endif
+#include <Eina.h> /* for eina_localtime_r */
 #include <Efl_Ui.h>
 #include <Elementary.h>
 
@@ -21,7 +22,7 @@ _bt_clicked(void *data EINA_UNUSED, const Efl_Event *ev)
    struct tm new_time;
 
    t = time(NULL);
-   localtime_r(&t, &new_time);
+   eina_localtime_r(&t, &new_time);
 
    new_time.tm_year = 85;
    new_time.tm_mon = 9;

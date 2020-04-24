@@ -1,5 +1,6 @@
 #include "evas_common_private.h"
 
+#include <Eina.h> /* for eina_gettimeofday */
 #include "Ecore.h"
 #include <assert.h>
 
@@ -66,7 +67,7 @@ _shutdown_timeout(double *time, int mode, int timeout_ms)
 {
    struct timeval tv;
 
-   gettimeofday(&tv, NULL);
+   eina_gettimeofday(&tv, NULL);
 
    if ( mode == SHUTDOWN_TIMEOUT_RESET )
      *time = (tv.tv_sec + tv.tv_usec / 1000000.0) * 1000.0;

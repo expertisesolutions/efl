@@ -1,6 +1,7 @@
 #ifdef HAVE_CONFIG_H
 # include "elementary_config.h"
 #endif
+#include <Eina.h> /* for eina_localtime_r */
 #include <Efl_Ui.h>
 #include <Elementary.h>
 
@@ -242,24 +243,24 @@ _calendar_create(Evas_Object *parent)
    elm_calendar_date_max_set(cal, gmtime(&the_time));
 
    current_time = time(NULL) + 4 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal, "holiday", &selected_time, ELM_CALENDAR_ANNUALLY);
 
    current_time = time(NULL) + 1 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal, "checked", &selected_time, ELM_CALENDAR_UNIQUE);
 
    current_time = time(NULL) - 363 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal, "checked", &selected_time, ELM_CALENDAR_MONTHLY);
 
    current_time = time(NULL) - 5 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    mark = elm_calendar_mark_add(cal, "holiday", &selected_time,
                                 ELM_CALENDAR_WEEKLY);
 
    current_time = time(NULL) + 1 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal, "holiday", &selected_time, ELM_CALENDAR_WEEKLY);
 
    elm_calendar_mark_del(mark);
@@ -322,14 +323,14 @@ test_calendar2(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event
    evas_object_size_hint_weight_set(cal3, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(cal3, EVAS_HINT_FILL, EVAS_HINT_FILL);
    current_time = time(NULL) + 34 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_selected_time_set(cal3, &selected_time);
    current_time = time(NULL) + 1 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal3, "checked", &selected_time, ELM_CALENDAR_UNIQUE);
    elm_calendar_marks_clear(cal3);
    current_time = time(NULL);
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal3, "checked", &selected_time, ELM_CALENDAR_DAILY);
    elm_calendar_mark_add(cal3, "holiday", &selected_time, ELM_CALENDAR_DAILY);
    elm_calendar_marks_draw(cal3);
@@ -369,7 +370,7 @@ test_calendar3(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event
                                (ELM_CALENDAR_SELECTABLE_YEAR
                                 | ELM_CALENDAR_SELECTABLE_MONTH));
    current_time = time(NULL) + 34 * SEC_PER_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    evas_object_size_hint_weight_set(cal, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    elm_box_pack_end(bx, cal);
 
@@ -427,11 +428,11 @@ test_efl_ui_calendar(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void 
    time_t current_date;
 
    current_date = time(NULL) + SEC_PER_DAY;
-   localtime_r(&current_date, &selected_date);
+   eina_localtime_r(&current_date, &selected_date);
    current_date = time(NULL) - SEC_PER_YEAR;
-   localtime_r(&current_date, &min_date);
+   eina_localtime_r(&current_date, &min_date);
    current_date = time(NULL) + SEC_PER_YEAR;
-   localtime_r(&current_date, &max_date);
+   eina_localtime_r(&current_date, &max_date);
 
    win = efl_add(EFL_UI_WIN_CLASS, efl_main_loop_get(),
                  efl_text_set(efl_added, "Efl Ui Calendar"),

@@ -16,9 +16,9 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "eina_time.h"
 #include "eina_sched.h"
 #include <sched.h>
-#include <sys/time.h>
 #include <sys/resource.h>
 #include <errno.h>
 #include <pthread.h>
@@ -57,7 +57,7 @@ eina_sched_prio_drop(void)
         errno = 0;
         prio = getpriority(PRIO_PROCESS, 0);
         if (errno == 0)
-          { 
+          {
              prio += NICENESS;
              if (prio > 19)
                {

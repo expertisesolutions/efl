@@ -63,7 +63,7 @@
 
 #include <semaphore.h>
 
-#include <sys/time.h>
+#include "eina_time.h" /* for eina_gettimeofday */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,7 +90,6 @@ EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 
 /* For cond_timedwait */
 #include <time.h>
-#include <sys/time.h>
 
 #include <eina_error.h>
 
@@ -261,9 +260,9 @@ _eina_lock_take(Eina_Lock *mutex)
         struct timeval t0, t1;
         int dt;
 
-        gettimeofday(&t0, NULL);
+        eina_gettimeofday(&t0, NULL);
         ok = pthread_mutex_lock(&(mutex->mutex));
-        gettimeofday(&t1, NULL);
+        eina_gettimeofday(&t1, NULL);
 
         dt = (t1.tv_sec - t0.tv_sec) * 1000000;
         if (t1.tv_usec > t0.tv_usec)
@@ -450,7 +449,7 @@ _eina_condition_timedwait(Eina_Condition *cond, double t)
              /* Obsolete for Linux.
               * TODO: use pthread_cond_timedwait_relative_np for OSX. */
              struct timeval tv;
-             if (gettimeofday(&tv, NULL) != 0) return EINA_FALSE;
+             if (eina_gettimeofday(&tv, NULL) != 0) return EINA_FALSE;
              ts.tv_sec = tv.tv_sec;
              ts.tv_nsec = tv.tv_usec * 1000L;
           }

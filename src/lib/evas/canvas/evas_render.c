@@ -1,11 +1,8 @@
 #include "evas_common_private.h"
 #include "evas_private.h"
+#include <Eina.h> /* for eina_gettimeofday */
 #include <math.h>
 #include <assert.h>
-
-#ifdef EVAS_RENDER_DEBUG_TIMING
-#include <sys/time.h>
-#endif
 
 // FIXME: Ugly!
 #define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
@@ -129,7 +126,7 @@ _time_get()
 {
    struct timeval tv;
 
-   gettimeofday(&tv, NULL);
+   eina_gettimeofday(&tv, NULL);
 
    return (tv.tv_sec + tv.tv_usec / 1000000.0) * 1000.0;
 }

@@ -1,4 +1,5 @@
 #include <config.h>
+#include <Eina.h> /* for eina_localtime_r */
 #include "Efl.h"
 
 #ifdef HAVE_LANGINFO_H
@@ -31,7 +32,7 @@ _time_init(Efl_Time *curr_time)
    time_t t;
 
    t = time(NULL);
-   localtime_r(&t, curr_time);
+   eina_localtime_r(&t, curr_time);
 }
 
 static char *

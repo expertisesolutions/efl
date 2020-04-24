@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <sys/time.h>
 #include <unistd.h>
+#include <Eina.h>
 #include <Eet.h>
 
 #define GL_GLEXT_PROTOTYPES

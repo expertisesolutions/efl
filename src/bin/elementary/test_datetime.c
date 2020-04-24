@@ -1,6 +1,7 @@
 #ifdef HAVE_CONFIG_H
 #include "elementary_config.h"
 #endif
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 
 /* A simple test, just displaying datetime in its default format */
@@ -20,7 +21,7 @@ _bt_clicked(void *data EINA_UNUSED, Evas_Object *obj, void *event_info EINA_UNUS
    struct tm new_time;
 
    t = time(NULL);
-   localtime_r(&t, &new_time);
+   eina_localtime_r(&t, &new_time);
 
    new_time.tm_wday = 6;
    new_time.tm_year = 85;
@@ -82,7 +83,7 @@ test_datetime(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event_
 
    // get the current local time
    t = time(NULL);
-   localtime_r(&t, &time1);
+   eina_localtime_r(&t, &time1);
    // set the max year as 2030 and the remaining fields are equal to current time values
    time1.tm_year = 130;
    elm_datetime_value_max_set(dt3, &time1);

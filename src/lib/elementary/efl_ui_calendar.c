@@ -7,6 +7,7 @@
 #define EFL_ACCESS_WIDGET_ACTION_PROTECTED
 #define EFL_UI_FORMAT_PROTECTED
 
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 #include "elm_priv.h"
 #include "efl_ui_calendar_private.h"
@@ -744,7 +745,7 @@ _update_cur_date(void *data)
    if (sd->today_it > 0) _not_today(sd);
 
    current_date = time(NULL);
-   localtime_r(&current_date, &sd->current_date);
+   eina_localtime_r(&current_date, &sd->current_date);
    t = _time_to_next_day(&sd->current_date);
    ecore_timer_interval_set(sd->update_timer, t);
 
@@ -886,7 +887,7 @@ _efl_ui_calendar_constructor_internal(Eo *obj, Efl_Ui_Calendar_Data *priv)
      _day_selected, obj);
 
    current_date = time(NULL);
-   localtime_r(&current_date, &priv->shown_date);
+   eina_localtime_r(&current_date, &priv->shown_date);
    priv->current_date = priv->shown_date;
    priv->date = priv->shown_date;
    t = _time_to_next_day(&priv->current_date);

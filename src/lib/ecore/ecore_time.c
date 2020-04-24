@@ -5,7 +5,6 @@
 #define EFL_LOOP_PROTECTED
 
 #include <stdlib.h>
-#include <sys/time.h>
 
 #if defined(__APPLE__) && defined(__MACH__)
 # include <mach/mach_time.h>
@@ -13,6 +12,7 @@
 
 #include <time.h>
 
+#include <Eina.h> /* for eina_gettimeofday */
 #include "Ecore.h"
 #include "ecore_private.h"
 
@@ -54,7 +54,7 @@ ecore_time_unix_get(void)
 #ifdef HAVE_GETTIMEOFDAY
    struct timeval timev;
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000);
 #else
 # error "Your platform isn't supported yet"

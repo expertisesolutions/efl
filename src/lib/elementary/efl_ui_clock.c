@@ -2,6 +2,8 @@
 # include "elementary_config.h"
 #endif
 
+#include <Eina.h> /* for eina_gettimeofday, eina_localtime_t */
+
 #ifdef _WIN32
 # include <evil_private.h> /* nl_langinfo */
 #endif
@@ -604,7 +606,7 @@ _max_days_get(int year,
    int day;
 
    t = time(NULL);
-   localtime_r(&t, &time1);
+   eina_localtime_r(&t, &time1);
    time1.tm_year = year;
    time1.tm_mon = month;
    for (day = MIN_DAYS_IN_MONTH; day <= mapping[EFL_UI_CLOCK_TYPE_DATE].def_max;
@@ -738,7 +740,7 @@ _field_list_init(Evas_Object *obj)
    EFL_UI_CLOCK_DATA_GET(obj, sd);
 
    t = time(NULL);
-   localtime_r(&t, &sd->curr_time);
+   eina_localtime_r(&t, &sd->curr_time);
 
    mapping[EFL_UI_CLOCK_TYPE_YEAR].def_min = _elm_config->year_min;
    mapping[EFL_UI_CLOCK_TYPE_YEAR].def_max = _elm_config->year_max;
@@ -791,7 +793,7 @@ _ticker(void *data)
    EFL_UI_CLOCK_DATA_GET(data, sd);
 
    tt = time(NULL);
-   localtime_r(&tt, &sd->curr_time);
+   eina_localtime_r(&tt, &sd->curr_time);
 
    if (sd->curr_time.tm_sec > 0)
      {
@@ -802,7 +804,7 @@ _ticker(void *data)
    else
      _field_list_display(data);
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    t = ((double)(1000000 - timev.tv_usec)) / 1000000.0;
    sd->ticker = ecore_timer_add(t, _ticker, data);
 

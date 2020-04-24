@@ -10,10 +10,10 @@
 
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/time.h>
 #include <sys/times.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <Eina.h> /* for eina_gettimeofday */
 #include <Ecore_Evas.h>
 #include <Ecore_X.h>
 #include <Ecore.h>
@@ -257,7 +257,7 @@ get_time(void)
    unsigned int tint;
    struct timeval tv;
    struct timezone tz;           /* is not used since ages */
-   gettimeofday(&tv, &tz);
+   eina_gettimeofday(&tv, &tz);
    tint = tv.tv_sec * 1000;
    tint = tint / 1000 * 1000;
    tint = tint + tv.tv_usec / 1000;

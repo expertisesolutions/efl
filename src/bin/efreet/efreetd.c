@@ -2,10 +2,10 @@
 # include <config.h>
 #endif
 
+#include <Eina.h> /* for eina_time.h */
 #include <stdlib.h>
 #include <unistd.h>
 #ifdef HAVE_SYS_RESOURCE_H
-#include <sys/time.h>
 #include <sys/resource.h>
 #endif
 #include <sys/types.h>

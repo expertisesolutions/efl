@@ -10,6 +10,7 @@
  * @endverbatim
  */
 
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 
 #define SECS_DAY 86400
@@ -41,7 +42,7 @@ elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
    evas_object_size_hint_weight_set(cal2, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(cal2, EVAS_HINT_FILL, EVAS_HINT_FILL);
    current_time = time(NULL) + 2 * SECS_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_selected_time_set(cal2, &selected_time);
    evas_object_show(cal2);
    elm_box_pack_end(bx, cal2);

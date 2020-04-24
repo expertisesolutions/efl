@@ -8,6 +8,7 @@
  * @endverbatim
  */
 
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 
 #define SECS_DAY 86400
@@ -61,13 +62,13 @@ elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
 
    /* check today - we'll remove it later */
    current_time = time(NULL);
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    mark = elm_calendar_mark_add(cal, "checked", &selected_time,
                                 ELM_CALENDAR_UNIQUE);
 
    /* check tomorrow */
    current_time = time(NULL) + 1 * SECS_DAY;
-   localtime_r(&current_time, &selected_time);
+   eina_localtime_r(&current_time, &selected_time);
    elm_calendar_mark_add(cal, "checked", &selected_time, ELM_CALENDAR_UNIQUE);
 
    /* mark christmas as holiday */

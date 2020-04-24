@@ -20,7 +20,7 @@
 # define EINA_INLINE_PRIVATE_H_
 
 # include <time.h>
-# include <sys/time.h>
+# include "eina_time.h"
 
 typedef struct timespec Eina_Nano_Time;
 
@@ -44,7 +44,7 @@ _eina_time_get(Eina_Nano_Time *tp)
 
    struct timeval tv;
 
-   if (gettimeofday(&tv, NULL))
+   if (eina_gettimeofday(&tv, NULL))
      return -1;
 
    tp->tv_sec = tv.tv_sec;

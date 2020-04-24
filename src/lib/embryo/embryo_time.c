@@ -2,7 +2,6 @@
 # include "config.h"
 #endif
 
-#include <sys/time.h>
 #include <time.h>
 
 #ifdef _WIN32
@@ -32,7 +31,7 @@ _embryo_time_seconds(Embryo_Program *ep EINA_UNUSED, Embryo_Cell *params EINA_UN
    double t;
    float f;
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    t = (double)(timev.tv_sec - ((timev.tv_sec / (60 * 60 * 24)) * (60 * 60 * 24)))
      + (((double)timev.tv_usec) / 1000000);
    f = (float)t;
@@ -48,7 +47,7 @@ _embryo_time_date(Embryo_Program *ep, Embryo_Cell *params)
    time_t tt;
 
    if (params[0] != (8 * sizeof(Embryo_Cell))) return 0;
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    tt = (time_t)(timev.tv_sec);
    if ((tt > (last_tzset + 1)) ||
        (tt < (last_tzset - 1)))
@@ -104,7 +103,7 @@ _embryo_time_tzdate(Embryo_Program *ep, Embryo_Cell *params)
         setenv("TZ", tz, 1);
         tzset();
      }
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    tt = (time_t)(timev.tv_sec);
    tm = localtime(&tt);
    if (tz && tz[0])

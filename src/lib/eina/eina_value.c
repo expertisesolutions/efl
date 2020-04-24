@@ -22,10 +22,10 @@
 
 #include <stdio.h> /* asprintf() */
 #include <inttypes.h> /* PRId64 and PRIu64 */
-#include <sys/time.h> /* struct timeval */
 
 #include "eina_config.h"
 #include "eina_private.h"
+#include "eina_time.h"
 #include "eina_alloca.h"
 #include "eina_log.h"
 #include "eina_strbuf.h"
@@ -2266,7 +2266,7 @@ _eina_value_type_string_vset(const Eina_Value_Type *type EINA_UNUSED, void *mem,
 {
    char **tmem = mem;
    const char *str = va_arg(args, const char *);
-   
+
    if (str == *tmem) return EINA_TRUE;
    if (!str)
      {
@@ -2291,7 +2291,7 @@ _eina_value_type_string_pset(const Eina_Value_Type *type EINA_UNUSED, void *mem,
 {
    char **tmem = mem;
    const char * const *str = ptr;
-   
+
    if (*str == *tmem) return EINA_TRUE;
    if (!*str)
      {
@@ -4610,7 +4610,7 @@ eina_value_optional_pset(Eina_Value *value,
                          const void *subvalue) EINA_ARG_NONNULL(1, 2, 3)
 {
    eina_value_optional_reset(value);
-  
+
    if(sizeof(Eina_Value_Optional_Outer) <= sizeof(Eina_Value_Union))
      {
        Eina_Value_Optional_Outer outer;
@@ -4718,7 +4718,7 @@ _eina_value_type_optional_compare(const Eina_Value_Type *type EINA_UNUSED, const
      {
        Eina_Value_Optional_Inner const * const* lhs_p = lhs_raw;
        Eina_Value_Optional_Inner const * const* rhs_p = rhs_raw;
-   
+
        if(!*lhs_p)
          return *rhs_p ? -1 : 0;
        else if(!*rhs_p)

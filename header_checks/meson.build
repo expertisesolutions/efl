@@ -47,6 +47,7 @@ header_checks = [
   'sys/wait.h',
   'sys/resource.h',
   'sys/times.h',
+  'sys/time.h',
   'longinfo.h',
   'ieeefp.h',
   'node/uv.h',

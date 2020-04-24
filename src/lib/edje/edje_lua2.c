@@ -1,6 +1,7 @@
 // FIXME: Some error checking would be nice.
 
 #include "edje_private.h"
+#include <Eina.h> /* for eina_gettimeofday */
 #include <ctype.h>
 
 #define RASTER_FORGOT_WHY "this is here."
@@ -738,7 +739,7 @@ _elua_echo(lua_State *L) // Stack usage [-0, +0, v]
 
    Retrieves the current time and date.
 
-   Wraps gettimeofday(), as passed through localtime().
+   Wraps eina_gettimeofday(), as passed through localtime().
 
    @return A table with these fields:
    - integer year: Year.
@@ -759,7 +760,7 @@ _elua_date(lua_State *L)  // Stack usage [-16, +17, em]
    struct tm *tm;
    time_t tt;
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    tt = (time_t)(timev.tv_sec);
    if ((tt > (last_tzset + 1)) || (tt < (last_tzset - 1)))
      {

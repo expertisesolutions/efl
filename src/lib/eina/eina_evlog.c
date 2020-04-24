@@ -28,6 +28,7 @@
 #include "Eina.h"
 #include "eina_evlog.h"
 #include "eina_debug.h"
+#include "eina_time.h"
 
 #if defined(__APPLE__) && defined(__MACH__)
 # include <mach/mach_time.h>
@@ -79,7 +80,7 @@ get_time(void)
    if (EINA_UNLIKELY(clock_gettime(_eina_evlog_time_clock_id, &t)))
      {
         struct timeval timev;
-        gettimeofday(&timev, NULL);
+        eina_gettimeofday(&timev, NULL);
         return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000.0);
      }
    return (double)t.tv_sec + (((double)t.tv_nsec) / 1000000000.0);
@@ -89,7 +90,7 @@ get_time(void)
    return _eina_evlog_time_clock_conversion * (double)mach_absolute_time();
 #else
    struct timeval timev;
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000.0);
 #endif
 }

@@ -2,6 +2,7 @@
 # include "elementary_config.h"
 #endif
 
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 
 #include "elm_priv.h"
@@ -86,7 +87,7 @@ _max_days_get(int year, int month)
    int day;
 
    t = time(NULL);
-   localtime_r(&t, &time1);
+   eina_localtime_r(&t, &time1);
    time1.tm_year = year;
    time1.tm_mon = month;
    for (day = 28; day <= 31;

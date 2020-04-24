@@ -10,8 +10,8 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <sys/time.h>
 
+#include "Eina.h"
 #include "Ecore.h"
 #include "ecore_private.h"
 #include "lib/ecore/ecore_main_common.h"

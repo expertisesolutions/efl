@@ -7,6 +7,7 @@
 #define EFL_UI_FOCUS_COMPOSITION_PROTECTED
 #define EFL_UI_FOCUS_OBJECT_PROTECTED
 
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 #include "elm_priv.h"
 #include "elm_widget_calendar.h"
@@ -1256,7 +1257,7 @@ _update_cur_date(void *data)
    if (sd->today_it > 0) _not_today(sd);
 
    current_time = time(NULL);
-   localtime_r(&current_time, &sd->current_time);
+   eina_localtime_r(&current_time, &sd->current_time);
    t = _time_to_next_day(&sd->current_time);
    ecore_timer_interval_set(sd->update_timer, t);
 
@@ -1370,7 +1371,7 @@ _elm_calendar_efl_canvas_group_group_add(Eo *obj, Elm_Calendar_Data *priv)
        _style_changed, obj);
 
    current_time = time(NULL);
-   localtime_r(&current_time, &priv->shown_time);
+   eina_localtime_r(&current_time, &priv->shown_time);
    priv->current_time = priv->shown_time;
    priv->selected_time = priv->shown_time;
    t = _time_to_next_day(&priv->current_time);

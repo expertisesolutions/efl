@@ -6,6 +6,7 @@
 #define EFL_UI_L10N_PROTECTED
 #define EFL_PART_PROTECTED
 
+#include <Eina.h> /* for eina_localtime_r */
 #include <Elementary.h>
 #include "elm_priv.h"
 #include "elm_widget_dayselector.h"
@@ -58,7 +59,7 @@ _elm_dayselector_efl_ui_l10n_translation_update(Eo *obj EINA_UNUSED, Elm_Daysele
      return;
 
    t = time(NULL);
-   localtime_r(&t, &time_daysel);
+   eina_localtime_r(&t, &time_daysel);
    EINA_LIST_FOREACH(sd->items, l, it)
      {
         time_daysel.tm_wday = it->day;
@@ -399,7 +400,7 @@ _items_create(Evas_Object *obj)
    struct tm time_daysel;
 
    t = time(NULL);
-   localtime_r(&t, &time_daysel);
+   eina_localtime_r(&t, &time_daysel);
 
    for (idx = 0; idx < ELM_DAYSELECTOR_MAX; idx++)
      {
@@ -580,7 +581,7 @@ _elm_dayselector_weekdays_names_set(Eo *obj, Elm_Dayselector_Data *sd, const cha
    else
      {
         now = time(NULL);
-        localtime_r(&now, &time_daysel);
+        eina_localtime_r(&now, &time_daysel);
         sd->weekdays_names_set = EINA_FALSE;
      }
 

@@ -6,6 +6,7 @@
 #define EFL_UI_FOCUS_COMPOSITION_PROTECTED
 #define EFL_UI_FOCUS_COMPOSITION_ADAPTER_PROTECTED
 
+#include <Eina.h> /* for eina_gettimeofday */
 #include <Elementary.h>
 #include "elm_priv.h"
 #include "elm_widget_clock.h"
@@ -650,7 +651,7 @@ _ticker(void *data)
    struct tm *tm;
    time_t tt;
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    t = ((double)(1000000 - timev.tv_usec)) / 1000000.0;
 
    sd->ticker = ecore_timer_add(t, _ticker, data);
@@ -819,7 +820,7 @@ _timediff_set(Elm_Clock_Data *sd)
    struct tm *tm;
    time_t tt;
 
-   gettimeofday(&timev, NULL);
+   eina_gettimeofday(&timev, NULL);
    tt = (time_t)(timev.tv_sec);
    tzset();
    tm = localtime(&tt);

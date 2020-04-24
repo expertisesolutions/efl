@@ -3,7 +3,6 @@
 #endif
 
 #include <stdio.h>
-#include <sys/time.h>
 
 #include <Eina.h>
 #include <Ecore.h>

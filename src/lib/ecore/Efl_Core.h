@@ -44,7 +44,6 @@
 #elif defined (__sun)
 # include <sys/siginfo.h>
 #else
-# include <sys/time.h>
 # include <signal.h>
 #endif
 

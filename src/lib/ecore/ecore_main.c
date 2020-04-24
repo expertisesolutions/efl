@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <sys/time.h>
+#include <Eina.h>
 
 #ifdef HAVE_SYSTEMD
 # include <systemd/sd-daemon.h>

@@ -41,6 +41,7 @@
 
 #include <unistd.h>
 #include <sys/mman.h>
+#include <Eina.h> /* for eina_gettimeofday */
 #include "ecore_wl2_private.h"
 
 typedef struct _Ecore_Wl2_Mouse_Down_Info
@@ -690,7 +691,7 @@ _pointer_cb_enter(void *data, struct wl_pointer *pointer EINA_UNUSED, unsigned i
      {
         struct timeval tv;
 
-        gettimeofday(&tv, NULL);
+        eina_gettimeofday(&tv, NULL);
         input->timestamp = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
      }
 
@@ -945,7 +946,7 @@ _keyboard_cb_enter(void *data, struct wl_keyboard *keyboard EINA_UNUSED, unsigne
      {
         struct timeval tv;
 
-        gettimeofday(&tv, NULL);
+        eina_gettimeofday(&tv, NULL);
         input->timestamp = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
      }
 

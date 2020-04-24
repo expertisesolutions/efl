@@ -12,9 +12,11 @@
 
 #include "evil_private.h"
 
-inline struct tm *localtime_r(const time_t * time, struct tm * result)
+inline struct tm *
+evil_localtime_r(const time_t * time, struct tm * result)
 {
-    return NULL;
+   localtime_s(result, time);
+   return result;
 }
 
 /*
@@ -344,7 +346,7 @@ strptime(const char *buf, const char *fmt, struct tm *tm)
                      continue;
                   }
 
-                if (localtime_r(&sse, tm) == NULL)
+                if (evil_localtime_r(&sse, tm) == NULL)
                   bp = NULL;
              }
              continue;

@@ -2,9 +2,9 @@
 # include <config.h>
 #endif
 
-#include <sys/time.h>
 #include <sys/utsname.h>
 
+#include <Eina.h>
 #include "evas_common_private.h"
 #include "evas_macros.h"
 

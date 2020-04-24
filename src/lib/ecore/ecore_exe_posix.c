@@ -10,7 +10,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/time.h>
+
+#include <Eina.h>
 #include <sys/resource.h>
 #include <signal.h>
 
@@ -298,7 +299,7 @@ _impl_ecore_exe_efl_object_finalize(Eo *obj, Ecore_Exe_Data *exe)
 #endif
          if (run_pri != ECORE_EXE_PRIORITY_INHERIT)
          {
-#ifdef PRIO_PROCESS            
+#ifdef PRIO_PROCESS
             if ((run_pri >= -20) && (run_pri <= 19))
               setpriority(PRIO_PROCESS, 0, run_pri);
 #else

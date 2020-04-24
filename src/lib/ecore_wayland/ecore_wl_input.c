@@ -17,6 +17,7 @@
  *
  **/
 
+#include <Eina.h> /* for eina_gettimeofday */
 #include "ecore_wl_private.h"
 #include <sys/mman.h>
 #include <ctype.h>
@@ -983,7 +984,7 @@ _ecore_wl_input_cb_pointer_enter(void *data, struct wl_pointer *pointer EINA_UNU
      {
         struct timeval tv;
 
-        gettimeofday(&tv, NULL);
+        eina_gettimeofday(&tv, NULL);
         input->timestamp = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
      }
 
@@ -1064,7 +1065,7 @@ _ecore_wl_input_cb_keyboard_enter(void *data, struct wl_keyboard *keyboard EINA_
      {
         struct timeval tv;
 
-        gettimeofday(&tv, NULL);
+        eina_gettimeofday(&tv, NULL);
         input->timestamp = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
      }
 
@@ -1101,7 +1102,7 @@ _ecore_wl_input_cb_keyboard_leave(void *data, struct wl_keyboard *keyboard EINA_
      {
         struct timeval tv;
 
-        gettimeofday(&tv, NULL);
+        eina_gettimeofday(&tv, NULL);
         input->timestamp = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
      }
 

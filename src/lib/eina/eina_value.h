@@ -213,7 +213,7 @@
  * Next we have setting, this however requires not one but rather two functions,
  * the reason for this is because to be able to receive arguments of any type
  * eina value uses <a href="https://wikipedia.org/wiki/Variadic_functions">
- * variadic functions</a>, so we need a function to get the argument from a 
+ * variadic functions</a>, so we need a function to get the argument from a
  * va_list and another to actually to the setting.
  *
  * Lets first look at the pset function which sets the received value to a
@@ -582,7 +582,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_HASH;
  * @var EINA_VALUE_TYPE_TIMEVAL
  * manages 'struct timeval' type
  *
- * eina_value_set() takes a "struct timeval" from sys/time.h.
+ * eina_value_set() takes a "struct timeval" from eina_time.h.
  * eina_value_pset() takes a pointer to "struct timeval".
  *
  * eina_value_get() and eina_value_pget() takes a pointer to "struct

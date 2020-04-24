@@ -1,6 +1,7 @@
 #ifndef _EFL_UI_H
 #define _EFL_UI_H
 
+#include <Eina.h>
 #include <Efl_Config.h>
 #include <Elementary_Options.h>
 
@@ -11,7 +12,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 #include <sys/param.h>
 #include <math.h>
 #include <fnmatch.h>
@@ -59,7 +59,6 @@
 #elif defined (__sun)
 # include <sys/siginfo.h>
 #else
-# include <sys/time.h>
 # include <signal.h>
 #endif
 

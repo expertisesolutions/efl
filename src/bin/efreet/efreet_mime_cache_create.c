@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <errno.h>
 #ifdef HAVE_SYS_RESOURCE_H
-#include <sys/time.h>
 #include <sys/resource.h>
 #endif
 
@@ -249,7 +248,7 @@ store_cache(const char *out)
    if (fwrite("EfrEeT-MiMeS-001", 16, 1, f) != 1)
      goto write_error;
    // note: all offsets are in bytes from start of file
-   // 
+   //
    // "EfrEeT-MiMeS-001" <- magic 16 byte header
    // [int] <- size of mimes array in number of entries
    // [int] <- str byte offset of 1st mime string (sorted)
