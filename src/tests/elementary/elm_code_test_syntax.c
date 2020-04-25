@@ -67,7 +67,7 @@ EFL_START_TEST(elm_code_syntax_c)
    efl_ui_code_widget_code_get(widget)->file->mime = "text/x-csrc";
    elm_code_widget_syntax_enabled_set(widget, EINA_TRUE);
 
-   _append_line(file, "#include <eina_stdio.h>");
+   _append_line(file, "#include <stdio.h>");
    _append_line(file, "#define MULTILINE \"Some text covering \"\\");
    _append_line(file, "   \"multiple lines\"");
    _append_line(file, "");
@@ -130,7 +130,7 @@ EFL_START_TEST(elm_code_syntax_scope_change_braces_test)
    elm_code_parser_standard_add(code, ELM_CODE_PARSER_STANDARD_SYNTAX);
    file = code->file;
 
-   elm_code_file_line_append(file, "#include <eina_stdio.h>", 18, NULL);
+   elm_code_file_line_append(file, "#include <stdio.h>", 18, NULL);
    line = elm_code_file_line_get(file, 1);
    ck_assert_int_eq(0, line->scope);
 

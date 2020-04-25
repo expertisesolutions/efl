@@ -6,7 +6,7 @@
 #ifdef HAVE_ALSA
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifdef HAVE_FEATURES_H

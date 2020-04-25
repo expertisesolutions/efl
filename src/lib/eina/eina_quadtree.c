@@ -28,7 +28,7 @@
 #endif
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #include "eina_quadtree.h"
 #include "eina_magic.h"

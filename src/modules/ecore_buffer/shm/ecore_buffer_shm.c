@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #ifdef HAVE_SYS_MMAN_H
 # include <sys/mman.h>

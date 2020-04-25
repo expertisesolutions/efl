@@ -3,7 +3,7 @@
 #endif
 
 #include <unistd.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #define EFL_GFX_FILTER_BETA
 #define EFL_CANVAS_LAYOUT_BETA

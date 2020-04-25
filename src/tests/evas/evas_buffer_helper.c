@@ -1,7 +1,7 @@
 
 #include <Evas.h>
 #include <Evas_Engine_Buffer.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <errno.h>
 
 /* Convenience routine to allocate and initialize the canvas.

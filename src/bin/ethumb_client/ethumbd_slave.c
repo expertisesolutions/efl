@@ -25,7 +25,7 @@
 #endif
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
 #include <string.h>

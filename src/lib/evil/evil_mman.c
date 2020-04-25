@@ -3,7 +3,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <errno.h>

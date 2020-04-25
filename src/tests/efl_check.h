@@ -6,7 +6,7 @@
 #endif
 
 #include <stdlib.h> /* getenv */
-#include <eina_stdio.h> /* fprintf, fputs */
+#include <stdio.h> /* fprintf, fputs */
 #include <string.h> /* strcmp */
 #include <unistd.h> /* execvp */
 #include <errno.h> /* errno */

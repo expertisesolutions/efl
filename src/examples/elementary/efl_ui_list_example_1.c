@@ -11,7 +11,7 @@
 #include <Elementary.h>
 #include <Efl.h>
 #include <Eio.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #define NUM_ITEMS 400
 

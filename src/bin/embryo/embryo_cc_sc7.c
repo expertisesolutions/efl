@@ -44,7 +44,7 @@
 #endif
 
 #include <assert.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>		/* for atoi() */
 #include <string.h>
 #include <ctype.h>

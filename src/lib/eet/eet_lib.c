@@ -2,7 +2,7 @@
 # include <config.h>
 #endif /* ifdef HAVE_CONFIG_H */
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>

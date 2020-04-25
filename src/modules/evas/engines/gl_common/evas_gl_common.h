@@ -4,7 +4,7 @@
 #include "evas_common_private.h"
 #include "evas_private.h"
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

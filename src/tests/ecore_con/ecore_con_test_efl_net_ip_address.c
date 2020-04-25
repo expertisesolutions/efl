@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #ifdef HAVE_SYS_SOCKET_H
 # include <sys/socket.h>

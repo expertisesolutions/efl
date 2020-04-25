@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -Wall -o eina_str_01 eina_str_01.c `pkg-config --cflags --libs eina`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 
 int main(int argc EINA_UNUSED, char **argv EINA_UNUSED)

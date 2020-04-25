@@ -7,7 +7,7 @@
 //Compile with:
 // gcc -o ecore_con_eet_client_example ecore_con_eet_client_example.c ecore_con_eet_descriptor_example.c `pkg-config --cflags --libs eet ecore ecore-con eina`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
 #include <Eina.h>

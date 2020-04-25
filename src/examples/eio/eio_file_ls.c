@@ -2,7 +2,7 @@
 //gcc -o eio_file_ls eio_file_ls.c `pkg-config --cflags --libs ecore eio`
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <Eio.h>
 #include <Ecore.h>

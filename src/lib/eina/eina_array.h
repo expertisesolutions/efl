@@ -34,7 +34,7 @@
  * @page eina_array_01_example_page Basic array usage
  * @dontinclude eina_array_01.c
  *
- * For this example we add stdlib.h, eina_stdio.h and string.h for some
+ * For this example we add stdlib.h, stdio.h and string.h for some
  * convenience functions. The first thing to do to be able to use an
  * @ref Eina_Array is to include Eina.h:
  * @skip #include

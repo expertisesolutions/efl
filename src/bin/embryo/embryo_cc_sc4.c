@@ -28,7 +28,7 @@
 
 #include <assert.h>
 #include <ctype.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <limits.h>		/* for PATH_MAX */
 #include <string.h>
 

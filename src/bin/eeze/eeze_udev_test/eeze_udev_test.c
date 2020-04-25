@@ -4,7 +4,7 @@
 
 #include <Eeze.h>
 #include <Ecore.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 /**
  * This demo program shows how to use some eeze_udev functions.  It roughly

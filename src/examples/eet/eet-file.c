@@ -2,7 +2,7 @@
 // gcc -o eet-file eet-file.c `pkg-config --cflags --libs eet`
 
 #include <Eet.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 static int

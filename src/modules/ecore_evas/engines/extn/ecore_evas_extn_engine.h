@@ -12,7 +12,7 @@
 #  include <stdlib.h>
 # endif
 #endif
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <math.h>

@@ -1,7 +1,7 @@
 //Compile with:
 // gcc -o ecore_con_lookup_example ecore_con_lookup_example.c `pkg-config --libs --cflags ecore ecore-con`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
 

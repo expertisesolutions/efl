@@ -20,7 +20,7 @@
 # include "config.h"
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>

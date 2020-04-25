@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -Wall -o emile_base64 emile_base64.c `pkg-config --cflags --libs eina emile`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 #include <Emile.h>
 

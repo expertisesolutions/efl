@@ -1,6 +1,7 @@
 #include "eina_stdio.h"
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 
 int
@@ -8,7 +9,7 @@ vasprintf(char **strp, const char *fmt, va_list ap)
 {
    int ret = -1;
 
-   int len = vscprintf(fmt, ap);
+   int len = _vscprintf(fmt, ap);
    if (len != -1)
      {
         char *str = (char *)malloc((len + 1) * sizeof(char));

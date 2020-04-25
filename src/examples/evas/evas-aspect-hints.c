@@ -23,7 +23,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Edje.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <errno.h>
 #include "evas-common.h"
 

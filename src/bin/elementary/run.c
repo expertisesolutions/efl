@@ -1,5 +1,5 @@
 #include "elementary_config.h"
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>

@@ -22,7 +22,7 @@
  */
 
 #include <Evas.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <errno.h>
 
 int

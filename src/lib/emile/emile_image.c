@@ -8,7 +8,7 @@
 #include "lz4.h"
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <setjmp.h>
 #include <jpeglib.h>
 #include <jerror.h>

@@ -5,7 +5,7 @@
 #define EFL_LOOP_PROTECTED
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <math.h>

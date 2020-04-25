@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -g eina_list_04.c -o eina_list_04 `pkg-config --cflags --libs eina`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 
 int

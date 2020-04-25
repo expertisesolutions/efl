@@ -1,7 +1,7 @@
 #ifndef _ECORE_BUFFER_con_H_
 #define _ECORE_BUFFER_con_H_
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <wayland-client.h>
 
 #include <Eina.h>

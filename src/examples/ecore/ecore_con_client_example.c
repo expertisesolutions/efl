@@ -5,7 +5,7 @@
 #include "config.h"
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
 #include <Ecore_Getopt.h>

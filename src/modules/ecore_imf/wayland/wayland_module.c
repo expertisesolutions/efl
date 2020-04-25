@@ -27,7 +27,7 @@
 #include <Ecore.h>
 #include <Ecore_IMF.h>
 #include <Ecore_Wl2.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #include "wayland_imcontext.h"
 #include "text-input-unstable-v1-client-protocol.h"

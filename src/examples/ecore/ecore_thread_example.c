@@ -1,7 +1,7 @@
 /*
  * gcc -o ecore_thread_example ecore_thread_example.c `pkg-config --cflags --libs ecore eina`
  */
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 

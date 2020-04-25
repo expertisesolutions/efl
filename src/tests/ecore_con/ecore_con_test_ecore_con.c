@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #ifdef _WIN32
 # include <evil_private.h> /* setenv unsetenv */

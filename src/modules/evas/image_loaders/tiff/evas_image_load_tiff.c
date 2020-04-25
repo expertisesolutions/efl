@@ -3,7 +3,7 @@
 #endif
 
 #include <sys/types.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <tiffio.h>
 

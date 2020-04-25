@@ -9,7 +9,7 @@
 #include <Efl_Ui.h>
 #include <Elementary.h>
 #include <Efl.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #define IMAX 500;
 

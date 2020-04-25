@@ -1,7 +1,7 @@
 #ifndef _SHARED_BUFFER_H_
 # define _SHARED_BUFFER_H_
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 #include <Ecore_Buffer.h>
 

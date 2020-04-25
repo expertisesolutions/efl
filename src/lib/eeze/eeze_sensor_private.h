@@ -1,6 +1,6 @@
 #ifndef EEZE_SENSOR_PRIVATE_H
 #define EEZE_SENSOR_PRIVATE_H
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 

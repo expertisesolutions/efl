@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 
 Eina_Bool

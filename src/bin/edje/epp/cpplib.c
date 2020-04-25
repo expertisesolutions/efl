@@ -64,7 +64,7 @@ const char         *version_string = "0.0.0";
 #endif
 
 #include <ctype.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <signal.h>
 #include <stdlib.h>

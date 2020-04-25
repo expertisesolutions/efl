@@ -14,7 +14,7 @@
 # define _(x) (x)
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include <Eina.h>

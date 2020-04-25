@@ -387,7 +387,7 @@ int _ecore_x_shutdown(void);
 //#define LOGFNS 1
 
 #ifdef LOGFNS
-#include <eina_stdio.h>
+#include <stdio.h>
 #define LOGFN(fl, ln, fn) printf("-ECORE-X: %25s: %5i - %s\n", fl, ln, fn);
 #else /* ifdef LOGFNS */
 #define LOGFN(fl, ln, fn)

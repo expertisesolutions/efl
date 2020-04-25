@@ -1,7 +1,7 @@
 //Compile with:
 // gcc -o ecore_con_url_headers_example ecore_con_url_headers_example.c `pkg-config --libs --cflags ecore ecore-con eina`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>

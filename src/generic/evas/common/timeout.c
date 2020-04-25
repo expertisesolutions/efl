@@ -1,5 +1,5 @@
 #ifdef _WIN32
-# include <eina_stdio.h>
+# include <stdio.h>
 # include <windows.h>
 # include <process.h>
 

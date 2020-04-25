@@ -20,7 +20,7 @@
 # include "config.h"
 #endif
 
-#include <eina_stdio.h> /* asprintf() */
+#include <stdio.h> /* asprintf() */
 #include <inttypes.h> /* PRId64 and PRIu64 */
 #include <sys/time.h> /* struct timeval */
 

@@ -21,7 +21,7 @@
 #include <Ecore.h>
 #include <Evas.h>
 #include <Ecore_Evas.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #define W (300)
 #define H (300)

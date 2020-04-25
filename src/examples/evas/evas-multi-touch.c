@@ -17,7 +17,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Evas.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <errno.h>
 
 #define WIDTH  (800)

@@ -27,7 +27,7 @@
 #endif
 
 #include <assert.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>		/* for macro max() */
 #include <string.h>
 #include <ctype.h>

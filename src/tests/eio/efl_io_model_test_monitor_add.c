@@ -8,7 +8,7 @@
 #include <Eio.h>
 #include <Ecore.h>
 #include <Efl.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #include "eio_suite.h"
 

@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #include <Evas.h>
 #define EFL_LOOP_PROTECTED //needed to set the loop time, we need that to simulate time passing for animation,tick

@@ -17,7 +17,7 @@
 #include <sys/types.h>
 
 #include <libgen.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>

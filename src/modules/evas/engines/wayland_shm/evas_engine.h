@@ -32,7 +32,7 @@
 //# define LOGFNS 1
 
 # ifdef LOGFNS
-#  include <eina_stdio.h>
+#  include <stdio.h>
 #  define LOGFN(fl, ln, fn) printf("-EVAS-WL: %25s: %5i - %s\n", fl, ln, fn);
 # else
 #  define LOGFN(fl, ln, fn)

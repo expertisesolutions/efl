@@ -4,7 +4,7 @@
 
 #define EIO_SENTRY_BETA
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 

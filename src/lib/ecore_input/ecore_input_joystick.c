@@ -7,7 +7,7 @@
 # include <linux/joystick.h>
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
 

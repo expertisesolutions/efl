@@ -21,7 +21,7 @@
 #endif
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
 #include <libgen.h>

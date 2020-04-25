@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #include <Ecore.h>
 #include <Efreet.h>

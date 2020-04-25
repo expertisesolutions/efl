@@ -7,7 +7,7 @@
 #include <Ecore.h>
 #include <Ecore_File.h>
 #include <Ecore_Getopt.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 /** This app can be used as a "dumb" replacement for unmount. Just don't try anything fancy yet! */
 static const Ecore_Getopt opts =

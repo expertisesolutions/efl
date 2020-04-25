@@ -7,7 +7,7 @@
 # include "config.h"
 #endif
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <locale.h>
 
 #include <Eina.h>

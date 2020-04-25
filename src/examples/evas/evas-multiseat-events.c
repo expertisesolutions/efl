@@ -22,7 +22,7 @@
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Efl.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #define WIDTH  (400)
 #define HEIGHT (200)

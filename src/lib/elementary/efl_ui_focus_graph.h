@@ -1,7 +1,7 @@
 #ifndef EFL_UI_FOCUS_GRAPH_H
 #define EFL_UI_FOCUS_GRAPH_H
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <Eina.h>
 

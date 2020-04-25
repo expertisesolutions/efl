@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -g eina_stringshare_01.c -o eina_stringshare_01 `pkg-config --cflags --libs eina`
 
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <Eina.h>
 
 int

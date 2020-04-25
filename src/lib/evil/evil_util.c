@@ -3,7 +3,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <limits.h>
 #include <wchar.h>

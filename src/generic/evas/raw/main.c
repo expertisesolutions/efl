@@ -2,7 +2,7 @@
 #include <config.h>
 #endif
 #include <fcntl.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>

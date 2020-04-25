@@ -4,7 +4,7 @@
 
 #include <Eeze.h>
 #include <Ecore.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 
 #include <Eeze_Sensor.h>

@@ -1,4 +1,4 @@
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 
 #include <Eina.h>

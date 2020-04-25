@@ -2,7 +2,7 @@
 //gcc -Wall -o eina_simple_xml_parser_01 eina_simple_xml_parser_01.c `pkg-config --cflags --libs eina`
 
 #include <Eina.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 static Eina_Bool _xml_attr_cb(void *data, const char *key, const char *value);

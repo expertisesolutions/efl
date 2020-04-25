@@ -24,7 +24,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 #include <sys/types.h>
 

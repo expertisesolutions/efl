@@ -20,7 +20,7 @@
 #include <Ecore_Evas.h>
 
 #include <stdlib.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 #define WIDTH  320

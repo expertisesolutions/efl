@@ -10,7 +10,7 @@
  */
 #include <Elementary.h>
 #include <Evas_GL.h>
-#include <eina_stdio.h>
+#include <stdio.h>
 
 typedef struct _GLData GLData;
 
