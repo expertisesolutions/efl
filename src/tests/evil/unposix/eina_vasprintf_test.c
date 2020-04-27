@@ -41,8 +41,8 @@ simple_test(void)
 
    printf("\tResult:"); 
    int result = strcmp(str, expected_str);
-   if(!result) printf("........ok!\n");
-   else        printf("........nok!\n"); 
+   if (!result) printf("........ok!\n");
+   else printf("........nok!\n");
 
    free(str);
    return result;
