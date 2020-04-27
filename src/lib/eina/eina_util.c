@@ -170,3 +170,13 @@ eina_readlink(const char *pathname, char *buf, size_t bufsize)
    readlink(buf,pathname,bufsize);
 #endif
 }
+
+EAPI int
+eina_setsid(void)
+{
+#ifdef _WIN32
+   return -1;
+#else
+   return (pid_t)setsid();
+#endif
+}

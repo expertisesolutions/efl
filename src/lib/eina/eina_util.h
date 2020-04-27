@@ -84,6 +84,15 @@ EAPI int eina_chown(const char *pathname, uid_t owner, gid_t group);
 EAPI int eina_readlink(const char *pathname, char *buf, size_t bufsize);
 
 /**
+ * @brief Creates a new session if the calling process is not a process group leader.
+ * @return On success, the (new) session ID of the calling process is returned. On error, 
+ * (pid_t) -1 is returned, and errno is set to indicate the error.
+ * 
+ * @since 1.15
+ */
+EAPI int eina_setsid(void);
+
+/**
  * @brief Returns the content of the environment referred by HOME on this system.
  * @return A temporary string to the content referred by HOME on this system.
  *
