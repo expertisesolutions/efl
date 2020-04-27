@@ -17,7 +17,7 @@ vasprintf(char **strp, const char *fmt, va_list ap)
           {
              ret = vsnprintf(str, (unsigned long) len + 1, fmt, ap);
              if (ret == len) *strp = str;
-             else            free(strp);
+             else free(strp);
           }
      }
 

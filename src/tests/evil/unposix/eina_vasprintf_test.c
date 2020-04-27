@@ -4,10 +4,8 @@
 #include <string.h>
 
 
-int vasprintf_wrap(char **ret, const char *fmt, int nargs, ...);
-int simple_test(void);
-
-int vasprintf_wrap(char **ret, const char *fmt, int nargs, ...)
+int
+vasprintf_wrap(char **ret, const char *fmt, int nargs, ...)
 {
    va_list ap;
    va_start(ap, nargs);
