@@ -21,9 +21,6 @@ int vasprintf_wrap(char **ret, const char *fmt, int nargs, ...)
 int
 simple_test(void)
 {
-   char *str;
-   int len;
-
    const char *expected_str = 
      "\tString: Hello World!\n"
      "\tInteger: 46234\n"
@@ -34,7 +31,8 @@ simple_test(void)
      "\tInteger: %d\n"
      "\tDouble: %E\n";
 
-   len = vasprintf_wrap(&str, fmt, 3, "Hello World!", 46234, 0.0096294);
+   char* str;
+   int len = vasprintf_wrap(&str, fmt, 3, "Hello World!", 46234, 0.0096294);
 
    printf("## Expecting:\n```%s```\n", expected_str);
    printf("## Returning:\n```%s```\n", str);
