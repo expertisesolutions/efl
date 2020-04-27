@@ -73,6 +73,17 @@ EAPI void eina_usleep(unsigned int seconds);
 EAPI int eina_chown(const char *pathname, uid_t owner, gid_t group);
 
 /**
+ * @brief Places the contents of the symbolic link pathname in the buffer buf, which has size bufsiz.
+ * @param[in] The symbolic link pathname.
+ * @param[out] The destination buffer to store pathname.
+ * @param[in] The size of the destination buf.
+ * @return Return the numbers of bytes placed in buf. If returned value equals bufsize, then truncation may have ocurred.
+ * 
+ * @since 1.15
+ */
+EAPI int eina_readlink(const char *pathname, char *buf, size_t bufsize);
+
+/**
  * @brief Returns the content of the environment referred by HOME on this system.
  * @return A temporary string to the content referred by HOME on this system.
  *

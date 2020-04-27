@@ -126,7 +126,7 @@ main(int argc, char **argv)
                {
                   char buf2[PATH_MAX];
 
-                  ssize_t len = readlink(exe, buf2, sizeof(buf2) - 1);
+                  ssize_t len = eina_readlink(exe, buf2, sizeof(buf2) - 1);
                   if (len >= 0)
                     {
                        char *p;

@@ -157,3 +157,16 @@ eina_chown(const char *pathname, uid_t owner, gid_t group)
 #endif
    return ret;
 }
+
+EAPI int
+eina_readlink(const char *pathname, char *buf, size_t bufsize)
+{
+#ifdef _WIN32
+   ssize_t string_size = strlen(pathname);
+   int n = string_size < bufsize ? string_size : bufsize;
+   strncpy(buf,pathname, n);
+   return n;
+#else
+   readlink(buf,pathname,bufsize);
+#endif
+}

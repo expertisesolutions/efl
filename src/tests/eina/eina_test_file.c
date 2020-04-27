@@ -758,7 +758,7 @@ EFL_START_TEST(eina_test_file_mktemp)
      unlink(buf);
 #elif !defined _WIN32
    sprintf(fmt, "/proc/self/fd/%d", fd);
-   if (readlink(fmt, buf, sizeof(buf)))
+   if (eina_readlink(fmt, buf, sizeof(buf)))
      unlink(buf);
 #else
    {

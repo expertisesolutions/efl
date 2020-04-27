@@ -300,7 +300,7 @@ _eio_dir_link(Ecore_Thread *thread, Eio_Dir_Copy *order,
 
         /* read link target */
         if (target)
-          length = readlink(ln, target, bsz);
+          length = eina_readlink(ln, target, bsz);
         if (length < 0)
           goto on_error;
 
