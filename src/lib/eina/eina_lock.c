@@ -7,7 +7,6 @@
 #include "eina_config.h"
 #include "Eina.h"
 
-
 Eina_Bool fork_resetting;
 
 EAPI void

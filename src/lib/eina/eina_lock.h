@@ -98,9 +98,9 @@ typedef enum
 typedef void (*Eina_TLS_Delete_Cb)(void *ptr);
 
 #ifdef _WIN32
-#include "eina_inline_lock_win32.x"
+# include "eina_inline_lock_win32.x"
 #else
-#include "eina_inline_lock_posix.x"
+# include "eina_inline_lock_posix.x"
 #endif
 
 /**
