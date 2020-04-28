@@ -12,20 +12,23 @@
 # include <winsock2.h>
 # include <Windows.h>
 # undef WIN32_LEAN_AND_MEAN
-# endif
-
-#define F_OK 0
-#define X_OK 0
-#define W_OK 2
-#define R_OK 4
-#define STDIN_FILENO  0 
-#define STDOUT_FILENO 1
-#define STDERR_FILENO 2
+# define F_OK 0
+# define X_OK 0
+# define W_OK 2
+# define R_OK 4
+# define STDIN_FILENO  0 
+# define STDOUT_FILENO 1
+# define STDERR_FILENO 2
 
 char optarg; //temporary
 int optind; //temporary
 int opterr; //temporary
 int optopt; //temporary
+#else
+# include <unistd.h>
+#endif
+
+
 /**
  * @file evil_unistd.h
  * @brief The file that provides functions ported from Unix in unistd.h.
