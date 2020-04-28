@@ -2,7 +2,7 @@ name: EFL on Windows
 
 on:
   push:
-    branches: [ master ]
+    branches: [ felipealmeida-windows-ci ]
   pull_request:
     branches: [ master ]
 
