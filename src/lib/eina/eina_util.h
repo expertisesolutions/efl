@@ -47,52 +47,6 @@
  */
 
 /**
- * @brief Suspends the execution of calling thread until time specified by seconds.
- * @param[in] Time in seconds for which execution is to be suspendend.
- * 
- * @since 1.15
- */
-EAPI void eina_sleep(unsigned int seconds);
-
-/**
- * @brief Suspends the execution of calling thread until time specified by microseconds.
- * @param[in] Time in microseconds for which execution is to be suspendend.
- * 
- * @since 1.15
- */
-EAPI void eina_usleep(unsigned int seconds);
-
-/**
- * @brief Changes the ownership of the file specified by pathname.
- * @param[in] The directory path to change owner.
- * @param[in] The new user to set.
- * @param[in] The new group to set.
- * 
- * @since 1.15
- */
-EAPI int eina_chown(const char *pathname, uid_t owner, gid_t group);
-
-/**
- * @brief Places the contents of the symbolic link pathname in the buffer buf, which has size bufsiz.
- * @param[in] The symbolic link pathname.
- * @param[out] The destination buffer to store pathname.
- * @param[in] The size of the destination buf.
- * @return Return the numbers of bytes placed in buf. If returned value equals bufsize, then truncation may have ocurred.
- * 
- * @since 1.15
- */
-EAPI int eina_readlink(const char *pathname, char *buf, size_t bufsize);
-
-/**
- * @brief Creates a new session if the calling process is not a process group leader.
- * @return On success, the (new) session ID of the calling process is returned. On error, 
- * (pid_t) -1 is returned, and errno is set to indicate the error.
- * 
- * @since 1.15
- */
-EAPI int eina_setsid(void);
-
-/**
  * @brief Returns the content of the environment referred by HOME on this system.
  * @return A temporary string to the content referred by HOME on this system.
  *

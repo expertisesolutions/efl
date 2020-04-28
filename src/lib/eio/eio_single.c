@@ -251,7 +251,7 @@ _eio_file_chown(void *data, Ecore_Thread *thread)
    if (owner == (uid_t) -1 && group == (gid_t) -1)
      goto on_error;
    
-   if (eina_chown(own->path, owner, group) != 0)
+   if (evil_chown(own->path, owner, group) != 0)
      eio_file_thread_error(&own->common, thread);
    return;
 

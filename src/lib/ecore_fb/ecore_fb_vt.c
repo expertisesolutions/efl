@@ -135,7 +135,7 @@ _ecore_fb_vt_setup(void)
    _ecore_fb_filter_handler = ecore_event_filter_add(_ecore_fb_event_filter_start, _ecore_fb_event_filter_filter, _ecore_fb_event_filter_end, NULL);
    */
 
-   eina_usleep(40000);
+   evil_usleep(40000);
    if (ioctl(_ecore_fb_vt_tty_fd, VT_ACTIVATE, _ecore_fb_vt_current_vt) < 0)
      {
         perror("[ecore_fb:vt_setup] error on VT_ACTIVATE");

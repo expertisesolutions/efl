@@ -2,7 +2,30 @@
 #define __EVIL_UNISTD_H__
 
 #include "evil_eapi.h"
+#include "sys/types.h"
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <io.h>
+# include <process.h>
+# include <winsock2.h>
+# include <Windows.h>
+# undef WIN32_LEAN_AND_MEAN
+# endif
 
+#define F_OK 0
+#define X_OK 0
+#define W_OK 2
+#define R_OK 4
+#define STDIN_FILENO  0 
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+
+char optarg; //temporary
+int optind; //temporary
+int opterr; //temporary
+int optopt; //temporary
 /**
  * @file evil_unistd.h
  * @brief The file that provides functions ported from Unix in unistd.h.
@@ -83,6 +106,56 @@ EAPI void evil_sockets_shutdown(void);
  */
 EAPI int evil_pipe(int *fds);
 
+/*
+ * Wrapper related functions from posix unistd
+ */
+
+/**
+ * @brief Suspends the execution of calling thread until time specified by seconds.
+ * @param[in] Time in seconds for which execution is to be suspendend.
+ * 
+ * @since 1.15
+ */
+
+EAPI void evil_sleep(unsigned int seconds);
+
+/**
+ * @brief Suspends the execution of calling thread until time specified by microseconds.
+ * @param[in] Time in microseconds for which execution is to be suspendend.
+ * 
+ * @since 1.15
+ */
+EAPI void evil_usleep(unsigned int seconds);
+
+/**
+ * @brief Changes the ownership of the file specified by pathname.
+ * @param[in] The directory path to change owner.
+ * @param[in] The new user to set.
+ * @param[in] The new group to set.
+ * 
+ * @since 1.15
+ */
+EAPI int evil_chown(const char *pathname, uid_t owner, gid_t group);
+
+/**
+ * @brief Places the contents of the symbolic link pathname in the buffer buf, which has size bufsiz.
+ * @param[in] The symbolic link pathname.
+ * @param[out] The destination buffer to store pathname.
+ * @param[in] The size of the destination buf.
+ * @return Return the numbers of bytes placed in buf. If returned value equals bufsize, then truncation may have ocurred.
+ * 
+ * @since 1.15
+ */
+EAPI int evil_readlink(const char *pathname, char *buf, size_t bufsize);
+
+/**
+ * @brief Creates a new session if the calling process is not a process group leader.
+ * @return On success, the (new) session ID of the calling process is returned. On error, 
+ * (pid_t) -1 is returned, and errno is set to indicate the error.
+ * 
+ * @since 1.15
+ */
+EAPI int evil_setsid(void);
 
 /**
  * @}

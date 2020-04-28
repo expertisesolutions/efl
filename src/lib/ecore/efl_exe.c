@@ -161,7 +161,7 @@ _exec(const char *cmd, Efl_Exe_Flags flags, Efl_Task_Flags task_flags)
      }
 #endif
 
-   if (flags & EFL_EXE_FLAGS_GROUP_LEADER) eina_setsid();
+   if (flags & EFL_EXE_FLAGS_GROUP_LEADER) evil_setsid();
    if (use_sh) // We have to use a shell to run this.
      {
         errno = 0;

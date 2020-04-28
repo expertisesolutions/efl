@@ -1188,7 +1188,7 @@ elm_quicklaunch_fork(int    argc,
              perror("could not fork");
              return 0;
           }
-        eina_setsid();
+        evil_setsid();
         if (chdir(cwd) != 0) perror("could not chdir");
         args = alloca((argc + 1) * sizeof(char *));
         for (i = 0; i < argc; i++) args[i] = argv[i];
@@ -1228,7 +1228,7 @@ elm_quicklaunch_fork(int    argc,
 #endif
      }
 
-   if (eina_setsid() < 0) perror("could not setsid");
+   if (evil_setsid() < 0) perror("could not setsid");
    if (chdir(cwd) != 0) perror("could not chdir");
    if (_elm_config->atspi_mode != ELM_ATSPI_MODE_OFF)
      _elm_atspi_bridge_init();

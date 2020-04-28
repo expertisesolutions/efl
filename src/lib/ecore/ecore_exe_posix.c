@@ -71,11 +71,11 @@ static int _ecore_exe_check_errno(int         result,
                                   int         line);
 
 #define E_IF_NO_ERRNO(result, foo, ok)                                                           \
-  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) eina_sleep(1);  \
+  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) evil_sleep(1);  \
           if (ok)
 
 #define E_NO_ERRNO(result, foo, ok) \
-  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) eina_sleep(1)
+  while (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)) == -1) evil_sleep(1)
 
 #define E_IF_NO_ERRNO_NOLOOP(result, foo, ok) \
   if (((ok) = _ecore_exe_check_errno((result) = (foo), __FILE__, __LINE__)))
@@ -1010,7 +1010,7 @@ _ecore_exe_exec_it(const char     *exe_cmd,
      }
 #endif
 
-   if (!(flags & ECORE_EXE_NOT_LEADER)) eina_setsid();
+   if (!(flags & ECORE_EXE_NOT_LEADER)) evil_setsid();
    if ((flags & ECORE_EXE_USE_SH))
    {
       errno = 0;

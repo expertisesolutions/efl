@@ -141,7 +141,7 @@ _ipc_launch(void)
    while ((!ipc) && (num < tries))
      {
         num++;
-        eina_usleep(try_gap);
+        evil_usleep(try_gap);
         ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
      }
    if (!ipc) ERR("Timeout in trying to start and then connect to efreetd");

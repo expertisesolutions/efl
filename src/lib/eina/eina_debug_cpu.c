@@ -234,7 +234,7 @@ _sysmon(void *data EINA_UNUSED, Eina_Thread thr EINA_UNUSED)
                   cpufreqs[i] = freq;
                }
           }
-        eina_usleep(1000); // 1ms sleep
+        evil_usleep(1000); // 1ms sleep
      }
    _eina_debug_cpu_active = -1;
    eina_lock_release(&_sysmon_lock);
@@ -279,7 +279,7 @@ _stop_cpu_thread(void)
    /* wait for thread to exit */
    while (!fork_resetting)
      {
-        eina_usleep(1000);
+        evil_usleep(1000);
         eina_lock_take(&_sysmon_lock);
         if (_eina_debug_cpu_active == -1)
           {

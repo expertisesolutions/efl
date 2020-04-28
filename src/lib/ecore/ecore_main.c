@@ -231,7 +231,7 @@ _ecore_fd_valid(Eo *obj EINA_UNUSED, Efl_Loop_Data *pd EINA_UNUSED)
 #  ifdef HAVE_PAUSE
         pause();
 #  else
-        eina_sleep(60);
+        evil_sleep(60);
 #  endif
      }
 # endif
@@ -263,7 +263,7 @@ _throttle_do(Efl_Loop_Data *pd)
 {
    if (pd->throttle == 0) return;
    eina_evlog("+throttle", NULL, 0.0, NULL);
-   eina_usleep(pd->throttle);
+   evil_usleep(pd->throttle);
    eina_evlog("-throttle", NULL, 0.0, NULL);
 }
 

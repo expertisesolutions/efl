@@ -41,7 +41,7 @@ EFL_START_TEST(ecore_test_ecore_x_bell)
 	     ret = ecore_x_bell(0);
 	     fail_if(ret != EINA_TRUE);
 	     ecore_x_sync();
-	     eina_sleep(1);
+	     evil_sleep(1);
      }
 
    ecore_x_shutdown();

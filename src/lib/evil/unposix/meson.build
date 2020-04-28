@@ -18,7 +18,6 @@ if target_machine.system() == 'windows'
     'string.h',
     'strings.h',
     'unimplemented.h',
-    'unistd.h',
   ]
 
 

@@ -31,7 +31,7 @@ _ecore_throttle(void)
 {
    if (throttle_val <= 0) return;
    eina_evlog("+throttle", NULL, 0.0, NULL);
-   eina_usleep(throttle_val);
+   evil_usleep(throttle_val);
    eina_evlog("-throttle", NULL, 0.0, NULL);
 }
 

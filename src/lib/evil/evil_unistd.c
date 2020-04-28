@@ -6,11 +6,6 @@
 #include <direct.h>
 # include <sys/time.h>
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <winsock2.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "evil_private.h"
 
@@ -196,4 +191,65 @@ evil_pipe(int *fds)
    fds[1] = -1;
 
    return -1;
+}
+
+EAPI void
+evil_sleep(unsigned int seconds)
+{
+#ifdef _WIN32
+   Sleep(seconds * 1000);
+#else
+   sleep(seconds);
+#endif
+}
+
+EAPI void
+evil_usleep(unsigned int microseconds)
+{
+#ifdef _WIN32
+   DWORD us = microseconds / 1000;
+   Sleep(us);
+#else
+   usleep(microseconds);
+#endif
+}
+
+EAPI int
+evil_chown(const char *pathname, uid_t owner, gid_t group)
+{
+   int ret;
+#ifdef _WIN32
+   SECURITY_DESCRIPTOR securityDescriptor;
+   DWORD lpnLengthNeeded;
+   GetFileSecurityA(pathname, OWNER_SECURITY_INFORMATION, &securityDescriptor,sizeof(securityDescriptor),&lpnLengthNeeded);
+   securityDescriptor.Owner = owner;
+   securityDescriptor.Group = group;
+   ret = (SetFileSecurityA(pathname, OWNER_SECURITY_INFORMATION, &securityDescriptor) != 0) ? 0 : -1;      
+#else
+   ret = chown(pathname, owner, group);
+#endif
+   return ret;
+}
+
+EAPI int
+evil_readlink(const char *pathname, char *buf, size_t bufsize)
+{
+#ifdef _WIN32
+   ssize_t string_size = strlen(pathname);
+   int n = string_size < bufsize ? string_size : bufsize;
+   strncpy(buf,pathname, n);
+   return n;
+#else
+   readlink(buf,pathname,bufsize);
+#endif
+}
+
+EAPI int
+evil_setsid(void)
+{
+#ifdef _WIN32
+   return -1;
+#else
+   return (pid_t)setsid();
+#endif
 }
