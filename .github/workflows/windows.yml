@@ -13,8 +13,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: install python3 and ninja
+      run: choco install python3 ninja
     - name: install meson
-      run: choco install python3
+      run: py -3 -m pip install meson
+    - name: download OpenSSL source
+      uses: https://www.openssl.org/source/openssl-1.1.1g.tar.gz
+    - uses: ilammy/msvc-dev-cmd@v1
+      arch: x64
+      run: echo "is this in the dev cmd?"
     - name: configure
       run: .\configure.bat
     - name: make
