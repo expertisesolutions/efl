@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include "Eina.h"
 #include "eina_thread_queue.h"
 #include "eina_safety_checks.h"

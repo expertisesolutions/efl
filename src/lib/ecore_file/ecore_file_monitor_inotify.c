@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fcntl.h>
 
 #include "ecore_file_private.h"

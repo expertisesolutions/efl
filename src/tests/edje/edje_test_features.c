@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <stdio.h>
 
 #ifdef _WIN32

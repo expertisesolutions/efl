@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fnmatch.h>
 #include <fcntl.h>
 

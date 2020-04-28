@@ -19,7 +19,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #ifdef _WIN32
 #include <evil_private.h> /* realpath */

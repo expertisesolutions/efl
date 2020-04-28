@@ -7,7 +7,7 @@
 
 #include "Ecore_Evas.h"
 #include "ecore_evas_private.h"
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "../../static_libs/buildsystem/buildsystem.h"
 

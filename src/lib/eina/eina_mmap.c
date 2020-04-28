@@ -41,7 +41,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #if HAVE_SIGINFO_H
 # include <siginfo.h>

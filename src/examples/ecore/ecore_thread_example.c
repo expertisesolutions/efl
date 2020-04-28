@@ -3,7 +3,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include <Ecore.h>
 #include <Ecore_Getopt.h>

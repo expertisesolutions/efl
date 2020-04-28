@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #ifdef HAVE_EEZE
  #include "Eeze.h"

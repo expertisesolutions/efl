@@ -5,7 +5,7 @@
 #define EIO_SENTRY_BETA
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <string.h>
 
 #include <Ecore.h>

@@ -3,7 +3,7 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #ifdef HAVE_SYS_MMAN_H
 # include <sys/mman.h>
 #endif

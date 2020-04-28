@@ -18,7 +18,7 @@
 #include <fstream>
 
 #include <stdlib.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <getopt.h>
 #include <libgen.h>
 

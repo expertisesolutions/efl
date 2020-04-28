@@ -3,7 +3,7 @@
  */
 
 #include <Ecore.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 struct context
 {

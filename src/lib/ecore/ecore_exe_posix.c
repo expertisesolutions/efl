@@ -8,7 +8,7 @@
 
 #include <errno.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fcntl.h>
 #include <sys/time.h>
 #include <sys/resource.h>

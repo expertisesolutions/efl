@@ -1,5 +1,5 @@
 #include <signal.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/xattr.h>

@@ -32,7 +32,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "elm_prefs_cc.h"
 

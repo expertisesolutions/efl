@@ -11,7 +11,7 @@
 #ifdef HAVE_ENVIRON
 # define _GNU_SOURCE 1
 #endif
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>

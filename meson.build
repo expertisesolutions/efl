@@ -232,7 +232,7 @@ config_h.set10('SLOPPY_SPEC', true)
 
 ## have to get compiler again for this to work
 code = '''#define _GNU_SOURCE 1
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <stdio.h>
 
 extern char **environ;

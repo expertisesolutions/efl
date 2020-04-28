@@ -3,7 +3,7 @@
 #endif
 
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "Evas.h"
 #include "Evas_Engine_Buffer.h"

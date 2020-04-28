@@ -4,7 +4,7 @@
 
 #include <fcntl.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <libgen.h>
 
 #include <Eina.h>

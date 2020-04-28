@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <pthread.h>
 #include <signal.h>
 #include <sys/types.h>

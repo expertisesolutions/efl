@@ -10,7 +10,7 @@
 #include <Emotion.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #define WIDTH  (320)
 #define HEIGHT (240)

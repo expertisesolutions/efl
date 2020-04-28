@@ -4,7 +4,7 @@
 
 #include <locale.h>
 #include <fnmatch.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <errno.h>
 
 #include "Edje.h"

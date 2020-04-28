@@ -25,7 +25,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <libgen.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #if defined HAVE_DLOPEN && ! defined _WIN32
 # include <dlfcn.h>

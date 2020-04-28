@@ -27,7 +27,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <errno.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include <fcntl.h>
 

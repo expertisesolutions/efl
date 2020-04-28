@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <time.h>
 #include <fcntl.h>
 #include <sys/types.h>

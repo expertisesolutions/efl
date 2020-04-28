@@ -22,7 +22,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <stdint.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #ifdef HAVE_PIXMAN
 #include <pixman.h>
@@ -30,7 +30,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include <Eina.h>
 #include <Eo.h>

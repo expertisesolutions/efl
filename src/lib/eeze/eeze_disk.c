@@ -5,7 +5,7 @@
 #include <Ecore.h>
 #include <Eeze.h>
 #include <Eeze_Disk.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "eeze_udev_private.h"
 #include "eeze_disk_private.h"

@@ -46,7 +46,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "eina_log.h"
 #include "eina_cpu.h"

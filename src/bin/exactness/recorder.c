@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #ifdef HAVE_DLSYM
 # include <dlfcn.h>

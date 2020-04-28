@@ -5,7 +5,7 @@
 #define EFL_CORE_COMMAND_LINE_PROTECTED
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #define EFL_NOLEGACY_API_SUPPORT
 #include <Efl_Core.h>
 #include "efl_app_suite.h"

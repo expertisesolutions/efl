@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -g -Wall -o ecore_pipe_simple_example ecore_pipe_simple_example.c `pkg-config --cflags --libs ecore`
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <Ecore.h>
 
 static void

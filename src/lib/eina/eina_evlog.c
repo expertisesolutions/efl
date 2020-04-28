@@ -34,7 +34,7 @@
 #endif
 
 #include <time.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #ifdef _WIN32
 # include <evil_private.h> /* mmap */

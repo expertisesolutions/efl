@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <errno.h>
 
 #include <io.h>

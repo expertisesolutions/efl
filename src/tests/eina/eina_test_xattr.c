@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fcntl.h>
 
 #include <Eina.h>

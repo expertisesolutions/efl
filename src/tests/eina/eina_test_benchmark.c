@@ -20,7 +20,7 @@
 # include "config.h"
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "eina_suite.h"
 #include "eina_benchmark.h"

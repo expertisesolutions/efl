@@ -3,7 +3,7 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>

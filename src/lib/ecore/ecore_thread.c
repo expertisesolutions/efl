@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "Ecore.h"
 #include "ecore_private.h"

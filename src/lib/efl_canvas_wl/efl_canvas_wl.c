@@ -11,7 +11,7 @@
 # pragma GCC diagnostic ignored "-Wunused-parameter"
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/mman.h>
 #include <sys/socket.h>
 #include <fcntl.h>

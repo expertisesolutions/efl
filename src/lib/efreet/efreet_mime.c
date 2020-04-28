@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fnmatch.h>
 
 #include <Ecore.h>

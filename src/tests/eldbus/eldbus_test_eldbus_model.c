@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include <Eina.h>
 #include <Ecore.h>

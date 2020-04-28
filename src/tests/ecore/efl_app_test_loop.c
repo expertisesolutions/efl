@@ -3,7 +3,7 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include "eo_internal.h"
 #define EFL_NOLEGACY_API_SUPPORT
 #include <Efl_Core.h>

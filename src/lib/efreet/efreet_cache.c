@@ -8,7 +8,7 @@
  */
 
 #include <libgen.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 

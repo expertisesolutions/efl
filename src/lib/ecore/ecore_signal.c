@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <assert.h>
 #include <fcntl.h>
 #include <errno.h>

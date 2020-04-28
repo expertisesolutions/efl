@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <ctype.h>
 #ifdef _WIN32
 # include <evil_private.h> /* mmap */

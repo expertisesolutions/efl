@@ -9,7 +9,7 @@
 
 #include "emotion_private.h"
 #include "../../static_libs/buildsystem/buildsystem.h"
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #ifdef EMOTION_STATIC_BUILD_XINE
 Eina_Bool xine_module_init(void);

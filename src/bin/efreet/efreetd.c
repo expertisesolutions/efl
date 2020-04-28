@@ -3,7 +3,7 @@
 #endif
 
 #include <stdlib.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/time.h>
 #include <sys/resource.h>

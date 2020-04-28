@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include "Ecore.h"
 #include "ecore_x_private.h"

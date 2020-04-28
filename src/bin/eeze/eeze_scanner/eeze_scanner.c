@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <errno.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fcntl.h>
 
 #include "eeze_scanner.h"

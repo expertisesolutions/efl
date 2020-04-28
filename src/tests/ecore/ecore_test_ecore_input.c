@@ -3,7 +3,7 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include <Ecore_Input.h>
 

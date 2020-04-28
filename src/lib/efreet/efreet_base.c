@@ -5,7 +5,7 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <ctype.h>
 #include <sys/types.h>
 

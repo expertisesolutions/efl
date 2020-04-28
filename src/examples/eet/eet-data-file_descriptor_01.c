@@ -7,7 +7,7 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 // complex real-world structures based on elmdentica database
 typedef struct

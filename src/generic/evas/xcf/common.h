@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <math.h>
 #ifdef HAVE_NETINET_IN_H
 # include <netinet/in.h>

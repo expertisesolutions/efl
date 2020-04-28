@@ -2,7 +2,7 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <stdio.h>
 
 #define EFL_GFX_FILTER_BETA

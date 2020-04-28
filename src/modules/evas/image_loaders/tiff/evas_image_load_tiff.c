@@ -4,7 +4,7 @@
 
 #include <sys/types.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <tiffio.h>
 
 #include "evas_common_private.h"

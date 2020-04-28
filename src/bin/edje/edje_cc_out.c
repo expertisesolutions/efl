@@ -13,7 +13,7 @@
 
 #include <string.h>
 #include <limits.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/stat.h>
 #include <libgen.h>
 

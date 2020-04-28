@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <Eeze_Net.h>
 
 #include "eeze_udev_private.h"

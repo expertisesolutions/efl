@@ -7,7 +7,7 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 typedef enum _Example_Data_Type      Example_Data_Type;
 typedef struct _Example_Variant_Type Example_Variant_Type;

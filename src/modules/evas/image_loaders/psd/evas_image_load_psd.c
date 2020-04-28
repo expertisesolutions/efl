@@ -12,7 +12,7 @@
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fcntl.h>
 
 #ifdef HAVE_NETINET_IN_H

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <math.h>
 #include <sys/time.h>
 #include <errno.h>

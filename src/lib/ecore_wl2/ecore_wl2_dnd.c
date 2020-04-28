@@ -26,7 +26,7 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <fcntl.h>
 #include <sys/epoll.h>
 #include "ecore_wl2_private.h"

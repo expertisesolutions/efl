@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <locale.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <errno.h>
 
 #include <Eina.h>

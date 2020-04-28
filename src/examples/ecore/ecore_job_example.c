@@ -2,7 +2,7 @@
 // gcc -o ecore_job_example ecore_job_example.c `pkg-config --libs --cflags ecore`
 
 #include <Ecore.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 static void
 _job_print_cb(void *data)

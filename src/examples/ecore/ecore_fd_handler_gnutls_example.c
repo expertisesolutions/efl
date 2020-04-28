@@ -19,7 +19,7 @@
 # include <arpa/inet.h>
 #endif
 #include <errno.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <gnutls/gnutls.h>
 #include <Ecore.h>
 

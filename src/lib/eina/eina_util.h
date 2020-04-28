@@ -29,11 +29,11 @@
 #else
 # include <pwd.h>
 #endif
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <float.h>
 #include <math.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/types.h>
 #include <string.h>
 #include "eina_config.h"

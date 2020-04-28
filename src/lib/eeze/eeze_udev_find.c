@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 
 #include <Eeze.h>
 #include "eeze_udev_private.h"

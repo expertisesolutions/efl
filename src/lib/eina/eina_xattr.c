@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <string.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <math.h>
 
 #ifdef HAVE_XATTR

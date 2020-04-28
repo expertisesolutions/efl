@@ -6,7 +6,7 @@
 # define USE_UNSTABLE_LIBMOUNT_API 1
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

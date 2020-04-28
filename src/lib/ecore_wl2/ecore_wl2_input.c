@@ -39,7 +39,7 @@
 # define BTN_BACK 0x116
 #endif
 
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <sys/mman.h>
 #include "ecore_wl2_private.h"
 

@@ -3,7 +3,7 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
+#include <evil_unistd.h>
 #include <Ecore.h>
 
 #define BUFFER_SIZE 1024
