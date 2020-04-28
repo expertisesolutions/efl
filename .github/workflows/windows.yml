@@ -22,13 +22,15 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-    - name: Test dev cmd
-      run: echo "is this in the dev cmd?"
+    - name: Configure OpenSSL
+      run: perl Configure VC-WIN64A
+      working-directory: .\openssl
+    - name: Compile OpenSSL
+      run: nmake
+      working-directory: .\openssl
     - name: configure
       run: .\configure.bat
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      env:
+        OPENSSL_DIR: openssl
+    - name: Build
+      run: .\build.bat
