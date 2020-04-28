@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #ifdef HAVE_ENVIRON
@@ -17,6 +16,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 
+include <Eina.h>
 #include <Elementary.h>
 
 #ifdef HAVE_ENVIRON

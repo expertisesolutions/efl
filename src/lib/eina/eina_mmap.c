@@ -34,7 +34,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <limits.h>
@@ -50,6 +49,7 @@
 #endif
 
 #include "eina_config.h"
+#include "eina_types.h"
 #include "eina_private.h"
 #include "eina_log.h"
 #include "eina_mmap.h"
@@ -229,7 +229,7 @@ eina_mmap_safety_enabled_set(Eina_Bool enabled)
           }
         signal(SIGBUS, SIG_DFL);
      }
-done:   
+done:
    mmap_safe = enabled;
    return mmap_safe;
 #endif

@@ -37,8 +37,6 @@ EAPI extern Ecore_X_Version *ecore_x_version;
 //legacy this was earlier there to indicate if we are running under xlib or xcb
 #define HAVE_ECORE_X_XLIB 1
 
-#include <sys/types.h>
-
 /**
  * @file
  * @brief Ecore functions for dealing with the X Windows System
@@ -993,7 +991,7 @@ struct _Ecore_X_Event_Window_Prop_Name_Class_Change
 struct _Ecore_X_Event_Window_Prop_Pid_Change
 {
    Ecore_X_Window win;
-   pid_t          pid;
+   Eina_Posix_Pid_t          pid;
    Ecore_X_Time   time;
 };
 

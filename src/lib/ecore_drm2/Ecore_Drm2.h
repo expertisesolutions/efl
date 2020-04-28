@@ -196,7 +196,7 @@ EAPI void ecore_drm2_device_close(Ecore_Drm2_Device *device);
  *
  * @param device
  *
- * @return The clockid_t used by this drm device
+ * @return The Eina_Posix_Clockid_t used by this drm device
  *
  * @ingroup Ecore_Drm2_Device_Group
  * @since 1.18

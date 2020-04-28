@@ -14,14 +14,11 @@
 # endif
 #endif
 
-#include <sys/types.h>
-
 #include <libgen.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -30,6 +27,7 @@
 # include <features.h>
 #endif
 
+#include <Eina.h>
 #include <Ecore.h>
 
 #include "Eio.h"
@@ -314,7 +312,7 @@ struct _Eio_File_Mkdir
    Eio_File common;
 
    const char *path;
-   mode_t mode;
+   Eina_Posix_Mode_t mode;
 };
 
 struct _Eio_File_Unlink

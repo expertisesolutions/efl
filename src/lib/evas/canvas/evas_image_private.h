@@ -10,7 +10,7 @@
 
 #include "evas_common_private.h"
 
-#include <sys/types.h>
+#include <Eina.h>
 #include <unistd.h>
 #include <math.h>
 

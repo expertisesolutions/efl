@@ -10,7 +10,7 @@ ex_is_original_app(void)
    const char *original_pid_env = getenv("EXACTNESS_ORIGINAL_PID");
    if (original_pid_env)
      {
-        pid_t original_pid = atoi(original_pid_env);
+        Eina_Posix_Pid_t original_pid = atoi(original_pid_env);
         if (original_pid == getpid())
           return EINA_TRUE;
      }

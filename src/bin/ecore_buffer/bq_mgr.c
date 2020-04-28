@@ -1,7 +1,6 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <sys/xattr.h>
 
 #include <Eina.h>

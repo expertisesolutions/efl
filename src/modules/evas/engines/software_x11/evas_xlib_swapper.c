@@ -2,13 +2,13 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include "evas_common_private.h"
 #include "evas_macros.h"
 #include "evas_xlib_swapper.h"
 
 #ifdef HAVE_DLSYM
 # include <dlfcn.h> /* dlopen,dlclose,etc */
-# include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 

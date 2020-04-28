@@ -4,7 +4,7 @@
 
 #include "ecore_wl2_private.h"
 
-#include <sys/types.h>
+#include <Eina.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <dlfcn.h>

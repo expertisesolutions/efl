@@ -2,11 +2,11 @@
 // gcc -o ecore_con_url_download_example ecore_con_url_download_example.c `pkg-config --libs --cflags ecore ecore-con`
 
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <Eina.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
 

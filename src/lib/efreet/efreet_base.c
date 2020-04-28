@@ -7,7 +7,6 @@
 
 #include <unistd.h>
 #include <ctype.h>
-#include <sys/types.h>
 
 #ifdef _WIN32
 # include <winsock2.h>
@@ -15,6 +14,7 @@
 # include <pwd.h>
 #endif
 
+#include <Eina.h>
 #include <Ecore_File.h>
 #include <Efl.h>
 

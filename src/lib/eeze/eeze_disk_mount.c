@@ -4,9 +4,9 @@
 
 #include <unistd.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <errno.h>
 
+#include <Eina.h>
 #include <Ecore.h>
 #include <Eeze.h>
 #include <Eeze_Disk.h>

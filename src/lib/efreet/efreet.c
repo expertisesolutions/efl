@@ -32,8 +32,8 @@ static void efreet_parse_locale(void);
 static int efreet_parse_locale_setting(const char *env);
 
 #ifndef _WIN32
-static uid_t ruid;
-static uid_t rgid;
+static Eina_Posix_Uid_t ruid;
+static Eina_Posix_Uid_t rgid;
 #endif
 
 EAPI int

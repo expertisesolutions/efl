@@ -11,7 +11,6 @@
 # include <dlfcn.h>
 #endif
 
-#include <sys/types.h>
 #ifdef HAVE_SYS_SYSINFO_H
 # include <sys/sysinfo.h>
 #endif

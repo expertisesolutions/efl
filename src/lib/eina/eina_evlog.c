@@ -26,6 +26,7 @@
 #endif
 
 #include "Eina.h"
+#include "eina_types.h"
 #include "eina_evlog.h"
 #include "eina_debug.h"
 #include "eina_time.h"
@@ -64,7 +65,7 @@ static Eina_Evlog_Buf *buf; // current event log we are writing events to
 static Eina_Evlog_Buf  buffers[2]; // double-buffer our event log buffers
 
 #if defined (HAVE_CLOCK_GETTIME)
-static clockid_t _eina_evlog_time_clock_id = -1;
+static Eina_Posix_Clockid_t _eina_evlog_time_clock_id = -1;
 #elif defined(__APPLE__) && defined(__MACH__)
 static double _eina_evlog_time_clock_conversion = 1e-9;
 #endif

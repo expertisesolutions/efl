@@ -7,7 +7,6 @@
 #include <Ecore_Con.h>
 #include <Eeze_Disk.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -384,7 +383,7 @@ cb_stor_chg(const char *device, Eeze_Udev_Event ev, void *data EINA_UNUSED, Eeze
    const char *str;
 
 
-   DBG("device='%s'", device);   
+   DBG("device='%s'", device);
    switch (ev)
      {
         case EEZE_UDEV_EVENT_ADD:

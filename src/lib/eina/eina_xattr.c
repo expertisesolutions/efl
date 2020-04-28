@@ -21,7 +21,6 @@
 #endif
 
 #include <stdlib.h>
-#include <sys/types.h>
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
@@ -33,6 +32,7 @@
 #include <fcntl.h>
 
 #include "eina_config.h"
+#include "eina_types.h"
 #include "eina_private.h"
 
 #include "eina_safety_checks.h"

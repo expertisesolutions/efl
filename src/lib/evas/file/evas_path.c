@@ -7,9 +7,9 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 /* get the casefold feature! */
 #include <fnmatch.h>

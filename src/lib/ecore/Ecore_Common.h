@@ -1064,15 +1064,15 @@ struct _Ecore_Exe_Event_Add
  */
 struct _Ecore_Exe_Event_Del
 {
-   pid_t      pid; /**< The process ID of the process that exited */
-   int        exit_code; /**< The exit code of the process */
-   Ecore_Exe *exe; /**< The handle to the exited process, or @c NULL if not found */
-   int        exit_signal; /**< The signal that caused the process to exit */
-   Eina_Bool  exited    : 1; /**< Set to 1 if the process exited of its own accord */
-   Eina_Bool  signalled : 1; /**< Set to 1 if the process exited due to uncaught signal */
-   void      *ext_data; /**< Extension data - not used */
+   Eina_Posix_Pid_t  pid; /**< The process ID of the process that exited */
+   int               exit_code; /**< The exit code of the process */
+   Ecore_Exe        *exe; /**< The handle to the exited process, or @c NULL if not found */
+   int               exit_signal; /**< The signal that caused the process to exit */
+   Eina_Bool         exited    : 1; /**< Set to 1 if the process exited of its own accord */
+   Eina_Bool         signalled : 1; /**< Set to 1 if the process exited due to uncaught signal */
+   void             *ext_data; /**< Extension data - not used */
 #if !defined (_WIN32) && !defined (__lv2ppu__)
-   siginfo_t  data; /**< Signal info */
+   siginfo_t         data; /**< Signal info */
 #endif
 };
 
@@ -1230,7 +1230,7 @@ EAPI void *ecore_exe_free(Ecore_Exe *exe);
  * @param   exe Handle to the given spawned process.
  * @return  The process ID on success,  @c -1 otherwise.
  */
-EAPI pid_t ecore_exe_pid_get(const Ecore_Exe *exe);
+EAPI Eina_Posix_Pid_t ecore_exe_pid_get(const Ecore_Exe *exe);
 
 /**
  * Sets the string tag for the given process handle.

@@ -21,7 +21,6 @@
 #include "Eio.h"
 #include "Eina.h"
 #include "Ecore_File.h"
-#include <sys/types.h>
 #include <sys/event.h>
 #include <sys/stat.h>
 
@@ -195,7 +194,7 @@ _eio_kevent_handler(void *data EINA_UNUSED, Ecore_Fd_Handler *fdh)
              _eio_monitor_send(backend->parent, backend->parent->path, event_code);
           }
      }
-   
+
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -242,7 +241,7 @@ void eio_monitor_backend_shutdown(void)
    if (!_kqueue_fd) return;
 
    eina_hash_free(_kevent_monitors);
-   
+
    fd = ecore_main_fd_handler_fd_get(_kqueue_fd);
    ecore_main_fd_handler_del(_kqueue_fd);
    _kqueue_fd = NULL;
@@ -267,7 +266,7 @@ void eio_monitor_backend_add(Eio_Monitor *monitor)
 
    backend = calloc(1, sizeof (Eio_Monitor_Backend));
    if (!backend) return;
-   
+
    res = stat(monitor->path, &st);
    if (res) goto error;
 
@@ -292,7 +291,7 @@ void eio_monitor_backend_add(Eio_Monitor *monitor)
      }
 
    return;
-   
+
 error:
    free(backend);
 }

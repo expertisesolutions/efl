@@ -7,6 +7,7 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include "Ecore.h"
 #include "Ecore_Con.h"
 #include "ecore_con_private.h"
@@ -33,7 +34,6 @@
 
 #ifdef BIND_HANG_WORKAROUND
 # include <sys/file.h>
-# include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 #endif

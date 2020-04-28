@@ -24,7 +24,7 @@
 #ifndef EMBRYO_CC_AMX_H
 #define EMBRYO_CC_AMX_H
 
-#include <sys/types.h>
+#include <Eina.h>
 
 /* calling convention for all interface functions and callback functions */
 

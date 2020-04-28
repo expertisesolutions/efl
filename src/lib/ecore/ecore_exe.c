@@ -29,7 +29,7 @@
 
 struct _ecore_exe_dead_exe
 {
-   pid_t pid;
+   Eina_Posix_Pid_t pid;
    char *cmd;
 };
 
@@ -211,7 +211,7 @@ ecore_exe_event_data_free(Ecore_Exe_Event_Data *e)
    free(e);
 }
 
-EAPI pid_t
+EAPI Eina_Posix_Pid_t
 ecore_exe_pid_get(const Ecore_Exe *obj)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0);
@@ -361,7 +361,7 @@ _ecore_exe_shutdown(void)
 }
 
 Ecore_Exe *
-_ecore_exe_find(pid_t pid)
+_ecore_exe_find(Eina_Posix_Pid_t pid)
 {
    Eina_List *itr;
    Ecore_Exe *obj;

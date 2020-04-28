@@ -6,7 +6,6 @@
 #include <ctype.h>
 #include <limits.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -14,6 +13,7 @@
 #include <regex.h>
 
 #include "elm_prefs_cc.h"
+#include <Eina.h>
 #include <Ecore.h>
 #include <Ecore_File.h>
 

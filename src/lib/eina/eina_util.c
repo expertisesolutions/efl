@@ -25,12 +25,12 @@
 #ifdef _WIN32
 # include <string.h>
 #else
-# include <sys/types.h>
 # include <pwd.h>
 # include <string.h>
 #endif
 
 #include "eina_config.h"
+#include "eina_types.h"
 #include "eina_private.h"
 #include "eina_tmpstr.h"
 

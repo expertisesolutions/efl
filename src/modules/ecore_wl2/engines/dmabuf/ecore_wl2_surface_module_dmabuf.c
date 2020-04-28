@@ -2,10 +2,10 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include "Ecore_Wl2.h"
 #include "ecore_wl2_internal.h"
 
-#include <sys/types.h>
 #include <sys/stat.h>
 
 #include "linux-dmabuf-unstable-v1-client-protocol.h"

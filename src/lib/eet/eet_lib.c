@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
 #include <string.h>
@@ -1485,7 +1484,7 @@ eet_mmap(const Eina_File *file)
 
    if (ef->mode == EET_FILE_MODE_READ)
      eet_cache_add(ef, &eet_readers, &eet_readers_num, &eet_readers_alloc);
-   
+
  done:
    UNLOCK_CACHE;
    return ef;

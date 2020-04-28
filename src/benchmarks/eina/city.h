@@ -43,7 +43,7 @@
 #ifndef CITY_HASH_H_
 #define CITY_HASH_H_
 
-#include <sys/types.h>  // for ssize_t.
+#include <Eina.h>  // for ssize_t.
 #include <stdlib.h>
 #include <stdint.h>
 #include <utility>

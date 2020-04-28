@@ -454,7 +454,7 @@ array_clear(Eina_Array **arr)
 static inline Eina_Bool
 client_allowed_check(Comp *c, struct wl_client *client)
 {
-   pid_t p;
+   Eina_Posix_Pid_t p;
    int32_t pid;
    Eina_Bool err;
 
@@ -2828,7 +2828,7 @@ static void
 data_device_manager_source_create(struct wl_client *client, struct wl_resource *resource, uint32_t id)
 {
    Comp_Data_Device_Source *ds;
-   pid_t pid;
+   Eina_Posix_Pid_t pid;
    Comp_Seat *s;
    Comp *c;
 

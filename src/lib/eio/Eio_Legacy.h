@@ -377,7 +377,7 @@ EAPI Eio_File *eio_file_direct_stat(const char *path,
  * It's equivalent to the chmod command.
  */
 EAPI Eio_File *eio_file_chmod(const char *path,
-                              mode_t mode,
+                              Eina_Posix_Mode_t mode,
                               Eio_Done_Cb done_cb,
                               Eio_Error_Cb error_cb,
                               const void *data);
@@ -432,7 +432,7 @@ EAPI Eio_File *eio_file_unlink(const char *path,
  * Creates a new directory using the mode provided.
  */
 EAPI Eio_File *eio_file_mkdir(const char *path,
-                              mode_t mode,
+                              Eina_Posix_Mode_t mode,
                               Eio_Done_Cb done_cb,
                               Eio_Error_Cb error_cb,
                               const void *data);

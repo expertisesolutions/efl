@@ -1,6 +1,7 @@
 #include "evas_gl_private.h"
 
-static mode_t default_mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+static Eina_Posix_Mode_t default_mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP
+                                        | S_IXGRP | S_IROTH | S_IXOTH;
 
 Eina_Bool
 evas_gl_common_file_cache_is_dir(const char *file)

@@ -1172,7 +1172,7 @@ elm_quicklaunch_fork(int    argc,
                      void  *postfork_data)
 {
 #ifdef HAVE_FORK
-   pid_t child;
+   Eina_Posix_Pid_t child;
    int ret;
 
    if (!qr_main && !qre_main)

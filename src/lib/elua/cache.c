@@ -1,6 +1,6 @@
 #include "elua_private.h"
 
-#include <sys/types.h>
+#include <Eina.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>

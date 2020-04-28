@@ -200,7 +200,7 @@ _signal_handler(int sig EINA_UNUSED,
    int i, slot = 0;
    Eina_Thread self = eina_thread_self();
 #if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_SCHED_GETCPU) && defined(__clockid_t_defined)
-   clockid_t cid;
+   Eina_Posix_Clockid_t cid;
 #endif
 
    // find which slot in the array of threads we have so we store info

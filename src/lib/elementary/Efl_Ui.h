@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/param.h>
 #include <math.h>
@@ -61,8 +60,6 @@
 #else
 # include <signal.h>
 #endif
-
-#include <sys/types.h>
 
 #define __EFL_UI_IS_REQUIRED
 

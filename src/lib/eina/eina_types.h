@@ -638,4 +638,38 @@ typedef void (*Eina_Free_Cb)(void *data);
  * @}
  */
 
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif /* WIN32_LEAN_AND_MEAN */
+# ifdef _MSC_VER
+#  include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+# endif /* _MSC_VER */
+# include <crtdefs.h>
+# undef WIN32_LEAN_AND_MEAN
+# include <stdint.h>
+# include <time.h>
+# include <wchar.h>
+#endif /* _WIN32 */
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+#ifdef _WIN32
+typedef int Eina_Posix_Clockid_t;
+typedef int Eina_Posix_Gid_t;
+typedef int Eina_Posix_Mode_t;
+typedef unsigned long Eina_Posix_Pid_t;
+typedef long Eina_Posix_Suseconds_t;
+typedef int Eina_Posix_Uid_t;
+#else /* POSIX */
+typedef clockid_t Eina_Posix_Clockid_t;
+typedef gid_t Eina_Posix_Gid_t;
+typedef mode_t Eina_Posix_Mode_t;
+typedef pid_t Eina_Posix_Pid_t;
+typedef uid_t Eina_Posix_Uid_t;
+#endif /* _WIN32 || POSIX */
+
 #endif /* EINA_TYPES_H_ */

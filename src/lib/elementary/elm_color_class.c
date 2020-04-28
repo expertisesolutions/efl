@@ -340,7 +340,7 @@ _colorclass_find_win(uint64_t winid)
 {
    Evas_Object *win;
    Eina_List *l;
-   pid_t pid = getpid();
+   Eina_Posix_Pid_t pid = getpid();
 
    EINA_LIST_FOREACH(_elm_win_list, l, win)
      {

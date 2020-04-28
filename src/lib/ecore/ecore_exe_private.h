@@ -126,7 +126,7 @@ struct _Ecore_Exe_Data
 #endif
 
    Ecore_Exe_Cb      pre_free_cb;
-   pid_t             pid;
+   Eina_Posix_Pid_t  pid;
    Ecore_Exe_Flags   flags;
    Eina_Bool         close_stdin : 1;
 };
@@ -138,7 +138,7 @@ EAPI extern int ECORE_EXE_EVENT_DEL;
 EAPI extern int ECORE_EXE_EVENT_DATA;
 EAPI extern int ECORE_EXE_EVENT_ERROR;
 
-Ecore_Exe *_ecore_exe_find(pid_t pid);
+Ecore_Exe *_ecore_exe_find(Eina_Posix_Pid_t pid);
 void *_ecore_exe_event_del_new(void);
 void _ecore_exe_event_del_free(void *data EINA_UNUSED, void *ev);
 void _ecore_exe_event_exe_data_free(void *data EINA_UNUSED, void *ev);

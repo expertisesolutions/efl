@@ -1,8 +1,8 @@
 #ifndef _MD5_H_
 #define _MD5_H_
 
+#include <Eina.h>
 #include <stdint.h>
-#include <sys/types.h>
 
 #define MD5_HASHBYTES 16
 

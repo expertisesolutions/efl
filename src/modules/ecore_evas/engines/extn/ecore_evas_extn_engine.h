@@ -13,7 +13,6 @@
 # endif
 #endif
 #include <stdio.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <math.h>
 #include <time.h>
@@ -29,6 +28,7 @@
 #include <string.h>
 #include <sys/file.h>
 #include <unistd.h>
+#include <Eina.h>
 #include <Evas.h>
 #include <Evas_Engine_Buffer.h>
 #include <Ecore.h>

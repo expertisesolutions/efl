@@ -77,7 +77,7 @@ struct _Ecore_Wl2_Display
 {
    int refs;
    char *name;
-   pid_t pid;
+   Eina_Posix_Pid_t pid;
 
    struct
      {

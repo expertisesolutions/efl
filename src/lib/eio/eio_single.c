@@ -210,8 +210,8 @@ _eio_file_chown(void *data, Ecore_Thread *thread)
 {
    Eio_File_Chown *own = data;
    char *tmp;
-   uid_t owner = -1;
-   gid_t group = -1;
+   Eina_Posix_Uid_t owner = -1;
+   Eina_Posix_Gid_t group = -1;
 
    own->common.error = 0;
 
@@ -249,7 +249,7 @@ _eio_file_chown(void *data, Ecore_Thread *thread)
           }
      }
 
-   if (owner == (uid_t) -1 && group == (gid_t) -1)
+   if (owner == (Eina_Posix_Uid_t) -1 && group == (Eina_Posix_Gid_t) -1)
      goto on_error;
 
    if (chown(own->path, owner, group) != 0)
@@ -511,7 +511,7 @@ eio_file_unlink(const char *path,
 
 EAPI Eio_File *
 eio_file_mkdir(const char *path,
-	       mode_t mode,
+	       Eina_Posix_Mode_t mode,
 	       Eio_Done_Cb done_cb,
 	       Eio_Error_Cb error_cb,
 	       const void *data)
@@ -542,7 +542,7 @@ eio_file_mkdir(const char *path,
 
 EAPI Eio_File *
 eio_file_chmod(const char *path,
-	       mode_t mode,
+	       Eina_Posix_Mode_t mode,
 	       Eio_Done_Cb done_cb,
 	       Eio_Error_Cb error_cb,
 	       const void *data)

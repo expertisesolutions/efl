@@ -7,7 +7,6 @@
 #include <string.h>
 
 #include <errno.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -280,7 +279,7 @@ _impl_ecore_exe_efl_object_finalize(Eo *obj, Ecore_Exe_Data *exe)
    }
    if (ok)
    {
-      pid_t pid = 0;
+      Eina_Posix_Pid_t pid = 0;
       volatile int vfork_exec_errno = 0;
 
       /* FIXME: I should double check this.  After a quick look around, this is already done, but via a more modern method. */

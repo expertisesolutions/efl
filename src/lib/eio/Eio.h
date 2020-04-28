@@ -24,7 +24,6 @@
 #ifndef EIO_H__
 # define EIO_H__
 
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 

@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <signal.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
@@ -53,7 +52,7 @@ _sysmon(void *data EINA_UNUSED, Eina_Thread thr EINA_UNUSED)
    static int prev_threads_num = 0;
    int j, cpu;
    Eina_Bool prev_threads_redo;
-   clockid_t cid;
+   Eina_Posix_Clockid_t cid;
    struct timespec t, t_now;
    unsigned long long tim_span, tim1, tim2;
 #endif

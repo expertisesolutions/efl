@@ -20,12 +20,12 @@
 # include "config.h"
 #endif
 
-#include <sys/types.h>
 #include <sys/stat.h>
 
 #include <evil_private.h>
 
 #include "eina_config.h"
+#include "eina_types.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
 

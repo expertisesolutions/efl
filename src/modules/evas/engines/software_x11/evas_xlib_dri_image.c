@@ -6,8 +6,8 @@
 #include "evas_xlib_dri_image.h"
 #include "../software_generic/evas_native_common.h"
 
+# include <Eina.h>
 # include <dlfcn.h> /* dlopen,dlclose,etc */
-# include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 

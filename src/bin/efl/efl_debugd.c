@@ -24,6 +24,7 @@
 
 #include <fcntl.h>
 #include "eina_debug_private.h"
+#include "eina_types.h"
 
 #ifdef _WIN32
 # include <evil_private.h> /* mkdir */
@@ -88,7 +89,7 @@ struct _Client
 
    int               version;
    int               cid;
-   pid_t             pid;
+   Eina_Posix_Pid_t             pid;
 
    Eina_Bool         cl_stat_obs : 1;
    Eina_Bool         is_master : 1;
@@ -534,7 +535,7 @@ _local_server_create(void)
 {
    Eo *loop;
    Eina_Error err;
-   mode_t mask = 0;
+   Eina_Posix_Mode_t mask = 0;
    char path[512];
    Eina_Bool ret = EINA_FALSE;
 
@@ -603,7 +604,7 @@ _remote_server_create(void)
 {
    Eo *loop;
    Eina_Error err;
-   mode_t mask = 0;
+   Eina_Posix_Mode_t mask = 0;
    Eina_Bool ret = EINA_FALSE;
    char address[256];
 

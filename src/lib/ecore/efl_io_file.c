@@ -10,9 +10,9 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include <Ecore.h>
 #include "ecore_private.h"
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 

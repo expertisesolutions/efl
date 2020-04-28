@@ -56,7 +56,7 @@ _sendMessage(void *data)
 int
 main(void)
 {
-   pid_t childPid;
+   Eina_Posix_Pid_t childPid;
    Ecore_Exe *childHandle;
 
    if (!ecore_init())

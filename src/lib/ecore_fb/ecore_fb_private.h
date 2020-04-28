@@ -1,6 +1,7 @@
 #ifndef _ECORE_FB_PRIVATE_H
 #define _ECORE_FB_PRIVATE_H
 
+#include <Eina.h>
 #include "Ecore.h"
 #include "ecore_private.h"
 #include "Ecore_Input.h"
@@ -10,7 +11,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <termios.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <linux/version.h>
@@ -18,7 +18,7 @@
 #include <linux/vt.h>
 #include <linux/fb.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,15)) && (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18))
- #define kernel_ulong_t unsigned long 
+ #define kernel_ulong_t unsigned long
  #define BITS_PER_LONG 32
  #include <linux/input.h>
  #undef kernel_ulong_t
@@ -53,7 +53,7 @@ struct _Ecore_Fb_Input_Device
    int fd;
    Ecore_Fd_Handler *handler;
    int listen;
-   struct 
+   struct
      {
         Ecore_Fb_Input_Device_Cap cap;
         char *name;
@@ -105,7 +105,7 @@ void ecore_fb_vt_shutdown(void);
 #ifndef TS_GET_CAL
 #define TS_GET_CAL 0x8014660a
 #endif
-  
+
 #undef EAPI
 #define EAPI
 

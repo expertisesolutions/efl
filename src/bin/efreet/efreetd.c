@@ -8,7 +8,6 @@
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 

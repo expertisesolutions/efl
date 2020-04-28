@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <fcntl.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #ifdef _WIN32
 # include <evil_private.h> /* mkdir */
@@ -25,6 +24,7 @@
 # include <ws2tcpip.h>
 #endif
 
+#include <Eina.h>
 #include <Ecore.h>
 #include <ecore_private.h>
 
@@ -110,7 +110,7 @@ ecore_con_local_path_new(Eina_Bool is_system, const char *name, int port)
 }
 
 void
-_ecore_con_local_mkpath(const char *path, mode_t mode)
+_ecore_con_local_mkpath(const char *path, Eina_Posix_Mode_t mode)
 {
    char *s, *d, *itr;
 

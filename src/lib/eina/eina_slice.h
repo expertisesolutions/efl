@@ -26,8 +26,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <sys/types.h>
-
 #include "eina_str.h"
 
 /**

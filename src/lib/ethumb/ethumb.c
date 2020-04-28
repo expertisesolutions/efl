@@ -38,7 +38,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <ctype.h>
 #ifndef _WIN32
@@ -878,7 +877,7 @@ ethumb_file_get(const Ethumb *e, const char **path, const char **key)
 }
 
 static const char ACCEPTABLE_URI_CHARS[96] = {
-     /*      !    "    #    $    %    &    '    (    )    *    +    ,    -    .    / */ 
+     /*      !    "    #    $    %    &    '    (    )    *    +    ,    -    .    / */
      0x00,0x3F,0x20,0x20,0x28,0x00,0x2C,0x3F,0x3F,0x3F,0x3F,0x2A,0x28,0x3F,0x3F,0x1C,
      /* 0    1    2    3    4    5    6    7    8    9    :    ;    <    =    >    ? */
      0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x38,0x20,0x20,0x2C,0x20,0x20,

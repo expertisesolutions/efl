@@ -15,7 +15,6 @@
 
 #include <pulse/pulseaudio.h>
 
-#include <sys/types.h>
 #include <sys/socket.h>
 
 #include "ecore_audio_private.h"

@@ -22,7 +22,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/types.h>
 #include <string.h>
 #include <libgen.h>
 #include <unistd.h>
@@ -36,6 +35,7 @@
 #endif
 
 #include "eina_config.h"
+#include "eina_types.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
 #include "eina_file.h"

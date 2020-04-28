@@ -41,7 +41,7 @@ int
 main(void)
 {
    Ecore_Pipe *pipe;
-   pid_t child_pid;
+   Eina_Posix_Pid_t child_pid;
 
    ecore_init();
 

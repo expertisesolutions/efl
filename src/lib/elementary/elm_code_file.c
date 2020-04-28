@@ -177,7 +177,7 @@ EAPI void elm_code_file_save(Elm_Code_File *file)
    unsigned int length;
    short crlength;
    struct stat st;
-   mode_t mode;
+   Eina_Posix_Mode_t mode;
    Eina_Bool have_mode = EINA_FALSE;
 
    code = file->parent;

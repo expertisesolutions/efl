@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <errno.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -20,6 +19,7 @@
 # include <sys/mman.h>
 #endif
 
+#include <Eina.h>
 #include <Ecore.h>
 #include "ecore_private.h"
 #include <Ecore_Input.h>

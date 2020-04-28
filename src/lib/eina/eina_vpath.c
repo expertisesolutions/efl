@@ -2,7 +2,6 @@
 # include <config.h>
 #endif
 
-#include <sys/types.h>
 #ifdef _WIN32
 # include <evil_private.h> /* mkdir */
 #else
@@ -51,7 +50,7 @@ _fallback_runtime_dir(const char *home)
 {
    char buf[PATH_MAX];
 #if defined(HAVE_GETUID)
-   uid_t uid = getuid();
+   Eina_Posix_Uid_t uid = getuid();
 #endif
    struct stat st;
 
@@ -129,7 +128,7 @@ _fallback_home_dir()
    char buf[PATH_MAX];
    /* Windows does not have getuid(), but home can't be NULL */
 #ifdef HAVE_GETEUID
-   uid_t uid = geteuid();
+   Eina_Posix_Uid_t uid = geteuid();
    struct stat st;
 
    snprintf(buf, sizeof(buf), "/tmp/%i", (int)uid);

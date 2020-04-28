@@ -34,11 +34,9 @@
 #ifdef HAVE_SYS_EPOLL_H
 # include <sys/epoll.h>
 #endif
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include <time.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #ifdef HAVE_SYS_SOCKET_H
 # include <sys/socket.h>

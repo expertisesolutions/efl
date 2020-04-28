@@ -11,7 +11,6 @@
 
 #include <pulse/pulseaudio.h>
 
-#include <sys/types.h>
 #include <sys/socket.h>
 
 int _ecore_audio_pa_log_dom = -1;

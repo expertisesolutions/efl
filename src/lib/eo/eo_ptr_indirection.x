@@ -1,5 +1,5 @@
+#include <Eina.h>
 #include <assert.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
@@ -165,7 +165,7 @@ _eo_id_mem_alloc(size_t size)
         void *ptr;
         Mem_Header *hdr;
         size_t newsize;
-        newsize = MEM_PAGE_SIZE * ((size + MEM_HEADER_SIZE + MEM_PAGE_SIZE - 1) / 
+        newsize = MEM_PAGE_SIZE * ((size + MEM_HEADER_SIZE + MEM_PAGE_SIZE - 1) /
                                    MEM_PAGE_SIZE);
         ptr = mmap(NULL, newsize, PROT_READ | PROT_WRITE,
                    MAP_PRIVATE | MAP_ANON, -1, 0);

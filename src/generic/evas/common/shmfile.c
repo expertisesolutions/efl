@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <math.h>
 #ifdef HAVE_NETINET_IN_H
@@ -16,6 +15,7 @@
 #include <string.h>
 #include <zlib.h>
 
+#include <Eina.h>
 #ifdef _WIN32
 # ifndef WIN32_LEAN_AND_MEAN
 #  define WIN32_LEAN_AND_MEAN

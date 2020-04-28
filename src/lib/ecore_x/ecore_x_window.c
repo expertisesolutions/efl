@@ -2,8 +2,8 @@
 # include <config.h>
 #endif /* ifdef HAVE_CONFIG_H */
 
+#include <Eina.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #include "Ecore.h"

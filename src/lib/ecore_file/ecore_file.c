@@ -38,7 +38,7 @@ static Eina_Bool
 _ecore_file_stat(const char *file,
                  long long *mtime,
                  long long *size,
-                 mode_t *mode,
+                 Eina_Posix_Mode_t *mode,
                  Eina_Bool *is_dir,
                  Eina_Bool *is_reg)
 {
@@ -188,7 +188,8 @@ ecore_file_is_dir(const char *file)
    return is_dir;
 }
 
-static mode_t default_mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+static Eina_Posix_Mode_t default_mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP
+                                        | S_IXGRP | S_IROTH | S_IXOTH;
 
 EAPI Eina_Bool
 ecore_file_mkdir(const char *dir)
@@ -457,7 +458,7 @@ ecore_file_mv(const char *src, const char *dst)
         // it resides on a different mount point.
         if (errno == EXDEV)
           {
-             mode_t mode;
+             Eina_Posix_Mode_t mode;
              Eina_Bool is_reg;
 
              // Make sure this is a regular file before

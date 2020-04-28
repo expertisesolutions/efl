@@ -17,7 +17,6 @@
 #include "ecore_audio_private.h"
 #include <pulse/pulseaudio.h>
 
-#include <sys/types.h>
 #include <sys/socket.h>
 
 extern pa_mainloop_api functable;

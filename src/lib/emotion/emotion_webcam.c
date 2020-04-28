@@ -2,9 +2,9 @@
 # include "config.h"
 #endif
 
+#include <Eina.h>
 #ifdef HAVE_EEZE
 # include <unistd.h>
-# include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # ifdef HAVE_V4L2

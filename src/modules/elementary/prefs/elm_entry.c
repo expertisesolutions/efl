@@ -1,6 +1,6 @@
 #include "private.h"
 #include "elm_widget.h"
-#include <sys/types.h>
+#include <Eina.h>
 #include <regex.h>
 #include "elm_entry_eo.h"
 

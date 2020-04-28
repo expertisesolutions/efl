@@ -111,7 +111,7 @@ void ecore_con_mempool_shutdown(void);
 void ecore_con_legacy_init(void);
 void ecore_con_legacy_shutdown(void);
 
-void _ecore_con_local_mkpath(const char *path, mode_t mode);
+void _ecore_con_local_mkpath(const char *path, Eina_Posix_Mode_t mode);
 
 /* allow windows and posix to use the same error comparison */
 #ifndef SOCKET_ERROR

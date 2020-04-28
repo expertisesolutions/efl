@@ -20,8 +20,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
  what you give them.   Help stamp out software-hoarding!  */
 
 #include <stdarg.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <Eina.h>
 
 #ifndef HOST_BITS_PER_WIDE_INT
 

@@ -21,7 +21,7 @@
 #include <sndfile.h>
 #endif
 
-#include <sys/types.h>
+#include <Eina.h>
 #include <sys/stat.h>
 
 #include "Ecore.h"

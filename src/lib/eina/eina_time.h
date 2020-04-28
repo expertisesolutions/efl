@@ -21,7 +21,6 @@
 
 #include <stdint.h>
 #include <time.h>
-#include <sys/types.h>
 
 #ifdef _WIN32
 typedef unsigned short u_short;

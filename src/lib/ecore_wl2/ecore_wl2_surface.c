@@ -4,7 +4,7 @@
 
 #include "ecore_wl2_private.h"
 
-#include <sys/types.h>
+#include <Eina.h>
 #include <sys/stat.h>
 
 static Eina_List *_smanagers = NULL;

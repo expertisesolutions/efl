@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <limits.h>
@@ -47,6 +46,7 @@
 #endif
 
 #include "eina_config.h"
+#include "eina_types.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
 #include "eina_log.h"

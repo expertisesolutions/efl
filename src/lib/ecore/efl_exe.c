@@ -18,7 +18,6 @@
 # include <stdio.h>
 # include <string.h>
 # include <errno.h>
-# include <sys/types.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <signal.h>
@@ -59,7 +58,7 @@ struct _Efl_Exe_Data
    } fd;
 #else
    Eo *exit_handler;
-   pid_t pid;
+   Eina_Posix_Pid_t pid;
    struct {
       int in, out, exited_read, exited_write;
       Eo *in_handler, *out_handler;

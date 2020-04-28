@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "eina_config.h"
+#include "eina_types.h"
 #include "Eina.h"
 
 Eina_Bool fork_resetting;
@@ -101,6 +102,7 @@ eina_condition_free(Eina_Condition *cond)
    _eina_condition_free(cond);
 }
 
+<<<<<<< HEAD
 EAPI Eina_Bool
 eina_condition_wait(Eina_Condition *cond)
 {

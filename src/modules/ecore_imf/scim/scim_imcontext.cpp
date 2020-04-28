@@ -8,7 +8,6 @@
 #define Uses_SCIM_HOTKEY
 #define Uses_SCIM_PANEL_CLIENT
 
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/times.h>
 #include <unistd.h>

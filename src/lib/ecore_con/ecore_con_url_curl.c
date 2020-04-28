@@ -2,10 +2,10 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #ifdef _WIN32

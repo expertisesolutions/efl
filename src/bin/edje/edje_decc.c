@@ -8,10 +8,10 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <locale.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
 
+#include <Eina.h>
 #include <Ecore_File.h>
 #include <Ecore_Evas.h>
 

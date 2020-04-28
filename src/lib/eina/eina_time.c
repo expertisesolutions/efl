@@ -27,11 +27,11 @@
 
 #include <stdint.h>
 #include <time.h>
-#include <sys/types.h>
 
 #if !defined(_WIN32) && defined(HAVE_SYS_TIME_H)
 # include <sys/time.h>
 #endif /* !_WIN32 && HAVE_SYS_TIME_H */
+
 
 EAPI int
 eina_gettimeofday(struct timeval * tp, struct timezone * tzp)

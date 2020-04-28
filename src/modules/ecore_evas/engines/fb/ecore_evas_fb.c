@@ -3,7 +3,6 @@
 #endif
 
 #include <stdlib.h>
-#include <sys/types.h>
 
 #include <Eina.h>
 #include <Ecore.h>

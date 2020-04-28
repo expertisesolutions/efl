@@ -6,7 +6,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
+#include <Eina.h>
 #include <sys/stat.h>
 
 #if defined(HAVE_SYS_EPOLL_H) && defined(HAVE_SYS_TIMERFD_H)

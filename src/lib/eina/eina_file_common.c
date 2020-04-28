@@ -40,6 +40,7 @@
 #include "eina_safety_checks.h"
 #include "eina_file_common.h"
 #include "eina_xattr.h"
+#include "eina_types.h"
 
 #ifndef O_BINARY
 # define O_BINARY 0
@@ -1000,7 +1001,7 @@ eina_file_mkstemp(const char *templatename, Eina_Tmpstr **path)
    const char *XXXXXX = NULL, *sep;
    int fd, len;
 #ifndef _WIN32
-   mode_t old_umask;
+   Eina_Posix_Mode_t old_umask;
 #endif
 
    EINA_SAFETY_ON_NULL_RETURN_VAL(templatename, -1);

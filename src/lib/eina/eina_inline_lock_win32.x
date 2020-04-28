@@ -28,6 +28,7 @@
 #undef WIN32_LEAN_AND_MEAN
 
 #include "eina_time.h"
+#include "eina_types.h"
 #include "unimplemented.h"
 
 #include <errno.h>
@@ -36,7 +37,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sys/types.h>
 #include <unistd.h>
 
 #ifdef EINA_HAVE_DEBUG_THREADS

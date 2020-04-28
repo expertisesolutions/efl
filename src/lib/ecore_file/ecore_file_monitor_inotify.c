@@ -2,11 +2,11 @@
 # include <config.h>
 #endif
 
+#include <Eina.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -36,8 +36,8 @@ struct _Ecore_File_Monitor_Inotify
 };
 
 static Ecore_Fd_Handler *_fdh = NULL;
-static Ecore_File_Monitor    *_monitors = NULL;
-static pid_t             _inotify_fd_pid = -1;
+static Ecore_File_Monitor *_monitors = NULL;
+static Eina_Posix_Pid_t    _inotify_fd_pid = -1;
 
 static Eina_Bool           _ecore_file_monitor_inotify_handler(void *data, Ecore_Fd_Handler *fdh);
 static Eina_List *_ecore_file_monitor_inotify_monitor_find(int wd);

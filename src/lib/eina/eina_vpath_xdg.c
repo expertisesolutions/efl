@@ -2,7 +2,6 @@
 # include <config.h>
 #endif
 
-#include <sys/types.h>
 #ifndef _WIN32
 # include <pwd.h>
 #endif
@@ -10,6 +9,7 @@
 #include <Eina.h>
 
 #include "eina_internal.h"
+#include "eina_types.h"
 #include "eina_private.h"
 
 void

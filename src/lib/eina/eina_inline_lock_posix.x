@@ -68,7 +68,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sys/types.h>
 #include <unistd.h>
 
 #ifdef EINA_HAVE_DEBUG_THREADS
@@ -79,6 +78,7 @@ typedef void (*Eina_Lock_Bt_Func) ();
 
 #include "eina_inlist.h"
 #endif
+#include "eina_types.h"
 
 EAPI void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
 EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
@@ -133,7 +133,7 @@ struct _Eina_Condition
    Eina_Lock      *lock;      /**< The lock for this condition */
    pthread_cond_t  condition; /**< The condition variable */
 #if defined(__clockid_t_defined)
-   clockid_t       clkid;     /**< The attached clock for timedwait */
+   Eina_Posix_Clockid_t       clkid;     /**< The attached clock for timedwait */
 #endif
 };
 

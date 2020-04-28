@@ -3,10 +3,10 @@
 #endif
 
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <Eina.h>
 #include <Evas.h>
 #include <Ecore_Evas.h>
 #include <Ecore.h>

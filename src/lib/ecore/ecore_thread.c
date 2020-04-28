@@ -4,7 +4,6 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #include <Eina.h>
@@ -170,8 +169,8 @@ static Ecore_Pthread_Worker *_ecore_thread_worker_new(void);
 static PH(get_main_loop_thread) (void)
 {
    static PH(main_loop_thread);
-   static pid_t main_loop_pid;
-   pid_t pid = getpid();
+   static Eina_Posix_Pid_t main_loop_pid;
+   Eina_Posix_Pid_t pid = getpid();
 
    if (pid != main_loop_pid)
      {

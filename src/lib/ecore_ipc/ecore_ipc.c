@@ -3,13 +3,13 @@
 #endif
 
 #include <string.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 
 #ifdef HAVE_ARPA_INET_H
 # include <arpa/inet.h>
 #endif
 
+#include <Eina.h>
 #include <Ecore.h>
 #include <ecore_private.h>
 #include <Ecore_Con.h>
@@ -387,7 +387,7 @@ ecore_ipc_server_add(Ecore_Ipc_Type type, const char *name, int port, const void
    Eina_Error err;
 #ifdef EFL_NET_SERVER_UNIX_CLASS
    Eina_Bool local_system = EINA_FALSE;
-   mode_t old_mask = 0, new_mask = 0;
+   Eina_Posix_Mode_t old_mask = 0, new_mask = 0;
 #endif
 
    EINA_SAFETY_ON_NULL_RETURN_VAL(name, NULL);

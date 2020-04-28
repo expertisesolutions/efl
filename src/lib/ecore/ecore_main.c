@@ -15,7 +15,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
-#include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <Eina.h>

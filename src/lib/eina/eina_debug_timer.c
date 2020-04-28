@@ -34,12 +34,12 @@
 #ifdef HAVE_SYS_EPOLL_H
 # include <sys/epoll.h>
 #endif
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include <time.h>
 #include <fcntl.h>
 
+#include "eina_types.h"
 #include "eina_thread.h"
 #include "eina_debug.h"
 #include "eina_debug_private.h"
@@ -176,7 +176,7 @@ eina_debug_timer_add(unsigned int timeout_ms, Eina_Debug_Timer_Cb cb, void *data
    # endif
         pthread_sigmask(SIG_BLOCK, &newset, &oldset);
    #endif
-        int err = eina_thread_create(&_thread, EINA_THREAD_BACKGROUND, -1
+        nt err = eina_thread_create(&_thread, EINA_THREAD_BACKGROUND, -1
                                     , (Eina_Thread_Cb)_monitor, NULL);
    #ifndef _WIN32
         pthread_sigmask(SIG_SETMASK, &oldset, NULL);

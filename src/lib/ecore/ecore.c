@@ -5,7 +5,6 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -57,7 +56,7 @@ EAPI double _efl_startup_time = 0;
 static Eina_Bool _ecore_memory_statistic(void *data);
 static int _ecore_memory_max_total = 0;
 static int _ecore_memory_max_free = 0;
-static pid_t _ecore_memory_pid = 0;
+static Eina_Posix_Pid_t _ecore_memory_pid = 0;
 #ifdef HAVE_MALLOC_INFO
 static FILE *_ecore_memory_statistic_file = NULL;
 #endif
@@ -589,7 +588,7 @@ ecore_fork_reset(void)
         fcb->func(fcb->data);
      }
    fork_cbs_walking--;
-   
+
    EINA_LIST_FOREACH_SAFE(fork_cbs, l, ln, fcb)
      {
         if (fcb->delete_me)

@@ -17,7 +17,7 @@
 #include "ecore_private.h"
 
 #if defined (HAVE_CLOCK_GETTIME)
-static clockid_t _ecore_time_clock_id;
+static Eina_Posix_Clockid_t _ecore_time_clock_id;
 static Eina_Bool _ecore_time_got_clock_id = EINA_FALSE;
 #elif defined(__APPLE__) && defined(__MACH__)
 static double _ecore_time_clock_conversion = 1e-9;

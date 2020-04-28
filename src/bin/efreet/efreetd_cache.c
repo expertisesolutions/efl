@@ -15,7 +15,6 @@
 #include "efreet_private.h"
 #include "efreetd_cache.h"
 
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -283,7 +282,7 @@ subdir_cache_get(const struct stat *st, const char *path)
    // go through content finding directories
    it = eina_file_stat_ls(path);
    if (!it) return cd;
-   
+
    EINA_ITERATOR_FOREACH(it, info)
      {
         // if ., .. or other "hidden" dot files - ignore
@@ -298,7 +297,7 @@ subdir_cache_get(const struct stat *st, const char *path)
           }
      }
    eina_iterator_free(it);
-   
+
    // now convert our temporary list into an array of stringshare strings
    cd->dirs_count = eina_list_count(files);
    if (cd->dirs_count > 0)
