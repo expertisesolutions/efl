@@ -2,10 +2,10 @@
 # include "config.h"
 #endif
 
-#include <Eina.h>
 #include <string.h>
 #include <ctype.h>
 
+#include "eina_stdio.h"
 #include "eina_private.h"
 #include "eina_str.h"
 #include "eina_strbuf_common.h"

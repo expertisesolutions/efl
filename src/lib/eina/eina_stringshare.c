@@ -27,9 +27,9 @@
 #endif
 
 #include <stdlib.h>
-#include <Eina.h>
 #include <string.h>
 
+#include "eina_stdio.h"
 #include "eina_config.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
