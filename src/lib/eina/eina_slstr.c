@@ -214,7 +214,7 @@ eina_slstr_vasprintf_new(const char *fmt, va_list args)
    fq = _slstr_freeq_get(EINA_FALSE);
    EINA_SAFETY_ON_NULL_RETURN_VAL(fq, NULL);
 
-   r = vasprintf(&str, fmt, args);
+   r = eina_vasprintf(&str, fmt, args);
    if (r == -1) return NULL;
 
 #ifdef DEBUG

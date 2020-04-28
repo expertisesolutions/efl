@@ -2122,7 +2122,7 @@ eina_log_print_cb_journald(const Eina_Log_Domain *d,
        goto finish;
      }
 
-   r = vasprintf(&message, fmt, args);
+   r = eina_vasprintf(&message, fmt, args);
    if (r == -1)
      {
        fputs("ERR: eina_log_print_cb_journald() vasprintf failed\n", stderr);

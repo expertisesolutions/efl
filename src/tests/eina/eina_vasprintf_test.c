@@ -1,16 +1,16 @@
-#include "eina_stdio.h"
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "eina_stdio.h"
 
 int
-vasprintf_wrap(char **ret, const char *fmt, int nargs, ...)
+eina_vasprintf_wrap(char **ret, const char *fmt, int nargs, ...)
 {
    va_list ap;
    va_start(ap, nargs);
 
-   int len = vasprintf(ret, fmt, ap);
+   int len = eina_vasprintf(ret, fmt, ap);
 
    va_end(ap);
    return len;
@@ -30,7 +30,7 @@ simple_test(void)
      "\tDouble: %E\n";
 
    char* str;
-   int len = vasprintf_wrap(&str, fmt, 3, "Hello World!", 46234, 0.0096294);
+   int len = eina_vasprintf_wrap(&str, fmt, 3, "Hello World!", 46234, 0.0096294);
 
    printf("## Expecting:\n```%s```\n", expected_str);
    printf("## Returning:\n```%s```\n", str);
@@ -50,7 +50,7 @@ main(void)
 #ifdef GNU
    printf("Test using vasprintf from GNU:\n");
 #else
-   printf("Test using custom vasprintf:\n");
+   printf("Test using implementd eina_vasprintf:\n");
 #endif
 
    simple_test();

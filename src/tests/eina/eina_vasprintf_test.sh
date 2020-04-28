@@ -2,7 +2,7 @@
 
 # clean and update
 \rm -f vasprintf_test eina_stdio.[hc]
-\cp ../../../lib/eina/eina_stdio.[hc] . &&
+\cp ../../lib/eina/eina_stdio.[hc] . &&
 
 # build
 clang-cl -o eina_vasprintf_test     \

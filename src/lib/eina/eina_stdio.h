@@ -7,7 +7,11 @@
 
 #include <stdarg.h>
 
-int vasprintf(char **str, const char *fmt, va_list ap);
+int eina_vasprintf(char **str, const char *fmt, va_list ap);
+
+#else
+
+#define eina_vasprintf vasprintf
 
 #endif /* _WIN32 */
 

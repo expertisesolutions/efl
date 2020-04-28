@@ -621,7 +621,7 @@ eina_stringshare_printf(const char *fmt, ...)
      return NULL;
 
    va_start(args, fmt);
-   len = vasprintf(&tmp, fmt, args);
+   len = eina_vasprintf(&tmp, fmt, args);
    va_end(args);
 
    if (len < 1) goto on_error;
@@ -643,7 +643,7 @@ eina_stringshare_vprintf(const char *fmt, va_list args)
    if (!fmt)
      return NULL;
 
-   len = vasprintf(&tmp, fmt, args);
+   len = eina_vasprintf(&tmp, fmt, args);
 
    if (len < 1) goto on_error;
 
