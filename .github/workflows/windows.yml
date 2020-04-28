@@ -17,7 +17,8 @@ jobs:
       run: choco install python3 ninja
     - name: install meson
       run: py -3 -m pip install meson
-    - uses: openssl/openssl@OpenSSL_1_1_1g
+    - name: Download openssl source
+      run: git clone -b OpenSSL_1_1_1g https://github.com/openssl/openssl
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
