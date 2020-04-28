@@ -20,7 +20,8 @@ jobs:
     - name: download OpenSSL source
       uses: https://www.openssl.org/source/openssl-1.1.1g.tar.gz
     - uses: ilammy/msvc-dev-cmd@v1
-      arch: x64
+      with:
+        arch: x64
     - name: Test dev cmd
       run: echo "is this in the dev cmd?"
     - name: configure
