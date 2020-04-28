@@ -2,9 +2,8 @@ name: EFL on Windows
 
 on:
   push:
-    branches: [ felipealmeida-windows-ci ]
   pull_request:
-    branches: [ master ]
+    branches: [ devs/expertise/native-windows ]
 
 jobs:
   build:
@@ -17,6 +16,8 @@ jobs:
       run: choco install python3 ninja
     - name: install meson
       run: py -3 -m pip install meson
+    - name: install nasm
+      run: choco install nasm
     - name: Download openssl source
       run: git clone -b OpenSSL_1_1_1g https://github.com/openssl/openssl
     - uses: ilammy/msvc-dev-cmd@v1
