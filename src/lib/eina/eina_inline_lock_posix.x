@@ -118,17 +118,15 @@ EAPI void eina_lock_debug(const Eina_Lock *mutex);
 /** @privatesection  @{ */
 struct _Eina_Lock
 {
-#ifdef EINA_HAVE_DEBUG_THREADS
-   EINA_INLIST; /**< Keeps track of the threads waiting for the lock */
-#endif
    pthread_mutex_t   mutex; /**< The mutex that handles the locking */
 #ifdef EINA_HAVE_DEBUG_THREADS
+   EINA_INLIST; /**< Keeps track of the threads waiting for the lock */
    pthread_t         lock_thread_id; /**< The ID of the thread that currently has the lock */
    Eina_Lock_Bt_Func lock_bt[EINA_LOCK_DEBUG_BT_NUM]; /**< The function that will produce a backtrace on the thread that has the lock */
    int               lock_bt_num; /**< Number of addresses in the backtrace */
    Eina_Bool         locked : 1;  /**< Indicates locked or not locked */
    Eina_Bool         recursive : 1;  /**< Indicates recursive lock */
-#endif
+#endif /* EINA_HAVE_DEBUG_THREADS */
 };
 
 struct _Eina_Condition
