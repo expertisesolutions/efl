@@ -21,7 +21,6 @@
 # include "config.h"
 #endif
 
-#include <eina_stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,6 +50,7 @@
 #include "eina_thread.h"
 #include "eina_convert.h"
 #include "eina_strbuf.h"
+#include "eina_stdio.h"
 
 /* undefs EINA_ARG_NONULL() so NULL checks are not compiled out! */
 #include "eina_safety_checks.h"

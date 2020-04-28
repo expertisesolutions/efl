@@ -210,6 +210,7 @@
 extern "C" {
 #endif
 
+#include <eina_stdio.h>
 #include <eina_config.h>
 #include <eina_types.h>
 #include <eina_alloca.h>

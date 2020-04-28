@@ -20,7 +20,6 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
 #include <time.h>
 
 #ifdef EFL_HAVE_THREADS
@@ -40,6 +39,7 @@
 #include <mcheck.h>
 #endif
 
+#include "eina_stdio.h"
 #include "eina_lock.h"
 #include "eina_thread.h"
 #include "eina_config.h"
