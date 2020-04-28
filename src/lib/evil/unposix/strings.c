@@ -1,6 +1,6 @@
 #include "strings.h"
 
-inline int
+int
 ffs(int i)
 {
    for (int j = 0; j < sizeof(i)*8; j++)
