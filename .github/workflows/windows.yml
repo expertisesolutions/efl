@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install nasm
-      run: choco install -d -v --ia "/D=C:\Nasm" nasm
+      run: choco install nasm
     - name: test nasm
       run: dir c:\
     - name: test nasm0
@@ -33,7 +33,15 @@ jobs:
     - name: test nasm7
       run: dir C:\ProgramData\chocolatey\lib\nasm\tools
     - name: test nasm8
-      run: C:\Nasm\nasm -v
+      run: dir C:\Program Files (x86)
+    - name: test nasm9
+      run: dir C:\Program Files\
+    - name: test nasm11
+      run: dir C:\Program Files\Nasm
+    - name: test nasm10
+      run: dir C:\Program Files (x86)\Nasm
+    - name: test nasm11
+      run: C:\Program Files\Nasm\nasm -v
     - name: install ninja
       run: choco install ninja
     - name: install meson
