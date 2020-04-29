@@ -1,6 +1,8 @@
 @echo off
 setlocal EnableDelayedExpansion
 
+@echo - Reading OpenSSL: %OPENSSL_DIR%
+
 if "%~1"=="--verbose" (
     echo Verbose ON.
     set VERBOSE=ON
