@@ -544,7 +544,6 @@ err:
 // way. this is an alternative to using external debuggers so we can get
 // users or developers to get useful information about an app at all times
 
-#ifndef _WIN32
 static void *
 _monitor(void *_data)
 {
@@ -554,7 +553,7 @@ _monitor(void *_data)
    _opcodes_register_all(session);
 
    // set a name for this thread for system debugging
-#ifdef EINA_HAVE_PTHREAD_SETNAME || EINA_HAVE_WIN32_THREAD_SETNAME
+#ifdef EINA_HAVE_PTHREAD_SETNAME | EINA_HAVE_WIN32_THREAD_SETNAME
    eina_thread_name_set(eina_thread_self(), "Edbg-mon");
 #endif
    
@@ -591,43 +590,20 @@ _monitor(void *_data)
      }
    return NULL;
 }
-#endif
 
 // start up the debug monitor if we haven't already
 static void
 _thread_start(Eina_Debug_Session *session)
 {
-#ifndef _WIN32
-   pthread_t monitor_thread;
-   int err;
-   sigset_t oldset, newset;
+   Eina_Thread monitor_thread;
 
-   sigemptyset(&newset);
-   sigaddset(&newset, SIGPIPE);
-   sigaddset(&newset, SIGALRM);
-   sigaddset(&newset, SIGCHLD);
-   sigaddset(&newset, SIGUSR1);
-   sigaddset(&newset, SIGUSR2);
-   sigaddset(&newset, SIGHUP);
-   sigaddset(&newset, SIGQUIT);
-   sigaddset(&newset, SIGINT);
-   sigaddset(&newset, SIGTERM);
-#ifdef SIGPWR
-   sigaddset(&newset, SIGPWR);
-#endif
-   pthread_sigmask(SIG_BLOCK, &newset, &oldset);
+   Eina_Bool err = eina_thread_create(&monitor_thread,EINA_THREAD_BACKGROUND,-1,(Eina_Thread_Cb)_monitor,session);
 
-   err = pthread_create(&monitor_thread, NULL, _monitor, session);
-
-   pthread_sigmask(SIG_SETMASK, &oldset, NULL);
-   if (err != 0)
+   if (!err)
      {
         e_debug("EINA DEBUG ERROR: Can't create monitor debug thread!");
         abort();
      }
-#else
-   (void)session;
-#endif
 }
 
 /*
