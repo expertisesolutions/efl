@@ -13,10 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Test env
+      run: echo $OPENSSL_DIR
       env:
         OPENSSL_DIR: $GITHUB_WORKSPACE\openssl
-    - name: Print env
-      run: echo $OPENSSL_DIR
     - name: Install LLVM
       run: choco install llvm
     - name: Add clang-cl to PATH
