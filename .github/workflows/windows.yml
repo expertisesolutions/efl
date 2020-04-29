@@ -40,6 +40,8 @@ jobs:
         cache-name: cache-openssl-compilation
       with:
         path: openssl
+        key: openssl-1_1_1g
+        restore-keys: openssl-1_1_1g
     - name: Download openssl source
       run: git clone -b OpenSSL_1_1_1g https://github.com/openssl/openssl
     - uses: ilammy/msvc-dev-cmd@v1
