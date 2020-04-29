@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install nasm
-      run: choco --debug --nocolor install nasm
+      run: choco -d install nasm
     - name: test nasm
       run: nasm -v
     - name: install python3 and ninja
