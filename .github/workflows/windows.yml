@@ -15,6 +15,14 @@ jobs:
     - name: install nasm
       run: choco install -d -v --ia "/D=C:\Nasm" nasm
     - name: test nasm
+      run: dir c:\
+      run: dir
+      run: pwd
+      run: dir C:\ProgramData
+      run: dir C:\ProgramData\Chocolatey
+      run: dir C:\ProgramData\Chocolatey
+      run: dir C:\ProgramData\chocolatey\lib
+      run: dir C:\ProgramData\chocolatey\lib\nasm
       run: C:\Nasm\nasm -v
     - name: install ninja
       run: choco install ninja
