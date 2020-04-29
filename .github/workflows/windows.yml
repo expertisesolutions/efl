@@ -22,7 +22,7 @@ jobs:
         key: cache-choco-downloads-v1
         restore-keys: cache-choco-downloads-v1
     - name: Cache Hit
-      if: steps.cache-choco.outputs.cache-hit != 'true'
+      if: steps.cache-choco.outputs.cache-hit == 'true'
       run: echo "Cache HIT"
     - name: Install LLVM
       run: choco install -c choco-cache llvm
