@@ -37,6 +37,7 @@ jobs:
     - name: test nasm
       run: nasm.exe -v
     - name: install ninja
+      # unexplicably, installation returns error code 1 if a cache location is used
       run: choco install ninja
     - name: test ninja
       run: ninja --version
@@ -75,5 +76,5 @@ jobs:
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
-#    - name: Build
-#      run: .\build.bat
+    - name: Build
+      run: .\build.bat
