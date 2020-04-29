@@ -36,7 +36,7 @@ jobs:
       run: dir "C:\Program Files"
     - name: test nasm11
       run: dir "C:\Program Files\Nasm"
-    - name: test nasm11
+    - name: test nasm12
       run: "C:\Program Files\Nasm\nasm" -v
     - name: install ninja
       run: choco install ninja
