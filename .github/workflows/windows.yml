@@ -12,20 +12,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Cache choco downloads
+      uses: actions/cache@v1
+      env:
+        cache-name: cache-choco-downloads
+      with:
+        path: choco-cache
+        key: cache-choco-downloads
+        restore-keys: cache-choco-downloads
     - name: Install LLVM
-      run: choco install llvm
+      run: choco install -c choco-cache llvm
     - name: Add clang-cl to PATH
       run: echo "::add-path::C:\Program Files\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: install nasm
-      run: choco install nasm
+      run: choco install -c choco-cache nasm
     - name: Add Nasm to PATH
       run: echo "::add-path::C:\Program Files\Nasm"
     - name: test nasm
       run: nasm.exe -v
     - name: install ninja
-      run: choco install ninja
+      run: choco install -c choco-cache ninja
     - name: test ninja
       run: ninja --version
     - name: install meson
@@ -35,6 +43,7 @@ jobs:
     - name: test meson
       run: meson -v
     - name: Cache OpenSSL compilation
+      id: cache-openssl
       uses: actions/cache@v1
       env:
         cache-name: cache-openssl-compilation
@@ -43,6 +52,7 @@ jobs:
         key: openssl-1_1_1g
         restore-keys: openssl-1_1_1g
     - name: Download openssl source
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: git clone -b OpenSSL_1_1_1g https://github.com/openssl/openssl
     - uses: ilammy/msvc-dev-cmd@v1
       with:
@@ -50,6 +60,7 @@ jobs:
     - name: Show from where clang-cl
       run: where clang-cl
     - name: Configure OpenSSL
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: perl Configure VC-WIN64A
       working-directory: .\openssl
     - name: Compile OpenSSL
