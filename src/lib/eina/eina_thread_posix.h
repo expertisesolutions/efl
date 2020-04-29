@@ -24,7 +24,6 @@
 #endif
 
 #include "eina_thread.h"
-#include <pthread.h>
 #include "eina_safety_checks.h"
 #include <signal.h>
 

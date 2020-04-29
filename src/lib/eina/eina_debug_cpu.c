@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
-#include <pthread.h>
+#include <eina_thread.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>

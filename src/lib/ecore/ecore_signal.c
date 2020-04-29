@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <pthread.h>
+#include <eina_thread.h>
 
 #include "Ecore.h"
 #include "ecore_private.h"

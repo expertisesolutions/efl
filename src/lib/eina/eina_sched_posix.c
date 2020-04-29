@@ -21,7 +21,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <errno.h>
-#include <pthread.h>
+
 
 EAPI void
 eina_sched_prio_drop(void)

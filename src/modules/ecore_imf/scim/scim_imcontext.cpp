@@ -13,7 +13,7 @@
 #include <sys/time.h>
 #include <sys/times.h>
 #include <unistd.h>
-#include <pthread.h>
+#include <eina_thread.h>
 #include <Ecore_Evas.h>
 #include <Ecore_X.h>
 #include <Ecore.h>
