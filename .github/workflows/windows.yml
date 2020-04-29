@@ -15,7 +15,7 @@ jobs:
     - name: Test env
       run: .\configure.bat
       env:
-        OPENSSL_DIR: $GITHUB_WORKSPACE\openssl
+        OPENSSL_DIR: ${{ github.workspace }}\openssl
     - name: Install LLVM
       run: choco install llvm
     - name: Add clang-cl to PATH
