@@ -13,9 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Search clang-cl
-      run: dir "C:\Program Files (x86)\Microsoft Visual Studio"
+      run: dir "C:\Program Files (x86)\Microsoft Visual Studio\2019"
     - name: command that will fail
-      run: echo "::error ::Something went wrong"
+      run: echo "::error Something went wrong"
     - name: install nasm
       run: choco install nasm
     - name: Add Nasm to PATH
