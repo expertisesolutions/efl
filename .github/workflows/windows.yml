@@ -35,8 +35,8 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-#    - name: Add clang-cl to PATH
-#      run: echo "::add-path::C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin"
+   - name: Add clang-cl to PATH
+     run: echo "::add-path::C:\Program Files (x86)\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: Show from where clang-cl
