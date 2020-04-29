@@ -24,7 +24,17 @@ jobs:
     - name: Cache Hit
       if: steps.cache-choco.outputs.cache-hit == 'true'
       run: echo "Cache HIT"
+    - name: Cache LLVM install
+      uses: actions/cache@v1
+      id: cache-llvm
+      env:
+        cache-name: cache-llvm
+      with:
+        path: "C:\Program Files\LLVM"
+        key: cache-llvm-v10.0.0.0-1
+        restore-keys: cache-llvm-v10.0.0.0-1
     - name: Install LLVM
+      if: steps.cache-llvm.outputs.cache-hit != 'true'
       run: choco install -c choco-cache llvm
     - name: Add clang-cl to PATH
       run: echo "::add-path::C:\Program Files\LLVM\bin"
@@ -76,5 +86,5 @@ jobs:
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
-    - name: Build
-      run: .\build.bat
+#    - name: Build
+#      run: .\build.bat
