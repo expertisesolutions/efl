@@ -12,10 +12,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Search clang-cl
-      run: dir "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin\clang-cl.exe"
-    - name: command that will fail
-      run: echo "::error Something went wrong"
     - name: install nasm
       run: choco install nasm
     - name: Add Nasm to PATH
@@ -37,6 +33,8 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
+    - name: Add clang-cl to PATH
+      run: echo "::add-path::C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: Configure OpenSSL
