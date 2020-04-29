@@ -20,6 +20,8 @@ jobs:
       run: nasm.exe -v
     - name: install ninja
       run: choco install ninja
+    - name: test ninja
+      run: ninja
     - name: install meson
       run: py -3 -m pip install meson
     - name: add meson to path
@@ -31,6 +33,8 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
+    - name: Search clang-cl
+      run: clang-cl -v
     - name: Configure OpenSSL
       run: perl Configure VC-WIN64A
       working-directory: .\openssl
