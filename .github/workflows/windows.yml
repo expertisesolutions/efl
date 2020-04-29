@@ -17,7 +17,7 @@ jobs:
     - name: Add Nasm to PATH
       run: echo "::add-path::C:\Program Files\Nasm"
     - name: test nasm
-      run: nasm.exe
+      run: nasm.exe -v
     - name: install ninja
       run: choco install ninja
     - name: install meson
