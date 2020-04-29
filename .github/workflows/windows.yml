@@ -22,8 +22,8 @@ jobs:
         restore-keys: cache-choco-downloads
     - name: Install LLVM
       run: choco install -c choco-cache llvm
-    - name: Add clang-cl to PATH
-      run: echo "::add-path::C:\Program Files\LLVM\bin"
+#    - name: Add clang-cl to PATH
+#      run: echo "::add-path::C:\Program Files\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: install nasm
@@ -57,8 +57,8 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-    - name: Show from where clang-cl
-      run: where clang-cl
+#    - name: Show from where clang-cl
+#      run: where clang-cl
     - name: Configure OpenSSL
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: perl Configure VC-WIN64A

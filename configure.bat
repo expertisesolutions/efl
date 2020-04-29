@@ -1,8 +1,6 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-@echo - Reading OpenSSL: %OPENSSL_DIR%
-
 if "%~1"=="--verbose" (
     echo Verbose ON.
     set VERBOSE=ON
@@ -118,7 +116,7 @@ exit /B 0
         call %vcvars64%
     )
     meson build %MESONFLAGS:            = %
-exit /B 0
+exit /B %ERRORLEVEL%
 
 :save_old_vars
     @echo ------------------------------
