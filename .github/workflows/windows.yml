@@ -17,7 +17,7 @@ jobs:
     - name: test nasm
       run: nasm.exe
       env:
-        PATH: %PATH;"C:\Program Files\Nasm"
+        PATH: %PATH;\"C:\Program Files\Nasm\"
     - name: install ninja
       run: choco install ninja
     - name: install meson
