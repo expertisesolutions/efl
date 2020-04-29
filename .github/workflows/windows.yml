@@ -13,9 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install nasm
-      run: choco install -d -v --ia "'/D=.\Nasm'" nasm
+      run: choco install -d -v --ia "/D=C:\Nasm" nasm
     - name: test nasm
-      run: .\Nasm\nasm -v
+      run: C:\Nasm\nasm -v
     - name: install ninja
       run: choco install ninja
     - name: install meson
