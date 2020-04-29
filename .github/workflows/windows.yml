@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install nasm
-      run: choco install --debug --verbose nasm
+      run: choco install --ia "INSTALLDIR="".\Nasm" --ia "'/D=.\Nasm'" nasm
     - name: test nasm
       run: nasm -v
     - name: install python3 and ninja
