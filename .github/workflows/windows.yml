@@ -15,7 +15,7 @@ jobs:
     - name: Install LLVM
       run: choco install llvm
     - name: Add clang-cl to PATH
-      run: echo "::add-path::C:\Program Files (x86)\LLVM\bin"
+      run: echo "::add-path::C:\Program Files\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: install nasm
