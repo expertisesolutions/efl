@@ -13,7 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Search clang-cl
-      run: echo path is %PATH
+      run: echo path is $PATH
+    - name:
+      run: command that will fail
     - name: install nasm
       run: choco install nasm
     - name: Add Nasm to PATH
