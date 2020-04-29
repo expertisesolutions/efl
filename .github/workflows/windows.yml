@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Search clang-cl
-      run: dir "C:\Program Files (x86)"
+      run: dir "C:\Program Files (x86)\Microsoft Visual Studio"
     - name: command that will fail
       run: echo "::error ::Something went wrong"
     - name: install nasm
