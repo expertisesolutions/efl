@@ -33,7 +33,7 @@ jobs:
     - name: test nasm
       run: nasm.exe -v
     - name: install ninja
-      run: choco install -c choco-cache ninja
+      run: choco install ninja
     - name: test ninja
       run: ninja --version
     - name: install meson
