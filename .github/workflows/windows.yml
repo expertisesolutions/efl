@@ -26,10 +26,10 @@ jobs:
       run: echo "Cache HIT"
     - name: Install LLVM
       run: choco install -c choco-cache llvm
-#    - name: Add clang-cl to PATH
-#      run: echo "::add-path::C:\Program Files\LLVM\bin"
-#   - name: Search clang-cl
-#     run: clang-cl -v
+    - name: Add clang-cl to PATH
+      run: echo "::add-path::C:\Program Files\LLVM\bin"
+   - name: Search clang-cl
+     run: clang-cl -v
     - name: install nasm
       run: choco install -c choco-cache nasm
     - name: Add Nasm to PATH
@@ -61,13 +61,14 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-#    - name: Show from where clang-cl
-#      run: where clang-cl
+    - name: Show from where clang-cl
+      run: where clang-cl
     - name: Configure OpenSSL
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: perl Configure VC-WIN64A
       working-directory: .\openssl
     - name: Compile OpenSSL
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: nmake
       working-directory: .\openssl
     - name: configure
