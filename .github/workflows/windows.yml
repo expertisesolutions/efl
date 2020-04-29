@@ -28,8 +28,8 @@ jobs:
       run: choco install -c choco-cache llvm
     - name: Add clang-cl to PATH
       run: echo "::add-path::C:\Program Files\LLVM\bin"
-   - name: Search clang-cl
-     run: clang-cl -v
+    - name: Search clang-cl
+      run: clang-cl -v
     - name: install nasm
       run: choco install -c choco-cache nasm
     - name: Add Nasm to PATH
