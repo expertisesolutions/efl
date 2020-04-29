@@ -12,10 +12,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Test env
-      run: .\configure.bat
-      env:
-        OPENSSL_DIR: ${{ github.workspace }}\openssl
     - name: Install LLVM
       run: choco install llvm
     - name: Add clang-cl to PATH
@@ -54,6 +50,6 @@ jobs:
     - name: configure
       run: .\configure.bat
       env:
-        OPENSSL_DIR: $GITHUB_WORKSPACE\openssl
+        OPENSSL_DIR: ${{ github.workspace }}\openssl
     - name: Build
       run: .\build.bat
