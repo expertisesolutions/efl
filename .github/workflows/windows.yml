@@ -14,10 +14,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: install nasm
       run: choco install nasm
+    - name: Add Nasm to PATH
+      run: echo "::add-path::C:\Program Files\Nasm"
     - name: test nasm
       run: nasm.exe
-      env:
-        PATH: %PATH;\"C:\Program Files\Nasm\"
     - name: install ninja
       run: choco install ninja
     - name: install meson
