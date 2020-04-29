@@ -13,8 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Search clang-cl
-      run: echo path is $PATH
-      shell: dir "C:\Program Files"
+      run: dir "C:\Program Files"
     - name: command that will fail
       run: echo "::error ::Something went wrong"
     - name: install nasm
