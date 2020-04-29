@@ -14,9 +14,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Search clang-cl
       run: echo path is $PATH
-      shell: cmd
+      shell: dir "C:\Program Files"
     - name: command that will fail
-      run: command that will fail
+      run: echo "::error ::Something went wrong"
     - name: install nasm
       run: choco install nasm
     - name: Add Nasm to PATH
