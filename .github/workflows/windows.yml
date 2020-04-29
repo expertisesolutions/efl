@@ -21,7 +21,7 @@ jobs:
     - name: install ninja
       run: choco install ninja
     - name: test ninja
-      run: ninja
+      run: ninja --version
     - name: install meson
       run: py -3 -m pip install meson
     - name: add meson to path
