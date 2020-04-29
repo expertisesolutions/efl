@@ -15,29 +15,9 @@ jobs:
     - name: install nasm
       run: choco install nasm
     - name: test nasm
-      run: dir c:\
-    - name: test nasm0
-      run: dir
-    - name: test nasm1
-      run: pwd
-    - name: test nasm2
-      run: dir C:\ProgramData
-    - name: test nasm3
-      run: dir C:\ProgramData\Chocolatey
-    - name: test nasm4
-      run: dir C:\ProgramData\Chocolatey\bin
-    - name: test nasm5
-      run: dir C:\ProgramData\chocolatey\lib
-    - name: test nasm6
-      run: dir C:\ProgramData\chocolatey\lib\nasm
-    - name: test nasm7
-      run: dir C:\ProgramData\chocolatey\lib\nasm\tools
-    - name: test nasm9
-      run: dir "C:\Program Files"
-    - name: test nasm11
-      run: dir "C:\Program Files\Nasm"
-    - name: test nasm12
-      run: cmd /c "C:\Program Files\Nasm\nasm.exe" -v
+      run: nasm.exe
+      env:
+        PATH: %PATH;"C:\Program Files\Nasm"
     - name: install ninja
       run: choco install ninja
     - name: install meson
