@@ -13,11 +13,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install nasm
-      run: choco install --ia "INSTALLDIR="".\Nasm" --ia "'/D=.\Nasm'" nasm
+      run: choco install --ia "INSTALLDIR="".\Nasm" nasm
     - name: test nasm
-      run: nasm -v
-    - name: install python3 and ninja
-      run: choco install python3 ninja
+      run: .\Nasm\nasm -v
+    - name: install ninja
+      run: choco install ninja
     - name: install meson
       run: py -3 -m pip install meson
     - name: Download openssl source
