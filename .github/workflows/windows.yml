@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install LLVM
-      run: choco -c choco-cache install llvm
+      run: choco install llvm
     - name: Add clang-cl to PATH
       run: echo "::add-path::C:\Program Files\LLVM\bin"
     - name: Search clang-cl
