@@ -37,7 +37,7 @@ jobs:
     - name: test nasm11
       run: dir "C:\Program Files\Nasm"
     - name: test nasm12
-      run: "C:\Program Files\Nasm\nasm" -v
+      run: cmd /c "C:\Program Files\Nasm\nasm.exe" -v
     - name: install ninja
       run: choco install ninja
     - name: install meson
