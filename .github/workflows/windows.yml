@@ -33,11 +33,11 @@ jobs:
     - name: test nasm7
       run: dir C:\ProgramData\chocolatey\lib\nasm\tools
     - name: test nasm9
-      run: dir C:\Program Files\
+      run: dir "C:\Program Files"
     - name: test nasm11
-      run: dir C:\Program Files\Nasm
+      run: dir "C:\Program Files\Nasm"
     - name: test nasm11
-      run: C:\Program Files\Nasm\nasm -v
+      run: "C:\Program Files\Nasm\nasm" -v
     - name: install ninja
       run: choco install ninja
     - name: install meson
