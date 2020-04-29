@@ -25,12 +25,14 @@ jobs:
     - name: test nasm3
       run: dir C:\ProgramData\Chocolatey
     - name: test nasm4
-      run: dir C:\ProgramData\Chocolatey
+      run: dir C:\ProgramData\Chocolatey\bin
     - name: test nasm5
       run: dir C:\ProgramData\chocolatey\lib
     - name: test nasm6
       run: dir C:\ProgramData\chocolatey\lib\nasm
     - name: test nasm7
+      run: dir C:\ProgramData\chocolatey\lib\nasm\tools
+    - name: test nasm8
       run: C:\Nasm\nasm -v
     - name: install ninja
       run: choco install ninja
