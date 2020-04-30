@@ -30,7 +30,7 @@ jobs:
       env:
         cache-name: cache-llvm
       with:
-        path: "C:\Program Files\LLVM"
+        path: "C:\\Program Files\\LLVM"
         key: cache-llvm-v10.0.0.0-1
         restore-keys: cache-llvm-v10.0.0.0-1
     - name: Install LLVM
@@ -86,5 +86,5 @@ jobs:
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
-    - name: Build
-      run: .\build.bat
+#    - name: Build
+#      run: .\build.bat
