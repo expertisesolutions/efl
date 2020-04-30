@@ -14,16 +14,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Cache choco downloads
       uses: actions/cache@v1
-      id: cache-choco
+      id: cache-nasm
       env:
-        cache-name: cache-choco-downloads
+        cache-name: cache-nasm
       with:
-        path: choco-cache
-        key: cache-choco-downloads-v1
-        restore-keys: cache-choco-downloads-v1
-    - name: Cache Hit
-      if: steps.cache-choco.outputs.cache-hit == 'true'
-      run: echo "Cache HIT"
+        path: "C:\\Program Files\\Nasm"
+        key: cache-nasm-v1
+        restore-keys: cache-nasm-v1
     - name: Cache LLVM install
       uses: actions/cache@v1
       id: cache-llvm
@@ -35,17 +32,18 @@ jobs:
         restore-keys: cache-llvm-v10.0.0.0-1
     - name: Install LLVM
       if: steps.cache-llvm.outputs.cache-hit != 'true'
-      run: choco install -c choco-cache llvm
+      run: choco install llvm
     - name: Add clang-cl to PATH
       run: echo "::add-path::C:\Program Files\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: install nasm
-      run: choco install -c choco-cache nasm
+      if: steps.cache-nasm.outputs.cache-hit != 'true'
+      run: choco install nasm
     - name: Add Nasm to PATH
       run: echo "::add-path::C:\Program Files\Nasm"
-    - name: test nasm
-      run: nasm.exe -v
+#    - name: test nasm
+#      run: nasm.exe -v
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: choco install ninja
@@ -86,5 +84,5 @@ jobs:
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
-    - name: Build
-      run: .\build.bat
+#    - name: Build
+#      run: .\build.bat
