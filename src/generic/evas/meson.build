@@ -13,6 +13,7 @@ inc_dir = config_dir
 common_deps = generic_deps
 if sys_windows
   inc_dir = [inc_dir, zlib_include_dir]
+  common_deps = [common_deps, evil]
 else
   common_deps = [generic_deps, rt]
 endif
@@ -40,7 +41,7 @@ foreach loader : generic_loaders
         generic_src,
         include_directories : config_dir + [include_directories('common')],
         link_with : common,
-        dependencies: [eina, generic_deps, evil_unposix],
+        dependencies: [eina, generic_deps],
         install_dir : join_paths(dir_lib, 'evas', 'utils'),
         install : true,
     )

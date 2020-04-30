@@ -25,7 +25,6 @@
 
 
 #include "eina_thread.h"
-#include "unimplemented.h"
 #include <errno.h>
 #ifndef WIN32_LEAN_AND_MEAN
 # define WIN32_LEAN_AND_MEAN
@@ -43,4 +42,4 @@
  */
 typedef HANDLE Eina_Thread;
 
-#endif 
+#endif

@@ -1,6 +1,7 @@
 #ifndef __EVIL_LOCALE_H__
 #define __EVIL_LOCALE_H__
 
+typedef _locale_t locale_t;
 
 /**
  * @file evil_locale.h

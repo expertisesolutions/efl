@@ -1,8 +1,6 @@
 #ifndef __EVIL_STDLIB_H__
 #define __EVIL_STDLIB_H__
 
-#include <evil_private.h>
-
 /**
  * @file evil_stdlib.h
  * @brief The file that provides functions ported from Unix in stdlib.h.
@@ -120,6 +118,24 @@ EAPI char *realpath(const char *file_name, char *resolved_name);
 # define HAVE_REALPATH 1
 #endif
 
+
+EVIL_API int mkstemp(char* template)
+{
+    #warning mkstemp is not implemented
+    return 0;
+}
+
+EVIL_API int mkostemp(char* template, int flags)
+{
+    #warning mkostemp is not implemented
+    return 0;
+}
+
+EVIL_API int mkostemps(char* template, int suffixlen, int flags)
+{
+    #warning mkostemps is not implemented
+    return 0;
+}
 
 /**
  * @}

@@ -1,7 +1,10 @@
 #ifndef __EVIL_UNISTD_H__
 #define __EVIL_UNISTD_H__
 
-#include "evil_eapi.h"
+#define F_OK 0
+#define W_OK 2
+#define R_OK 4
+#define X_OK 0
 
 /**
  * @file evil_unistd.h

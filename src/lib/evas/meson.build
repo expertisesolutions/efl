@@ -228,7 +228,7 @@ if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
       evas_include_directories +
       [vg_common_inc_dir],
     c_args: native_arch_opt_c_args,
-    dependencies: [eina, eo, ector, emile, evas_deps, m, evil_unposix],
+    dependencies: [eina, eo, ector, emile, evas_deps, m],
   )
   evas_link += [ evas_opt ]
 endif
@@ -299,7 +299,7 @@ endforeach
 evas_lib = library('evas',
     include_directories: evas_include_directories + [vg_common_inc_dir],
     sources : [evas_src, pub_eo_file_target, priv_eo_file_target],
-    dependencies: [evas_deps, m, draw, valgrind, libunibreak, evas_static_list, evil_unposix],
+    dependencies: [evas_deps, m, draw, valgrind, libunibreak, evas_static_list],
     link_with: evas_link,
     install: true,
     c_args : '-DPACKAGE_DATA_DIR="'+join_paths(dir_data, 'evas')+'"',
@@ -309,13 +309,13 @@ evas_lib = library('evas',
 evas = declare_dependency(
    link_with : [evas_lib],
    sources: pub_eo_file_target,
-   dependencies : [m] + evas_pub_deps + evas_deps + [evil_unposix],
+   dependencies : [m] + evas_pub_deps + evas_deps,
    include_directories: evas_include_directories + [vg_common_inc_dir] + [include_directories(join_paths('..', '..', 'modules', 'evas', 'engines', 'buffer'))],
 )
 
 evas_bin = declare_dependency(
    link_with : [evas_lib],
-   dependencies : [eina, ecore, ector, emile, lua, evil_unposix],
+   dependencies : [eina, ecore, ector, emile, lua],
    include_directories : evas_include_directories
 )
 

@@ -4,18 +4,11 @@ if sys_windows
   evil_unposix_src = []
 
   evil_unposix_header_src = [
-    'fnmatch.h',
+    'fnmatch.h', # Removed by 36
     'libgen.h',
-    'limits.h',
-    'locale.h',
-    'math.h',
     'pthread.h',
-    'semaphore.h',
-    'stdlib.h',
-    'string.h',
-    'strings.h',
-    'unimplemented.h',
-    'unistd.h',
+    'semaphore.h', # Removed by #34
+    'strings.h', # Removed by #42
   ]
 
   subdir('sys')

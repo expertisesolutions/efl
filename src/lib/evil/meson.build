@@ -1,6 +1,4 @@
 if target_machine.system() == 'windows'
-  subdir('unposix')
-
   evil_src = [
     'evil_dlfcn.c',
     'evil_fcntl.c',
@@ -15,7 +13,6 @@ if target_machine.system() == 'windows'
     'evil_unistd.c',
     'evil_util.c',
     'evil_private.h',
-    'pcre/regex.h',
   ]
 
   psapi = cc.find_library('psapi')
@@ -24,8 +21,8 @@ if target_machine.system() == 'windows'
   secur32 = cc.find_library('secur32')
   uuid = cc.find_library('uuid')
 
-  evil_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, evil_unposix]
-  evil_pub_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, evil_unposix]
+  evil_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep]
+  evil_pub_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep]
 
   evil_lib = library('evil', evil_src,
     dependencies : evil_deps,
@@ -41,7 +38,6 @@ if target_machine.system() == 'windows'
   )
 else
   evil = declare_dependency()
-  evil_unposix = declare_dependency()
 endif
 
 automatic_pkgfile = false
