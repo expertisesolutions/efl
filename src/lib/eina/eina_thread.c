@@ -40,19 +40,14 @@
 #endif
 # include <string.h>
 
-EAPI const void *EINA_THREAD_JOIN_CANCELED = EINA_THREAD_CANCELED;
+const void *EINA_THREAD_JOIN_CANCELED = EINA_THREAD_CANCELED;
 
-EAPI Eina_Thread
+Eina_Thread
 eina_thread_self(void)
 {
    return _eina_thread_self();
 }
 
-EAPI Eina_Bool
-eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
-{
-   return _eina_thread_equal(t1, t2);
-}
 static void *
 _eina_internal_call(void *context)
 {
@@ -76,12 +71,6 @@ _eina_internal_call(void *context)
    EINA_THREAD_CLEANUP_POP(EINA_TRUE);
 
    return r;
-}
-
-Eina_Thread
-eina_thread_self(void)
-{
-   return _eina_thread_self();
 }
 
 Eina_Bool
@@ -174,8 +163,6 @@ eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb clea
    eina_thread_cancellable_set(old, NULL);
    return ret;
 }
-
-const void *EINA_THREAD_JOIN_CANCELED = PTHREAD_CANCELED;
 
 Eina_Bool
 eina_thread_init(void)

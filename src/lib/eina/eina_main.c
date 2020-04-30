@@ -100,7 +100,7 @@ Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
 unsigned int eina_seed = 0;
 
 #ifdef EFL_HAVE_THREADS
-EAPI Eina_Thread _eina_main_loop;
+Eina_Thread _eina_main_loop;
 #endif
 
 #ifdef MT
