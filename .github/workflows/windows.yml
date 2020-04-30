@@ -88,3 +88,5 @@ jobs:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
 #    - name: Build
 #      run: .\build.bat
+    - name: Build
+        run: echo "should build" 
