@@ -389,7 +389,8 @@ if sys_windows
   eina_lib_deps = [execinfo, iconv, eina_deps, thread_dep, eina_mem_pools, evil]
 else
   eina_lib_deps = [m, rt, dl, execinfo, iconv, eina_deps, thread_dep
-                  , eina_mem_pools, evil]
+  #                  , eina_mem_pools, evil]
+  ]
 endif
 
 eina_lib = library('eina', sources,
