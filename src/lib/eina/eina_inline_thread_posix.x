@@ -28,7 +28,7 @@ _eina_thread_join(Eina_Thread t)
    return NULL;
 }
 
-static inline Eina_Bool 
+static inline Eina_Bool
 _eina_thread_name_set(Eina_Thread thread, char *buf)
 {
 #ifndef __linux__
@@ -105,15 +105,15 @@ _eina_thread_self(void)
 }
 
 static inline void
-_eina_thread_setcanceltype(int type, int *oldtype)
+_eina_thread_setcanceltype(EINA_UNUSED int type, int *oldtype)
 {
-   pthread_setcanceltype(EINA_THREAD_CANCEL_DEFERRED, &oldtype);
+   pthread_setcanceltype(EINA_THREAD_CANCEL_DEFERRED, oldtype);
 }
 
 static inline int
 _eina_thread_setcancelstate(int type, int *oldtype)
 {
-   return pthread_setcancelstate(type, &oldtype);
+   return pthread_setcancelstate(type, oldtype);
 }
 
 static inline Eina_Bool

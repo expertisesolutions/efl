@@ -94,7 +94,7 @@ _monitor(void *_data EINA_UNUSED)
    event.events = EPOLLIN;
    ret = epoll_ctl(epfd, EPOLL_CTL_ADD, event.data.fd, &event);
    if (ret) perror("epoll_ctl/add");
-# ifdef EINA_HAVE_PTHREAD_SETNAME || EINA_HAVE_WIN32_THREAD_SETNAME
+# if (defined(EINA_HAVE_PTHREAD_SETNAME) || defined(EINA_HAVE_WIN32_THREAD_SETNAME))
    eina_thread_name_set(eina_thread_self(), "Edbg-tim");
 # endif
 
@@ -174,8 +174,9 @@ eina_debug_timer_add(unsigned int timeout_ms, Eina_Debug_Timer_Cb cb, void *data
         sigaddset(&newset, SIGPWR);
    # endif
         pthread_sigmask(SIG_BLOCK, &newset, &oldset);
-   #endif       
-        int err = eina_thread_create(&_thread, EINA_THREAD_BACKGROUND, NULL,(Eina_Thread_Cb)_monitor, NULL);
+   #endif
+        int err = eina_thread_create(&_thread, EINA_THREAD_BACKGROUND, -1
+                                    , (Eina_Thread_Cb)_monitor, NULL);
    #ifndef _WIN32
         pthread_sigmask(SIG_SETMASK, &oldset, NULL);
    #endif
