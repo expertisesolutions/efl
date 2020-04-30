@@ -21,9 +21,8 @@
 # include "config.h"
 #endif
 
-#include <strings.h>
 #include <stdlib.h>
-#include <string.h>
+#include "evil_string.h"
 #include <ctype.h>
 
 #include "eina_config.h"

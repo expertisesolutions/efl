@@ -11,6 +11,7 @@ if target_machine.system() == 'windows'
     'evil_stdio.c',
     'evil_stdlib.c',
     'evil_string.c',
+    'evil_strings.c',
     'evil_time.c',
     'evil_unistd.c',
     'evil_util.c',

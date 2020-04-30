@@ -6,7 +6,7 @@
 #include <time.h>
 
 #include "eina_types.h"
-
+#include <evil_string.h>
 /**
  * @page tutorial_eina_string Eina String example
  * @dontinclude eina_str_01.c

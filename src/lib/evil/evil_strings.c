@@ -1,4 +1,4 @@
-#include "strings.h"
+#include "evil_strings.h"
 
 int
 ffs(int i)
