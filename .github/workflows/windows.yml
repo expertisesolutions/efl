@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Cache choco downloads
+    - name: Cache Nasm install
       uses: actions/cache@v1
       id: cache-nasm
       env:
@@ -84,5 +84,5 @@ jobs:
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
-#    - name: Build
-#      run: .\build.bat
+    - name: Build
+      run: .\build.bat
