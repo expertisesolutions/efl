@@ -4,16 +4,17 @@
 
 #include "evil_private.h"
 
-#include <define_lean_and_mean.h>
+#ifdef WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+#endif
+
 #include <errno.h>
-#include <define_lean_and_mean.h>
 #include <direct.h>
-#include <define_lean_and_mean.h>
 #include <sys/time.h>
 
-#include <define_lean_and_mean.h>
 //#include <winsock2.h>
-#include <undefine_lean_and_mean.h>
 
 LONGLONG _evil_time_freq;
 LONGLONG _evil_time_count;

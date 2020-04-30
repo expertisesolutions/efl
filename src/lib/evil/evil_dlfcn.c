@@ -2,11 +2,10 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#define DLFCN_C
 #include "evil_private.h"
-#undef DLFCN_C
 
 #include <psapi.h> /*  EnumProcessModules(Ex) */
+#include <stdlib.h>
 
 static char *_dl_err = NULL;
 static int _dl_err_viewed = 0;

@@ -1,6 +1,5 @@
 #include "time.h"
 
-
 int gettimeofday(struct timeval * tp, struct timezone * tzp)
 {
     // This number is the number of 100 nanosecond intervals since 00:00:00

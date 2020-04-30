@@ -2,7 +2,11 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <define_lean_and_mean.h>
+#ifdef WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+#endif
 
 #include <stdio.h>
 #include <sys/locking.h>
@@ -11,8 +15,6 @@
 #include <io.h>
 
 #include "evil_private.h"
-
-#include <undefine_lean_and_mean.h>
 
 /* SOCKET is defined as a uintptr_t, so passing a fd (int) is not a problem */
 static int

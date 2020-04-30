@@ -141,9 +141,6 @@ struct Dl_info
  *
  * @ingroup Evil_Dlfcn
  */
-#ifdef DLFCN_C
-#include "show_eapi.h"
-#endif
 EVIL_API void *dlopen(const char* path, int mode);
 
 #ifndef HAVE_DLOPEN

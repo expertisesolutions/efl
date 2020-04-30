@@ -3,24 +3,21 @@
 
 #include "unposix_api.h"
 
-#include <define_lean_and_mean.h>
-#include <require_lean_and_mean.h>
+#ifdef WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+#endif
 
 #include <winsock2.h>
-#include <define_lean_and_mean.h>
 #include <minwinbase.h>
-#include <define_lean_and_mean.h>
 #include <sysinfoapi.h>
-#include <define_lean_and_mean.h>
 #include <timezoneapi.h>
 
-#include "define_lean_and_mean.h"
 #include <stdint.h>
 
-#include "define_lean_and_mean.h"
 #include <../ucrt/time.h>
 
-#include "define_lean_and_mean.h"
 #include <sys/types.h>
 
 typedef unsigned short u_short;

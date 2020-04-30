@@ -4,7 +4,9 @@
 #include <unposix_api.h>
 
 #ifdef _WIN32
-# include <define_lean_and_mean.h>
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
 #endif
 
 #include <sys/types.h>
@@ -14,7 +16,7 @@
 #include <corecrt.h>
 #endif
 
-#include <evil_macro_wrapper.h>
+#include <evil_private.h>
 
 #ifndef stat64
 #define stat64 _stat64

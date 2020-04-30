@@ -2,16 +2,14 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include "evil_private.h"
+
 #include <string.h>
 #include <strings.h>
 #include <inttypes.h>
 #include <ctype.h>
 #include <time.h>
-
-#include <Windows.h>
-
-#include "evil_private.h"
-#include "evil_time.h"
+#include <sys/time.h>
 
 /*
  * strptime
