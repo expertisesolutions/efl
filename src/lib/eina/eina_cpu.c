@@ -37,7 +37,7 @@
 # elif defined (__linux__) || defined(__GLIBC__)
 #  include <sched.h>
 # endif
-# include <pthread.h>
+# include "eina_thread.h"
 
 # define TH_MAX 32
 #endif

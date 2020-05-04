@@ -1,7 +1,7 @@
 //Compile with:
 //gcc -o efl_thread_1 efl_thread_1.c -g `pkg-config --cflags --libs elementary`
 #include <Elementary.h>
-#include <pthread.h>
+#include <Eina.h>
 
 static Evas_Object *win = NULL;
 static Evas_Object *rect = NULL;
