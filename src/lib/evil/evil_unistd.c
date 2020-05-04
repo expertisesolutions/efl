@@ -2,6 +2,19 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include <errno.h>
+#include <direct.h>
+# include <sys/time.h>
+
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <winsock2.h>
+# include <io.h>
+# undef WIN32_LEAN_AND_MEAN
+#endif /* _WIN32 */
+
 #include "evil_private.h"
 
 #include <evil_windows.h>
@@ -190,4 +203,10 @@ evil_pipe(int *fds)
    fds[1] = -1;
 
    return -1;
+}
+
+EVIL_API int
+close (int fd)
+{
+   return _close(fd);
 }

@@ -2,7 +2,14 @@
 #define __EVIL_FCNTL_H__
 
 
-# include <sys/types.h>
+# ifdef _WIN32
+#  ifndef _CRT_DECLARE_NONSTDC_NAMES
+#   define _CRT_DECLARE_NONSTDC_NAMES 1
+#  endif /* _CRT_DECLARE_NONSTDC_NAMES */
+#  include <fcntl.h>
+#  include <sys/stat.h>
+#  include <sys/types.h>
+# endif /* _WIN32 */
 
 
 /**
@@ -109,5 +116,6 @@ struct flock
  */
 EVIL_API int fcntl(int fd, int cmd, ...);
 
+EVIL_API int open (const char *path, int oflag, ...);
 
 #endif /* __EVIL_FCNTL_H__ */

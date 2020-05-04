@@ -2,12 +2,18 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <evil_windows.h>
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif /* WIN32_LEAN_AND_MEAN */
+
+# include <sys/locking.h>
+# include <winsock2.h> /* for ioctlsocket */
+# include <io.h>
+# undef WIN32_LEAN_AND_MEAN
+#endif /* _WIN32 */
 
 #include <stdio.h>
-#include <sys/locking.h>
-
-#include <io.h>
 
 #include "evil_private.h"
 
@@ -136,3 +142,16 @@ int fcntl(int fd, int cmd, ...)
 
    return res;
 }
+
+EVIL_API int
+open (const char *path, int oflag, ...)
+{
+   va_list varargs;
+   va_start (varargs, oflag);
+
+   int ret = _open(path, oflag, varargs);
+
+   va_end (varargs);
+   return ret;
+}
+

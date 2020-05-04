@@ -88,5 +88,6 @@ EVIL_API int evil_pipe(int *fds);
  * @}
  */
 
+EVIL_API int close (int fd);
 
 #endif /* __EVIL_UNISTD_H__ */
