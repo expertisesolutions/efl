@@ -27,11 +27,11 @@
 #include <synchapi.h>
 #undef WIN32_LEAN_AND_MEAN
 
+#include "eina_time.h"
 #include "unimplemented.h"
 
 #include <errno.h>
 
-#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +58,6 @@ EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 
 /* For cond_timedwait */
 #include <time.h>
-#include <sys/time.h>
 
 #include <eina_error.h>
 
