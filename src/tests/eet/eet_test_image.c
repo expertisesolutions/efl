@@ -16,6 +16,10 @@
 #define IM2 0x8899aabb
 #define IM3 0xccddeeff
 
+#ifdef _WIN32
+#include <evil_private.h> // for mkstemp
+#endif
+
 typedef struct _Eet_Test_Image Eet_Test_Image;
 struct _Eet_Test_Image
 {

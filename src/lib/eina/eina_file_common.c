@@ -28,7 +28,7 @@
 #include <errno.h>
 
 #ifdef _WIN32
-# include <evil_private.h> /* windows.h fcntl mkstemps mkdtemp */
+# include <evil_private.h> /* windows.h fcntl mkstemp mkstemps mkdtemp */
 #endif
 
 #define COPY_BLOCKSIZE (4 * 1024 * 1024)

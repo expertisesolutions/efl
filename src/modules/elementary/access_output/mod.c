@@ -10,6 +10,10 @@
 #undef ELM_MODULE_HELPER_H
 #include "elm_module_helper.h"
 
+#ifdef _WIN32
+#include <evil_private.h> // for mkstemp
+#endif
+
 /* to enable this module
 export ELM_MODULES="access_output>access/api"
 export ELM_ACCESS_MODE=1

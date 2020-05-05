@@ -11,6 +11,10 @@
 #include "eet_suite.h"
 #include "eet_test_common.h"
 
+#ifdef _WIN32
+#include <evil_private.h> // for mkstemp
+#endif
+
 static Eina_Bool open_worker_stop;
 static Eina_Condition open_worker_cond;
 static Eina_Lock open_worker_mutex;

@@ -16,6 +16,10 @@
 # define O_BINARY 0
 #endif
 
+#ifdef _WIN32
+#include <evil_private.h> // for mkstemp
+#endif
+
 static char _key_pem[PATH_MAX] = "";
 static char _cert_pem[PATH_MAX] = "";
 static char _key_enc[PATH_MAX] = "";

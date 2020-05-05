@@ -10,6 +10,10 @@
 #include <unistd.h>
 #include <string.h>
 
+#ifdef _WIN32
+#include <evil_private.h> // for mkstemp
+#endif
+
 int
 main(void)
 {

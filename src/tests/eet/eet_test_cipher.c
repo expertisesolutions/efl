@@ -12,6 +12,10 @@
 #include "eet_suite.h"
 #include "eet_test_common.h"
 
+#ifdef _WIN32
+#include <evil_private.h> // for mkstemp
+#endif
+
 EFL_START_TEST(eet_test_cipher_decipher_simple)
 {
    const char *buffer = "Here is a string of data to save !";
