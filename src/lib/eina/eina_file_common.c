@@ -23,12 +23,13 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 
 #ifdef _WIN32
 # include <evil_private.h> /* windows.h fcntl mkstemp mkstemps mkdtemp */
+#else
+#include <unistd.h>
 #endif
 
 #define COPY_BLOCKSIZE (4 * 1024 * 1024)

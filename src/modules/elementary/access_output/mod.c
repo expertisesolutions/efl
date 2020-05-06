@@ -12,6 +12,8 @@
 
 #ifdef _WIN32
 #include <evil_private.h> // for mkstemp
+#else
+#include <unistd.h>
 #endif
 
 /* to enable this module

@@ -7,11 +7,12 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <string.h>
 
 #ifdef _WIN32
 #include <evil_private.h> // for mkstemp
+#else
+#include <unistd.h>
 #endif
 
 int

@@ -3,7 +3,6 @@
 #endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
 
 #include <Eina.h>
@@ -18,6 +17,8 @@
 
 #ifdef _WIN32
 #include <evil_private.h> // for mkstemp
+#else
+#include <unistd.h>
 #endif
 
 static char _key_pem[PATH_MAX] = "";

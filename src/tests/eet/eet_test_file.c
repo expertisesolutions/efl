@@ -3,7 +3,6 @@
 #endif
 
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <Eina.h>
 #include <Eet.h>
@@ -13,6 +12,8 @@
 
 #ifdef _WIN32
 #include <evil_private.h> // for mkstemp
+#else
+#include <unistd.h>
 #endif
 
 EFL_START_TEST(eet_test_file_simple_write)

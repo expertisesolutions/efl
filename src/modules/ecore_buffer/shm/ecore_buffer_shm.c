@@ -3,7 +3,6 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
 #ifdef HAVE_SYS_MMAN_H
 # include <sys/mman.h>
 #endif
@@ -17,6 +16,12 @@
 
 #ifndef O_BINARY
 # define O_BINARY 0
+#endif
+
+#ifdef _WIN32
+#include <evil_private.h> // for mkostemp
+#else
+#include <unistd.h> // for mkostemp
 #endif
 
 typedef struct _Ecore_Buffer_Shm_Data Ecore_Buffer_Shm_Data;

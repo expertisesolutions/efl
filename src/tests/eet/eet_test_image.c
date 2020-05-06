@@ -3,7 +3,6 @@
 #endif
 
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <Eina.h>
 #include <Eet.h>
@@ -18,6 +17,8 @@
 
 #ifdef _WIN32
 #include <evil_private.h> // for mkstemp
+#else
+#include <unistd.h>
 #endif
 
 typedef struct _Eet_Test_Image Eet_Test_Image;
