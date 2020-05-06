@@ -1,4 +1,8 @@
+#ifndef _MSC_VER
 #include <unistd.h>
+#else
+#include <windows.h>
+#endif
 
 #if defined(__clang__)
 # pragma clang diagnostic ignored "-Wunused-parameter"
@@ -10,6 +14,10 @@
 int
 main(int arc, char *argv[])
 {
+#ifndef _MSC_VER
    sleep(60);
+#else
+   Sleep(60);
+#endif
    return 0;
 }
