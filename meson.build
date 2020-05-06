@@ -537,7 +537,7 @@ foreach package : subprojects
     if (package[5] and not sys_windows)
        subdir(join_paths(local_benchmark, package_name))
     endif
-    if (package[6] and not sys_windows)
+    if (package[6])
        test_dirs += [package_name]
     endif
     if (package[7] and not sys_windows)
@@ -590,8 +590,10 @@ endforeach
 #subdir(join_paths('src', 'edje_external'))
 #subdir(join_paths('data'))
 
-if get_option('build-tests')
-  check = dependency('check')
+if true # get_option('build-tests')
+  if not sys_windows
+    check = dependency('check')
+  endif
   subdir(join_paths('src', 'tests'))
   foreach test : test_dirs
       subdir(join_paths(local_tests, test))
