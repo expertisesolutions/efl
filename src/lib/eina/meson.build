@@ -404,8 +404,8 @@ if sys_windows
     , evil]
 else
   eina_lib_deps = [m, rt, dl, execinfo, iconv, eina_deps, thread_dep
-  #                  , eina_mem_pools, evil]
-  ]
+  #                  , eina_mem_pools
+  , evil]
 endif
 
 eina_lib = library('eina', sources,
