@@ -1,6 +1,4 @@
 if target_machine.system() == 'windows'
-  #subdir('unposix')
-
   evil_src = [
     'evil_dlfcn.c',
     'evil_fcntl.c',
@@ -29,7 +27,7 @@ if target_machine.system() == 'windows'
   evil_pub_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, getopt_dep]
 
   evil_lib = library('evil', evil_src,
-    c_args : ['-DEVIL_BUILD', '-DEVIL_DLL', '-DPCRE_STATIC'],
+    c_args : ['-DEVIL_BUILD', '-DEVIL_DLL'],
     dependencies : evil_deps,
     include_directories : [config_dir, 'unposix'],
     install: true,
@@ -40,6 +38,7 @@ if target_machine.system() == 'windows'
     include_directories: [include_directories('.', 'unposix')],
     dependencies : evil_pub_deps,
     link_with: evil_lib,
+    compile_args : ['-DPCRE_STATIC'],
   )
 else
   evil = declare_dependency()
