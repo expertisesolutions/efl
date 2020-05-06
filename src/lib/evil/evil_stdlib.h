@@ -76,14 +76,30 @@ EVIL_API int unsetenv(const char *name);
 EVIL_API char *mkdtemp(char *__template);
 
 /**
- * @brief Create a unique temporary file name.
+ * @brief Create a unique temporary file name with a suffix and specific 
+ * open flags.
  *
  * @param __template Template of the file to create.
+ * @param suffixlen Length of the suffix following the 'XXXXXX' placeholder.
+ * @param oflag Flags passed to open.
  * @return A file descriptor on success, -1 otherwise.
  *
  * @since ????
  */
-#define mkstemp(__template) mkstemps(__template, 0)
+EVIL_API int mkostemps(char *__template, int suffixlen, int oflag);
+
+/**
+ * @brief Create a unique temporary file name with a suffix and specific 
+ * open flags.
+ *
+ * @param __template Template of the file to create.
+ * @param suffixlen Length of the suffix following the 'XXXXXX' placeholder.
+ * @param oflag Flags passed to open.
+ * @return A file descriptor on success, -1 otherwise.
+ *
+ * @since ????
+ */
+#define mkostemp(__ptr_template, oflag) mkostemps(__ptr_template, 0, oflag)
 
 /**
  * @brief Create a unique temporary file name with a suffix.
@@ -94,7 +110,17 @@ EVIL_API char *mkdtemp(char *__template);
  *
  * @since 1.10.0
  */
-EVIL_API int mkstemps(char *__template, int suffixlen);
+#define mkstemps(__ptr_template, sufixlen) mkostemps(__ptr_template, sufixlen, _O_RDWR | _O_BINARY | _O_CREAT | _O_EXCL)
+
+/**
+ * @brief Create a unique temporary file name.
+ *
+ * @param __template Template of the file to create.
+ * @return A file descriptor on success, -1 otherwise.
+ *
+ * @since ????
+ */
+#define mkstemp(__template) mkstemps(__template, 0)
 
 /**
  * @brief Return an absolute or full path name for a specified relative path name.

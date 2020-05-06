@@ -158,7 +158,7 @@ mkdtemp(char *__template)
 }
 
 int
-mkstemps(char *__template, int suffixlen)
+mkostemps(char *__template, int suffixlen, int oflag)
 {
    char      *suffix;
    DWORD      val;
@@ -177,7 +177,7 @@ mkstemps(char *__template, int suffixlen)
 
         val = _mkstemp(suffix, val);
 
-        fd = _open(__template, _O_RDWR | _O_BINARY | _O_CREAT | _O_EXCL, _S_IREAD | _S_IWRITE);
+        fd = _open(__template, oflag, _S_IREAD | _S_IWRITE);
         if (fd >= 0)
           return fd;
      }
