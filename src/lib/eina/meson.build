@@ -9,6 +9,8 @@ if sys_windows == true
    eina_pub_deps += [evil]
 endif
 
+subdir('check')
+
 public_sub_headers = [
 'eina_promise.h',
 'eina_safety_checks.h',
