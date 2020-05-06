@@ -4,13 +4,11 @@ if sys_windows
   evil_unposix_src = []
 
   evil_unposix_header_src = [
-    'libgen.h',
     'limits.h',
     'locale.h',
     'math.h',
     'pthread.h',
     'stdlib.h',
-    'string.h',
     'strings.h',
     'unimplemented.h',
     'unistd.h',
