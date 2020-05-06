@@ -21,6 +21,10 @@
 # include "config.h"
 #endif
 
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
+
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -57,7 +61,6 @@
 
 #include "eina_inline_private.h"
 
-#include <evil_vasprintf.h>
 
 /* TODO
  * + printing logs to stdout or stderr can be implemented

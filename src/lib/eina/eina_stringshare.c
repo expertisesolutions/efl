@@ -41,7 +41,9 @@
 #include "eina_safety_checks.h"
 #include "eina_stringshare.h"
 
-#include <evil_vasprintf.h>
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
 
 #ifdef CRI
 #undef CRI

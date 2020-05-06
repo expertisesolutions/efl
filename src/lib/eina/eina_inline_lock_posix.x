@@ -156,23 +156,6 @@ EINA_API extern pthread_mutex_t _eina_tracking_lock;
 EINA_API extern Eina_Inlist *_eina_tracking;
 #endif
 
-
-EINA_API Eina_Bool _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive);
-EINA_API void      _eina_lock_free(Eina_Lock *mutex);
-EINA_API Eina_Bool _eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
-EINA_API void      _eina_condition_free(Eina_Condition *cond);
-EINA_API Eina_Bool _eina_rwlock_new(Eina_RWLock *mutex);
-EINA_API void      _eina_rwlock_free(Eina_RWLock *mutex);
-EINA_API Eina_Bool _eina_spinlock_new(Eina_Spinlock *spinlock);
-EINA_API void      _eina_spinlock_free(Eina_Spinlock *spinlock);
-EINA_API Eina_Bool _eina_semaphore_new(Eina_Semaphore *sem, int count_init);
-EINA_API Eina_Bool _eina_semaphore_free(Eina_Semaphore *sem);
-#ifdef EINA_HAVE_OSX_SPINLOCK
-EINA_API Eina_Lock_Result _eina_spinlock_macos_take(Eina_Spinlock *spinlock);
-EINA_API Eina_Lock_Result _eina_spinlock_macos_take_try(Eina_Spinlock *spinlock);
-EINA_API Eina_Lock_Result _eina_spinlock_macos_release(Eina_Spinlock *spinlock);
-#endif
-
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
