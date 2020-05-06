@@ -12,8 +12,8 @@
 #include "eina_unicode.h"
 
 #ifdef _WIN32
-# include <evil_private.h>
-#endif
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
 
 /*============================================================================*
  *                                  Local                                     *

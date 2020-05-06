@@ -21,6 +21,10 @@
 # include "config.h"
 #endif
 
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
+
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
