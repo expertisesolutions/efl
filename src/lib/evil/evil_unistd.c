@@ -13,8 +13,8 @@ LONGLONG _evil_time_freq;
 LONGLONG _evil_time_count;
 long     _evil_time_second;
 
-
-long _evil_systemtime_to_time(SYSTEMTIME st);
+long 
+_evil_systemtime_to_time(SYSTEMTIME st);
 
 long
 _evil_systemtime_to_time(SYSTEMTIME st)
@@ -39,6 +39,17 @@ _evil_systemtime_to_time(SYSTEMTIME st)
 
   return (long)t;
 }
+
+
+#define execvp _ucrt_execvp  // overriding execvp below
+#include <process.h> // for _execvp
+#undef execvp 
+int
+execvp(const char *file, char *const argv[])
+{
+   return _execvp(file, (const char *const *)argv);
+}
+
 
 /*
  * Time related functions

@@ -15,6 +15,8 @@
  */
 
 
+EVIL_API int execvp(const char *file, char *const argv[]);
+
 /*
  * Time related functions
  *
