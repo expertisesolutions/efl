@@ -12,10 +12,19 @@
 // loading as functions: chmod and umask (for umask, it is necessary to include: errno.h)
 //  fstat ja incluido em <sys/stat.h>
 #include <corecrt_io.h>
+// loading as functions: chmod and umask (for umask, it is necessary to include: errno.h)
+// from corecrt_io import chmod and umask
+// fstat ja incluido em <sys/stat.h>
 
+typedef  int  mode_t ; 
 #ifndef stat64
 # define stat64 _stat64
 #endif
+
+
+int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
+
+int fstatat64(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
 // Missing definitions:
 // Note: some pieces of code were based on LibreSSL-Portable's compat lib and
@@ -35,23 +44,12 @@
 # define S_IXOTH  0                           /* Execute others */
 #endif
 
+#define	S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
+#define	S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+#define	S_ISREG(mode)  (((mode) & S_IFMT) == S_IFREG)
+#define	S_ISLNK(mode)  (((mode) & S_IFMT) == S_IFLNK)
+#define	S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
+#define	S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
+#define	S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
+
 #endif
-
-
-
-/*
-
-// ------------------------------------------------------------------------
-
-// Sinalizadores de tipo de arquivo para d_type  // ver a questão de st_mode
-
-#define DT_UNKNOWN  0
-#define DT_REG      S_IFREG
-#define DT_DIR      S_IFDIR
-#define DT_FIFO     S_IFIFO
-#define DT_SOCK     S_IFSOCK  //ver 
-#define DT_CHR      S_IFCHR
-#define DT_BLK      S_IFBLK   //ver
-#define DT_LNK      S_IFLNK   //ver 
-
-*/
