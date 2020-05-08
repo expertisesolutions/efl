@@ -8,7 +8,6 @@ if sys_windows
     'locale.h',
     'math.h',
     'pthread.h',
-    'stdlib.h',
     'unimplemented.h',
     'unistd.h',
   ]
