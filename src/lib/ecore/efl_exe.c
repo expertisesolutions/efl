@@ -11,6 +11,7 @@
 #include "ecore_private.h"
 
 #ifdef _WIN32
+# include <evil_private.h>
 #else
 # include <sys/time.h>
 # include <sys/resource.h>

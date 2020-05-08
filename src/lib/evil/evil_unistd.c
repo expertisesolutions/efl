@@ -31,19 +31,16 @@ _evil_systemtime_to_time(SYSTEMTIME st)
 
    day = st.wDay + days[st.wMonth - 1];
 
-  if (!(st.wYear & 3) && (st.wMonth > 2) )
-    day++;
+   if (!(st.wYear & 3) && (st.wMonth > 2) )
+     day++;
 
-  t = ((st.wYear - 70) * 365 + ((st.wYear - 1) >> 2) - 17 + day) * 24 + st.wHour;
-  t = (t * 60 + st.wMinute) * 60 + st.wSecond;
+   t = ((st.wYear - 70) * 365 + ((st.wYear - 1) >> 2) - 17 + day) * 24 + st.wHour;
+   t = (t * 60 + st.wMinute) * 60 + st.wSecond;
 
-  return (long)t;
+   return (long)t;
 }
 
 
-#define execvp _ucrt_execvp  // overriding execvp below
-#include <process.h> // for _execvp
-#undef execvp 
 int
 execvp(const char *file, char *const argv[])
 {
