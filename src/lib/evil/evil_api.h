@@ -5,22 +5,20 @@
 #error EVIL_API cant be already defined
 #endif
 
-#ifdef DLL_EXPORT
-# ifdef _MSC_VER
-#  ifdef EVIL_BUILD
-#   define EVIL_API __declspec(dllexport)
-#  else
-#   define EVIL_API __declspec(dllimport)
-#  endif
+#ifdef _MSC_VER
+# ifndef EVIL_DLL
+#  define EVIL_API
+# elif defined(EVIL_BUILD)
+#  define EVIL_API __declspec(dllexport)
 # else
-#  if __GNUC__ >= 4
-#   define EVIL_API __attribute__ ((visibility("default")))
-#  else
-#   define EVIL_API
-#  endif
+#  define EVIL_API __declspec(dllimport)
 # endif
 #else
-# define EVIL_API
+# if __GNUC__ >= 4
+#  define EVIL_API __attribute__ ((visibility("default")))
+# else
+#  define EVIL_API
+# endif
 #endif
 
 #endif

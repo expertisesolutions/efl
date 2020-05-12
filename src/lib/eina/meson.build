@@ -6,7 +6,7 @@ endif
 eina_pub_deps = [thread_dep]
 
 if sys_windows == true
-   eina_pub_deps += [evil]
+  eina_pub_deps += [evil]
 endif
 
 subdir('check')

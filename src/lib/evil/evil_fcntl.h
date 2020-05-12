@@ -2,6 +2,7 @@
 #define __EVIL_FCNTL_H__
 
 
+#include <evil_api.h>
 # include <sys/types.h>
 
 

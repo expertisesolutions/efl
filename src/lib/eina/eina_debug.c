@@ -51,11 +51,12 @@
 #ifdef HAVE_ARPA_INET_H
 # include <arpa/inet.h>
 #endif
-#include <fcntl.h>
 
 #ifdef _WIN32
-# include <evil_windows.h> /* fcntl */
+# include <evil_private.h> /* fcntl */
 # include <ws2tcpip.h>
+#else
+# include <fcntl.h>
 #endif
 
 #include "eina_alloca.h"

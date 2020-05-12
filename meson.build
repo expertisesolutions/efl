@@ -92,6 +92,8 @@ add_global_arguments(dev_cflags, language: 'c')
 add_global_arguments(dev_cflags, language: 'cpp')
 
 if sys_windows
+  add_global_arguments('-DEVIL_DLL', language: 'cpp')
+  add_global_arguments('-DEVIL_DLL', language: 'c')
   if not get_option('dbus')
     dbus = declare_dependency()
     eldbus = declare_dependency()

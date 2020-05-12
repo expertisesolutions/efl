@@ -1,6 +1,7 @@
 #ifndef __EVIL_UTIL_H__
 #define __EVIL_UTIL_H__
 
+#include <evil_api.h>
 
 /**
  * @brief Convert a string from char * to wchar_t *.

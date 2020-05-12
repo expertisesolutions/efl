@@ -23,7 +23,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <evil_private.h>
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 #include "eina_config.h"
 #include "eina_private.h"

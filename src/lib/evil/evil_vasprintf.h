@@ -3,6 +3,8 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include <evil_api.h>
+
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
