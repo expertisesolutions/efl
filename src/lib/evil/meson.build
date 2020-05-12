@@ -1,5 +1,6 @@
 if target_machine.system() == 'windows'
   evil_src = [
+    'evil_basename.c',
     'evil_dlfcn.c',
     'evil_fcntl.c',
     'evil_langinfo.c',
@@ -13,10 +14,11 @@ if target_machine.system() == 'windows'
     'evil_time.c',
     'evil_unistd.c',
     'evil_util.c',
+    'evil_vasprintf.h',
   ]
 
   evil_header_src = [
-    #  'evil_private.h',
+    'evil_private.h',
   ]
 
   psapi = cc.find_library('psapi')
@@ -51,3 +53,4 @@ else
 endif
 
 automatic_pkgfile = false
+
