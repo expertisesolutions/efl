@@ -229,9 +229,16 @@ if sys_windows
   zlib_dep = zlib_project.get_variable('zlib_dep')
   zlib_include_dir = zlib_project.get_variable('incdir')
 
+  # getopt
   getopt_project = subproject('getopt')
   getopt = getopt_project.get_variable('getopt')
   getopt_dep = getopt_project.get_variable('getopt_dep')
+
+  # libcheck
+  check_project = subproject('check')
+  check = check_project.get_variable('check')
+  check_dep = check_project.get_variable('chek_dep')
+
 else
   zlib_dep = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
