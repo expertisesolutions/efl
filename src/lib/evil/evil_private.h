@@ -35,18 +35,21 @@ extern "C" {
 # define PATH_MAX MAX_PATH
 #endif
 
+#include "evil_basename.h"
 #include "evil_dlfcn.h"
 #include "evil_fcntl.h"
 #include "evil_langinfo.h"
 #include "evil_locale.h"
 #include "evil_main.h"
 #include "evil_mman.h"
-#include "evil_stdlib.h"
 #include "evil_stdio.h"
+#include "evil_stdlib.h"
 #include "evil_string.h"
+#include "evil_strings.h"
 #include "evil_time.h"
 #include "evil_unistd.h"
 #include "evil_util.h"
+#include "evil_vasprintf.h"
 
 #define sigsetjmp(Env, Save) setjmp(Env)
 
