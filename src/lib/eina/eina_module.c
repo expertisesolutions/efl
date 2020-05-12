@@ -47,7 +47,7 @@
 #ifndef _MSC_VER
 #include <libgen.h>
 #else
-#include <evil_basename.h>
+#include <evil_private.h>
 #endif
 
 /*============================================================================*

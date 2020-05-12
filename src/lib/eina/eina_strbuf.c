@@ -11,7 +11,9 @@
 #include "eina_strbuf_common.h"
 #include "eina_unicode.h"
 
-#include <evil_vasprintf.h>
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 /*============================================================================*
  *                                  Local                                     *
