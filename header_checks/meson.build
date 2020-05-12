@@ -250,6 +250,7 @@ else
   endif
 
   getopt_dep = declare_dependency()
+  check_dep = declare_dependency()
 endif
 
 config_h.set('VMAJ', version_major)
