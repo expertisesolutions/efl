@@ -9,9 +9,12 @@
 #include <corecrt.h>
 #include <evil_macro_wrapper.h>
 #include <errno.h>
+
 // loading as functions: chmod and umask (for umask, it is necessary to include: errno.h)
 //  fstat ja incluido em <sys/stat.h>
+
 #include <corecrt_io.h>
+
 // loading as functions: chmod and umask (for umask, it is necessary to include: errno.h)
 // from corecrt_io import chmod and umask
 // fstat ja incluido em <sys/stat.h>
@@ -20,7 +23,6 @@ typedef  int  mode_t ;
 #ifndef stat64
 # define stat64 _stat64
 #endif
-
 
 int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
