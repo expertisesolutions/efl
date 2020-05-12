@@ -236,8 +236,8 @@ if sys_windows
 
   # libcheck
   check_project = subproject('check')
-  check = check_project.get_variable('check')
-  check_dep = check_project.get_variable('chek_dep')
+  check = check_project.get_variable('checklib')
+  check_dep = check_project.get_variable('check_dep')
 
 else
   zlib_dep = dependency('zlib')
