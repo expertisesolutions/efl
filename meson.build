@@ -9,7 +9,7 @@ if host_machine.system() == 'darwin'
 endif
 
 if host_machine.system() != 'windows'
-pkgconfig = import('pkgconfig')
+  pkgconfig = import('pkgconfig')
 endif
 
 test_env = environment()
@@ -24,6 +24,11 @@ version_name = 'v-'+version_major + '.' + version_minor
 
 cc = meson.get_compiler('c')
 host_os = host_machine.system()
+
+if host_os == 'windows' and cc.has_header_symbol('stdio.h', '_MSC_VER')
+  run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
+endif
+  
 
 if host_os == 'linux'
   if cc.has_header_symbol('features.h', '__UCLIBC__')
