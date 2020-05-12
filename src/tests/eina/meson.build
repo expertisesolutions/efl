@@ -61,7 +61,7 @@ eina_test_src = files(
 eina_test_exe = executable('eina_suite',
   include_directories : config_dir,
   sources : eina_test_src,
-  dependencies: [m, check, eina],
+  dependencies: [m, check_dep, eina],
   c_args : [
   '-DTESTS_WD="`pwd`"',
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
