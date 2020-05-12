@@ -7,8 +7,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#ifdef _MSC_VER
-
 inline int
 vasprintf(char **strp, const char *fmt, va_list ap)
 {
@@ -28,5 +26,3 @@ vasprintf(char **strp, const char *fmt, va_list ap)
 
    return ret;
 }
-
-#endif
