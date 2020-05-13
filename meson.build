@@ -474,7 +474,7 @@ config_dir += include_directories('.')
 
 #we have to do that first, eina modules are required by eina
 #the other modules require theire package
-#subdir(join_paths(local_module, 'eina'))
+subdir(join_paths(local_module, 'eina'))
 
 #List of dependency objects that might be disabled due to configurations
 #If they are enabled, the object gets overwritten by the library file.
