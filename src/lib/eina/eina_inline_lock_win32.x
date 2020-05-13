@@ -143,6 +143,7 @@ EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
+   SetLastError (ERROR_SUCCESS);
    InitializeCriticalSection(&(mutex->mutex));
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
@@ -152,6 +153,7 @@ _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 static inline void
 _eina_lock_free(Eina_Lock *mutex)
 {
+   SetLastError (ERROR_SUCCESS);
 #ifdef EINA_HAVE_DEBUG_THREADS
    if (mutex->locked)
      {
@@ -174,6 +176,8 @@ _eina_lock_take_try(Eina_Lock *mutex)
 {
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
 
+   SetLastError (ERROR_SUCCESS);
+   
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
 #endif
@@ -213,6 +217,8 @@ _eina_lock_take(Eina_Lock *mutex)
 {
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
    DWORD ok;
+
+   SetLastError (ERROR_SUCCESS);
 
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
@@ -278,6 +284,8 @@ static inline Eina_Lock_Result
 _eina_lock_release(Eina_Lock *mutex)
 {
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
+
+   SetLastError (ERROR_SUCCESS);
 
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
@@ -742,6 +750,5 @@ _eina_semaphore_release(Eina_Semaphore *sem, int count_release EINA_UNUSED)
      return (ReleaseSemaphore(sem, 1, NULL) != 0) ? EINA_TRUE : EINA_FALSE;
    return EINA_FALSE;
 }
-
 
 #endif
