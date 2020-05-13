@@ -9,8 +9,6 @@ if sys_windows == true
   eina_pub_deps += [evil]
 endif
 
-subdir('check')
-
 public_sub_headers = [
 'eina_promise.h',
 'eina_safety_checks.h',
@@ -400,11 +398,11 @@ execinfo = cc.find_library('execinfo', required: false)
 
 if sys_windows
   eina_lib_deps = [execinfo, iconv, eina_deps, thread_dep
-    #, eina_mem_pools
+    , eina_mem_pools
     , evil]
 else
   eina_lib_deps = [m, rt, dl, execinfo, iconv, eina_deps, thread_dep
-  #                  , eina_mem_pools
+                    , eina_mem_pools
   , evil]
 endif
 
