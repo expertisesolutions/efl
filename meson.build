@@ -397,6 +397,19 @@ if sys_osx == true and get_option('lua-interpreter') == 'luajit'
   )
 endif
 
+if sys_windows
+  r = run_command('build/nuget.exe', 'restore', 'win32-deps/packages.config', '-PackagesDirectory', 'win32-deps')
+  output = r.stdout().strip()
+  if r.returncode() != 0
+    errortxt = r.stderr().strip()
+    error(errortxt)
+  endif
+
+  message(output)
+
+  subdir('win32-deps')
+endif
+
 subprojects = [
 # name              |   option              | mod  | lib  | bin  | bench | tests | examples | pkg-config options | name of static libs
 ['evil'             ,[]                    , false,  true, false, false, false, false, [], []],
