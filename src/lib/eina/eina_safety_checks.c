@@ -43,6 +43,7 @@ static int initcnt = 0;
 Eina_Bool
 eina_safety_checks_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (!initcnt) return EINA_FALSE;
    if (!(--initcnt))
      {

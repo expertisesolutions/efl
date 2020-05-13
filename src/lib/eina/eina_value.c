@@ -5523,6 +5523,7 @@ eina_value_init(void)
 Eina_Bool
 eina_value_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef DEBUG
    Eina_Iterator *it;
    Eina_Value_Inner_Mp *imp;

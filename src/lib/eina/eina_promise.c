@@ -607,6 +607,7 @@ __eina_promise_cancel_data(void *data)
 Eina_Bool
 eina_promise_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    __eina_promise_cancel_all();
    eina_lock_free(&_pending_futures_lock);
    eina_mempool_del(_future_mp);

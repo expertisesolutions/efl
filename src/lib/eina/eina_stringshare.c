@@ -378,6 +378,7 @@ _eina_stringshare_small_init(void)
 static void
 _eina_stringshare_small_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Stringshare_Small_Bucket **p_bucket, **p_bucket_end;
 
    p_bucket = _eina_small_share.buckets;
@@ -515,6 +516,7 @@ eina_stringshare_init(void)
 Eina_Bool
 eina_stringshare_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Bool ret;
    _eina_stringshare_small_shutdown();
    ret = eina_share_common_shutdown(&stringshare_share);

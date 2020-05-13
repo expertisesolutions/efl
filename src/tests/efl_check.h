@@ -270,14 +270,18 @@ static int
 _efl_suite_run_end(SRunner *sr, const char *name)
 {
    int failed_count;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    if (name)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         char *n = strdup(name);
         char *p;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
         for (p = n; p[0]; p++)
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              switch (p[0])
                {
                 case ' ':
@@ -288,15 +292,22 @@ _efl_suite_run_end(SRunner *sr, const char *name)
                   break;
                }
           }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         snprintf(srunner_xml_buf, sizeof(srunner_xml_buf), TESTS_BUILD_DIR "/check-results-%s.xml", n);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         srunner_set_xml(sr, srunner_xml_buf);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         free(n);
      }
    else
      srunner_set_xml(sr, TESTS_BUILD_DIR "/check-results.xml");
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    srunner_run_all(sr, CK_ENV);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    failed_count = srunner_ntests_failed(sr);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    srunner_free(sr);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return failed_count;
 }
 
@@ -344,6 +355,7 @@ _efl_suite_build_and_run(int argc, const char **argv, const char *suite_name, co
    int timing;
 #endif
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef ENABLE_TIMING_INFO
    timing = _timing_enabled();
    if (timing)
@@ -356,86 +368,123 @@ _efl_suite_build_and_run(int argc, const char **argv, const char *suite_name, co
      tcstart = tstart;
 # endif
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    fflush(stdout);
    s = suite_create(suite_name);
    sr = srunner_create(s);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef HAVE_FORK
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    do_fork = _efl_test_fork_has(sr);
    if (do_fork)
      can_fork = !!etc[1].test_case /* can't parallelize 1 test */;
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    for (i = 0; etc[i].test_case; ++i)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef HAVE_FORK
         int pid = 0;
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
         if (!_efl_test_use(argc, argv, etc[i].test_case))
            continue;
 #ifdef HAVE_FORK
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (do_fork && can_fork)
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              if (!timeout_pid)
                {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                   timeout_pid = fork();
                   if (!timeout_pid)
                     execl("/bin/sh", "/bin/sh", "-c", PACKAGE_BUILD_DIR "/src/tests/timeout", (char *)NULL);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              if (num_forks == eina_cpu_count())
                failed_count += _efl_suite_wait_on_fork(&num_forks, &timeout_reached);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              if (timeout_reached) break;
              pid = fork();
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              if (pid > 0)
                {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                   if (!fork_map) fork_map = eina_hash_int32_new(NULL);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                   eina_hash_add(fork_map, &pid, etc[i].test_case);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                   num_forks++;
 # ifdef ENABLE_TIMING_INFO
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                   if (timing)
                     tcstart = _timing_time_get();
 # endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
                   continue;
                }
           }
 #endif
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         tc = tcase_create(etc[i].test_case);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (init || shutdown)
           tcase_add_checked_fixture(tc, init, shutdown);
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef HAVE_FORK
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (do_fork)
           tcase_set_timeout(tc, 0);
 #endif
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         etc[i].build(tc);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         suite_add_tcase(s, tc);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef HAVE_FORK
         if (do_fork && (!pid) && can_fork)
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              failed_count = _efl_suite_run_end(sr, etc[i].test_case);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              if (failed_count > 255)
                failed_count = 255;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 # ifdef ENABLE_TIMING_INFO
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              if (timing)
                printf("TC TIME %s: %.5g\n", etc[i].test_case, _timing_time_get() - tcstart);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 # endif
              exit(failed_count);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
           }
 #endif
      }
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef HAVE_FORK
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (num_forks && (!timeout_reached))
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         do
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              failed_count += _efl_suite_wait_on_fork(&num_forks, &timeout_reached);
           } while (num_forks && (!timeout_reached));
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (timeout_reached)
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              Eina_Iterator *it;
              const char *testname;
              it = eina_hash_iterator_data_new(fork_map);
@@ -451,25 +500,37 @@ _efl_suite_build_and_run(int argc, const char **argv, const char *suite_name, co
      }
    else
 #endif
+     {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      failed_count = _efl_suite_run_end(sr, NULL);
+     }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
 #ifdef HAVE_FORK
    if (timeout_pid)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         kill(timeout_pid, SIGKILL);
         timeout_pid = 0;
      }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_hash_free(fork_map);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    fork_map = NULL;
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
 #ifdef ENABLE_TIMING_INFO
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (timing)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         printf("SUITE TIME(%u) %s: %.5g\n", getpid(), suite_name, _timing_time_get() - tstart);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         fflush(stdout);
      }
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return failed_count;
 }
 

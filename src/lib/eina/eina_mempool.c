@@ -231,6 +231,7 @@ mempool_init_error:
 Eina_Bool
 eina_mempool_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    /* builtin backends */
 #ifdef EINA_STATIC_BUILD_CHAINED_POOL
    chained_shutdown();

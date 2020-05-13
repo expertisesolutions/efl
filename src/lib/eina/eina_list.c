@@ -559,6 +559,7 @@ on_init_fail:
 Eina_Bool
 eina_list_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if ((--_eina_list_init) != 0)
      {
         if (_eina_list_init < 0) _eina_list_init = 0;

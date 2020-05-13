@@ -60,6 +60,7 @@ fail:
 Eina_Bool
 eina_slstr_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (_slstr_init == 0) return EINA_FALSE;
    if (--_slstr_init) return EINA_TRUE;
 

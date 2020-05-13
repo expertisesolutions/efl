@@ -173,6 +173,7 @@ eina_thread_init(void)
 Eina_Bool
 eina_thread_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return EINA_TRUE;
 }
 

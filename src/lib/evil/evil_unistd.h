@@ -29,8 +29,18 @@ EVIL_API int execvp(const char *file, char *const argv[]);
 #define X_OK    0       /* execute permission, originally '1', just a bypass here*/
 #define F_OK    0       /* Test for existence.  */
 
+# define pipe_write(fd, buffer, size) send((fd), (char *)(buffer), size, 0)
+# define pipe_read(fd, buffer, size)  recv((fd), (char *)(buffer), size, 0)
+# define pipe_close(fd)               closesocket(fd)
+# define PIPE_FD_ERROR   SOCKET_ERROR
+
 #else
 #include <unistd.h>
+
+# define pipe_write(fd, buffer, size) write((fd), buffer, size)
+# define pipe_read(fd, buffer, size)  read((fd), buffer, size)
+# define pipe_close(fd)               close(fd)
+# define PIPE_FD_ERROR   -1
 #endif // _WIN32
 
 /*

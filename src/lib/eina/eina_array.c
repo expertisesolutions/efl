@@ -263,6 +263,7 @@ eina_array_init(void)
 Eina_Bool
 eina_array_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_log_domain_unregister(_eina_array_log_dom);
    _eina_array_log_dom = -1;
    return EINA_TRUE;

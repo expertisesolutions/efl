@@ -215,10 +215,13 @@ static const size_t _eina_desc_setup_len = sizeof(_eina_desc_setup) /
 static void
 _eina_shutdown_from_desc(const struct eina_desc_setup *itr)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    for (itr--; itr >= _eina_desc_setup; itr--)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (!itr->shutdown())
            ERR("Problems shutting down eina module '%s', ignored.", itr->name);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      }
 
    eina_log_domain_unregister(_eina_log_dom);
@@ -352,34 +355,52 @@ eina_init(void)
 EINA_API int
 eina_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (_eina_main_count <= 0)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         ERR("Init count not greater than 0 in shutdown.");
         return 0;
      }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_main_count--;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (EINA_UNLIKELY(_eina_main_count == 0))
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         eina_log_timing(_eina_log_dom,
                         EINA_LOG_STATE_START,
                         EINA_LOG_STATE_SHUTDOWN);
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         _eina_shutdown_from_desc(_eina_desc_setup + _eina_desc_setup_len);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
         if (_eina_threads_activated && (!_eina_main_thread_count))
+          {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
           _eina_threads_do_shutdown();
+          }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef EINA_HAVE_DEBUG_THREADS
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 	eina_lock_free(&_eina_tracking_lock);
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         eina_freeq_free(eina_freeq_main_get());
 #ifdef MT
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (_mt_enabled)
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              muntrace();
              _mt_enabled = 0;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
           }
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    return _eina_main_count;
 }
