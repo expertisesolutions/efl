@@ -79,7 +79,7 @@ EINA_API void eina_lock_debug(const Eina_Lock *mutex);
 
 /** @privatesection  @{ */
 typedef HANDLE _Eina_Thread;
-typedef PCRITICAL_SECTION _Eina_Mutex_t;
+typedef CRITICAL_SECTION _Eina_Mutex_t;
 typedef CONDITION_VARIABLE _Eina_Condition_t;
 typedef PSRWLOCK _Eina_RWLock_t;
 
@@ -143,7 +143,7 @@ EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
-   InitializeCriticalSection((mutex->mutex));
+   InitializeCriticalSection(&(mutex->mutex));
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
    return EINA_FALSE;
@@ -163,7 +163,7 @@ _eina_lock_free(Eina_Lock *mutex)
 #endif
    DWORD ok;
 
-   DeleteCriticalSection((mutex->mutex));
+   DeleteCriticalSection(&(mutex->mutex));
    ok = GetLastError();
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG((int)ok, mutex_destroy
                                                   , mutex);
@@ -178,7 +178,7 @@ _eina_lock_take_try(Eina_Lock *mutex)
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
 #endif
 
-   int ok = TryEnterCriticalSection((mutex->mutex));
+   int ok = TryEnterCriticalSection(&(mutex->mutex));
    DWORD err = GetLastError();
    if (ok != 0) ret = EINA_LOCK_SUCCEED;
    else if (err == ERROR_POSSIBLE_DEADLOCK)
@@ -227,7 +227,7 @@ _eina_lock_take(Eina_Lock *mutex)
         int dt;
 
         gettimeofday(&t0, NULL);
-        ok = EnterCriticalSection((mutex->mutex));
+        ok = EnterCriticalSection(&(mutex->mutex));
         gettimeofday(&t1, NULL);
 
         dt = (t1.tv_sec - t0.tv_sec) * 1000000;
@@ -238,7 +238,7 @@ _eina_lock_take(Eina_Lock *mutex)
    else
      {
 #endif
-        EnterCriticalSection((mutex->mutex));
+        EnterCriticalSection(&(mutex->mutex));
         ok = GetLastError();
 #ifdef EINA_HAVE_DEBUG_THREADS
      }
@@ -297,7 +297,7 @@ _eina_lock_release(Eina_Lock *mutex)
         LeaveCriticalSection(_eina_tracking_lock);
      }
 #endif
-   LeaveCriticalSection((mutex->mutex));
+   LeaveCriticalSection((&mutex->mutex));
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) ret = EINA_LOCK_SUCCEED;
    else if (ok != ERROR_ACCESS_DENIED) ret = EINA_LOCK_FAIL;
@@ -335,7 +335,7 @@ _eina_condition_wait(Eina_Condition *cond)
 #endif
 
    int ok = SleepConditionVariableCS(&(cond->condition)
-                                , (cond->lock->mutex), INFINITE);
+                                , (&cond->lock->mutex), INFINITE);
    DWORD err = GetLastError();
    if (ok != 0) r = EINA_TRUE;
    else if (err != ERROR_ACCESS_DENIED) r = EINA_FALSE;
