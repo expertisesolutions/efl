@@ -2,13 +2,18 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <string.h>
-#include <strings.h>
+#include "evil_string.h"
 #include <inttypes.h>
 #include <ctype.h>
 #include <time.h>
 
-#include <Windows.h>
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <Windows.h>
+# undef WIN32_LEAN_AND_MEAN
+#endif
 
 #include "evil_private.h"
 

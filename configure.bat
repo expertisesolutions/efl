@@ -52,7 +52,7 @@ exit /B 0
 
     :: ---------------------------------
     :: Windows terminal specific options
-    set CFLAGS=-fansi-escape-codes -fcolor-diagnostics %CFLAGS%
+    set CFLAGS=-fansi-escape-codes -Wno-implicit-fallthrough %CFLAGS%
 
 
     if defined VERBOSE (
@@ -89,6 +89,7 @@ exit /B 0
             -Dbuild-tests=false^
             -Dbuild-examples=false^
             -Dbindings=^
+            --buildtype=debug^
             --native-file native-file-windows.txt
 
     if exist build (

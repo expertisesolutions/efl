@@ -11,6 +11,10 @@
 #include "eina_strbuf_common.h"
 #include "eina_unicode.h"
 
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
+
 /*============================================================================*
  *                                  Local                                     *
  *============================================================================*/
@@ -78,7 +82,7 @@ static const char __STRBUF_MAGIC_STR[] = "Eina Strbuf";
  *============================================================================*/
 
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_strbuf_append_printf(Eina_Strbuf *buf, const char *fmt, ...)
 {
    va_list args;
@@ -98,7 +102,7 @@ eina_strbuf_append_printf(Eina_Strbuf *buf, const char *fmt, ...)
    return ret;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_strbuf_append_vprintf(Eina_Strbuf *buf, const char *fmt, va_list args)
 {
    char *str;
@@ -115,7 +119,7 @@ eina_strbuf_append_vprintf(Eina_Strbuf *buf, const char *fmt, va_list args)
    return ret;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_strbuf_insert_printf(Eina_Strbuf *buf, const char *fmt, size_t pos, ...)
 {
    va_list args;
@@ -135,7 +139,7 @@ eina_strbuf_insert_printf(Eina_Strbuf *buf, const char *fmt, size_t pos, ...)
    return ret;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_strbuf_insert_vprintf(Eina_Strbuf *buf,
                            const char *fmt,
                            size_t pos,
@@ -155,7 +159,7 @@ eina_strbuf_insert_vprintf(Eina_Strbuf *buf,
    return ret;
 }
 
-EAPI void
+EINA_API void
 eina_strbuf_trim(Eina_Strbuf *buf)
 {
    unsigned char *c = buf->buf;
@@ -171,7 +175,7 @@ eina_strbuf_trim(Eina_Strbuf *buf)
    ((unsigned char *)buf->buf)[buf->len] = '\0';
 }
 
-EAPI void
+EINA_API void
 eina_strbuf_ltrim(Eina_Strbuf *buf)
 {
    unsigned char *c = buf->buf;
@@ -185,7 +189,7 @@ eina_strbuf_ltrim(Eina_Strbuf *buf)
    ((unsigned char *)buf->buf)[buf->len] = '\0';
 }
 
-EAPI void
+EINA_API void
 eina_strbuf_rtrim(Eina_Strbuf *buf)
 {
    while (buf->len > 0 && isspace(((unsigned char*)(buf->buf))[buf->len - 1]))
@@ -193,7 +197,7 @@ eina_strbuf_rtrim(Eina_Strbuf *buf)
    ((unsigned char *)buf->buf)[buf->len] = '\0';
 }
 
-EAPI void
+EINA_API void
 eina_strbuf_tolower(Eina_Strbuf *buf)
 {
    if (!buf || !(buf->buf)) return;
@@ -201,7 +205,7 @@ eina_strbuf_tolower(Eina_Strbuf *buf)
    eina_str_tolower((char **)&(buf->buf));
 }
 
-EAPI Eina_Strbuf *
+EINA_API Eina_Strbuf *
 eina_strbuf_substr_get(Eina_Strbuf *buf, size_t pos, size_t len)
 {
    char *str;
@@ -216,7 +220,7 @@ eina_strbuf_substr_get(Eina_Strbuf *buf, size_t pos, size_t len)
    return eina_strbuf_manage_new(str);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_strbuf_append_strftime(Eina_Strbuf *buf, const char *format, const struct tm *tm)
 {
    char *outputbuf;
@@ -230,7 +234,7 @@ eina_strbuf_append_strftime(Eina_Strbuf *buf, const char *format, const struct t
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_strbuf_insert_strftime(Eina_Strbuf *buf, const char *format, const struct tm *tm, size_t pos)
 {
    char *outputbuf;

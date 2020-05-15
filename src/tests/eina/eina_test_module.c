@@ -28,6 +28,7 @@
 
 static Eina_Bool list_cb(Eina_Module *m, void *data EINA_UNUSED)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    int *sym;
    const char *file;
 
@@ -47,6 +48,7 @@ static Eina_Bool list_cb(Eina_Module *m, void *data EINA_UNUSED)
 
 EFL_START_TEST(eina_module_load_unload)
 {
+   fprintf(stderr, "start " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Array *_modules;
    unsigned int i;
    Eina_Array_Iterator it;
@@ -64,12 +66,14 @@ EFL_START_TEST(eina_module_load_unload)
    EINA_ARRAY_ITER_NEXT(_modules, i, module, it)
      free(module);
    eina_array_free(_modules);
+   fprintf(stderr, "end " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 }
 EFL_END_TEST
 
 EFL_START_TEST(eina_module_find_test)
 {
-   Eina_Array *_modules;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr); 
+  Eina_Array *_modules;
 
    _modules = eina_module_list_get(NULL,
                                    PACKAGE_BUILD_DIR "/src/tests/eina",
@@ -84,6 +88,9 @@ EFL_END_TEST
 void
 eina_test_module(TCase *tc)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    tcase_add_test(tc, eina_module_load_unload);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    tcase_add_test(tc, eina_module_find_test);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 }

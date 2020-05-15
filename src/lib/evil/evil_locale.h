@@ -1,6 +1,7 @@
 #ifndef __EVIL_LOCALE_H__
 #define __EVIL_LOCALE_H__
 
+#include <evil_api.h>
 
 /**
  * @file evil_locale.h
@@ -48,7 +49,7 @@
  *
  * @since 1.16
  */
-EAPI char *evil_setlocale(int category, const char *locale);
+EVIL_API char *evil_setlocale(int category, const char *locale);
 
 
 /**

@@ -1,6 +1,8 @@
 #ifndef __EVIL_MAIN_H__
 #define __EVIL_MAIN_H__
 
+#include <evil_api.h>
+
 /**
  * @page evil_main Evil
  * @author Vincent Torri
@@ -100,7 +102,7 @@
  * When Evil is not used anymore, call evil_shutdown() to shut down
  * the Evil library.
  */
-EAPI int evil_init(void);
+EVIL_API int evil_init(void);
 
 /**
  * @brief Shut down the Evil library.
@@ -116,7 +118,7 @@ EAPI int evil_init(void);
  * documentation anymore . You must call evil_init() again to use these
  * functions again.
  */
-EAPI int evil_shutdown(void);
+EVIL_API int evil_shutdown(void);
 
 
 /**

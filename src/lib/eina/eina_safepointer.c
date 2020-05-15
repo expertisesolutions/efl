@@ -59,8 +59,8 @@ struct _Eina_Memory_Header
    size_t size;
 };
 
-EAPI Eina_Memory_Table **_eina_sp_ids_tables[EINA_MAX_MID_TABLE_ID] = { NULL };
-EAPI int _eina_sp_log_dom = -1;
+EINA_API Eina_Memory_Table **_eina_sp_ids_tables[EINA_MAX_MID_TABLE_ID] = { NULL };
+EINA_API int _eina_sp_log_dom = -1;
 
 /* Spare empty table */
 static Eina_Memory_Table *empty_table = NULL;
@@ -261,7 +261,7 @@ _eina_safepointer_entry_find(Eina_Memory_Table *table)
    return entry;
 }
 
-EAPI const Eina_Safepointer *
+EINA_API const Eina_Safepointer *
 eina_safepointer_register(const void *target)
 {
    Eina_Memory_Table *table;
@@ -298,7 +298,7 @@ eina_safepointer_register(const void *target)
    return (void*) id;
 }
 
-EAPI void
+EINA_API void
 eina_safepointer_unregister(const Eina_Safepointer *safe)
 {
    Eina_Memory_Table *table;
@@ -384,6 +384,7 @@ eina_safepointer_init(void)
 Eina_Bool
 eina_safepointer_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&sl);
 
    return EINA_TRUE;

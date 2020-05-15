@@ -2,10 +2,11 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+#include <evil_windows.h>
+
 #include <stdio.h>
 #include <sys/locking.h>
 
-#include <winsock2.h> /* for ioctlsocket */
 #include <io.h>
 
 #include "evil_private.h"

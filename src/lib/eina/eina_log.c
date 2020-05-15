@@ -21,11 +21,13 @@
 # include "config.h"
 #endif
 
-#include <stdio.h>
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
+
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fnmatch.h>
 #include <assert.h>
 #include <errno.h>
 
@@ -35,6 +37,7 @@
 
 #ifdef _WIN32
 # include <windows.h>
+# include <evil_private.h>
 #endif
 
 #ifdef HAVE_EXECINFO_H
@@ -51,12 +54,14 @@
 #include "eina_thread.h"
 #include "eina_convert.h"
 #include "eina_strbuf.h"
+#include "eina_fnmatch.h"
 
 /* undefs EINA_ARG_NONULL() so NULL checks are not compiled out! */
 #include "eina_safety_checks.h"
 #include "eina_log.h"
 
 #include "eina_inline_private.h"
+
 
 /* TODO
  * + printing logs to stdout or stderr can be implemented
@@ -103,8 +108,8 @@ struct _Eina_Log_Timing
    Eina_Log_State state;
 };
 
-EAPI const char *_eina_log_state_init = "init";
-EAPI const char *_eina_log_state_shutdown = "shutdown";
+EINA_API const char *_eina_log_state_init = "init";
+EINA_API const char *_eina_log_state_shutdown = "shutdown";
 
 /*
  * List of levels for domains set by the user before the domains are registered,
@@ -1280,7 +1285,7 @@ finish_register:
      {
         EINA_INLIST_FOREACH(_glob_list, pending)
         {
-           if (!fnmatch(pending->name, name, 0))
+           if (!eina_fnmatch(pending->name, name, 0))
              {
                 _log_domains[i].level = pending->level;
                 break;
@@ -1604,6 +1609,7 @@ eina_log_init(void)
 Eina_Bool
 eina_log_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef EINA_ENABLE_LOG
    Eina_Inlist *tmp;
 
@@ -1694,13 +1700,13 @@ eina_log_threads_shutdown(void)
  * @cond LOCAL
  */
 
-EAPI int EINA_LOG_DOMAIN_GLOBAL = 0;
+EINA_API int EINA_LOG_DOMAIN_GLOBAL = 0;
 
 /**
  * @endcond
  */
 
-EAPI void
+EINA_API void
 eina_log_threads_enable(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1711,7 +1717,7 @@ eina_log_threads_enable(void)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_print_cb_set(Eina_Log_Print_Cb cb, void *data)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1729,7 +1735,7 @@ eina_log_print_cb_set(Eina_Log_Print_Cb cb, void *data)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_level_set(int level)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1742,7 +1748,7 @@ eina_log_level_set(int level)
 #endif
 }
 
-EAPI int
+EINA_API int
 eina_log_level_get(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1752,7 +1758,7 @@ eina_log_level_get(void)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_log_main_thread_check(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1762,7 +1768,7 @@ eina_log_main_thread_check(void)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_color_disable_set(Eina_Bool disabled)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1791,7 +1797,7 @@ eina_log_color_disable_set(Eina_Bool disabled)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_log_color_disable_get(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1801,7 +1807,7 @@ eina_log_color_disable_get(void)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_file_disable_set(Eina_Bool disabled)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1811,7 +1817,7 @@ eina_log_file_disable_set(Eina_Bool disabled)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_log_file_disable_get(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1821,7 +1827,7 @@ eina_log_file_disable_get(void)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_function_disable_set(Eina_Bool disabled)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1831,7 +1837,7 @@ eina_log_function_disable_set(Eina_Bool disabled)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_log_function_disable_get(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1841,7 +1847,7 @@ eina_log_function_disable_get(void)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_abort_on_critical_set(Eina_Bool abort_on_critical)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1851,7 +1857,7 @@ eina_log_abort_on_critical_set(Eina_Bool abort_on_critical)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_log_abort_on_critical_get(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1861,7 +1867,7 @@ eina_log_abort_on_critical_get(void)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_abort_on_critical_level_set(int critical_level)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1871,7 +1877,7 @@ eina_log_abort_on_critical_level_set(int critical_level)
 #endif
 }
 
-EAPI int
+EINA_API int
 eina_log_abort_on_critical_level_get(void)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1881,7 +1887,7 @@ eina_log_abort_on_critical_level_get(void)
 #endif
 }
 
-EAPI int
+EINA_API int
 eina_log_domain_register(const char *name, const char *color)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1900,7 +1906,7 @@ eina_log_domain_register(const char *name, const char *color)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_domain_unregister(int domain)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1913,7 +1919,7 @@ eina_log_domain_unregister(int domain)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_domain_level_set(const char *domain_name, int level)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1963,7 +1969,7 @@ eina_log_domain_level_set(const char *domain_name, int level)
 #endif
 }
 
-EAPI int
+EINA_API int
 eina_log_domain_level_get(const char *domain_name)
 {
 #ifdef EINA_ENABLE_LOG
@@ -1996,7 +2002,7 @@ eina_log_domain_level_get(const char *domain_name)
 
    EINA_INLIST_FOREACH(_glob_list, pending)
    {
-      if (!fnmatch(pending->name, domain_name, 0))
+      if (!eina_fnmatch(pending->name, domain_name, 0))
          return pending->level;
    }
 
@@ -2007,7 +2013,7 @@ eina_log_domain_level_get(const char *domain_name)
 #endif
 }
 
-EAPI int
+EINA_API int
 eina_log_domain_registered_level_get(int domain)
 {
 #ifdef EINA_ENABLE_LOG
@@ -2023,7 +2029,7 @@ eina_log_domain_registered_level_get(int domain)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_domain_registered_level_set(int domain, int level)
 {
 #ifdef EINA_ENABLE_LOG
@@ -2037,7 +2043,7 @@ eina_log_domain_registered_level_set(int domain, int level)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_print_cb_stderr(const Eina_Log_Domain *d,
                          Eina_Log_Level level,
                          const char *file,
@@ -2064,7 +2070,7 @@ eina_log_print_cb_stderr(const Eina_Log_Domain *d,
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_print_cb_stdout(const Eina_Log_Domain *d,
                          Eina_Log_Level level,
                          const char *file,
@@ -2091,7 +2097,7 @@ eina_log_print_cb_stdout(const Eina_Log_Domain *d,
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_print_cb_journald(const Eina_Log_Domain *d,
                            Eina_Log_Level level,
                            const char *file,
@@ -2182,7 +2188,7 @@ finish:
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_print_cb_file(const Eina_Log_Domain *d,
                        EINA_UNUSED Eina_Log_Level level,
                        const char *file,
@@ -2226,7 +2232,7 @@ end:
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_print(int domain, Eina_Log_Level level, const char *file,
                const char *fnc, int line, const char *fmt, ...)
 {
@@ -2268,7 +2274,7 @@ eina_log_print(int domain, Eina_Log_Level level, const char *file,
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_vprint(int domain, Eina_Log_Level level, const char *file,
                 const char *fnc, int line, const char *fmt, va_list args)
 {
@@ -2308,7 +2314,7 @@ eina_log_vprint(int domain, Eina_Log_Level level, const char *file,
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_console_color_set(FILE *fp, const char *color)
 {
 #ifdef EINA_ENABLE_LOG
@@ -2344,7 +2350,7 @@ eina_log_console_color_set(FILE *fp, const char *color)
 #endif
 }
 
-EAPI void
+EINA_API void
 eina_log_timing(int domain,
                 Eina_Log_State state,
                 const char *phase)

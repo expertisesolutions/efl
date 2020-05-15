@@ -4,12 +4,15 @@
 
 #define EINA_SLSTR_INTERNAL
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "Eina.h"
 #include "eina_private.h"
+
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
 
 // ========================================================================= //
 
@@ -21,9 +24,9 @@ static Eina_TLS _slstr_tls = 0;
 
 #if 0
 // 2 extension ideas here: slices for short-lived raw data buffers
-EAPI Eina_Rw_Slice eina_slslice_new(size_t length); // alloc
-EAPI Eina_Rw_Slice eina_slslice_copy(Eina_Slice slice); // copies
-EAPI Eina_Rw_Slice eina_slslice_free(Eina_Rw_Slice slice); // steals
+EINA_API Eina_Rw_Slice eina_slslice_new(size_t length); // alloc
+EINA_API Eina_Rw_Slice eina_slslice_copy(Eina_Slice slice); // copies
+EINA_API Eina_Rw_Slice eina_slslice_free(Eina_Rw_Slice slice); // steals
 #endif
 
 static void
@@ -57,6 +60,7 @@ fail:
 Eina_Bool
 eina_slstr_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (_slstr_init == 0) return EINA_FALSE;
    if (--_slstr_init) return EINA_TRUE;
 
@@ -87,7 +91,7 @@ _slstr_freeq_get(Eina_Bool nocreate)
      }
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_copy_new(const char *string)
 {
    Eina_FreeQ *fq;
@@ -108,7 +112,7 @@ eina_slstr_copy_new(const char *string)
    return copy;
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_copy_new_length(const char *string, size_t len)
 {
    Eina_FreeQ *fq;
@@ -125,7 +129,7 @@ eina_slstr_copy_new_length(const char *string, size_t len)
    return copy;
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_steal_new(char *string)
 {
    Eina_FreeQ *fq;
@@ -143,7 +147,7 @@ eina_slstr_steal_new(char *string)
    return string;
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_stringshare_new(Eina_Stringshare *string)
 {
    Eina_FreeQ *fq;
@@ -161,7 +165,7 @@ eina_slstr_stringshare_new(Eina_Stringshare *string)
    return string;
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_tmpstr_new(Eina_Tmpstr *string)
 {
    Eina_FreeQ *fq;
@@ -179,7 +183,7 @@ eina_slstr_tmpstr_new(Eina_Tmpstr *string)
    return string;
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_strbuf_new(Eina_Strbuf *string)
 {
    Eina_FreeQ *fq;
@@ -203,7 +207,7 @@ error:
    return NULL;
 }
 
-EAPI Eina_Slstr *
+EINA_API Eina_Slstr *
 eina_slstr_vasprintf_new(const char *fmt, va_list args)
 {
    Eina_FreeQ *fq;
@@ -224,7 +228,7 @@ eina_slstr_vasprintf_new(const char *fmt, va_list args)
    return str;
 }
 
-EAPI void
+EINA_API void
 eina_slstr_local_clear(void)
 {
    Eina_FreeQ *fq;

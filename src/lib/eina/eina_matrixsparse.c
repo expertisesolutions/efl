@@ -915,6 +915,7 @@ on_init_fail:
 Eina_Bool
 eina_matrixsparse_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_mempool_del(_eina_matrixsparse_row_mp);
    eina_mempool_del(_eina_matrixsparse_cell_mp);
 
@@ -927,7 +928,7 @@ eina_matrixsparse_shutdown(void)
 *                                   API                                      *
 *============================================================================*/
 
-EAPI Eina_Matrixsparse *
+EINA_API Eina_Matrixsparse *
 eina_matrixsparse_new(unsigned long rows, unsigned long cols, void (*free_func)(
                          void *user_data,
                          void *cell_data), const void *user_data)
@@ -954,7 +955,7 @@ eina_matrixsparse_new(unsigned long rows, unsigned long cols, void (*free_func)(
    return m;
 }
 
-EAPI void
+EINA_API void
 eina_matrixsparse_free(Eina_Matrixsparse *m)
 {
    void (*free_func)(void *, void *);
@@ -982,7 +983,7 @@ eina_matrixsparse_free(Eina_Matrixsparse *m)
    free(m);
 }
 
-EAPI void
+EINA_API void
 eina_matrixsparse_size_get(const Eina_Matrixsparse *m,
                            unsigned long *rows,
                            unsigned long *cols)
@@ -1001,7 +1002,7 @@ eina_matrixsparse_size_get(const Eina_Matrixsparse *m,
       *cols = m->size.cols;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_size_set(Eina_Matrixsparse *m,
                            unsigned long rows,
                            unsigned long cols)
@@ -1107,7 +1108,7 @@ eina_matrixsparse_size_set(Eina_Matrixsparse *m,
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_cell_idx_get(const Eina_Matrixsparse *m,
                                unsigned long row,
                                unsigned long col,
@@ -1122,14 +1123,14 @@ eina_matrixsparse_cell_idx_get(const Eina_Matrixsparse *m,
    return 1;
 }
 
-EAPI void *
+EINA_API void *
 eina_matrixsparse_cell_data_get(const Eina_Matrixsparse_Cell *cell)
 {
    EINA_MAGIC_CHECK_MATRIXSPARSE_CELL(cell, NULL);
    return cell->data;
 }
 
-EAPI void *
+EINA_API void *
 eina_matrixsparse_data_idx_get(const Eina_Matrixsparse *m,
                                unsigned long row,
                                unsigned long col)
@@ -1143,7 +1144,7 @@ eina_matrixsparse_data_idx_get(const Eina_Matrixsparse *m,
       return NULL;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_cell_position_get(const Eina_Matrixsparse_Cell *cell,
                                     unsigned long *row,
                                     unsigned long *col)
@@ -1165,7 +1166,7 @@ eina_matrixsparse_cell_position_get(const Eina_Matrixsparse_Cell *cell,
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_cell_data_replace(Eina_Matrixsparse_Cell *cell,
                                     const void *data,
                                     void **p_old)
@@ -1182,7 +1183,7 @@ eina_matrixsparse_cell_data_replace(Eina_Matrixsparse_Cell *cell,
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_cell_data_set(Eina_Matrixsparse_Cell *cell, const void *data)
 {
    Eina_Matrixsparse *m;
@@ -1200,7 +1201,7 @@ eina_matrixsparse_cell_data_set(Eina_Matrixsparse_Cell *cell, const void *data)
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_data_idx_replace(Eina_Matrixsparse *m,
                                    unsigned long row,
                                    unsigned long col,
@@ -1229,7 +1230,7 @@ eina_matrixsparse_data_idx_replace(Eina_Matrixsparse *m,
    return _eina_matrixsparse_cell_idx_add(m, row, col, data);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_data_idx_set(Eina_Matrixsparse *m,
                                unsigned long row,
                                unsigned long col,
@@ -1254,7 +1255,7 @@ eina_matrixsparse_data_idx_set(Eina_Matrixsparse *m,
    return _eina_matrixsparse_cell_idx_add(m, row, col, data);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_row_idx_clear(Eina_Matrixsparse *m, unsigned long row)
 {
    Eina_Matrixsparse_Row *r;
@@ -1272,7 +1273,7 @@ eina_matrixsparse_row_idx_clear(Eina_Matrixsparse *m, unsigned long row)
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_column_idx_clear(Eina_Matrixsparse *m, unsigned long col)
 {
    Eina_Matrixsparse_Row *r;
@@ -1311,7 +1312,7 @@ eina_matrixsparse_column_idx_clear(Eina_Matrixsparse *m, unsigned long col)
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_cell_idx_clear(Eina_Matrixsparse *m,
                                  unsigned long row,
                                  unsigned long col)
@@ -1332,7 +1333,7 @@ eina_matrixsparse_cell_idx_clear(Eina_Matrixsparse *m,
    return 1;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_matrixsparse_cell_clear(Eina_Matrixsparse_Cell *cell)
 {
    Eina_Matrixsparse *m;
@@ -1348,7 +1349,7 @@ eina_matrixsparse_cell_clear(Eina_Matrixsparse_Cell *cell)
    return 1;
 }
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_matrixsparse_iterator_new(const Eina_Matrixsparse *m)
 {
    Eina_Matrixsparse_Iterator *it;
@@ -1371,7 +1372,7 @@ eina_matrixsparse_iterator_new(const Eina_Matrixsparse *m)
    return &it->iterator;
 }
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_matrixsparse_iterator_complete_new(const Eina_Matrixsparse *m)
 {
    Eina_Matrixsparse_Iterator_Complete *it;

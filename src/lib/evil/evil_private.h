@@ -21,41 +21,39 @@ extern "C" {
 #define EVIL_UNUSED
 #endif
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
+#include <evil_windows.h>
 
+#include <stdint.h> /* for mode_t in  */
 #include <sys/stat.h> /* for mkdir in evil_macro_wrapper */
 
+#include <sys/types.h> /* for mode_t in  */
 
-#include "evil_eapi.h"
+#include <evil_api.h>
 
 
 #ifndef PATH_MAX
 # define PATH_MAX MAX_PATH
 #endif
 
+#include "evil_basename.h"
 #include "evil_dlfcn.h"
 #include "evil_fcntl.h"
 #include "evil_langinfo.h"
 #include "evil_locale.h"
 #include "evil_main.h"
 #include "evil_mman.h"
-#include "evil_stdlib.h"
 #include "evil_stdio.h"
+#include "evil_stdlib.h"
 #include "evil_string.h"
+#include "evil_strings.h"
 #include "evil_time.h"
 #include "evil_unistd.h"
 #include "evil_util.h"
+#include "evil_vasprintf.h"
 
 #define sigsetjmp(Env, Save) setjmp(Env)
 
 #include "evil_macro_wrapper.h"
-
-#undef EAPI
-#define EAPI
 
 #ifdef __cplusplus
 }

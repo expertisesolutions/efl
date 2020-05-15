@@ -122,6 +122,7 @@ eina_ustringshare_init(void)
 Eina_Bool
 eina_ustringshare_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Bool ret;
    ret = eina_share_common_shutdown(&ustringshare_share);
 
@@ -138,7 +139,7 @@ eina_ustringshare_shutdown(void)
 *                                   API                                      *
 *============================================================================*/
 
-EAPI void
+EINA_API void
 eina_ustringshare_del(const Eina_Unicode *str)
 {
    if (!str)
@@ -148,7 +149,7 @@ eina_ustringshare_del(const Eina_Unicode *str)
      CRI("EEEK trying to del non-shared ustringshare \"%s\"", (const char *)str);
 }
 
-EAPI const Eina_Unicode *
+EINA_API const Eina_Unicode *
 eina_ustringshare_add_length(const Eina_Unicode *str, unsigned int slen)
 {
    return (const Eina_Unicode *)eina_share_common_add_length(ustringshare_share,
@@ -160,21 +161,21 @@ eina_ustringshare_add_length(const Eina_Unicode *str, unsigned int slen)
                                                                 Eina_Unicode));
 }
 
-EAPI const Eina_Unicode *
+EINA_API const Eina_Unicode *
 eina_ustringshare_add(const Eina_Unicode *str)
 {
    int slen = (str) ? (int)eina_unicode_strlen(str) : -1;
    return eina_ustringshare_add_length(str, slen);
 }
 
-EAPI const Eina_Unicode *
+EINA_API const Eina_Unicode *
 eina_ustringshare_ref(const Eina_Unicode *str)
 {
    return (const Eina_Unicode *)eina_share_common_ref(ustringshare_share,
                                                       (const char *)str);
 }
 
-EAPI int
+EINA_API int
 eina_ustringshare_strlen(const Eina_Unicode *str)
 {
    int len = eina_share_common_length(ustringshare_share, (const char *)str);
@@ -182,7 +183,7 @@ eina_ustringshare_strlen(const Eina_Unicode *str)
    return len;
 }
 
-EAPI void
+EINA_API void
 eina_ustringshare_dump(void)
 {
    eina_share_common_dump(ustringshare_share, NULL, 0);

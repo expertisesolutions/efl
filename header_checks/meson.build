@@ -217,7 +217,10 @@ if sys_windows
   pcre_project = subproject('pcre')
 
   pcre = pcre_project.get_variable('pcre8')
-  pcre_dep = pcre_project.get_variable('pcre_dep')
+  pcre_posix = pcre_project.get_variable('pcre_posix')
+  original_pcre_dep = pcre_project.get_variable('pcre_dep')
+
+  pcre_dep = declare_dependency(link_with : [pcre, pcre_posix], dependencies : original_pcre_dep)
 
   # zlib
   zlib_project = subproject('zlib')
@@ -226,9 +229,16 @@ if sys_windows
   zlib_dep = zlib_project.get_variable('zlib_dep')
   zlib_include_dir = zlib_project.get_variable('incdir')
 
+  # getopt
   getopt_project = subproject('getopt')
   getopt = getopt_project.get_variable('getopt')
   getopt_dep = getopt_project.get_variable('getopt_dep')
+
+  # libcheck
+  check_project = subproject('check')
+  check = check_project.get_variable('checklib')
+  check_dep = check_project.get_variable('check_dep')
+
 else
   zlib_dep = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
@@ -240,6 +250,7 @@ else
   endif
 
   getopt_dep = declare_dependency()
+  check_dep = declare_dependency()
 endif
 
 config_h.set('VMAJ', version_major)

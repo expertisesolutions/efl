@@ -67,6 +67,7 @@
 #include "eina_slstr.h"
 #include "eina_vpath.h"
 #include "eina_thread.h"
+#include "eina_fnmatch.h"
 
 /*============================================================================*
 *                                  Local                                     *
@@ -94,13 +95,13 @@ static int _eina_log_dom = -1;
 #endif
 #define DBG(...) EINA_LOG_DOM_DBG(_eina_log_dom, __VA_ARGS__)
 
-EAPI Eina_Bool _eina_threads_activated = EINA_FALSE;
-EAPI Eina_Error EINA_ERROR_NOT_MAIN_LOOP = 0;
-EAPI Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
-EAPI unsigned int eina_seed = 0;
+EINA_API Eina_Bool _eina_threads_activated = EINA_FALSE;
+EINA_API Eina_Error EINA_ERROR_NOT_MAIN_LOOP = 0;
+EINA_API Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
+EINA_API unsigned int eina_seed = 0;
 
 #ifdef EFL_HAVE_THREADS
-EAPI Eina_Thread _eina_main_loop;
+EINA_API Eina_Thread _eina_main_loop; 
 #endif
 
 #ifdef MT
@@ -108,9 +109,9 @@ static int _mt_enabled = 0;
 #endif
 
 #ifdef EFL_HAVE_THREADS
-EAPI int _eina_threads_debug = 0;
-EAPI Eina_Lock _eina_tracking_lock;
-EAPI Eina_Inlist *_eina_tracking = NULL;
+EINA_API int _eina_threads_debug = 0;
+EINA_API Eina_Lock _eina_tracking_lock;
+EINA_API Eina_Inlist *_eina_tracking = NULL;
 extern Eina_Lock       _sysmon_lock;
 #endif
 
@@ -214,10 +215,13 @@ static const size_t _eina_desc_setup_len = sizeof(_eina_desc_setup) /
 static void
 _eina_shutdown_from_desc(const struct eina_desc_setup *itr)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    for (itr--; itr >= _eina_desc_setup; itr--)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (!itr->shutdown())
            ERR("Problems shutting down eina module '%s', ignored.", itr->name);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      }
 
    eina_log_domain_unregister(_eina_log_dom);
@@ -275,9 +279,9 @@ _eina_threads_do_shutdown(void)
  * @var eina_version
  * @brief Eina version (defined at configuration time)
  */
-EAPI Eina_Version *eina_version = &_version;
+EINA_API Eina_Version *eina_version = &_version;
 
-EAPI int
+EINA_API int
 eina_init(void)
 {
    const struct eina_desc_setup *itr, *itr_end;
@@ -348,43 +352,61 @@ eina_init(void)
    return 1;
 }
 
-EAPI int
+EINA_API int
 eina_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (_eina_main_count <= 0)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         ERR("Init count not greater than 0 in shutdown.");
         return 0;
      }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_main_count--;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (EINA_UNLIKELY(_eina_main_count == 0))
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         eina_log_timing(_eina_log_dom,
                         EINA_LOG_STATE_START,
                         EINA_LOG_STATE_SHUTDOWN);
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         _eina_shutdown_from_desc(_eina_desc_setup + _eina_desc_setup_len);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
         if (_eina_threads_activated && (!_eina_main_thread_count))
+          {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
           _eina_threads_do_shutdown();
+          }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef EINA_HAVE_DEBUG_THREADS
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 	eina_lock_free(&_eina_tracking_lock);
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         eina_freeq_free(eina_freeq_main_get());
 #ifdef MT
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         if (_mt_enabled)
           {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
              muntrace();
              _mt_enabled = 0;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
           }
 #endif
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    return _eina_main_count;
 }
 
 
-EAPI int
+EINA_API int
 eina_threads_init(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -409,7 +431,7 @@ eina_threads_init(void)
 #endif
 }
 
-EAPI int
+EINA_API int
 eina_threads_shutdown(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -433,7 +455,7 @@ eina_threads_shutdown(void)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_main_loop_is(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -450,7 +472,7 @@ eina_main_loop_is(void)
 }
 
 /** The purpose of this API should not be documented, it is used only by the one who know what they are doing. */
-EAPI void
+EINA_API void
 eina_main_loop_define(void)
 {
 #ifdef EFL_HAVE_THREADS

@@ -1,12 +1,12 @@
 if not sys_windows
   eina_deps = [dl]
 else
-  eina_deps = []
+  eina_deps = [pcre_dep]
 endif
 eina_pub_deps = [thread_dep]
 
 if sys_windows == true
-   eina_pub_deps += [evil]
+  eina_pub_deps += [evil]
 endif
 
 public_sub_headers = [
@@ -109,7 +109,8 @@ public_sub_headers = [
 'eina_freeq.h',
 'eina_slstr.h',
 'eina_vpath.h',
-'eina_abstract_content.h'
+'eina_abstract_content.h',
+'eina_fnmatch.h'
 ]
 
 public_headers = [
@@ -199,6 +200,7 @@ if sys_windows == true
   public_sub_headers += 'eina_inline_thread_win32.x'
   sources += 'eina_file_win32.c'
   sources += 'eina_sched_win32.c'
+  sources += 'eina_fnmatch.c'
   public_sub_headers += 'eina_inline_lock_win32.x'
 else
   public_sub_headers += 'eina_thread_posix.h'
@@ -395,13 +397,17 @@ endif
 execinfo = cc.find_library('execinfo', required: false)
 
 if sys_windows
-  eina_lib_deps = [execinfo, iconv, eina_deps, thread_dep, eina_mem_pools, evil]
+  eina_lib_deps = [execinfo, iconv, eina_deps, thread_dep
+    , eina_mem_pools
+    , evil]
 else
   eina_lib_deps = [m, rt, dl, execinfo, iconv, eina_deps, thread_dep
-                  , eina_mem_pools, evil]
+                    , eina_mem_pools
+  , evil]
 endif
 
 eina_lib = library('eina', sources,
+  c_args : ['-DEINA_BUILD'],
   include_directories : config_dir,
   dependencies: eina_lib_deps,
   install: true,

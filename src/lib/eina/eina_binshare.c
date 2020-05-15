@@ -83,7 +83,7 @@ static const char EINA_MAGIC_BINSHARE_NODE_STR[] = "Eina Binshare Node";
  *
  * @see eina_init()
  */
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_binshare_init(void)
 {
    Eina_Bool ret;
@@ -124,9 +124,10 @@ eina_binshare_init(void)
  *
  * @see eina_shutdown()
  */
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_binshare_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Bool ret;
    ret = eina_share_common_shutdown(&binshare_share);
 
@@ -144,7 +145,7 @@ eina_binshare_shutdown(void)
  *                                   API                                      *
  *============================================================================*/
 
-EAPI void
+EINA_API void
 eina_binshare_del(const void *obj)
 {
    if (!obj)
@@ -154,7 +155,7 @@ eina_binshare_del(const void *obj)
      CRI("EEEK trying to del non-shared binshare %p", obj);
 }
 
-EAPI const void *
+EINA_API const void *
 eina_binshare_add_length(const void *obj, unsigned int olen)
 {
    return eina_share_common_add_length(binshare_share,
@@ -163,19 +164,19 @@ eina_binshare_add_length(const void *obj, unsigned int olen)
                                                      0);
 }
 
-EAPI const void *
+EINA_API const void *
 eina_binshare_ref(const void *obj)
 {
    return eina_share_common_ref(binshare_share, obj);
 }
 
-EAPI int
+EINA_API int
 eina_binshare_length(const void *obj)
 {
    return eina_share_common_length(binshare_share, obj);
 }
 
-EAPI void
+EINA_API void
 eina_binshare_dump(void)
 {
    eina_share_common_dump(binshare_share, NULL, 0);

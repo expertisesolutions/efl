@@ -324,6 +324,7 @@ _eina_debug_cpu_init(void)
 Eina_Bool
 _eina_debug_cpu_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifndef _WIN32
    if (_eina_debug_sysmon_active)
      _stop_cpu_thread();

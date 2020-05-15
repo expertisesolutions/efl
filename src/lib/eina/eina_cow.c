@@ -321,12 +321,13 @@ eina_cow_init(void)
 Eina_Bool
 eina_cow_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_log_domain_unregister(_eina_cow_log_dom);
    eina_mempool_del(gc_pool);
    return EINA_TRUE;
 }
 
-EAPI Eina_Cow *
+EINA_API Eina_Cow *
 eina_cow_add(const char *name, unsigned int struct_size, unsigned int step, const void *default_value, Eina_Bool gc)
 {
    const char *choice, *tmp;
@@ -390,7 +391,7 @@ eina_cow_add(const char *name, unsigned int struct_size, unsigned int step, cons
    return NULL;
 }
 
-EAPI void
+EINA_API void
 eina_cow_del(Eina_Cow *cow)
 {
    if (!cow) return;
@@ -405,7 +406,7 @@ eina_cow_del(Eina_Cow *cow)
    free(cow);
 }
 
-EAPI const Eina_Cow_Data *
+EINA_API const Eina_Cow_Data *
 eina_cow_alloc(Eina_Cow *cow)
 {
 #ifdef EINA_COW_MAGIC_ON
@@ -415,7 +416,7 @@ eina_cow_alloc(Eina_Cow *cow)
    return cow->default_value;
 }
 
-EAPI void
+EINA_API void
 eina_cow_free(Eina_Cow *cow, const Eina_Cow_Data **data)
 {
    Eina_Cow_Ptr *ref;
@@ -451,7 +452,7 @@ eina_cow_free(Eina_Cow *cow, const Eina_Cow_Data **data)
    eina_mempool_free(cow->pool, (void*) ref);
 }
 
-EAPI void *
+EINA_API void *
 eina_cow_write(Eina_Cow *cow,
 	       const Eina_Cow_Data * const *data)
 {
@@ -535,7 +536,7 @@ eina_cow_write(Eina_Cow *cow,
    return (void *) *data;
 }
 
-EAPI void
+EINA_API void
 eina_cow_done(Eina_Cow *cow,
 	      const Eina_Cow_Data * const * dst,
 	      const void *data,
@@ -569,7 +570,7 @@ eina_cow_done(Eina_Cow *cow,
    _eina_cow_togc_add(cow, ref, (const Eina_Cow_Data **) dst);
 }
 
-EAPI void
+EINA_API void
 eina_cow_memcpy(Eina_Cow *cow,
 		const Eina_Cow_Data * const *dst,
 		const Eina_Cow_Data *src)
@@ -603,7 +604,7 @@ eina_cow_memcpy(Eina_Cow *cow,
    *((const void**)dst) = src;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_cow_gc(Eina_Cow *cow)
 {
    Eina_Cow_GC *gc;

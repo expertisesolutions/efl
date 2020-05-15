@@ -53,6 +53,17 @@ clock_gettime(int mode, struct timespec* ts)
 
    return 0;
 }
+# elif defined(_WIN32)
+
+#  define CLOCK_REALTIME 0
+
+int
+clock_gettime(int mode, struct timespec* ts)
+{
+// TODO: implement clock_gettime() for _WIN32.
+   return 0;
+}
+
 # else /* ! __MACH__ */
 # error No support for clock_gettime()
 # endif /* __MACH__ */

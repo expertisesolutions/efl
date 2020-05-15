@@ -41,6 +41,9 @@
 #include "eina_safety_checks.h"
 #include "eina_stringshare.h"
 
+#ifdef _WIN32
+# include <evil_private.h> /* vasprintf */
+#endif /* _WIN32 */
 
 #ifdef CRI
 #undef CRI
@@ -375,6 +378,7 @@ _eina_stringshare_small_init(void)
 static void
 _eina_stringshare_small_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Stringshare_Small_Bucket **p_bucket, **p_bucket_end;
 
    p_bucket = _eina_small_share.buckets;
@@ -512,6 +516,7 @@ eina_stringshare_init(void)
 Eina_Bool
 eina_stringshare_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Bool ret;
    _eina_stringshare_small_shutdown();
    ret = eina_share_common_shutdown(&stringshare_share);
@@ -529,7 +534,7 @@ eina_stringshare_shutdown(void)
  *                                   API                                      *
  *============================================================================*/
 
-EAPI void
+EINA_API void
 eina_stringshare_del(Eina_Stringshare *str)
 {
    int slen;
@@ -569,7 +574,7 @@ eina_stringshare_del(Eina_Stringshare *str)
      CRI("EEEK trying to del non-shared stringshare \"%s\"", str);
 }
 
-EAPI Eina_Stringshare *
+EINA_API Eina_Stringshare *
 eina_stringshare_add_length(const char *str, unsigned int slen)
 {
    if (!str)
@@ -602,14 +607,14 @@ eina_stringshare_add_length(const char *str, unsigned int slen)
                                        sizeof(char), sizeof(char));
 }
 
-EAPI Eina_Stringshare *
+EINA_API Eina_Stringshare *
 eina_stringshare_add(const char *str)
 {
    if (!str) return NULL;
    return eina_stringshare_add_length(str, strlen(str));
 }
 
-EAPI Eina_Stringshare *
+EINA_API Eina_Stringshare *
 eina_stringshare_printf(const char *fmt, ...)
 {
    va_list args;
@@ -633,7 +638,7 @@ eina_stringshare_printf(const char *fmt, ...)
    return ret;
 }
 
-EAPI Eina_Stringshare *
+EINA_API Eina_Stringshare *
 eina_stringshare_vprintf(const char *fmt, va_list args)
 {
    char *tmp = NULL;
@@ -654,7 +659,7 @@ eina_stringshare_vprintf(const char *fmt, va_list args)
    return ret;
 }
 
-EAPI Eina_Stringshare *
+EINA_API Eina_Stringshare *
 eina_stringshare_nprintf(unsigned int len, const char *fmt, ...)
 {
    va_list args;
@@ -681,7 +686,7 @@ eina_stringshare_nprintf(unsigned int len, const char *fmt, ...)
    return eina_stringshare_add_length(tmp, size);
 }
 
-EAPI Eina_Stringshare *
+EINA_API Eina_Stringshare *
 eina_stringshare_ref(Eina_Stringshare *str)
 {
    int slen;
@@ -722,7 +727,7 @@ eina_stringshare_ref(Eina_Stringshare *str)
    return eina_share_common_ref(stringshare_share, str);
 }
 
-EAPI int
+EINA_API int
 eina_stringshare_strlen(Eina_Stringshare *str)
 {
    int len;
@@ -747,7 +752,7 @@ eina_stringshare_strlen(Eina_Stringshare *str)
    return len;
 }
 
-EAPI void
+EINA_API void
 eina_stringshare_dump(void)
 {
    eina_share_common_dump(stringshare_share,

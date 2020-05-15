@@ -1,7 +1,10 @@
 #ifndef __EVIL_STRING_H__
 #define __EVIL_STRING_H__
 
+#include <evil_api.h>
 
+#include "evil_strings.h"
+#include "evil_private.h"
 /**
  * @file evil_string.h
  * @brief The file that provides functions ported from Unix in string.h.
@@ -35,7 +38,7 @@
  *
  * Supported OS: Windows XP.
  */
-EAPI char *strcasestr(const char *haystack, const char *needle);
+EVIL_API char *strcasestr(const char *haystack, const char *needle);
 
 /**
  * @brief Implements the strsep function which is used to separate strings.
@@ -61,6 +64,6 @@ EAPI char *strcasestr(const char *haystack, const char *needle);
  * @since 1.8
  *
  */
-EAPI char *strsep(char **stringp, const char *delim);
+EVIL_API char *strsep(char **stringp, const char *delim);
 
 #endif /* __EVIL_STRING_H__ */

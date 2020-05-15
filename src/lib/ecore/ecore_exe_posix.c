@@ -8,11 +8,16 @@
 
 #include <errno.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <signal.h>
+
+#ifdef _WIN32
+#include <evil_private.h>
+#else
+#include <unistd.h> /* execvp */
+#endif
 
 #ifdef HAVE_PRCTL
 # include <sys/prctl.h>

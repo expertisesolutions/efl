@@ -559,6 +559,7 @@ on_init_fail:
 Eina_Bool
 eina_list_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if ((--_eina_list_init) != 0)
      {
         if (_eina_list_init < 0) _eina_list_init = 0;
@@ -580,7 +581,7 @@ eina_list_shutdown(void)
  *                                   API                                      *
  *============================================================================*/
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_append(Eina_List *list, const void *data)
 {
    Eina_List *l, *new_l;
@@ -614,7 +615,7 @@ on_error:
 #endif
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_prepend(Eina_List *list, const void *data)
 {
    Eina_List *new_l;
@@ -645,7 +646,7 @@ on_error:
 #endif
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_append_relative(Eina_List *list,
                           const void *data,
                           const void *relative)
@@ -666,7 +667,7 @@ eina_list_append_relative(Eina_List *list,
    return eina_list_append(list, data);
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_append_relative_list(Eina_List *list,
                                const void *data,
                                Eina_List *relative)
@@ -700,7 +701,7 @@ eina_list_append_relative_list(Eina_List *list,
    return list;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_prepend_relative(Eina_List *list,
                            const void *data,
                            const void *relative)
@@ -720,7 +721,7 @@ eina_list_prepend_relative(Eina_List *list,
    return eina_list_prepend(list, data);
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_prepend_relative_list(Eina_List *list,
                                 const void *data,
                                 Eina_List *relative)
@@ -753,7 +754,7 @@ eina_list_prepend_relative_list(Eina_List *list,
    return new_l;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_sorted_insert(Eina_List *list, Eina_Compare_Cb func, const void *data)
 {
    Eina_List *lnear;
@@ -769,7 +770,7 @@ eina_list_sorted_insert(Eina_List *list, Eina_Compare_Cb func, const void *data)
      return eina_list_prepend_relative_list(list, data, lnear);
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_remove(Eina_List *list, const void *data)
 {
    Eina_List *l;
@@ -782,7 +783,7 @@ eina_list_remove(Eina_List *list, const void *data)
    return eina_list_remove_list(list, l);
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_remove_list(Eina_List *list, Eina_List *remove_list)
 {
    Eina_List *return_l;
@@ -819,7 +820,7 @@ eina_list_remove_list(Eina_List *list, Eina_List *remove_list)
    return return_l;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_free(Eina_List *list)
 {
    Eina_List *l, *free_l;
@@ -841,7 +842,7 @@ eina_list_free(Eina_List *list)
    return NULL;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_promote_list(Eina_List *list, Eina_List *move_list)
 {
    if (!list)
@@ -885,7 +886,7 @@ eina_list_promote_list(Eina_List *list, Eina_List *move_list)
    return move_list;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_demote_list(Eina_List *list, Eina_List *move_list)
 {
    if (!list)
@@ -924,7 +925,7 @@ eina_list_demote_list(Eina_List *list, Eina_List *move_list)
    return list;
 }
 
-EAPI void *
+EINA_API void *
 eina_list_data_find(const Eina_List *list, const void *data)
 {
    if (eina_list_data_find_list(list, data))
@@ -933,7 +934,7 @@ eina_list_data_find(const Eina_List *list, const void *data)
    return NULL;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_list_move(Eina_List **to, Eina_List **from, void *data)
 {
    Eina_List *l;
@@ -954,7 +955,7 @@ eina_list_move(Eina_List **to, Eina_List **from, void *data)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_list_move_list(Eina_List **to, Eina_List **from, Eina_List *data)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(to, EINA_FALSE);
@@ -971,7 +972,7 @@ eina_list_move_list(Eina_List **to, Eina_List **from, Eina_List *data)
    return EINA_TRUE;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_data_find_list(const Eina_List *list, const void *data)
 {
    const Eina_List *l;
@@ -990,7 +991,7 @@ eina_list_data_find_list(const Eina_List *list, const void *data)
    return NULL;
 }
 
-EAPI void *
+EINA_API void *
 eina_list_nth(const Eina_List *list, unsigned int n)
 {
    Eina_List *l;
@@ -1002,7 +1003,7 @@ eina_list_nth(const Eina_List *list, unsigned int n)
    return l ? l->data : NULL;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_nth_list(const Eina_List *list, unsigned int n)
 {
    const Eina_List *l;
@@ -1038,7 +1039,7 @@ eina_list_nth_list(const Eina_List *list, unsigned int n)
    abort();
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_reverse(Eina_List *list)
 {
    Eina_List *l1, *l2;
@@ -1068,7 +1069,7 @@ eina_list_reverse(Eina_List *list)
    return list;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_reverse_clone(const Eina_List *list)
 {
    const Eina_List *l;
@@ -1088,7 +1089,7 @@ eina_list_reverse_clone(const Eina_List *list)
    return lclone;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_clone(const Eina_List *list)
 {
    const Eina_List *l;
@@ -1108,7 +1109,7 @@ eina_list_clone(const Eina_List *list)
    return lclone;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_sort(Eina_List *list, unsigned int limit, Eina_Compare_Cb func)
 {
    unsigned int i = 0;
@@ -1178,7 +1179,7 @@ eina_list_sort(Eina_List *list, unsigned int limit, Eina_Compare_Cb func)
    return list;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_shuffle(Eina_List *list, Eina_Random_Cb func)
 {
    unsigned int n, i, j;
@@ -1261,7 +1262,7 @@ eina_list_shuffle(Eina_List *list, Eina_Random_Cb func)
    return shuffled_list;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_merge(Eina_List *left, Eina_List *right)
 {
    unsigned int n_left, n_right;
@@ -1312,7 +1313,7 @@ eina_list_merge(Eina_List *left, Eina_List *right)
 }
 
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_split_list(Eina_List *list, Eina_List *relative, Eina_List **right)
 {
    Eina_List *next;
@@ -1358,7 +1359,7 @@ eina_list_split_list(Eina_List *list, Eina_List *relative, Eina_List **right)
    return list;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_sorted_merge(Eina_List *left, Eina_List *right, Eina_Compare_Cb func)
 {
    Eina_List *ret;
@@ -1435,7 +1436,7 @@ eina_list_sorted_merge(Eina_List *left, Eina_List *right, Eina_Compare_Cb func)
    return ret;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_search_sorted_near_list(const Eina_List *list,
                                   Eina_Compare_Cb func,
                                   const void *data,
@@ -1518,7 +1519,7 @@ end:
    return (Eina_List *)ct;
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_search_sorted_list(const Eina_List *list,
                              Eina_Compare_Cb func,
                              const void *data)
@@ -1537,7 +1538,7 @@ eina_list_search_sorted_list(const Eina_List *list,
 }
 
 
-EAPI void *
+EINA_API void *
 eina_list_search_sorted(const Eina_List *list,
                         Eina_Compare_Cb func,
                         const void *data)
@@ -1545,7 +1546,7 @@ eina_list_search_sorted(const Eina_List *list,
    return eina_list_data_get(eina_list_search_sorted_list(list, func, data));
 }
 
-EAPI Eina_List *
+EINA_API Eina_List *
 eina_list_search_unsorted_list(const Eina_List *list,
                                Eina_Compare_Cb func,
                                const void *data)
@@ -1561,7 +1562,7 @@ eina_list_search_unsorted_list(const Eina_List *list,
    return NULL;
 }
 
-EAPI void *
+EINA_API void *
 eina_list_search_unsorted(const Eina_List *list,
                           Eina_Compare_Cb func,
                           const void *data)
@@ -1570,7 +1571,7 @@ eina_list_search_unsorted(const Eina_List *list,
 }
 
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_list_iterator_new(const Eina_List *list)
 {
    Eina_Iterator_List *it;
@@ -1593,7 +1594,7 @@ eina_list_iterator_new(const Eina_List *list)
    return &it->iterator;
 }
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_list_iterator_reversed_new(const Eina_List *list)
 {
    Eina_Iterator_List *it;
@@ -1616,7 +1617,7 @@ eina_list_iterator_reversed_new(const Eina_List *list)
    return &it->iterator;
 }
 
-EAPI Eina_Accessor *
+EINA_API Eina_Accessor *
 eina_list_accessor_new(const Eina_List *list)
 {
    Eina_Accessor_List *ac;
@@ -1643,7 +1644,7 @@ eina_list_accessor_new(const Eina_List *list)
    return &ac->accessor;
 }
 
-EAPI int
+EINA_API int
 eina_list_data_idx(const Eina_List *list, void *data)
 {
    const Eina_List *l;

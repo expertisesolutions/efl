@@ -76,7 +76,7 @@ typedef enum _Eina_Thread_Priority
  * @return identifier of current thread.
  * @since 1.8
  */
-EAPI Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
+EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Checks if two thread identifiers are the same.
@@ -85,7 +85,7 @@ EAPI Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
  * @return #EINA_TRUE if they are equal, #EINA_FALSE otherwise.
  * @since 1.8
  */
-EAPI Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSED_RESULT;
+EINA_API Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Creates a new thread, setting its priority and affinity.
@@ -98,7 +98,7 @@ EAPI Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSE
  * @return #EINA_TRUE if thread was created, #EINA_FALSE on errors.
  * @since 1.8
  */
-EAPI Eina_Bool eina_thread_create(Eina_Thread *t,
+EINA_API Eina_Bool eina_thread_create(Eina_Thread *t,
                                   Eina_Thread_Priority prio, int affinity,
                                   Eina_Thread_Cb func, const void *data) EINA_ARG_NONNULL(1, 4) EINA_WARN_UNUSED_RESULT;
 
@@ -114,7 +114,7 @@ EAPI Eina_Bool eina_thread_create(Eina_Thread *t,
  *
  * @since 1.19
  */
-EAPI extern const void *EINA_THREAD_JOIN_CANCELED;
+EINA_API extern const void *EINA_THREAD_JOIN_CANCELED;
 
 /**
  * @brief Joins a currently running thread, waiting until it finishes.
@@ -131,7 +131,7 @@ EAPI extern const void *EINA_THREAD_JOIN_CANCELED;
  *         EINA_THREAD_JOIN_CANCELED.
  * @since 1.8
  */
-EAPI void *eina_thread_join(Eina_Thread t);
+EINA_API void *eina_thread_join(Eina_Thread t);
 
 /**
  * @brief Sets the name of a given thread for debugging purposes.
@@ -148,7 +148,7 @@ EAPI void *eina_thread_join(Eina_Thread t);
  *         otherwise.
  * @since 1.16
  */
-EAPI Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
+EINA_API Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
 
 /**
  * @brief Attempts to cancel a running thread.
@@ -171,7 +171,7 @@ EAPI Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
  *
  * @since 1.19
  */
-EAPI Eina_Bool eina_thread_cancel(Eina_Thread t);
+EINA_API Eina_Bool eina_thread_cancel(Eina_Thread t);
 
 /**
  * @brief Enables or disables if the current thread can be canceled.
@@ -209,7 +209,7 @@ EAPI Eina_Bool eina_thread_cancel(Eina_Thread t);
  *
  * @since 1.19
  */
-EAPI Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable);
+EINA_API Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable);
 
 /**
  * If the current thread is cancellable, this introduces a
@@ -225,69 +225,7 @@ EAPI Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was
  *
  * @since 1.19
  */
-EAPI void eina_thread_cancel_checkpoint(void);
-
-/**
- * @def EINA_THREAD_CLEANUP_PUSH(cleanup, data)
- *
- * @brief Pushes a cleanup function to be executed when the thread is
- * canceled.
- *
- * This macro will schedule a function cleanup(data) to be executed if
- * the thread is canceled with eina_thread_cancel() and the thread
- * was previously marked as cancellable with
- * eina_thread_cancellable_set().
- *
- * It @b must be paired with EINA_THREAD_CLEANUP_POP() in the same
- * code block as they will expand to do {} while ()!
- *
- * The cleanup function may also be executed if
- * EINA_THREAD_CLEANUP_POP(EINA_TRUE) is used.
- *
- * @note If the block within EINA_THREAD_CLEANUP_PUSH() and
- *       EINA_THREAD_CLEANUP_POP() returns, the cleanup callback will
- *       @b not be executed! To avoid problems prefer to use
- *       eina_thread_cancellable_run()!
- *
- * @param[in] cleanup The function to execute on cancellation.
- * @param[in] data The context to give to cleanup function.
- *
- * @see eina_thread_cancellable_run()
- *
- * @since 1.19
- */
-#define EINA_THREAD_CLEANUP_PUSH(cleanup, data) \
-  pthread_cleanup_push(cleanup, data)
-
-/**
- * @def EINA_THREAD_CLEANUP_POP(exec_cleanup)
- *
- * @brief Pops a cleanup function to be executed when the thread is
- * canceled.
- *
- * This macro will remove a previously pushed cleanup function, thus
- * if the thread is canceled with eina_thread_cancel() and the thread
- * was previously marked as cancellable with
- * eina_thread_cancellable_set(), that cleanup won't be executed
- * anymore.
- *
- * It @b must be paired with EINA_THREAD_CLEANUP_PUSH() in the same
- * code block as they will expand to do {} while ()!
- *
- * @note If the block within EINA_THREAD_CLEANUP_PUSH() and
- *       EINA_THREAD_CLEANUP_POP() returns, the cleanup callback will
- *       @b not be executed even if exec_cleanup is EINA_TRUE! To
- *       avoid problems prefer to use eina_thread_cancellable_run()!
- *
- * @param[in] exec_cleanup if EINA_TRUE, the function registered with
- *        EINA_THREAD_CLEANUP_PUSH() will be executed.
- *
- * @see eina_thread_cancellable_run()
- *
- * @since 1.19
- */
-#define EINA_THREAD_CLEANUP_POP(exec_cleanup) \
-  pthread_cleanup_pop(exec_cleanup)
+EINA_API void eina_thread_cancel_checkpoint(void);
 
 /**
  * @typedef Eina_Thread_Cancellable_Run_Cb
@@ -339,7 +277,7 @@ typedef void *(*Eina_Thread_Cancellable_Run_Cb)(void *data);
  *
  * @since 1.19
  */
-EAPI void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
+EINA_API void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
 
 typedef struct _Eina_Thread_Call Eina_Thread_Call;
 struct _Eina_Thread_Call

@@ -1,7 +1,7 @@
 #ifndef __EVIL_UNISTD_H__
 #define __EVIL_UNISTD_H__
 
-#include "evil_eapi.h"
+#include "evil_api.h"
 
 /**
  * @file evil_unistd.h
@@ -14,6 +14,34 @@
  * @{
  */
 
+#ifdef _WIN32
+
+#include <io.h> // for read, write, access, close
+
+#define execvp _ucrt_execvp  // overriding execvp below
+#include <process.h> // for _execvp (but not execvp), getpid
+#undef execvp 
+EVIL_API int execvp(const char *file, char *const argv[]);
+
+/* Values for the second argument to access.  These may be OR'd together.  */
+#define R_OK    4       /* Test for read permission.  */
+#define W_OK    2       /* Test for write permission.  */
+#define X_OK    0       /* execute permission, originally '1', just a bypass here*/
+#define F_OK    0       /* Test for existence.  */
+
+# define pipe_write(fd, buffer, size) send((fd), (char *)(buffer), size, 0)
+# define pipe_read(fd, buffer, size)  recv((fd), (char *)(buffer), size, 0)
+# define pipe_close(fd)               closesocket(fd)
+# define PIPE_FD_ERROR   SOCKET_ERROR
+
+#else
+#include <unistd.h>
+
+# define pipe_write(fd, buffer, size) write((fd), buffer, size)
+# define pipe_read(fd, buffer, size)  read((fd), buffer, size)
+# define pipe_close(fd)               close(fd)
+# define PIPE_FD_ERROR   -1
+#endif // _WIN32
 
 /*
  * Time related functions
@@ -35,7 +63,7 @@
  *
  * Supported OS: Windows XP.
  */
-EAPI double evil_time_get(void);
+EVIL_API double evil_time_get(void);
 
 /*
  * Sockets and pipe related functions
@@ -54,7 +82,7 @@ EAPI double evil_time_get(void);
  *
  * Supported OS: Windows XP.
  */
-EAPI int evil_sockets_init(void);
+EVIL_API int evil_sockets_init(void);
 
 /**
  * @brief Shutdown the Windows socket system.
@@ -65,7 +93,7 @@ EAPI int evil_sockets_init(void);
  *
  * Supported OS: Windows XP.
  */
-EAPI void evil_sockets_shutdown(void);
+EVIL_API void evil_sockets_shutdown(void);
 
 /**
  * @brief Create a pair of sockets.
@@ -81,7 +109,7 @@ EAPI void evil_sockets_shutdown(void);
  *
  * Supported OS: Windows XP.
  */
-EAPI int evil_pipe(int *fds);
+EVIL_API int evil_pipe(int *fds);
 
 
 /**

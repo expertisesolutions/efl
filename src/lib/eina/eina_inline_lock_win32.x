@@ -48,8 +48,8 @@ typedef void (*Eina_Lock_Bt_Func) ();
 #include "eina_inlist.h"
 #endif
 
-EAPI void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
-EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
+EINA_API void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
+EINA_API void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 
 #define EINA_LOCK_ABORT_DEBUG(err, fn, ptr) \
    _eina_lock_debug_abort(err, #fn, ptr)
@@ -70,16 +70,16 @@ typedef LPDWORD Eina_TLS;
 typedef HANDLE Eina_Semaphore;
 
 #ifdef EINA_HAVE_WIN32_SPINLOCK
-typedef PCRITICAL_SECTION Eina_Spinlock;
+typedef CRITICAL_SECTION Eina_Spinlock;
 #else
 typedef Eina_Lock Eina_Spinlock;
 #endif
 
-EAPI void eina_lock_debug(const Eina_Lock *mutex);
+EINA_API void eina_lock_debug(const Eina_Lock *mutex);
 
 /** @privatesection  @{ */
 typedef HANDLE _Eina_Thread;
-typedef PCRITICAL_SECTION _Eina_Mutex_t;
+typedef CRITICAL_SECTION _Eina_Mutex_t;
 typedef CONDITION_VARIABLE _Eina_Condition_t;
 typedef PSRWLOCK _Eina_RWLock_t;
 
@@ -121,29 +121,30 @@ struct _Eina_RWLock
 };
 /** @} privatesection */
 
-EAPI extern Eina_Bool _eina_threads_activated;
+EINA_API extern Eina_Bool _eina_threads_activated;
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-EAPI extern int _eina_threads_debug;
-EAPI extern _Eina_Thread _eina_main_loop;
-EAPI extern Eina_Lock _eina_tracking_lock;
-EAPI extern Eina_Inlist *_eina_tracking;
+EINA_API extern int _eina_threads_debug;
+EINA_API extern _Eina_Thread _eina_main_loop;
+EINA_API extern Eina_Lock _eina_tracking_lock;
+EINA_API extern Eina_Inlist *_eina_tracking;
 #endif
 
-EAPI Eina_Bool eina_lock_new(Eina_Lock *mutex);
-EAPI void eina_lock_free(Eina_Lock *mutex);
-EAPI Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
-EAPI Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
-EAPI Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
-EAPI Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
-EAPI void eina_condition_free(Eina_Condition *cond);
-EAPI Eina_Bool eina_condition_wait(Eina_Condition *cond);
-EAPI Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
+EINA_API Eina_Bool eina_lock_new(Eina_Lock *mutex);
+EINA_API void eina_lock_free(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
+EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
+EINA_API void eina_condition_free(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
-   InitializeCriticalSection((mutex->mutex));
+   SetLastError (ERROR_SUCCESS);
+   InitializeCriticalSection(&(mutex->mutex));
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
    return EINA_FALSE;
@@ -152,6 +153,7 @@ _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 static inline void
 _eina_lock_free(Eina_Lock *mutex)
 {
+   SetLastError (ERROR_SUCCESS);
 #ifdef EINA_HAVE_DEBUG_THREADS
    if (mutex->locked)
      {
@@ -163,7 +165,7 @@ _eina_lock_free(Eina_Lock *mutex)
 #endif
    DWORD ok;
 
-   DeleteCriticalSection((mutex->mutex));
+   DeleteCriticalSection(&(mutex->mutex));
    ok = GetLastError();
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG((int)ok, mutex_destroy
                                                   , mutex);
@@ -174,11 +176,13 @@ _eina_lock_take_try(Eina_Lock *mutex)
 {
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
 
+   SetLastError (ERROR_SUCCESS);
+   
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
 #endif
 
-   int ok = TryEnterCriticalSection((mutex->mutex));
+   int ok = TryEnterCriticalSection(&(mutex->mutex));
    DWORD err = GetLastError();
    if (ok != 0) ret = EINA_LOCK_SUCCEED;
    else if (err == ERROR_POSSIBLE_DEADLOCK)
@@ -214,6 +218,8 @@ _eina_lock_take(Eina_Lock *mutex)
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
    DWORD ok;
 
+   SetLastError (ERROR_SUCCESS);
+
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
 #endif
@@ -227,7 +233,7 @@ _eina_lock_take(Eina_Lock *mutex)
         int dt;
 
         gettimeofday(&t0, NULL);
-        ok = EnterCriticalSection((mutex->mutex));
+        ok = EnterCriticalSection(&(mutex->mutex));
         gettimeofday(&t1, NULL);
 
         dt = (t1.tv_sec - t0.tv_sec) * 1000000;
@@ -238,7 +244,7 @@ _eina_lock_take(Eina_Lock *mutex)
    else
      {
 #endif
-        EnterCriticalSection((mutex->mutex));
+        EnterCriticalSection(&(mutex->mutex));
         ok = GetLastError();
 #ifdef EINA_HAVE_DEBUG_THREADS
      }
@@ -279,6 +285,8 @@ _eina_lock_release(Eina_Lock *mutex)
 {
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
 
+   SetLastError (ERROR_SUCCESS);
+
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
 #endif
@@ -297,7 +305,7 @@ _eina_lock_release(Eina_Lock *mutex)
         LeaveCriticalSection(_eina_tracking_lock);
      }
 #endif
-   LeaveCriticalSection((mutex->mutex));
+   LeaveCriticalSection((&mutex->mutex));
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) ret = EINA_LOCK_SUCCEED;
    else if (ok != ERROR_ACCESS_DENIED) ret = EINA_LOCK_FAIL;
@@ -335,7 +343,7 @@ _eina_condition_wait(Eina_Condition *cond)
 #endif
 
    int ok = SleepConditionVariableCS(&(cond->condition)
-                                , (cond->lock->mutex), INFINITE);
+                                , (&cond->lock->mutex), INFINITE);
    DWORD err = GetLastError();
    if (ok != 0) r = EINA_TRUE;
    else if (err != ERROR_ACCESS_DENIED) r = EINA_FALSE;
@@ -693,7 +701,7 @@ _eina_semaphore_new(Eina_Semaphore *sem, int count_init)
 {
    if (sem && (count_init >= 0))
      {
-        sem = CreateSemaphoreA(NULL, count_init, count_init, NULL);
+        *sem = CreateSemaphoreA(NULL, count_init, count_init, NULL);
         DWORD ok = GetLastError();
         if (ok == ERROR_SUCCESS) return EINA_TRUE;
      }
@@ -705,7 +713,7 @@ _eina_semaphore_free(Eina_Semaphore *sem)
 {
    if (sem)
      {
-        CloseHandle(sem);
+        CloseHandle(*sem);
         DWORD ok = GetLastError();
         if (ok == ERROR_SUCCESS) return EINA_TRUE;
      }
@@ -719,7 +727,7 @@ _eina_semaphore_lock(Eina_Semaphore *sem)
      {
         for (;;)
           {
-             WaitForSingleObject(sem, INFINITE);
+             WaitForSingleObject(*sem, INFINITE);
              DWORD ok = GetLastError();
              if (ok == ERROR_SUCCESS)
                 return EINA_TRUE;
@@ -727,7 +735,7 @@ _eina_semaphore_lock(Eina_Semaphore *sem)
                 continue;
              else if (errno == ERROR_POSSIBLE_DEADLOCK)
               {
-                 EINA_LOCK_DEADLOCK_DEBUG(sem_wait, sem);
+                 EINA_LOCK_DEADLOCK_DEBUG(sem_wait, *sem);
                  return EINA_FALSE;
               }
           }
@@ -739,9 +747,8 @@ static inline Eina_Bool
 _eina_semaphore_release(Eina_Semaphore *sem, int count_release EINA_UNUSED)
 {
    if (sem)
-     return (ReleaseSemaphore(sem, 1, NULL) != 0) ? EINA_TRUE : EINA_FALSE;
+     return (ReleaseSemaphore(*sem, 1, NULL) != 0) ? EINA_TRUE : EINA_FALSE;
    return EINA_FALSE;
 }
-
 
 #endif

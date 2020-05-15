@@ -1,6 +1,8 @@
 #ifndef __EVIL_SYS_MMAN_H__
 #define __EVIL_SYS_MMAN_H__
 
+#include <evil_api.h>
+
 #include <sys/types.h>
 
 
@@ -107,7 +109,7 @@
  *
  * @ingroup Evil_Mman
  */
-EAPI void *mmap(void   *addr,
+EVIL_API void *mmap(void   *addr,
                 size_t len,
                 int    prot,
                 int    flags,
@@ -138,7 +140,7 @@ EAPI void *mmap(void   *addr,
  *
  * @ingroup Evil_Mman
  */
-EAPI int   munmap(void  *addr,
+EVIL_API int   munmap(void  *addr,
                   size_t len);
 
 /**
@@ -159,7 +161,7 @@ EAPI int   munmap(void  *addr,
  *
  * @ingroup Evil_Mman
  */
-EAPI int mprotect(void *addr, size_t len, int prot);
+EVIL_API int mprotect(void *addr, size_t len, int prot);
 
 
 #endif /* __EVIL_SYS_MMAN_H__ */

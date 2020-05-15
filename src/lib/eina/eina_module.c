@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
-#include <libgen.h>
 #include <unistd.h>
 
 #if defined HAVE_DLOPEN && ! defined _WIN32
@@ -33,6 +32,10 @@
 
 #ifdef _WIN32
 # include <evil_private.h>
+#endif
+
+#ifndef _MSC_VER
+#include <libgen.h>
 #endif
 
 #include "eina_config.h"
@@ -180,8 +183,8 @@ static void _dir_arch_list_cb(const char *name, const char *path, void *data)
  * @cond LOCAL
  */
 
-EAPI Eina_Error EINA_ERROR_WRONG_MODULE = 0;
-EAPI Eina_Error EINA_ERROR_MODULE_INIT_FAILED = 0;
+EINA_API Eina_Error EINA_ERROR_WRONG_MODULE = 0;
+EINA_API Eina_Error EINA_ERROR_MODULE_INIT_FAILED = 0;
 
 /**
  * @endcond
@@ -227,6 +230,7 @@ eina_module_init(void)
 Eina_Bool
 eina_module_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    /* TODO should we store every module when "new" is called and
     * delete the list of modules here
     */
@@ -240,7 +244,7 @@ eina_module_shutdown(void)
 *                                   API                                      *
 *============================================================================*/
 
-EAPI Eina_Module *eina_module_new(const char *file)
+EINA_API Eina_Module *eina_module_new(const char *file)
 {
    Eina_Module *m;
    size_t len;
@@ -255,7 +259,12 @@ EAPI Eina_Module *eina_module_new(const char *file)
        (file[0] != '\0' && file[1] == ':' && file[2] == '\\'))
      {
         if (stat(file, &st) == -1) return NULL;
+#ifdef _MSC_VER
+#define EINA_S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+        if (!EINA_S_ISREG(st.st_mode)) return NULL;
+#else
         if (!S_ISREG(st.st_mode)) return NULL;
+#endif
      }
 
    len = strlen(file);
@@ -278,7 +287,7 @@ EAPI Eina_Module *eina_module_new(const char *file)
    return m;
 }
 
-EAPI Eina_Bool eina_module_free(Eina_Module *m)
+EINA_API Eina_Bool eina_module_free(Eina_Module *m)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(m, EINA_FALSE);
 
@@ -292,7 +301,7 @@ EAPI Eina_Bool eina_module_free(Eina_Module *m)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool eina_module_load(Eina_Module *m)
+EINA_API Eina_Bool eina_module_load(Eina_Module *m)
 {
 #ifdef HAVE_DLOPEN
    void *dl_handle;
@@ -347,7 +356,7 @@ loaded:
 #endif
 }
 
-EAPI Eina_Bool eina_module_unload(Eina_Module *m)
+EINA_API Eina_Bool eina_module_unload(Eina_Module *m)
 {
 #ifdef HAVE_DLOPEN
    Eina_Module_Shutdown *shut;
@@ -375,7 +384,7 @@ EAPI Eina_Bool eina_module_unload(Eina_Module *m)
 #endif
 }
 
-EAPI void *eina_module_symbol_get(const Eina_Module *m, const char *symbol)
+EINA_API void *eina_module_symbol_get(const Eina_Module *m, const char *symbol)
 {
 #ifdef HAVE_DLOPEN
    EINA_SAFETY_ON_NULL_RETURN_VAL(m,         NULL);
@@ -388,19 +397,19 @@ EAPI void *eina_module_symbol_get(const Eina_Module *m, const char *symbol)
 #endif
 }
 
-EAPI const char *eina_module_file_get(const Eina_Module *m)
+EINA_API const char *eina_module_file_get(const Eina_Module *m)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(m, NULL);
    return m->file;
 }
 
-EAPI void eina_module_symbol_global_set(Eina_Module *module, Eina_Bool global)
+EINA_API void eina_module_symbol_global_set(Eina_Module *module, Eina_Bool global)
 {
    EINA_SAFETY_ON_NULL_RETURN(module);
    module->global = !!global;
 }
 
-EAPI char *eina_module_symbol_path_get(const void *symbol, const char *sub_dir)
+EINA_API char *eina_module_symbol_path_get(const void *symbol, const char *sub_dir)
 {
 #ifdef HAVE_DLADDR
    Dl_info eina_dl;
@@ -442,7 +451,7 @@ EAPI char *eina_module_symbol_path_get(const void *symbol, const char *sub_dir)
    return NULL;
 }
 
-EAPI char *eina_module_environment_path_get(const char *env,
+EINA_API char *eina_module_environment_path_get(const char *env,
                                             const char *sub_dir)
 {
    const char *env_dir;
@@ -478,7 +487,7 @@ EAPI char *eina_module_environment_path_get(const char *env,
    return NULL;
 }
 
-EAPI Eina_Array *eina_module_arch_list_get(Eina_Array *array,
+EINA_API Eina_Array *eina_module_arch_list_get(Eina_Array *array,
                                            const char *path,
                                            const char *arch)
 {
@@ -496,7 +505,7 @@ EAPI Eina_Array *eina_module_arch_list_get(Eina_Array *array,
    return list_get_cb_data.array;
 }
 
-EAPI Eina_Array *eina_module_list_get(Eina_Array *array,
+EINA_API Eina_Array *eina_module_list_get(Eina_Array *array,
                                       const char *path,
                                       Eina_Bool recursive,
                                       Eina_Module_Cb cb,
@@ -520,7 +529,7 @@ EAPI Eina_Array *eina_module_list_get(Eina_Array *array,
    return list_get_cb_data.array;
 }
 
-EAPI Eina_Module *
+EINA_API Eina_Module *
 eina_module_find(const Eina_Array *array, const char *module)
 {
    unsigned int i;
@@ -551,7 +560,7 @@ eina_module_find(const Eina_Array *array, const char *module)
    return NULL;
 }
 
-EAPI void eina_module_list_load(Eina_Array *array)
+EINA_API void eina_module_list_load(Eina_Array *array)
 {
    Eina_Array_Iterator iterator;
    Eina_Module *m;
@@ -566,7 +575,7 @@ EAPI void eina_module_list_load(Eina_Array *array)
      }
 }
 
-EAPI void eina_module_list_unload(Eina_Array *array)
+EINA_API void eina_module_list_unload(Eina_Array *array)
 {
    Eina_Array_Iterator iterator;
    Eina_Module *m;
@@ -578,7 +587,7 @@ EAPI void eina_module_list_unload(Eina_Array *array)
      eina_module_unload(m);
 }
 
-EAPI void eina_module_list_free(Eina_Array *array)
+EINA_API void eina_module_list_free(Eina_Array *array)
 {
    Eina_Array_Iterator iterator;
    Eina_Module *m;

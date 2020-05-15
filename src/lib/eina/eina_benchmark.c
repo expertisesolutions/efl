@@ -125,6 +125,7 @@ eina_benchmark_init(void)
 Eina_Bool
 eina_benchmark_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_log_domain_unregister(_eina_benchmark_log_dom);
    _eina_benchmark_log_dom = -1;
    return EINA_TRUE;
@@ -134,7 +135,7 @@ eina_benchmark_shutdown(void)
 *                                   API                                      *
 *============================================================================*/
 
-EAPI Eina_Benchmark *
+EINA_API Eina_Benchmark *
 eina_benchmark_new(const char *name, const char *run)
 {
    Eina_Benchmark *new;
@@ -148,7 +149,7 @@ eina_benchmark_new(const char *name, const char *run)
    return new;
 }
 
-EAPI void
+EINA_API void
 eina_benchmark_free(Eina_Benchmark *bench)
 {
    Eina_Array *names;
@@ -179,7 +180,7 @@ eina_benchmark_free(Eina_Benchmark *bench)
    free(bench);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_benchmark_register(Eina_Benchmark *bench,
                         const char *name,
                         Eina_Benchmark_Specimens bench_cb,
@@ -209,7 +210,7 @@ eina_benchmark_register(Eina_Benchmark *bench,
    return EINA_TRUE;
 }
 
-EAPI Eina_Array *
+EINA_API Eina_Array *
 eina_benchmark_run(Eina_Benchmark *bench)
 {
    FILE *main_script;

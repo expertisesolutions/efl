@@ -140,7 +140,7 @@ static const Eina_Value_Struct_Desc RACE_STRUCT_DESC = {
 };
 
 /** @cond local */
-EAPI const Eina_Value_Struct_Desc *EINA_PROMISE_RACE_STRUCT_DESC = &RACE_STRUCT_DESC;
+EINA_API const Eina_Value_Struct_Desc *EINA_PROMISE_RACE_STRUCT_DESC = &RACE_STRUCT_DESC;
 /** @endcond */
 
 static inline void
@@ -574,7 +574,7 @@ eina_promise_init(void)
    return EINA_FALSE;
 }
 
-EAPI void
+EINA_API void
 __eina_promise_cancel_all(void)
 {
    eina_lock_take(&_pending_futures_lock);
@@ -583,7 +583,7 @@ __eina_promise_cancel_all(void)
    eina_lock_release(&_pending_futures_lock);
 }
 
-EAPI void
+EINA_API void
 __eina_promise_cancel_data(void *data)
 {
    Eina_List *del = NULL, *l;
@@ -607,6 +607,7 @@ __eina_promise_cancel_data(void *data)
 Eina_Bool
 eina_promise_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    __eina_promise_cancel_all();
    eina_lock_free(&_pending_futures_lock);
    eina_mempool_del(_future_mp);
@@ -618,7 +619,7 @@ eina_promise_shutdown(void)
    return EINA_TRUE;
 }
 
-EAPI Eina_Value
+EINA_API Eina_Value
 eina_promise_as_value(Eina_Promise *p)
 {
    Eina_Value v = EINA_VALUE_EMPTY;
@@ -698,7 +699,7 @@ _scheduler_get(Eina_Future *f)
    return NULL;
 }
 
-EAPI Eina_Value
+EINA_API Eina_Value
 eina_future_as_value(Eina_Future *f)
 {
    Eina_Value v = EINA_VALUE_EMPTY;
@@ -739,7 +740,7 @@ eina_future_as_value(Eina_Future *f)
    return v;
 }
 
-EAPI Eina_Promise *
+EINA_API Eina_Promise *
 eina_promise_new(Eina_Future_Scheduler *scheduler,
                  Eina_Promise_Cancel_Cb cancel_cb, const void *data)
 {
@@ -758,7 +759,7 @@ eina_promise_new(Eina_Future_Scheduler *scheduler,
    return p;
 }
 
-EAPI Eina_Promise *
+EINA_API Eina_Promise *
 eina_promise_continue_new(const Eina_Future *dead_future,
                           Eina_Promise_Cancel_Cb cancel_cb, const void *data)
 {
@@ -777,14 +778,14 @@ eina_promise_continue_new(const Eina_Future *dead_future,
    return p;
 }
 
-EAPI void
+EINA_API void
 eina_future_cancel(Eina_Future *f)
 {
    EINA_FUTURE_CHECK_RETURN(f);
    _eina_future_cancel(f, ECANCELED);
 }
 
-EAPI void
+EINA_API void
 eina_promise_resolve(Eina_Promise *p, Eina_Value value)
 {
    EINA_PROMISE_CHECK_GOTO(p, err);
@@ -795,7 +796,7 @@ eina_promise_resolve(Eina_Promise *p, Eina_Value value)
    eina_value_flush(&value);
 }
 
-EAPI void
+EINA_API void
 eina_promise_reject(Eina_Promise *p, Eina_Error err)
 {
    Eina_Value value;
@@ -863,7 +864,7 @@ _eina_future_new(Eina_Promise *p, const Eina_Future_Desc desc)
    return NULL;
 }
 
-EAPI Eina_Future *
+EINA_API Eina_Future *
 eina_future_new(Eina_Promise *p)
 {
    static const Eina_Future_Desc desc = {
@@ -898,7 +899,7 @@ _eina_future_then(Eina_Future *prev, const Eina_Future_Desc desc)
    return NULL;
 }
 
-EAPI Eina_Future *
+EINA_API Eina_Future *
 eina_future_resolved(Eina_Future_Scheduler *scheduler, Eina_Value value)
 {
    Eina_Promise *p;
@@ -920,7 +921,7 @@ eina_future_resolved(Eina_Future_Scheduler *scheduler, Eina_Value value)
    return NULL;
 }
 
-EAPI Eina_Future *
+EINA_API Eina_Future *
 eina_future_rejected(Eina_Future_Scheduler *scheduler, Eina_Error err)
 {
    Eina_Promise *p;
@@ -941,7 +942,7 @@ eina_future_rejected(Eina_Future_Scheduler *scheduler, Eina_Error err)
    return NULL;
 }
 
-EAPI Eina_Future *
+EINA_API Eina_Future *
 eina_future_then_from_desc(Eina_Future *prev, const Eina_Future_Desc desc)
 {
    EINA_FUTURE_CHECK_GOTO(prev, err_future);
@@ -955,7 +956,7 @@ eina_future_then_from_desc(Eina_Future *prev, const Eina_Future_Desc desc)
    return NULL;
 }
 
-EAPI Eina_Future *
+EINA_API Eina_Future *
 eina_future_chain_array(Eina_Future *prev, const Eina_Future_Desc descs[])
 {
    Eina_Future *f = prev;
@@ -991,7 +992,7 @@ eina_future_chain_array(Eina_Future *prev, const Eina_Future_Desc descs[])
    return NULL;
 }
 
-EAPI Eina_Future *
+EINA_API Eina_Future *
 eina_future_chain_easy_array(Eina_Future *prev, const Eina_Future_Cb_Easy_Desc descs[])
 {
    size_t i = -1;
@@ -1060,7 +1061,7 @@ _eina_future_cb_console(void *data,
    return value;
 }
 
-EAPI Eina_Future_Desc
+EINA_API Eina_Future_Desc
 eina_future_cb_console_from_desc(const Eina_Future_Cb_Console_Desc desc)
 {
    Eina_Future_Cb_Console_Desc *c;
@@ -1112,7 +1113,7 @@ _eina_future_cb_convert_to(void *data, const Eina_Value src,
     return dst;
 }
 
-EAPI Eina_Future_Desc
+EINA_API Eina_Future_Desc
 eina_future_cb_convert_to(const Eina_Value_Type *type)
 {
    return (Eina_Future_Desc){.cb = _eina_future_cb_convert_to, .data = type};
@@ -1134,7 +1135,7 @@ _eina_future_cb_easy(void *data, const Eina_Value value,
     return ret;
 }
 
-EAPI Eina_Future_Desc
+EINA_API Eina_Future_Desc
 eina_future_cb_easy_from_desc(const Eina_Future_Cb_Easy_Desc desc)
 {
    Eina_Future_Cb_Easy_Desc *d = calloc(1, sizeof(Eina_Future_Cb_Easy_Desc));
@@ -1329,7 +1330,7 @@ promise_proxy_of_future_array_create(Eina_Future *array[],
    return EINA_FALSE;
 }
 
-EAPI Eina_Promise *
+EINA_API Eina_Promise *
 eina_promise_all_iterator(Eina_Iterator *it)
 {
    All_Promise_Ctx *ctx;
@@ -1393,7 +1394,7 @@ eina_promise_all_iterator(Eina_Iterator *it)
    return NULL;
 }
 
-EAPI Eina_Promise *
+EINA_API Eina_Promise *
 eina_promise_all_array(Eina_Future *array[])
 {
    All_Promise_Ctx *ctx;
@@ -1436,7 +1437,7 @@ eina_promise_all_array(Eina_Future *array[])
    return NULL;
 }
 
-EAPI Eina_Promise *
+EINA_API Eina_Promise *
 eina_promise_race_array(Eina_Future *array[])
 {
    Race_Promise_Ctx *ctx;
@@ -1478,13 +1479,13 @@ _eina_future_cb_ignore_error(void *data, const Eina_Value value,
    return value;
 }
 
-EAPI Eina_Future_Desc
+EINA_API Eina_Future_Desc
 eina_future_cb_ignore_error(Eina_Error err)
 {
    return (Eina_Future_Desc){ _eina_future_cb_ignore_error, (void*)(uintptr_t)err, NULL };
 }
 
-EAPI void
+EINA_API void
 eina_future_desc_flush(Eina_Future_Desc *desc)
 {
    if (!desc) return;
@@ -1492,7 +1493,7 @@ eina_future_desc_flush(Eina_Future_Desc *desc)
    memset(desc, 0, sizeof(Eina_Future_Desc));
 }
 
-EAPI void
+EINA_API void
 eina_future_cb_easy_desc_flush(Eina_Future_Cb_Easy_Desc *desc)
 {
    if (!desc) return;
@@ -1541,7 +1542,7 @@ _future_cb_log(void *data, const Eina_Value value,
    return value;
 }
 
-EAPI Eina_Future_Desc
+EINA_API Eina_Future_Desc
 eina_future_cb_log_from_desc(const Eina_Future_Cb_Log_Desc desc)
 {
    Eina_Future_Cb_Log_Desc *ctx = calloc(1, sizeof(Eina_Future_Cb_Log_Desc));

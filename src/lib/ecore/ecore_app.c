@@ -3,7 +3,12 @@
 #endif
 
 #include <stdlib.h>
+
+#ifdef _WIN32
+#include <evil_private.h>
+#else
 #include <unistd.h>
+#endif
 
 #include "Ecore.h"
 #include "ecore_private.h"

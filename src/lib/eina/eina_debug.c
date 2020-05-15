@@ -51,11 +51,12 @@
 #ifdef HAVE_ARPA_INET_H
 # include <arpa/inet.h>
 #endif
-#include <fcntl.h>
 
 #ifdef _WIN32
-# include <ws2tcpip.h>
 # include <evil_private.h> /* fcntl */
+# include <ws2tcpip.h>
+#else
+# include <fcntl.h>
 #endif
 
 #include "eina_alloca.h"
@@ -136,12 +137,10 @@ struct _Eina_Debug_Session
    Eina_Bool deleted : 1; /* set if session is dead */
 };
 
-#ifndef _WIN32
 static void _opcodes_register_all(Eina_Debug_Session *session);
-#endif
 static void _thread_start(Eina_Debug_Session *session);
 
-EAPI int
+EINA_API int
 eina_debug_session_send(Eina_Debug_Session *session, int dest, int op, void *data, int size)
 {
    Eina_Debug_Packet_Header hdr;
@@ -176,7 +175,6 @@ err:
 #endif
 }
 
-#ifndef _WIN32
 static void
 _daemon_greet(Eina_Debug_Session *session)
 {
@@ -190,6 +188,7 @@ _daemon_greet(Eina_Debug_Session *session)
 #endif
    int size = 8 + (app_name ? strlen(app_name) : 0) + 1;
    unsigned char *buf = alloca(size);
+   
    int version = SWAP_32(1); // version of protocol we speak
    int pid = getpid();
    pid = SWAP_32(pid);
@@ -259,15 +258,14 @@ end:
    if (rret <= 0 && packet_buf) free(packet_buf);
    return rret;
 }
-#endif
 
-EAPI void
+EINA_API void
 eina_debug_disable()
 {
    _debug_disabled = EINA_TRUE;
 }
 
-EAPI void
+EINA_API void
 eina_debug_session_terminate(Eina_Debug_Session *session)
 {
    /* Close fd here so the thread terminates its own session by itself */
@@ -286,7 +284,7 @@ eina_debug_session_terminate(Eina_Debug_Session *session)
      }
 }
 
-EAPI void
+EINA_API void
 eina_debug_session_dispatch_override(Eina_Debug_Session *session, Eina_Debug_Dispatch_Cb disp_cb)
 {
    if (!session) return;
@@ -294,14 +292,13 @@ eina_debug_session_dispatch_override(Eina_Debug_Session *session, Eina_Debug_Dis
    session->dispatch_cb = disp_cb;
 }
 
-EAPI Eina_Debug_Dispatch_Cb
+EINA_API Eina_Debug_Dispatch_Cb
 eina_debug_session_dispatch_get(Eina_Debug_Session *session)
 {
    if (session) return session->dispatch_cb;
    else return NULL;
 }
 
-#ifndef _WIN32
 static void
 _static_opcode_register(Eina_Debug_Session *session,
       int op_id, Eina_Debug_Cb cb)
@@ -359,7 +356,6 @@ _callbacks_register_cb(Eina_Debug_Session *session, int src_id EINA_UNUSED, void
 
    return EINA_FALSE;
 }
-#endif
 
 static void
 _opcodes_registration_send(Eina_Debug_Session *session,
@@ -404,7 +400,6 @@ _opcodes_registration_send(Eina_Debug_Session *session,
    free(buf);
 }
 
-#ifndef _WIN32
 static void
 _opcodes_register_all(Eina_Debug_Session *session)
 {
@@ -445,7 +440,6 @@ _opcodes_unregister_all(Eina_Debug_Session *session)
 
 #define LENGTH_OF_SOCKADDR_UN(s) \
    (strlen((s)->sun_path) + (size_t)(((struct sockaddr_un *)NULL)->sun_path))
-#endif
 
 static Eina_Debug_Session *
 _session_create(int fd)
@@ -461,7 +455,7 @@ _session_create(int fd)
    return session;
 }
 
-EAPI Eina_Debug_Session *
+EINA_API Eina_Debug_Session *
 eina_debug_remote_connect(int port)
 {
    int fd;
@@ -491,7 +485,7 @@ err:
    return NULL;
 }
 
-EAPI Eina_Debug_Session *
+EINA_API Eina_Debug_Session *
 eina_debug_local_connect(Eina_Bool is_master)
 {
 #ifndef _WIN32
@@ -544,7 +538,6 @@ err:
 // way. this is an alternative to using external debuggers so we can get
 // users or developers to get useful information about an app at all times
 
-#ifndef _WIN32
 static void *
 _monitor(void *_data)
 {
@@ -554,7 +547,7 @@ _monitor(void *_data)
    _opcodes_register_all(session);
 
    // set a name for this thread for system debugging
-#if (defined (EINA_HAVE_PTHREAD_SETNAME) || defined (EINA_HAVE_WIN32_THREAD_SETNAME))
+#if defined(EINA_HAVE_PTHREAD_SETNAME) || defined(EINA_HAVE_WIN32_THREAD_SETNAME)
    eina_thread_name_set(eina_thread_self(), "Edbg-mon");
 #endif
 
@@ -591,43 +584,20 @@ _monitor(void *_data)
      }
    return NULL;
 }
-#endif
 
 // start up the debug monitor if we haven't already
 static void
 _thread_start(Eina_Debug_Session *session)
 {
-#ifndef _WIN32
-   pthread_t monitor_thread;
-   int err;
-   sigset_t oldset, newset;
+   Eina_Thread monitor_thread;
 
-   sigemptyset(&newset);
-   sigaddset(&newset, SIGPIPE);
-   sigaddset(&newset, SIGALRM);
-   sigaddset(&newset, SIGCHLD);
-   sigaddset(&newset, SIGUSR1);
-   sigaddset(&newset, SIGUSR2);
-   sigaddset(&newset, SIGHUP);
-   sigaddset(&newset, SIGQUIT);
-   sigaddset(&newset, SIGINT);
-   sigaddset(&newset, SIGTERM);
-#ifdef SIGPWR
-   sigaddset(&newset, SIGPWR);
-#endif
-   pthread_sigmask(SIG_BLOCK, &newset, &oldset);
+   Eina_Bool err = eina_thread_create(&monitor_thread,EINA_THREAD_BACKGROUND,-1,(Eina_Thread_Cb)_monitor,session);
 
-   err = pthread_create(&monitor_thread, NULL, _monitor, session);
-
-   pthread_sigmask(SIG_SETMASK, &oldset, NULL);
-   if (err != 0)
+   if (!err)
      {
         e_debug("EINA DEBUG ERROR: Can't create monitor debug thread!");
         abort();
      }
-#else
-   (void)session;
-#endif
 }
 
 /*
@@ -635,7 +605,7 @@ _thread_start(Eina_Debug_Session *session)
  * - Pointer to ops: returned in the response to determine which opcodes have been added
  * - List of opcode names separated by \0
  */
-EAPI void
+EINA_API void
 eina_debug_opcodes_register(Eina_Debug_Session *session, const Eina_Debug_Opcode ops[],
       Eina_Debug_Opcode_Status_Cb status_cb, void *data)
 {
@@ -657,7 +627,7 @@ eina_debug_opcodes_register(Eina_Debug_Session *session, const Eina_Debug_Opcode
       _opcodes_registration_send(session, info);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_debug_dispatch(Eina_Debug_Session *session, void *buffer)
 {
    Eina_Debug_Packet_Header *hdr = buffer;
@@ -682,13 +652,13 @@ eina_debug_dispatch(Eina_Debug_Session *session, void *buffer)
    return EINA_TRUE;
 }
 
-EAPI void
+EINA_API void
 eina_debug_session_data_set(Eina_Debug_Session *session, void *data)
 {
    if (session) session->data = data;
 }
 
-EAPI void *
+EINA_API void *
 eina_debug_session_data_get(Eina_Debug_Session *session)
 {
    if (session) return session->data;
@@ -729,23 +699,32 @@ eina_debug_init(void)
 Eina_Bool
 eina_debug_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Debug_Session *session;
    Eina_Thread self = eina_thread_self();
 
    EINA_LIST_FREE(sessions, session)
      eina_debug_session_terminate(session);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    _eina_debug_timer_shutdown();
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_debug_bt_shutdown();
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_debug_cpu_shutdown();
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_debug_thread_del(&self);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&_eina_debug_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&_eina_debug_thread_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_threads_shutdown();
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return EINA_TRUE;
 }
 
-EAPI void
+EINA_API void
 eina_debug_fork_reset(void)
 {
    extern Eina_Bool fork_resetting;

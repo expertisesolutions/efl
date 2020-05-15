@@ -1,6 +1,7 @@
 #ifndef __EVIL_TIME_H__
 #define __EVIL_TIME_H__
 
+#include <evil_api.h>
 
 #include <time.h>
 
@@ -34,7 +35,7 @@
  *
  * Supported OS: Windows XP.
  */
-EAPI char *strptime(const char *buf, const char *fmt, struct tm *tm);
+EVIL_API char *strptime(const char *buf, const char *fmt, struct tm *tm);
 
 
 /**

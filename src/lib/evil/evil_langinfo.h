@@ -2,6 +2,7 @@
 #define __EVIL_LANGINFO_H__
 
 
+#include <evil_api.h>
 #include <locale.h>
 
 
@@ -39,7 +40,7 @@ enum {
 # define CODESET       _NL_CTYPE_CODESET
 # define RADIXCHAR     _NL_NUMERIC_RADIXCHAR
 
-EAPI char *nl_langinfo(nl_item index);
+EVIL_API char *nl_langinfo(nl_item index);
 
 
 #endif /*__EVIL_LANGINFO_H__ */

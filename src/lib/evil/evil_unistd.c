@@ -2,25 +2,19 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <errno.h>
-#include <direct.h>
-# include <sys/time.h>
-
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <winsock2.h>
-#undef WIN32_LEAN_AND_MEAN
-
 #include "evil_private.h"
 
+#include <evil_windows.h>
+#include <errno.h>
+#include <direct.h>
+#include <sys/time.h>
 
 LONGLONG _evil_time_freq;
 LONGLONG _evil_time_count;
 long     _evil_time_second;
 
-
-long _evil_systemtime_to_time(SYSTEMTIME st);
+long 
+_evil_systemtime_to_time(SYSTEMTIME st);
 
 long
 _evil_systemtime_to_time(SYSTEMTIME st)
@@ -37,14 +31,22 @@ _evil_systemtime_to_time(SYSTEMTIME st)
 
    day = st.wDay + days[st.wMonth - 1];
 
-  if (!(st.wYear & 3) && (st.wMonth > 2) )
-    day++;
+   if (!(st.wYear & 3) && (st.wMonth > 2) )
+     day++;
 
-  t = ((st.wYear - 70) * 365 + ((st.wYear - 1) >> 2) - 17 + day) * 24 + st.wHour;
-  t = (t * 60 + st.wMinute) * 60 + st.wSecond;
+   t = ((st.wYear - 70) * 365 + ((st.wYear - 1) >> 2) - 17 + day) * 24 + st.wHour;
+   t = (t * 60 + st.wMinute) * 60 + st.wSecond;
 
-  return (long)t;
+   return (long)t;
 }
+
+
+int
+execvp(const char *file, char *const argv[])
+{
+   return _execvp(file, (const char *const *)argv);
+}
+
 
 /*
  * Time related functions
