@@ -89,6 +89,7 @@ exit /B 0
             -Dbuild-tests=false^
             -Dbuild-examples=false^
             -Dbindings=^
+            --buildtype=debug^
             --native-file native-file-windows.txt
 
     if exist build (
