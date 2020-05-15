@@ -104,3 +104,4 @@ subprojects/pcre-*
 subprojects/zlib-*
 subprojects/getopt
 subprojects/packagecache
+subprojects/check*
