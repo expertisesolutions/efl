@@ -476,7 +476,7 @@ eina_rbtree_inline_remove(Eina_Rbtree *root,
 	       rt = (*rt)->son + dir;
 	    }
 
-	 if (q != NULL) 
+	 if (q != NULL)
 	    {
 	       int r_color = r->color;
 	       Eina_Rbtree *nd = q->son[dir ^ 1];
@@ -558,7 +558,6 @@ eina_rbtree_init(void)
 Eina_Bool
 eina_rbtree_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Iterator_Rbtree *it;
 
    while ((it = eina_array_pop(&iterator_trash)))

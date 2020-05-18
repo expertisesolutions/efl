@@ -127,7 +127,6 @@ eina_binshare_init(void)
 EINA_API Eina_Bool
 eina_binshare_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Bool ret;
    ret = eina_share_common_shutdown(&binshare_share);
 

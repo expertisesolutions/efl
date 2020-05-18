@@ -50,7 +50,6 @@ _FUNC_EXPAND(init)(void)
 Eina_Bool
 _FUNC_EXPAND(shutdown)(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return eina_strbuf_common_shutdown();
 }
 

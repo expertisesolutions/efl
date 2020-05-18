@@ -189,7 +189,6 @@ eina_error_init(void)
 Eina_Bool
 eina_error_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Error_Message *eem, *eem_end;
 
    eem = _eina_errors;

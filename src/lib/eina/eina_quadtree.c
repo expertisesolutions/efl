@@ -923,7 +923,6 @@ eina_quadtree_init(void)
 Eina_Bool
 eina_quadtree_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_mempool_del(eina_quadtree_root_mp);
    eina_mempool_del(_eina_quadtree_items_mp);
 

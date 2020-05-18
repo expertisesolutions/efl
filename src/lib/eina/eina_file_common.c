@@ -1122,7 +1122,6 @@ eina_file_init(void)
 Eina_Bool
 eina_file_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (eina_hash_population(_eina_file_cache) > 0)
      {
         Eina_Iterator *it;

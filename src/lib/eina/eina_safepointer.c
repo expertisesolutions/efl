@@ -384,7 +384,6 @@ eina_safepointer_init(void)
 Eina_Bool
 eina_safepointer_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&sl);
 
    return EINA_TRUE;

@@ -268,7 +268,6 @@ on_init_fail:
 Eina_Bool
 eina_simple_xml_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_mempool_del(_eina_simple_xml_attribute_mp);
    eina_mempool_del(_eina_simple_xml_tag_mp);
 

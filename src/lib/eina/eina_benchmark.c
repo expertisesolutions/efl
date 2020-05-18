@@ -125,7 +125,6 @@ eina_benchmark_init(void)
 Eina_Bool
 eina_benchmark_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_log_domain_unregister(_eina_benchmark_log_dom);
    _eina_benchmark_log_dom = -1;
    return EINA_TRUE;

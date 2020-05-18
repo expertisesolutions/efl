@@ -571,7 +571,6 @@ init_error:
 Eina_Bool
 eina_rectangle_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Rectangle *del;
 
    eina_spinlock_free(&_eina_spinlock);
