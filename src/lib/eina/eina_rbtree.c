@@ -61,7 +61,7 @@ struct _Eina_Iterator_Rbtree_List
 {
    Eina_Rbtree *tree;
 
-   Eina_Rbtree_Direction dir : 1;
+   unsigned int dir : 1;
    Eina_Bool up : 1;
 };
 
@@ -476,7 +476,7 @@ eina_rbtree_inline_remove(Eina_Rbtree *root,
 	       rt = (*rt)->son + dir;
 	    }
 
-	 if (q != NULL) 
+	 if (q != NULL)
 	    {
 	       int r_color = r->color;
 	       Eina_Rbtree *nd = q->son[dir ^ 1];
