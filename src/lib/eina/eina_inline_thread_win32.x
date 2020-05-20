@@ -45,7 +45,7 @@ _eina_thread_join(Eina_Thread t)
    return NULL;
 }
 
-DWORD WINAPI 
+DWORD WINAPI
 _eina_thread_func(void *params)
 {
    return (DWORD)((Eina_Win32_Thread_Func *)params)->
@@ -72,7 +72,7 @@ _eina_thread_set_priority(Eina_Thread_Priority prio, Eina_Thread *t)
       case EINA_THREAD_NORMAL:
       default:
         nPriority = THREAD_PRIORITY_NORMAL;
-        break;       
+        break;
      }
 
    SetThreadPriority((HANDLE)*t, nPriority);
@@ -115,7 +115,7 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
         SetThreadAffinityMask(*t, (DWORD_PTR *)&affinity);
    #endif
      }
-   
+
    return ret;
 }
 
@@ -144,45 +144,18 @@ _eina_thread_name_set(Eina_Thread thread, char *buf)
 static inline Eina_Bool
 _eina_thread_cancel(Eina_Thread thread)
 {
-   LPDWORD lpExitCode;
-   Eina_Bool success = GetExitCodeThread((HANDLE)thread, lpExitCode);
-   ExitThread(*lpExitCode);
-   return !success;
+   return EINVAL;
 }
 
-UNIMPLEMENTED static inline void
-_eina_thread_setcanceltype(int type, int *oldtype)
-{
-   #warning _eina_thread_setcanceltype is not implemented.
-}
-
-UNIMPLEMENTED static inline int
-_eina_thread_setcancelstate(int type, int *oldtype)
-{
-   #warning _eina_thread_setcancelstate is not implemented.
-   return 0;
-}
-
-UNIMPLEMENTED static inline void
+static inline void
 _eina_thread_cancel_checkpoint(void)
 {
-   #warning _eina_thread_cancel_checkpoint is not implemented.
+   return;
 }
 
 static inline Eina_Bool
 _eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable)
 {
-   int state = cancellable ? EINA_THREAD_CANCEL_ENABLE :
-EINA_THREAD_CANCEL_DISABLE;
-   if (!state)
-     {
-        *was_cancellable = EINA_TRUE;
-        return EINA_FALSE;
-     }
-   else
-     {
-        *was_cancellable = EINA_TRUE;
-        return EINA_TRUE;
-     }
+   return EINA_FALSE;
 }
 #endif
