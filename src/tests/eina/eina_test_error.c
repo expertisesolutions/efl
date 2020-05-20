@@ -220,8 +220,13 @@ EFL_START_TEST(eina_error_test_failures)
                     EINA_FALSE);
    fail_unless(ctx.did);
 
+#ifdef _MSC_VER
+   ck_assert_str_eq(eina_error_msg_get(ENOMEM),
+                    "Not enough space");
+#else
    ck_assert_str_eq(eina_error_msg_get(ENOMEM),
                     "Cannot allocate memory");
+#endif
 
    TEST_MAGIC_SAFETY("eina_error_find",
                      "safety check failed: msg == NULL");
