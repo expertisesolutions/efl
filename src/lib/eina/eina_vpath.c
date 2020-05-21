@@ -233,8 +233,10 @@ _eina_vpath_resolve(const char *path, char *str, size_t size)
         // ~username/ <- homedir of user "username"
         else
 #ifndef HAVE_GETPWENT
-          ERR("User fetching is disabled on this system\nThe string was: %s", path);
-          return 0;
+	  {
+             ERR("User fetching is disabled on this system\nThe string was: %s", path);
+             return 0;
+	  }
 #else
           {
              const char *p;
