@@ -94,14 +94,20 @@ EFL_START_TEST(eina_value_test_simple)
    eina_value_flush(value);
 
    fail_unless(eina_value_setup(value, EINA_VALUE_TYPE_INT64));
-   fail_unless(eina_value_set(value, 0x0011223344556677));
+   long expected_long;
+   if (sizeof(long) > 4) {
+      expected_long = 0x0011223344556677;
+   } else {
+      expected_long = 0x01234567;
+   }
+   fail_unless(eina_value_set(value, expected_long));
    fail_unless(eina_value_get(value, &i64));
-   fail_unless(i64 == 0x0011223344556677);
+   fail_unless(i64 == expected_long);
    fail_unless(eina_value_int64_get(value, &i64));
    fail_if(eina_value_long_get(value, &l));
    fail_unless(eina_value_long_convert(value, &l));
-   fail_unless(l == (long)0x0011223344556677);
-   fail_unless(i64 == 0x0011223344556677);
+   fail_unless(l == expected_long);
+   fail_unless(i64 == expected_long);
    eina_value_flush(value);
 
    /* unsigned: */
@@ -151,14 +157,20 @@ EFL_START_TEST(eina_value_test_simple)
    eina_value_flush(value);
 
    fail_unless(eina_value_setup(value, EINA_VALUE_TYPE_UINT64));
-   fail_unless(eina_value_set(value, 0x1122334455667788));
+   unsigned long expected_ulong;
+   if (sizeof(unsigned long) > 4) {
+      expected_ulong = 0x1122334455667788;
+   } else {
+      expected_ulong = 0x12345678;
+   }
+   fail_unless(eina_value_set(value, expected_ulong));
    fail_unless(eina_value_get(value, &u64));
-   fail_unless(u64 == 0x1122334455667788);
+   fail_unless(u64 == expected_ulong);
    fail_unless(eina_value_uint64_get(value, &u64));
    fail_if(eina_value_ulong_get(value, &ul));
    fail_unless(eina_value_ulong_convert(value, &ul));
-   fail_unless(ul == (unsigned long)0x1122334455667788);
-   fail_unless(u64 == 0x1122334455667788);
+   fail_unless(ul == expected_ulong);
+   fail_unless(u64 == expected_ulong);
    eina_value_flush(value);
 
    /* floating point */
