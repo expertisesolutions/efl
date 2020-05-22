@@ -177,7 +177,7 @@ _eina_lock_take_try(Eina_Lock *mutex)
    Eina_Lock_Result ret = EINA_LOCK_FAIL;
 
    SetLastError (ERROR_SUCCESS);
-   
+
 #ifdef EINA_HAVE_ON_OFF_THREADS
    if (!_eina_threads_activated) return EINA_LOCK_SUCCEED;
 #endif
@@ -233,7 +233,8 @@ _eina_lock_take(Eina_Lock *mutex)
         int dt;
 
         gettimeofday(&t0, NULL);
-        ok = EnterCriticalSection(&(mutex->mutex));
+        EnterCriticalSection(&(mutex->mutex));
+        ok = GetLastError();
         gettimeofday(&t1, NULL);
 
         dt = (t1.tv_sec - t0.tv_sec) * 1000000;
@@ -549,7 +550,7 @@ static inline Eina_Bool
 _eina_barrier_new(Eina_Barrier *barrier, int needed)
 {
 #ifdef EINA_HAVE_WIN32_BARRIER
-   InitializeSynchronizationBarrier(&(barrier->barrier), (LONG) needed, 0);
+   InitializeSynchronizationBarrier(barrier->barrier, (LONG) needed, 0);
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
    else if ((ok == ERROR_NOT_ENOUGH_MEMORY) || (ok == ERROR_ACCESS_DENIED)
@@ -575,7 +576,7 @@ static inline  void
 _eina_barrier_free(Eina_Barrier *barrier)
 {
 #ifdef EINA_HAVE_WIN32_BARRIER
-   DeleteSynchronizationBarrier(&(barrier->barrier));
+   DeleteSynchronizationBarrier(barrier->barrier);
    DWORD ok = GetLastError();
    if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG(ok, barrier_destroy, barrier);
 #else
@@ -590,7 +591,7 @@ static inline Eina_Bool
 _eina_barrier_wait(Eina_Barrier *barrier)
 {
 #ifdef EINA_HAVE_WIN32_BARRIER
-   EnterSyncronizationBarrier(&(barrier->barrier)
+   EnterSynchronizationBarrier(barrier->barrier
                               , SYNCHRONIZATION_BARRIER_FLAGS_BLOCK_ONLY);
    DWORD ok = GetLastError();
    if (ok == ERROR_SUCCESS) return EINA_TRUE;
@@ -648,9 +649,9 @@ _eina_spinlock_take_try(Eina_Spinlock *spinlock)
    int ok = TryEnterCriticalSection(spinlock);
    DWORD err = GetLastError();
    if (err == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
-   else if (ok == 0 || err == ERROR_TIMEOUT) EINA_LOCK_FAIL;
-   else EINA_LOCK_ABORT_DEBUG((int)err, trylock, mutex);
-   return EINA_LOCK_FAIL
+   else if (ok == 0 || err == ERROR_TIMEOUT) return EINA_LOCK_FAIL;
+   else EINA_LOCK_ABORT_DEBUG((int)err, trylock, spinlock);
+   return EINA_LOCK_FAIL;
 #else
    return eina_lock_take_try(spinlock);
 #endif
@@ -667,10 +668,10 @@ _eina_spinlock_take(Eina_Spinlock *spinlock)
 
    for (;;)
      {
-        int ok = EnterCriticalSection(spinlock);
-        if (ok != 0) break;
+        EnterCriticalSection(spinlock);
+        DWORD err = GetLastError();
+        if (err == ERROR_SUCCESS) break;
         else {
-           DWORD err = GetLastError();
            EINA_LOCK_ABORT_DEBUG((int)err, spin_lock, spinlock);
         }
      }
