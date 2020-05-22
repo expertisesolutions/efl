@@ -52,7 +52,10 @@ jobs:
     - name: install meson
       run: py -3 -m pip install meson
     - name: add meson to path
-      run: echo "::add-path::C:\hostedtoolcache\windows\Python\3.8.2\x64\Scripts"
+      run: |
+        $python_version = (py -3 --version).replace("Python ", "")
+        $meson_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
+        echo "::add-path::$meson_path"
     - name: test meson
       run: meson -v
     - name: Cache OpenSSL compilation
