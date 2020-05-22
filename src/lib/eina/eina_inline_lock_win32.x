@@ -650,7 +650,7 @@ _eina_spinlock_take_try(Eina_Spinlock *spinlock)
    if (err == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
    else if (ok == 0 || err == ERROR_TIMEOUT) EINA_LOCK_FAIL;
    else EINA_LOCK_ABORT_DEBUG((int)err, trylock, mutex);
-   return EINA_LOCK_FAIL
+   return EINA_LOCK_FAIL;
 #else
    return eina_lock_take_try(spinlock);
 #endif
