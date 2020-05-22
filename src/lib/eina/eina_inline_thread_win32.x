@@ -29,13 +29,6 @@ typedef struct _Eina_Win32_Thread_Func
    void *(*func)(void *data);
 } Eina_Win32_Thread_Func;
 
-typedef struct _Eina_Win32_Thread_Attr
-{
-   LPSECURITY_ATTRIBUTES lpThreadAttributes;
-   SIZE_T dwStackSize;
-   DWORD dwCreationFlags;
-} Eina_Win32_Thread_Attr;
-
 static inline int *
 _eina_thread_join(Eina_Thread t)
 {
@@ -82,20 +75,9 @@ static inline Eina_Bool
 _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), void *data)
 {
    Eina_Bool ret;
-   Eina_Win32_Thread_Attr thread_attr;
+   DWORD threadID;
 
-   SECURITY_ATTRIBUTES sec_attributes;
-
-   sec_attributes.nLength = sizeof(SECURITY_ATTRIBUTES);
-   sec_attributes.lpSecurityDescriptor = NULL;
-   sec_attributes.bInheritHandle = EINA_TRUE;
-
-   thread_attr.lpThreadAttributes = &sec_attributes;
-
-   thread_attr.dwStackSize = 2*1024*1024;
-   thread_attr.dwCreationFlags = 0;
-
-   LPDWORD threadID;
+   SIZE_T dwStackSize = 2*1024*1024;
 
    Eina_Win32_Thread_Func thread_func;
    Eina_Thread_Call *c = (Eina_Thread_Call *)(data);
@@ -103,8 +85,10 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
    thread_func.func = func;
    thread_func.data = data;
 
-   *t = CreateThread(thread_attr.lpThreadAttributes, thread_attr.dwStackSize, &_eina_thread_func, &thread_func, thread_attr.dwCreationFlags, threadID);
+   *t = CreateThread(NULL, dwStackSize, &_eina_thread_func
+                   , &thread_func, CREATE_SUSPENDED, &threadID);
 
+   ResumeThread(*t);
    _eina_thread_set_priority(c->prio, t);
 
    ret = (*t != NULL) ? EINA_TRUE : EINA_FALSE;
