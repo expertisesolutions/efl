@@ -93,38 +93,39 @@ foreach cf: dev_cflags_try
     dev_cflags += cf
   endif
 endforeach
-add_global_arguments(dev_cflags, language: 'c')
-add_global_arguments(dev_cflags, language: 'cpp')
+
+add_project_arguments(dev_cflags, language: 'c')
+add_project_arguments(dev_cflags, language: 'cpp')
 
 
 foreach lang : ['c', 'objc', 'cpp']
-  add_global_arguments('-DHAVE_CONFIG_H=1', language: lang)
-  add_global_arguments('-D_GNU_SOURCE=1', language: lang)
-  add_global_arguments('-DEFL_BETA_API_SUPPORT=1', language: lang)
-  add_global_arguments('-DNEED_RUN_IN_TREE=1', language: lang)
-  add_global_arguments('-DELM_INTERNAL_API_ARGESFSDFEFC=1', language: lang)
+  add_project_arguments('-DHAVE_CONFIG_H=1', language: lang)
+  add_project_arguments('-D_GNU_SOURCE=1', language: lang)
+  add_project_arguments('-DEFL_BETA_API_SUPPORT=1', language: lang)
+  add_project_arguments('-DNEED_RUN_IN_TREE=1', language: lang)
+  add_project_arguments('-DELM_INTERNAL_API_ARGESFSDFEFC=1', language: lang)
   if sys_windows == true
-    add_global_arguments('-D_POSIX_C_SOURCE=200809L', language: lang)
-    add_global_arguments('-DDLL_EXPORT=1', language: lang)
+    add_project_arguments('-D_POSIX_C_SOURCE=200809L', language: lang)
+    add_project_arguments('-DDLL_EXPORT=1', language: lang)
     if (get_option('windows-version') == 'vista')
-      add_global_arguments('-DWINVER=0x060', language: lang)
-      add_global_arguments('-D_WIN32_WINNT=0x0600', language: lang)
+      add_project_arguments('-DWINVER=0x060', language: lang)
+      add_project_arguments('-D_WIN32_WINNT=0x0600', language: lang)
     elif (get_option('windows-version') == 'win7')
-      add_global_arguments('-DWINVER=0x0601', language: lang)
-      add_global_arguments('-D_WIN32_WINNT=0x0601', language: lang)
+      add_project_arguments('-DWINVER=0x0601', language: lang)
+      add_project_arguments('-D_WIN32_WINNT=0x0601', language: lang)
     elif (get_option('windows-version') == 'win8')
-      add_global_arguments('-DWINVER=0x0602', language: lang)
-      add_global_arguments('-D_WIN32_WINNT=0x0602', language: lang)
+      add_project_arguments('-DWINVER=0x0602', language: lang)
+      add_project_arguments('-D_WIN32_WINNT=0x0602', language: lang)
     elif (get_option('windows-version') == 'win81')
-      add_global_arguments('-DWINVER=0x0603', language: lang)
-      add_global_arguments('-D_WIN32_WINNT=0x0603', language: lang)
+      add_project_arguments('-DWINVER=0x0603', language: lang)
+      add_project_arguments('-D_WIN32_WINNT=0x0603', language: lang)
     elif (get_option('windows-version') == 'win10')
-      add_global_arguments('-DWINVER=0x0A00', language: lang)
-      add_global_arguments('-D_WIN32_WINNT=0x0A00', language: lang)
+      add_project_arguments('-DWINVER=0x0A00', language: lang)
+      add_project_arguments('-D_WIN32_WINNT=0x0A00', language: lang)
     else
       error('Version of targetted Windows incorrect')
     endif
-    add_global_arguments('-D__USE_MINGW_ANSI_STDIO', language: lang)
+    add_project_arguments('-D__USE_MINGW_ANSI_STDIO', language: lang)
   endif
 endforeach
 
@@ -185,21 +186,21 @@ if get_option('native-arch-optimization')
   elif host_machine.cpu_family() == 'arm'
     cpu_neon = true
     config_h.set10('BUILD_NEON', true)
-    add_global_arguments('-mfpu=neon', language: 'c')
-    add_global_arguments('-ftree-vectorize', language: 'c')
+    add_project_arguments('-mfpu=neon', language: 'c')
+    add_project_arguments('-ftree-vectorize', language: 'c')
     message('ARM build - NEON enabled')
   elif host_machine.cpu_family() == 'aarch64'
     cpu_neon = true
     cpu_neon_intrinsics = true
     config_h.set10('BUILD_NEON', true)
     config_h.set10('BUILD_NEON_INTRINSICS', true)
-    add_global_arguments('-ftree-vectorize', language: 'c')
+    add_project_arguments('-ftree-vectorize', language: 'c')
     native_arch_opt_c_args = [ '-ftree-vectorize' ]
     message('ARM64 build - NEON + intrinsics enabled')
   elif host_machine.cpu_family() == 'ppc' or host_machine.cpu_family() == 'ppc64'
     config_h.set10('BUILD_ALTIVEC', true)
-    add_global_arguments('-ftree-vectorize', language: 'c')
-    add_global_arguments('-maltivec', language: 'c')
+    add_project_arguments('-ftree-vectorize', language: 'c')
+    add_project_arguments('-maltivec', language: 'c')
     message('PPC/POWER build - ALTIVEC enabled')
   endif
 endif
