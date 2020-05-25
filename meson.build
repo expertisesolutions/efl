@@ -10,13 +10,6 @@ endif
 
 pkgconfig = import('pkgconfig')
 
-test_env = environment()
-test_env.set('EFL_RUN_IN_TREE', '1')
-
-if get_option('b_sanitize') == 'address'
-  test_env.set('ASAN_OPTIONS', 'detect_leaks=0:detect_odr_violation=0')
-endif
-
 version_arr = meson.project_version().split('.')
 
 version_major = version_arr[0]
@@ -589,6 +582,14 @@ subdir(join_paths('data'))
 
 if get_option('build-tests')
   check = dependency('check')
+
+  test_env = environment()
+  test_env.set('EFL_RUN_IN_TREE', '1')
+
+  if get_option('b_sanitize') == 'address'
+    test_env.set('ASAN_OPTIONS', 'detect_leaks=0:detect_odr_violation=0')
+  endif
+
   subdir(join_paths('src', 'tests'))
   foreach test : test_dirs
     package_c_args = [
