@@ -82,7 +82,7 @@ dev_cflags_try = [
 ]
 
 foreach cf: dev_cflags_try
-  if cc.has_argument(cf) == true
+  if cc.has_argument(cf)
     dev_cflags += cf
   endif
 endforeach
@@ -97,22 +97,22 @@ foreach lang : ['c', 'objc', 'cpp']
   add_project_arguments('-DEFL_BETA_API_SUPPORT=1', language: lang)
   add_project_arguments('-DNEED_RUN_IN_TREE=1', language: lang)
   add_project_arguments('-DELM_INTERNAL_API_ARGESFSDFEFC=1', language: lang)
-  if sys_windows == true
+  if sys_windows
     add_project_arguments('-D_POSIX_C_SOURCE=200809L', language: lang)
     add_project_arguments('-DDLL_EXPORT=1', language: lang)
-    if (get_option('windows-version') == 'vista')
+    if get_option('windows-version') == 'vista'
       add_project_arguments('-DWINVER=0x060', language: lang)
       add_project_arguments('-D_WIN32_WINNT=0x0600', language: lang)
-    elif (get_option('windows-version') == 'win7')
+    elif get_option('windows-version') == 'win7'
       add_project_arguments('-DWINVER=0x0601', language: lang)
       add_project_arguments('-D_WIN32_WINNT=0x0601', language: lang)
-    elif (get_option('windows-version') == 'win8')
+    elif get_option('windows-version') == 'win8'
       add_project_arguments('-DWINVER=0x0602', language: lang)
       add_project_arguments('-D_WIN32_WINNT=0x0602', language: lang)
-    elif (get_option('windows-version') == 'win81')
+    elif get_option('windows-version') == 'win81'
       add_project_arguments('-DWINVER=0x0603', language: lang)
       add_project_arguments('-D_WIN32_WINNT=0x0603', language: lang)
-    elif (get_option('windows-version') == 'win10')
+    elif get_option('windows-version') == 'win10'
       add_project_arguments('-DWINVER=0x0A00', language: lang)
       add_project_arguments('-D_WIN32_WINNT=0x0A00', language: lang)
     else
@@ -122,7 +122,7 @@ foreach lang : ['c', 'objc', 'cpp']
   endif
 endforeach
 
-if sys_sun == true
+if sys_sun
 # for getpwuid_r()
   add_global_arguments('-D_POSIX_PTHREAD_SEMANTICS', language: 'c')
 endif
@@ -156,7 +156,7 @@ extern char **environ;
 
 void func(void) { printf("%p\n", environ); }
 '''
-if cc.compiles(code, args : '-lc', name : 'environ check') == true
+if cc.compiles(code, args : '-lc', name : 'environ check')
   config_h.set10('HAVE_ENVIRON', true)
 endif
 
@@ -201,15 +201,15 @@ endif
 config_dir = [include_directories('.')]
 eolian_include_directories = []
 
-if sys_linux == true or sys_bsd == true or sys_sun == true
+if sys_linux or sys_bsd or sys_sun
   sys_lib_extension = 'so'
   sys_exe_extension = ''
   sys_mod_extension = 'so'
-elif sys_windows == true
+elif sys_windows
   sys_lib_extension = 'dll'
   sys_exe_extension = 'exe'
   sys_mod_extension = 'dll'
-elif sys_osx == true
+elif sys_osx
   sys_lib_extension = 'dylib'
   sys_exe_extension = ''
   sys_mod_extension = 'so'
@@ -223,11 +223,11 @@ if host_os == 'freebsd' or host_os == 'dragonfly'
   # can cause major issues (2 copies of the same library).
   crypto = declare_dependency(link_args : [ '-lssl', '-lcrypto'])
   config_h.set('HAVE_OPENSSL', '1')
-elif (get_option('crypto') == 'gnutls')
+elif get_option('crypto') == 'gnutls'
   # gcrypt does not want to provide a pkg config file so we try the lib
   crypto = [dependency('gnutls'), cc.find_library('gcrypt')]
   config_h.set('HAVE_GNUTLS', '1')
-elif (get_option('crypto') == 'openssl')
+elif get_option('crypto') == 'openssl'
   crypto = dependency('openssl')
   config_h.set('HAVE_OPENSSL', '1')
 endif
@@ -245,14 +245,14 @@ else
   config_h.set_quoted('EXE_SUFFIX', '.' + sys_exe_extension)
 endif
 
-if get_option('tslib') == true
+if get_option('tslib')
   config_h.set('HAVE_TSLIB', '1')
 endif
 
 subdir('header_checks')
 subdir('po')
 
-if get_option('wl') == true
+if get_option('wl')
   subdir(join_paths('src', 'wayland_protocol'))
 endif
 
@@ -278,7 +278,7 @@ if get_option('lua-interpreter') == 'lua'
   foreach l : luaold_interpreters
     lua = dependency(l[0], version: l[1], required:false)
     lua_pc_name = l[0]
-    if lua.found() == true
+    if lua.found()
       break
     endif
   endforeach
@@ -301,7 +301,7 @@ else
   lua_pc_name = 'luajit'
 endif
 
-if sys_osx == true and get_option('lua-interpreter') == 'luajit'
+if sys_osx and get_option('lua-interpreter') == 'luajit'
   # luajit on macro is broken, this means we need to generate our own
   # dependency with our arguments, a library later still needs to link to
   # luajit for the pagesize argument thingy
@@ -474,7 +474,7 @@ foreach package : subprojects
     set_variable('build_' + package_name.underscorify(), true)
 
     # generate automatic pc files for libraries
-    if automatic_pkgfile == true and package[3]
+    if automatic_pkgfile and package[3]
       tmp_lib = get_variable(package_name + '_lib')
       tmp_deps = get_variable(package_name + '_deps')
       tmp_pub_deps = get_variable(package_name + '_pub_deps')
