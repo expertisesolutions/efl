@@ -41,8 +41,15 @@ _eina_thread_join(Eina_Thread t)
 DWORD WINAPI
 _eina_thread_func(void *params)
 {
-   return (DWORD)((Eina_Win32_Thread_Func *)params)->
-      func((void *)((Eina_Win32_Thread_Func *)params)->data);
+    void *(*func)(void *);
+
+    Eina_Win32_Thread_Func *thread_func = (Eina_Win32_Thread_Func *) params;
+    void *data = thread_func->data;
+    func = thread_func->func;
+
+    free(thread_func);
+
+    return (uintptr_t) func(data);
 }
 
 static inline void
@@ -79,19 +86,32 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
 
    SIZE_T dwStackSize = 2*1024*1024;
 
-   Eina_Win32_Thread_Func thread_func;
+   Eina_Win32_Thread_Func *thread_func = (Eina_Win32_Thread_Func *) malloc(sizeof(*thread_func));
+   if (NULL == thread_func)
+     {
+         return EINA_FALSE;
+     }
+
    Eina_Thread_Call *c = (Eina_Thread_Call *)(data);
 
-   thread_func.func = func;
-   thread_func.data = data;
+
+   thread_func->func = func;
+   thread_func->data = data;
 
    *t = CreateThread(NULL, dwStackSize, &_eina_thread_func
-                   , &thread_func, CREATE_SUSPENDED, &threadID);
-
-   ResumeThread(*t);
-   _eina_thread_set_priority(c->prio, t);
+                   , thread_func, CREATE_SUSPENDED, &threadID);
 
    ret = (*t != NULL) ? EINA_TRUE : EINA_FALSE;
+
+   if (ret)
+     {
+        ResumeThread(*t);
+        _eina_thread_set_priority(c->prio, t);
+     }
+   else
+     {
+        free(thread_func);
+     }
 
    if (affinity >= 0 && ret)
      {
