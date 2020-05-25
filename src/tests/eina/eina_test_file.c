@@ -492,9 +492,16 @@ _eina_test_file_thread(void *data EINA_UNUSED, Eina_Thread t EINA_UNUSED)
    Eina_File *f;
    unsigned int i;
 
+   const char *const test_file =
+#if defined(_WIN32) && !defined(__CYGWIN__)
+    "C:/Windows/system.ini";
+#else
+    "/bin/sh";
+#endif
+
    for (i = 0; i < 100; ++i)
      {
-        f = eina_file_open("/bin/sh", EINA_FALSE);
+        f = eina_file_open(test_file, EINA_FALSE);
         fail_if(!f);
         eina_file_close(f);
      }
