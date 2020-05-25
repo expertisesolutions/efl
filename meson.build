@@ -1,6 +1,10 @@
 project('efl', ['c','cpp'],
   version: '1.24.99',
-  default_options : ['buildtype=plain', 'cpp_std=c++11'],
+  default_options : [
+    'buildtype=plain',
+    'cpp_std=c++11',
+    'warning_level=3',
+  ],
   meson_version : '>=0.50'
 )
 
@@ -80,7 +84,6 @@ local_scripts = join_paths('src', 'scripts')
 dev_cflags = []
 dev_cflags_try = [
   '-fvisibility=hidden',
-  '-Wall',
   '-Wfloat-compare',
   '-Wpointer-arith',
   '-Wunused-parameter',
