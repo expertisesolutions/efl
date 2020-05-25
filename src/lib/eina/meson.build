@@ -362,14 +362,12 @@ if sys_osx == true
 endif
 
 if sys_windows == true
-  synchapi_prefix = '#include <windows.h>'
-
-  if cc.has_header_symbol('synchapi.h', 'SetCriticalSectionSpinCount', prefix : synchapi_prefix)
-     eina_config.set('EINA_HAVE_WIN32_SPINLOCK', '1')
-  endif
-  if cc.has_header_symbol('synchapi.h', 'InitializeSynchronizationBarrier', prefix : synchapi_prefix)
-     eina_config.set('EINA_HAVE_WIN32_BARRIER', '1')
-  endif
+   if cc.has_header_symbol('synchapi.h', 'SetCriticalSectionSpinCount')
+      eina_config.set('EINA_HAVE_WIN32_SPINLOCK', '1')
+   endif
+   if cc.has_header_symbol('synchapi.h', 'InitializeSynchronizationBarrier')
+      eina_config.set('EINA_HAVE_WIN32_BARRIER', '1')
+   endif
 endif
 
 if host_machine.endian() == 'big'
