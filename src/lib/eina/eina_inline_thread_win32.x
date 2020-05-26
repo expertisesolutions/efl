@@ -75,7 +75,7 @@ _eina_thread_set_priority(Eina_Thread_Priority prio, Eina_Thread *t)
         break;
      }
 
-   SetThreadPriority((HANDLE)t.handle, nPriority);
+   SetThreadPriority((HANDLE)t->handle, nPriority);
 }
 
 static inline Eina_Bool
@@ -98,7 +98,7 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
 
    if (ret)
      {
-        ResumeThread(t.handle);
+        ResumeThread(t->handle);
         _eina_thread_set_priority(c->prio, t);
      }
 
