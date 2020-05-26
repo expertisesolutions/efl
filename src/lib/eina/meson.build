@@ -361,15 +361,6 @@ if sys_osx == true
    endif
 endif
 
-if sys_windows == true
-   if cc.has_header_symbol('synchapi.h', 'SetCriticalSectionSpinCount')
-      eina_config.set('EINA_HAVE_WIN32_SPINLOCK', '1')
-   endif
-   if cc.has_header_symbol('synchapi.h', 'InitializeSynchronizationBarrier')
-      eina_config.set('EINA_HAVE_WIN32_BARRIER', '1')
-   endif
-endif
-
 if host_machine.endian() == 'big'
    eina_config.set('EINA_HAVE_WORDS_BIGENDIAN', '1')
 endif
