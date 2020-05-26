@@ -69,11 +69,7 @@ typedef struct _Eina_Barrier Eina_Barrier;
 typedef DWORD Eina_TLS;
 typedef HANDLE Eina_Semaphore;
 
-#ifdef EINA_HAVE_WIN32_SPINLOCK
-typedef CRITICAL_SECTION Eina_Spinlock;
-#else
-typedef Eina_Lock Eina_Spinlock;
-#endif
+typedef volatile LONG Eina_Spinlock;
 
 EINA_API void eina_lock_debug(const Eina_Lock *mutex);
 
@@ -475,87 +471,53 @@ _eina_barrier_wait(Eina_Barrier *barrier)
 static inline Eina_Bool
 _eina_spinlock_new(Eina_Spinlock *spinlock)
 {
-#ifdef EINA_HAVE_WIN32_SPINLOCK
-   int ok = InitializeCriticalSectionAndSpinCount(spinlock, INFINITE);
-   DWORD err = GetLastError();
-   if (ok != 0) return EINA_TRUE;
-   else if ((err == ERROR_NOT_ENOUGH_MEMORY) || (err == ERROR_ACCESS_DENIED)
-            || (err == ERROR_OUTOFMEMORY))
-    {
-       return EINA_FALSE;
-    }
-   else EINA_LOCK_ABORT_DEBUG((int)err, spin_init, spinlock);
-   return EINA_FALSE;
-#else
-   return eina_lock_new(spinlock);
-#endif
+    *spinlock = 0L;
+    return EINA_TRUE;
 }
 
 static inline void
 _eina_spinlock_free(Eina_Spinlock *spinlock)
 {
-#ifdef EINA_HAVE_WIN32_SPINLOCK
-   DeleteCriticalSection(spinlock);
-   DWORD ok = GetLastError();
-   if (ok != ERROR_SUCCESS) EINA_LOCK_ABORT_DEBUG(ok, spin_destroy, spinlock);
-#else
-   eina_lock_free(spinlock);
-#endif
 }
 
 static inline Eina_Lock_Result
 _eina_spinlock_take_try(Eina_Spinlock *spinlock)
 {
-#ifdef EINA_HAVE_WIN32_SPINLOCK
-   int ok = TryEnterCriticalSection(spinlock);
-   DWORD err = GetLastError();
-   if (err == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
-   else if (ok == 0 || err == ERROR_TIMEOUT) EINA_LOCK_FAIL;
-   else EINA_LOCK_ABORT_DEBUG((int)err, trylock, mutex);
-   return EINA_LOCK_FAIL;
-#else
-   return eina_lock_take_try(spinlock);
-#endif
+    return 0 == InterlockedCompareExchange(spinlock, 1, 0)
+        ? EINA_LOCK_SUCCEED : EINA_LOCK_FAIL;
 }
 
 static inline Eina_Lock_Result
 _eina_spinlock_take(Eina_Spinlock *spinlock)
 {
-#ifdef EINA_HAVE_WIN32_SPINLOCK
-# ifdef EINA_HAVE_DEBUG_THREADS
-   if (eina_spinlock_take_try(spinlock) == EINA_LOCK_SUCCEED)
-     return EINA_LOCK_SUCCEED;
-# endif
+    for (;;)
+      {
+          /*
+           * Implementations of compare-exchange operations may actually
+           * perform a memory write even though the compare is falsy,
+           * yielding memory contention.
+           * We perform a little optimization by checking if the value is
+           * zero first before the compare-exchange operation.
+           */
+          if (0L == *spinlock
+              && EINA_LOCK_SUCCEED == _eina_spinlock_take_try(spinlock))
+            {
+               return EINA_LOCK_SUCCEED;
+            }
 
-   for (;;)
-     {
-        int ok = EnterCriticalSection(spinlock);
-        if (ok != 0) break;
-        else {
-           DWORD err = GetLastError();
-           EINA_LOCK_ABORT_DEBUG((int)err, spin_lock, spinlock);
-        }
-     }
-
-   return EINA_LOCK_SUCCEED;
-#else
-   return eina_lock_take(spinlock);
-#endif
+          /*
+           * _mm_pause will emit a 'PAUSE' intruction, which tells the processor
+           * we are in the middle of a spinlock loop
+           */
+          _mm_pause();
+      }
 }
 
 static inline Eina_Lock_Result
 _eina_spinlock_release(Eina_Spinlock *spinlock)
 {
-#if defined(EINA_HAVE_WIN32_SPINLOCK)
-   LeaveCriticalSection(spinlock);
-   DWORD ok = GetLastError();
-   if (ok == ERROR_SUCCESS) return EINA_LOCK_SUCCEED;
-   else if (ok == ERROR_ACCESS_DENIED) return EINA_LOCK_FAIL;
-   else EINA_LOCK_ABORT_DEBUG((int)ok, spin_unlock, spinlock);
-   return EINA_LOCK_FAIL;
-#else
-   return eina_lock_release(spinlock);
-#endif
+    return 1 == InterlockedCompareExchange(spinlock, 0, 1)
+        ? EINA_LOCK_SUCCEED : EINA_LOCK_FAIL;
 }
 
 static inline Eina_Bool
