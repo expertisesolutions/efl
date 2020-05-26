@@ -16,9 +16,6 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PEI
-#define PEI fprintf(stderr, "%lu == " __FILE__ ":%d %s\n",GetCurrentThreadId(), __LINE__, __func__); fflush(stderr);
-#endif
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -59,7 +56,7 @@ eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 static void *
 _eina_internal_call(void *context)
 {
-PEI   Eina_Thread_Call *c = context;
+   Eina_Thread_Call *c = context;
    void *r;
    Eina_Thread self;
 
@@ -78,7 +75,7 @@ PEI   Eina_Thread_Call *c = context;
    EINA_THREAD_CLEANUP_POP(EINA_TRUE);
    EINA_THREAD_CLEANUP_POP(EINA_TRUE);
 
-PEI   return r;
+   return r;
 }
 EINA_API Eina_Bool
 eina_thread_create(Eina_Thread *t,
@@ -110,7 +107,7 @@ eina_thread_create(Eina_Thread *t,
 EINA_API void *
 eina_thread_join(Eina_Thread t)
 {
-PEI   return _eina_thread_join(t);
+   return _eina_thread_join(t);
 }
 
 EINA_API Eina_Bool
