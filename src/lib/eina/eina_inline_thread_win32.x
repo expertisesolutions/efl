@@ -39,7 +39,7 @@ _eina_thread_join(Eina_Thread t)
    return NULL;
 }
 
-DWORD * WINAPI
+DWORD WINAPI
 _eina_thread_func(void *params)
 {
     void *(*func)(void *);
