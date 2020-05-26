@@ -26,7 +26,7 @@
 // like get them to stop and dump a backtrace for us
 Eina_Spinlock         _eina_debug_thread_lock;
 
-Eina_Thread             _eina_debug_thread_mainloop = 0;
+Eina_Thread           _eina_debug_thread_mainloop = eina_thread_self();
 Eina_Debug_Thread    *_eina_debug_thread_active = NULL;
 int                   _eina_debug_thread_active_num = 0;
 
