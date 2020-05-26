@@ -26,12 +26,12 @@
 EINA_API void
 eina_sched_prio_drop(void)
 {
-   Eina_Thread thread_id;
+   Eina_Thread thread;
    int sched_priority;
 
-   thread_id = eina_thread_self();
+   thread = eina_thread_self();
 
-   sched_priority = GetThreadPriority(thread_id);
+   sched_priority = GetThreadPriority(thread.handle);
 
    if (EINA_UNLIKELY(sched_priority == THREAD_PRIORITY_TIME_CRITICAL))
      {
@@ -43,7 +43,7 @@ eina_sched_prio_drop(void)
              EINA_LOG_INFO("RT prio < 1, setting to 1 instead");
              sched_priority = 1;
           }
-        if (!SetThreadPriority(thread_id, sched_priority))
+        if (!SetThreadPriority(thread.handle, sched_priority))
           {
              EINA_LOG_ERR("Unable to query sched parameters");
           }
@@ -58,7 +58,7 @@ eina_sched_prio_drop(void)
              EINA_LOG_INFO("Max niceness reached; keeping max (THREAD_PRIORITY_TIME_CRITICAL)");
              sched_priority = THREAD_PRIORITY_TIME_CRITICAL;
           }
-        if (!SetThreadPriority(thread_id, sched_priority))
+        if (!SetThreadPriority(thread.handle, sched_priority))
           {
              EINA_LOG_ERR("Unable to query sched parameters");
           }
