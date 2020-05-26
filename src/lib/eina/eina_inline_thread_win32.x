@@ -28,7 +28,7 @@ _eina_thread_join(Eina_Thread t)
 {
    if (WaitForSingleObject(t.handle, INFINITE) == WAIT_OBJECT_0)
      {
-        DWORD* ret;
+        DWORD ret;
         if (GetExitCodeThread(t.handle, &ret))
           {
              if (ret != 0) return NULL;
@@ -90,7 +90,7 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
 
 
    t->func = func;
-   t->data = data;
+   t->in = data;
 
    t->handle = CreateThread(NULL, dwStackSize, &_eina_thread_func
                    , t, CREATE_SUSPENDED, &threadID);
@@ -100,23 +100,13 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
      {
         ResumeThread(t->handle);
         _eina_thread_set_priority(c->prio, t);
-     }
 
-   if (ret)
-     {
-        ResumeThread(*t);
-        _eina_thread_set_priority(c->prio, t);
-     }
-   else
-     {
-        free(thread_func);
-     }
-
-   if (affinity >= 0 && ret)
-     {
-   #ifdef EINA_HAVE_WIN32_THREAD_AFFINITY
-        SetThreadAffinityMask(t.handle, (DWORD_PTR *)&affinity);
-   #endif
+        #ifdef EINA_HAVE_WIN32_THREAD_AFFINITY
+        if (affinity >= 0)
+          {
+             SetThreadAffinityMask(t->handle, (DWORD_PTR *)&affinity);
+          }
+        #endif
      }
 
    return ret;
