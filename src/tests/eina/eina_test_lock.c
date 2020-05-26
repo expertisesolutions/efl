@@ -1,3 +1,6 @@
+#ifndef PEI
+#define PEI fprintf(stderr, "%lu == " __FILE__ ":%d %s\n",GetCurrentThreadId(), __LINE__, __func__); fflush(stderr);
+#endif
 /* EINA - EFL data type library
  * Copyright (C) 2013 Cedric Bail
  *
@@ -77,7 +80,7 @@ static unsigned int counter;
 static void *
 _eina_test_lock_thread(void *data, Eina_Thread t)
 {
-   unsigned int i;
+PEI   unsigned int i;
 
    fail_if(!eina_thread_equal(t, thread));
    fail_if(strcmp("test", data));
@@ -86,15 +89,17 @@ _eina_test_lock_thread(void *data, Eina_Thread t)
      {
         fail_if(eina_spinlock_take(&spin) != EINA_LOCK_SUCCEED);
         counter++;
+fprintf(stderr, " thread %lu counter %u\n", GetCurrentThreadId(), counter); fflush(stderr);
         fail_if(eina_spinlock_release(&spin) != EINA_LOCK_SUCCEED);
      }
 
+fprintf(stderr, " %lu data %s\n", GetCurrentThreadId(), data); fflush(stderr);
    return data;
 }
 
 EFL_START_TEST(eina_test_spinlock)
 {
-   unsigned int i;
+PEI   unsigned int i;
 
 
    counter = 0;
@@ -102,18 +107,20 @@ EFL_START_TEST(eina_test_spinlock)
 
    fail_if(!eina_thread_create(&thread, EINA_THREAD_NORMAL, -1, _eina_test_lock_thread, "test"));
 
-   for (i = 0; i < 150; i++)
+PEI   for (i = 0; i < 150; i++)
      {
         fail_if(eina_spinlock_take(&spin) != EINA_LOCK_SUCCEED);
         counter++;
+fprintf(stderr, " thread %lu counter %u\n", GetCurrentThreadId(), counter); fflush(stderr);
         fail_if(eina_spinlock_release(&spin) != EINA_LOCK_SUCCEED);
      }
+PEI void * ret = eina_thread_join(thread);
+PEI fprintf(stderr, " ret %s\n", ret); fflush(stderr);
+PEI   fail_if(strcmp("test", ret));
 
-   fail_if(strcmp("test", eina_thread_join(thread)));
+PEI   fail_if(counter != 300);
 
-   fail_if(counter != 300);
-
-   fail_if(eina_spinlock_take_try(&spin) != EINA_LOCK_SUCCEED);
+PEI   fail_if(eina_spinlock_take_try(&spin) != EINA_LOCK_SUCCEED);
    fail_if(eina_spinlock_release(&spin) != EINA_LOCK_SUCCEED);
 
    eina_spinlock_free(&spin);

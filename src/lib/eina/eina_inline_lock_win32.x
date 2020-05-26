@@ -74,7 +74,6 @@ typedef volatile LONG Eina_Spinlock;
 EINA_API void eina_lock_debug(const Eina_Lock *mutex);
 
 /** @privatesection  @{ */
-typedef HANDLE _Eina_Thread;
 typedef CRITICAL_SECTION _Eina_Mutex_t;
 typedef CONDITION_VARIABLE _Eina_Condition_t;
 typedef SRWLOCK _Eina_RWLock_t;

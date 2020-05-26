@@ -127,6 +127,21 @@ static Eina_Bool _abort_on_critical = EINA_FALSE;
 static Eina_Bool _disable_timing = EINA_TRUE;
 static int _abort_level_on_critical = EINA_LOG_LEVEL_CRITICAL;
 
+#define THREAD_ID(t) \
+# ifdef _WIN32       \
+    eina_thread_id(t)\
+# else               \
+    t                \
+# endif /* _WIN32 */
+
+#define THREAD_SELF_ID() \
+# ifdef _WIN32           \
+    eina_thread_self_id()\
+# else                   \
+    eina_thread_self()   \
+# endif /* _WIN32 */
+
+
 #ifdef EINA_LOG_BACKTRACE
 // CRI & ERR by default in release mode, nothing in dev mode
 # ifndef EINA_LOG_BACKTRACE_ENABLE
@@ -149,8 +164,8 @@ static Eina_Thread _main_thread;
       if (!IS_MAIN(eina_thread_self())) {                         \
          fprintf(stderr,                                          \
                  "ERR: not main thread! current=%lu, main=%lu\n", \
-                 (unsigned long)eina_thread_self(),               \
-                 (unsigned long)_main_thread);                    \
+                 (unsigned long)THREAD_SELF_IF(),               \
+                 (unsigned long)THREAD_ID(_main_thread));                    \
          return __VA_ARGS__;                                      \
       }                                                           \
    } while (0)
@@ -640,7 +655,7 @@ eina_log_print_prefix_threads_NOcolor_file_func(FILE *fp,
      {
         fprintf(fp, "%s<%u>:%s[T:%lu] %s:%d %s() ",
                 name, eina_log_pid_get(), d->domain_str,
-                (unsigned long)cur, file, line, fnc);
+                (unsigned long)EINA_THREAD_ID(cur), file, line, fnc);
         return;
      }
    fprintf(fp, "%s<%u>:%s %s:%d %s() ",
@@ -663,7 +678,7 @@ eina_log_print_prefix_threads_NOcolor_NOfile_func(FILE *fp,
      {
         fprintf(fp, "%s<%u>:%s[T:%lu] %s() ",
                 name, eina_log_pid_get(), d->domain_str,
-                (unsigned long)cur, fnc);
+                (unsigned long)EINA_THREAD_ID(cur), fnc);
         return;
      }
    fprintf(fp, "%s<%u>:%s %s() ",
@@ -684,9 +699,8 @@ eina_log_print_prefix_threads_NOcolor_file_NOfunc(FILE *fp,
    cur = SELF();
    if (IS_OTHER(cur))
      {
-        fprintf(fp, "%s<%u>:%s[T:%lu] %s:%d ",
-                name, eina_log_pid_get(), d->domain_str, (unsigned long)cur,
-                file, line);
+        fprintf(fp, "%s<%u>:%s[T:%lu] %s:%d ", name, eina_log_pid_get()
+            , d->domain_str, (unsigned long)EINA_THREAD_ID(cur), file, line);
         return;
      }
 
@@ -722,7 +736,7 @@ eina_log_print_prefix_threads_color_file_func_win32_console(FILE *fp,
    fprintf(fp, "[T:");
    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
                            FOREGROUND_GREEN | FOREGROUND_BLUE);
-   fprintf(fp, "%lu", (unsigned long)cur);
+   fprintf(fp, "%lu", (unsigned long)EINA_THREAD_ID(cur));
    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
                            FOREGROUND_RED | FOREGROUND_GREEN |
                            FOREGROUND_BLUE);
@@ -752,7 +766,7 @@ eina_log_print_prefix_threads_color_file_func_posix(FILE *fp,
            EINA_COLOR_ORANGE "%lu" EINA_COLOR_RESET "] %s:%d "
            EINA_COLOR_HIGH "%s()" EINA_COLOR_RESET " ",
            color, name, eina_log_pid_get() ,d->domain_str,
-           (unsigned long)cur, file, line, fnc);
+           (unsigned long)EINA_THREAD_ID(cur), file, line, fnc);
 }
 
 static void

@@ -1,3 +1,6 @@
+#ifndef PEI
+#define PEI fprintf(stderr, "%lu == " __FILE__ ":%d %s\n",GetCurrentThreadId(), __LINE__, __func__); fflush(stderr);
+#endif
 /* EINA - EFL data type library
  * Copyright (C) 2020 Carlos Ré Signor
  *
@@ -23,33 +26,34 @@
 #define EINA_THREAD_CLEANUP_PUSH(cleanup, data)
 #define EINA_THREAD_CLEANUP_POP(exec_cleanup)
 
-typedef struct _Eina_Win32_Thread_Func
-{
-   void *data;
-   void *(*func)(void *data);
-} Eina_Win32_Thread_Func;
-
-static inline int *
+static inline void *
 _eina_thread_join(Eina_Thread t)
 {
-   int ret = (int)WaitForSingleObject(t, INFINITE);
-
-   if (ret != 0) return ret;
-   return NULL;
+PEI   if (WaitForSingleObject(t.handle, INFINITE) == WAIT_OBJECT_0)
+        {
+PEI           DWORD* ret;
+PEI           if (GetExitCodeThread(t.handle, &ret))
+                {
+                   if (ret != 0) return NULL;
+PEI                   CloseHandle(t.handle);
+PEI                   return t.out;
+                }
+        }
+PEI   return NULL;
 }
 
-DWORD WINAPI
+DWORD * WINAPI
 _eina_thread_func(void *params)
 {
     void *(*func)(void *);
 
-    Eina_Win32_Thread_Func *thread_func = (Eina_Win32_Thread_Func *) params;
-    void *data = thread_func->data;
-    func = thread_func->func;
+    Eina_Thread *thread = (Eina_Thread *) params;
+    void *data = thread->in;
+    func = thread->func;
 
-    free(thread_func);
-
-    return (uintptr_t) func(data);
+    //free(thread_func);
+    thread->out = func(data);
+PEI    return 0;
 }
 
 static inline void
@@ -75,33 +79,32 @@ _eina_thread_set_priority(Eina_Thread_Priority prio, Eina_Thread *t)
         break;
      }
 
-   SetThreadPriority((HANDLE)*t, nPriority);
+   SetThreadPriority((HANDLE)t.handle, nPriority);
 }
 
 static inline Eina_Bool
 _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), void *data)
 {
-   Eina_Bool ret;
+PEI   Eina_Bool ret;
    DWORD threadID;
 
    SIZE_T dwStackSize = 2*1024*1024;
 
-   Eina_Win32_Thread_Func *thread_func = (Eina_Win32_Thread_Func *) malloc(sizeof(*thread_func));
-   if (NULL == thread_func)
-     {
-         return EINA_FALSE;
-     }
-
    Eina_Thread_Call *c = (Eina_Thread_Call *)(data);
 
 
-   thread_func->func = func;
-   thread_func->data = data;
+   t->func = func;
+   t->data = data;
 
-   *t = CreateThread(NULL, dwStackSize, &_eina_thread_func
-                   , thread_func, CREATE_SUSPENDED, &threadID);
+   t->handle = CreateThread(NULL, dwStackSize, &_eina_thread_func
+                   , t, CREATE_SUSPENDED, &threadID);
+   ret = (t->handle != NULL) ? EINA_TRUE : EINA_FALSE;
 
-   ret = (*t != NULL) ? EINA_TRUE : EINA_FALSE;
+   if (ret)
+     {
+        ResumeThread(t.handle);
+        _eina_thread_set_priority(c->prio, t);
+     }
 
    if (ret)
      {
@@ -116,18 +119,18 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
    if (affinity >= 0 && ret)
      {
    #ifdef EINA_HAVE_WIN32_THREAD_AFFINITY
-        SetThreadAffinityMask(*t, (DWORD_PTR *)&affinity);
+        SetThreadAffinityMask(t.handle, (DWORD_PTR *)&affinity);
    #endif
      }
 
-   return ret;
+PEI   return ret;
 }
 
 static inline Eina_Bool
 _eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 {
-   DWORD t1_thread_id = GetThreadId(t1);
-   DWORD t2_thread_id = GetThreadId(t2);
+   DWORD t1_thread_id = GetThreadId(t1.handle);
+   DWORD t2_thread_id = GetThreadId(t2.handle);
 
    return (t1_thread_id == t2_thread_id) ? EINA_TRUE : EINA_FALSE;
 }
@@ -135,13 +138,15 @@ _eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 static inline Eina_Thread
 _eina_thread_self(void)
 {
-   return GetCurrentThread();
+   Eina_Thread ret;
+   ret.handle = GetCurrentThread();
+   return ret;
 }
 
 static inline Eina_Bool
 _eina_thread_name_set(Eina_Thread thread, char *buf)
 {
-   HRESULT res = SetThreadDescription((HANDLE)thread, (PCWSTR)buf);
+   HRESULT res = SetThreadDescription((HANDLE)thread.handle, (PCWSTR)buf);
    return HRESULT_CODE(res);
 }
 
