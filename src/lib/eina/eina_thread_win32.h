@@ -49,7 +49,7 @@ typedef struct _Eina_Thread
    void *(*func)(void *in);
 } Eina_Thread;
 
-EINA_API DWORD eina_thread_self_id(void)
-EINA_API DWORD eina_thread_id(Eina_thread t)
+EINA_API DWORD eina_thread_self_id(void);
+EINA_API DWORD eina_thread_id(Eina_Thread t);
 
 #endif

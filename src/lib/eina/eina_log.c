@@ -141,20 +141,17 @@ static Eina_Bool _threads_inited = EINA_FALSE;
 
 static Eina_Thread _main_thread;
 
-#define THREAD_ID(t) \
-# ifdef _WIN32       \
-    eina_thread_id(t)\
-# else               \
-    t                \
-# endif /* _WIN32 */
+#ifdef _WIN32
+# define THREAD_ID(t) eina_thread_id(t)
+#else
+# define THREAD_ID(t) t
+#endif /* _WIN32 */
 
-#define THREAD_SELF_ID() \
-# ifdef _WIN32           \
-    eina_thread_self_id()\
-# else                   \
-    eina_thread_self()   \
-# endif /* _WIN32 */
-
+#ifdef _WIN32
+# define THREAD_SELF_ID() eina_thread_self_id()
+#else
+# define THREAD_SELF_ID() eina_thread_self()
+#endif /* _WIN32 */
 
 #  define SELF() eina_thread_self()
 #  define IS_MAIN(t)  eina_thread_equal(t, _main_thread)
