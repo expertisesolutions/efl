@@ -1,6 +1,3 @@
-#ifndef PEI
-#define PEI fprintf(stderr, "%lu == " __FILE__ ":%d %s\n",GetCurrentThreadId(), __LINE__, __func__); fflush(stderr);
-#endif
 /* EINA - EFL data type library
  * Copyright (C) 2020 Carlos Ré Signor
  *
@@ -29,17 +26,17 @@
 static inline void *
 _eina_thread_join(Eina_Thread t)
 {
-PEI   if (WaitForSingleObject(t.handle, INFINITE) == WAIT_OBJECT_0)
-        {
-PEI           DWORD* ret;
-PEI           if (GetExitCodeThread(t.handle, &ret))
-                {
-                   if (ret != 0) return NULL;
-PEI                   CloseHandle(t.handle);
-PEI                   return t.out;
-                }
-        }
-PEI   return NULL;
+   if (WaitForSingleObject(t.handle, INFINITE) == WAIT_OBJECT_0)
+     {
+        DWORD* ret;
+        if (GetExitCodeThread(t.handle, &ret))
+          {
+             if (ret != 0) return NULL;
+             CloseHandle(t.handle);
+             return t.out;
+          }
+     }
+   return NULL;
 }
 
 DWORD * WINAPI
@@ -51,9 +48,8 @@ _eina_thread_func(void *params)
     void *data = thread->in;
     func = thread->func;
 
-    //free(thread_func);
     thread->out = func(data);
-PEI    return 0;
+    return 0;
 }
 
 static inline void
@@ -85,7 +81,7 @@ _eina_thread_set_priority(Eina_Thread_Priority prio, Eina_Thread *t)
 static inline Eina_Bool
 _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), void *data)
 {
-PEI   Eina_Bool ret;
+   Eina_Bool ret;
    DWORD threadID;
 
    SIZE_T dwStackSize = 2*1024*1024;
@@ -123,7 +119,7 @@ PEI   Eina_Bool ret;
    #endif
      }
 
-PEI   return ret;
+   return ret;
 }
 
 static inline Eina_Bool
