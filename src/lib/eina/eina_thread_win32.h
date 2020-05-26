@@ -41,6 +41,15 @@
  * @typedef Eina_Thread
  * Type for a generic thread.
  */
-typedef HANDLE Eina_Thread;
+typedef struct _Eina_Thread
+{
+   HANDLE handle;
+   void* in;
+   void* out;
+   void *(*func)(void *in);
+} Eina_Thread;
 
-#endif 
+EINA_API DWORD eina_thread_self_id(void)
+EINA_API DWORD eina_thread_id(Eina_thread t)
+
+#endif
