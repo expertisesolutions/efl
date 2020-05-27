@@ -398,7 +398,7 @@ subprojects = [
 ['eina'             ,[]                    , false,  true,  true,  true,  true,  true, [], []],
 ['eolian'           ,[]                    , false,  true,  true, false,  false, false, ['eina'], []],
 #['eo'               ,[]                    , false,  true, false,  true,  true, false, ['eina'], []],
-#['efl'              ,[]                    , false,  true, false, false,  true, false, ['eo'], []],
+['efl'              ,[]                    , false,  true, false, false,  false, false, [], []],
 #['emile'            ,[]                    , false,  true, false, false,  true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
 #['eet'              ,[]                    , false,  true,  true, false,  true,  true, ['eina', 'emile', 'efl'], []],
 #['ecore'            ,[]                    , false,  true, false, false, false, false, ['eina', 'eo', 'efl'], ['buildsystem']]
