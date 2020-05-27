@@ -212,6 +212,12 @@ if sys_linux and config_h.has('HAVE_LISTXATTR') and config_h.has('HAVE_SETXATTR'
   config_h.set10('HAVE_XATTR', true)
 endif
 
+
+# libraries
+
+# libcheck
+check_dep = dependency('check', fallback : ['check', 'check_dep'])
+
 if sys_windows
   # pcre
   pcre_project = subproject('pcre')
@@ -233,12 +239,6 @@ if sys_windows
   getopt_project = subproject('getopt')
   getopt = getopt_project.get_variable('getopt')
   getopt_dep = getopt_project.get_variable('getopt_dep')
-
-  # libcheck
-  check_project = subproject('check')
-  check = check_project.get_variable('checklib')
-  check_dep = check_project.get_variable('check_dep')
-
 else
   zlib_dep = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
@@ -250,7 +250,6 @@ else
   endif
 
   getopt_dep = declare_dependency()
-  check_dep = declare_dependency()
 endif
 
 config_h.set('VMAJ', version_major)
