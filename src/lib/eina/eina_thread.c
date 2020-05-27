@@ -132,7 +132,6 @@ eina_thread_name_set(Eina_Thread t, const char *name)
 EINA_API Eina_Bool
 eina_thread_cancel(Eina_Thread t)
 {
-   if (!t) return EINA_FALSE;
    return _eina_thread_cancel(t) == 0;
 }
 
@@ -185,7 +184,7 @@ eina_thread_self_id(void)
 }
 
 DWORD
-eina_thread_id(Eina_thread t)
+eina_thread_id(Eina_Thread t)
 {
    return  GetThreadId(t.handle);
 }
