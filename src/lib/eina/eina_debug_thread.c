@@ -81,7 +81,7 @@ _eina_debug_thread_del(void *th)
    // find the thread id to remove
    for (i = 0; i < _eina_debug_thread_active_num; i++)
      {
-        if (_eina_debug_thread_active[i].thread == *pth)
+        if (eina_thread_equal(_eina_debug_thread_active[i].thread, *pth))
           {
              // found it - now shuffle down all further thread id's in array
              for (; i < (_eina_debug_thread_active_num - 1); i++)
