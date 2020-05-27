@@ -409,25 +409,23 @@ if false# not sys_windows
     true, false,  true,  true, ['eina', 'eo', 'efl'], []]]
 endif
 
-if false
 subprojects += [
-['ecore'            ,[]                    ,  true, false, false, false,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
-['ecore_audio'      ,['audio']             , false,  true, false, false, false, false, ['eina', 'eo'], []],
-['ecore_avahi'      ,['avahi']             , false,  true, false, false, false,  true, ['eina', 'ecore'], []],
-['ecore_con'        ,[]                    , false,  true,  true, false,  true, false, ['eina', 'eo', 'efl', 'ecore'], ['http-parser']],
-['ecore_file'       ,[]                    , false,  true, false, false, false, false, ['eina'], []],
-['eeze'             ,['eeze']              ,  true,  true,  true, false,  true, false, ['eina', 'efl'], []],
-['ecore_input'      ,[]                    , false,  true, false, false, false, false, ['eina', 'eo'], []],
-['ecore_x'          ,['x11']               , false,  true, false, false, false, false, ['eina', 'efl'], []],
-['ecore_fb'         ,['fb']                , false,  true, false, false, false, false, ['eina'], []],
-['ecore_wl2'        ,['wl']                ,  true,  true, false, false, true, false, ['eina'], ['libdrm']],
-['ecore_sdl'        ,['sdl']               , false,  true, false, false, false, false, ['eina'], []],
+#['ecore'            ,[]                    ,  true, false, false, false,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
+#['ecore_audio'      ,['audio']             , false,  true, false, false, false, false, ['eina', 'eo'], []],
+#['ecore_avahi'      ,['avahi']             , false,  true, false, false, false,  true, ['eina', 'ecore'], []],
+#['ecore_con'        ,[]                    , false,  true,  true, false,  true, false, ['eina', 'eo', 'efl', 'ecore'], ['http-parser']],
+#['ecore_file'       ,[]                    , false,  true, false, false, false, false, ['eina'], []],
+#['eeze'             ,['eeze']              ,  true,  true,  true, false,  true, false, ['eina', 'efl'], []],
+#['ecore_input'      ,[]                    , false,  true, false, false, false, false, ['eina', 'eo'], []],
+#['ecore_x'          ,['x11']               , false,  true, false, false, false, false, ['eina', 'efl'], []],
+#['ecore_fb'         ,['fb']                , false,  true, false, false, false, false, ['eina'], []],
+#['ecore_wl2'        ,['wl']                ,  true,  true, false, false, true, false, ['eina'], ['libdrm']],
+#['ecore_sdl'        ,['sdl']               , false,  true, false, false, false, false, ['eina'], []],
 ['ecore_win32'      ,[]                    , false,  true, false, false, false, false, ['eina'], []],
-['ecore_ipc'        ,[]                    , false,  true, false, false, false, false, ['eina'], []],
-['ecore_buffer'     ,['buffer']            ,  true,  true,  true, false, false, false, ['eina'], []],
-['ector'            ,[]                    , false,  true, false, false,  true,
-  false, ['eina', 'efl'], ['draw', 'triangulator', 'freetype']],]
-endif
+#['ecore_ipc'        ,[]                    , false,  true, false, false, false, false, ['eina'], []],
+#['ecore_buffer'     ,['buffer']            ,  true,  true,  true, false, false, false, ['eina'], []],
+#['ector'            ,[]                    , false,  true, false, false,  true, false, ['eina', 'efl'], ['draw', 'triangulator', 'freetype']],]
+]
 if false # not sys_windows
   subprojects +=  [['elput'            ,['drm']               , false,  true,
     false, false,  true, false, ['eina', 'eldbus'], []]]

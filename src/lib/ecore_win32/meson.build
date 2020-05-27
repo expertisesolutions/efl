@@ -1,5 +1,5 @@
 if sys_windows == true
-  ecore_win32_deps = [evil, eina, ecore, ecore_input]
+  ecore_win32_deps = [evil, eina]
   ecore_win32_pub_deps = []
 
   ecore_win32_src = [
