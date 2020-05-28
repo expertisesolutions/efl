@@ -7,14 +7,6 @@
 #include <ctype.h>
 #include <time.h>
 
-#ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <Windows.h>
-# undef WIN32_LEAN_AND_MEAN
-#endif
-
 #include "evil_private.h"
 
 inline struct tm *localtime_r(const time_t * time, struct tm * result)

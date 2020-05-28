@@ -6,8 +6,8 @@
 #include <errno.h>
 
 #ifdef _WIN32
-# include <winsock2.h>
 # include <evil_private.h> /* fcntl */
+# include <winsock2.h>
 #endif
 
 #include <fcntl.h>
