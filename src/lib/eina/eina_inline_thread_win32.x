@@ -26,29 +26,23 @@
 static inline void *
 _eina_thread_join(Eina_Thread t)
 {
+   void *data = NULL;
+
    if (WaitForSingleObject(t.handle, INFINITE) == WAIT_OBJECT_0)
      {
-        DWORD ret;
-        if (GetExitCodeThread(t.handle, &ret))
-          {
-             if (ret != 0) return NULL;
-             CloseHandle(t.handle);
-             return t.out;
-          }
+        data = t.data->data;
      }
-   return NULL;
+
+   CloseHandle(t.handle);
+   free(t.data);
+   return data;
 }
 
 DWORD WINAPI
 _eina_thread_func(void *params)
 {
-    void *(*func)(void *);
-
-    Eina_Thread *thread = (Eina_Thread *) params;
-    void *data = thread->in;
-    func = thread->func;
-
-    thread->out = func(data);
+    struct _Eina_ThreadData *thread = (struct _Eina_ThreadData *) params;
+    thread->data = thread->func(thread->data);
     return 0;
 }
 
@@ -79,26 +73,18 @@ _eina_thread_set_priority(Eina_Thread_Priority prio, Eina_Thread *t)
 }
 
 static inline Eina_Bool
-_eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), void *data)
+_eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), Eina_Thread_Call *c)
 {
-   Eina_Bool ret;
-   DWORD threadID;
+   t->data = malloc(sizeof(*t->data));
+   if (!t->data) return EINA_FALSE;
 
-   SIZE_T dwStackSize = 2*1024*1024;
+   t->data->func = func;
+   t->data->data = c;
 
-   Eina_Thread_Call *c = (Eina_Thread_Call *)(data);
-
-
-   t->func = func;
-   t->in = data;
-
-   t->handle = CreateThread(NULL, dwStackSize, &_eina_thread_func
-                   , t, CREATE_SUSPENDED, &threadID);
-   ret = (t->handle != NULL) ? EINA_TRUE : EINA_FALSE;
-
-   if (ret)
+   t->handle = CreateThread(NULL, 0, &_eina_thread_func
+                   , t->data, 0, NULL);
+   if (t->handle)
      {
-        ResumeThread(t->handle);
         _eina_thread_set_priority(c->prio, t);
 
         #ifdef EINA_HAVE_WIN32_THREAD_AFFINITY
@@ -107,9 +93,14 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), voi
              SetThreadAffinityMask(t->handle, (DWORD_PTR *)&affinity);
           }
         #endif
-     }
 
-   return ret;
+        return EINA_TRUE;
+     }
+   else
+     {
+        free(t->data);
+        return EINA_FALSE;
+     }
 }
 
 static inline Eina_Bool
@@ -126,6 +117,7 @@ _eina_thread_self(void)
 {
    Eina_Thread ret;
    ret.handle = GetCurrentThread();
+   ret.data = NULL;
    return ret;
 }
 
