@@ -15,10 +15,11 @@ if not sys_windows
 endif
 
 efl_lib = library('efl',
-    efl_src, 
-    dependencies: efl_lib_deps,
-    install: true,
-    version : meson.project_version()
+  efl_src,
+  c_args : ['-DEFL_BUILD'],
+  dependencies: efl_lib_deps,
+  install: true,
+  version : meson.project_version()
 )
 
 efl = declare_dependency(

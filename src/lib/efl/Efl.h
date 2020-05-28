@@ -19,11 +19,7 @@ extern "C" {
 
 #ifdef _WIN32
 # ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EFL_API __declspec(dllexport)
-#  else
-#   define EFL_API
-#  endif
+#  define EFL_API __declspec(dllexport)
 # else
 #  define EFL_API __declspec(dllimport)
 # endif
