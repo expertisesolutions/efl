@@ -6,7 +6,7 @@ efl_header_src = [
   'Efl_MVVM_Common.h'
 ]
 
-efl_src = []
+efl_src = ['efl_main.c']
 
 efl_lib_deps = [eina]
 
