@@ -8,8 +8,6 @@
 #include <locale.h>
 #include <errno.h>
 
-#include <evil_windows.h>
-
 /*
  * LOCALE_SISO639LANGNAME and LOCALE_SISO3166CTRYNAME need at least a buffer
  * of 9 char each (including NULL char). So we need 2*8 + the trailing NULL

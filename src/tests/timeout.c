@@ -1,7 +1,11 @@
 #ifndef _MSC_VER
-#include <unistd.h>
+# include <unistd.h>
 #else
-#include <windows.h>
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <windows.h>
+# undef WIN32_LEAN_AND_MEAN
 #endif
 
 #if defined(__clang__)

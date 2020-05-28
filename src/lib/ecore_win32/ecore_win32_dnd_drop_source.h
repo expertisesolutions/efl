@@ -2,10 +2,12 @@
 #define __ECORE_WIN32_DND_DROP_SOURCE_H__
 
 
-#define WIN32_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
 #include <ole2.h>
+#undef WIN32_LEAN_AND_MEAN
 
 #include "Ecore_Win32.h"
 

@@ -42,8 +42,8 @@
 #endif
 
 #ifdef _WIN32
-# include <direct.h> /* getcwd */
 # include <evil_private.h> /* path_is_absolute realpath dladdr */
+# include <direct.h> /* getcwd */
 #endif
 
 #include "eina_config.h"
