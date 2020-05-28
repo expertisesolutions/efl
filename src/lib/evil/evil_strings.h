@@ -7,10 +7,10 @@
 # ifndef WIN32_LEAN_AND_MEAN
 #  define WIN32_LEAN_AND_MEAN
 # endif
-# include <Windows.h>
+# include <windows.h>
 # undef WIN32_LEAN_AND_MEAN
 #else
-# include<string.h>
+# include <string.h>
 #endif
 
 #define strncasecmp _strnicmp
