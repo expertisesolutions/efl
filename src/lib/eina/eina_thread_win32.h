@@ -37,6 +37,17 @@
 #define EINA_THREAD_CANCEL_DEFERRED 0
 #define EINA_THREAD_CANCEL_ASYNCHRONOUS 1
 #define EINA_THREAD_CANCELED   ((void *) -1)
+
+struct _Eina_ThreadData
+{
+   /*
+    * In calling contains the argument to the thread func
+    * On exit, holds the return value of the thread
+    */
+   void *data;
+   void *(*func)(void *data);
+};
+
 /**
  * @typedef Eina_Thread
  * Type for a generic thread.
@@ -44,9 +55,7 @@
 typedef struct _Eina_Thread
 {
    HANDLE handle;
-   void* in;
-   void* out;
-   void *(*func)(void *in);
+   struct _Eina_ThreadData *data;
 } Eina_Thread;
 
 EINA_API DWORD eina_thread_self_id(void);
