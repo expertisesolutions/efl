@@ -17,9 +17,12 @@
 #include "ecore_evas_private.h"
 #include "ecore_evas_win32.h"
 
-#define WIN32_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
+#endif
 
 #ifdef BUILD_ECORE_EVAS_SOFTWARE_GDI
 # include <Evas_Engine_Software_Gdi.h>
