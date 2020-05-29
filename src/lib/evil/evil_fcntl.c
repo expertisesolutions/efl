@@ -3,7 +3,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "evil_private.h"
-#include <winsock.h>
+#include <winsock2.h>
 
 #include <stdio.h>
 #include <sys/locking.h>
