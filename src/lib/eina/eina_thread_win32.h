@@ -59,7 +59,6 @@ typedef struct _Eina_Thread
    struct _Eina_ThreadData *data;
 } Eina_Thread;
 
-EINA_API DWORD eina_thread_self_id(void);
-EINA_API DWORD eina_thread_id(Eina_Thread t);
+typedef DWORD Eina_ThreadId;
 
 #endif

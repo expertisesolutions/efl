@@ -18,6 +18,14 @@
 
 #include "eina_thread_posix.h"
 
+#ifdef HAVE_PTHREAD_NP_H
+#include <pthread_np.h>
+#endif
+
+#ifdef __linux__
+#include <sys/types.h>
+#endif
+
 /**
  * @def EINA_THREAD_CLEANUP_PUSH(cleanup, data)
  *
@@ -165,6 +173,18 @@ static inline Eina_Thread
 _eina_thread_self(void)
 {
    return (Eina_Thread)pthread_self();
+}
+
+static inline Eina_ThreadId
+_eina_thread_self_id(void)
+{
+#if defined HAVE_PTHREAD_GETTHREADID_NP
+    return pthread_getthreadid_np();
+#elif defined __linux__
+    return gettid();
+#else
+    return (Eina_ThreadId) pthread_self();
+#endif
 }
 
 static inline void

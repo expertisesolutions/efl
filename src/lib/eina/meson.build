@@ -361,6 +361,13 @@ if sys_osx == true
    endif
 endif
 
+if cc.has_header('pthread_np.h')
+  cc.set('HAVE_PTHREAD_H', 1)
+  if cc.has_function('pthread_getthreadid_np', prefix: '#include <pthread_np.h>')
+    cc.set('HAVE_PTHREAD_GETTHREADID_NP', 1)
+  endif
+endif
+
 if host_machine.endian() == 'big'
    eina_config.set('EINA_HAVE_WORDS_BIGENDIAN', '1')
 endif
