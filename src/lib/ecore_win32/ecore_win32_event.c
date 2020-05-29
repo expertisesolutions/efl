@@ -12,8 +12,8 @@
 
 #include <evil_private.h> /* evil_utf16_to_utf8() */
 #include <Eina.h>
-#include <Ecore.h>
-#include <Ecore_Input.h>
+//#include <Ecore.h>
+//#include <Ecore_Input.h>
 
 #include "Ecore_Win32.h"
 #include "ecore_win32_private.h"
