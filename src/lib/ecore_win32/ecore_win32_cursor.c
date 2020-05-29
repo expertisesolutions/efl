@@ -2,11 +2,8 @@
 # include <config.h>
 #endif
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <windowsx.h>
 #undef WIN32_LEAN_AND_MEAN
 
 #include <Eina.h>

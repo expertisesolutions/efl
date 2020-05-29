@@ -2,13 +2,12 @@
 # include <config.h>
 #endif
 
-#include <evil_private.h> /* evil_last_error_get */
-
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <process.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
+#include <process.h>
+
+#include <evil_private.h> /* evil_last_error_get */
 
 #include "Ecore.h"
 #include "ecore_private.h"

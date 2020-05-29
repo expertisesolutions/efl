@@ -39,8 +39,8 @@
 #endif
 
 #ifdef _WIN32
-# include <evil_private.h> /* evil_init|shutdown */
 # include <ws2tcpip.h>
+# include <evil_private.h> /* evil_init|shutdown */
 #endif
 
 #include "Ecore.h"

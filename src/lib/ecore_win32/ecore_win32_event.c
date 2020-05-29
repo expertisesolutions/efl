@@ -4,11 +4,10 @@
 
 #include <stdlib.h>
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windowsx.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
+#include <windowsx.h>
 
 #include <evil_private.h> /* evil_utf16_to_utf8() */
 #include <Eina.h>

@@ -23,16 +23,15 @@
 # include "config.h"
 #endif
 
+
 #include "eina_thread.h"
 #include "unimplemented.h"
 #include <errno.h>
-
 #ifndef WIN32_LEAN_AND_MEAN
 # define WIN32_LEAN_AND_MEAN
 #endif
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
-
+#include <Windows.h>
+#undef _WIN32_LEAN_AND_MEAN
 #define EINA_THREAD_CANCEL_ENABLE 0
 #define EINA_THREAD_CANCEL_DISABLE 1
 #define EINA_THREAD_CANCEL_DEFERRED 0
@@ -63,4 +62,4 @@ typedef struct _Eina_Thread
 EINA_API DWORD eina_thread_self_id(void);
 EINA_API DWORD eina_thread_id(Eina_Thread t);
 
-#endif
+#endif 

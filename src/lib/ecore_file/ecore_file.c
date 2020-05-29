@@ -9,8 +9,8 @@
 #include <libgen.h>
 
 #ifdef _WIN32
-# include <evil_private.h> /* mkdir realpath */
 # include <direct.h>
+# include <evil_private.h> /* mkdir realpath */
 #endif
 
 #ifdef HAVE_FEATURES_H

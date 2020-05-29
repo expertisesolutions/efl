@@ -1,12 +1,10 @@
 #ifndef __ECORE_WIN32_DND_DATA_OBJECT_H__
 #define __ECORE_WIN32_DND_DATA_OBJECT_H__
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
+
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
-
 #include <objbase.h>
 
 

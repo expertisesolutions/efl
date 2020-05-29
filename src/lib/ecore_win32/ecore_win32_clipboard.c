@@ -2,6 +2,10 @@
 # include <config.h>
 #endif
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+
 #include <evil_private.h> /* utf-8 and utf-16 conversion */
 #include <Eina.h>
 

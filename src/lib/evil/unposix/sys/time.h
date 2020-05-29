@@ -15,8 +15,6 @@
 #include <../ucrt/time.h>
 #include <sys/types.h>
 
-#undef WIN32_LEAN_AND_MEAN
-
 // typedef unsigned short u_short;
 
 // struct timezone {

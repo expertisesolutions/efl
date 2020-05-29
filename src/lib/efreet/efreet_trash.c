@@ -13,8 +13,6 @@
 # endif
 # include <windows.h> /* GetCurrentProcessId */
 # undef WIN32_LEAN_AND_MEAN
-
-# define getuid() GetCurrentProcessId()
 #endif
 
 #include <Ecore_File.h>
@@ -29,6 +27,10 @@ static int _efreet_trash_log_dom = -1;
 
 static unsigned int _efreet_trash_init_count = 0;
 static const char *efreet_trash_dir = NULL;
+
+#ifdef _WIN32
+# define getuid() GetCurrentProcessId()
+#endif
 
 EAPI int
 efreet_trash_init(void)

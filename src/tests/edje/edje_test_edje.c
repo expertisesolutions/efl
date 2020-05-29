@@ -9,15 +9,9 @@
 #define EFL_CANVAS_LAYOUT_BETA
 
 #include "edje_suite.h"
-
 #ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
 # include <windows.h>
-# undef WIN32_LEAN_AND_MEAN
 #endif
-
 #define EVAS_DATA_DIR TESTS_SRC_DIR "/../../lib/evas"
 
 EFL_START_TEST(edje_test_edje_init)
