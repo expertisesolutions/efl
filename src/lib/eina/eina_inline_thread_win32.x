@@ -85,6 +85,7 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), Ein
                    , t->data, 0, NULL);
    if (t->handle)
      {
+        t->id = GetThreadId(t->handle);
         _eina_thread_set_priority(c->prio, t);
 
         #ifdef EINA_HAVE_WIN32_THREAD_AFFINITY
@@ -106,10 +107,7 @@ _eina_thread_create(Eina_Thread *t, int affinity, void *(*func)(void *data), Ein
 static inline Eina_Bool
 _eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 {
-   DWORD t1_thread_id = GetThreadId(t1.handle);
-   DWORD t2_thread_id = GetThreadId(t2.handle);
-
-   return (t1_thread_id == t2_thread_id) ? EINA_TRUE : EINA_FALSE;
+   return (t1.id == t2.id) ? EINA_TRUE : EINA_FALSE;
 }
 
 static inline Eina_Thread
@@ -117,6 +115,7 @@ _eina_thread_self(void)
 {
    Eina_Thread ret;
    ret.handle = GetCurrentThread();
+   ret.id = GetCurrentThreadId();
    ret.data = NULL;
    return ret;
 }

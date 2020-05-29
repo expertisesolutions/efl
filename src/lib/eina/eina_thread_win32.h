@@ -55,6 +55,7 @@ struct _Eina_ThreadData
 typedef struct _Eina_Thread
 {
    HANDLE handle;
+   DWORD id;
    struct _Eina_ThreadData *data;
 } Eina_Thread;
 
