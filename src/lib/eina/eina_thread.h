@@ -79,6 +79,18 @@ typedef enum _Eina_Thread_Priority
 EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
 
 /**
+ * @brief Returns an integral compatible identifier of the current thread.
+ *
+ * Contrary to @eina_self_thread, this function returns an indentifier that
+ * is an integral type. It means you can compare it with the == operator and
+ * cast it to an integer type.
+ *
+ * @return integral identifier of current thread.
+ * @since 1.25
+ */
+EINA_API Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
+
+/**
  * @brief Checks if two thread identifiers are the same.
  * @param[in] t1 first thread identifier to compare.
  * @param[in] t2 second thread identifier to compare.
