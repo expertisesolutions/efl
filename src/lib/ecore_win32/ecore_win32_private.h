@@ -164,7 +164,7 @@ void  _ecore_win32_event_handle_selection_notify(Ecore_Win32_Callback_Data *msg)
 
 void *_ecore_win32_dnd_data_object_new(void *fmtetc, void *stgmeds, int count);
 void _ecore_win32_dnd_data_object_free(void *data_object);
-void *_ecore_win32_dnd_drop_source_new();
+void *_ecore_win32_dnd_drop_source_new(void);
 void _ecore_win32_dnd_drop_source_free(void *drop_source);
 void *_ecore_win32_dnd_register_drop_window(HWND hwnd,
                                             Ecore_Win32_Dnd_DropTarget_Callback callback, void *ptr);
