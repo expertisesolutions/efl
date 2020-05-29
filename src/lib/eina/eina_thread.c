@@ -48,6 +48,12 @@ eina_thread_self(void)
    return _eina_thread_self();
 }
 
+EINA_API Eina_ThreadId
+eina_thread_self_id(void)
+{
+   return _eina_thread_self_id();
+}
+
 EINA_API Eina_Bool
 eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 {
@@ -176,16 +182,3 @@ eina_thread_shutdown(void)
    return EINA_TRUE;
 }
 
-#ifdef _WIN32
-DWORD
-eina_thread_self_id(void)
-{
-   return  GetCurrentThreadId();
-}
-
-DWORD
-eina_thread_id(Eina_Thread t)
-{
-   return  GetThreadId(t.handle);
-}
-#endif
