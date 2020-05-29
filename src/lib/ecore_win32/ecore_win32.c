@@ -4,11 +4,13 @@
 
 #include <stdlib.h>
 
-#define WIN32_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
 #include <windowsx.h>
 #include <dbt.h>
+#undef WIN32_LEAN_AND_MEAN
 
 #include <Eina.h>
 //#include <Ecore.h>

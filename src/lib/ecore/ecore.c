@@ -16,7 +16,7 @@
 #endif
 
 #ifdef _WIN32
-# include <evil_private.h> /* mmap */
+# include <evil_private.h> /* mmap, evil_init/shutdown */
 #else
 # include <sys/mman.h>
 #endif
@@ -25,9 +25,6 @@
 # include <systemd/sd-daemon.h>
 #endif
 
-#ifdef _WIN32
-# include <evil_private.h> /* evil_init/shutdown */
-#endif
 #include <Eina.h>
 #include <Efl.h>
 
