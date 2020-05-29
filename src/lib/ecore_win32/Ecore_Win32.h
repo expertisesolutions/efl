@@ -519,9 +519,9 @@ ECORE_WIN32_API extern int ECORE_WIN32_EVENT_SELECTION_NOTIFY; /**< Ecore_Event 
 
 /* Core */
 
-ECORE_WIN32_API int           ecore_win32_init();
-ECORE_WIN32_API int           ecore_win32_shutdown();
-ECORE_WIN32_API int           ecore_win32_screen_depth_get();
+ECORE_WIN32_API int           ecore_win32_init(void);
+ECORE_WIN32_API int           ecore_win32_shutdown(void);
+ECORE_WIN32_API int           ecore_win32_screen_depth_get(void);
 ECORE_WIN32_API void          ecore_win32_double_click_time_set(double t);
 ECORE_WIN32_API double        ecore_win32_double_click_time_get(void);
 ECORE_WIN32_API unsigned long ecore_win32_current_time_get(void);
@@ -663,8 +663,8 @@ ECORE_WIN32_API void                ecore_win32_cursor_show(Eina_Bool show);
 
 
 /* Drag and drop */
-ECORE_WIN32_API int       ecore_win32_dnd_init();
-ECORE_WIN32_API int       ecore_win32_dnd_shutdown();
+ECORE_WIN32_API int       ecore_win32_dnd_init(void);
+ECORE_WIN32_API int       ecore_win32_dnd_shutdown(void);
 ECORE_WIN32_API Eina_Bool ecore_win32_dnd_begin(const char *data,
                                      int         size);
 ECORE_WIN32_API Eina_Bool ecore_win32_dnd_register_drop_target(Ecore_Win32_Window                 *window,
