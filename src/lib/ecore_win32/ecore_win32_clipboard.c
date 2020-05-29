@@ -33,7 +33,7 @@
  *============================================================================*/
 
 
-EAPI Eina_Bool
+ECORE_WIN32_API Eina_Bool
 ecore_win32_clipboard_set(const Ecore_Win32_Window *window,
                           const void *data,
                           size_t size,
@@ -117,7 +117,7 @@ ecore_win32_clipboard_set(const Ecore_Win32_Window *window,
    return res;
 }
 
-EAPI void *
+ECORE_WIN32_API void *
 ecore_win32_clipboard_get(const Ecore_Win32_Window *window,
                           size_t *size,
                           const char *mime_type)
@@ -221,7 +221,7 @@ ecore_win32_clipboard_get(const Ecore_Win32_Window *window,
    return NULL;
 }
 
-EAPI void
+ECORE_WIN32_API void
 ecore_win32_clipboard_clear(const Ecore_Win32_Window *window)
 {
    INF("clearing the clipboard");
