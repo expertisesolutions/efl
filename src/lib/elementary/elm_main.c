@@ -8,9 +8,9 @@
 
 #ifdef _WIN32
 # include <evil_private.h> /* dlopen,dlclose,etc */
-# include <dlfcn.h> /* dlopen,dlclose,etc */
 # include <direct.h> /* getcwd */
 #else
+# include <dlfcn.h> /* dlopen,dlclose,etc */
 # include <unistd.h>
 #endif
 
