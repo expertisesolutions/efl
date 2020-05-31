@@ -397,7 +397,7 @@ subprojects = [
 ['evil'             ,[]                    , false,  true, false, false, false, false, [], []],
 ['eina'             ,[]                    , false,  true,  true,  true,  true,  true, [], []],
 ['eolian'           ,[]                    , false,  true,  true, false,  true, false, ['eina'], []],
-#['eo'               ,[]                    , false,  true, false,  true,  true, false, ['eina'], []],
+['eo'               ,[]                    , false,  true, false,  true,  true, false, ['eina'], []],
 #['efl'              ,[]                    , false,  true, false, false,  true, false, ['eo'], []],
 #['emile'            ,[]                    , false,  true, false, false,  true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
 #['eet'              ,[]                    , false,  true,  true, false,  true,  true, ['eina', 'emile', 'efl'], []],
