@@ -27,7 +27,7 @@ endforeach
 
 eolian_suite = executable('eolian_suite',
   eolian_test_src, priv_eo_file_target,
-  dependencies: [eolian, check, eo],
+  dependencies: [eolian, check_dep],
   c_args : [
   '-DEOLIAN_GEN="'+eolian_gen_path+'"',
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
