@@ -1,6 +1,8 @@
 #include "main.h"
 #include "docs.h"
 
+extern char* _eolian_api_symbol;
+
 static const char *
 _get_add_star(Eolian_Function_Type ftype, Eolian_Parameter_Direction pdir)
 {
@@ -118,7 +120,8 @@ _gen_func(const Eolian_State *state, const Eolian_Function *fid,
         eina_strbuf_append_char(buf, '\n');
         eina_strbuf_free(dbuf);
      }
-   eina_strbuf_append(buf, "EOAPI ");
+   eina_strbuf_append(buf, _eolian_api_symbol);
+   eina_strbuf_append(buf, " ");
    if (rtp)
      {
         if (!rtps)
@@ -225,7 +228,8 @@ eo_gen_header_gen(const Eolian_State *state, const Eolian_Class *cl,
    eina_strbuf_append_printf(buf, "#define %s %s()\n\n", mname, gname);
    eina_stringshare_del(mname);
 
-   eina_strbuf_append_printf(buf, "EWAPI const Efl_Class *%s(void);\n", gname);
+   eina_strbuf_append(buf, _eolian_api_symbol);
+   eina_strbuf_append_printf(buf, " const Efl_Class *%s(void);\n", gname);
    eina_stringshare_del(gname);
 
    /* method section */
@@ -283,7 +287,8 @@ events:
         if (!eolian_event_is_beta(ev) && evs == EOLIAN_SCOPE_PUBLIC)
           eina_strbuf_append_char(buf, '\n');
 
-        eina_strbuf_append_printf(buf, "EWAPI extern const "
+        eina_strbuf_append(buf, _eolian_api_symbol);
+        eina_strbuf_append_printf(buf, " extern const "
                                   "Efl_Event_Description _%s;\n\n", evn);
 
         Eina_Strbuf *evdbuf = eo_gen_docs_event_gen(state, ev,

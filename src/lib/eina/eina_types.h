@@ -294,6 +294,10 @@
 # define EINA_PREFETCH_WRITE(arg) ((void) (arg))
 # define EINA_PREFETCH_NOCACHE(arg) ((void) (arg))
 # define EINA_PREFETCH_NOCACHE_WRITE(arg) ((void) (arg))
+# define EINA_HOT
+# define EINA_COLD
+// # undef EWAPI
+// # define EWAPI __declspec(dllimport)
 
 #elif defined(__SUNPRO_C)
 # define EINA_UNUSED
