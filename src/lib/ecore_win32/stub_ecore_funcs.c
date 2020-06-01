@@ -7,12 +7,12 @@ void* ecore_event_add(void * arg, ...)
 
 void* ecore_event_init (void)
 {
-   return;
+   return 0;
 }
 
 void* ecore_event_type_new (void)
 {
-   return;
+   return 0;
 }
 
 void ecore_event_shutdown (void)
