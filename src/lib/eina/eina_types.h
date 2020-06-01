@@ -281,6 +281,8 @@
 # endif
 # define EINA_MALLOC
 # define EINA_PURE
+# define EINA_HOT
+# define EINA_COLD
 # define EINA_PRINTF(fmt, arg)
 # define EINA_SCANF(fmt, arg)
 # define EINA_FORMAT(fmt)
