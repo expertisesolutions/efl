@@ -917,6 +917,10 @@ eina_file_map_new(Eina_File *file, Eina_File_Populate rule,
    if (!map)
      {
         HANDLE fm;
+        SYSTEM_INFO sys_info;
+
+        GetSystemInfo(&sys_info);
+
         map = malloc(sizeof (Eina_File_Map));
         if (!map)
           {
@@ -924,17 +928,47 @@ eina_file_map_new(Eina_File *file, Eina_File_Populate rule,
              return NULL;
           }
 
+        /*
+         * align_mask  defines the mask to align the offset value
+         * aligned to alocation granularity that is <= the offset parameter.
+         */
+        const DWORD align_mask = ~(sys_info.dwAllocationGranularity - 1);
+
+        /*
+         * aligned_offset is the offset value after we apply the aligment
+         * mask.
+         */
+        const DWORD aligned_offset = offset & align_mask;
+
+        /*
+         * The distance from the aligned to the passed offset.
+         */
+        const DWORD offset_diff = offset - aligned_offset;
+
+        /*
+         * The file mapping must be from the beginning of the file
+         * until the last byte we want to map, independent of the
+         * offset value.
+         */
+        const uint64_t total_length = offset + length;
+
+        /*
+         * Divide the total length between high and low parts.
+         */
+        const DWORD length_low = total_length & (uint64_t) (DWORD)-1;
+        const DWORD length_high = total_length >> (sizeof(DWORD) * 8);
+
         /* the length parameter is unsigned long, that is a DWORD */
         /* so the max size high parameter of CreateFileMapping is 0 */
         fm = CreateFileMapping(file->handle, NULL, PAGE_READONLY,
-                                     0, (DWORD)length, NULL);
+                                     length_high, length_low, NULL);
         if (!fm)
           return NULL;
 
         map->map = MapViewOfFile(fm, FILE_MAP_READ,
-                             offset & 0xffff0000,
-                             offset & 0x0000ffff,
-                             length);
+                             0,
+                             aligned_offset,
+                             length + offset_diff);
         CloseHandle(fm);
         if (!map->map)
           map->map = MAP_FAILED;
@@ -949,16 +983,20 @@ eina_file_map_new(Eina_File *file, Eina_File_Populate rule,
              eina_lock_release(&file->lock);
              return NULL;
           }
+        else
+          {
+             map->pret = (BYTE *) map->map + offset_diff;
+          }
 
         eina_hash_add(file->map, &key, map);
-        eina_hash_direct_add(file->rmap, map->map, map);
+        eina_hash_direct_add(file->rmap, &map->pret, map);
      }
 
    map->refcount++;
 
    eina_lock_release(&file->lock);
 
-   return map->map;
+   return map->pret;
 }
 
 EAPI void
@@ -985,7 +1023,7 @@ eina_file_map_free(Eina_File *file, void *map)
      }
    else
      {
-        eina_file_common_map_free(file, map, _eina_file_map_close);
+        eina_file_common_map_free(file, &map, _eina_file_map_close);
      }
 
  on_exit:
