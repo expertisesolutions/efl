@@ -230,7 +230,6 @@ eina_module_init(void)
 Eina_Bool
 eina_module_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    /* TODO should we store every module when "new" is called and
     * delete the list of modules here
     */

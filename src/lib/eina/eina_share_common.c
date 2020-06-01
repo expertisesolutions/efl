@@ -199,7 +199,6 @@ _eina_share_common_population_init(Eina_Share *share)
 static void
 _eina_share_common_population_shutdown(Eina_Share *share)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    unsigned int i;
 
    share->max_node_population = 0;

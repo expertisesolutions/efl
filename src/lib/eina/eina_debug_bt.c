@@ -413,7 +413,6 @@ _eina_debug_bt_init(void)
 Eina_Bool
 _eina_debug_bt_shutdown(void)
 {
-    fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_semaphore_free(&_wait_for_bts_sem);
    return EINA_TRUE;
 }

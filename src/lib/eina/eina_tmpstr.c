@@ -59,7 +59,6 @@ eina_tmpstr_init(void)
 Eina_Bool
 eina_tmpstr_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_lock_free(&_mutex);
    return EINA_TRUE;
 }
