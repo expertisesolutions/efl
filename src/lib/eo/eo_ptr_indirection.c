@@ -39,7 +39,7 @@ _eo_obj_pointer_invalid(const Eo_Id obj_id,
    const char *reason = "This ID has probably been deleted";
    char tbuf[128];
    if (obj_id & MASK_CLASS_TAG) type = "class";
-   if (thread != _efl_object_main_thread)
+   if (!eina_thread_equal(thread, _efl_object_main_thread))
      {
         snprintf(tbuf, sizeof(tbuf), "%p", (void *)thread);
         tself = tbuf;
