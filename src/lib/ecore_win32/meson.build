@@ -14,6 +14,7 @@ if sys_windows == true
     'ecore_win32_event.c',
     'ecore_win32_monitor.c',
     'ecore_win32_window.c',
+    'stub_ecore_funcs.c',
   ]
 
   ecore_win32_header_src = [
