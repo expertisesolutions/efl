@@ -70,4 +70,8 @@ EAPI char *strsep(char **stringp, const char *delim);
  * @}
  */
 
+/**
+ * @}
+ */
+
 #endif /* __EVIL_STRING_H__ */
