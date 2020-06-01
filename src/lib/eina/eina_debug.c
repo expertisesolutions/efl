@@ -188,7 +188,7 @@ _daemon_greet(Eina_Debug_Session *session)
 #endif
    int size = 8 + (app_name ? strlen(app_name) : 0) + 1;
    unsigned char *buf = alloca(size);
-   
+
    int version = SWAP_32(1); // version of protocol we speak
    int pid = getpid();
    pid = SWAP_32(pid);
@@ -699,29 +699,20 @@ eina_debug_init(void)
 Eina_Bool
 eina_debug_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Debug_Session *session;
    Eina_Thread self = eina_thread_self(); 
    fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    EINA_LIST_FREE(sessions, session)
      eina_debug_session_terminate(session);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    _eina_debug_timer_shutdown();
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_debug_bt_shutdown();
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_debug_cpu_shutdown();
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_debug_thread_del(&self);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&_eina_debug_lock);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&_eina_debug_thread_lock);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_threads_shutdown();
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return EINA_TRUE;
 }
 

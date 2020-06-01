@@ -1597,7 +1597,6 @@ eina_log_init(void)
 Eina_Bool
 eina_log_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 #ifdef EINA_ENABLE_LOG
    Eina_Inlist *tmp;
 

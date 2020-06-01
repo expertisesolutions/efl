@@ -417,7 +417,6 @@ eina_abstract_content_init(void)
 Eina_Bool
 eina_abstract_content_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_hash_free(conversion_callbacks);
 
    return EINA_TRUE;

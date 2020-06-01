@@ -64,7 +64,6 @@ eina_strbuf_common_init(void)
 Eina_Bool
 eina_strbuf_common_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return EINA_TRUE;
 }
 
@@ -218,7 +217,7 @@ _eina_strbuf_common_insert_length(size_t csize,
       return EINA_FALSE;
 
    /* move the existing text */
-   memmove(((unsigned char *)(buf->buf)) + ((len + pos) * csize), 
+   memmove(((unsigned char *)(buf->buf)) + ((len + pos) * csize),
            ((unsigned char *)(buf->buf)) + (pos * csize),
            (buf->len - pos) * csize);
 
@@ -485,7 +484,7 @@ eina_strbuf_common_append(size_t csize,
 
    if (EINA_UNLIKELY(!_eina_strbuf_common_grow(csize, buf, buf->len + len)))
       return EINA_FALSE;
-   memcpy(((unsigned char *)(buf->buf)) + (buf->len * csize), str, 
+   memcpy(((unsigned char *)(buf->buf)) + (buf->len * csize), str,
           (len + 1) * csize);
    buf->len += len;
    return EINA_TRUE;
@@ -526,7 +525,7 @@ eina_strbuf_common_append_n(size_t csize,
    if (len > maxlen) len = maxlen;
    if (EINA_UNLIKELY(!_eina_strbuf_common_grow(csize, buf, buf->len + len)))
       return EINA_FALSE;
-   memcpy(((unsigned char *)(buf->buf)) + (buf->len * csize), str, 
+   memcpy(((unsigned char *)(buf->buf)) + (buf->len * csize), str,
           len * csize);
    buf->len += len;
    memset(((unsigned char *)(buf->buf)) + (buf->len * csize), 0, csize);
@@ -966,7 +965,7 @@ eina_strbuf_replace(Eina_Strbuf *buf,
         if (EINA_UNLIKELY(!_eina_strbuf_common_grow(_STRBUF_CSIZE, buf,
                                                     buf->len - len1 + len2)))
            return EINA_FALSE; /* move the existing text */
-        memmove(((unsigned char *)(buf->buf)) + pos + len2, 
+        memmove(((unsigned char *)(buf->buf)) + pos + len2,
                 ((unsigned char *)(buf->buf)) + pos + len1,
                 buf->len - pos - len1);
      }

@@ -162,7 +162,6 @@ eina_magic_string_init(void)
 Eina_Bool
 eina_magic_string_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Magic_String *ems, *ems_end;
 
    ems = _eina_magic_strings;

@@ -915,7 +915,6 @@ on_init_fail:
 Eina_Bool
 eina_matrixsparse_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_mempool_del(_eina_matrixsparse_row_mp);
    eina_mempool_del(_eina_matrixsparse_cell_mp);
 
@@ -942,7 +941,7 @@ eina_matrixsparse_new(unsigned long rows, unsigned long cols, void (*free_func)(
    if (!m) return NULL;
 
    EINA_MAGIC_SET(m, EINA_MAGIC_MATRIXSPARSE);
-   
+
    m->rows = NULL;
    m->last_row = NULL;
    m->last_used = NULL;

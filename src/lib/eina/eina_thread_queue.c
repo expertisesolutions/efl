@@ -184,7 +184,6 @@ _eina_thread_queue_msg_block_pool_init(void)
 static void
 _eina_thread_queue_msg_block_pool_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_take(&(_eina_thread_queue_block_pool_lock));
    while (_eina_thread_queue_block_pool)
      {
@@ -393,7 +392,6 @@ eina_thread_queue_init(void)
 Eina_Bool
 eina_thread_queue_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    _eina_thread_queue_msg_block_pool_shutdown();
    eina_log_domain_unregister(_eina_thread_queue_log_dom);
    return EINA_TRUE;

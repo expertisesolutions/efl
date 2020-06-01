@@ -98,31 +98,23 @@ static Eina_Array *_modules;
 
 SUITE_INIT(eina)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    ck_assert_int_eq(eina_init(), 1);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 }
 
 SUITE_SHUTDOWN(eina)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    ck_assert_int_eq(eina_shutdown(), 0);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 }
 
 EFL_START_TEST(mempool_module_load)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
     _modules = eina_module_list_get(NULL,
                                  PACKAGE_BUILD_DIR "/src/modules/eina",
                                  EINA_TRUE,
                                  NULL,
                                  NULL);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_module_list_load(_modules);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_module_list_unload(_modules);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 }
 EFL_END_TEST
 
@@ -153,31 +145,21 @@ main(int argc, char **argv)
     */
 
 
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    failed_count = _efl_suite_build_and_run(argc - 1, (const char **)argv + 1,
                                            "eina_init_module", mp_etc, SUITE_INIT_FN(eina), SUITE_SHUTDOWN_FN(eina));
 
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_init();
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_module_list_load(_modules);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    failed_count += _efl_suite_build_and_run(argc - 1, (const char **)argv + 1,
                                            "Eina", etc, NULL, NULL);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    if (_modules)
      {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         while (eina_array_count(_modules))
           eina_module_free(eina_array_pop(_modules));
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         eina_array_free(_modules);
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      }
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_shutdown();
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    return (failed_count == 0) ? 0 : 255;
 }

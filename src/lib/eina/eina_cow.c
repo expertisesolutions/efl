@@ -321,7 +321,6 @@ eina_cow_init(void)
 Eina_Bool
 eina_cow_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_log_domain_unregister(_eina_cow_log_dom);
    eina_mempool_del(gc_pool);
    return EINA_TRUE;

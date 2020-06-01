@@ -84,7 +84,6 @@ eina_accessor_init(void)
 Eina_Bool
 eina_accessor_shutdown(void)
 {
-   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    return EINA_TRUE;
 }
 
