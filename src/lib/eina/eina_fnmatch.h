@@ -8,6 +8,8 @@ extern "C"
 
 #ifdef _WIN32
 
+#include "eina_types.h"
+
 /* Bits set in the FLAGS argument to `fnmatch'.  */
 #define FNM_PATHNAME (1 << 0) /* No wildcard can ever match `/'.  */
 #define FNM_NOESCAPE (1 << 1) /* Backslashes don't quote special chars.  */
@@ -20,7 +22,7 @@ extern "C"
 /* Value returned by `fnmatch' if STRING does not match PATTERN.  */
 #define FNM_NOMATCH 1
 
-int eina_fnmatch(const char *pattern, const char *string, int flags);
+EINA_API int eina_fnmatch(const char *pattern, const char *string, int flags);
 
 #else /* _WIN32 */
 
