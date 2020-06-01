@@ -23,7 +23,7 @@
 #include <errno.h>
 #include <pthread.h>
 
-EINA_API void
+EAPI void
 eina_sched_prio_drop(void)
 {
    struct sched_param param;
@@ -69,7 +69,7 @@ eina_sched_prio_drop(void)
      }
 }
 
-EINA_API void
+EAPI void
 eina_sched_prio_init(Eina_Thread_Call* c)
 {
    Eina_Thread self = eina_thread_self();

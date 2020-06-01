@@ -81,7 +81,7 @@ dev_cflags = []
 dev_cflags_try = [
   '-fvisibility=hidden',
   '-Wall',
-  '-Wfloat-compare',
+  # '-Wfloat-compare',
   '-Wpointer-arith',
   '-Wunused-parameter',
   '-Wsign-compare',
@@ -98,8 +98,6 @@ add_global_arguments(dev_cflags, language: 'c')
 add_global_arguments(dev_cflags, language: 'cpp')
 
 if sys_windows
-  add_global_arguments('-DEVIL_DLL', language: 'cpp')
-  add_global_arguments('-DEVIL_DLL', language: 'c')
   if not get_option('dbus')
     dbus = declare_dependency()
     eldbus = declare_dependency()
@@ -244,7 +242,9 @@ config_h.set_quoted('PACKAGE_BIN_DIR', dir_bin)
 config_h.set_quoted('PACKAGE_LIB_DIR', dir_lib)
 config_h.set_quoted('PACKAGE_SRC_DIR', meson.source_root())
 if sys_windows
-  config_h.set_quoted('PACKAGE_BUILD_DIR', '\\\\'.join(meson.current_build_dir().split('\\')))
+  pkg_build_dir = '/'.join(meson.current_build_dir().split('\\'))
+  message('PACKAGE_BUILD_DIR: @0@'.format(pkg_build_dir))
+  config_h.set_quoted('PACKAGE_BUILD_DIR', pkg_build_dir)
 else
   config_h.set_quoted('PACKAGE_BUILD_DIR', meson.current_build_dir())
 endif

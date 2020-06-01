@@ -64,14 +64,14 @@ typedef enum _Eina_Cpu_Features
  *
  * @return the current cpu features
  */
-EINA_API extern Eina_Cpu_Features eina_cpu_features;
+EAPI extern Eina_Cpu_Features eina_cpu_features;
 
 /**
  * @brief Cpu features accessor.
  *
  * @return the current cpu features
  */
-EINA_API Eina_Cpu_Features eina_cpu_features_get(void);
+EAPI Eina_Cpu_Features eina_cpu_features_get(void);
 
 /**
  * @brief Gets the current number of processors.
@@ -79,7 +79,7 @@ EINA_API Eina_Cpu_Features eina_cpu_features_get(void);
  * @return The number of processors that are online, that
  * is available when the function is called.
  */
-EINA_API int               eina_cpu_count(void);
+EAPI int               eina_cpu_count(void);
 
 /**
  * @brief Gets the current virtual page size.
@@ -88,7 +88,7 @@ EINA_API int               eina_cpu_count(void);
  * allocation performed by the operating system on behalf of the program, and
  * for transfers between the main memory and any other auxiliary store.
  */
-EINA_API int               eina_cpu_page_size(void);
+EAPI int               eina_cpu_page_size(void);
 
 /**
  * @brief Reverses the byte order of a 16-bit (destination) register.

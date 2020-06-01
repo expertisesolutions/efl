@@ -41,7 +41,7 @@
  *
  * Supported OS: Windows XP.
  */
-EVIL_API int setenv(const char *name,
+EAPI int setenv(const char *name,
                 const char *value,
                 int         overwrite);
 
@@ -60,7 +60,7 @@ EVIL_API int setenv(const char *name,
  *
  * Supported OS: Windows XP.
  */
-EVIL_API int unsetenv(const char *name);
+EAPI int unsetenv(const char *name);
 
 
 /*
@@ -73,7 +73,7 @@ EVIL_API int unsetenv(const char *name);
  *
  * @since 1.8.0
  */
-EVIL_API char *mkdtemp(char *__template);
+EAPI char *mkdtemp(char *__template);
 
 /**
  * @brief Create a unique temporary file name.
@@ -94,7 +94,7 @@ EVIL_API char *mkdtemp(char *__template);
  *
  * @since 1.10.0
  */
-EVIL_API int mkstemps(char *__template, int suffixlen);
+EAPI int mkstemps(char *__template, int suffixlen);
 
 /**
  * @brief Return an absolute or full path name for a specified relative path name.
@@ -125,7 +125,7 @@ EVIL_API int mkstemps(char *__template, int suffixlen);
  *
  * Supported OS: Windows XP.
  */
-EVIL_API char *realpath(const char *file_name, char *resolved_name);
+EAPI char *realpath(const char *file_name, char *resolved_name);
 #ifndef HAVE_REALPATH
 # define HAVE_REALPATH 1
 #endif

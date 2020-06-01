@@ -38,7 +38,7 @@
  *
  * Supported OS: Windows XP.
  */
-EVIL_API char *strcasestr(const char *haystack, const char *needle);
+EAPI char *strcasestr(const char *haystack, const char *needle);
 
 /**
  * @brief Implements the strsep function which is used to separate strings.
@@ -64,7 +64,7 @@ EVIL_API char *strcasestr(const char *haystack, const char *needle);
  * @since 1.8
  *
  */
-EVIL_API char *strsep(char **stringp, const char *delim);
+EAPI char *strsep(char **stringp, const char *delim);
 
 /**
  * @}

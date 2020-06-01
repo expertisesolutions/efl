@@ -146,7 +146,7 @@ _monitor(void *_data EINA_UNUSED)
    return NULL;
 }
 
-EINA_API Eina_Debug_Timer *
+EAPI Eina_Debug_Timer *
 eina_debug_timer_add(unsigned int timeout_ms, Eina_Debug_Timer_Cb cb, void *data)
 {
    if (!cb || !timeout_ms) return NULL;
@@ -191,7 +191,7 @@ eina_debug_timer_add(unsigned int timeout_ms, Eina_Debug_Timer_Cb cb, void *data
    return t;
 }
 
-EINA_API void
+EAPI void
 eina_debug_timer_del(Eina_Debug_Timer *t)
 {
   abort();

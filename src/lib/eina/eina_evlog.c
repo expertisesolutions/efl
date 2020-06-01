@@ -156,7 +156,7 @@ push_buf(Eina_Evlog_Buf *b, unsigned int size)
    return ptr;
 }
 
-EINA_API void
+EAPI void
 eina_evlog(const char *event, void *obj, double srctime, const char *detail)
 {
    Eina_Evlog_Item *item;
@@ -193,7 +193,7 @@ eina_evlog(const char *event, void *obj, double srctime, const char *detail)
    eina_spinlock_release(&_evlog_lock);
 }
 
-EINA_API Eina_Evlog_Buf *
+EAPI Eina_Evlog_Buf *
 eina_evlog_steal(void)
 {
    Eina_Evlog_Buf *stolen = NULL;
@@ -217,7 +217,7 @@ eina_evlog_steal(void)
    return stolen;
 }
 
-EINA_API void
+EAPI void
 eina_evlog_start(void)
 {
    eina_spinlock_take(&_evlog_lock);
@@ -231,7 +231,7 @@ eina_evlog_start(void)
    eina_spinlock_release(&_evlog_lock);
 }
 
-EINA_API void
+EAPI void
 eina_evlog_stop(void)
 {
    eina_spinlock_take(&_evlog_lock);

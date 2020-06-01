@@ -49,7 +49,7 @@
  *
  * @since 1.16
  */
-EVIL_API char *evil_setlocale(int category, const char *locale);
+EAPI char *evil_setlocale(int category, const char *locale);
 
 
 /**

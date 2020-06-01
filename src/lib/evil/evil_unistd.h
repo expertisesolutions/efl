@@ -21,7 +21,7 @@
 #define execvp _ucrt_execvp  // overriding execvp below
 #include <process.h> // for _execvp (but not execvp), getpid
 #undef execvp 
-EVIL_API int execvp(const char *file, char *const argv[]);
+EAPI int execvp(const char *file, char *const argv[]);
 
 /* Values for the second argument to access.  These may be OR'd together.  */
 #define R_OK    4       /* Test for read permission.  */
@@ -63,7 +63,7 @@ EVIL_API int execvp(const char *file, char *const argv[]);
  *
  * Supported OS: Windows XP.
  */
-EVIL_API double evil_time_get(void);
+EAPI double evil_time_get(void);
 
 /*
  * Sockets and pipe related functions
@@ -82,7 +82,7 @@ EVIL_API double evil_time_get(void);
  *
  * Supported OS: Windows XP.
  */
-EVIL_API int evil_sockets_init(void);
+EAPI int evil_sockets_init(void);
 
 /**
  * @brief Shutdown the Windows socket system.
@@ -93,7 +93,7 @@ EVIL_API int evil_sockets_init(void);
  *
  * Supported OS: Windows XP.
  */
-EVIL_API void evil_sockets_shutdown(void);
+EAPI void evil_sockets_shutdown(void);
 
 /**
  * @brief Create a pair of sockets.
@@ -109,7 +109,7 @@ EVIL_API void evil_sockets_shutdown(void);
  *
  * Supported OS: Windows XP.
  */
-EVIL_API int evil_pipe(int *fds);
+EAPI int evil_pipe(int *fds);
 
 
 /**

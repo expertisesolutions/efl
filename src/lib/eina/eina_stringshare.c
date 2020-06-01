@@ -532,7 +532,7 @@ eina_stringshare_shutdown(void)
  *                                   API                                      *
  *============================================================================*/
 
-EINA_API void
+EAPI void
 eina_stringshare_del(Eina_Stringshare *str)
 {
    int slen;
@@ -572,7 +572,7 @@ eina_stringshare_del(Eina_Stringshare *str)
      CRI("EEEK trying to del non-shared stringshare \"%s\"", str);
 }
 
-EINA_API Eina_Stringshare *
+EAPI Eina_Stringshare *
 eina_stringshare_add_length(const char *str, unsigned int slen)
 {
    if (!str)
@@ -605,14 +605,14 @@ eina_stringshare_add_length(const char *str, unsigned int slen)
                                        sizeof(char), sizeof(char));
 }
 
-EINA_API Eina_Stringshare *
+EAPI Eina_Stringshare *
 eina_stringshare_add(const char *str)
 {
    if (!str) return NULL;
    return eina_stringshare_add_length(str, strlen(str));
 }
 
-EINA_API Eina_Stringshare *
+EAPI Eina_Stringshare *
 eina_stringshare_printf(const char *fmt, ...)
 {
    va_list args;
@@ -636,7 +636,7 @@ eina_stringshare_printf(const char *fmt, ...)
    return ret;
 }
 
-EINA_API Eina_Stringshare *
+EAPI Eina_Stringshare *
 eina_stringshare_vprintf(const char *fmt, va_list args)
 {
    char *tmp = NULL;
@@ -657,7 +657,7 @@ eina_stringshare_vprintf(const char *fmt, va_list args)
    return ret;
 }
 
-EINA_API Eina_Stringshare *
+EAPI Eina_Stringshare *
 eina_stringshare_nprintf(unsigned int len, const char *fmt, ...)
 {
    va_list args;
@@ -684,7 +684,7 @@ eina_stringshare_nprintf(unsigned int len, const char *fmt, ...)
    return eina_stringshare_add_length(tmp, size);
 }
 
-EINA_API Eina_Stringshare *
+EAPI Eina_Stringshare *
 eina_stringshare_ref(Eina_Stringshare *str)
 {
    int slen;
@@ -725,7 +725,7 @@ eina_stringshare_ref(Eina_Stringshare *str)
    return eina_share_common_ref(stringshare_share, str);
 }
 
-EINA_API int
+EAPI int
 eina_stringshare_strlen(Eina_Stringshare *str)
 {
    int len;
@@ -750,7 +750,7 @@ eina_stringshare_strlen(Eina_Stringshare *str)
    return len;
 }
 
-EINA_API void
+EAPI void
 eina_stringshare_dump(void)
 {
    eina_share_common_dump(stringshare_share,

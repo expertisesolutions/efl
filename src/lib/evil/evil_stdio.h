@@ -43,7 +43,7 @@
  *
  * @since 1.8
  */
-EVIL_API int evil_rename(const char *src, const char *dst);
+EAPI int evil_rename(const char *src, const char *dst);
 
 #ifndef HAVE_CYGWIN
 typedef int mode_t;
@@ -60,7 +60,7 @@ typedef int mode_t;
  *
  * @since 1.15
  */
-EVIL_API int evil_mkdir(const char *dirname, mode_t mode);
+EAPI int evil_mkdir(const char *dirname, mode_t mode);
 
 /**
  * @}
