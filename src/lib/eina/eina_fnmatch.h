@@ -8,6 +8,8 @@ extern "C"
 
 #ifdef _WIN32
 
+#include "eina_types.h"
+
 /* Bits set in the FLAGS argument to `fnmatch'.  */
 #define FNM_PATHNAME (1 << 0) /* No wildcard can ever match `/'.  */
 #define FNM_NOESCAPE (1 << 1) /* Backslashes don't quote special chars.  */
