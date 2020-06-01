@@ -47,6 +47,9 @@
 extern "C" {
 #endif
 
+#include <stub_ecore_types.h>
+#include <stub_ecore_funcs.h>
+
 /**
  * @defgroup Ecore_Win32_Group Ecore_Win32 library
  * @ingroup Ecore
