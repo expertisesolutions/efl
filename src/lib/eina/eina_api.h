@@ -1,30 +1,43 @@
 #ifndef EINA_PREAMBLE_H
-# define EINA_PREAMBLE_H
+#define EINA_PREAMBLE_H
 
-#ifdef EINA_API
-# undef EINA_API
+#ifdef EAPI
+# undef EAPI
 #endif
 
-#ifdef _MSC_VER
-# ifndef EINA_DLL
-#  define EINA_API
-# elif defined(EINA_BUILD)
-#  define EINA_API __declspec(dllexport)
+#ifdef _WIN32
+# ifdef EFL_BUILD
+#  ifdef DLL_EXPORT
+#   define EAPI __declspec(dllexport)
+#  else
+#   define EAPI
+#  endif
 # else
-#  define EINA_API __declspec(dllimport)
+#  define EAPI __declspec(dllimport)
 # endif
-# define EINA_API_WEAK
+# define EAPI_WEAK
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EINA_API __attribute__ ((visibility("default")))
-#   define EINA_API_WEAK __attribute__ ((weak))
+#   define EAPI __attribute__ ((visibility("default")))
+#   define EAPI_WEAK __attribute__ ((weak))
 #  else
-#   define EINA_API
-#   define EINA_API_WEAK
+#   define EAPI
+#   define EAPI_WEAK
 #  endif
 # else
-#  define EINA_API
+/**
+ * @def EAPI
+ * @brief Used to export functions (by changing visibility).
+ */
+#  define EAPI
+/**
+ * @def EAPI_WEAK
+ * @brief Weak symbol, primarily useful in defining library functions which
+ * can be overridden in user code.
+ * Note: Not supported on all platforms.
+ */
+#  define EAPI_WEAK
 # endif
 #endif
 

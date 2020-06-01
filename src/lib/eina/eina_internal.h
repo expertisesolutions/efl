@@ -37,9 +37,9 @@ struct _Eina_Vpath_Interface_User
  *
  * @internal
  */
-EINA_API void __eina_promise_cancel_all(void);
+EAPI void __eina_promise_cancel_all(void);
 
-EINA_API void __eina_promise_cancel_data(void *data);
+EAPI void __eina_promise_cancel_data(void *data);
 
 /**
  * Make the app specific paths accessible as virtual path
@@ -56,7 +56,7 @@ EINA_API void __eina_promise_cancel_data(void *data);
  *
  * If you do NOT call this api the virtual paths for app.* will be unset
  */
-EINA_API void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p);
+EAPI void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p);
 
 /**
  * Create the desktop specific vpaths
@@ -65,11 +65,11 @@ EINA_API void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p)
  *
  * If you do NOT call this api the virtual paths for usr.* will be unset.
  */
-EINA_API void eina_vpath_interface_user_set(Eina_Vpath_Interface_User *user);
+EAPI void eina_vpath_interface_user_set(Eina_Vpath_Interface_User *user);
 
 void eina_xdg_env_init(void);
 
-#undef EINA_API
-#define EINA_API
+#undef EAPI
+#define EAPI
 
 #endif

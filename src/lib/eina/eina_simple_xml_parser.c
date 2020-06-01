@@ -282,7 +282,7 @@ eina_simple_xml_shutdown(void)
  *============================================================================*/
 
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_simple_xml_parse(const char *buf, unsigned buflen, Eina_Bool strip, Eina_Simple_XML_Cb func, const void *data)
 {
    const char *itr = buf, *itr_end = buf + buflen;
@@ -474,7 +474,7 @@ eina_simple_xml_parse(const char *buf, unsigned buflen, Eina_Bool strip, Eina_Si
    return EINA_TRUE;
 }
 
-EINA_API const char *
+EAPI const char *
 eina_simple_xml_tag_attributes_find(const char *buf, unsigned buflen)
 {
    const char *itr = buf, *itr_end = buf + buflen;
@@ -499,7 +499,7 @@ eina_simple_xml_tag_attributes_find(const char *buf, unsigned buflen)
    return NULL;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_simple_xml_attributes_parse(const char *buf, unsigned buflen, Eina_Simple_XML_Attribute_Cb func, const void *data)
 {
    const char *itr = buf, *itr_end = buf + buflen;
@@ -559,7 +559,7 @@ eina_simple_xml_attributes_parse(const char *buf, unsigned buflen, Eina_Simple_X
    return EINA_TRUE;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_simple_xml_attribute_w3c_parse(const char *buf, Eina_Simple_XML_Attribute_Cb func, const void *data)
 {
    const char *end;
@@ -618,7 +618,7 @@ eina_simple_xml_attribute_w3c_parse(const char *buf, Eina_Simple_XML_Attribute_C
 
 /* Node loader *************************************************************/
 
-EINA_API Eina_Simple_XML_Attribute *
+EAPI Eina_Simple_XML_Attribute *
 eina_simple_xml_attribute_new(Eina_Simple_XML_Node_Tag *parent, const char *key, const char *value)
 {
    Eina_Simple_XML_Attribute *attr;
@@ -644,7 +644,7 @@ eina_simple_xml_attribute_new(Eina_Simple_XML_Node_Tag *parent, const char *key,
    return attr;
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_attribute_free(Eina_Simple_XML_Attribute *attr)
 {
    if (!attr)
@@ -673,7 +673,7 @@ _eina_simple_xml_node_data_free(Eina_Simple_XML_Node_Data *node)
    free(node);
 }
 
-EINA_API Eina_Simple_XML_Node_Tag *
+EAPI Eina_Simple_XML_Node_Tag *
 eina_simple_xml_node_tag_new(Eina_Simple_XML_Node_Tag *parent, const char *name)
 {
    Eina_Simple_XML_Node_Tag *n;
@@ -731,7 +731,7 @@ _eina_simple_xml_node_tag_free(Eina_Simple_XML_Node_Tag *tag)
    eina_mempool_free(_eina_simple_xml_tag_mp, tag);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_tag_free(Eina_Simple_XML_Node_Tag *tag)
 {
    if (!tag)
@@ -776,14 +776,14 @@ _eina_simple_xml_node_data_new(Eina_Simple_XML_Node_Tag *parent, Eina_Simple_XML
    return n;
 }
 
-EINA_API Eina_Simple_XML_Node_Data *
+EAPI Eina_Simple_XML_Node_Data *
 eina_simple_xml_node_data_new(Eina_Simple_XML_Node_Tag *parent, const char *contents, size_t length)
 {
    return _eina_simple_xml_node_data_new
      (parent, EINA_SIMPLE_XML_NODE_DATA, contents, length);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_data_free(Eina_Simple_XML_Node_Data *node)
 {
    if (!node)
@@ -798,14 +798,14 @@ eina_simple_xml_node_data_free(Eina_Simple_XML_Node_Data *node)
    _eina_simple_xml_node_data_free(node);
 }
 
-EINA_API Eina_Simple_XML_Node_CData *
+EAPI Eina_Simple_XML_Node_CData *
 eina_simple_xml_node_cdata_new(Eina_Simple_XML_Node_Tag *parent, const char *contents, size_t length)
 {
    return _eina_simple_xml_node_data_new
      (parent, EINA_SIMPLE_XML_NODE_CDATA, contents, length);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_cdata_free(Eina_Simple_XML_Node_Data *node)
 {
    if (!node)
@@ -820,14 +820,14 @@ eina_simple_xml_node_cdata_free(Eina_Simple_XML_Node_Data *node)
    _eina_simple_xml_node_data_free(node);
 }
 
-EINA_API Eina_Simple_XML_Node_Doctype_Child *
+EAPI Eina_Simple_XML_Node_Doctype_Child *
 eina_simple_xml_node_doctype_child_new(Eina_Simple_XML_Node_Tag *parent, const char *contents, size_t length)
 {
    return _eina_simple_xml_node_data_new
      (parent, EINA_SIMPLE_XML_NODE_DOCTYPE_CHILD, contents, length);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_doctype_child_free(Eina_Simple_XML_Node_Data *node)
 {
    if (!node)
@@ -842,14 +842,14 @@ eina_simple_xml_node_doctype_child_free(Eina_Simple_XML_Node_Data *node)
    _eina_simple_xml_node_data_free(node);
 }
 
-EINA_API Eina_Simple_XML_Node_Processing *
+EAPI Eina_Simple_XML_Node_Processing *
 eina_simple_xml_node_processing_new(Eina_Simple_XML_Node_Tag *parent, const char *contents, size_t length)
 {
    return _eina_simple_xml_node_data_new
      (parent, EINA_SIMPLE_XML_NODE_PROCESSING, contents, length);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_processing_free(Eina_Simple_XML_Node_Data *node)
 {
    if (!node)
@@ -864,14 +864,14 @@ eina_simple_xml_node_processing_free(Eina_Simple_XML_Node_Data *node)
    _eina_simple_xml_node_data_free(node);
 }
 
-EINA_API Eina_Simple_XML_Node_Doctype *
+EAPI Eina_Simple_XML_Node_Doctype *
 eina_simple_xml_node_doctype_new(Eina_Simple_XML_Node_Tag *parent, const char *contents, size_t length)
 {
    return _eina_simple_xml_node_data_new
      (parent, EINA_SIMPLE_XML_NODE_DOCTYPE, contents, length);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_doctype_free(Eina_Simple_XML_Node_Data *node)
 {
    if (!node)
@@ -886,14 +886,14 @@ eina_simple_xml_node_doctype_free(Eina_Simple_XML_Node_Data *node)
    _eina_simple_xml_node_data_free(node);
 }
 
-EINA_API Eina_Simple_XML_Node_Comment *
+EAPI Eina_Simple_XML_Node_Comment *
 eina_simple_xml_node_comment_new(Eina_Simple_XML_Node_Tag *parent, const char *contents, size_t length)
 {
    return _eina_simple_xml_node_data_new
      (parent, EINA_SIMPLE_XML_NODE_COMMENT, contents, length);
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_comment_free(Eina_Simple_XML_Node_Data *node)
 {
    if (!node)
@@ -1012,7 +1012,7 @@ _eina_simple_xml_node_parse(void *data, Eina_Simple_XML_Type type, const char *c
    return EINA_TRUE;
 }
 
-EINA_API Eina_Simple_XML_Node_Root *
+EAPI Eina_Simple_XML_Node_Root *
 eina_simple_xml_node_load(const char *buf, unsigned buflen, Eina_Bool strip)
 {
    Eina_Simple_XML_Node_Root *root;
@@ -1034,7 +1034,7 @@ eina_simple_xml_node_load(const char *buf, unsigned buflen, Eina_Bool strip)
    return root;
 }
 
-EINA_API void
+EAPI void
 eina_simple_xml_node_root_free(Eina_Simple_XML_Node_Root *root)
 {
    if (!root) return;
@@ -1194,7 +1194,7 @@ _eina_simple_xml_node_dump(Eina_Strbuf *buf, Eina_Simple_XML_Node *node, const c
      }
 }
 
-EINA_API char *
+EAPI char *
 eina_simple_xml_node_dump(Eina_Simple_XML_Node *node, const char *indent)
 {
    Eina_Strbuf *buf;

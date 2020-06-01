@@ -157,8 +157,11 @@ m = cc.find_library('m')
 endif
 #just keep this here as required false, if it is not inplace the library rt will just be linked as NOP
 if host_machine.system() != 'windows'
-dl = cc.find_library('dl', required: false)
-rt = cc.find_library('rt', required: false)
+  dl = cc.find_library('dl', required: false)
+  rt = cc.find_library('rt', required: false)
+else
+  dl = declare_dependency()
+  rt = declare_dependency()
 endif
 
 thread_dep = dependency('threads')

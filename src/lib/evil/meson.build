@@ -1,7 +1,7 @@
 if target_machine.system() == 'windows'
   evil_deps = []
-  evil_pub_deps = []
-  evil_ext_deps = []
+  evil_pub_deps = [getopt_dep, pcre_dep]
+  evil_ext_deps = [getopt_dep, pcre_dep]
   evil_src = []
 
   evil_src += files([
@@ -33,7 +33,8 @@ if target_machine.system() == 'windows'
   secur32 = cc.find_library('secur32')
   uuid = cc.find_library('uuid')
 
-  evil_ext_deps += [psapi, ole32, ws2_32, secur32, uuid, regexp]
+  evil_pub_deps += [psapi, ole32, ws2_32, secur32, uuid]
+  evil_ext_deps += [psapi, ole32, ws2_32, secur32, uuid]
 
   evil_lib = library('evil', evil_src,
     c_args : package_c_args,

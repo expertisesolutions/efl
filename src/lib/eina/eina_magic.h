@@ -150,7 +150,7 @@ typedef unsigned int Eina_Magic;
  *
  * @warning The returned value must not be freed.
  */
-EINA_API const char *eina_magic_string_get(Eina_Magic magic) EINA_WARN_UNUSED_RESULT;
+EAPI const char *eina_magic_string_get(Eina_Magic magic) EINA_WARN_UNUSED_RESULT;
 /**
  * @brief Sets the string associated with the given magic identifier.
  * @details This function sets the string @p magic_name to @p magic. It is not
@@ -165,7 +165,7 @@ EINA_API const char *eina_magic_string_get(Eina_Magic magic) EINA_WARN_UNUSED_RE
  *
  * @see eina_magic_string_static_set()
  */
-EINA_API Eina_Bool   eina_magic_string_set(Eina_Magic  magic,
+EAPI Eina_Bool   eina_magic_string_set(Eina_Magic  magic,
                                        const char *magic_name) EINA_ARG_NONNULL(2);
 
 /**
@@ -183,7 +183,7 @@ EINA_API Eina_Bool   eina_magic_string_set(Eina_Magic  magic,
  *
  * @see eina_magic_string_set()
  */
-EINA_API Eina_Bool   eina_magic_string_static_set(Eina_Magic  magic,
+EAPI Eina_Bool   eina_magic_string_static_set(Eina_Magic  magic,
                                               const char *magic_name) EINA_ARG_NONNULL(2);
 
 /**
@@ -200,7 +200,7 @@ EINA_API Eina_Bool   eina_magic_string_static_set(Eina_Magic  magic,
  * @var EINA_ERROR_MAGIC_FAILED
  * @brief The error identifier corresponding to the magic check failure.
  */
-EINA_API extern Eina_Error EINA_ERROR_MAGIC_FAILED;
+EAPI extern Eina_Error EINA_ERROR_MAGIC_FAILED;
 
 #ifdef EINA_MAGIC_DEBUG
 
@@ -289,7 +289,7 @@ EINA_API extern Eina_Error EINA_ERROR_MAGIC_FAILED;
  *       called and the program stops. It is useful for debugging programs
  *       with gdb.
  */
-EINA_API void eina_magic_fail(void *d, Eina_Magic m, Eina_Magic req_m,
+EAPI void eina_magic_fail(void *d, Eina_Magic m, Eina_Magic req_m,
                           const char *file, const char *fnc,
                           int line) EINA_ARG_NONNULL(4, 5);
 

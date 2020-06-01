@@ -548,7 +548,7 @@ struct _Eina_Future_Desc {
 /**
  * Value type for #Eina_Value's containing an #Eina_Promise
  */
-EINA_API extern const Eina_Value_Type EINA_VALUE_TYPE_PROMISE;
+EAPI extern const Eina_Value_Type EINA_VALUE_TYPE_PROMISE;
 
 /**
  * Creates a new promise.
@@ -598,7 +598,7 @@ EINA_API extern const Eina_Value_Type EINA_VALUE_TYPE_PROMISE;
  * @see Eina_Future_Schedule_Entry
  * @see Eina_Future_Scheduler_Cb
  */
-EINA_API Eina_Promise *eina_promise_new(Eina_Future_Scheduler *scheduler, Eina_Promise_Cancel_Cb cancel_cb, const void *data) EINA_ARG_NONNULL(1, 2) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Promise *eina_promise_new(Eina_Future_Scheduler *scheduler, Eina_Promise_Cancel_Cb cancel_cb, const void *data) EINA_ARG_NONNULL(1, 2) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates a new promise from a dead_future.
@@ -664,7 +664,7 @@ EINA_API Eina_Promise *eina_promise_new(Eina_Future_Scheduler *scheduler, Eina_P
  * @see Eina_Future_Schedule_Entry
  * @see Eina_Future_Scheduler_Cb
  */
-EINA_API Eina_Promise *eina_promise_continue_new(const Eina_Future *dead_future, Eina_Promise_Cancel_Cb cancel_cb, const void *data) EINA_ARG_NONNULL(1, 2) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Promise *eina_promise_continue_new(const Eina_Future *dead_future, Eina_Promise_Cancel_Cb cancel_cb, const void *data) EINA_ARG_NONNULL(1, 2) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Resolves a promise.
@@ -686,7 +686,7 @@ EINA_API Eina_Promise *eina_promise_continue_new(const Eina_Future *dead_future,
  * @see eina_promise_reject()
  * @see eina_promise_as_value()
  */
-EINA_API void eina_promise_resolve(Eina_Promise *p, Eina_Value value) EINA_ARG_NONNULL(1);
+EAPI void eina_promise_resolve(Eina_Promise *p, Eina_Value value) EINA_ARG_NONNULL(1);
 
 /**
  * Rejects a promise.
@@ -703,7 +703,7 @@ EINA_API void eina_promise_resolve(Eina_Promise *p, Eina_Value value) EINA_ARG_N
  * @see eina_promise_resolve()
  * @see eina_promise_as_value()
  */
-EINA_API void eina_promise_reject(Eina_Promise *p, Eina_Error err) EINA_ARG_NONNULL(1);
+EAPI void eina_promise_reject(Eina_Promise *p, Eina_Error err) EINA_ARG_NONNULL(1);
 
 
 /**
@@ -725,7 +725,7 @@ EINA_API void eina_promise_reject(Eina_Promise *p, Eina_Error err) EINA_ARG_NONN
  * with an #Eina_Value typed as #EINA_VALUE_TYPE_ERROR, with its value set to @c ECANCELED
  * @param[in,out] f The future to cancel.
  */
-EINA_API void eina_future_cancel(Eina_Future *f) EINA_ARG_NONNULL(1);
+EAPI void eina_future_cancel(Eina_Future *f) EINA_ARG_NONNULL(1);
 
 /**
  * Flushes an #Eina_Future_Desc
@@ -735,7 +735,7 @@ EINA_API void eina_future_cancel(Eina_Future *f) EINA_ARG_NONNULL(1);
  *
  * @param[in,out] desc The #Eina_Future_Desc to flush, if @c NULL this is a noop.
  */
-EINA_API void eina_future_desc_flush(Eina_Future_Desc *desc);
+EAPI void eina_future_desc_flush(Eina_Future_Desc *desc);
 
 /**
  * Flushes an #Eina_Future_Cb_Easy_Desc
@@ -746,7 +746,7 @@ EINA_API void eina_future_desc_flush(Eina_Future_Desc *desc);
  *
  * @param[in,out] desc The #Eina_Future_Cb_Easy_Desc to flush, if @c NULL this is a noop.
  */
-EINA_API void eina_future_cb_easy_desc_flush(Eina_Future_Cb_Easy_Desc *desc);
+EAPI void eina_future_cb_easy_desc_flush(Eina_Future_Cb_Easy_Desc *desc);
 
 /**
  * Creates a new #Eina_Value from a promise.
@@ -826,7 +826,7 @@ EINA_API void eina_future_cb_easy_desc_flush(Eina_Future_Cb_Easy_Desc *desc);
  * @see eina_promise_reject()
  * @see eina_promise_resolve()
  */
-EINA_API Eina_Value eina_promise_as_value(Eina_Promise *p) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Value eina_promise_as_value(Eina_Promise *p) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates an #Eina_Value from a future.
@@ -839,7 +839,7 @@ EINA_API Eina_Value eina_promise_as_value(Eina_Promise *p) EINA_ARG_NONNULL(1) E
  * @note If an error happens the future @p f will be CANCELED
  * @see eina_promise_as_value()
  */
-EINA_API Eina_Value eina_future_as_value(Eina_Future *f)EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Value eina_future_as_value(Eina_Future *f)EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates a new future.
@@ -864,7 +864,7 @@ EINA_API Eina_Value eina_future_as_value(Eina_Future *f)EINA_ARG_NONNULL(1) EINA
  * @see eina_promise_resolve()
  * @see eina_future_cancel()
  */
-EINA_API Eina_Future *eina_future_new(Eina_Promise *p) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Future *eina_future_new(Eina_Promise *p) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates a new future that is already resolved to a value.
@@ -896,7 +896,7 @@ EINA_API Eina_Future *eina_future_new(Eina_Promise *p) EINA_ARG_NONNULL(1) EINA_
  * @see eina_promise_resolve()
  * @see eina_future_cancel()
  */
-EINA_API Eina_Future *eina_future_resolved(Eina_Future_Scheduler *scheduler, Eina_Value value) EINA_ARG_NONNULL(1);
+EAPI Eina_Future *eina_future_resolved(Eina_Future_Scheduler *scheduler, Eina_Value value) EINA_ARG_NONNULL(1);
 
 /**
  * Creates a new future that is already rejected to a specified error.
@@ -923,7 +923,7 @@ EINA_API Eina_Future *eina_future_resolved(Eina_Future_Scheduler *scheduler, Ein
  * @see eina_promise_resolve()
  * @see eina_future_cancel()
  */
-EINA_API Eina_Future *eina_future_rejected(Eina_Future_Scheduler *scheduler, Eina_Error err);
+EAPI Eina_Future *eina_future_rejected(Eina_Future_Scheduler *scheduler, Eina_Error err);
 
 /**
  * Register an #Eina_Future_Desc to be used when the future is resolved/rejected.
@@ -1078,7 +1078,7 @@ EINA_API Eina_Future *eina_future_rejected(Eina_Future_Scheduler *scheduler, Ein
  * @see eina_future_then_easy()
  * @see eina_future_cb_log_from_desc()
  */
-EINA_API Eina_Future *eina_future_then_from_desc(Eina_Future *prev, const Eina_Future_Desc desc) EINA_ARG_NONNULL(1);
+EAPI Eina_Future *eina_future_then_from_desc(Eina_Future *prev, const Eina_Future_Desc desc) EINA_ARG_NONNULL(1);
 
 /**
  * Creates an Eina_Future_Desc that will log the previous future resolved value.
@@ -1109,7 +1109,7 @@ EINA_API Eina_Future *eina_future_then_from_desc(Eina_Future *prev, const Eina_F
  * @see eina_future_cb_log_warn()
  * @see eina_future_cb_console_from_desc()
  */
-EINA_API Eina_Future_Desc eina_future_cb_log_from_desc(const Eina_Future_Cb_Log_Desc desc) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Future_Desc eina_future_cb_log_from_desc(const Eina_Future_Cb_Log_Desc desc) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates a future chain.
@@ -1160,7 +1160,7 @@ EINA_API Eina_Future_Desc eina_future_cb_log_from_desc(const Eina_Future_Cb_Log_
  * @see eina_future_then_easy()
  * @see eina_future_cb_convert_to()
  */
-EINA_API Eina_Future *eina_future_chain_array(Eina_Future *prev, const Eina_Future_Desc descs[]) EINA_ARG_NONNULL(1, 2);
+EAPI Eina_Future *eina_future_chain_array(Eina_Future *prev, const Eina_Future_Desc descs[]) EINA_ARG_NONNULL(1, 2);
 
 
 /**
@@ -1181,7 +1181,7 @@ EINA_API Eina_Future *eina_future_chain_array(Eina_Future *prev, const Eina_Futu
  * @see eina_future_chain_array()
  * @see eina_future_cb_easy_from_desc()
  */
-EINA_API Eina_Future *eina_future_chain_easy_array(Eina_Future *prev, const Eina_Future_Cb_Easy_Desc descs[]) EINA_ARG_NONNULL(1, 2);
+EAPI Eina_Future *eina_future_chain_easy_array(Eina_Future *prev, const Eina_Future_Cb_Easy_Desc descs[]) EINA_ARG_NONNULL(1, 2);
 
 /**
  * Creates an #Eina_Future_Desc that will print the previous future's resolved value.
@@ -1224,7 +1224,7 @@ EINA_API Eina_Future *eina_future_chain_easy_array(Eina_Future *prev, const Eina
  * @see eina_future_cb_ignore_error()
  * @see eina_future_cb_log_from_desc()
  */
-EINA_API Eina_Future_Desc eina_future_cb_console_from_desc(const Eina_Future_Cb_Console_Desc desc) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Future_Desc eina_future_cb_console_from_desc(const Eina_Future_Cb_Console_Desc desc) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Returns an #Eina_Future_Desc that ignores an error.
@@ -1236,7 +1236,7 @@ EINA_API Eina_Future_Desc eina_future_cb_console_from_desc(const Eina_Future_Cb_
  * @param[in] err The error to be ignored.
  * @return A future descriptor to be used with eina_future_then() or eina_future_chain()
  */
-EINA_API Eina_Future_Desc eina_future_cb_ignore_error(Eina_Error err);
+EAPI Eina_Future_Desc eina_future_cb_ignore_error(Eina_Error err);
 
 /**
  * Creates an #Eina_Future_Desc which will convert the received eina value to a given type.
@@ -1251,7 +1251,7 @@ EINA_API Eina_Future_Desc eina_future_cb_ignore_error(Eina_Error err);
  * @see eina_future_then_from_desc()
  * @see eina_future_then_easy()
  */
-EINA_API Eina_Future_Desc eina_future_cb_convert_to(const Eina_Value_Type *type);
+EAPI Eina_Future_Desc eina_future_cb_convert_to(const Eina_Value_Type *type);
 
 /**
  * Creates an #Eina_Future_Desc based on an #Eina_Future_Cb_Easy_Desc.
@@ -1326,7 +1326,7 @@ EINA_API Eina_Future_Desc eina_future_cb_convert_to(const Eina_Value_Type *type)
  * @see eina_future_then()
  * @see eina_future_cb_easy()
  */
-EINA_API Eina_Future_Desc eina_future_cb_easy_from_desc(const Eina_Future_Cb_Easy_Desc desc) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Future_Desc eina_future_cb_easy_from_desc(const Eina_Future_Cb_Easy_Desc desc) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates an all promise.
@@ -1427,7 +1427,7 @@ EINA_API Eina_Future_Desc eina_future_cb_easy_from_desc(const Eina_Future_Cb_Eas
  * @note On error all the futures will be CANCELED.
  * @see eina_future_all_array()
  */
-EINA_API Eina_Promise *eina_promise_all_array(Eina_Future *array[]) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Promise *eina_promise_all_array(Eina_Future *array[]) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates an all promise from an iterator.
@@ -1443,7 +1443,7 @@ EINA_API Eina_Promise *eina_promise_all_array(Eina_Future *array[]) EINA_ARG_NON
  * @note On error all the futures will be CANCELED.
  * @see eina_future_all_iterator()
  */
-EINA_API Eina_Promise *eina_promise_all_iterator(Eina_Iterator *iterator) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Promise *eina_promise_all_iterator(Eina_Iterator *iterator) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Creates a race promise.
@@ -1555,7 +1555,7 @@ EINA_API Eina_Promise *eina_promise_all_iterator(Eina_Iterator *iterator) EINA_A
  * @see eina_future_race_array()
  * @see _Eina_Future_Race_Result
  */
-EINA_API Eina_Promise *eina_promise_race_array(Eina_Future *array[]) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Promise *eina_promise_race_array(Eina_Future *array[]) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @struct _Eina_Future_Race_Result
@@ -1611,7 +1611,7 @@ struct _Eina_Future_Race_Result {
  * @see eina_promise_race_array()
  * @see _Eina_Future_Race_Result
  */
-EINA_API extern const Eina_Value_Struct_Desc *EINA_PROMISE_RACE_STRUCT_DESC;
+EAPI extern const Eina_Value_Struct_Desc *EINA_PROMISE_RACE_STRUCT_DESC;
 
 /**
  * Creates a future that will be resolved once all futures from @p array is resolved.
