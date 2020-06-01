@@ -116,6 +116,9 @@ struct _Eina_File
 struct _Eina_File_Map
 {
    void *map;  /**< A pointer to the mapped region */
+#ifdef _WIN32
+   void *pret; /**< The end pointer returned to file_map_new caller */
+#endif
 
    unsigned long int offset;  /**< The offset in the file */
    unsigned long int length;  /**< The length of the region */
