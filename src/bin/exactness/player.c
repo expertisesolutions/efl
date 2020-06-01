@@ -508,11 +508,14 @@ _feed_event_timer_cb(void *data EINA_UNUSED)
      }
    else
      {
-        if (act->type != EXACTNESS_ACTION_STABILIZE)
+        if (act && act->type != EXACTNESS_ACTION_STABILIZE)
           {
              act = eina_list_data_get(_cur_event_list);
-             DBG("  %s timer_time=<%f>\n", __func__, act->delay_ms / 1000.0);
-             ecore_timer_add(act->delay_ms / 1000.0, _feed_event_timer_cb, NULL);
+             if (act)
+               {
+                  DBG("  %s timer_time=<%f>\n", __func__, act->delay_ms / 1000.0);
+                  ecore_timer_add(act->delay_ms / 1000.0, _feed_event_timer_cb, NULL);
+               }
           }
      }
    return ECORE_CALLBACK_CANCEL;
@@ -549,8 +552,11 @@ _stabilization_timer_cb(void *data EINA_UNUSED)
         if (_src_type != FTYPE_REMOTE && !_pause_request)
           {
              Exactness_Action *act = eina_list_data_get(_cur_event_list);
-             DBG("  %s timer_time=<%f>\n", __func__, act->delay_ms / 1000.0);
-             ecore_timer_add(act->delay_ms / 1000.0, _feed_event_timer_cb, NULL);
+             if (act)
+               {
+                  DBG("  %s timer_time=<%f>\n", __func__, act->delay_ms / 1000.0);
+                  ecore_timer_add(act->delay_ms / 1000.0, _feed_event_timer_cb, NULL);
+               }
           }
         need_more = STAB_MAX;
         return ECORE_CALLBACK_CANCEL;
@@ -795,7 +801,7 @@ _src_open()
                   last_action_type = act->type;
                }
           }
-        if (_speed && _speed != 1)
+        if (EINA_DBL_NONZERO(_speed) && (!EINA_DBL_EQ(_speed, 1)))
           {
              EINA_LIST_FOREACH(_src_unit->actions, itr, act)
                 act->delay_ms /= _speed;
@@ -883,15 +889,15 @@ _setup_dest_type(const char *dest, Eina_Bool external_injection)
         if (!strcmp(_dest + strlen(_dest) - 4,".exu"))
           {
              _dest_type = FTYPE_EXU;
-             /* Cut path at the beginning of the file name */
-             char *file_start = strrchr(dest, '/');
-             *file_start = '\0';
+             char *path = ecore_file_dir_get(dest);
 
-             if (!ecore_file_mkpath(dest))
+             if (!ecore_file_mkpath(path))
                {
-                  fprintf(stderr, "Path for %s cannot be created\n", dest);
+                  fprintf(stderr, "Path for %s cannot be created\n", _dest);
+                  free(path);
                   return EINA_FALSE;
                }
+             free(path);
           }
         else
           {
@@ -956,7 +962,7 @@ _setup_font_settings(const char *fonts_dir)
      {
         char buf[PATH_MAX];
         if (!fonts_dir) fonts_dir = "./fonts";
-        sprintf(buf, "%s/%s", fonts_dir, _src_unit->fonts_path);
+        snprintf(buf, PATH_MAX, "%s/%s", fonts_dir, _src_unit->fonts_path);
         if (!ecore_file_exists(buf))
           {
              fprintf(stderr, "Unable to use the fonts path '%s' provided in %s\n",
@@ -983,6 +989,7 @@ _setup_font_settings(const char *fonts_dir)
         if (chosen_fonts)
           {
              int tmp_fd = eina_file_mkstemp("/tmp/fonts_XXXXXX.conf", &fonts_conf_name);
+             if (tmp_fd < 0) return EINA_FALSE;
              FILE *tmp_f = fdopen(tmp_fd, "wb");
              fprintf(tmp_f,
                    "<?xml version=\"1.0\"?>\n<!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">\n<fontconfig>\n"
@@ -1013,8 +1020,11 @@ _write_unit_file(void)
         Exactness_Unit *tmp = NULL;
 
         EINA_SAFETY_ON_NULL_RETURN(_src_unit);
-        if (_src_type == FTYPE_EXU) tmp = exactness_unit_file_read(_src_filename);
-          _dest_unit->actions = tmp->actions;
+        if (_src_type == FTYPE_EXU)
+          {
+             tmp = exactness_unit_file_read(_src_filename);
+             _dest_unit->actions = tmp->actions;
+          }
         exactness_unit_file_write(_dest_unit, _dest);
      }
 }
@@ -1098,7 +1108,7 @@ elm_init(int argc, char **argv)
    ORIGINAL_CALL("elm_init", argc, argv)
 
    if (ex_is_original_app() && original_return == 1)
-     ex_prepare_elm_overloay();
+     ex_prepare_elm_overlay();
 
    return original_return;
 }

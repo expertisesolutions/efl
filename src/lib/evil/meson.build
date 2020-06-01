@@ -1,6 +1,13 @@
 if target_machine.system() == 'windows'
-  evil_src = [
+  evil_deps = []
+  evil_pub_deps = []
+  evil_ext_deps = []
+  evil_src = []
+
+  evil_src += files([
     'evil_basename.c',
+    'evil_strings.c',
+    'evil_vasprintf.h',
     'evil_dlfcn.c',
     'evil_fcntl.c',
     'evil_langinfo.c',
@@ -10,12 +17,11 @@ if target_machine.system() == 'windows'
     'evil_stdio.c',
     'evil_stdlib.c',
     'evil_string.c',
-    'evil_strings.c',
     'evil_time.c',
     'evil_unistd.c',
     'evil_util.c',
-    'evil_vasprintf.h',
-  ]
+    'evil_private.h',
+  ])
 
   evil_header_src = [
     'evil_private.h',
@@ -27,13 +33,12 @@ if target_machine.system() == 'windows'
   secur32 = cc.find_library('secur32')
   uuid = cc.find_library('uuid')
 
-  evil_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, getopt_dep]
-  evil_pub_deps = [psapi, ole32, ws2_32, secur32, uuid, pcre_dep, getopt_dep]
+  evil_ext_deps += [psapi, ole32, ws2_32, secur32, uuid, regexp]
 
   evil_lib = library('evil', evil_src,
-    c_args : ['-DEVIL_BUILD', '-DEVIL_DLL'],
-    dependencies : evil_deps,
-    include_directories : [config_dir, 'unposix'],
+    c_args : package_c_args,
+    dependencies : evil_ext_deps,
+    include_directories : [config_dir],
     install: true,
     version: meson.project_version(),
   )

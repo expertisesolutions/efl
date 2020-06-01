@@ -257,10 +257,11 @@ EFL_END_TEST
 
 EFL_START_TEST(elm_image_test_memfile_set)
 {
-   Evas_Object *win, *image;
+   Evas_Object *win, *image, *image2;
    char *mem;
    int size;
    const char *file = NULL;
+   int error_called = 0;
 
    win = win_add(NULL, "image", ELM_WIN_BASIC);
 
@@ -274,6 +275,40 @@ EFL_START_TEST(elm_image_test_memfile_set)
    ck_assert(elm_image_file_set(image, ELM_IMAGE_DATA_DIR"/images/icon_01.png", NULL));
    elm_image_file_get(image, &file, NULL);
    ck_assert_str_eq(file, ELM_IMAGE_DATA_DIR"/images/icon_01.png");
+
+   image2 = elm_image_add(win);
+   evas_object_smart_callback_add(image2, "load,ready", event_callback_that_quits_the_main_loop_when_called, NULL);
+   evas_object_smart_callback_add(image2, "load,error", event_callback_single_call_int_data, &error_called);
+   ck_assert(elm_image_memfile_set(image2, mem, size, "png", NULL));
+   ck_assert_int_eq(error_called, 0);
+   ecore_main_loop_begin();
+
+   ck_assert_int_eq(error_called, 0);
+}
+EFL_END_TEST
+
+EFL_START_TEST(elm_image_test_scale_method)
+{
+   Evas_Object *win, *image;
+   int w, h;
+
+   win = win_add(NULL, "image", ELM_WIN_BASIC);
+   evas_object_resize(win, 100, 100);
+
+   image = elm_image_add(win);
+   ck_assert(elm_image_file_set(image, ELM_IMAGE_DATA_DIR"/images/logo.png", NULL));
+   evas_object_size_hint_align_set(image, 0.5, 0.0);
+   efl_gfx_image_scale_method_set(image, EFL_GFX_IMAGE_SCALE_METHOD_FIT_WIDTH);
+   evas_object_resize(image, 100, 100);
+   evas_object_show(image);
+   evas_object_show(win);
+   get_me_to_those_events(win);
+   evas_object_geometry_get(image, NULL, NULL, &w, &h);
+   ck_assert_int_eq(w, 100);
+   ck_assert_int_eq(h, 100);
+   evas_object_geometry_get(elm_image_object_get(image), NULL, NULL, &w, &h);
+   ck_assert_int_eq(w, 100);
+   ck_assert_int_eq(h, 100);
 }
 EFL_END_TEST
 
@@ -332,6 +367,7 @@ void elm_test_image(TCase *tc)
    tcase_add_test(tc, elm_image_evas_object_color_set);
    tcase_add_test(tc, elm_image_evas_image_get);
    tcase_add_test(tc, elm_image_test_memfile_set);
+   tcase_add_test(tc, elm_image_test_scale_method);
 #ifdef BUILD_LOADER_GIF
    tcase_add_test(tc, elm_image_test_gif);
 #endif

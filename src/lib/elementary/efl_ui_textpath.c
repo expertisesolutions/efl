@@ -66,10 +66,10 @@ struct _Efl_Ui_Textpath_Data
 
    Eina_Inlist *segments;
    int total_length;
-   Ecore_Job *draw_text_job;
 #ifdef EFL_UI_TEXTPATH_LINE_DEBUG
    Eina_List *lines;
 #endif
+   Eina_Bool need_redraw : 1;
    Eina_Bool circular : 1;   //TODO: Remove this flag when elm_textpath_circle_set() is removed.
 };
 
@@ -97,7 +97,6 @@ _segment_draw(Efl_Ui_Textpath_Data *pd, int slice_no, double dt, double dist,
    double u0, u1, v0, v1;
    double t;
    double px, py, px2, py2;
-   double rad;
    Eina_Rect r;
    Eina_Vector2 vec, nvec, vec0, vec1, vec2, vec3;
    Eina_Matrix2 mat;
@@ -107,9 +106,7 @@ _segment_draw(Efl_Ui_Textpath_Data *pd, int slice_no, double dt, double dist,
 #endif
 
    r = efl_gfx_entity_geometry_get(pd->text_obj);
-
-   rad = _deg_to_rad(90);
-   eina_matrix2_values_set(&mat, cos(rad), -sin(rad), sin(rad), cos(rad));
+   eina_matrix2_values_set(&mat, 0.0, -1.0, 1.0, 0.0);
 
    eina_bezier_values_get(&bezier, NULL, NULL, NULL, NULL, NULL, NULL, &px2, &py2);
    t = 0;
@@ -329,9 +326,8 @@ _map_point_calc(Efl_Ui_Textpath_Data *pd)
 }
 
 static void
-_text_draw(void *data)
+_text_draw(Efl_Ui_Textpath_Data *pd)
 {
-   Efl_Ui_Textpath_Data *pd = data;
    Efl_Ui_Textpath_Segment *seg;
    Evas_Map *map;
    int w1, w2;
@@ -399,7 +395,13 @@ _text_draw(void *data)
    evas_object_map_set(pd->text_obj, map);
    evas_map_free(map);
 
-   pd->draw_text_job = NULL;
+   pd->need_redraw = EINA_FALSE;
+}
+
+static void
+_render_pre_cb(void *data, Evas *e EINA_UNUSED, void *ev EINA_UNUSED)
+{
+   _text_draw(data);
 }
 
 static void
@@ -523,8 +525,7 @@ _path_data_get(Eo *obj, Efl_Ui_Textpath_Data *pd)
 static void
 _sizing_eval(Efl_Ui_Textpath_Data *pd)
 {
-   ecore_job_del(pd->draw_text_job);
-   pd->draw_text_job = ecore_job_add(_text_draw, pd);
+   pd->need_redraw = EINA_TRUE;
 }
 
 static void
@@ -615,7 +616,7 @@ _path_start_angle_adjust(Eo *obj, Efl_Ui_Textpath_Data *pd)
    eina_vector2_normalize(&first, &first);
    eina_vector2_normalize(&last, &last);
    rad = acos(eina_vector2_dot_product(&first, &last));
-   if (rad == 0) return;
+   if (EINA_DBL_EQ(rad, 0)) return;
 
    offset_angle = _rad_to_deg(rad);
    if (r.w > pd->total_length / 2)
@@ -698,12 +699,16 @@ _efl_ui_textpath_efl_object_constructor(Eo *obj, Efl_Ui_Textpath_Data *pd)
    pd->slice_no = SLICE_DEFAULT_NO;
    pd->direction = EFL_UI_TEXTPATH_DIRECTION_CW;
 
+   evas_event_callback_add(evas_object_evas_get(obj), EVAS_CALLBACK_RENDER_PRE, _render_pre_cb, pd);
+
    return obj;
 }
 
 EOLIAN static void
 _efl_ui_textpath_efl_object_destructor(Eo *obj, Efl_Ui_Textpath_Data *pd)
 {
+   evas_event_callback_del_full(evas_object_evas_get(obj), EVAS_CALLBACK_RENDER_PRE, _render_pre_cb, pd);
+
    Efl_Ui_Textpath_Segment *seg;
 
    if (pd->text) free(pd->text);
@@ -713,7 +718,6 @@ _efl_ui_textpath_efl_object_destructor(Eo *obj, Efl_Ui_Textpath_Data *pd)
         pd->segments = eina_inlist_remove(pd->segments, EINA_INLIST_GET(seg));
         free(seg);
      }
-   ecore_job_del(pd->draw_text_job);
 
 #ifdef EFL_UI_TEXTPATH_LINE_DEBUG
    Evas_Object *line;
@@ -844,8 +848,8 @@ _efl_ui_textpath_circular_set(Eo *obj, Efl_Ui_Textpath_Data *pd, double radius, 
    Eina_Size2D text_size;
    double sweep_length, x, y;
 
-   if (pd->circle.radius == radius &&
-       pd->circle.start_angle == start_angle &&
+   if (EINA_DBL_EQ(pd->circle.radius, radius) &&
+       EINA_DBL_EQ(pd->circle.start_angle, start_angle) &&
        pd->direction == direction &&
        _map_point_calc(pd) > 0)
         return;
@@ -977,9 +981,9 @@ elm_textpath_circle_set(Eo *obj, double x, double y, double radius, double start
    EFL_UI_TEXTPATH_DATA_GET(obj, pd);
    if (!pd) return;
 
-   if (pd->circle.x == x && pd->circle.y == y &&
-       pd->circle.radius == radius &&
-       pd->circle.start_angle == start_angle &&
+   if (EINA_DBL_EQ(pd->circle.x, x) && EINA_DBL_EQ(pd->circle.y, y) &&
+       EINA_DBL_EQ(pd->circle.radius, radius) &&
+       EINA_DBL_EQ(pd->circle.start_angle, start_angle) &&
        pd->direction == direction &&
        _map_point_calc(pd) > 0)
         return;

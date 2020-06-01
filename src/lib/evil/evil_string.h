@@ -13,7 +13,7 @@
  *
  * This header provides functions ported from Unix in string.h.
  *
- *
+ * @{
  */
 
 
@@ -65,5 +65,9 @@ EVIL_API char *strcasestr(const char *haystack, const char *needle);
  *
  */
 EVIL_API char *strsep(char **stringp, const char *delim);
+
+/**
+ * @}
+ */
 
 #endif /* __EVIL_STRING_H__ */

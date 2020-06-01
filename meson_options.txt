@@ -139,7 +139,7 @@ option('gstreamer',
 option('systemd',
   type : 'boolean',
   value : true,
-  description : 'Systemd support in efl'
+  description : 'Systemd and Elogind support at runtime in efl'
 )
 
 option('pulseaudio',
@@ -297,8 +297,8 @@ option('nls',
 
 option('bindings',
   type : 'array',
-  choices : ['luajit','cxx', 'mono'],
-  value : ['luajit', 'cxx'],
+  choices : ['lua', 'cxx', 'mono'],
+  value : ['lua', 'cxx'],
   description : 'Which auto-generated language bindings for efl to enable',
 )
 
@@ -345,12 +345,6 @@ option('native-arch-optimization',
   description: 'Enable architecture native optimizations in efl'
 )
 
-option('elogind',
-  type : 'boolean',
-  value : false,
-  description : 'elogind support in efl (subset of systemd)'
-)
-
 option('windows-version',
   type : 'combo',
   choices : ['vista', 'win7', 'win8', 'win81', 'win10'],
@@ -372,7 +366,7 @@ option('elementary-base-dir',
 
 option('install-eo-files',
   type: 'boolean',
-  value: false,
+  value: true,
   description : 'Install any eo file'
 )
 
@@ -380,4 +374,10 @@ option('mono-friend-assemblies',
   type : 'array',
   value : [],
   description : 'List of friend assemblies that can access efl_mono assembly\'s internal types and members.'
+)
+
+option('efl-one',
+  type: 'boolean',
+  value : false,
+  description : 'Build special set of .so´s as a single .so'
 )

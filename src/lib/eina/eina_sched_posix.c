@@ -68,3 +68,54 @@ eina_sched_prio_drop(void)
           }
      }
 }
+
+EINA_API void
+eina_sched_prio_init(Eina_Thread_Call* c)
+{
+   Eina_Thread self = eina_thread_self();
+
+   if (c->prio == EINA_THREAD_IDLE)
+     {
+        struct sched_param params;
+        int min;
+#ifdef SCHED_IDLE
+        int pol = SCHED_IDLE;
+#else
+        int pol;
+        pthread_getschedparam(self, &pol, &params);
+#endif
+        min = sched_get_priority_min(pol);
+        params.sched_priority = min;
+        pthread_setschedparam(self, pol, &params);
+     }
+   else if (c->prio == EINA_THREAD_BACKGROUND)
+     {
+        struct sched_param params;
+        int min, max;
+#ifdef SCHED_BATCH
+        int pol = SCHED_BATCH;
+#else
+        int pol;
+        pthread_getschedparam(self, &pol, &params);
+#endif
+        min = sched_get_priority_min(pol);
+        max = sched_get_priority_max(pol);
+        params.sched_priority = (max - min) / 2;
+        pthread_setschedparam(self, pol, &params);
+     }
+// do nothing for normal
+//   else if (c->prio == EINA_THREAD_NORMAL)
+//     {
+//     }
+   else if (c->prio == EINA_THREAD_URGENT)
+     {
+        struct sched_param params;
+        int max, pol;
+
+        pthread_getschedparam(self, &pol, &params);
+        max = sched_get_priority_max(pol);
+        params.sched_priority += 5;
+        if (params.sched_priority > max) params.sched_priority = max;
+        pthread_setschedparam(self, pol, &params);
+     }
+}

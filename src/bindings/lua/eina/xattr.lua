@@ -4,6 +4,8 @@
 local ffi = require("ffi")
 local C = ffi.C
 
+local tonum = ffi.tonumber or tonumber
+
 local iterator = require("eina.iterator")
 
 ffi.cdef [[
@@ -98,7 +100,7 @@ end
 M.get = function(file, attribute)
     local size = ffi.new("size_t[1]")
     local v = eina.eina_xattr_get(file, attribute, size)
-    if v == nil then return nil end
+    if v == ffi.nullptr then return nil end
     local r = ffi.string(v, size[0])
     C.free(v)
     return r
@@ -126,7 +128,7 @@ end
 
 M.string_get = function(file, attribute)
     local v = eina.eina_xattr_string_get(file, attribute)
-    if v == nil then return nil end
+    if v == ffi.nullptr then return nil end
     local r = ffi.string(v)
     C.free(v)
     return r
@@ -140,7 +142,7 @@ M.double_get = function(file, attribute)
     local v = ffi.new("double[1]")
     local r = eina.eina_xattr_double_get(file, attribute, v)
     if r == 0 then return false end
-    return true, tonumber(v[0])
+    return true, tonum(v[0])
 end
 
 M.int_set = function(file, attribute, value, flags)
@@ -151,7 +153,7 @@ M.int_get = function(file, attribute)
     local v = ffi.new("int[1]")
     local r = eina.eina_xattr_int_get(file, attribute, v)
     if r == 0 then return false end
-    return true, tonumber(v[0])
+    return true, tonum(v[0])
 end
 
 return M

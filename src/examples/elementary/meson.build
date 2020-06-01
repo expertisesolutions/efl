@@ -46,6 +46,8 @@ examples = [
   'hoversel_example_01',
   'icon_example_01',
   'image_example_01',
+  'image_webp_example_01',
+  'image_webp_example_02',
   'index_example_01',
   'index_example_02',
   'inwin_example',
@@ -122,7 +124,7 @@ examples = [
 ]
 
 foreach example : examples
-  executable(example, example + '.c', dependencies: [elementary, ecore, eio])
+  executable(example, example + '.c', dependencies: [elementary, ecore, eio, m])
 endforeach
 if get_option('bindings').contains('cxx')
   cxx_examples = [

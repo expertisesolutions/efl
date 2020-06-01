@@ -123,7 +123,7 @@ EFL_START_TEST(edje_test_textblock)
    ck_assert_int_ne(w, 0);
    ck_assert_int_ne(h, 0);
 
-   edje_object_text_class_set(obj2, "tc1", "Sans", 15);
+   edje_object_text_class_set(obj2, "tc1", "Sans", 8);
    edje_object_calc_force(obj2);
    int w2 = 0, h2 = 0;
    evas_object_textblock_size_formatted_get(tb, &w2, &h2);
@@ -153,7 +153,7 @@ EFL_START_TEST(edje_test_textblock)
 }
 EFL_END_TEST
 
-START_TEST(edje_test_text_ellipsis)
+EFL_START_TEST(edje_test_text_ellipsis)
 {
    Eo *evas;
    Eo *layout;
@@ -169,9 +169,9 @@ START_TEST(edje_test_text_ellipsis)
    efl_text_ellipsis_set(efl_part(layout, "text"), 1.0);
 
 }
-END_TEST
+EFL_END_TEST
 
-START_TEST(edje_test_text_wrap)
+EFL_START_TEST(edje_test_text_wrap)
 {
    Eo *evas;
    Eo *layout;
@@ -187,9 +187,9 @@ START_TEST(edje_test_text_wrap)
    efl_text_wrap_set(efl_part(layout, "text"), EFL_TEXT_FORMAT_WRAP_WORD);
 
 }
-END_TEST
+EFL_END_TEST
 
-START_TEST(edje_test_text_font)
+EFL_START_TEST(edje_test_text_font)
 {
    Eo *evas;
    Eo *layout;
@@ -206,9 +206,9 @@ START_TEST(edje_test_text_font)
    efl_text_font_size_set(efl_part(layout, "text"), 14);
 
 }
-END_TEST
+EFL_END_TEST
 
-START_TEST(edje_test_text_color)
+EFL_START_TEST(edje_test_text_color)
 {
    Eo *evas;
    Eo *layout;
@@ -224,7 +224,7 @@ START_TEST(edje_test_text_color)
    efl_text_color_set(efl_part(layout, "text"), 255, 255, 255, 255);
 
 }
-END_TEST
+EFL_END_TEST
 
 static void
 _basic_check(Eo *layout, Eina_Bool set)
@@ -347,7 +347,7 @@ _basic_check(Eo *layout, Eina_Bool set)
      }
 }
 
-START_TEST(edje_test_text_part)
+EFL_START_TEST(edje_test_text_part)
 {
    Eo *evas;
    Eo *layout;
@@ -369,7 +369,7 @@ START_TEST(edje_test_text_part)
    _basic_check(layout, EINA_FALSE);
 
 }
-END_TEST
+EFL_END_TEST
 
 void edje_test_text(TCase *tc)
 {

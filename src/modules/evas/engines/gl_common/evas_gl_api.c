@@ -11,10 +11,10 @@
 #define EVGLD_FUNC_BEGIN() \
 { \
    EVGL_FUNC_BEGIN(); \
-   _func_begin_debug(__FUNCTION__); \
+   _func_begin_debug(__func__); \
 }
 
-#define EVGLD_FUNC_END() GLERRV(__FUNCTION__)
+#define EVGLD_FUNC_END() GLERRV(__func__)
 #define _EVGL_INT_INIT_VALUE -3
 
 #define SET_GL_ERROR(gl_error_type) \
@@ -546,15 +546,15 @@ _evgl_glClear(GLbitfield mask)
              if (ctx->current_sfc->alpha && !rsc->direct.render_op_copy &&
                  (mask & GL_COLOR_BUFFER_BIT))
                {
-                  if ((rsc->clear_color.a == 0) &&
-                      (rsc->clear_color.r == 0) &&
-                      (rsc->clear_color.g == 0) &&
-                      (rsc->clear_color.b == 0))
+                  if (EINA_DBL_EQ(rsc->clear_color.a, 0) &&
+                      EINA_DBL_EQ(rsc->clear_color.r, 0) &&
+                      EINA_DBL_EQ(rsc->clear_color.g, 0) &&
+                      EINA_DBL_EQ(rsc->clear_color.b, 0))
                     {
                        // Skip clear color as we don't want to write black
                        mask &= ~GL_COLOR_BUFFER_BIT;
                     }
-                  else if (rsc->clear_color.a != 1.0)
+                  else if (!EINA_DBL_EQ(rsc->clear_color.a, 1.0))
                     {
                        // TODO: Draw a rectangle? This will never be the perfect solution though.
                        WRN("glClear() used with a semi-transparent color and direct rendering. "
@@ -1115,7 +1115,7 @@ _evgl_glGetFloatv(GLenum pname, GLfloat* params)
                   if (ctx->current_read_fbo == 0)
                     {
                        glGetFloatv(pname, params);
-                       if (*params == GL_COLOR_ATTACHMENT0)
+                       if (EINA_DBL_EQ(*params, GL_COLOR_ATTACHMENT0))
                          {
                             *params = (GLfloat)GL_BACK;
                             return;

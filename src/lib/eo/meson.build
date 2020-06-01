@@ -1,5 +1,6 @@
 eo_deps = []
 eo_pub_deps = [eina]
+eo_ext_deps = [valgrind, dl, execinfo]
 
 pub_eo_files = [
   'efl_object.eo',
@@ -7,7 +8,7 @@ pub_eo_files = [
   'efl_object_override.eo'
 ]
 
-eo_src = [
+eo_src = files([
   'eo.c',
   'eo_ptr_indirection.c',
   'eo_ptr_indirection.h',
@@ -17,16 +18,31 @@ eo_src = [
   'eo_add_fallback.h',
   'eo_private.h',
   'eo_internal.h'
-]
+])
 
 pub_eo_types_files = [
   'eina_types.eot'
 ]
 
-eo_header = ['Eo.h']
-
 pub_eo_file_target = []
 priv_eo_file_target = []
+
+foreach eo_file : pub_eo_types_files
+  pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
+    input : eo_file,
+    output : [eo_file + '.h'],
+    depfile : eo_file + '.d',
+    install : true,
+    install_dir : dir_package_include,
+    command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
+                           '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
+                           '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
+                           '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                           '-gchd', '@INPUT@'])
+endforeach
+
+eo_header = ['Eo.h']
+
 foreach eo_file : pub_eo_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
     input : eo_file,
@@ -51,7 +67,8 @@ endif
 
 eo_lib = library('eo',
     eo_src, pub_eo_file_target,
-    dependencies: eo_lib_deps,
+    c_args : package_c_args,
+    dependencies: [eo_deps, eo_pub_deps, eo_ext_deps],
     install: true,
     version : meson.project_version(),
 )
@@ -64,10 +81,10 @@ endif
 
 eo_lib_dbg = library('eo_dbg',
     eo_src, pub_eo_file_target,
-    dependencies: eo_lib_dbg_deps,
+    c_args : package_c_args + [ '-DEO_DEBUG' ],
+    dependencies: [eo_deps, eo_pub_deps, eo_ext_deps],
     install: true,
-    c_args : '-DEO_DEBUG',
-    version : meson.project_version(),
+    version : meson.project_version()
 )
 
 eo = declare_dependency(

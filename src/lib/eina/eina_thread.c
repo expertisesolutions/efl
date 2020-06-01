@@ -71,10 +71,9 @@ _eina_internal_call(void *context)
 
    EINA_THREAD_CLEANUP_PUSH(free, c);
 
-   if (c->prio == EINA_THREAD_BACKGROUND || c->prio == EINA_THREAD_IDLE)
-     eina_sched_prio_drop();
-
    self = eina_thread_self();
+
+   eina_sched_prio_init(c);
    _eina_debug_thread_add(&self);
    EINA_THREAD_CLEANUP_PUSH(_eina_debug_thread_del, &self);
    r = c->func((void*) c->data, eina_thread_self());

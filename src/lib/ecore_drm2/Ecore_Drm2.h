@@ -92,6 +92,8 @@ typedef struct _Ecore_Drm2_Context
                           unsigned int tv_usec, void *user_data);
    void (*page_flip_handler)(int fd, unsigned int sequence, unsigned int tv_sec,
                              unsigned int tv_usec, void *user_data);
+   void (*page_flip_handler2)(int fd, unsigned int sequence, unsigned int tv_sec,
+                              unsigned int tv_usec, unsigned int crtc_id, void *user_data);
 } Ecore_Drm2_Context;
 
 EAPI extern int ECORE_DRM2_EVENT_OUTPUT_CHANGED;
@@ -148,7 +150,7 @@ EAPI int ecore_drm2_shutdown(void);
  * Read and process pending Drm events
  *
  * @param dev drm device
- * @param ctx
+ * @param drmctx
  *
  * @return 0 on success, -1 otherwise
  *
@@ -230,7 +232,7 @@ EAPI void ecore_drm2_device_pointer_xy_get(Ecore_Drm2_Device *device, int *x, in
 /**
  * Warp the pointer position to given coordinates
  *
- * @param dev
+ * @param device
  * @param x
  * @param y
  *
@@ -408,6 +410,18 @@ EAPI Eina_Bool ecore_drm2_device_vt_set(Ecore_Drm2_Device *device, int vt);
  * @since 1.19
  */
 EAPI Eina_Bool ecore_drm2_device_prefer_shadow(Ecore_Drm2_Device *device);
+
+/**
+ * Get the default depth & bpp from a given device
+ *
+ * @param device
+ * @param depth
+ * @param bpp
+ *
+ * @ingroup Ecore_Drm2_Device_Group
+ * @since 1.25
+ */
+EAPI void ecore_drm2_device_preferred_depth_get(Ecore_Drm2_Device *device, int *depth, int *bpp);
 
 /**
  * @defgroup Ecore_Drm2_Output_Group Drm output functions
@@ -807,7 +821,7 @@ EAPI int ecore_drm2_output_rotation_get(Ecore_Drm2_Output *output);
 /**
  * Set the user data for the output's page flip handler
  *
- * @param output The output to update user data for
+ * @param o The output to update user data for
  * @param data The new user data pointer
  *
  * @ingroup Ecore_Drm2_Output_Group
@@ -840,7 +854,7 @@ EAPI unsigned int ecore_drm2_output_subpixel_get(const Ecore_Drm2_Output *output
  * Set the relative mode for an output
  *
  * @param output The output to set relative mode
- * @param relative The relative mode to set
+ * @param mode The relative mode to set
  *
  * @ingroup Ecore_Drm2_Output_Group
  * @since 1.21
@@ -1005,7 +1019,7 @@ EAPI Eina_Bool ecore_drm2_fb_busy_get(Ecore_Drm2_Fb *fb);
  * Releasing buffers committed to scanout will potentially cause flicker,
  * so this is only done when the panic flag is set.
  *
- * @param output The output to force release
+ * @param o The output to force release
  * @param panic Try to release even buffers committed to scanout
  *
  * @return EINA_TRUE if a buffer was released
@@ -1036,7 +1050,7 @@ EAPI void *ecore_drm2_fb_bo_get(Ecore_Drm2_Fb *fb);
  * @param depth
  * @param bpp
  * @param format
- * @param stride
+ * @param strides
  * @param dmabuf_fd
  * @param dmabuf_fd_count
  *
