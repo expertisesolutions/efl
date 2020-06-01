@@ -6,11 +6,13 @@
 /*          ECORE FUNCS         */
 void* ecore_event_add (void * arg, ...);
 
-void* ecore_event_init (void * arg, ...);
+void* ecore_event_init (void);
 
-void* ecore_event_type_new (void * arg, ...);
+void* ecore_event_type_new (void);
 
-void* ecore_event_shutdown (void * arg, ...);
+void ecore_event_shutdown (void);
+
+void* ecore_event_type_flush (void * arg, ...);
 
 /*          ECORE_INPUT FUNCS         */
 #endif
