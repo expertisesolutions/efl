@@ -622,7 +622,7 @@ EINA_API void eina_spinlock_free(Eina_Spinlock *spinlock);
       {									\
 	EINA_LOG_ERR("You are calling %s from outside"			\
 		     "of the main loop threads in %s at line %i",	\
-		     __FUNCTION__,					\
+		     __func__,					\
 		     __FILE__,						\
 		     __LINE__);						\
 	return val;							\
@@ -634,7 +634,7 @@ EINA_API void eina_spinlock_free(Eina_Spinlock *spinlock);
       {									\
 	EINA_LOG_ERR("You are calling %s from outside"			\
 		     "of the main loop threads in %s at line %i",	\
-		     __FUNCTION__,					\
+		     __func__,					\
 		     __FILE__,						\
 		     __LINE__);						\
 	return ;							\

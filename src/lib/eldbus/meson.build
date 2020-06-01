@@ -1,5 +1,6 @@
 eldbus_deps = [ecore]
 eldbus_pub_deps = [eina, eo, efl]
+eldbus_ext_deps = []
 
 pub_eo_files = [
   'eldbus_model_connection.eo',
@@ -61,7 +62,7 @@ eldbus_header_src = [
   'eldbus_message_eina_value.h'
 ]
 
-eldbus_src = [
+eldbus_src = files([
   'eldbus_private.h',
   'eldbus_private_types.h',
   'eldbus_model_private.h',
@@ -90,13 +91,14 @@ eldbus_src = [
   'eldbus_model_arguments.c',
   'eldbus_model_signal.c',
   'eldbus_introspection.c'
-]
+])
 
-eldbus_deps += dependency('dbus-1')
+eldbus_ext_deps += dependency('dbus-1')
 
 eldbus_lib = library('eldbus',
     eldbus_src, pub_eo_file_target,
-    dependencies: eldbus_pub_deps + eldbus_deps,
+    c_args : package_c_args,
+    dependencies: eldbus_pub_deps + eldbus_deps + eldbus_ext_deps,
     include_directories : config_dir,
     install: true,
     version : meson.project_version()
@@ -109,12 +111,14 @@ eldbus = declare_dependency(
   dependencies: eldbus_pub_deps,
 )
 
-
-if get_option('install-eo-files')
-  install_data(pub_eo_files + pub_eo_types_files,
-    install_dir: join_paths(eolian_include_dir, package_version_name)
-  )
-endif
+#
+# Only enable that again when the namespace problems are fixed. ref T8648
+#
+#if get_option('install-eo-files')
+#  install_data(pub_eo_files + pub_eo_types_files,
+#    install_dir: join_paths(eolian_include_dir, package_version_name)
+#  )
+#endif
 
 install_headers(eldbus_header_src,
   install_dir : dir_package_include,

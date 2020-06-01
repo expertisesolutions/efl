@@ -21,7 +21,7 @@
 
 #ifdef HAVE_SYSTEMD
 # include <systemd/sd-daemon.h>
-#endif
+#endif 
 
 #include <Ecore.h>
 #include <ecore_private.h>

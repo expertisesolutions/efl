@@ -103,7 +103,7 @@ _drop_cb(void *data, const Efl_Event *ev)
    Efl_Ui_Drop_Dropped_Event *event = ev->info;
    Elm_Drop_Target *target = data;
    target->action = _string_to_action(event->action);
-   efl_future_then(ev->object, efl_ui_dnd_drop_data_get(ev->object, _default_seat(ev->object), eina_array_iterator_new(target->mime_types)),
+   efl_future_then(ev->object, efl_ui_dnd_drop_data_get(elm_widget_is(ev->object) ? ev->object : efl_ui_win_get(ev->object), _default_seat(ev->object), eina_array_iterator_new(target->mime_types)),
     .success = _deliver_content,
     .data = target
    );
@@ -133,7 +133,11 @@ _format_to_mime_array(Elm_Sel_Format format)
    Eina_Array *ret = eina_array_new(10);
 
    if (format & ELM_SEL_FORMAT_TEXT)
-     eina_array_push(ret, "text/plain;charset=utf-8");
+     {
+        eina_array_push(ret, "text/plain");
+        eina_array_push(ret, "text/plain;charset=utf-8");
+        eina_array_push(ret, "text/uri-list");
+     }
    if (format & ELM_SEL_FORMAT_MARKUP)
      eina_array_push(ret, "application/x-elementary-markup");
    if (format & ELM_SEL_FORMAT_IMAGE)
@@ -163,6 +167,7 @@ elm_drop_target_add(Evas_Object *obj, Elm_Sel_Format format,
                     Elm_Drag_Pos pos_cb, void *pos_data,
                     Elm_Drop_Cb drop_cb, void *drop_data)
 {
+   EINA_SAFETY_ON_NULL_RETURN_VAL(obj, EINA_FALSE);
 
    Elm_Drop_Target *target = calloc(1, sizeof(Elm_Drop_Target));
    target->enter_cb = enter_cb;
@@ -177,7 +182,8 @@ elm_drop_target_add(Evas_Object *obj, Elm_Sel_Format format,
    target->format = format;
 
    efl_event_callback_array_add(obj, drop_target_cb(), target);
-
+   if (!efl_isa(obj, EFL_UI_WIDGET_CLASS))
+     _drop_event_register(obj); //this is ensuring that we are also supporting none widgets
    if (!target_register)
      target_register = eina_hash_pointer_new(NULL);
    eina_hash_list_append(target_register, &obj, target);
@@ -194,6 +200,8 @@ elm_drop_target_del(Evas_Object *obj, Elm_Sel_Format format,
 {
    Elm_Drop_Target *target;
    Eina_List *n, *found = NULL;
+
+   EINA_SAFETY_ON_NULL_RETURN_VAL(obj, EINA_FALSE);
 
    if (!target_register)
      return EINA_TRUE;
@@ -220,6 +228,7 @@ elm_drop_target_del(Evas_Object *obj, Elm_Sel_Format format,
         efl_event_callback_array_del(obj, drop_target_cb(), eina_list_data_get(found));
         eina_hash_list_remove(target_register, &obj, target);
         eina_array_free(target->mime_types);
+        _drop_event_unregister(obj); //this is ensuring that we are also supporting none widgets
         free(target);
      }
 
@@ -409,7 +418,7 @@ _cont_obj_anim_start(void *data)
                _drag_anim_start(st);
              else
                {
-                  if (st->anim_tm)
+                  if (EINA_DBL_NONZERO(st->anim_tm))
                     {
                        // even if we don't manage the icons animation, we have
                        // to wait until it is finished before beginning drag.
@@ -768,6 +777,12 @@ elm_drag_start(Evas_Object *obj, Elm_Sel_Format format,
    Efl_Ui_Widget *widget;
    Elm_Drag_Data *dd;
    const char *str_action;
+
+   EINA_SAFETY_ON_NULL_RETURN_VAL(obj, EINA_FALSE);
+
+   //it should return EINA_TRUE to keep backward compatibility
+   if (!data)
+     return EINA_TRUE;
 
    str_action = _action_to_string(action);
    dd = calloc(1, sizeof(Elm_Drag_Data));

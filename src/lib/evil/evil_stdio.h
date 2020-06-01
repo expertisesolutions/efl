@@ -11,7 +11,7 @@
  * @ingroup Evil
  *
  * This header provides functions ported from Unix in stdio.h.
- *
+ * @{
  */
 
 #define EVIL_PATH_SEP_SWAP(p, s1, s2) \
@@ -62,5 +62,8 @@ typedef int mode_t;
  */
 EVIL_API int evil_mkdir(const char *dirname, mode_t mode);
 
+/**
+ * @}
+ */
 
 #endif /* __EVIL_STDIO_H__ */

@@ -9,8 +9,9 @@ foreach loader_inst : evas_image_loaders_file
       evas_package_modules = join_paths(dir_lib, 'evas', 'modules')
       mod_install_dir = join_paths(evas_package_modules, 'image_loaders', loader, version_name)
       shared_module('shared_loader_'+loader, file,
+        c_args : package_c_args,
         include_directories : config_dir,
-        dependencies : [eina, evas] + loader_deps,
+        dependencies : [eina, evas, eet, evas_ext_none_static_deps] + loader_deps,
         install : true,
         install_dir : mod_install_dir,
         name_suffix : sys_mod_extension

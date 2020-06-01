@@ -35,13 +35,8 @@
 #endif
 
 /**
- * @addtogroup Eina_Tools_Group Tools
- *
- * @{
- */
-
-/**
  * @defgroup Eina_Thread_Group Thread
+ * @ingroup Eina_Tools_Group
  *
  * Abstracts platform threads, providing a uniform API. It's modeled
  * after POSIX THREADS (pthreads), on Linux they are almost 1:1
@@ -65,10 +60,10 @@ typedef void *(*Eina_Thread_Cb)(void *data, Eina_Thread t);
  */
 typedef enum _Eina_Thread_Priority
 {
-  EINA_THREAD_URGENT,
-  EINA_THREAD_NORMAL,
-  EINA_THREAD_BACKGROUND,
-  EINA_THREAD_IDLE
+  EINA_THREAD_URGENT,     /**< Higher than average process priority */
+  EINA_THREAD_NORMAL,     /**< Standard process priority */
+  EINA_THREAD_BACKGROUND, /**< Lower than average process priority */
+  EINA_THREAD_IDLE        /**< Thread to be executed only when the processor is idle */
 } Eina_Thread_Priority;
 
 /**
@@ -300,9 +295,5 @@ struct _Eina_Thread_Call
    Eina_Thread_Priority prio;
    int affinity;
 };
-
-/**
- * @}
- */
 
 #endif

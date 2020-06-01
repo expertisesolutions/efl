@@ -142,7 +142,7 @@
  * custom data can be passed to that callback, powerful display
  * messages can be displayed.
  *
- * It is suggested to not use __FILE__, __FUNCTION__ or __LINE__ when
+ * It is suggested to not use __FILE__, __func__ or __LINE__ when
  * writing that callback, but when defining macros (like
  * EINA_LOG_ERR() and other macros).
  *
@@ -304,7 +304,7 @@ EINA_API extern int EINA_LOG_DOMAIN_GLOBAL;
 # define EINA_LOG(DOM, LEVEL, fmt, ...)					\
   do {									\
      if (LEVEL <= EINA_LOG_LEVEL_MAXIMUM) {				\
-        eina_log_print(DOM, LEVEL, __FILE__, __FUNCTION__, __LINE__,	\
+        eina_log_print(DOM, LEVEL, __FILE__, __func__, __LINE__,	\
                        fmt, ## __VA_ARGS__); }				\
   } while (0)
 # else
@@ -312,7 +312,7 @@ EINA_API extern int EINA_LOG_DOMAIN_GLOBAL;
   eina_log_print(DOM,                   \
                  LEVEL,                 \
                  __FILE__,              \
-                 __FUNCTION__,          \
+                 __func__,          \
                  __LINE__,              \
                  fmt,                   \
                  ## __VA_ARGS__)
@@ -482,8 +482,8 @@ typedef void (*Eina_Log_Print_Cb)(const Eina_Log_Domain *d,
  */
 typedef enum _Eina_Log_State
 {
-  EINA_LOG_STATE_START,
-  EINA_LOG_STATE_STOP
+  EINA_LOG_STATE_START, /**< Logging is Started */
+  EINA_LOG_STATE_STOP   /**< Logging is Stopped */
 } Eina_Log_State;
 
 /*
