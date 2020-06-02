@@ -4,10 +4,12 @@
 
 #include <stdlib.h>
 
-#define WIN32_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
 #include <dbt.h>
+#undef WIN32_LEAN_AND_MEAN
 
 #include <Eina.h>
 
