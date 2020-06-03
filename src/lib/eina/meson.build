@@ -110,7 +110,8 @@ public_sub_headers = [
 'eina_slstr.h',
 'eina_vpath.h',
 'eina_abstract_content.h',
-'eina_fnmatch.h'
+'eina_fnmatch.h',
+'eina_pipe.h',
 ]
 
 public_headers = [
