@@ -352,6 +352,12 @@ option('windows-version',
   description : 'When on Windows, compile efl with the specified Windows version'
 )
 
+option('nuget-download',
+  type: 'boolean',
+  value: false,
+  description: 'Enable nuget to download dependencies for windows'
+)
+
 option('dictionaries-hyphen-dir',
   type : 'string',
   value : '/usr/share/hyphen/',
