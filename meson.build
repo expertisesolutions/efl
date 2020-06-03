@@ -25,12 +25,13 @@ version_name = 'v-'+version_major + '.' + version_minor
 cc = meson.get_compiler('c')
 host_os = host_machine.system()
 
-nuget_download = meson.get_cross_property('nuget-download')
-
-if host_os == 'windows' and cc.has_header_symbol('stdio.h', '_MSC_VER') and nuget_download
-  run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
+if host_os == 'windows'
+  nuget_download = meson.get_cross_property('nuget-download')
+  if cc.has_header_symbol('stdio.h', '_MSC_VER') and nuget_download
+    run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
+  endif
 endif
-  
+
 
 if host_os == 'linux'
   if cc.has_header_symbol('features.h', '__UCLIBC__')
@@ -192,7 +193,7 @@ if sys_windows
       '-Wno-return-type-c-linkage',
       '-Wno-vla',
       '-Wno-strict-prototypes',
-    
+
     # ------------------------------------
     # Default flags for native compilation
       '-Wno-language-extension-token',
