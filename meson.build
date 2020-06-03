@@ -511,7 +511,7 @@ if sys_windows
     'edje',
     'eet',
     'eeze',
-    'efl',
+    #'efl',
     'efl_canvas_wl',
     'efreet',
     'efreet',
