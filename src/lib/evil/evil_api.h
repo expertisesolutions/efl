@@ -5,6 +5,15 @@
 #undef EAPI
 #endif
 
+#ifdef EXTERN
+# undef EXTERN
+#endif
+#ifdef _WIN32
+# define EXTERN
+#else
+# define EXTERN extern
+#endif
+
 #ifdef _WIN32
 # ifdef EFL_BUILD
 #  ifdef DLL_EXPORT

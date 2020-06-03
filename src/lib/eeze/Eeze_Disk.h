@@ -72,10 +72,10 @@ typedef enum
 } Eeze_Mount_Opts;
 
 
-EAPI extern int EEZE_EVENT_DISK_MOUNT;
-EAPI extern int EEZE_EVENT_DISK_UNMOUNT;
-EAPI extern int EEZE_EVENT_DISK_EJECT;
-EAPI extern int EEZE_EVENT_DISK_ERROR;
+EAPI EXTERN int EEZE_EVENT_DISK_MOUNT;
+EAPI EXTERN int EEZE_EVENT_DISK_UNMOUNT;
+EAPI EXTERN int EEZE_EVENT_DISK_EJECT;
+EAPI EXTERN int EEZE_EVENT_DISK_ERROR;
 
 typedef struct _Eeze_Event_Disk Eeze_Event_Disk_Mount;
 typedef struct _Eeze_Event_Disk Eeze_Event_Disk_Unmount;

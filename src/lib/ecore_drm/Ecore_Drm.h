@@ -202,11 +202,11 @@ typedef struct _Ecore_Drm_Event_Output Ecore_Drm_Event_Output;
 /** @since 1.14 */
 typedef void (*Ecore_Drm_Pageflip_Cb)(void *data);
 
-EAPI extern int ECORE_DRM_EVENT_ACTIVATE;
+EAPI EXTERN int ECORE_DRM_EVENT_ACTIVATE;
 
-EAPI extern int ECORE_DRM_EVENT_OUTPUT; /**< @since 1.14 */
+EAPI EXTERN int ECORE_DRM_EVENT_OUTPUT; /**< @since 1.14 */
 
-EAPI extern int ECORE_DRM_EVENT_SEAT_ADD; /**< @since 1.14 */
+EAPI EXTERN int ECORE_DRM_EVENT_SEAT_ADD; /**< @since 1.14 */
 
 /**
  * @file

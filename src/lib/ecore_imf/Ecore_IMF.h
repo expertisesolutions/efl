@@ -202,11 +202,11 @@ typedef struct _Ecore_IMF_Context_Info             Ecore_IMF_Context_Info;      
 /* Preedit attribute info */
 typedef struct _Ecore_IMF_Preedit_Attr             Ecore_IMF_Preedit_Attr;
 
-EAPI extern int ECORE_IMF_EVENT_PREEDIT_START;
-EAPI extern int ECORE_IMF_EVENT_PREEDIT_END;
-EAPI extern int ECORE_IMF_EVENT_PREEDIT_CHANGED;
-EAPI extern int ECORE_IMF_EVENT_COMMIT;
-EAPI extern int ECORE_IMF_EVENT_DELETE_SURROUNDING;
+EAPI EXTERN int ECORE_IMF_EVENT_PREEDIT_START;
+EAPI EXTERN int ECORE_IMF_EVENT_PREEDIT_END;
+EAPI EXTERN int ECORE_IMF_EVENT_PREEDIT_CHANGED;
+EAPI EXTERN int ECORE_IMF_EVENT_COMMIT;
+EAPI EXTERN int ECORE_IMF_EVENT_DELETE_SURROUNDING;
 
 /**
  * @typedef Ecore_IMF_Event_Cb

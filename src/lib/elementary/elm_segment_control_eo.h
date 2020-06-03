@@ -174,7 +174,7 @@ EOAPI Elm_Widget_Item *elm_obj_segment_control_item_add(Eo *obj, Efl_Canvas_Obje
  */
 EOAPI Efl_Canvas_Object *elm_obj_segment_control_item_icon_get(const Eo *obj, int idx);
 
-EWAPI extern const Efl_Event_Description _ELM_SEGMENT_CONTROL_EVENT_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_SEGMENT_CONTROL_EVENT_CHANGED;
 
 /** Called when segment control changed
  * @return Efl_Object *

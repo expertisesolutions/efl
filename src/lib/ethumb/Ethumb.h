@@ -48,7 +48,7 @@ extern "C" {
         int revision; /** < git revision (0 if a proper release or the git revision number Ethumb is built from) */
      } Ethumb_Version;
 
-   EAPI extern Ethumb_Version *ethumb_version;
+   EAPI EXTERN Ethumb_Version *ethumb_version;
 
 /**
  * @page ethumb_main Ethumb

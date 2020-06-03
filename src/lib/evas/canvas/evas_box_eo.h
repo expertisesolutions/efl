@@ -797,7 +797,7 @@ EOAPI void evas_obj_box_layout_flow_horizontal(Eo *obj, Evas_Object_Box_Data *pr
  */
 EOAPI int evas_obj_box_count(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
+EWAPI EXTERN const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
 
 /** Called when a child object was added to the box
  * @return Evas_Object_Box_Option *
@@ -806,7 +806,7 @@ EWAPI extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
  */
 #define EVAS_BOX_EVENT_CHILD_ADDED (&(_EVAS_BOX_EVENT_CHILD_ADDED))
 
-EWAPI extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED;
+EWAPI EXTERN const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED;
 
 /** Called when a child object was removed from the box
  * @return Efl_Canvas_Object *

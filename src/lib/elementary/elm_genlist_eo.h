@@ -708,7 +708,7 @@ EOAPI Elm_Widget_Item *elm_obj_genlist_item_sorted_insert(Eo *obj, const Elm_Gen
  */
 EOAPI Elm_Widget_Item *elm_obj_genlist_search_by_text_item_get(Eo *obj, Elm_Widget_Item *item_to_search_from, const char *part_name, const char *pattern, Elm_Glob_Match_Flags flags);
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED;
 
 /** Called when genlist item got focus
  * @return Efl_Object *
@@ -717,7 +717,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED;
  */
 #define ELM_GENLIST_EVENT_ITEM_FOCUSED (&(_ELM_GENLIST_EVENT_ITEM_FOCUSED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED;
 
 /** Called when genlist item lost focus
  * @return Efl_Object *
@@ -726,7 +726,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED;
  */
 #define ELM_GENLIST_EVENT_ITEM_UNFOCUSED (&(_ELM_GENLIST_EVENT_ITEM_UNFOCUSED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG;
 
 /** Called when vertical bar is dragged
  *
@@ -734,7 +734,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG;
  */
 #define ELM_GENLIST_EVENT_VBAR_DRAG (&(_ELM_GENLIST_EVENT_VBAR_DRAG))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS;
 
 /** Called when vertical bar is pressed
  *
@@ -742,7 +742,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS;
  */
 #define ELM_GENLIST_EVENT_VBAR_PRESS (&(_ELM_GENLIST_EVENT_VBAR_PRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS;
 
 /** Called when vertical bar is no longer pressed
  *
@@ -750,7 +750,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS;
  */
 #define ELM_GENLIST_EVENT_VBAR_UNPRESS (&(_ELM_GENLIST_EVENT_VBAR_UNPRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG;
 
 /** Called when horizontal bar is dragged
  *
@@ -758,7 +758,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG;
  */
 #define ELM_GENLIST_EVENT_HBAR_DRAG (&(_ELM_GENLIST_EVENT_HBAR_DRAG))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS;
 
 /** Called when horizontal bar is pressed
  *
@@ -766,7 +766,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS;
  */
 #define ELM_GENLIST_EVENT_HBAR_PRESS (&(_ELM_GENLIST_EVENT_HBAR_PRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS;
 
 /** Called when horizontal bar is no longer pressed
  *
@@ -774,7 +774,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS;
  */
 #define ELM_GENLIST_EVENT_HBAR_UNPRESS (&(_ELM_GENLIST_EVENT_HBAR_UNPRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP;
 
 /** Called when top edge is reached
  *
@@ -782,7 +782,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP;
  */
 #define ELM_GENLIST_EVENT_EDGE_TOP (&(_ELM_GENLIST_EVENT_EDGE_TOP))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM;
 
 /** Called when bottom edge is reached
  *
@@ -790,7 +790,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM;
  */
 #define ELM_GENLIST_EVENT_EDGE_BOTTOM (&(_ELM_GENLIST_EVENT_EDGE_BOTTOM))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT;
 
 /** Called when left edge is reached
  *
@@ -798,7 +798,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT;
  */
 #define ELM_GENLIST_EVENT_EDGE_LEFT (&(_ELM_GENLIST_EVENT_EDGE_LEFT))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT;
 
 /** Called when right edge is reached
  *
@@ -806,7 +806,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT;
  */
 #define ELM_GENLIST_EVENT_EDGE_RIGHT (&(_ELM_GENLIST_EVENT_EDGE_RIGHT))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED;
 
 /** Called when genlist item moved
  * @return Efl_Object *
@@ -815,7 +815,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED;
  */
 #define ELM_GENLIST_EVENT_MOVED (&(_ELM_GENLIST_EVENT_MOVED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE;
 
 /** Called when genlist item moved before
  * @return Efl_Object *
@@ -824,7 +824,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE;
  */
 #define ELM_GENLIST_EVENT_MOVED_BEFORE (&(_ELM_GENLIST_EVENT_MOVED_BEFORE))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER;
 
 /** Called when genlist item moved after
  * @return Efl_Object *
@@ -833,7 +833,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER;
  */
 #define ELM_GENLIST_EVENT_MOVED_AFTER (&(_ELM_GENLIST_EVENT_MOVED_AFTER))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE;
 
 /** Called when swipe is detected
  * @return Efl_Object *
@@ -842,7 +842,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE;
  */
 #define ELM_GENLIST_EVENT_SWIPE (&(_ELM_GENLIST_EVENT_SWIPE))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN;
 
 /** Called when multitouch pinch in detected
  * @return Efl_Object *
@@ -851,7 +851,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN;
  */
 #define ELM_GENLIST_EVENT_MULTI_PINCH_IN (&(_ELM_GENLIST_EVENT_MULTI_PINCH_IN))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT;
 
 /** Called when multitouch pinch out detected
  * @return Efl_Object *
@@ -860,7 +860,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT;
  */
 #define ELM_GENLIST_EVENT_MULTI_PINCH_OUT (&(_ELM_GENLIST_EVENT_MULTI_PINCH_OUT))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN;
 
 /** Called when multitouch swipe down detected
  * @return Efl_Object *
@@ -869,7 +869,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN;
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP;
 
 /** Called when multitouch swipe up detected
  * @return Efl_Object *
@@ -878,7 +878,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP;
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_UP (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_UP))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT;
 
 /** Called when multitouch swipe right detected
  * @return Efl_Object *
@@ -887,7 +887,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT;
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT;
 
 /** Called when multitouch swipe left detected
  * @return Efl_Object *
@@ -896,7 +896,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT;
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED;
 
 /** Called when genlist is released
  * @return Efl_Object *
@@ -905,7 +905,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED;
  */
 #define ELM_GENLIST_EVENT_RELEASED (&(_ELM_GENLIST_EVENT_RELEASED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED;
 
 /** called when genlist is activated
  * @return Efl_Object *
@@ -914,7 +914,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED;
  */
 #define ELM_GENLIST_EVENT_ACTIVATED (&(_ELM_GENLIST_EVENT_ACTIVATED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED;
 
 /** Called when genlist is highlighted
  * @return Efl_Object *
@@ -923,7 +923,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED;
  */
 #define ELM_GENLIST_EVENT_HIGHLIGHTED (&(_ELM_GENLIST_EVENT_HIGHLIGHTED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED;
 
 /** Called when genlist is no longer highlighted
  * @return Efl_Object *
@@ -932,7 +932,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED;
  */
 #define ELM_GENLIST_EVENT_UNHIGHLIGHTED (&(_ELM_GENLIST_EVENT_UNHIGHLIGHTED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED;
 
 /** Called when genlist is realized
  * @return Efl_Object *
@@ -941,7 +941,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED;
  */
 #define ELM_GENLIST_EVENT_REALIZED (&(_ELM_GENLIST_EVENT_REALIZED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED;
 
 /** Called when genlist is unrealized
  * @return Efl_Object *
@@ -950,7 +950,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED;
  */
 #define ELM_GENLIST_EVENT_UNREALIZED (&(_ELM_GENLIST_EVENT_UNREALIZED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST;
 
 /** Called when contract is requested
  * @return Efl_Object *
@@ -959,7 +959,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST;
  */
 #define ELM_GENLIST_EVENT_CONTRACT_REQUEST (&(_ELM_GENLIST_EVENT_CONTRACT_REQUEST))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST;
 
 /** Called when expand is requested
  * @return Efl_Object *
@@ -968,7 +968,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST;
  */
 #define ELM_GENLIST_EVENT_EXPAND_REQUEST (&(_ELM_GENLIST_EVENT_EXPAND_REQUEST))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED;
 
 /** called when genlist is contracted
  * @return Efl_Object *
@@ -977,7 +977,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED;
  */
 #define ELM_GENLIST_EVENT_CONTRACTED (&(_ELM_GENLIST_EVENT_CONTRACTED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED;
 
 /** Called when genlist is expanded
  * @return Efl_Object *
@@ -986,7 +986,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED;
  */
 #define ELM_GENLIST_EVENT_EXPANDED (&(_ELM_GENLIST_EVENT_EXPANDED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE;
 
 /** Called when genlist index updated
  * @return Efl_Object *
@@ -995,7 +995,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE;
  */
 #define ELM_GENLIST_EVENT_INDEX_UPDATE (&(_ELM_GENLIST_EVENT_INDEX_UPDATE))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED;
 
 /** Called when genlist tree effect finished
  *
@@ -1003,7 +1003,7 @@ EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED
  */
 #define ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED (&(_ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED))
 
-EWAPI extern const Efl_Event_Description _ELM_GENLIST_EVENT_FILTER_DONE;
+EWAPI EXTERN const Efl_Event_Description _ELM_GENLIST_EVENT_FILTER_DONE;
 
 /** Called when genlist filter is done
  *

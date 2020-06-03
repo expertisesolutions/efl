@@ -44,7 +44,7 @@ typedef struct _Evas_Version
    int revision;  /**< git revision (0 if a proper release or the git revision number Evas is built from) */
 } Evas_Version;
 
-EAPI extern Evas_Version * evas_version;
+EAPI EXTERN Evas_Version * evas_version;
 
 /**
  * @file

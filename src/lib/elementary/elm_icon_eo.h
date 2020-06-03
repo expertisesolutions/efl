@@ -21,7 +21,7 @@ typedef Eo Elm_Icon;
 
 EWAPI const Efl_Class *elm_icon_class_get(void);
 
-EWAPI extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_DONE;
+EWAPI EXTERN const Efl_Event_Description _ELM_ICON_EVENT_THUMB_DONE;
 
 /** Called when thumb nailing is successfully done
  *
@@ -29,7 +29,7 @@ EWAPI extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_DONE;
  */
 #define ELM_ICON_EVENT_THUMB_DONE (&(_ELM_ICON_EVENT_THUMB_DONE))
 
-EWAPI extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_ERROR;
+EWAPI EXTERN const Efl_Event_Description _ELM_ICON_EVENT_THUMB_ERROR;
 
 /** Called when thumb nailing failed
  *

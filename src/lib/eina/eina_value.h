@@ -361,7 +361,7 @@ union _Eina_Value_Union
  *
  * @since 1.21
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_ERROR;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_ERROR;
 
 /**
  * @var EINA_VALUE_TYPE_VALUE
@@ -372,7 +372,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_ERROR;
  *
  * @since 1.21
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_VALUE;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_VALUE;
 
 /**
  * @var EINA_VALUE_TYPE_UCHAR
@@ -380,7 +380,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_VALUE;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_UCHAR;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_UCHAR;
 
 /**
  * @var EINA_VALUE_TYPE_UCHAR
@@ -388,7 +388,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_UCHAR;
  *
  * @since 1.21
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_BOOL;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_BOOL;
 
 /**
  * @var EINA_VALUE_TYPE_USHORT
@@ -396,7 +396,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_BOOL;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_USHORT;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_USHORT;
 
 /**
  * @var EINA_VALUE_TYPE_UINT
@@ -404,7 +404,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_USHORT;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_UINT;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_UINT;
 
 /**
  * @var EINA_VALUE_TYPE_ULONG
@@ -412,7 +412,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_UINT;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_ULONG;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_ULONG;
 
 /**
  * @var EINA_VALUE_TYPE_TIMESTAMP
@@ -421,7 +421,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_ULONG;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_TIMESTAMP;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_TIMESTAMP;
 
 /**
  * @var EINA_VALUE_TYPE_UINT64
@@ -429,7 +429,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_TIMESTAMP;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_UINT64;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_UINT64;
 
 /**
  * @var EINA_VALUE_TYPE_CHAR
@@ -437,7 +437,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_UINT64;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_CHAR;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_CHAR;
 
 /**
  * @var EINA_VALUE_TYPE_SHORT
@@ -445,7 +445,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_CHAR;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_SHORT;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_SHORT;
 
 /**
  * @var EINA_VALUE_TYPE_INT
@@ -453,7 +453,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_SHORT;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_INT;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_INT;
 
 /**
  * @var EINA_VALUE_TYPE_LONG
@@ -461,7 +461,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_INT;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_LONG;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_LONG;
 
 /**
  * @var EINA_VALUE_TYPE_INT64
@@ -469,7 +469,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_LONG;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_INT64;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_INT64;
 
 /**
  * @var EINA_VALUE_TYPE_FLOAT
@@ -477,7 +477,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_INT64;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_FLOAT;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_FLOAT;
 
 /**
  * @var EINA_VALUE_TYPE_DOUBLE
@@ -485,7 +485,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_FLOAT;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_DOUBLE;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_DOUBLE;
 
 /**
  * @var EINA_VALUE_TYPE_STRINGSHARE
@@ -493,7 +493,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_DOUBLE;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_STRINGSHARE;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_STRINGSHARE;
 
 /**
  * @var EINA_VALUE_TYPE_STRING
@@ -501,7 +501,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_STRINGSHARE;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_STRING;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_STRING;
 
 
 /**
@@ -525,7 +525,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_STRING;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_ARRAY;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_ARRAY;
 
 /**
  * @var EINA_VALUE_TYPE_LIST
@@ -547,7 +547,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_ARRAY;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_LIST;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_LIST;
 
 /**
  * @var EINA_VALUE_TYPE_HASH
@@ -576,7 +576,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_LIST;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_HASH;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_HASH;
 
 /**
  * @var EINA_VALUE_TYPE_TIMEVAL
@@ -590,7 +590,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_HASH;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_TIMEVAL;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_TIMEVAL;
 
 /**
  * @var EINA_VALUE_TYPE_BLOB
@@ -606,7 +606,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_TIMEVAL;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_BLOB;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_BLOB;
 
 /**
  * @var EINA_VALUE_TYPE_STRUCT
@@ -628,7 +628,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_BLOB;
  *
  * @since 1.2
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_STRUCT;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_STRUCT;
 
 /**
  * @var EINA_VALUE_TYPE_TM
@@ -642,9 +642,9 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_STRUCT;
  *
  * @since 1.21
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_TM;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_TM;
 
-EAPI extern Eina_Error EINA_ERROR_VALUE_FAILED;
+EAPI EXTERN Eina_Error EINA_ERROR_VALUE_FAILED;
 
 /**
  * @defgroup Eina_Value_Value_Group Generic Value management
@@ -2970,7 +2970,7 @@ struct _Eina_Value_Blob_Operations
  *
  * No compare or to_string are provided, defaults will be used.
  */
-EAPI extern const Eina_Value_Blob_Operations *EINA_VALUE_BLOB_OPERATIONS_MALLOC;
+EAPI EXTERN const Eina_Value_Blob_Operations *EINA_VALUE_BLOB_OPERATIONS_MALLOC;
 
 /**
  * @typedef Eina_Value_Blob
@@ -3083,7 +3083,7 @@ struct _Eina_Value_Struct_Operations
  * No other methods are set (alloc, free, copy, compare), then it uses
  * the default operations.
  */
-EAPI extern const Eina_Value_Struct_Operations *EINA_VALUE_STRUCT_OPERATIONS_BINSEARCH;
+EAPI EXTERN const Eina_Value_Struct_Operations *EINA_VALUE_STRUCT_OPERATIONS_BINSEARCH;
 
 /**
  * @var EINA_VALUE_STRUCT_OPERATIONS_STRINGSHARE
@@ -3098,7 +3098,7 @@ EAPI extern const Eina_Value_Struct_Operations *EINA_VALUE_STRUCT_OPERATIONS_BIN
  * No other methods are set (alloc, free, copy, compare), then it uses
  * the default operations.
  */
-EAPI extern const Eina_Value_Struct_Operations *EINA_VALUE_STRUCT_OPERATIONS_STRINGSHARE;
+EAPI EXTERN const Eina_Value_Struct_Operations *EINA_VALUE_STRUCT_OPERATIONS_STRINGSHARE;
 
 /**
  * @struct _Eina_Value_Struct_Member
@@ -3837,7 +3837,7 @@ static inline Eina_Bool eina_value_type_pget(const Eina_Value_Type *type, const 
  *
  * @since 1.17
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_OPTIONAL;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_OPTIONAL;
 
 /**
  * @typedef Eina_Value_Optional type to be used with Eina_Value_Struct
@@ -3933,7 +3933,7 @@ static inline const Eina_Value_Type *eina_value_optional_type_get(Eina_Value *va
  *
  * @since 1.21
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_FILE;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_FILE;
 
 /**
  * @var EINA_VALUE_TYPE_RECTANGLE
@@ -3941,7 +3941,7 @@ EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_FILE;
  *
  * @since 1.21
  */
-EAPI extern const Eina_Value_Type *EINA_VALUE_TYPE_RECTANGLE;
+EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_RECTANGLE;
 
 /**
  * @}

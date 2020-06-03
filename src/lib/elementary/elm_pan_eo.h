@@ -76,7 +76,7 @@ EOAPI void elm_obj_pan_pos_min_get(const Eo *obj, int *x, int *y);
  */
 EOAPI void elm_obj_pan_pos_max_get(const Eo *obj, int *x, int *y);
 
-EWAPI extern const Efl_Event_Description _ELM_PAN_EVENT_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_PAN_EVENT_CHANGED;
 
 /** Called when pan object changed
  *

@@ -32,7 +32,7 @@ EWAPI const Efl_Class *elm_atspi_bridge_class_get(void);
  */
 EOAPI Eina_Bool elm_obj_atspi_bridge_connected_get(const Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_ATSPI_BRIDGE_EVENT_CONNECTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ATSPI_BRIDGE_EVENT_CONNECTED;
 
 /** Connected with AT-SPI2 bus
  *
@@ -40,7 +40,7 @@ EWAPI extern const Efl_Event_Description _ELM_ATSPI_BRIDGE_EVENT_CONNECTED;
  */
 #define ELM_ATSPI_BRIDGE_EVENT_CONNECTED (&(_ELM_ATSPI_BRIDGE_EVENT_CONNECTED))
 
-EWAPI extern const Efl_Event_Description _ELM_ATSPI_BRIDGE_EVENT_DISCONNECTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ATSPI_BRIDGE_EVENT_DISCONNECTED;
 
 /** Disconnected from AT-SPI2 bus
  *

@@ -8943,9 +8943,9 @@ edje_edit_color_classes_source_generate(Evas_Object *obj, Eina_List *color_class
  * Functions to deal with error messages (see @ref edcref).
  */ //@{
 
-EAPI extern Eina_Error EDJE_EDIT_ERROR_GROUP_CURRENTLY_USED;
-EAPI extern Eina_Error EDJE_EDIT_ERROR_GROUP_REFERENCED;
-EAPI extern Eina_Error EDJE_EDIT_ERROR_GROUP_DOES_NOT_EXIST;
+EAPI EXTERN Eina_Error EDJE_EDIT_ERROR_GROUP_CURRENTLY_USED;
+EAPI EXTERN Eina_Error EDJE_EDIT_ERROR_GROUP_REFERENCED;
+EAPI EXTERN Eina_Error EDJE_EDIT_ERROR_GROUP_DOES_NOT_EXIST;
 
 
 #ifdef __cplusplus
