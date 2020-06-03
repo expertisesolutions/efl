@@ -319,7 +319,7 @@ eina_init(void)
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   eina_lock_take(&_eina_tracking_lock, NULL);
+   eina_lock_take(&_eina_tracking_lock);
 
    if (getenv("EINA_DEBUG_THREADS"))
      _eina_threads_debug = atoi(getenv("EINA_DEBUG_THREADS"));
