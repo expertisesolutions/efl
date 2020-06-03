@@ -41,7 +41,7 @@ _eo_obj_pointer_invalid(const Eo_Id obj_id,
    if (obj_id & MASK_CLASS_TAG) type = "class";
    if (!eina_thread_equal(thread, _efl_object_main_thread))
      {
-        snprintf(tbuf, sizeof(tbuf), "%p", (void *)thread);
+        //snprintf(tbuf, sizeof(tbuf), "%p", (void *)thread);
         tself = tbuf;
      }
 
