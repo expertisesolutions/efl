@@ -23,7 +23,7 @@ eo_suite_src = [
 
 eo_suite = executable('eo_suite',
   eo_suite_src,
-  dependencies: [eo, check, valgrind],
+  dependencies: [eo, check_dep, valgrind],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']
@@ -35,7 +35,7 @@ test('eo-suite', eo_suite,
 
 eo_suite = executable('eo_suite_dbg',
   eo_suite_src,
-  dependencies: [eo_dbg, check, valgrind],
+  dependencies: [eo_dbg, check_dep, valgrind],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DEO_DEBUG=1',
@@ -48,7 +48,7 @@ test('eo-suite-dbg', eo_suite,
 
 eo_suite = executable('eo_suite_fallback',
   eo_suite_src,
-  dependencies: [eo_dbg, check, valgrind],
+  dependencies: [eo_dbg, check_dep, valgrind],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DEO_DEBUG=1',
