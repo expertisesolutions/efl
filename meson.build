@@ -476,7 +476,7 @@ if sys_windows
     #'ecore_evas',
     'ecore_fb',
     #'ecore_file',
-    'ecore_imf',
+    #'ecore_imf',
     'ecore_imf_evas',
     #'ecore_input',
     #'ecore_input_evas',
