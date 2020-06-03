@@ -300,6 +300,10 @@ _eina_condition_wait_ex(Eina_Condition *cond, DWORD timeout)
           {
              EINA_LOCK_ABORT_DEBUG((int) err, cond_wait, cond);
           }
+        else if (ERROR_TIMEOUT == err)
+          {
+             eina_error_set(ETIMEDOUT);
+          }
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
