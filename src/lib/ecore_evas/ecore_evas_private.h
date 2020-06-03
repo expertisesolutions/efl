@@ -31,11 +31,11 @@
 
 /** Log domain macros and variables **/
 
-EAPI extern int _ecore_evas_log_dom;
+EAPI EXTERN int _ecore_evas_log_dom;
 
-EAPI extern Eina_Error ecore_evas_no_matching_type;
-EAPI extern Eina_Error ecore_evas_no_selection;
-EAPI extern Eina_Error ecore_evas_request_replaced;
+EAPI EXTERN Eina_Error ecore_evas_no_matching_type;
+EAPI EXTERN Eina_Error ecore_evas_no_selection;
+EAPI EXTERN Eina_Error ecore_evas_request_replaced;
 
 #ifdef ECORE_EVAS_DEFAULT_LOG_COLOR
 # undef ECORE_EVAS_DEFAULT_LOG_COLOR
@@ -485,7 +485,7 @@ EAPI void _ecore_evas_mouse_multi_up_process(Ecore_Evas *ee, int device,
                                              unsigned int timestamp);
 EAPI Eina_Bool _ecore_evas_input_direct_cb(void *window, int type, const void *info);
 
-EAPI extern Eina_Bool _ecore_evas_app_comp_sync;
+EAPI EXTERN Eina_Bool _ecore_evas_app_comp_sync;
 
 
 EAPI Ecore_Evas_Interface *_ecore_evas_interface_get(const Ecore_Evas *ee, const char *iname);

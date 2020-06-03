@@ -36,7 +36,7 @@ typedef uint32_t Eina_Unicode;
 /**
  * @brief Same as the standard strlen just with Eina_Unicode instead of char.
  */
-EAPI extern const Eina_Unicode *EINA_UNICODE_EMPTY_STRING;
+EAPI EXTERN const Eina_Unicode *EINA_UNICODE_EMPTY_STRING;
 
 EAPI size_t        eina_unicode_strlen(const Eina_Unicode *ustr) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
 

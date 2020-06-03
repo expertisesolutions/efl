@@ -573,8 +573,8 @@ typedef struct _Ecore_Wl2_Surface
    Eina_Bool alpha : 1;
 } Ecore_Wl2_Surface;
 
-EAPI extern int _ecore_wl2_event_window_www;
-EAPI extern int _ecore_wl2_event_window_www_drag;
+EAPI EXTERN int _ecore_wl2_event_window_www;
+EAPI EXTERN int _ecore_wl2_event_window_www_drag;
 
 Ecore_Wl2_Window *_ecore_wl2_display_window_surface_find(Ecore_Wl2_Display *display, struct wl_surface *wl_surface);
 void _display_event_free(void *d, void *event EINA_UNUSED);

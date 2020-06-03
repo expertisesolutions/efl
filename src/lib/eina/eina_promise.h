@@ -548,7 +548,7 @@ struct _Eina_Future_Desc {
 /**
  * Value type for #Eina_Value's containing an #Eina_Promise
  */
-EAPI extern const Eina_Value_Type EINA_VALUE_TYPE_PROMISE;
+EAPI EXTERN const Eina_Value_Type EINA_VALUE_TYPE_PROMISE;
 
 /**
  * Creates a new promise.
@@ -1611,7 +1611,7 @@ struct _Eina_Future_Race_Result {
  * @see eina_promise_race_array()
  * @see _Eina_Future_Race_Result
  */
-EAPI extern const Eina_Value_Struct_Desc *EINA_PROMISE_RACE_STRUCT_DESC;
+EAPI EXTERN const Eina_Value_Struct_Desc *EINA_PROMISE_RACE_STRUCT_DESC;
 
 /**
  * Creates a future that will be resolved once all futures from @p array is resolved.

@@ -51,7 +51,7 @@ EOAPI void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Eina_Bool visible
  */
 EOAPI Eina_Bool elm_obj_fileselector_buttons_ok_cancel_get(const Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE;
+EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE;
 
 /** Called when OK button was pressed
  * @return const char *
@@ -60,7 +60,7 @@ EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE;
  */
 #define ELM_FILESELECTOR_EVENT_DONE (&(_ELM_FILESELECTOR_EVENT_DONE))
 
-EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED;
+EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED;
 
 /** Called when the filesector was activated
  *
@@ -68,7 +68,7 @@ EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED;
  */
 #define ELM_FILESELECTOR_EVENT_ACTIVATED (&(_ELM_FILESELECTOR_EVENT_ACTIVATED))
 
-EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALID;
+EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALID;
 
 /** Called when fileselector was selected
  *
@@ -76,7 +76,7 @@ EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALI
  */
 #define ELM_FILESELECTOR_EVENT_SELECTED_INVALID (&(_ELM_FILESELECTOR_EVENT_SELECTED_INVALID))
 
-EWAPI extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DIRECTORY_OPEN;
+EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DIRECTORY_OPEN;
 
 /** Called when a directory was opened
  *

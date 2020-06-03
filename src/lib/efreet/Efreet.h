@@ -124,7 +124,7 @@ extern "C" {
         int revision; /** < git revision (0 if a proper release or the git revision number Efreet is built from) */
      } Efreet_Version;
    
-   EAPI extern Efreet_Version *efreet_version;
+   EAPI EXTERN Efreet_Version *efreet_version;
    
 #include "efreet_base.h"
 #include "efreet_ini.h"

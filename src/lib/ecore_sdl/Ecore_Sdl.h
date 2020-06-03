@@ -36,10 +36,10 @@
 extern "C" {
 #endif
 
-EAPI extern int ECORE_SDL_EVENT_GOT_FOCUS;
-EAPI extern int ECORE_SDL_EVENT_LOST_FOCUS;
-EAPI extern int ECORE_SDL_EVENT_RESIZE;
-EAPI extern int ECORE_SDL_EVENT_EXPOSE;
+EAPI EXTERN int ECORE_SDL_EVENT_GOT_FOCUS;
+EAPI EXTERN int ECORE_SDL_EVENT_LOST_FOCUS;
+EAPI EXTERN int ECORE_SDL_EVENT_RESIZE;
+EAPI EXTERN int ECORE_SDL_EVENT_EXPOSE;
 
 typedef struct _Ecore_Sdl_Event_Video_Resize Ecore_Sdl_Event_Video_Resize;
 struct _Ecore_Sdl_Event_Video_Resize

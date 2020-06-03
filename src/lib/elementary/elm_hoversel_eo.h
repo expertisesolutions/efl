@@ -169,7 +169,7 @@ EOAPI void elm_obj_hoversel_hover_end(Eo *obj);
  */
 EOAPI Elm_Widget_Item *elm_obj_hoversel_item_add(Eo *obj, const char *label, const char *icon_file, Elm_Icon_Type icon_type, Evas_Smart_Cb func, const void *data);
 
-EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED;
 
 /** Called when hoversel is dismissed
  *
@@ -177,7 +177,7 @@ EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED;
  */
 #define ELM_HOVERSEL_EVENT_DISMISSED (&(_ELM_HOVERSEL_EVENT_DISMISSED))
 
-EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED;
+EWAPI EXTERN const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED;
 
 /** Called when hoversel is expanded
  *
@@ -185,7 +185,7 @@ EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED;
  */
 #define ELM_HOVERSEL_EVENT_EXPANDED (&(_ELM_HOVERSEL_EVENT_EXPANDED))
 
-EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED;
 
 /** Called when hoversel item got focus
  * @return Efl_Object *
@@ -194,7 +194,7 @@ EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED;
  */
 #define ELM_HOVERSEL_EVENT_ITEM_FOCUSED (&(_ELM_HOVERSEL_EVENT_ITEM_FOCUSED))
 
-EWAPI extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_UNFOCUSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_UNFOCUSED;
 
 /** Called when hoversel item lost focus
  * @return Efl_Object *

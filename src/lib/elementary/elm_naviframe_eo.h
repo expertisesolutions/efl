@@ -250,7 +250,7 @@ EOAPI void elm_obj_naviframe_item_simple_promote(Eo *obj, Efl_Canvas_Object *con
  */
 EOAPI Elm_Widget_Item *elm_obj_naviframe_item_insert_after(Eo *obj, Elm_Widget_Item *after, const char *title_label, Efl_Canvas_Object *prev_btn, Efl_Canvas_Object *next_btn, Efl_Canvas_Object *content, const char *item_style);
 
-EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED;
+EWAPI EXTERN const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED;
 
 /** Called when naviframe transition finished
  * @return Efl_Object *
@@ -259,7 +259,7 @@ EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHE
  */
 #define ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED (&(_ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED))
 
-EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED;
+EWAPI EXTERN const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED;
 
 /** Called when naviframe title transaction finished
  * @return Efl_Object *
@@ -268,7 +268,7 @@ EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_F
  */
 #define ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED (&(_ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED))
 
-EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED;
+EWAPI EXTERN const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED;
 
 /** Called when naviframe title was clicked
  * @return Efl_Object *
@@ -277,7 +277,7 @@ EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED;
  */
 #define ELM_NAVIFRAME_EVENT_TITLE_CLICKED (&(_ELM_NAVIFRAME_EVENT_TITLE_CLICKED))
 
-EWAPI extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_ITEM_ACTIVATED;
+EWAPI EXTERN const Efl_Event_Description _ELM_NAVIFRAME_EVENT_ITEM_ACTIVATED;
 
 /** Called when naviframe item was activated
  * @return Efl_Object *

@@ -247,7 +247,7 @@ EOAPI Eina_Bool elm_obj_label_ellipsis_get(const Eo *obj);
  */
 EOAPI void elm_obj_label_slide_go(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END;
+EWAPI EXTERN const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END;
 
 /** Called when slide stopped
  *

@@ -383,7 +383,7 @@ extern "C" {
         int revision; /** < git revision (0 if a proper release or the git revision number Embryo is built from) */
      } Embryo_Version;
    
-   EAPI extern Embryo_Version *embryo_version;
+   EAPI EXTERN Embryo_Version *embryo_version;
    
    /* potential error values */
    typedef enum _Embryo_Error

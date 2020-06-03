@@ -60,7 +60,7 @@ EOAPI void elm_obj_scroller_page_scroll_limit_set(const Eo *obj, int page_limit_
  */
 EOAPI void elm_obj_scroller_page_scroll_limit_get(const Eo *obj, int *page_limit_h, int *page_limit_v);
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_PAGE_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_PAGE_CHANGED;
 
 /** Called when scroll page changed
  *
@@ -68,7 +68,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_PAGE_CHANGED
  */
 #define ELM_SCROLLER_EVENT_SCROLL_PAGE_CHANGED (&(_ELM_SCROLLER_EVENT_SCROLL_PAGE_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_UNPRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_UNPRESS;
 
 /** Called when horizontal bar is no longer pressed
  *
@@ -76,7 +76,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_UNPRESS;
  */
 #define ELM_SCROLLER_EVENT_HBAR_UNPRESS (&(_ELM_SCROLLER_EVENT_HBAR_UNPRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_PRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_PRESS;
 
 /** Called when horizontal bar is pressed
  *
@@ -84,7 +84,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_PRESS;
  */
 #define ELM_SCROLLER_EVENT_HBAR_PRESS (&(_ELM_SCROLLER_EVENT_HBAR_PRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_DRAG;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_DRAG;
 
 /** Called when horizontal bar is dragged
  *
@@ -92,7 +92,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_HBAR_DRAG;
  */
 #define ELM_SCROLLER_EVENT_HBAR_DRAG (&(_ELM_SCROLLER_EVENT_HBAR_DRAG))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_UNPRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_UNPRESS;
 
 /** Called when vertical bar is no longer pressed
  *
@@ -100,7 +100,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_UNPRESS;
  */
 #define ELM_SCROLLER_EVENT_VBAR_UNPRESS (&(_ELM_SCROLLER_EVENT_VBAR_UNPRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_PRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_PRESS;
 
 /** Called when vertical bar is pressed
  *
@@ -108,7 +108,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_PRESS;
  */
 #define ELM_SCROLLER_EVENT_VBAR_PRESS (&(_ELM_SCROLLER_EVENT_VBAR_PRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_DRAG;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_DRAG;
 
 /** Called when vertical bar is dragged
  *
@@ -116,7 +116,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_VBAR_DRAG;
  */
 #define ELM_SCROLLER_EVENT_VBAR_DRAG (&(_ELM_SCROLLER_EVENT_VBAR_DRAG))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_LEFT;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_LEFT;
 
 /** Called when scrolling to left
  *
@@ -124,7 +124,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_LEFT;
  */
 #define ELM_SCROLLER_EVENT_SCROLL_LEFT (&(_ELM_SCROLLER_EVENT_SCROLL_LEFT))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_RIGHT;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_RIGHT;
 
 /** Called when scrolling to right
  *
@@ -132,7 +132,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_RIGHT;
  */
 #define ELM_SCROLLER_EVENT_SCROLL_RIGHT (&(_ELM_SCROLLER_EVENT_SCROLL_RIGHT))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_UP;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_UP;
 
 /** Called scrolled upwards
  *
@@ -140,7 +140,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_UP;
  */
 #define ELM_SCROLLER_EVENT_SCROLL_UP (&(_ELM_SCROLLER_EVENT_SCROLL_UP))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_DOWN;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_DOWN;
 
 /** Called when scrolled downwards
  *
@@ -148,7 +148,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_DOWN;
  */
 #define ELM_SCROLLER_EVENT_SCROLL_DOWN (&(_ELM_SCROLLER_EVENT_SCROLL_DOWN))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_LEFT;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_LEFT;
 
 /** Called when hitting the left edge
  *
@@ -156,7 +156,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_LEFT;
  */
 #define ELM_SCROLLER_EVENT_EDGE_LEFT (&(_ELM_SCROLLER_EVENT_EDGE_LEFT))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_RIGHT;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_RIGHT;
 
 /** Called when hitting the right edge
  *
@@ -164,7 +164,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_RIGHT;
  */
 #define ELM_SCROLLER_EVENT_EDGE_RIGHT (&(_ELM_SCROLLER_EVENT_EDGE_RIGHT))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_TOP;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_TOP;
 
 /** Called when hitting the top edge
  *
@@ -172,7 +172,7 @@ EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_TOP;
  */
 #define ELM_SCROLLER_EVENT_EDGE_TOP (&(_ELM_SCROLLER_EVENT_EDGE_TOP))
 
-EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_BOTTOM;
+EWAPI EXTERN const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_BOTTOM;
 
 /** Called when hitting the bottom edge
  *

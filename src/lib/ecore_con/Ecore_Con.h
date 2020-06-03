@@ -633,51 +633,51 @@ struct _Ecore_Con_Event_Url_Progress
 };
 
 /** A client has connected to the server. */
-EAPI extern int ECORE_CON_EVENT_CLIENT_ADD;
+EAPI EXTERN int ECORE_CON_EVENT_CLIENT_ADD;
 /** A client has disconnected from the server. */
-EAPI extern int ECORE_CON_EVENT_CLIENT_DEL;
+EAPI EXTERN int ECORE_CON_EVENT_CLIENT_DEL;
 /** A client experienced an error.
  * @since 1.1
  */
-EAPI extern int ECORE_CON_EVENT_CLIENT_ERROR;
+EAPI EXTERN int ECORE_CON_EVENT_CLIENT_ERROR;
 /** A client connection has been upgraded to SSL.
  * @since 1.1
  */
-EAPI extern int ECORE_CON_EVENT_CLIENT_UPGRADE;
+EAPI EXTERN int ECORE_CON_EVENT_CLIENT_UPGRADE;
 /** A server was created. */
-EAPI extern int ECORE_CON_EVENT_SERVER_ADD;
+EAPI EXTERN int ECORE_CON_EVENT_SERVER_ADD;
 /** A server connection was lost. */
-EAPI extern int ECORE_CON_EVENT_SERVER_DEL;
+EAPI EXTERN int ECORE_CON_EVENT_SERVER_DEL;
 /** A server experienced an error.
  * @since 1.1
  */
-EAPI extern int ECORE_CON_EVENT_SERVER_ERROR;
+EAPI EXTERN int ECORE_CON_EVENT_SERVER_ERROR;
 /** A server connection has been upgraded to SSL.
  * @since 1.1
  */
-EAPI extern int ECORE_CON_EVENT_SERVER_UPGRADE;
+EAPI EXTERN int ECORE_CON_EVENT_SERVER_UPGRADE;
 /** A server connection has sent data to its client.
  * @since 1.1
  */
-EAPI extern int ECORE_CON_EVENT_CLIENT_WRITE;
+EAPI EXTERN int ECORE_CON_EVENT_CLIENT_WRITE;
 /** A server connection object has sent data.
  * @since 1.1
  */
-EAPI extern int ECORE_CON_EVENT_SERVER_WRITE;
+EAPI EXTERN int ECORE_CON_EVENT_SERVER_WRITE;
 /** A client connected to the server has sent data. */
-EAPI extern int ECORE_CON_EVENT_CLIENT_DATA;
+EAPI EXTERN int ECORE_CON_EVENT_CLIENT_DATA;
 /** A server connection object has data.*/
-EAPI extern int ECORE_CON_EVENT_SERVER_DATA;
+EAPI EXTERN int ECORE_CON_EVENT_SERVER_DATA;
 /** A server connection has successfully negotiated an ip:port binding.
  * @since 1.2
  */
-EAPI extern int ECORE_CON_EVENT_PROXY_BIND;
+EAPI EXTERN int ECORE_CON_EVENT_PROXY_BIND;
 /** A URL object has data. */
-EAPI extern int ECORE_CON_EVENT_URL_DATA;
+EAPI EXTERN int ECORE_CON_EVENT_URL_DATA;
 /** A URL object has completed its transfer to and from the server and can be reused. */
-EAPI extern int ECORE_CON_EVENT_URL_COMPLETE;
+EAPI EXTERN int ECORE_CON_EVENT_URL_COMPLETE;
 /** A URL object has made progress in its transfer. */
-EAPI extern int ECORE_CON_EVENT_URL_PROGRESS;
+EAPI EXTERN int ECORE_CON_EVENT_URL_PROGRESS;
 
 /**
  * @}
