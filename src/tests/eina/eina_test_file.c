@@ -814,7 +814,7 @@ EFL_START_TEST(eina_test_file_mktemp)
    eina_file_path_join(buf, sizeof(buf), tmpdir, "eina_file_test_XXXXXX.txt");
 
    fd = eina_file_mkstemp(buf, &tmpfile);
-   fail_if((fd < 0) || !tmpfile || errno);
+   fail_if((fd < 0) || !tmpfile);
    close(fd);
 
    it = eina_file_direct_ls(tmpdir);
