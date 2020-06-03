@@ -283,7 +283,7 @@ events:
         if (!eolian_event_is_beta(ev) && evs == EOLIAN_SCOPE_PUBLIC)
           eina_strbuf_append_char(buf, '\n');
 
-        eina_strbuf_append_printf(buf, "EWAPI extern const "
+        eina_strbuf_append_printf(buf, "EWAPI EXTERN const "
                                   "Efl_Event_Description _%s;\n\n", evn);
 
         Eina_Strbuf *evdbuf = eo_gen_docs_event_gen(state, ev,
