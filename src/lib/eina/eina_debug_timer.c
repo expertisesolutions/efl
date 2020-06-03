@@ -42,6 +42,7 @@
 #include "eina_thread.h"
 #include "eina_debug.h"
 #include "eina_debug_private.h"
+#include "eina_pipe.h"
 
 static Eina_Spinlock _lock;
 
