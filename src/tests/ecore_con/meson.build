@@ -9,7 +9,7 @@ ecore_con_suite_src = [
 
 ecore_con_suite = executable('ecore_con_suite',
   ecore_con_suite_src,
-  dependencies: [ecore_con, eet, ecore, check],
+  dependencies: [ecore_con, eet, ecore, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

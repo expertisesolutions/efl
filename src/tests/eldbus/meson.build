@@ -21,7 +21,7 @@ eldbus_suite_src = [
 
 eldbus_suite = executable('eldbus_suite',
   eldbus_suite_src,
-  dependencies: [eldbus, ecore, check],
+  dependencies: [eldbus, ecore, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

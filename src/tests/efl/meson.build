@@ -7,7 +7,7 @@ efl_suite_src = [
 
 efl_suite_bin = executable('efl_suite',
   efl_suite_src,
-  dependencies: [efl, ecore, check],
+  dependencies: [efl, ecore, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

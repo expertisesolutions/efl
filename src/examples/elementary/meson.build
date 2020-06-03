@@ -13,7 +13,7 @@ examples = [
   'calendar_example_04',
   'calendar_example_05',
   'calendar_example_06',
-  'check_example_01',
+  'check_dep_example_01',
   'clock_example',
   'colorselector_example_01',
   'conformant_example_01',

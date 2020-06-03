@@ -1,4 +1,4 @@
-elua_suite_deps = [check, eina, elua]
+elua_suite_deps = [check_dep, eina, elua]
 
 elua_suite_src = [
    'elua_suite.c',
@@ -20,7 +20,7 @@ elua_apps_dir = join_paths(meson.source_root(), 'src', 'tests', 'elua', 'data', 
 elua_suite = executable('elua_suite',
   elua_suite_src,
   include_directories : config_dir,
-  dependencies: [elua_suite_deps, check],
+  dependencies: [elua_suite_deps, check_dep],
   c_args : [
     '-DELUA_BINDINGS_DIR="'+elua_bindings_dir+'"',
     '-DELUA_CORE_DIR="'+elua_core_dir+'"',

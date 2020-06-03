@@ -1,4 +1,4 @@
-eet_cxx_suite_deps = [check, eet_cxx]
+eet_cxx_suite_deps = [check_dep, eet_cxx]
 
 eet_cxx_suite_src = [
   'eet_cxx_suite.cc',
@@ -8,7 +8,7 @@ eet_cxx_suite_src = [
 
 eet_cxx_suite = executable('eet_cxx_suite',
   eet_cxx_suite_src,
-  dependencies: [eet_cxx_suite_deps, check],
+  dependencies: [eet_cxx_suite_deps, check_dep],
   cpp_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

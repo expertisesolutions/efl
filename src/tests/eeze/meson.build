@@ -9,7 +9,7 @@ eeze_suite_src = [
 
 eeze_suite = executable('eeze_suite',
   eeze_suite_src,
-  dependencies: [eeze, ecore, check],
+  dependencies: [eeze, ecore, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']
