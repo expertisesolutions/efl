@@ -379,6 +379,17 @@ efl_one_include_dirs = []
 efl_one_sub_dirs = []
 tmp_empty = declare_dependency()
 
+# Defines a table of symbols that works as identifiers for each library.
+# Intended to properly set EAPI.
+id = 0
+foreach package : subprojects
+  package_name = package[0]
+  config_h.set('@0@_LIB'.format(package_name.to_upper()), id)
+  id += 1
+endforeach
+
+
+# Generate build for packages
 foreach package : subprojects
   package_name = package[0]
   package_version_name = '-'.join(package_name.split('_')) + '-' + version_major
@@ -418,7 +429,7 @@ foreach package : subprojects
     package_c_args = [
       '-DPACKAGE_DATA_DIR="'+ join_paths(dir_data, package_name)+'"',
       '-DNEED_RUN_IN_TREE=1',
-      '-DEFL_BUILD=1',
+      '-DEFL_BUILD=@0@_LIB'.format(package_name.to_upper()),
     ]
     if (package[3])
       subdir(join_paths(local_lib, package_name))
@@ -548,7 +559,7 @@ foreach package : subprojects
     package_c_args = [
       '-DPACKAGE_DATA_DIR="'+ join_paths(dir_data, package_name)+'"',
       '-DNEED_RUN_IN_TREE=1',
-      '-DEFL_BUILD=1',
+      '-DEFL_BUILD=@0@_LIB'.format(package_name.to_upper()),
     ]
     if (package[2])
        subdir(join_paths(local_module, package_name))

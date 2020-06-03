@@ -6,12 +6,8 @@
 #endif
 
 #ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
-#  else
-#   define EAPI
-#  endif
+# if defined(EFL_BUILD) && EFL_BUILD == EOLIAN_LIB
+#  define EAPI __declspec(dllexport)
 # else
 #  define EAPI __declspec(dllimport)
 # endif

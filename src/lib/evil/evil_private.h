@@ -30,14 +30,14 @@ extern "C" {
 # undef EAPI
 #endif
 
-#ifdef EFL_BUILD
-# ifdef DLL_EXPORT
+#ifdef _WIN32
+# if defined(EFL_BUILD) && EFL_BUILD == EVIL_LIB
 #  define EAPI __declspec(dllexport)
 # else
-#  define EAPI
+#  define EAPI __declspec(dllimport)
 # endif
 #else
-# define EAPI __declspec(dllimport)
+# define EAPI
 #endif
 
 #ifndef PATH_MAX
