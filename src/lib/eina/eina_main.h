@@ -66,9 +66,9 @@ typedef struct _Eina_Version
    int revision; /**< Revision component of the version */
 } Eina_Version;
 
-EAPI extern Eina_Version *eina_version;
+EAPI Eina_Version *eina_version;
 
-EAPI extern Eina_Error EINA_ERROR_NOT_IMPLEMENTED;
+EAPI Eina_Error EINA_ERROR_NOT_IMPLEMENTED;
 
 /**
  * @brief Initializes the Eina library.

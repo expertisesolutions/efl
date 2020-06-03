@@ -22,7 +22,7 @@ extern "C"
 /* Value returned by `fnmatch' if STRING does not match PATTERN.  */
 #define FNM_NOMATCH 1
 
-int eina_fnmatch(const char *pattern, const char *string, int flags);
+EAPI int eina_fnmatch(const char *pattern, const char *string, int flags);
 
 #else /* _WIN32 */
 

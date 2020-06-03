@@ -73,7 +73,7 @@ typedef struct _Eina_Mempool_Backend Eina_Mempool_Backend;
  */
 typedef void (*Eina_Mempool_Repack_Cb)(void *dst, void *src, void *data);
 
-EAPI extern Eina_Error EINA_ERROR_NOT_MEMPOOL_MODULE;
+EAPI Eina_Error EINA_ERROR_NOT_MEMPOOL_MODULE;
 
 /**
  * @brief Creates a new mempool of the given type

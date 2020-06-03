@@ -411,9 +411,9 @@ endif
 subprojects = [
 # name              |   option              | mod  | lib  | bin  | bench | tests | examples | true if build in efl-one | pkg-config options | name of static libs
 ['evil'             ,[]                    , false,  true, false, false, false, false,  true, [], []],
-['eina'             ,[]                    , false,  true,  true,  true,  true,  true,  true, [], []],
-['eolian'           ,[]                    , false,  true,  true, false,  true, false, false, ['eina'], []],
-['eo'               ,[]                    , false,  true, false,  true,  true, false,  true, ['eina'], []],
+['eina'             ,[]                    , false,  true, false, false, false, false,  true, [], []],
+['eolian'           ,[]                    , false,  true,  true, false, false, false, false, ['eina'], []],
+['eo'               ,[]                    , false,  true, false, false, false, false,  true, ['eina'], []],
 ['efl'              ,[]                    , false,  true, false, false,  true, false,  true, ['eo'], []],
 ['emile'            ,[]                    , false,  true, false, false,  true,  true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
 ['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], []],
@@ -500,8 +500,8 @@ if sys_windows
     'embryo',
     'emile',
     'emotion',
-    'eo',
-    'eolian',
+    #'eo',
+    #'eolian',
     'ephysics',
     'ethumb',
     'ethumb_client',
