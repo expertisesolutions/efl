@@ -299,7 +299,7 @@ EOAPI const char *elm_obj_spinner_label_format_get(const Eo *obj);
  */
 EOAPI void elm_obj_spinner_special_value_add(Eo *obj, double value, const char *label);
 
-EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
 
 /** Called when spinner changed
  *
@@ -307,7 +307,7 @@ EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
  */
 #define ELM_SPINNER_EVENT_CHANGED (&(_ELM_SPINNER_EVENT_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED;
 
 /** Called when spinner delay changed
  *
@@ -315,7 +315,7 @@ EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED;
  */
 #define ELM_SPINNER_EVENT_DELAY_CHANGED (&(_ELM_SPINNER_EVENT_DELAY_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START;
+EWAPI EXTERN const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START;
 
 /** Called when spinner drag started
  *
@@ -323,7 +323,7 @@ EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START;
  */
 #define ELM_SPINNER_EVENT_SPINNER_DRAG_START (&(_ELM_SPINNER_EVENT_SPINNER_DRAG_START))
 
-EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP;
+EWAPI EXTERN const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP;
 
 /** Called when spinner drag stopped
  *
@@ -331,7 +331,7 @@ EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP;
  */
 #define ELM_SPINNER_EVENT_SPINNER_DRAG_STOP (&(_ELM_SPINNER_EVENT_SPINNER_DRAG_STOP))
 
-EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED;
+EWAPI EXTERN const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED;
 
 /** Called when spinner value reached min
  *
@@ -339,7 +339,7 @@ EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED;
  */
 #define ELM_SPINNER_EVENT_MIN_REACHED (&(_ELM_SPINNER_EVENT_MIN_REACHED))
 
-EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_MAX_REACHED;
+EWAPI EXTERN const Efl_Event_Description _ELM_SPINNER_EVENT_MAX_REACHED;
 
 /** Called when spinner value reached max
  *

@@ -14,7 +14,7 @@ extern "C" {
         int revision; /**< Revision number */
      } Eio_Version;
 
-   EAPI extern Eio_Version *eio_version;
+   EAPI EXTERN Eio_Version *eio_version;
 
 /**
  * @file
@@ -1174,17 +1174,17 @@ EAPI Eio_File *eio_eet_write_cipher(Eet_File *ef,
  * @{
  */
 
-EAPI extern int EIO_MONITOR_FILE_CREATED; /**< A new file was created in a watched directory */
-EAPI extern int EIO_MONITOR_FILE_DELETED; /**< A watched file was deleted, or a file in a watched directory was deleted */
-EAPI extern int EIO_MONITOR_FILE_MODIFIED; /**< A file was modified in a watched directory */
-EAPI extern int EIO_MONITOR_FILE_CLOSED; /**< A file was closed in a watched directory. This event is never sent on Windows and OSX, or for non-fallback monitors */
-EAPI extern int EIO_MONITOR_DIRECTORY_CREATED; /**< A new directory was created in a watched directory */
-EAPI extern int EIO_MONITOR_DIRECTORY_DELETED; /**< A directory has been deleted: this can be either a watched directory or one of its subdirectories */
-EAPI extern int EIO_MONITOR_DIRECTORY_MODIFIED; /**< A directory has been modified in a watched directory */
-EAPI extern int EIO_MONITOR_DIRECTORY_CLOSED; /**< A directory has been closed in a watched directory. This event is never sent on Windows and OSX, or for non-fallback monitors */
-EAPI extern int EIO_MONITOR_SELF_RENAME; /**< The monitored path has been renamed, an error could happen just after if the renamed path doesn't exist. This event is never sent on OSX, or for non-fallback monitors */
-EAPI extern int EIO_MONITOR_SELF_DELETED; /**< The monitored path has been removed. This event is never sent on OSX */
-EAPI extern int EIO_MONITOR_ERROR; /**< During operation the monitor failed and will no longer work. eio_monitor_del must be called on it. */
+EAPI EXTERN int EIO_MONITOR_FILE_CREATED; /**< A new file was created in a watched directory */
+EAPI EXTERN int EIO_MONITOR_FILE_DELETED; /**< A watched file was deleted, or a file in a watched directory was deleted */
+EAPI EXTERN int EIO_MONITOR_FILE_MODIFIED; /**< A file was modified in a watched directory */
+EAPI EXTERN int EIO_MONITOR_FILE_CLOSED; /**< A file was closed in a watched directory. This event is never sent on Windows and OSX, or for non-fallback monitors */
+EAPI EXTERN int EIO_MONITOR_DIRECTORY_CREATED; /**< A new directory was created in a watched directory */
+EAPI EXTERN int EIO_MONITOR_DIRECTORY_DELETED; /**< A directory has been deleted: this can be either a watched directory or one of its subdirectories */
+EAPI EXTERN int EIO_MONITOR_DIRECTORY_MODIFIED; /**< A directory has been modified in a watched directory */
+EAPI EXTERN int EIO_MONITOR_DIRECTORY_CLOSED; /**< A directory has been closed in a watched directory. This event is never sent on Windows and OSX, or for non-fallback monitors */
+EAPI EXTERN int EIO_MONITOR_SELF_RENAME; /**< The monitored path has been renamed, an error could happen just after if the renamed path doesn't exist. This event is never sent on OSX, or for non-fallback monitors */
+EAPI EXTERN int EIO_MONITOR_SELF_DELETED; /**< The monitored path has been removed. This event is never sent on OSX */
+EAPI EXTERN int EIO_MONITOR_ERROR; /**< During operation the monitor failed and will no longer work. eio_monitor_del must be called on it. */
 
 typedef struct _Eio_Monitor Eio_Monitor;
 

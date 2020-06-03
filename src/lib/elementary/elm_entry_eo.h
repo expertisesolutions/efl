@@ -1268,7 +1268,7 @@ EOAPI Eina_Bool elm_obj_entry_prediction_hint_hash_set(Eo *obj, const char *key,
  */
 EOAPI Eina_Bool elm_obj_entry_prediction_hint_hash_del(Eo *obj, const char *key);
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED;
 
 /** Called when entry got activated
  *
@@ -1276,7 +1276,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED;
  */
 #define ELM_ENTRY_EVENT_ACTIVATED (&(_ELM_ENTRY_EVENT_ACTIVATED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED;
 
 /** Called when entry changed
  *
@@ -1284,7 +1284,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED;
  */
 #define ELM_ENTRY_EVENT_CHANGED (&(_ELM_ENTRY_EVENT_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER;
 
 /** Called when the object changed due to user interaction
  * @return Elm_Entry_Change_Info
@@ -1293,7 +1293,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER;
  */
 #define ELM_ENTRY_EVENT_CHANGED_USER (&(_ELM_ENTRY_EVENT_CHANGED_USER))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE;
 
 /** Called when validating
  * @return Elm_Validate_Content
@@ -1302,7 +1302,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE;
  */
 #define ELM_ENTRY_EVENT_VALIDATE (&(_ELM_ENTRY_EVENT_VALIDATE))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN;
 
 /** Called when context menu was opened
  *
@@ -1310,7 +1310,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN;
  */
 #define ELM_ENTRY_EVENT_CONTEXT_OPEN (&(_ELM_ENTRY_EVENT_CONTEXT_OPEN))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED;
 
 /** Called when anchor was clicked
  * @return Elm_Entry_Anchor_Info
@@ -1319,7 +1319,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_CLICKED (&(_ELM_ENTRY_EVENT_ANCHOR_CLICKED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED;
 
 /** Called when entry was rejected
  *
@@ -1327,7 +1327,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED;
  */
 #define ELM_ENTRY_EVENT_REJECTED (&(_ELM_ENTRY_EVENT_REJECTED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED;
 
 /** Called when maximum entry length has been reached
  *
@@ -1335,7 +1335,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED;
  */
 #define ELM_ENTRY_EVENT_MAXLENGTH_REACHED (&(_ELM_ENTRY_EVENT_MAXLENGTH_REACHED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED;
 
 /** Called when entry preedit changed
  *
@@ -1343,7 +1343,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED;
  */
 #define ELM_ENTRY_EVENT_PREEDIT_CHANGED (&(_ELM_ENTRY_EVENT_PREEDIT_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS;
 
 /** Called when entry pressed
  *
@@ -1351,7 +1351,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS;
  */
 #define ELM_ENTRY_EVENT_PRESS (&(_ELM_ENTRY_EVENT_PRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST;
 
 /** Called when redo was requested
  *
@@ -1359,7 +1359,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST;
  */
 #define ELM_ENTRY_EVENT_REDO_REQUEST (&(_ELM_ENTRY_EVENT_REDO_REQUEST))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST;
 
 /** Called when undo was requested
  *
@@ -1367,7 +1367,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST;
  */
 #define ELM_ENTRY_EVENT_UNDO_REQUEST (&(_ELM_ENTRY_EVENT_UNDO_REQUEST))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE;
 
 /** Called when text set finished
  *
@@ -1375,7 +1375,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE;
  */
 #define ELM_ENTRY_EVENT_TEXT_SET_DONE (&(_ELM_ENTRY_EVENT_TEXT_SET_DONE))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED;
 
 /** Called when entry was aborted
  *
@@ -1383,7 +1383,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED;
  */
 #define ELM_ENTRY_EVENT_ABORTED (&(_ELM_ENTRY_EVENT_ABORTED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN;
 
 /** Called on anchor down
  * @return Elm_Entry_Anchor_Info
@@ -1392,7 +1392,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_DOWN (&(_ELM_ENTRY_EVENT_ANCHOR_DOWN))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED;
 
 /** Called when hover opened
  * @return Elm_Entry_Anchor_Hover_Info
@@ -1401,7 +1401,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED (&(_ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN;
 
 /** Called on anchor in
  * @return Elm_Entry_Anchor_Info
@@ -1410,7 +1410,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_IN (&(_ELM_ENTRY_EVENT_ANCHOR_IN))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT;
 
 /** Called on anchor out
  * @return Elm_Entry_Anchor_Info
@@ -1419,7 +1419,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_OUT (&(_ELM_ENTRY_EVENT_ANCHOR_OUT))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP;
 
 /** called on anchor up
  * @return Elm_Entry_Anchor_Info
@@ -1428,7 +1428,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_UP (&(_ELM_ENTRY_EVENT_ANCHOR_UP))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED;
 
 /** Called on cursor changed
  *
@@ -1436,7 +1436,7 @@ EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED;
  */
 #define ELM_ENTRY_EVENT_CURSOR_CHANGED (&(_ELM_ENTRY_EVENT_CURSOR_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED_MANUAL;
+EWAPI EXTERN const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED_MANUAL;
 
 /** Called on manual cursor change
  *

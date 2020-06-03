@@ -144,7 +144,7 @@ typedef struct _Eldbus_Version
    int revision; /**< git revision (0 if a proper release or the git revision number Eldbus is built from) */
 } Eldbus_Version;
 
-EAPI extern const Eldbus_Version * eldbus_version; /**< Global Eldbus_Version object */
+EAPI EXTERN const Eldbus_Version * eldbus_version; /**< Global Eldbus_Version object */
 
 /**
  * @brief Initialize eldbus.

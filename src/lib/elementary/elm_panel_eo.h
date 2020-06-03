@@ -129,7 +129,7 @@ EOAPI double elm_obj_panel_scrollable_content_size_get(const Eo *obj);
  */
 EOAPI void elm_obj_panel_toggle(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_PANEL_EVENT_TOGGLED;
+EWAPI EXTERN const Efl_Event_Description _ELM_PANEL_EVENT_TOGGLED;
 
 /** Called when the hidden state was toggled
  *

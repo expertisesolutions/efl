@@ -104,7 +104,7 @@ EOAPI void ecore_obj_exe_command_set(Eo *obj, const char *exe_cmd, Ecore_Exe_Fla
  */
 EOAPI void ecore_obj_exe_command_get(const Eo *obj, const char **exe_cmd, Ecore_Exe_Flags *flags);
 
-EWAPI extern const Efl_Event_Description _ECORE_EXE_EVENT_DATA_GET;
+EWAPI EXTERN const Efl_Event_Description _ECORE_EXE_EVENT_DATA_GET;
 
 /** Data received event from the child process
  * @return Ecore_Exe_Event_Data
@@ -113,7 +113,7 @@ EWAPI extern const Efl_Event_Description _ECORE_EXE_EVENT_DATA_GET;
  */
 #define ECORE_EXE_EVENT_DATA_GET (&(_ECORE_EXE_EVENT_DATA_GET))
 
-EWAPI extern const Efl_Event_Description _ECORE_EXE_EVENT_DATA_ERROR;
+EWAPI EXTERN const Efl_Event_Description _ECORE_EXE_EVENT_DATA_ERROR;
 
 /** Error received event from the child process
  * @return Ecore_Exe_Event_Data

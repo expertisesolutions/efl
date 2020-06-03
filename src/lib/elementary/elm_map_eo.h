@@ -620,7 +620,7 @@ EOAPI Elm_Map_Overlay *elm_obj_map_overlay_add(Eo *obj, double lon, double lat);
  */
 EOAPI void elm_obj_map_canvas_to_region_convert(const Eo *obj, int x, int y, double *lon, double *lat);
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_PRESS;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_PRESS;
 
 /** Called when map was pressed
  * @return Evas_Event_Mouse_Down
@@ -629,7 +629,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_PRESS;
  */
 #define ELM_MAP_EVENT_PRESS (&(_ELM_MAP_EVENT_PRESS))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_LOADED;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_LOADED;
 
 /** Called when map loaded
  *
@@ -637,7 +637,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_LOADED;
  */
 #define ELM_MAP_EVENT_LOADED (&(_ELM_MAP_EVENT_LOADED))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOAD;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOAD;
 
 /** Called when title load started
  *
@@ -645,7 +645,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOAD;
  */
 #define ELM_MAP_EVENT_TILE_LOAD (&(_ELM_MAP_EVENT_TILE_LOAD))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED;
 
 /** Called when title load finished
  *
@@ -653,7 +653,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED;
  */
 #define ELM_MAP_EVENT_TILE_LOADED (&(_ELM_MAP_EVENT_TILE_LOADED))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED_FAIL;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED_FAIL;
 
 /** Called when title load failed
  *
@@ -661,7 +661,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED_FAIL;
  */
 #define ELM_MAP_EVENT_TILE_LOADED_FAIL (&(_ELM_MAP_EVENT_TILE_LOADED_FAIL))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOAD;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOAD;
 
 /** Called when route load started
  * @return Elm_Map_Route
@@ -670,7 +670,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOAD;
  */
 #define ELM_MAP_EVENT_ROUTE_LOAD (&(_ELM_MAP_EVENT_ROUTE_LOAD))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED;
 
 /** Called when route load finished
  *
@@ -678,7 +678,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED;
  */
 #define ELM_MAP_EVENT_ROUTE_LOADED (&(_ELM_MAP_EVENT_ROUTE_LOADED))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED_FAIL;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED_FAIL;
 
 /** Called when route load failed
  *
@@ -686,7 +686,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED_FAIL;
  */
 #define ELM_MAP_EVENT_ROUTE_LOADED_FAIL (&(_ELM_MAP_EVENT_ROUTE_LOADED_FAIL))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOAD;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOAD;
 
 /** Called when name load started
  *
@@ -694,7 +694,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOAD;
  */
 #define ELM_MAP_EVENT_NAME_LOAD (&(_ELM_MAP_EVENT_NAME_LOAD))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED;
 
 /** Called when name load finished
  *
@@ -702,7 +702,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED;
  */
 #define ELM_MAP_EVENT_NAME_LOADED (&(_ELM_MAP_EVENT_NAME_LOADED))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED_FAIL;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED_FAIL;
 
 /** Called when name load failed
  *
@@ -710,7 +710,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED_FAIL;
  */
 #define ELM_MAP_EVENT_NAME_LOADED_FAIL (&(_ELM_MAP_EVENT_NAME_LOADED_FAIL))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_CLICKED;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_CLICKED;
 
 /** Called when overlay was clicked
  * @return Elm_Map_Overlay
@@ -719,7 +719,7 @@ EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_CLICKED;
  */
 #define ELM_MAP_EVENT_OVERLAY_CLICKED (&(_ELM_MAP_EVENT_OVERLAY_CLICKED))
 
-EWAPI extern const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_DEL;
+EWAPI EXTERN const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_DEL;
 
 /** Called when overlay was deleted
  * @return Elm_Map_Overlay

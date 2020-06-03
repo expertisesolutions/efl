@@ -290,7 +290,7 @@ typedef struct _Emotion_Version
      int revision; /** < git revision (0 if a proper release or the git revision number Emotion is built from) */
   } Emotion_Version;
 
-EAPI extern Emotion_Version *emotion_version;
+EAPI EXTERN Emotion_Version *emotion_version;
 
 /* api calls available */
 
@@ -1309,9 +1309,9 @@ EAPI Evas_Object *emotion_object_image_get(const Evas_Object *obj);
 
 typedef struct _Emotion_Webcam Emotion_Webcam; /**< Webcam description */
 
-EAPI extern int EMOTION_WEBCAM_UPDATE; /**< Ecore_Event triggered when a new webcam is plugged or unplugged */
-EAPI extern int EMOTION_WEBCAM_ADD; /**< Ecore_Event triggered when a new webcam is plugged in @since 1.8*/
-EAPI extern int EMOTION_WEBCAM_DEL; /**< Ecore_Event triggered when a webcam is unplugged @since 1.8 */
+EAPI EXTERN int EMOTION_WEBCAM_UPDATE; /**< Ecore_Event triggered when a new webcam is plugged or unplugged */
+EAPI EXTERN int EMOTION_WEBCAM_ADD; /**< Ecore_Event triggered when a new webcam is plugged in @since 1.8*/
+EAPI EXTERN int EMOTION_WEBCAM_DEL; /**< Ecore_Event triggered when a webcam is unplugged @since 1.8 */
 
 /**
  * @brief Get a list of active and available webcam

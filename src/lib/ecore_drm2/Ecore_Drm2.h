@@ -96,8 +96,8 @@ typedef struct _Ecore_Drm2_Context
                               unsigned int tv_usec, unsigned int crtc_id, void *user_data);
 } Ecore_Drm2_Context;
 
-EAPI extern int ECORE_DRM2_EVENT_OUTPUT_CHANGED;
-EAPI extern int ECORE_DRM2_EVENT_ACTIVATE;
+EAPI EXTERN int ECORE_DRM2_EVENT_OUTPUT_CHANGED;
+EAPI EXTERN int ECORE_DRM2_EVENT_ACTIVATE;
 
 typedef void (*Ecore_Drm2_Release_Handler)(void *data, Ecore_Drm2_Fb *b);
 typedef void (*Ecore_Drm2_Fb_Status_Handler)(Ecore_Drm2_Fb *b, Ecore_Drm2_Fb_Status status, void *data);

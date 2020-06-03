@@ -13,21 +13,21 @@
  */
 
 
-EAPI extern int EFREET_DESKTOP_TYPE_APPLICATION;
-EAPI extern int EFREET_DESKTOP_TYPE_LINK;
-EAPI extern int EFREET_DESKTOP_TYPE_DIRECTORY;
+EAPI EXTERN int EFREET_DESKTOP_TYPE_APPLICATION;
+EAPI EXTERN int EFREET_DESKTOP_TYPE_LINK;
+EAPI EXTERN int EFREET_DESKTOP_TYPE_DIRECTORY;
 
 /**
  * Event id for cache update. All users of efreet_desktop_get must listen to
  * this event and refetch. The old eet cache will be closed and mem will
  * be invalidated.
  */
-EAPI extern int EFREET_EVENT_DESKTOP_CACHE_UPDATE;
+EAPI EXTERN int EFREET_EVENT_DESKTOP_CACHE_UPDATE;
 /**
  * Event id for cache build complete.
  * @since 1.1.0
  */
-EAPI extern int EFREET_EVENT_DESKTOP_CACHE_BUILD;
+EAPI EXTERN int EFREET_EVENT_DESKTOP_CACHE_BUILD;
 
 /**
  * Efreet_Desktop_Action

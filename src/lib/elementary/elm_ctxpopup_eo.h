@@ -320,7 +320,7 @@ EOAPI Elm_Widget_Item *elm_obj_ctxpopup_item_append(Eo *obj, const char *label, 
  */
 EOAPI Elm_Widget_Item *elm_obj_ctxpopup_item_prepend(Eo *obj, const char *label, Efl_Canvas_Object *icon, Evas_Smart_Cb func, const void *data);
 
-EWAPI extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED;
 
 /** Called when context popup was dismissed
  *
@@ -328,7 +328,7 @@ EWAPI extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED;
  */
 #define ELM_CTXPOPUP_EVENT_DISMISSED (&(_ELM_CTXPOPUP_EVENT_DISMISSED))
 
-EWAPI extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_GEOMETRY_UPDATE;
+EWAPI EXTERN const Efl_Event_Description _ELM_CTXPOPUP_EVENT_GEOMETRY_UPDATE;
 
 /** Called when context popup geometry was updated
  * @return const Eina_Rect *

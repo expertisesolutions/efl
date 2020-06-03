@@ -166,7 +166,7 @@ EOAPI Elm_Widget_Item *elm_obj_colorselector_palette_color_add(Eo *obj, int r, i
  */
 EOAPI void elm_obj_colorselector_palette_clear(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED;
 
 /** Called when color item was selected
  * @return Efl_Object *
@@ -175,7 +175,7 @@ EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SEL
  */
 #define ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED (&(_ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED))
 
-EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED;
+EWAPI EXTERN const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED;
 
 /** Called when color item got a long press
  * @return Efl_Object *
@@ -184,7 +184,7 @@ EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LON
  */
 #define ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED (&(_ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED))
 
-EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED;
+EWAPI EXTERN const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED;
 
 /** Called when colorselector changed
  *
@@ -192,7 +192,7 @@ EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED;
  */
 #define ELM_COLORSELECTOR_EVENT_CHANGED (&(_ELM_COLORSELECTOR_EVENT_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED_USER;
+EWAPI EXTERN const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED_USER;
 
 /** Called when the object changed due to user interaction
  *

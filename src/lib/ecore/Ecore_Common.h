@@ -147,7 +147,7 @@ typedef struct _Ecore_Version
    int revision; /** < git revision (0 if a proper release or the git revision number Ecore is built from) */
 } Ecore_Version;
 
-EAPI extern Ecore_Version *ecore_version;
+EAPI EXTERN Ecore_Version *ecore_version;
 
 #define ECORE_CALLBACK_CANCEL  EINA_FALSE /**< Return value to remove a callback */
 #define ECORE_CALLBACK_RENEW   EINA_TRUE /**< Return value to keep a callback */
@@ -1014,10 +1014,10 @@ EAPI void ecore_power_state_set(Ecore_Power_State state);
 /** Inherit priority from parent process */
 #define ECORE_EXE_PRIORITY_INHERIT 9999
 
-EAPI extern int ECORE_EXE_EVENT_ADD;     /**< A child process has been added */
-EAPI extern int ECORE_EXE_EVENT_DEL;     /**< A child process has been deleted (it exited, naming consistent with the rest of ecore). */
-EAPI extern int ECORE_EXE_EVENT_DATA;    /**< Data from a child process. */
-EAPI extern int ECORE_EXE_EVENT_ERROR;    /**< Errors from a child process. */
+EAPI EXTERN int ECORE_EXE_EVENT_ADD;     /**< A child process has been added */
+EAPI EXTERN int ECORE_EXE_EVENT_DEL;     /**< A child process has been deleted (it exited, naming consistent with the rest of ecore). */
+EAPI EXTERN int ECORE_EXE_EVENT_DATA;    /**< Data from a child process. */
+EAPI EXTERN int ECORE_EXE_EVENT_ERROR;    /**< Errors from a child process. */
 
 /**
  * @enum _Ecore_Exe_Win32_Priority

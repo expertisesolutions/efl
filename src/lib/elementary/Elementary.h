@@ -137,7 +137,7 @@ typedef struct _Elm_Version
    int revision;
 } Elm_Version;
 
-EAPI extern Elm_Version *elm_version;
+EAPI EXTERN Elm_Version *elm_version;
 
 
 /* include these first for general used definitions */

@@ -85,7 +85,7 @@ EOAPI void elm_view_list_model_set(Eo *obj, Efl_Model *model);
  */
 EOAPI Efl_Model *elm_view_list_model_get(const Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_VIEW_LIST_EVENT_MODEL_SELECTED;
+EWAPI EXTERN const Efl_Event_Description _ELM_VIEW_LIST_EVENT_MODEL_SELECTED;
 
 /** Called when model was selected
  * @return Efl_Object *
