@@ -3,18 +3,18 @@
 
 #include <Eina.h>
 
-EAPI extern Eina_Error EFL_MODEL_ERROR_UNKNOWN;
-EAPI extern Eina_Error EFL_MODEL_ERROR_NOT_SUPPORTED;
-EAPI extern Eina_Error EFL_MODEL_ERROR_NOT_FOUND;
-EAPI extern Eina_Error EFL_MODEL_ERROR_READ_ONLY;
-EAPI extern Eina_Error EFL_MODEL_ERROR_INIT_FAILED;
-EAPI extern Eina_Error EFL_MODEL_ERROR_INCORRECT_VALUE;
-EAPI extern Eina_Error EFL_MODEL_ERROR_PERMISSION_DENIED;
-EAPI extern Eina_Error EFL_MODEL_ERROR_INVALID_OBJECT; /**< @since 1.19 */
+EAPI Eina_Error EFL_MODEL_ERROR_UNKNOWN;
+EAPI Eina_Error EFL_MODEL_ERROR_NOT_SUPPORTED;
+EAPI Eina_Error EFL_MODEL_ERROR_NOT_FOUND;
+EAPI Eina_Error EFL_MODEL_ERROR_READ_ONLY;
+EAPI Eina_Error EFL_MODEL_ERROR_INIT_FAILED;
+EAPI Eina_Error EFL_MODEL_ERROR_INCORRECT_VALUE;
+EAPI Eina_Error EFL_MODEL_ERROR_PERMISSION_DENIED;
+EAPI Eina_Error EFL_MODEL_ERROR_INVALID_OBJECT; /**< @since 1.19 */
 
-EAPI extern Eina_Error EFL_PROPERTY_ERROR_INVALID_KEY; /**< Returned when the given key during a efl_ui_property_bind does not exist on the object. */
+EAPI Eina_Error EFL_PROPERTY_ERROR_INVALID_KEY; /**< Returned when the given key during a efl_ui_property_bind does not exist on the object. */
 
-EAPI extern Eina_Error EFL_FACTORY_ERROR_NOT_SUPPORTED; /**< Returned error when factory got a request that it can't fullfil due to a set of unsupported parameters @since 1.22 */
+EAPI Eina_Error EFL_FACTORY_ERROR_NOT_SUPPORTED; /**< Returned error when factory got a request that it can't fullfil due to a set of unsupported parameters @since 1.22 */
 
 #include "interfaces/efl_model.eo.h"
 
