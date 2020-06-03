@@ -288,7 +288,7 @@ events:
           eina_strbuf_append_char(buf, '\n');
 
         eina_strbuf_append(buf, _eolian_api_symbol);
-        eina_strbuf_append_printf(buf, " extern const "
+        eina_strbuf_append_printf(buf, " const "
                                   "Efl_Event_Description _%s;\n\n", evn);
 
         Eina_Strbuf *evdbuf = eo_gen_docs_event_gen(state, ev,
