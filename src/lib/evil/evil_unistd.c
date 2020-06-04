@@ -106,6 +106,7 @@ usleep(__int64 usec)
    CloseHandle(timer);
 }
 
+
 /*
  * Sockets and pipe related functions
  *
