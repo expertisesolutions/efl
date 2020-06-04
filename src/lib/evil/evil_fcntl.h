@@ -7,6 +7,12 @@
 
 
 /**
+ * @def O_ACCMODE
+ * O_ACCMODE is an AND mask to extract file access modes.
+ */
+#define O_ACCMODE 3
+
+/**
  * @def FD_CLOEXEC
  * Specifies that the file descriptor should be closed when an exec()
  * function is invoked.
@@ -80,7 +86,6 @@ struct flock
    pid_t     l_pid;    /**< lock owner */
 #endif
 };
-
 
 /**
  * @brief Provide control over file descriptors.
