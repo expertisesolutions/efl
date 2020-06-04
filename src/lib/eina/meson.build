@@ -202,6 +202,7 @@ if sys_windows == true
   sources += 'eina_file_win32.c'
   sources += 'eina_sched_win32.c'
   sources += 'eina_fnmatch.c'
+  sources += 'eina_tls_win32.c'
   public_sub_headers += 'eina_inline_lock_win32.x'
 else
   public_sub_headers += 'eina_thread_posix.h'
