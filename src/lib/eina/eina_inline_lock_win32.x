@@ -136,6 +136,11 @@ extern Eina_Lock _eina_tls_map_lock;
 
 void _eina_free_tls_value(Eina_TLS *key, void *val);
 
+extern Eina_Hash *_eina_tls_map;
+extern Eina_Lock _eina_tls_map_lock;
+
+void _eina_free_tls_value(Eina_TLS *key, void *val);
+
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
