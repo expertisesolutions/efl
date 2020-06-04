@@ -48,6 +48,8 @@ typedef void (*Eina_Lock_Bt_Func) ();
 #include "eina_inlist.h"
 #endif
 
+#include "eina_hash.h"
+
 EINA_API void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
 EINA_API void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 
@@ -128,6 +130,11 @@ EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
 EINA_API void eina_condition_free(Eina_Condition *cond);
 EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
 EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
+
+extern Eina_Hash *_eina_tls_map;
+extern Eina_Lock _eina_tls_map_lock;
+
+void _eina_free_tls_value(Eina_TLS *key, void *val);
 
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
@@ -417,13 +424,31 @@ _eina_rwlock_release(Eina_RWLock *mutex)
 static inline Eina_Bool
 _eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb)
 {
-   *key = TlsAlloc();
-   return TLS_OUT_OF_INDEXES == *key ? EINA_FALSE : EINA_TRUE;
+   const DWORD k = TlsAlloc();
+   if (TLS_OUT_OF_INDEXES != k)
+     {
+        if (delete_cb)
+          {
+             eina_lock_take(&_eina_tls_map_lock);
+             eina_hash_add(_eina_tls_map, &k, delete_cb);
+             eina_lock_release(&_eina_tls_map_lock);
+          }
+        *key = k;
+        return EINA_TRUE;
+     }
+   else
+     {
+        return EINA_FALSE;
+     }
 }
 
 static inline void
 _eina_tls_free(Eina_TLS key)
 {
+   eina_lock_take(&_eina_tls_map_lock);
+   _eina_free_tls_value(&key, TlsGetValue(key));
+   eina_hash_del_by_key(_eina_tls_map, &key);
+   eina_lock_release(&_eina_tls_map_lock);
    TlsFree(key);
 }
 
@@ -436,7 +461,12 @@ _eina_tls_get(Eina_TLS key)
 static inline Eina_Bool
 _eina_tls_set(Eina_TLS key, const void *data)
 {
-   return TlsSetValue(key, (void *) data) ? EINA_TRUE : EINA_FALSE;
+   void *p = TlsGetValue(key);
+   const Eina_Bool ret = TlsSetValue(key, (void *) data) ? EINA_TRUE : EINA_FALSE;
+   eina_lock_take(&_eina_tls_map_lock);
+   if (ret) _eina_free_tls_value(&key, p);
+   eina_lock_release(&_eina_tls_map_lock);
+   return ret;
 }
 
 struct _Eina_Barrier
