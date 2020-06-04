@@ -61,7 +61,7 @@ ecore_time_unix_get(void)
    gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000);
 #else
-# error "Your platform isn't supported yet"
+# warning "Your platform isn't supported yet"
 #endif
 }
 
