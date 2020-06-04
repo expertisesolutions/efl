@@ -57,6 +57,13 @@ execvp(const char *file, char *const argv[])
    return _execvp(file, (const char *const *)argv);
 }
 
+int
+ftruncate(int fd, off_t size)
+{
+   // Fix-me: not implemented
+   return 0;
+}
+
 
 /*
  * Time related functions
