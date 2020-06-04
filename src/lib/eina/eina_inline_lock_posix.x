@@ -156,6 +156,9 @@ EINA_API extern pthread_mutex_t _eina_tracking_lock;
 EINA_API extern Eina_Inlist *_eina_tracking;
 #endif
 
+EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
+
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
