@@ -55,6 +55,11 @@ EVIL_API int ftruncate(int fd, off_t size);
  */
 EVIL_API double evil_time_get(void);
 
+#ifdef _MSC_VER
+# include <stdint.h>
+EVIL_API void usleep(uint64_t usec);
+#endif
+
 /*
  * Sockets and pipe related functions
  *
