@@ -54,6 +54,8 @@ EAPI int execvp(const char *file, char *const argv[]);
  */
 EAPI double evil_time_get(void);
 
+EAPI void usleep(__int64 usec);
+
 /*
  * Sockets and pipe related functions
  *
