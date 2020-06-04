@@ -20,7 +20,11 @@
 #define FIX_HZ 1
 
 #ifdef FIX_HZ
-# include <sys/param.h>
+# ifdef _WIN32
+//#  include <???>
+# else
+#  include <sys/param.h>
+# endif
 # ifndef HZ
 #  define HZ 100
 # endif
