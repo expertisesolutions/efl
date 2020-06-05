@@ -217,9 +217,9 @@ _ecore_thread_data_free(void *data)
 void
 _ecore_thread_join(void *data)
 {
-   PH(thread) = (uintptr_t)data;
-   DBG("joining thread=%" PRIu64, (uint64_t)thread);
-   PHJ(thread);
+   //PH(thread) = (uintptr_t)data;
+   //DBG("joining thread=%" PRIu64, (uint64_t)thread);
+   //PHJ(thread);
 }
 
 static void
@@ -342,7 +342,7 @@ _ecore_short_job_cleanup(void *data)
 {
    Ecore_Pthread_Worker *work = data;
 
-   DBG("cleanup work=%p, thread=%" PRIu64, work, (uint64_t)work->self);
+   //DBG("cleanup work=%p, thread=%" PRIu64, work, (uint64_t)work->self);
 
    SLKL(_ecore_running_job_mutex);
    _ecore_running_job = eina_list_remove(_ecore_running_job, work);
@@ -388,7 +388,7 @@ _ecore_short_job(PH(thread))
    SLKL(work->cancel_mutex);
    cancel = work->cancel;
    SLKU(work->cancel_mutex);
-   work->self = thread;
+   //work->self->handle = thread;
 
    EINA_THREAD_CLEANUP_PUSH(_ecore_short_job_cleanup, work);
    if (!cancel)
@@ -402,7 +402,7 @@ _ecore_feedback_job_cleanup(void *data)
 {
    Ecore_Pthread_Worker *work = data;
 
-   DBG("cleanup work=%p, thread=%" PRIu64, work, (uint64_t)work->self);
+   //DBG("cleanup work=%p, thread=%" PRIu64, work, (uint64_t)work->self);
 
    SLKL(_ecore_running_job_mutex);
    _ecore_running_job = eina_list_remove(_ecore_running_job, work);
@@ -461,14 +461,14 @@ _ecore_direct_worker_cleanup(void *data)
 {
    Ecore_Pthread_Worker *work = data;
 
-   DBG("cleanup work=%p, thread=%" PRIu64 " (should join)", work, (uint64_t)work->self);
+   //DBG("cleanup work=%p, thread=%" PRIu64 " (should join)", work, (uint64_t)work->self);
 
    SLKL(_ecore_pending_job_threads_mutex);
    _ecore_thread_count_no_queue--;
    ecore_main_loop_thread_safe_call_async(_ecore_thread_handler, work);
 
-   ecore_main_loop_thread_safe_call_async((Ecore_Cb)_ecore_thread_join,
-                                          (void *)(intptr_t)PHS());
+   //ecore_main_loop_thread_safe_call_async((Ecore_Cb)_ecore_thread_join,
+   //                                       (void *)(intptr_t)PHS());
    SLKU(_ecore_pending_job_threads_mutex);
 }
 
@@ -497,8 +497,8 @@ _ecore_thread_worker_cleanup(void *data EINA_UNUSED)
    DBG("cleanup thread=%" PRIuPTR " (should join)", PHS());
    SLKL(_ecore_pending_job_threads_mutex);
    _ecore_thread_count--;
-   ecore_main_loop_thread_safe_call_async((Ecore_Cb)_ecore_thread_join,
-                                          (void *)(intptr_t)PHS());
+   //ecore_main_loop_thread_safe_call_async((Ecore_Cb)_ecore_thread_join,
+   //                                       (void *)(intptr_t)PHS());
    SLKU(_ecore_pending_job_threads_mutex);
 }
 
@@ -691,7 +691,7 @@ ecore_thread_run(Ecore_Thread_Cb func_blocking,
    work->no_queue = EINA_FALSE;
    work->data = data;
 
-   work->self = 0;
+   //work->self = 0;
    work->hash = NULL;
 
    SLKL(_ecore_pending_job_threads_mutex);
@@ -941,7 +941,7 @@ ecore_thread_feedback_run(Ecore_Thread_Cb func_heavy,
    worker->feedback_run = EINA_TRUE;
    worker->kill = EINA_FALSE;
    worker->reschedule = EINA_FALSE;
-   worker->self = 0;
+   //worker->self = 0;
 
    worker->u.feedback_run.send = 0;
    worker->u.feedback_run.received = 0;
