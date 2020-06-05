@@ -187,6 +187,12 @@ _eina_thread_self_id(void)
 #endif
 }
 
+static inline Eina_ThreadId
+_eina_thread_id(Eina_Thread t)
+{
+    return (Eina_ThreadId) t;
+}
+
 static inline void
 _eina_thread_setcanceltype(EINA_UNUSED int type, int *oldtype)
 {
