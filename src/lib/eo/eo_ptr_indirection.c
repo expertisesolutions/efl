@@ -34,6 +34,7 @@ _eo_obj_pointer_invalid(const Eo_Id obj_id,
                         int line)
 {
    Eina_Thread thread = eina_thread_self();
+   Eina_ThreadId thread_id = eina_thread_self_id();
    const char *tself = "main";
    const char *type = "object";
    const char *reason = "This ID has probably been deleted";
@@ -41,7 +42,7 @@ _eo_obj_pointer_invalid(const Eo_Id obj_id,
    if (obj_id & MASK_CLASS_TAG) type = "class";
    if (thread != _efl_object_main_thread)
      {
-        //snprintf(tbuf, sizeof(tbuf), "%p", (void *)thread);
+	snprintf(tbuf, sizeof(tbuf), "%ld", (long) thread_id);
         tself = tbuf;
      }
 
