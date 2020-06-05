@@ -54,6 +54,12 @@ eina_thread_self_id(void)
    return _eina_thread_self_id();
 }
 
+EINA_API Eina_ThreadId
+eina_thread_id(Eina_Thread t)
+{
+   return _eina_thread_id(t);
+}
+
 EINA_API Eina_Bool
 eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 {
