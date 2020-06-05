@@ -17,7 +17,9 @@
 # include <dlfcn.h>
 static char ***_dl_environ;
 #else
+# ifndef _WIN32
 extern char **environ;
+# endif
 #endif
 
 static Efl_Core_Env *env = NULL;
