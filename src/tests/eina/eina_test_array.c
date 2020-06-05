@@ -185,7 +185,7 @@ EFL_START_TEST(eina_array_find_test)
    eina_array_step_set(&sea, sizeof(sea), 5);
 
    for (i =1 ; i < 10 ; i++)
-     eina_array_push(&sea, (void*)i);
+     eina_array_push(&sea, (uintptr_t) i);
 
    fail_if(eina_array_find(&sea, (void*)15, NULL) != EINA_FALSE);
 
