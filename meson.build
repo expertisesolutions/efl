@@ -385,7 +385,7 @@ luaold_interpreters = [
 
 lua_pc_name = ''
 
-if false # sys_windows or get_option('lua-interpreter') == 'lua'
+if sys_windows or get_option('lua-interpreter') == 'lua'
   if sys_windows and get_option('lua-interpreter') != 'lua'
     warning('There is no "' + get_option('lua-interpreter')
             + '" binding option for Windows, backing up to "lua"')
@@ -398,8 +398,8 @@ if false # sys_windows or get_option('lua-interpreter') == 'lua'
     endif
   endforeach
 else
-  #  lua = dependency(get_option('lua-interpreter'))
-#  lua_pc_name = 'luajit'
+  lua = dependency(get_option('lua-interpreter'))
+  lua_pc_name = 'luajit'
 endif
 
 if sys_osx == true and get_option('lua-interpreter') == 'luajit'
