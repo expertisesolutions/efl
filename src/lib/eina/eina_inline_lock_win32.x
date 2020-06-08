@@ -142,10 +142,10 @@ _eina_lock_free(Eina_Lock *mutex)
 #ifdef EINA_HAVE_DEBUG_THREADS
    if (mutex->locked)
      {
-        EnterCriticalSection(_eina_tracking_lock);
+        eina_lock_take(_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        LeaveCriticalSection(_eina_tracking_lock);
+        eina_lock_release(_eina_tracking_lock);
      }
 #endif
 
@@ -174,10 +174,10 @@ _eina_lock_take_try(Eina_Lock *mutex)
         mutex->lock_bt_num = backtrace((void **)(mutex->lock_bt), EINA_LOCK_DEBUG_BT_NUM);
         errno = err;
 
-        EnterCriticalSection(_eina_tracking_lock);
+        eina_lock_take(_eina_tracking_lock);
         _eina_tracking = eina_inlist_append(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        LeaveCriticalSection(_eina_tracking_lock);
+        eina_lock_release(_eina_tracking_lock);
      }
 #endif
 
@@ -224,10 +224,10 @@ _eina_lock_take(Eina_Lock *mutex)
    mutex->lock_bt_num = backtrace((void **)(mutex->lock_bt), EINA_LOCK_DEBUG_BT_NUM);
    errno = err;
 
-   EnterCriticalSection(_eina_tracking_lock);
+   eina_lock_take(_eina_tracking_lock);
    _eina_tracking = eina_inlist_append(_eina_tracking,
                                        EINA_INLIST_GET(mutex));
-   LeaveCriticalSection(_eina_tracking_lock);
+   eina_lock_release(_eina_tracking_lock);
 #endif
 
    return EINA_LOCK_SUCCEED;
@@ -248,10 +248,10 @@ _eina_lock_release(Eina_Lock *mutex)
         mutex->lock_thread_id = 0;
         memset(mutex->lock_bt, 0, EINA_LOCK_DEBUG_BT_NUM * sizeof(Eina_Lock_Bt_Func));
         mutex->lock_bt_num = 0;
-        EnterCriticalSection(_eina_tracking_lock);
+        eina_lock_take(_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        LeaveCriticalSection(_eina_tracking_lock);
+        eina_lock_release(_eina_tracking_lock);
      }
 #endif
    LeaveCriticalSection((&mutex->mutex));
@@ -280,10 +280,10 @@ _eina_condition_wait_ex(Eina_Condition *cond, DWORD timeout)
    assert(_eina_threads_activated);
    assert(cond->lock != NULL);
 
-   EnterCriticalSection(_eina_tracking_lock);
+   eina_lock_take(_eina_tracking_lock);
    _eina_tracking = eina_inlist_remove(_eina_tracking,
                                        EINA_INLIST_GET(cond->lock));
-   LeaveCriticalSection(_eina_tracking_lock);
+   eina_lock_release(_eina_tracking_lock);
 #endif
 
    if (SleepConditionVariableCS(&cond->condition
@@ -307,10 +307,10 @@ _eina_condition_wait_ex(Eina_Condition *cond, DWORD timeout)
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   EnterCriticalSection(_eina_tracking_lock);
+   eina_lock_take(_eina_tracking_lock);
    _eina_tracking = eina_inlist_append(_eina_tracking
                                       , EINA_INLIST_GET(cond->lock));
-   LeaveCriticalSection(_eina_tracking_lock);
+   eina_lock_release(_eina_tracking_lock);
 #endif
 
    return r;
