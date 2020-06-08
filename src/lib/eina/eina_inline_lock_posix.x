@@ -156,7 +156,15 @@ EINA_API extern pthread_mutex_t _eina_tracking_lock;
 EINA_API extern Eina_Inlist *_eina_tracking;
 #endif
 
+EINA_API Eina_Bool eina_lock_new(Eina_Lock *mutex);
+EINA_API void eina_lock_free(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
 EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
+EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
+EINA_API void eina_condition_free(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 EINA_API Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
 
 static inline Eina_Bool
