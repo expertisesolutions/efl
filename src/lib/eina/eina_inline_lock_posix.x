@@ -716,9 +716,6 @@ _eina_barrier_wait(Eina_Barrier *barrier)
 #endif
 }
 
-EAPI Eina_Bool _eina_barrier_new(Eina_Barrier *barrier, int needed);
-EAPI void      _eina_barrier_free(Eina_Barrier *barrier);
-
 static inline Eina_Bool
 _eina_spinlock_new(Eina_Spinlock *spinlock)
 {
