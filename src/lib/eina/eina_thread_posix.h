@@ -51,7 +51,7 @@ typedef int Eina_ThreadId;
 #elif defined __linux__
 typedef pid_t Eina_ThreadId;
 #else
-typedef size_t EinaThreadId;
+typedef size_t Eina_ThreadId;
 #endif
 
 #endif
