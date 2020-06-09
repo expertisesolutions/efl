@@ -3,10 +3,10 @@
 
 #include_next<string.h>
 
-#define strncasecmp _strnicmp
-#define strcasecmp _stricmp
-#define strncasecmp_l _strnicmp_l
-#define strcasecmp_l _strncmp_l
+// #define strncasecmp _strnicmp
+// #define strcasecmp _stricmp
+// #define strncasecmp_l _strnicmp_l
+// #define strcasecmp_l _strncmp_l
 
-inline int ffs(int i);
+// inline int ffs(int i);
 #endif
