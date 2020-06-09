@@ -3,7 +3,7 @@
 
 #include <evil_api.h>
 
-EVIL_API char* basename (char* path);
+EAPI char* basename (char* path);
 
 #endif
 

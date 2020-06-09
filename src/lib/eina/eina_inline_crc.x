@@ -19,7 +19,7 @@
 #ifndef EINA_INLINE_CRC_X_
 #define EINA_INLINE_CRC_X_
 
-EINA_API unsigned int _eina_crc(const char *data, int len, unsigned int seed, Eina_Bool start_stream);
+EAPI unsigned int _eina_crc(const char *data, int len, unsigned int seed, Eina_Bool start_stream);
 
 static inline unsigned int
 eina_crc(const char *key, int len, unsigned int seed, Eina_Bool start_stream)

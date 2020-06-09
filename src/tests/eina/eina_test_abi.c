@@ -43,8 +43,7 @@ typedef uint32_t Eina_Unicode;
 #include "eina_main.h"
 #include "eina_safety_checks.h"
 
-EINA_API Eina_Unicode eina_unicode_utf8_get_next(const char *buf, int *iindex);
-EINA_API unsigned int eina_mempool_alignof(unsigned int size);
+EAPI Eina_Unicode eina_unicode_utf8_get_next(const char *buf, int *iindex);
 
 EFL_START_TEST(eina_unicode_utf8)
 {

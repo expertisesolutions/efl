@@ -183,8 +183,8 @@ static void _dir_arch_list_cb(const char *name, const char *path, void *data)
  * @cond LOCAL
  */
 
-EINA_API Eina_Error EINA_ERROR_WRONG_MODULE = 0;
-EINA_API Eina_Error EINA_ERROR_MODULE_INIT_FAILED = 0;
+EAPI Eina_Error EINA_ERROR_WRONG_MODULE = 0;
+EAPI Eina_Error EINA_ERROR_MODULE_INIT_FAILED = 0;
 
 /**
  * @endcond
@@ -243,7 +243,7 @@ eina_module_shutdown(void)
 *                                   API                                      *
 *============================================================================*/
 
-EINA_API Eina_Module *eina_module_new(const char *file)
+EAPI Eina_Module *eina_module_new(const char *file)
 {
    Eina_Module *m;
    size_t len;
@@ -286,7 +286,7 @@ EINA_API Eina_Module *eina_module_new(const char *file)
    return m;
 }
 
-EINA_API Eina_Bool eina_module_free(Eina_Module *m)
+EAPI Eina_Bool eina_module_free(Eina_Module *m)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(m, EINA_FALSE);
 
@@ -300,7 +300,7 @@ EINA_API Eina_Bool eina_module_free(Eina_Module *m)
    return EINA_TRUE;
 }
 
-EINA_API Eina_Bool eina_module_load(Eina_Module *m)
+EAPI Eina_Bool eina_module_load(Eina_Module *m)
 {
 #ifdef HAVE_DLOPEN
    void *dl_handle;
@@ -355,7 +355,7 @@ loaded:
 #endif
 }
 
-EINA_API Eina_Bool eina_module_unload(Eina_Module *m)
+EAPI Eina_Bool eina_module_unload(Eina_Module *m)
 {
 #ifdef HAVE_DLOPEN
    Eina_Module_Shutdown *shut;
@@ -383,7 +383,7 @@ EINA_API Eina_Bool eina_module_unload(Eina_Module *m)
 #endif
 }
 
-EINA_API void *eina_module_symbol_get(const Eina_Module *m, const char *symbol)
+EAPI void *eina_module_symbol_get(const Eina_Module *m, const char *symbol)
 {
 #ifdef HAVE_DLOPEN
    EINA_SAFETY_ON_NULL_RETURN_VAL(m,         NULL);
@@ -396,19 +396,19 @@ EINA_API void *eina_module_symbol_get(const Eina_Module *m, const char *symbol)
 #endif
 }
 
-EINA_API const char *eina_module_file_get(const Eina_Module *m)
+EAPI const char *eina_module_file_get(const Eina_Module *m)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(m, NULL);
    return m->file;
 }
 
-EINA_API void eina_module_symbol_global_set(Eina_Module *module, Eina_Bool global)
+EAPI void eina_module_symbol_global_set(Eina_Module *module, Eina_Bool global)
 {
    EINA_SAFETY_ON_NULL_RETURN(module);
    module->global = !!global;
 }
 
-EINA_API char *eina_module_symbol_path_get(const void *symbol, const char *sub_dir)
+EAPI char *eina_module_symbol_path_get(const void *symbol, const char *sub_dir)
 {
 #ifdef HAVE_DLADDR
    Dl_info eina_dl;
@@ -450,7 +450,7 @@ EINA_API char *eina_module_symbol_path_get(const void *symbol, const char *sub_d
    return NULL;
 }
 
-EINA_API char *eina_module_environment_path_get(const char *env,
+EAPI char *eina_module_environment_path_get(const char *env,
                                             const char *sub_dir)
 {
    const char *env_dir;
@@ -486,7 +486,7 @@ EINA_API char *eina_module_environment_path_get(const char *env,
    return NULL;
 }
 
-EINA_API Eina_Array *eina_module_arch_list_get(Eina_Array *array,
+EAPI Eina_Array *eina_module_arch_list_get(Eina_Array *array,
                                            const char *path,
                                            const char *arch)
 {
@@ -504,7 +504,7 @@ EINA_API Eina_Array *eina_module_arch_list_get(Eina_Array *array,
    return list_get_cb_data.array;
 }
 
-EINA_API Eina_Array *eina_module_list_get(Eina_Array *array,
+EAPI Eina_Array *eina_module_list_get(Eina_Array *array,
                                       const char *path,
                                       Eina_Bool recursive,
                                       Eina_Module_Cb cb,
@@ -528,7 +528,7 @@ EINA_API Eina_Array *eina_module_list_get(Eina_Array *array,
    return list_get_cb_data.array;
 }
 
-EINA_API Eina_Module *
+EAPI Eina_Module *
 eina_module_find(const Eina_Array *array, const char *module)
 {
    unsigned int i;
@@ -559,7 +559,7 @@ eina_module_find(const Eina_Array *array, const char *module)
    return NULL;
 }
 
-EINA_API void eina_module_list_load(Eina_Array *array)
+EAPI void eina_module_list_load(Eina_Array *array)
 {
    Eina_Array_Iterator iterator;
    Eina_Module *m;
@@ -574,7 +574,7 @@ EINA_API void eina_module_list_load(Eina_Array *array)
      }
 }
 
-EINA_API void eina_module_list_unload(Eina_Array *array)
+EAPI void eina_module_list_unload(Eina_Array *array)
 {
    Eina_Array_Iterator iterator;
    Eina_Module *m;
@@ -586,7 +586,7 @@ EINA_API void eina_module_list_unload(Eina_Array *array)
      eina_module_unload(m);
 }
 
-EINA_API void eina_module_list_free(Eina_Array *array)
+EAPI void eina_module_list_free(Eina_Array *array)
 {
    Eina_Array_Iterator iterator;
    Eina_Module *m;

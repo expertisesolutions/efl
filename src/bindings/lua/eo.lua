@@ -109,11 +109,13 @@ ffi.cdef [[
     extern const Eo_Event_Description _EO_BASE_EVENT_DEL;
 ]]
 
+local tonum = ffi.tonumber or tonumber
+
 local addr_d = ffi.typeof("union { double d; const Eo *p; }")
 local eo_obj_addr_get = function(x)
     local v = addr_d()
     v.p = x
-    return tonumber(v.d)
+    return tonum(v.d)
 end
 
 local cutil = require("cutil")
@@ -143,7 +145,7 @@ local eo_event_cb_fun = function(data, obj, desc, einfo)
     local  addr = eo_obj_addr_get(obj)
     local  cbs  = eo_callbacks[addr]
     assert(cbs)
-    local cidx = tonumber(ffi.cast("intptr_t", data))
+    local cidx = tonum(ffi.cast("intptr_t", data))
     local fun  = cbs[cidx]
     assert(fun)
     return fun() ~= false
@@ -337,7 +339,7 @@ end
 
 local get_obj_mt = function(obj)
     local cl = eo.eo_class_get(obj)
-    if cl == nil then return nil end
+    if cl == ffi.nullptr then return nil end
     return classes[eo_obj_addr_get(cl)]
 end
 
@@ -416,7 +418,7 @@ ffi.metatype("Eo", {
     -- handles property getting with no keys and also properties with keys
     __index = function(self, key)
         local mt = get_obj_mt(self)
-        if mt == nil then return nil end
+        if not mt then return nil end
         local pt = mt.__properties
         local pp = pt[key]
         if not pp then
@@ -444,7 +446,7 @@ ffi.metatype("Eo", {
     -- handles property setting with no keys
     __newindex = function(self, key, val)
         local mt = get_obj_mt(self)
-        if mt == nil then return nil end
+        if not mt then return nil end
         local pt = mt.__properties
         local pp = pt[key]
         if not pp then

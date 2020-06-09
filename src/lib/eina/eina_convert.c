@@ -39,6 +39,7 @@
 #include "eina_safety_checks.h"
 #include "eina_convert.h"
 #include "eina_fp.h"
+#include "eina_util.h"
 
 /*============================================================================*
 *                                  Local                                     *
@@ -90,9 +91,9 @@ static inline void reverse(char s[], int length)
  * @cond LOCAL
  */
 
-EINA_API Eina_Error EINA_ERROR_CONVERT_P_NOT_FOUND = 0;
-EINA_API Eina_Error EINA_ERROR_CONVERT_0X_NOT_FOUND = 0;
-EINA_API Eina_Error EINA_ERROR_CONVERT_OUTRUN_STRING_LENGTH = 0;
+EAPI Eina_Error EINA_ERROR_CONVERT_P_NOT_FOUND = 0;
+EAPI Eina_Error EINA_ERROR_CONVERT_0X_NOT_FOUND = 0;
+EAPI Eina_Error EINA_ERROR_CONVERT_OUTRUN_STRING_LENGTH = 0;
 
 /**
  * @endcond
@@ -149,7 +150,7 @@ eina_convert_shutdown(void)
  * Come from the second edition of The C Programming Language ("K&R2") on page 64
  */
 
-EINA_API int
+EAPI int
 eina_convert_itoa(int n, char *s)
 {
    int i = 0;
@@ -174,7 +175,7 @@ eina_convert_itoa(int n, char *s)
    return i + r;
 }
 
-EINA_API int
+EAPI int
 eina_convert_xtoa(unsigned int n, char *s)
 {
    int i;
@@ -193,7 +194,7 @@ eina_convert_xtoa(unsigned int n, char *s)
    return i;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_convert_atod(const char *src, int length, long long *m, long *e)
 {
    const char *str = src;
@@ -285,7 +286,7 @@ on_length_error:
    return EINA_FALSE;
 }
 
-EINA_API int
+EAPI int
 eina_convert_dtoa(double d, char *des)
 {
    int length = 0;
@@ -349,7 +350,7 @@ eina_convert_dtoa(double d, char *des)
    return length + eina_convert_itoa(p, des);
 }
 
-EINA_API int
+EAPI int
 eina_convert_fptoa(Eina_F32p32 fp, char *des)
 {
    int length = 0;
@@ -433,7 +434,7 @@ eina_convert_fptoa(Eina_F32p32 fp, char *des)
    return length + eina_convert_itoa(p, des);
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_convert_atofp(const char *src, int length, Eina_F32p32 *fp)
 {
    long long m;
@@ -467,7 +468,7 @@ eina_convert_atofp(const char *src, int length, Eina_F32p32 *fp)
  * No hexadecimal form supported
  * no sequence supported after NAN
  */
-EINA_API double
+EAPI double
 eina_convert_strtod_c(const char *nptr, char **endptr)
 {
    const char *iter;
@@ -613,7 +614,7 @@ eina_convert_strtod_c(const char *nptr, char **endptr)
         else if (*iter == 0)
           goto on_success;
 
-        if ((val == 2.2250738585072011) && ((minus_e * (int)expo_part) == -308))
+        if ((eina_dbl_exact(val, 2.2250738585072011)) && ((minus_e * (int)expo_part) == -308))
           {
             val *= 1.0e-308;
             a = iter;
@@ -621,7 +622,7 @@ eina_convert_strtod_c(const char *nptr, char **endptr)
             goto on_success;
           }
 
-        if ((val == 2.2250738585072012) && ((minus_e * (int)expo_part) <= -308))
+        if ((eina_dbl_exact(val, 2.2250738585072012)) && ((minus_e * (int)expo_part) <= -308))
           {
             val *= 1.0e-308;
             a = iter;

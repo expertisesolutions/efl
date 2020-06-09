@@ -107,7 +107,7 @@ typedef void (*Eina_TLS_Delete_Cb)(void *ptr);
  * @brief A type definition for warning that a function was called from
  *        somewhere other than the EFL main loop.
  */
-EINA_API extern Eina_Error EINA_ERROR_NOT_MAIN_LOOP;
+EAPI extern Eina_Error EINA_ERROR_NOT_MAIN_LOOP;
 
 /**
  * @brief Initializes a new #Eina_Lock.
@@ -121,7 +121,7 @@ EINA_API extern Eina_Error EINA_ERROR_NOT_MAIN_LOOP;
  *
  * @see eina_lock_free()
  */
-EINA_API Eina_Bool eina_lock_new(Eina_Lock *mutex);
+EAPI Eina_Bool eina_lock_new(Eina_Lock *mutex);
 
 /**
  * @brief Initializes a new #Eina_Lock that is recursive.
@@ -137,7 +137,7 @@ EINA_API Eina_Bool eina_lock_new(Eina_Lock *mutex);
  * @see eina_lock_free()
  * @since 1.19
  */
-EINA_API Eina_Bool eina_lock_recursive_new(Eina_Lock *mutex);
+EAPI Eina_Bool eina_lock_recursive_new(Eina_Lock *mutex);
 
 /**
  * @brief Deallocates an #Eina_Lock.
@@ -148,7 +148,7 @@ EINA_API Eina_Bool eina_lock_recursive_new(Eina_Lock *mutex);
  *
  * @see eina_lock_new()
  */
-EINA_API void eina_lock_free(Eina_Lock *mutex);
+EAPI void eina_lock_free(Eina_Lock *mutex);
 
 /**
  * @brief Attempts to take a lock.
@@ -166,7 +166,7 @@ EINA_API void eina_lock_free(Eina_Lock *mutex);
  * @see eina_lock_take_try()
  * @see eina_lock_release()
  */
-EINA_API Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
+EAPI Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
 
 /**
  * @brief Attempts to take a lock if possible.
@@ -182,7 +182,7 @@ EINA_API Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
  * @see eina_lock_take()
  * @see eina_lock_release()
  */
-EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EAPI Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
 
 /**
  * @brief Releases a lock.
@@ -198,7 +198,7 @@ EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
  * @see eina_lock_take()
  * @see eina_lock_take_try()
  */
-EINA_API Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
+EAPI Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
 
 /**
  * @brief Prints debug information about a lock.
@@ -212,7 +212,7 @@ EINA_API Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
  *
  * @since 1.19
  */
-EINA_API void eina_lock_debug(const Eina_Lock *mutex);
+EAPI void eina_lock_debug(const Eina_Lock *mutex);
 
 /**
  * @brief Initializes a new condition variable.
@@ -230,7 +230,7 @@ EINA_API void eina_lock_debug(const Eina_Lock *mutex);
  *
  * @see eina_condition_free()
  */
-EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
+EAPI Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
 
 /**
  * @brief Deallocates a condition variable.
@@ -241,7 +241,7 @@ EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
  *
  * @see eina_condition_new()
  */
-EINA_API void eina_condition_free(Eina_Condition *cond);
+EAPI void eina_condition_free(Eina_Condition *cond);
 
 /**
  * @brief Causes a thread to wait until signaled by the condition.
@@ -253,7 +253,7 @@ EINA_API void eina_condition_free(Eina_Condition *cond);
  *
  * @see eina_condition_timedwait()
  */
-EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
+EAPI Eina_Bool eina_condition_wait(Eina_Condition *cond);
 
 /**
  * @brief Causes a thread to wait until signaled by the condition or a
@@ -269,7 +269,7 @@ EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
  *
  * @see eina_condition_wait()
  */
-EINA_API Eina_Bool eina_condition_timedwait(Eina_Condition *cond, double t);
+EAPI Eina_Bool eina_condition_timedwait(Eina_Condition *cond, double t);
 
 /**
  * @brief Signals all threads waiting for a condition.
@@ -283,7 +283,7 @@ EINA_API Eina_Bool eina_condition_timedwait(Eina_Condition *cond, double t);
  *
  * @see eina_condition_signal()
  */
-EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
+EAPI Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 
 /**
  * @brief Signals a thread waiting for a condition.
@@ -300,7 +300,7 @@ EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
  *
  * @see eina_condition_broadcast()
  */
-EINA_API Eina_Bool eina_condition_signal(Eina_Condition *cond);
+EAPI Eina_Bool eina_condition_signal(Eina_Condition *cond);
 
 
 /**
@@ -315,7 +315,7 @@ EINA_API Eina_Bool eina_condition_signal(Eina_Condition *cond);
  *
  * @see eina_rwlock_free()
  */
-EINA_API Eina_Bool eina_rwlock_new(Eina_RWLock *mutex);
+EAPI Eina_Bool eina_rwlock_new(Eina_RWLock *mutex);
 
 /**
  * @brief Deallocates an #Eina_RWLock.
@@ -326,7 +326,7 @@ EINA_API Eina_Bool eina_rwlock_new(Eina_RWLock *mutex);
  *
  * @see eina_rwlock_new()
  */
-EINA_API void eina_rwlock_free(Eina_RWLock *mutex);
+EAPI void eina_rwlock_free(Eina_RWLock *mutex);
 
 /**
  * @brief Attempts to take a read lock.
@@ -342,7 +342,7 @@ EINA_API void eina_rwlock_free(Eina_RWLock *mutex);
  *
  * @see eina_rwlock_release()
  */
-EINA_API Eina_Lock_Result eina_rwlock_take_read(Eina_RWLock *mutex);
+EAPI Eina_Lock_Result eina_rwlock_take_read(Eina_RWLock *mutex);
 
 /**
  * @brief Attempts to take a write lock.
@@ -358,7 +358,7 @@ EINA_API Eina_Lock_Result eina_rwlock_take_read(Eina_RWLock *mutex);
  *
  * @see eina_rwlock_release()
  */
-EINA_API Eina_Lock_Result eina_rwlock_take_write(Eina_RWLock *mutex);
+EAPI Eina_Lock_Result eina_rwlock_take_write(Eina_RWLock *mutex);
 
 /**
  * @brief Releases a lock.
@@ -372,7 +372,7 @@ EINA_API Eina_Lock_Result eina_rwlock_take_write(Eina_RWLock *mutex);
  * @see eina_rwlock_take_read()
  * @see eina_rwlock_take_write()
  */
-EINA_API Eina_Lock_Result eina_rwlock_release(Eina_RWLock *mutex);
+EAPI Eina_Lock_Result eina_rwlock_release(Eina_RWLock *mutex);
 
 /**
  * @brief Initializes a new #Eina_TLS, or thread level storage, to store thread
@@ -390,7 +390,7 @@ EINA_API Eina_Lock_Result eina_rwlock_release(Eina_RWLock *mutex);
  * @see eina_tls_cb_new()
  * @see eina_tls_free()
  */
-EINA_API Eina_Bool eina_tls_new(Eina_TLS *key);
+EAPI Eina_Bool eina_tls_new(Eina_TLS *key);
 
 /**
  * @brief Initializes a new #Eina_TLS, or thread level storage, to store thread
@@ -407,7 +407,7 @@ EINA_API Eina_Bool eina_tls_new(Eina_TLS *key);
  * @see eina_tls_new()
  * @see eina_tls_free()
  */
-EINA_API Eina_Bool eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb);
+EAPI Eina_Bool eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb);
 
 /**
  * @brief Frees an allocated #Eina_TLS.
@@ -419,7 +419,7 @@ EINA_API Eina_Bool eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb);
  * @see eina_tls_new()
  * @see eina_tls_cb_new()
  */
-EINA_API void eina_tls_free(Eina_TLS key);
+EAPI void eina_tls_free(Eina_TLS key);
 
 /**
  * @brief Gets the value in #Eina_TLS for this thread.
@@ -432,7 +432,7 @@ EINA_API void eina_tls_free(Eina_TLS key);
  *
  * @see  eina_tls_set()
  */
-EINA_API void *eina_tls_get(Eina_TLS key);
+EAPI void *eina_tls_get(Eina_TLS key);
 
 /**
  * @brief Sets the value in Eina_TLS for this thread.
@@ -446,7 +446,7 @@ EINA_API void *eina_tls_get(Eina_TLS key);
  *
  * @see eina_tls_get()
  */
-EINA_API Eina_Bool eina_tls_set(Eina_TLS key, const void *data);
+EAPI Eina_Bool eina_tls_set(Eina_TLS key, const void *data);
 
 /**
  * @brief Initializes a new #Eina_Semaphore.
@@ -460,7 +460,7 @@ EINA_API Eina_Bool eina_tls_set(Eina_TLS key, const void *data);
  *
  * @see eina_semaphore_free()
  */
-EINA_API Eina_Bool eina_semaphore_new(Eina_Semaphore *sem, int count_init);
+EAPI Eina_Bool eina_semaphore_new(Eina_Semaphore *sem, int count_init);
 
 /**
  * @brief Frees an allocated #Eina_Semaphore.
@@ -473,7 +473,7 @@ EINA_API Eina_Bool eina_semaphore_new(Eina_Semaphore *sem, int count_init);
  *
  * @see eina_semaphore_new()
  */
-EINA_API Eina_Bool eina_semaphore_free(Eina_Semaphore *sem);
+EAPI Eina_Bool eina_semaphore_free(Eina_Semaphore *sem);
 
 /**
  * @brief Gets a lock on an #Eina_Semaphore.
@@ -486,7 +486,7 @@ EINA_API Eina_Bool eina_semaphore_free(Eina_Semaphore *sem);
  *
  * @see eina_semaphore_release()
  */
-EINA_API Eina_Bool eina_semaphore_lock(Eina_Semaphore *sem);
+EAPI Eina_Bool eina_semaphore_lock(Eina_Semaphore *sem);
 
 /**
  * @brief Releases a lock on an #Eina_Semaphore.
@@ -500,7 +500,7 @@ EINA_API Eina_Bool eina_semaphore_lock(Eina_Semaphore *sem);
  *
  * @see eina_semaphore_lock()
  */
-EINA_API Eina_Bool eina_semaphore_release(Eina_Semaphore *sem, int count_release);
+EAPI Eina_Bool eina_semaphore_release(Eina_Semaphore *sem, int count_release);
 
 /**
  * @brief Initializes a new #Eina_Barrier.
@@ -515,7 +515,7 @@ EINA_API Eina_Bool eina_semaphore_release(Eina_Semaphore *sem, int count_release
  *
  * @see eina_barrier_free()
  */
-EINA_API Eina_Bool eina_barrier_new(Eina_Barrier *barrier, int needed);
+EAPI Eina_Bool eina_barrier_new(Eina_Barrier *barrier, int needed);
 
 /**
  * @brief Frees an allocated #Eina_Barrier.
@@ -525,7 +525,7 @@ EINA_API Eina_Bool eina_barrier_new(Eina_Barrier *barrier, int needed);
  *
  * @see eina_barrier_new()
  */
-EINA_API void eina_barrier_free(Eina_Barrier *barrier);
+EAPI void eina_barrier_free(Eina_Barrier *barrier);
 
 /**
  * @brief Increments the count of threads that are waiting on @p barrier.
@@ -536,7 +536,7 @@ EINA_API void eina_barrier_free(Eina_Barrier *barrier);
  * @return #EINA_TRUE on success, else #EINA_FALSE otherwise.
  *
  */
-EINA_API Eina_Bool eina_barrier_wait(Eina_Barrier *barrier);
+EAPI Eina_Bool eina_barrier_wait(Eina_Barrier *barrier);
 
 
 /**
@@ -553,7 +553,7 @@ EINA_API Eina_Bool eina_barrier_wait(Eina_Barrier *barrier);
  *
  * @see eina_spinlock_free()
  */
-EINA_API Eina_Bool eina_spinlock_new(Eina_Spinlock *spinlock);
+EAPI Eina_Bool eina_spinlock_new(Eina_Spinlock *spinlock);
 
 /**
  * @brief Attempts to take a spinlock.
@@ -571,7 +571,7 @@ EINA_API Eina_Bool eina_spinlock_new(Eina_Spinlock *spinlock);
  * @see eina_spinlock_take_try()
  * @see eina_spinlock_release()
  */
-EINA_API Eina_Lock_Result eina_spinlock_take(Eina_Spinlock *spinlock);
+EAPI Eina_Lock_Result eina_spinlock_take(Eina_Spinlock *spinlock);
 
 /**
  * @brief Attempts to take a spinlock if possible.
@@ -587,7 +587,7 @@ EINA_API Eina_Lock_Result eina_spinlock_take(Eina_Spinlock *spinlock);
  * @see eina_spinlock_take_try()
  * @see eina_spinlock_release()
  */
-EINA_API Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
+EAPI Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
 
 /**
  * @brief Releases a spinlock.
@@ -603,7 +603,7 @@ EINA_API Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
  * @see eina_spinlock_take_try()
 
  */
-EINA_API Eina_Lock_Result eina_spinlock_release(Eina_Spinlock *spinlock);
+EAPI Eina_Lock_Result eina_spinlock_release(Eina_Spinlock *spinlock);
 
 /**
  * @brief Deallocates an #Eina_Spinlock.
@@ -613,7 +613,7 @@ EINA_API Eina_Lock_Result eina_spinlock_release(Eina_Spinlock *spinlock);
  * @param[in] spinlock The #Eina_Spinlock to be deallocated.
  *
  */
-EINA_API void eina_spinlock_free(Eina_Spinlock *spinlock);
+EAPI void eina_spinlock_free(Eina_Spinlock *spinlock);
 
 #ifdef EINA_HAVE_DEBUG_THREADS
 # define EINA_MAIN_LOOP_CHECK_RETURN_VAL(val)				\
@@ -622,7 +622,7 @@ EINA_API void eina_spinlock_free(Eina_Spinlock *spinlock);
       {									\
 	EINA_LOG_ERR("You are calling %s from outside"			\
 		     "of the main loop threads in %s at line %i",	\
-		     __FUNCTION__,					\
+		     __func__,					\
 		     __FILE__,						\
 		     __LINE__);						\
 	return val;							\
@@ -634,7 +634,7 @@ EINA_API void eina_spinlock_free(Eina_Spinlock *spinlock);
       {									\
 	EINA_LOG_ERR("You are calling %s from outside"			\
 		     "of the main loop threads in %s at line %i",	\
-		     __FUNCTION__,					\
+		     __func__,					\
 		     __FILE__,						\
 		     __LINE__);						\
 	return ;							\

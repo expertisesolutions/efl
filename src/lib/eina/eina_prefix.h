@@ -150,7 +150,7 @@ typedef struct _Eina_Prefix Eina_Prefix;
  *
  * @see eina_prefix_free()
  */
-EINA_API Eina_Prefix *eina_prefix_new(const char *argv0, void *symbol, const char *envprefix,
+EAPI Eina_Prefix *eina_prefix_new(const char *argv0, void *symbol, const char *envprefix,
                                   const char *sharedir, const char *magicsharefile,
                                   const char *pkg_bin, const char *pkg_lib,
                                   const char *pkg_data, const char *pkg_locale) EINA_ARG_NONNULL(6, 7, 8, 9) EINA_WARN_UNUSED_RESULT;
@@ -167,7 +167,7 @@ EINA_API Eina_Prefix *eina_prefix_new(const char *argv0, void *symbol, const cha
  *
  * @see eina_prefix_new()
  */
-EINA_API void eina_prefix_free(Eina_Prefix *pfx) EINA_ARG_NONNULL(1);
+EAPI void eina_prefix_free(Eina_Prefix *pfx) EINA_ARG_NONNULL(1);
 
 /**
  * @brief Gets the prefix base directory.
@@ -178,7 +178,7 @@ EINA_API void eina_prefix_free(Eina_Prefix *pfx) EINA_ARG_NONNULL(1);
  *
  * @since 1.1.0
  */
-EINA_API const char *eina_prefix_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
+EAPI const char *eina_prefix_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
 
 /**
  * @brief Gets the binary installation directory.
@@ -189,7 +189,7 @@ EINA_API const char *eina_prefix_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_
  *
  * @since 1.1.0
  */
-EINA_API const char *eina_prefix_bin_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
+EAPI const char *eina_prefix_bin_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
 
 /**
  * @brief Gets the library installation directory.
@@ -200,7 +200,7 @@ EINA_API const char *eina_prefix_bin_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) E
  *
  * @since 1.1.0
  */
-EINA_API const char *eina_prefix_lib_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
+EAPI const char *eina_prefix_lib_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
 
 /**
  * @brief Gets the data installation directory.
@@ -211,7 +211,7 @@ EINA_API const char *eina_prefix_lib_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) E
  *
  * @since 1.1.0
  */
-EINA_API const char *eina_prefix_data_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
+EAPI const char *eina_prefix_data_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
 
 /**
  * @brief Gets the locale installation directory.
@@ -222,7 +222,7 @@ EINA_API const char *eina_prefix_data_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) 
  *
  * @since 1.1.0
  */
-EINA_API const char *eina_prefix_locale_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
+EAPI const char *eina_prefix_locale_get(Eina_Prefix *pfx) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT EINA_PURE;
 
 /**
  * @}

@@ -100,14 +100,27 @@ _eina_thread_join(Eina_Thread t)
 }
 
 static inline Eina_Bool
-_eina_thread_name_set(Eina_Thread thread, char *buf)
+_eina_thread_name_set(Eina_Thread thread, char *name)
 {
-#ifndef __linux__
-   pthread_set_name_np((pthread_t)t, buf);
+#ifdef EINA_HAVE_PTHREAD_SETNAME
+   char buf[16];
+   if (name)
+     {
+        strncpy(buf, name, 15);
+        buf[15] = 0;
+     }
+   else buf[0] = 0;
+ #ifndef __linux__
+   pthread_set_name_np((pthread_t)thread, buf);
    return EINA_TRUE;
+ #else
+   if (pthread_setname_np((pthread_t)thread, buf) == 0) return EINA_TRUE;
+ #endif
 #else
-   return pthread_setname_np((pthread_t)thread, buf);
+   (void)thread;
+   (void)name;
 #endif
+   return EINA_FALSE;
 }
 
 static inline Eina_Bool

@@ -2,7 +2,6 @@
 -- For use with Elua
 
 local ffi = require("ffi")
-local bit = require("bit")
 
 ffi.cdef [[
     void eina_stringshare_del(const char *str);
@@ -275,8 +274,12 @@ ffi.cdef [[
 
     typedef struct _Eolian_Doc_Token {
         Eolian_Doc_Token_Type type;
-        const char *text, *text_end;
+        const char *text;
+        const char *text_end;
     } Eolian_Doc_Token;
+
+    void *malloc(size_t sz);
+    void free(void *ptr);
 
     int eolian_init(void);
     int eolian_shutdown(void);
@@ -443,7 +446,7 @@ ffi.cdef [[
 
     const Eolian_Function *eolian_typedecl_function_pointer_get(const Eolian_Typedecl *tp);
 
-    Eolian_Value_t eolian_expression_eval(const Eolian_Expression *expr, Eolian_Expression_Mask m);
+    Eina_Bool eolian_expression_eval_fill(const Eolian_Expression *expr, Eolian_Expression_Mask m, Eolian_Value_t *val);
     const char *eolian_expression_value_to_literal(const Eolian_Value *v);
     const char *eolian_expression_serialize(const Eolian_Expression *expr);
     Eolian_Expression_Type eolian_expression_type_get(const Eolian_Expression *expr);
@@ -452,7 +455,7 @@ ffi.cdef [[
     const Eolian_Expression *eolian_expression_binary_rhs_get(const Eolian_Expression *expr);
     Eolian_Unary_Operator eolian_expression_unary_operator_get(const Eolian_Expression *expr);
     const Eolian_Expression *eolian_expression_unary_expression_get(const Eolian_Expression *expr);
-    Eolian_Value_t eolian_expression_value_get(const Eolian_Expression *expr);
+    Eina_Bool eolian_expression_value_get_fill(const Eolian_Expression *expr, Eolian_Value_t *val);
     const Eolian_Documentation *eolian_constant_documentation_get(const Eolian_Constant *var);
     const Eolian_Type *eolian_constant_type_get(const Eolian_Constant *var);
     const Eolian_Expression *eolian_constant_value_get(const Eolian_Constant *var);
@@ -474,6 +477,8 @@ ffi.cdef [[
 
 local cutil = require("cutil")
 local util  = require("util")
+
+local tonum = ffi.tonumber or tonumber
 
 local iterator = require("eina.iterator")
 
@@ -551,28 +556,28 @@ local object_idx, wrap_object = gen_wrap {
     end,
 
     type_get = function(self)
-        return tonumber(eolian.eolian_object_type_get(cast_obj(self)))
+        return tonum(eolian.eolian_object_type_get(cast_obj(self)))
     end,
 
     unit_get = function(self)
         local v = eolian.eolian_object_unit_get(cast_obj(self))
-        if v == nil then
+        if v == ffi.nullptr then
             return nil
         end
         return v
     end,
 
     line_get = function(self)
-        return tonumber(eolian.eolian_object_line_get(cast_obj(self)))
+        return tonum(eolian.eolian_object_line_get(cast_obj(self)))
     end,
 
     column_get = function(self)
-        return tonumber(eolian.eolian_object_column_get(cast_obj(self)))
+        return tonum(eolian.eolian_object_column_get(cast_obj(self)))
     end,
 
     file_get = function(self)
         local v = eolian.eolian_object_file_get(cast_obj(self))
-        if v == nil then
+        if v == ffi.nullptr then
             return nil
         end
         return ffi.string(v)
@@ -580,7 +585,7 @@ local object_idx, wrap_object = gen_wrap {
 
     name_get = function(self)
         local v = eolian.eolian_object_name_get(cast_obj(self))
-        if v == nil then
+        if v == ffi.nullptr then
             return nil
         end
         return ffi.string(v)
@@ -588,7 +593,7 @@ local object_idx, wrap_object = gen_wrap {
 
     c_name_get = function(self)
         local v = eolian.eolian_object_c_name_get(cast_obj(self))
-        if v == nil then
+        if v == ffi.nullptr then
             return nil
         end
         return ffi.string(v)
@@ -596,7 +601,7 @@ local object_idx, wrap_object = gen_wrap {
 
     short_name_get = function(self)
         local v = eolian.eolian_object_short_name_get(cast_obj(self))
-        if v == nil then
+        if v == ffi.nullptr then
             return nil
         end
         return ffi.string(v)
@@ -617,7 +622,7 @@ ffi.metatype("Eolian_Object", { __index = object_idx })
 local unit_idx, wrap_unit = gen_wrap {
     state_get = function(self)
         local v = eolian.eolian_unit_state_get(cast_unit(self))
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
@@ -628,23 +633,23 @@ local unit_idx, wrap_unit = gen_wrap {
 
     file_get = function(self)
         local v = eolian.eolian_unit_file_get(cast_unit(self))
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return ffi.string(v)
     end,
 
     file_path_get = function(self)
         local v = eolian.eolian_unit_file_path_get(cast_unit(self))
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return ffi.string(v)
     end,
 
     version_get = function(self)
-        return tonumber(eolian.eolian_unit_version_get(cast_unit(self)))
+        return tonum(eolian.eolian_unit_version_get(cast_unit(self)))
     end,
 
     object_by_name_get = function(self, name)
         local v = eolian.eolian_unit_object_by_name_get(cast_unit(self), name)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
@@ -655,7 +660,7 @@ local unit_idx, wrap_unit = gen_wrap {
 
     class_by_name_get = function(self, cname)
         local v = eolian.eolian_unit_class_by_name_get(cast_unit(self), cname)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
@@ -666,13 +671,13 @@ local unit_idx, wrap_unit = gen_wrap {
 
     constant_by_name_get = function(self, name)
         local v = eolian.eolian_unit_constant_by_name_get(cast_unit(self), name)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
     error_by_name_get = function(self, name)
         local v = eolian.eolian_unit_error_by_name_get(cast_unit(self), name)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
@@ -688,19 +693,19 @@ local unit_idx, wrap_unit = gen_wrap {
 
     alias_by_name_get = function(self, name)
         local v = eolian.eolian_unit_alias_by_name_get(cast_unit(self), name)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
     struct_by_name_get = function(self, name)
         local v = eolian.eolian_unit_struct_by_name_get(cast_unit(self), name)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
     enum_by_name_get = function(self, name)
         local v = eolian.eolian_unit_enum_by_name_get(cast_unit(self), name)
-        if v == nil then return nil end
+        if v == ffi.nullptr then return nil end
         return v
     end,
 
@@ -726,7 +731,7 @@ local panic_cbs = {}
 local error_cbs = {}
 
 local obj_to_idx = function(obj)
-    return tonumber(ffi.cast("size_t", obj))
+    return tonum(ffi.cast("size_t", obj))
 end
 
 local panic_cb, err_cb
@@ -769,7 +774,7 @@ ffi.metatype("Eolian_State", {
 
         file_parse = function(self, fname)
             local v = eolian.eolian_state_file_parse(self, fname)
-            if v == nil then
+            if v == ffi.nullptr then
                 return nil
             end
             return v
@@ -777,7 +782,7 @@ ffi.metatype("Eolian_State", {
 
         file_path_parse = function(self, fpath)
             local v = eolian.eolian_state_file_path_parse(self, fpath)
-            if v == nil then
+            if v == ffi.nullptr then
                 return nil
             end
             return v
@@ -817,7 +822,7 @@ ffi.metatype("Eolian_State", {
 
         unit_by_file_get = function(self, fname)
             local v = eolian.eolian_state_unit_by_file_get(state, fname)
-            if v == nil then
+            if v == ffi.nullptr then
                 return nil
             end
             return v
@@ -835,7 +840,7 @@ ffi.metatype("Eolian_State", {
 
         class_by_file_get = function(self, fname)
             local v = eolian.eolian_state_class_by_file_get(self, fname)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -961,13 +966,13 @@ ffi.metatype("Eolian_Struct_Type_Field", {
     __index = wrap_object {
         documentation_get = function(self)
             local v = eolian.eolian_typedecl_struct_field_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         type_get = function(self)
             local v = eolian.eolian_typedecl_struct_field_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -985,19 +990,19 @@ ffi.metatype("Eolian_Enum_Type_Field", {
     __index = wrap_object {
         c_name_get = function(self)
             local v = eolian.eolian_typedecl_enum_field_c_constant_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
         documentation_get = function(self)
             local v = eolian.eolian_typedecl_enum_field_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         value_get = function(self, force)
             local v = eolian.eolian_typedecl_enum_field_value_get(self, force and 1 or 0)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end
     }
@@ -1006,7 +1011,7 @@ ffi.metatype("Eolian_Enum_Type_Field", {
 M.Typedecl = ffi.metatype("Eolian_Typedecl", {
     __index = wrap_object {
         type_get = function(self)
-            return tonumber(eolian.eolian_typedecl_type_get(self))
+            return tonum(eolian.eolian_typedecl_type_get(self))
         end,
 
         struct_fields_get = function(self)
@@ -1016,7 +1021,7 @@ M.Typedecl = ffi.metatype("Eolian_Typedecl", {
 
         struct_field_get = function(self, name)
             local v = eolian.eolian_typedecl_struct_field_get(self, name)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1027,31 +1032,31 @@ M.Typedecl = ffi.metatype("Eolian_Typedecl", {
 
         enum_field_get = function(self, field)
             local v = eolian.eolian_typedecl_enum_field_get(self, field)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         enum_legacy_prefix_get = function(self)
             local v = eolian.eolian_typedecl_enum_legacy_prefix_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end,
 
         documentation_get = function(self, name)
             local v = eolian.eolian_typedecl_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         base_type_get = function(self)
             local v = eolian.eolian_typedecl_base_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         aliased_base_get = function(self)
             local v = eolian.eolian_typedecl_aliased_byse_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1061,19 +1066,19 @@ M.Typedecl = ffi.metatype("Eolian_Typedecl", {
 
         c_type_get = function(self)
             local v = eolian.eolian_typedecl_c_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
         free_func_get = function(self)
             local v = eolian.eolian_typedecl_free_func_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end,
 
         function_pointer_get = function(self)
             local v = eolian.eolian_typedecl_function_pointer_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end
     }
@@ -1082,46 +1087,46 @@ M.Typedecl = ffi.metatype("Eolian_Typedecl", {
 M.Type = ffi.metatype("Eolian_Type", {
     __index = wrap_object {
         type_get = function(self)
-            return tonumber(eolian.eolian_type_type_get(self))
+            return tonum(eolian.eolian_type_type_get(self))
         end,
 
         builtin_type_get = function(self)
-            return tonumber(eolian.eolian_type_builtin_type_get(self))
+            return tonum(eolian.eolian_type_builtin_type_get(self))
         end,
 
         base_type_get = function(self)
             local v = eolian.eolian_type_base_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         next_type_get = function(self)
             local v = eolian.eolian_type_next_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         typedecl_get = function(self)
             local v = eolian.eolian_type_typedecl_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         aliased_base_get = function(self)
             local v = eolian.eolian_type_aliased_byse_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         class_get = function(self)
             local v = eolian.eolian_type_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         error_get = function(self)
             local v = eolian.eolian_type_error_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1139,7 +1144,7 @@ M.Type = ffi.metatype("Eolian_Type", {
 
         c_type_get = function(self)
             local v = eolian.eolian_type_c_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end
     }
@@ -1157,22 +1162,22 @@ M.function_type = {
 M.Function = ffi.metatype("Eolian_Function", {
     __index = wrap_object {
         type_get = function(self)
-            return tonumber(eolian.eolian_function_type_get(self))
+            return tonum(eolian.eolian_function_type_get(self))
         end,
 
         scope_get = function(self, ftype)
-            return tonumber(eolian.eolian_function_scope_get(self, ftype))
+            return tonum(eolian.eolian_function_scope_get(self, ftype))
         end,
 
         full_c_name_get = function(self, ftype)
             local v = eolian.eolian_function_full_c_name_get(self, ftype)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
         implement_get = function(self)
             local v = eolian.eolian_function_implement_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1205,19 +1210,19 @@ M.Function = ffi.metatype("Eolian_Function", {
 
         return_type_get = function(self, ftype)
             local v = eolian.eolian_function_return_type_get(self, ftype)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         return_default_value_get = function(self, ftype)
             local v = eolian.eolian_function_return_default_value_get(self, ftype)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         return_documentation_get = function(self, ftype)
             local v = eolian.eolian_function_return_documentation_get(self, ftype)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1240,7 +1245,7 @@ M.Function = ffi.metatype("Eolian_Function", {
 
         class_get = function(self)
             local v = eolian.eolian_function_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end
     }
@@ -1256,24 +1261,24 @@ M.parameter_dir = {
 ffi.metatype("Eolian_Function_Parameter", {
     __index = wrap_object {
         direction_get = function(self)
-            return tonumber(eolian.eolian_parameter_direction_get(self))
+            return tonum(eolian.eolian_parameter_direction_get(self))
         end,
 
         type_get = function(self)
             local v = eolian.eolian_parameter_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         default_value_get = function(self)
             local v = eolian.eolian_parameter_default_value_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         documentation_get = function(self)
             local v = eolian.eolian_parameter_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1295,26 +1300,26 @@ ffi.metatype("Eolian_Implement", {
     __index = wrap_object {
         class_get = function(self)
             local v = eolian.eolian_implement_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         implementing_class_get = function(self)
             local v = eolian.eolian_implement_implementing_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         function_get = function(self)
             local tp = ffi.new("Eolian_Function_Type[1]")
             local v = eolian.eolian_implement_function_get(self, tp)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v, tp[0]
         end,
 
         documentation_get = function(self, ftype)
             local v = eolian.eolian_implement_documentation_get(self, ftype)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1344,13 +1349,13 @@ ffi.metatype("Eolian_Constructor", {
     __index = wrap_object {
         class_get = function(self)
             local v = eolian.eolian_constructor_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         function_get = function(self)
             local v = eolian.eolian_constructor_function_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1364,29 +1369,29 @@ ffi.metatype("Eolian_Event", {
     __index = wrap_object {
         type_get = function(self)
             local v = eolian.eolian_event_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         class_get = function(self)
             local v = eolian.eolian_event_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         documentation_get = function(self)
             local v = eolian.eolian_event_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         scope_get = function(self)
-            return tonumber(eolian.eolian_event_scope_get(self))
+            return tonum(eolian.eolian_event_scope_get(self))
         end,
 
         c_macro_get = function(self)
             local v = eolian.eolian_event_c_macro_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
@@ -1404,13 +1409,13 @@ ffi.metatype("Eolian_Part", {
     __index = wrap_object {
         class_get = function(self)
             local v = eolian.eolian_part_class_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         documentation_get = function(self)
             local v = eolian.eolian_part_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end
     }
@@ -1427,18 +1432,18 @@ M.class_type = {
 M.Class = ffi.metatype("Eolian_Class", {
     __index = wrap_object {
         type_get = function(self)
-            return tonumber(eolian.eolian_class_type_get(self))
+            return tonum(eolian.eolian_class_type_get(self))
         end,
 
         documentation_get = function(self)
             local v = eolian.eolian_class_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         c_prefix_get = function(self)
             local v = eolian.eolian_class_c_prefix_get(self)
-            if v == nil then
+            if v == ffi.nullptr then
                 local buf = self:namespaces_get()
                 buf[#buf + 1] = self:short_name_get()
                 return table.concat(buf, "_"):lower()
@@ -1448,7 +1453,7 @@ M.Class = ffi.metatype("Eolian_Class", {
 
         event_c_prefix_get = function(self)
             local v = eolian.eolian_class_event_c_prefix_get(self)
-            if v == nil then
+            if v == ffi.nullptr then
                 return self:c_prefix_get()
             end
             return ffi.string(v)
@@ -1456,13 +1461,13 @@ M.Class = ffi.metatype("Eolian_Class", {
 
         data_type_get = function(self)
             local v = eolian.eolian_class_data_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end,
 
         parent_get = function(self)
             local v = eolian.eolian_class_parent_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1484,7 +1489,7 @@ M.Class = ffi.metatype("Eolian_Class", {
         function_by_name_get = function(self, fname, ftype)
             local v = eolian.eolian_class_function_by_name_get(self, fname,
                 ftype)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1505,7 +1510,7 @@ M.Class = ffi.metatype("Eolian_Class", {
 
         event_by_name_get = function(self, name)
             local v = eolian.eolian_class_event_by_name_get(self, name)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1524,19 +1529,19 @@ M.Class = ffi.metatype("Eolian_Class", {
 
         c_get_function_name_get = function(self)
             local v = eolian.eolian_class_c_get_function_name_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
         c_macro_get = function(self)
             local v = eolian.eolian_class_c_macro_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
         c_data_type_get = function(self)
             local v = eolian.eolian_class_c_data_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end
     }
@@ -1564,32 +1569,31 @@ M.expression_type = {
 local etype = M.expression_type
 
 M.expression_mask = {
-    SINT   = bit.lshift(1, 0),
-    UINT   = bit.lshift(1, 1),
-    FLOAT  = bit.lshift(1, 2),
-    BOOL   = bit.lshift(1, 3),
-    STRING = bit.lshift(1, 4),
-    CHAR   = bit.lshift(1, 5),
-    NULL   = bit.lshift(1, 6)
+    SINT   = 2 ^ 0,
+    UINT   = 2 ^ 1,
+    FLOAT  = 2 ^ 2,
+    BOOL   = 2 ^ 3,
+    STRING = 2 ^ 4,
+    CHAR   = 2 ^ 5,
+    NULL   = 2 ^ 6
 }
 
 local emask = M.expression_mask
 
-emask.INT    = bit.bor(emask.SINT  , emask.UINT )
-emask.SIGNED = bit.bor(emask.SINT  , emask.FLOAT)
-emask.NUMBER = bit.bor(emask.INT   , emask.FLOAT)
-emask.ALL    = bit.bor(emask.NUMBER, emask.BOOL,
-                       emask.STRING, emask.CHAR, emask.NULL)
+emask.INT    = emask.SINT + emask.UINT
+emask.SIGNED = emask.SINT + emask.FLOAT
+emask.NUMBER = emask.INT  + emask.FLOAT
+emask.ALL = emask.NUMBER + emask.BOOL + emask.STRING + emask.CHAR + emask.NULL
 
 local value_con = {
-    [etype.INT   ] = function(v) return tonumber(v.value.i   ) end,
-    [etype.UINT  ] = function(v) return tonumber(v.value.u   ) end,
+    [etype.INT   ] = function(v) return tonum(v.value.i      ) end,
+    [etype.UINT  ] = function(v) return tonum(v.value.u      ) end,
     [etype.LONG  ] = function(v) return v.value.l              end,
     [etype.ULONG ] = function(v) return v.value.ul             end,
     [etype.LLONG ] = function(v) return v.value.ll             end,
     [etype.ULLONG] = function(v) return v.value.ull            end,
-    [etype.FLOAT ] = function(v) return tonumber(v.value.f   ) end,
-    [etype.DOUBLE] = function(v) return tonumber(v.value.d   ) end,
+    [etype.FLOAT ] = function(v) return tonum(v.value.f      ) end,
+    [etype.DOUBLE] = function(v) return tonum(v.value.d      ) end,
     [etype.STRING] = function(v) return ffi.string(v.value.s ) end,
     [etype.CHAR  ] = function(v) return string.char(v.value.c) end,
     [etype.NULL  ] = function(v) return nil                    end,
@@ -1599,19 +1603,19 @@ local value_con = {
 M.Value = ffi.metatype("Eolian_Value", {
     __index = {
         get_type = function(self)
-            return tonumber(ffi.cast("Eolian_Value_t*", self).type)
+            return tonum(ffi.cast("Eolian_Value_t*", self).type)
         end,
 
         get_value = function(self)
             local   tp = self:get_type()
-            local  fun = value_con[tonumber(tp)]
+            local  fun = value_con[tonum(tp)]
             if not fun then return nil end
             return fun()
         end,
 
         to_literal = function(self)
             local v = eolian.eolian_expression_value_to_literal(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end
     }
@@ -1657,51 +1661,63 @@ M.Expression = ffi.metatype("Eolian_Expression", {
     __index = wrap_object {
         eval = function(self, mask)
             mask = mask or emask.ALL
-            local v = eolian.eolian_expression_eval(self, mask)
-            if v == nil then return nil end
-            return ffi.cast("Eolian_Value*", v)
+            local vsz = ffi.sizeof("Eolian_Value_t")
+            local p = ffi.cast("Eolian_Value_t *", ffi.C.malloc(vsz))
+            if p == ffi.nullptr then return nil end
+            local v = eolian.eolian_expression_eval_fill(self, mask, p)
+            if v == 0 then
+                ffi.C.free(p)
+                return nil
+            end
+            return ffi.gc(ffi.cast("Eolian_Value *", p), ffi.C.free)
         end,
 
         serialize = function(self)
             local v = eolian.eolian_expression_serialize(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi_stringshare(v)
         end,
 
         type_get = function(self)
-            return tonumber(eolian.eolian_expression_type_get(self))
+            return tonum(eolian.eolian_expression_type_get(self))
         end,
 
         binary_operator_get = function(self)
-            return tonumber(eolian.eolian_expression_binary_operator_get(self))
+            return tonum(eolian.eolian_expression_binary_operator_get(self))
         end,
 
         binary_lhs_get = function(self)
             local v = eolian.eolian_expression_binary_lhs_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         binary_rhs_get = function(self)
             local v = eolian.eolian_expression_binary_rhs_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         unary_operator_get = function(self)
-            return tonumber(eolian.eolian_expression_unary_operator_get(self))
+            return tonum(eolian.eolian_expression_unary_operator_get(self))
         end,
 
         unary_expression_get = function(self)
             local v = eolian.eolian_expression_unary_expression_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         value_get = function(self)
-            local v = eolian.eolian_expression_value_get(self)
-            if v == nil then return nil end
-            return ffi.cast("Eolian_Value*", v)
+            local vsz = ffi.sizeof("Eolian_Value_t")
+            local p = ffi.cast("Eolian_Value_t *", ffi.C.malloc(vsz))
+            if p == ffi.nullptr then return nil end
+            local v = eolian.eolian_expression_value_get_fill(self, p)
+            if v == 0 then
+                ffi.C.free(p)
+                return nil
+            end
+            return ffi.gc(ffi.cast("Eolian_Value *", p), ffi.C.free)
         end
     }
 })
@@ -1710,19 +1726,19 @@ M.Constant = ffi.metatype("Eolian_Constant", {
     __index = wrap_object {
         documentation_get = function(self)
             local v = eolian.eolian_constant_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         type_get = function(self)
             local v = eolian.eolian_constant_type_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         value_get = function(self)
             local v = eolian.eolian_constant_value_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
@@ -1736,13 +1752,13 @@ M.Error = ffi.metatype("Eolian_Error", {
     __index = wrap_object {
         documentation_get = function(self)
             local v = eolian.eolian_error_documentation_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return v
         end,
 
         message_get = function(self)
             local v = eolian.eolian_error_message_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end,
 
@@ -1756,19 +1772,19 @@ M.Documentation = ffi.metatype("Eolian_Documentation", {
     __index = wrap_object {
         summary_get = function(self)
             local v = eolian.eolian_documentation_summary_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end,
 
         description_get = function(self)
             local v = eolian.eolian_documentation_description_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end,
 
         since_get = function(self)
             local v = eolian.eolian_documentation_since_get(self)
-            if v == nil then return nil end
+            if v == ffi.nullptr then return nil end
             return ffi.string(v)
         end
     }
@@ -1807,7 +1823,7 @@ end
 
 M.documentation_tokenize = function(doc, ret)
     local ret = eolian.eolian_documentation_tokenize(doc, ret)
-    if ret == nil then
+    if ret == ffi.nullptr then
         return nil
     end
     return ffi.string(ret)
@@ -1822,12 +1838,12 @@ end
 M.Eolian_Doc_Token = ffi.metatype("Eolian_Doc_Token", {
     __index = {
         type_get = function(self)
-            return tonumber(eolian.eolian_doc_token_type_get(self))
+            return tonum(eolian.eolian_doc_token_type_get(self))
         end,
 
         text_get = function(self)
             local str = eolian.eolian_doc_token_text_get(self)
-            if str == nil then
+            if str == ffi.nullptr then
                 return nil
             end
             local ret = ffi.string(str)
@@ -1837,7 +1853,7 @@ M.Eolian_Doc_Token = ffi.metatype("Eolian_Doc_Token", {
 
         ref_resolve = function(self, state)
             local stor = ffi.new("const Eolian_Object *[2]")
-            local tp = tonumber(eolian.eolian_doc_token_ref_resolve(self, state, stor, stor + 1))
+            local tp = tonum(eolian.eolian_doc_token_ref_resolve(self, state, stor, stor + 1))
             local reft = M.object_type
             if tp == reft.CLASS then
                 return tp, ffi.cast("const Eolian_Class *", stor[0])

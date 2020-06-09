@@ -270,7 +270,7 @@ ecore_print_warning(const char *function,
 #define CHECK_PARAM_POINTER_RETURN(sparam, param, ret) \
   if (!(param))                                        \
     {                                                  \
-       ecore_print_warning(__FUNCTION__, sparam);      \
+       ecore_print_warning(__func__, sparam);      \
        return ret;                                     \
     }
 
@@ -278,7 +278,7 @@ ecore_print_warning(const char *function,
 #define CHECK_PARAM_POINTER(sparam, param)        \
   if (!(param))                                   \
     {                                             \
-       ecore_print_warning(__FUNCTION__, sparam); \
+       ecore_print_warning(__func__, sparam); \
        return;                                    \
     }
 
@@ -510,6 +510,12 @@ extern int _ecore_fps_debug;
 extern Eina_Bool _ecore_glib_always_integrate;
 extern Ecore_Select_Function main_loop_select;
 extern int in_main_loop;
+
+#ifdef HAVE_SYSTEMD
+void _ecore_sd_init(void);
+
+extern int (*_ecore_sd_notify) (int unset_environment, const char *state);
+#endif
 
 Eina_Bool ecore_mempool_init(void);
 void ecore_mempool_shutdown(void);

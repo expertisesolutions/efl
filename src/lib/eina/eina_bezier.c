@@ -106,7 +106,7 @@ _eina_bezier_length_helper(const Eina_Bezier *b)
    return len;
 }
 
-EINA_API void
+EAPI void
 eina_bezier_values_set(Eina_Bezier *b,
                        double start_x, double start_y,
                        double ctrl_start_x, double ctrl_start_y,
@@ -123,7 +123,7 @@ eina_bezier_values_set(Eina_Bezier *b,
    b->end.y = end_y;
 }
 
-EINA_API void
+EAPI void
 eina_bezier_values_get(const Eina_Bezier *b,
                        double *start_x, double *start_y,
                        double *ctrl_start_x, double *ctrl_start_y,
@@ -141,7 +141,7 @@ eina_bezier_values_get(const Eina_Bezier *b,
 }
 
 
-EINA_API void
+EAPI void
 eina_bezier_point_at(const Eina_Bezier *bz, double t, double *px, double *py)
 {
    double m_t = 1.0 - t;
@@ -169,7 +169,7 @@ eina_bezier_point_at(const Eina_Bezier *bz, double t, double *px, double *py)
      }
 }
 
-EINA_API double
+EAPI double
 eina_bezier_angle_at(const Eina_Bezier *b, double t)
 {
    double x, y;
@@ -183,7 +183,7 @@ eina_bezier_angle_at(const Eina_Bezier *b, double t)
    return theta_normalized;
 }
 
-EINA_API double
+EAPI double
 eina_bezier_length_get(const Eina_Bezier *b)
 {
    return _eina_bezier_length_helper(b);
@@ -218,7 +218,7 @@ _eina_bezier_split_left(Eina_Bezier *b, double t, Eina_Bezier *left)
    left->end.y = b->start.y = left->ctrl_end.y + t * (b->ctrl_start.y - left->ctrl_end.y);
 }
 
-EINA_API double
+EAPI double
 eina_bezier_t_at(const Eina_Bezier *b, double l)
 {
    double len = eina_bezier_length_get(b);
@@ -256,7 +256,7 @@ eina_bezier_t_at(const Eina_Bezier *b, double l)
    return t;
 }
 
-EINA_API void
+EAPI void
 eina_bezier_split_at_length(const Eina_Bezier *b, double len,
                             Eina_Bezier *left, Eina_Bezier *right)
 {
@@ -270,7 +270,7 @@ eina_bezier_split_at_length(const Eina_Bezier *b, double len,
    _eina_bezier_split_left(right, t, left);
 }
 
-EINA_API void
+EAPI void
 eina_bezier_bounds_get(const Eina_Bezier *b, double *x, double *y, double *w, double *h)
 {
    double xmin = b->start.x;
@@ -310,7 +310,7 @@ eina_bezier_bounds_get(const Eina_Bezier *b, double *x, double *y, double *w, do
    if (h) *h = ymax - ymin;
 }
 
-EINA_API void
+EAPI void
 eina_bezier_on_interval(Eina_Bezier *b, double t0, double t1, Eina_Bezier *result)
 {
    Eina_Bezier bezier;

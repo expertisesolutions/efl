@@ -19,6 +19,7 @@ elif get_option('evas-loaders-disabler').contains('gif')
 endif
 
 webp = dependency('libwebp', required: get_option('evas-loaders-disabler').contains('webp') == false)
+webpdemux = dependency('libwebpdemux', required: get_option('evas-loaders-disabler').contains('webp') == false)
 libopenjp2 = dependency('libopenjp2', required: get_option('evas-loaders-disabler').contains('jp2k') == false)
 
 if sys_windows and get_option('evas-loaders-disabler').contains('generic')
@@ -40,7 +41,7 @@ evas_image_loaders_file = [
      ['tgv',     'shared', [rg_etc, lz4]],
      ['tiff',    'shared', [tiff]],
      ['wbmp',    'shared', []],
-     ['webp',    'shared', [webp]],
+     ['webp',    'shared', [webp, webpdemux]],
      ['xpm',     'shared', []]
 ]
 
@@ -63,7 +64,10 @@ evas_vg_loaders_file = [
 evas_vg_savers_file = ['eet', 'svg']
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
-evas_deps = [eo, eet, eina, efl, emile, ector, ecore, buildsystem, intl]
+evas_deps = [eo, eet, eina, efl, emile, ector, ecore, draw, buildsystem]
+evas_ext_deps = []
+evas_ext_none_static_deps = [buildsystem_simple, intl, m, draw_simple, valgrind, libunibreak, lua, vg_common]
+
 pub_eo_file_target = []
 priv_eo_files = []
 evas_include_directories = []
@@ -143,29 +147,26 @@ evas_include_directories += [
   include_directories('common'),
   include_directories('include'),
   include_directories('filters'),
-  vg_common_inc_dir
 ]
 
-evas_src += [
+evas_src += files([
    'main.c'
-]
+])
 
 evas_src_opt = [ ]
 
-evas_src += vg_common_src
-
 if not sys_windows
-  evas_deps += dependency('freetype2')
+  evas_ext_none_static_deps += dependency('freetype2')
 endif
 
 if (get_option('fontconfig'))
    config_h.set('HAVE_FONTCONFIG', '1')
-   evas_deps += dependency('fontconfig')
+   evas_ext_none_static_deps += dependency('fontconfig')
 endif
 
 if (get_option('fribidi'))
    config_h.set('HAVE_FRIBIDI', '1')
-   evas_deps += dependency('fribidi')
+   evas_ext_none_static_deps += dependency('fribidi')
 endif
 
 if (get_option('pixman'))
@@ -173,16 +174,16 @@ if (get_option('pixman'))
    foreach support : pixman_support
      config_h.set(support, '1')
    endforeach
-   evas_deps += dependency('pixman-1')
+   evas_ext_none_static_deps += dependency('pixman-1')
 endif
 
 if (get_option('hyphen'))
    config_h.set('HAVE_HYPHEN', '1')
    hyphen = dependency('hyphen', required : false)
    if hyphen.found() == false
-     evas_deps += cc.find_library('hyphen')
+     evas_ext_none_static_deps += cc.find_library('hyphen')
    endif
-   evas_deps += hyphen
+   evas_ext_none_static_deps += hyphen
    config_h.set_quoted('EVAS_DICTS_HYPHEN_DIR', get_option('dictionaries-hyphen-dir'))
 endif
 
@@ -198,12 +199,12 @@ subdir('vg')
 gl_deps = []
 
 if get_option('harfbuzz')
-  evas_deps += dependency('harfbuzz')
+  evas_ext_none_static_deps += dependency('harfbuzz')
   config_h.set('HAVE_HARFBUZZ', '1')
 endif
 
 if get_option('wl')
-  evas_deps += wayland_protocol
+  evas_ext_none_static_deps += wayland_protocol
 endif
 
 
@@ -222,13 +223,13 @@ evas_pub_deps = [eina, ecore, ector, emile]
 
 if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
   evas_opt = static_library('evas_opt',
-    sources: evas_src_opt,
+    sources: [evas_src_opt, pub_eo_file_target, priv_eo_file_target],
     include_directories:
       [ include_directories('../../..') ] +
       evas_include_directories +
       [vg_common_inc_dir],
     c_args: native_arch_opt_c_args,
-    dependencies: [eina, eo, ector, emile, evas_deps, m, evil_unposix],
+    dependencies: [eina, eo, ector, emile, evas_deps, evas_ext_none_static_deps],
   )
   evas_link += [ evas_opt ]
 endif
@@ -296,26 +297,34 @@ foreach loader : evas_vg_savers_file
   endif
 endforeach
 
+evas_ext_deps += evas_static_list
+
+evas_ext_deps += declare_dependency(
+  link_with: evas_link,
+)
+
+evas_ext_deps += evas_ext_none_static_deps
+
 evas_lib = library('evas',
     include_directories: evas_include_directories + [vg_common_inc_dir],
     sources : [evas_src, pub_eo_file_target, priv_eo_file_target],
-    dependencies: [evas_deps, m, draw, valgrind, libunibreak, evas_static_list, evil_unposix],
+    dependencies: [evas_deps, evas_ext_deps],
     link_with: evas_link,
     install: true,
-    c_args : '-DPACKAGE_DATA_DIR="'+join_paths(dir_data, 'evas')+'"',
+    c_args : package_c_args,
     version : meson.project_version()
 )
 
 evas = declare_dependency(
    link_with : [evas_lib],
    sources: pub_eo_file_target,
-   dependencies : [m] + evas_pub_deps + evas_deps + [evil_unposix],
+   dependencies : evas_pub_deps,
    include_directories: evas_include_directories + [vg_common_inc_dir] + [include_directories(join_paths('..', '..', 'modules', 'evas', 'engines', 'buffer'))],
 )
 
 evas_bin = declare_dependency(
    link_with : [evas_lib],
-   dependencies : [eina, ecore, ector, emile, lua, evil_unposix],
+   dependencies : [eina, ecore, ector, emile],
    include_directories : evas_include_directories
 )
 
@@ -332,3 +341,5 @@ install_headers(evas_header_src,
 pub_eo_files = []
 package_eo_subdirs += ['canvas', 'gesture']
 package_header_subdirs += ['canvas', 'gesture']
+#special case becase evas has a more structures subfolder
+efl_one_include_dirs += evas_include_directories

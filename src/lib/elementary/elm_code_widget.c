@@ -702,9 +702,9 @@ _elm_code_widget_cursor_move(Elm_Code_Widget *widget, Elm_Code_Widget_Data *pd, 
 {
    Elm_Code *code;
    Elm_Code_Line *line_obj;
-   unsigned int oldrow, position, length, first_row, last_row;
-   int cw, ch;
    const char *text;
+   unsigned int oldrow, position, length, first_row, last_row;
+   int cw = 0, ch = 0;
 
    oldrow = pd->cursor_line;
 
@@ -2112,10 +2112,10 @@ _elm_code_widget_resize(Elm_Code_Widget *widget, Elm_Code_Line *newline)
         return;
      }
 
-   if (pd->gravity_x == 1.0 || pd->gravity_y == 1.0)
+   if (EINA_DBL_EQ(pd->gravity_x, 1.0) || EINA_DBL_EQ(pd->gravity_y, 1.0))
      _elm_code_widget_scroll_by(widget,
-        (pd->gravity_x == 1.0 && ww > old_width) ? ww - old_width : 0,
-        (pd->gravity_y == 1.0 && wh > old_height) ? wh - old_height : 0);
+        (EINA_DBL_EQ(pd->gravity_x, 1.0) && ww > old_width) ? ww - old_width : 0,
+        (EINA_DBL_EQ(pd->gravity_y, 1.0) && wh > old_height) ? wh - old_height : 0);
 }
 
 EOAPI void

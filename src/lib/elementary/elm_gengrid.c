@@ -165,8 +165,10 @@ _item_cache_free(Item_Cache *itc)
    /* does not exist if cache item has just been reused */
    if (itc->base_view)
      {
+        Evas_Object *view = itc->base_view;
         efl_wref_del(itc->base_view, &itc->base_view);
-        efl_del(itc->base_view);
+        efl_del(view);
+        itc->base_view = NULL;
      }
    eina_stringshare_del(itc->item_style);
    EINA_LIST_FREE(itc->contents, c)
@@ -1494,7 +1496,10 @@ _item_unrealize_cb(Elm_Gen_Item *it)
    Evas_Object *c;
    if (!_item_cache_add(it, _content_cache_add(it, &cache)))
      {
-        ELM_SAFE_FREE(VIEW(it), evas_object_del);
+        Evas_Object *view = VIEW(it);
+        efl_wref_del(VIEW(it), &VIEW(it));
+        ELM_SAFE_FREE(view, evas_object_del);
+        VIEW(it) = NULL;
         ELM_SAFE_FREE(it->spacer, evas_object_del);
         EINA_LIST_FREE(cache, c)
           evas_object_del(c);
@@ -4180,6 +4185,8 @@ _elm_gengrid_efl_canvas_group_group_del(Eo *obj, Elm_Gengrid_Data *sd)
    _item_cache_zero(sd);
    ecore_job_del(sd->calc_job);
 
+   eina_hash_free(sd->content_item_map);
+
    efl_canvas_group_del(efl_super(obj, MY_CLASS));
 }
 
@@ -4452,7 +4459,7 @@ _elm_gengrid_align_set(Eo *obj EINA_UNUSED, Elm_Gengrid_Data *sd, double align_x
      align_y = 0.0;
    sd->align_y = align_y;
 
-   if ((old_h != sd->align_x) || (old_y != sd->align_y))
+   if (!EINA_DBL_EQ(old_h, sd->align_x) || !EINA_DBL_EQ(old_y, sd->align_y))
      evas_object_smart_calculate(sd->pan_obj);
 }
 

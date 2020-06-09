@@ -257,9 +257,7 @@ typedef struct
    int nb_shots;        /**< The number of shots present in the unit */
 } Exactness_Unit;
 
-Evas *(*_evas_new)(void);
 const char *_exactness_action_type_to_string_get(Exactness_Action_Type type);
-
 
 Eina_Bool ex_is_original_app(void);
 void ex_set_original_envvar(void);
@@ -268,6 +266,4 @@ Exactness_Unit *exactness_unit_file_read(const char *filename);
 Eina_Bool exactness_unit_file_write(Exactness_Unit *unit, const char *filename);
 void exactness_image_free(Exactness_Image *img);
 
-int ex_prg_invoke(const char *full_path, int argc, char **argv, Eina_Bool player);
-Eina_Stringshare *ex_prg_full_path_guess(const char *prg);
-void ex_prepare_elm_overloay(void);
+void ex_prepare_elm_overlay(void);

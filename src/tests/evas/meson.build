@@ -25,7 +25,7 @@ evas_suite_src = [
 
 evas_suite = executable('evas_suite',
   evas_suite_src,
-  dependencies: [evas_bin, evas, ecore_evas, dl, check],
+  dependencies: [evas_bin, evas, ecore_evas, dl, check, evas_ext_deps], #external deps needed here since tests do include internal headers
   include_directories: include_directories(join_paths('..', '..', 'modules', 'evas', 'engines', 'buffer')),
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
@@ -33,5 +33,6 @@ evas_suite = executable('evas_suite',
 )
 
 test('evas-suite', evas_suite,
-  env : test_env
+  env : test_env,
+  timeout: 60,
 )

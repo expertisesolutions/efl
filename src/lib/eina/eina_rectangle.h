@@ -39,15 +39,24 @@
  * @{
  */
 
+/** A zero-size rectangle. */
 #define EINA_RECTANGLE_INIT { 0, 0, 0, 0}
+/** A format string useful for printf-like functions. */
 #define EINA_RECTANGLE_FORMAT "dx%d - %dx%d"
+/** Separates the components of the rectangle structure into a comma-separated list,
+ * so they can be used as parameters. */
 #define EINA_RECTANGLE_ARGS(r) (r)->x, (r)->y, (r)->w, (r)->h
 
+/** Creates an instance of an #Eina_Rect */
 #define EINA_RECT(x, y, w, h) ((Eina_Rect) { { (x), (y), (w), (h) } })
+/** A zero-size rectangle that can be used to initialize #Eina_Rect structures. */
 #define EINA_RECT_ZERO() { EINA_RECTANGLE_INIT }
+/** A zero-size rectangle that can be used to initialize #Eina_Rect structures. */
 #define EINA_RECT_EMPTY() ((Eina_Rect) EINA_RECT_ZERO())
 
+/** Creates an instance of an #Eina_Position2D */
 #define EINA_POSITION2D(x, y) ((Eina_Position2D) { (x), (y) })
+/** Creates an instance of an #Eina_Size2D */
 #define EINA_SIZE2D(x, y) ((Eina_Size2D) { (x), (y) })
 
 /** @brief A 2D position in pixel coordinates */
@@ -104,15 +113,22 @@ typedef struct _Eina_Rectangle
    int h; /**< height of rectangle */
 } Eina_Rectangle;
 
+/**
+ * @typedef Eina_Rect
+ * A convenient rectangle structure which can be accessed in different ways.
+ */
 typedef union _Eina_Rect
 {
-   Eina_Rectangle rect;
+   Eina_Rectangle rect; /**< Embedded simple rectangle structure */
    struct {
-      Eina_Position2D pos;
-      Eina_Size2D size;
+      Eina_Position2D pos; /**< Top-left corner in pixels */
+      Eina_Size2D size; /**< Size in pixels */
    };
    struct {
-      int x, y, w, h;
+      int x; /**< Top-left x coordinate of rectangle */
+      int y; /**< Top-left y coordinate of rectangle */
+      int w; /**< Width of rectangle */
+      int h; /**< Height of rectangle */
    };
 } Eina_Rect;
 
@@ -141,10 +157,10 @@ typedef enum {
  * @since 1.19
  */
 typedef enum {
-    EINA_RECTANGLE_OUTSIDE_TOP = 1,
-    EINA_RECTANGLE_OUTSIDE_LEFT = 2,
-    EINA_RECTANGLE_OUTSIDE_BOTTOM = 4,
-    EINA_RECTANGLE_OUTSIDE_RIGHT = 8
+    EINA_RECTANGLE_OUTSIDE_TOP = 1,    /**< Position is over the rectangle */
+    EINA_RECTANGLE_OUTSIDE_LEFT = 2,   /**< Position is to the left of the rectangle */
+    EINA_RECTANGLE_OUTSIDE_BOTTOM = 4, /**< Position is below the rectangle */
+    EINA_RECTANGLE_OUTSIDE_RIGHT = 8   /**< Position is to the right of the rectangle */
 } Eina_Rectangle_Outside;
 
 
@@ -406,7 +422,7 @@ static inline Eina_Bool   eina_rectangle_subtract(Eina_Rectangle *rect, Eina_Rec
  * new pool. If the pool can not be created, @c NULL is
  * returned. Otherwise the newly allocated pool is returned.
  */
-EINA_API Eina_Rectangle_Pool *eina_rectangle_pool_new(int w, int h) EINA_MALLOC EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Rectangle_Pool *eina_rectangle_pool_new(int w, int h) EINA_MALLOC EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Returns the pool of the given rectangle.
@@ -417,7 +433,7 @@ EINA_API Eina_Rectangle_Pool *eina_rectangle_pool_new(int w, int h) EINA_MALLOC 
  * This function returns the pool in which @p rect is. If  @p rect is
  * @c NULL, @c NULL is returned.
  */
-EINA_API Eina_Rectangle_Pool *eina_rectangle_pool_get(Eina_Rectangle *rect) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EAPI Eina_Rectangle_Pool *eina_rectangle_pool_get(Eina_Rectangle *rect) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * @brief Returns the width and height of the given pool.
@@ -432,7 +448,7 @@ EINA_API Eina_Rectangle_Pool *eina_rectangle_pool_get(Eina_Rectangle *rect) EINA
  * @p pool is @c NULL, #EINA_FALSE is returned. Otherwise #EINA_TRUE is
  * returned.
  */
-EINA_API Eina_Bool            eina_rectangle_pool_geometry_get(Eina_Rectangle_Pool *pool, int *w, int *h) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Bool            eina_rectangle_pool_geometry_get(Eina_Rectangle_Pool *pool, int *w, int *h) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Gets the data from the given pool.
@@ -444,7 +460,7 @@ EINA_API Eina_Bool            eina_rectangle_pool_geometry_get(Eina_Rectangle_Po
  * eina_rectangle_pool_data_set(). If @p pool is @c NULL, this
  * function returns @c NULL.
  */
-EINA_API void                *eina_rectangle_pool_data_get(Eina_Rectangle_Pool *pool) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EAPI void                *eina_rectangle_pool_data_get(Eina_Rectangle_Pool *pool) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * @brief Sets the data to the given pool.
@@ -455,7 +471,7 @@ EINA_API void                *eina_rectangle_pool_data_get(Eina_Rectangle_Pool *
  * This function sets @p data to @p pool. If @p pool is @c NULL, this
  * function does nothing.
  */
-EINA_API void                 eina_rectangle_pool_data_set(Eina_Rectangle_Pool *pool, const void *data) EINA_ARG_NONNULL(1);
+EAPI void                 eina_rectangle_pool_data_set(Eina_Rectangle_Pool *pool, const void *data) EINA_ARG_NONNULL(1);
 
 /**
  * @brief Frees the given pool.
@@ -465,7 +481,7 @@ EINA_API void                 eina_rectangle_pool_data_set(Eina_Rectangle_Pool *
  * This function frees the allocated data of @p pool. If @p pool is
  * @c NULL, this function returned immediately.
  */
-EINA_API void                 eina_rectangle_pool_free(Eina_Rectangle_Pool *pool) EINA_ARG_NONNULL(1);
+EAPI void                 eina_rectangle_pool_free(Eina_Rectangle_Pool *pool) EINA_ARG_NONNULL(1);
 
 /**
  * @brief Returns the number of rectangles in the given pool.
@@ -475,7 +491,7 @@ EINA_API void                 eina_rectangle_pool_free(Eina_Rectangle_Pool *pool
  *
  * This function returns the number of rectangles in @p pool.
  */
-EINA_API int                  eina_rectangle_pool_count(Eina_Rectangle_Pool *pool) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
+EAPI int                  eina_rectangle_pool_count(Eina_Rectangle_Pool *pool) EINA_ARG_NONNULL(1) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Requests a rectangle of given size in the given pool.
@@ -492,7 +508,7 @@ EINA_API int                  eina_rectangle_pool_count(Eina_Rectangle_Pool *poo
  * returns the rectangle which matches the size (@p w, @p h).
  * Otherwise it returns @c NULL.
  */
-EINA_API Eina_Rectangle      *eina_rectangle_pool_request(Eina_Rectangle_Pool *pool, int w, int h) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EAPI Eina_Rectangle      *eina_rectangle_pool_request(Eina_Rectangle_Pool *pool, int w, int h) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * @brief Removes the given rectangle from the pool.
@@ -503,7 +519,7 @@ EINA_API Eina_Rectangle      *eina_rectangle_pool_request(Eina_Rectangle_Pool *p
  * @c NULL, the function returns immediately. Otherwise it removes @p
  * rect from the pool.
  */
-EINA_API void                 eina_rectangle_pool_release(Eina_Rectangle *rect) EINA_ARG_NONNULL(1);
+EAPI void                 eina_rectangle_pool_release(Eina_Rectangle *rect) EINA_ARG_NONNULL(1);
 
 /**
  * @def EINA_RECTANGLE_SET
@@ -527,6 +543,10 @@ EINA_API void                 eina_rectangle_pool_release(Eina_Rectangle *rect) 
       (Rectangle)->h = H;			  \
     }
 
+/**
+ * @def EINA_RECT_SET
+ * Functionally equivalent to #EINA_RECTANGLE_SET
+ */
 #define EINA_RECT_SET(rect, x, y, w, h) do { EINA_RECTANGLE_SET((&rect), x, y, w, h) } while (0)
 
 
@@ -545,7 +565,7 @@ EINA_API void                 eina_rectangle_pool_release(Eina_Rectangle *rect) 
  *
  * No check is done on @p w and @p h.
  */
-EINA_API Eina_Rectangle *eina_rectangle_new(int x, int y, int w, int h) EINA_MALLOC EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Rectangle *eina_rectangle_new(int x, int y, int w, int h) EINA_MALLOC EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Frees the given rectangle.
@@ -554,7 +574,7 @@ EINA_API Eina_Rectangle *eina_rectangle_new(int x, int y, int w, int h) EINA_MAL
  *
  * This function removes @p rect from the rectangles pool.
  */
-EINA_API void            eina_rectangle_free(Eina_Rectangle *rect) EINA_ARG_NONNULL(1);
+EAPI void            eina_rectangle_free(Eina_Rectangle *rect) EINA_ARG_NONNULL(1);
 
 /**
  * @brief Sets the type of given rectangle pool.
@@ -566,7 +586,7 @@ EINA_API void            eina_rectangle_free(Eina_Rectangle *rect) EINA_ARG_NONN
  * @see Eina_Rectangle_Packing
  * @since 1.11
  */
-EINA_API void            eina_rectangle_pool_packing_set(Eina_Rectangle_Pool *pool,Eina_Rectangle_Packing type) EINA_ARG_NONNULL(1);
+EAPI void            eina_rectangle_pool_packing_set(Eina_Rectangle_Pool *pool,Eina_Rectangle_Packing type) EINA_ARG_NONNULL(1);
 
 /**
  * @brief calculates where rect2 is outside of rect1.
@@ -577,7 +597,7 @@ EINA_API void            eina_rectangle_pool_packing_set(Eina_Rectangle_Pool *po
  * @return An OR'd map of Eina_Rectangle_Outside values
  * @since 1.19
  */
-EINA_API Eina_Rectangle_Outside eina_rectangle_outside_position(Eina_Rectangle *rect1, Eina_Rectangle *rect2);
+EAPI Eina_Rectangle_Outside eina_rectangle_outside_position(Eina_Rectangle *rect1, Eina_Rectangle *rect2);
 
 /**
  * @brief Compares two rectangles for equality

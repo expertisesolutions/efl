@@ -17,6 +17,9 @@ pub_legacy_eo_files = [
   'elm_actionslider_part.eo',
   'elm_bubble_part.eo',
   'elm_fileselector_part.eo',
+  'elm_multibuttonentry_part.eo',
+  'elm_interface_scrollable.eo',
+  'elm_code_widget.eo',
 ]
 
 pub_eo_file_target = []
@@ -139,7 +142,6 @@ pub_eo_files = [
   'efl_access_window.eo',
   'efl_ui_theme.eo',
   'efl_config_global.eo',
-  'elm_code_widget.eo',
   'efl_ui_selection.eo',
   'efl_ui_dnd.eo',
   'efl_ui_focus_manager_window_root.eo',
@@ -159,8 +161,6 @@ pub_eo_files = [
   'efl_ui_radio_legacy_part.eo',
   'efl_ui_check_legacy_part.eo',
   'efl_ui_progressbar_legacy_part.eo',
-  'elm_multibuttonentry_part.eo',
-  'elm_interface_scrollable.eo',
   'efl_ui_image_zoomable_pan.eo',
   'efl_ui_textbox_part.eo',
   'efl_ui_caching_factory.eo',
@@ -716,7 +716,7 @@ elementary_header_src = [
   'Elementary_Cursor.h'
 ] + elementary_pub_headers + elementary_headers_unstable
 
-elementary_src = [
+elementary_src = files([
   'elm_priv.h',
   'elementary_config.h',
   'els_box.h',
@@ -951,12 +951,12 @@ elementary_src = [
   'efl_ui_stack.c',
   'efl_ui_separator.c',
   'efl_ui_spotlight_animation_manager.c',
-]
+])
 
-elementary_deps = [emile, eo, efl, edje, ethumb, ethumb_client, emotion, ecore_imf, ecore_con, eldbus, efreet, efreet_mime, efreet_trash, eio, atspi, dl, intl]
+elementary_deps = [emile, eo, efl, edje, ethumb, ethumb_client, emotion, ecore_imf, ecore_con, eldbus, efreet, eio, buildsystem]
 elementary_pub_deps = [eina, eet, evas, ecore, ecore_evas, ecore_file, ecore_input, ecore_imf, ecore_con,
-                       edje, eldbus, efreet, efreet_mime, efreet_trash, ethumb_client, efl]
-
+                       edje, eldbus, efreet, ethumb_client, efl]
+elementary_ext_deps = [atspi, dl, intl, buildsystem_simple]
 elm_options = configuration_data()
 
 config_h.set_quoted('ELM_TOP_BUILD_DIR', meson.build_root())
@@ -966,8 +966,6 @@ config_h.set_quoted('ICON_DIR', join_paths(dir_lib, 'icons'))
 
 if sys_windows == false
   elm_options.set('ELM_UNIX', '1')
-else
-  elm_options.set('DLL_EXPORT', '1')
 endif
 
 elm_options.set('ELM_EFREET', '1')
@@ -992,6 +990,10 @@ endif
 if get_option('wl')
   config_h.set('HAVE_ELEMENTARY_WL2', '1')
   elementary_deps += ecore_wl2
+  elementary_ext_deps += declare_dependency(
+    include_directories: include_directories([join_paths('..', '..', 'modules', 'ecore_evas', 'engines', 'wayland'), join_paths('..', '..', 'lib', 'ecore_wl2')]),
+    dependencies : ecore_wl2_internal_headers
+  )
 endif
 
 if get_option('drm')
@@ -1014,12 +1016,13 @@ c = configure_file(
   install_dir : dir_package_include,
   configuration: elm_options)
 
-elm_package_c_args =  package_c_args + ['-DELEMENTARY_BUILD=1']
+# Save in extra variable here to pass to edje_external
+elm_package_c_args =  package_c_args
 
 elementary_lib = library('elementary',
     elementary_src, pub_eo_file_target, priv_eo_file_target, c, embed_config,
-    dependencies: elementary_pub_deps + elementary_deps,
-    include_directories : config_dir + [include_directories('.')] + [include_directories(join_paths('..', '..', '..'))] + [ecore_evas_wayland_engine_include_dir],
+    dependencies: elementary_pub_deps + elementary_deps + elementary_ext_deps,
+    include_directories : config_dir + [include_directories('.')] + [include_directories(join_paths('..', '..', '..'))],
     install: true,
     c_args : elm_package_c_args,
     version : meson.project_version()
@@ -1031,7 +1034,6 @@ elementary = declare_dependency(
   sources : pub_eo_file_target + priv_eo_file_target,
   dependencies: elementary_pub_deps,
 )
-
 
 if get_option('install-eo-files')
   install_data(pub_eo_files + pub_eo_types_files,

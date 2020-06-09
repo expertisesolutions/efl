@@ -1142,16 +1142,16 @@ _efl_canvas_image_internal_efl_gfx_buffer_alpha_set(Eo *eo_obj, Evas_Image_Data 
 {
    Evas_Object_Protected_Data *obj = efl_data_scope_get(eo_obj, EFL_CANVAS_OBJECT_CLASS);
 
+   has_alpha = !!has_alpha;
+   if (has_alpha == o->cur->has_alpha)
+     return;
+
    evas_object_async_block(obj);
    if ((o->preload & EVAS_IMAGE_PRELOADING) && (o->engine_data))
      {
         o->preload = EVAS_IMAGE_PRELOAD_NONE;
         ENFN->image_data_preload_cancel(ENC, o->engine_data, eo_obj, EINA_TRUE);
      }
-
-   has_alpha = !!has_alpha;
-   if (has_alpha == o->cur->has_alpha)
-     return;
 
    EINA_COW_IMAGE_STATE_WRITE_BEGIN(o, state_write)
    {
@@ -3256,7 +3256,7 @@ evas_object_image_render_post(Evas_Object *eo_obj EINA_UNUSED,
    /* FIXME: copy strings across */
 
    //Somehow(preloading cancelled) image has been changed, need to redraw.
-   if (o->changed) evas_object_change(eo_obj, obj);
+   if (o->changed) evas_render_post_change_object_push(obj);
 }
 
 static void *
@@ -3514,6 +3514,9 @@ evas_object_image_is_inside(Evas_Object *eo_obj,
              o->pixels->func.get_pixels(o->pixels->func.get_pixels_data, eo_obj);
              if (ENFN->gl_get_pixels_post)
                ENFN->gl_get_pixels_post(ENC, output);
+             pixels = _evas_image_pixels_get(eo_obj, obj, ENC, output, NULL, NULL, 0, 0,
+                                             &imagew, &imageh, &uvw, &uvh, EINA_TRUE, EINA_FALSE);
+             if (!pixels) return is_inside;
           }
      }
 

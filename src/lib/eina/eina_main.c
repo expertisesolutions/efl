@@ -95,13 +95,13 @@ static int _eina_log_dom = -1;
 #endif
 #define DBG(...) EINA_LOG_DOM_DBG(_eina_log_dom, __VA_ARGS__)
 
-EINA_API Eina_Bool _eina_threads_activated = EINA_FALSE;
-EINA_API Eina_Error EINA_ERROR_NOT_MAIN_LOOP = 0;
-EINA_API Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
-EINA_API unsigned int eina_seed = 0;
+EAPI Eina_Bool _eina_threads_activated = EINA_FALSE;
+EAPI Eina_Error EINA_ERROR_NOT_MAIN_LOOP = 0;
+EAPI Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
+EAPI unsigned int eina_seed = 0;
 
 #ifdef EFL_HAVE_THREADS
-EINA_API Eina_Thread _eina_main_loop;
+EAPI Eina_Thread _eina_main_loop;
 #endif
 
 #ifdef MT
@@ -109,9 +109,9 @@ static int _mt_enabled = 0;
 #endif
 
 #ifdef EFL_HAVE_THREADS
-EINA_API int _eina_threads_debug = 0;
-EINA_API Eina_Lock _eina_tracking_lock;
-EINA_API Eina_Inlist *_eina_tracking = NULL;
+EAPI int _eina_threads_debug = 0;
+EAPI Eina_Lock _eina_tracking_lock;
+EAPI Eina_Inlist *_eina_tracking = NULL;
 extern Eina_Lock       _sysmon_lock;
 #endif
 
@@ -276,9 +276,9 @@ _eina_threads_do_shutdown(void)
  * @var eina_version
  * @brief Eina version (defined at configuration time)
  */
-EINA_API Eina_Version *eina_version = &_version;
+EAPI Eina_Version *eina_version = &_version;
 
-EINA_API int
+EAPI int
 eina_init(void)
 {
    const struct eina_desc_setup *itr, *itr_end;
@@ -319,7 +319,7 @@ eina_init(void)
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   eina_lock_take(&_eina_tracking_lock);
+   eina_lock_new(&_eina_tracking_lock);
 
    if (getenv("EINA_DEBUG_THREADS"))
      _eina_threads_debug = atoi(getenv("EINA_DEBUG_THREADS"));
@@ -349,7 +349,7 @@ eina_init(void)
    return 1;
 }
 
-EINA_API int
+EAPI int
 eina_shutdown(void)
 {
    if (_eina_main_count <= 0)
@@ -387,7 +387,7 @@ eina_shutdown(void)
 }
 
 
-EINA_API int
+EAPI int
 eina_threads_init(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -412,7 +412,7 @@ eina_threads_init(void)
 #endif
 }
 
-EINA_API int
+EAPI int
 eina_threads_shutdown(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -436,7 +436,7 @@ eina_threads_shutdown(void)
 #endif
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_main_loop_is(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -453,7 +453,7 @@ eina_main_loop_is(void)
 }
 
 /** The purpose of this API should not be documented, it is used only by the one who know what they are doing. */
-EINA_API void
+EAPI void
 eina_main_loop_define(void)
 {
 #ifdef EFL_HAVE_THREADS

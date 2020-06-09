@@ -119,7 +119,7 @@ _eina_magic_strings_alloc(void)
 *                                 Global                                     *
 *============================================================================*/
 
-EINA_API Eina_Error EINA_ERROR_MAGIC_FAILED = 0;
+EAPI Eina_Error EINA_ERROR_MAGIC_FAILED = 0;
 
 /**
  * @internal
@@ -185,7 +185,7 @@ eina_magic_string_shutdown(void)
 /*============================================================================*
 *                                   API                                      *
 *============================================================================*/
-EINA_API const char *
+EAPI const char *
 eina_magic_string_get(Eina_Magic magic)
 {
    Eina_Magic_String *ems;
@@ -209,7 +209,7 @@ eina_magic_string_get(Eina_Magic magic)
    return "(unknown)";
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_magic_string_set(Eina_Magic magic, const char *magic_name)
 {
    Eina_Magic_String *ems;
@@ -234,7 +234,7 @@ eina_magic_string_set(Eina_Magic magic, const char *magic_name)
    return EINA_TRUE;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_magic_string_static_set(Eina_Magic magic, const char *magic_name)
 {
    Eina_Magic_String *ems;
@@ -257,7 +257,7 @@ eina_magic_string_static_set(Eina_Magic magic, const char *magic_name)
 # undef eina_magic_fail
 #endif
 
-EINA_API void
+EAPI void
 eina_magic_fail(void *d,
                 Eina_Magic m,
                 Eina_Magic req_m,

@@ -519,6 +519,7 @@ _ecore_wl2_window_show_send(Ecore_Wl2_Window *window)
    if (window->parent)
      ev->parent_win = window->parent;
    ev->event_win = window;
+   window->visible = EINA_TRUE;
    ecore_event_add(ECORE_WL2_EVENT_WINDOW_SHOW, ev, NULL, NULL);
 }
 
@@ -534,7 +535,25 @@ _ecore_wl2_window_hide_send(Ecore_Wl2_Window *window)
    if (window->parent)
      ev->parent_win = window->parent;
    ev->event_win = window;
+   window->visible = EINA_FALSE;
    ecore_event_add(ECORE_WL2_EVENT_WINDOW_HIDE, ev, NULL, NULL);
+}
+
+static void
+_ecore_wl2_window_create_destroy_send(Ecore_Wl2_Window *window, Eina_Bool create)
+{
+   Ecore_Wl2_Event_Window_Common *ev;
+
+   ev = calloc(1, sizeof(Ecore_Wl2_Event_Window_Common));
+   if (!ev) return;
+
+   ev->win = window;
+   if (window->parent)
+     ev->parent_win = window->parent;
+   ev->event_win = window;
+
+   if (create) ecore_event_add(ECORE_WL2_EVENT_WINDOW_CREATE, ev, NULL, NULL);
+   else ecore_event_add(ECORE_WL2_EVENT_WINDOW_DESTROY, ev, NULL, NULL);
 }
 
 EAPI Ecore_Wl2_Window *
@@ -568,6 +587,8 @@ ecore_wl2_window_new(Ecore_Wl2_Display *display, Ecore_Wl2_Window *parent, int x
      eina_inlist_append(display->windows, EINA_INLIST_GET(win));
 
    _ecore_wl2_window_surface_create(win);
+
+   _ecore_wl2_window_create_destroy_send(win, EINA_TRUE);
 
    return win;
 }
@@ -628,15 +649,9 @@ ecore_wl2_window_show(Ecore_Wl2_Window *window)
 EAPI void
 ecore_wl2_window_hide(Ecore_Wl2_Window *window)
 {
-   Ecore_Wl2_Subsurface *subsurf;
-   Eina_Inlist *tmp;
-
    EINA_SAFETY_ON_NULL_RETURN(window);
 
    _ecore_wl2_window_hide_send(window);
-
-   EINA_INLIST_FOREACH_SAFE(window->subsurfs, tmp, subsurf)
-     _ecore_wl2_subsurf_unmap(subsurf);
 
    if (window->commit_pending)
      {
@@ -695,6 +710,10 @@ ecore_wl2_window_free(Ecore_Wl2_Window *window)
 
    EINA_SAFETY_ON_NULL_RETURN(window);
 
+   if (window->visible) _ecore_wl2_window_hide_send(window);
+
+   _ecore_wl2_window_create_destroy_send(window, EINA_FALSE);
+
    display = window->display;
 
    EINA_INLIST_FOREACH(display->inputs, input)
@@ -719,6 +738,9 @@ ecore_wl2_window_free(Ecore_Wl2_Window *window)
    if (window->title) eina_stringshare_del(window->title);
    if (window->class) eina_stringshare_del(window->class);
    if (window->role) eina_stringshare_del(window->role);
+
+   if (window->wm_rot.available_rots) free(window->wm_rot.available_rots);
+   window->wm_rot.available_rots = NULL;
 
    display->windows =
      eina_inlist_remove(display->windows, EINA_INLIST_GET(window));
@@ -1233,9 +1255,24 @@ ecore_wl2_window_preferred_rotation_get(Ecore_Wl2_Window *window)
 EAPI void
 ecore_wl2_window_available_rotations_set(Ecore_Wl2_Window *window, const int *rots, unsigned int count)
 {
+   unsigned int i = 0;
    EINA_SAFETY_ON_NULL_RETURN(window);
+
+   if (window->wm_rot.available_rots)
+     {
+        free(window->wm_rot.available_rots);
+        window->wm_rot.available_rots = NULL;
+     }
    window->wm_rot.count = count;
-   window->wm_rot.available_rots = (int *)rots;
+
+   if (count >= 1)
+     {
+        window->wm_rot.available_rots = calloc(count, sizeof(int));
+        if (!window->wm_rot.available_rots) return;
+
+        for (; i < count; i++)
+          window->wm_rot.available_rots[i] = ((int *)rots)[i];
+     }
 }
 
 EAPI Eina_Bool

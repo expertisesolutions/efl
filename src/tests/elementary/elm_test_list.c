@@ -242,6 +242,100 @@ EFL_START_TEST(elm_atspi_children_parent)
 }
 EFL_END_TEST
 
+#define NUM_ITEMS 10
+EFL_START_TEST(elm_list_test_callbacks)
+{
+   Evas_Object *win, *list;
+   unsigned int i;
+   int count[NUM_ITEMS] = {0};
+   Elm_Object_Item *it;
+   int selected = 0, unselected = 0;
+   int highlighted = 0, unhighlighted = 0;
+
+   win = win_add(NULL, "list", ELM_WIN_BASIC);
+   evas_object_resize(win, 100, 100);
+
+   list = elm_list_add(win);
+   evas_object_smart_callback_add(list, "selected", (void*)event_callback_that_increments_an_int_when_called, &selected);
+   evas_object_smart_callback_add(list, "unselected", (void*)event_callback_that_increments_an_int_when_called, &unselected);
+   evas_object_smart_callback_add(list, "highlighted", (void*)event_callback_that_increments_an_int_when_called, &highlighted);
+   evas_object_smart_callback_add(list, "unhighlighted", (void*)event_callback_that_increments_an_int_when_called, &unhighlighted);
+   evas_object_resize(list, 100, 100);
+   for (i = 0; i < NUM_ITEMS; i++)
+     elm_list_item_append(list, "item", NULL, NULL, (void*)event_callback_single_call_int_data, &(count[i]));
+
+   elm_list_go(list);
+   evas_object_show(list);
+   evas_object_show(win);
+   get_me_to_those_events(win);
+
+   for (i = 0, it = elm_list_first_item_get(list); i < NUM_ITEMS; i++, it = elm_list_item_next(it))
+     {
+        elm_list_item_selected_set(it, EINA_TRUE);
+        ck_assert_int_eq(count[i], 1);
+
+        ck_assert_int_eq(selected, i + 1);
+        ck_assert_int_eq(unselected, i);
+
+        ck_assert_int_eq(highlighted, i + 1);
+        ck_assert_int_eq(unhighlighted, i);
+     }
+   ck_assert_int_eq(selected, 10);
+   ck_assert_int_eq(unselected, 9);
+
+   ck_assert_int_eq(highlighted, 10);
+   ck_assert_int_eq(unhighlighted, 9);
+
+   /* weird SIGILL in shutdown if the list isn't deleted here */
+   evas_object_del(list);
+}
+EFL_END_TEST
+
+static Eo *
+create_content_with_size(Eo *parent, int mw, int mh)
+{
+   Evas *e = evas_object_evas_get(parent);
+   Eo *rect = evas_object_rectangle_add(e);
+
+   evas_object_size_hint_min_set(rect, mw, mh);
+   evas_object_show(rect);
+
+   return rect;
+}
+
+EFL_START_TEST(elm_list_test_sizing)
+{
+   Evas_Object *win, *list;
+   unsigned int i;
+   int count[NUM_ITEMS] = {0};
+   Elm_Object_Item *it;
+
+   win = win_add(NULL, "list", ELM_WIN_BASIC);
+   evas_object_resize(win, 100, 100);
+
+   list = elm_list_add(win);
+   evas_object_resize(list, 100, 100);
+   for (i = 0; i < NUM_ITEMS; i++)
+     elm_list_item_append(list, "item", create_content_with_size(list, i * 5, i * 5), NULL, (void*)event_callback_single_call_int_data, &(count[i]));
+
+   elm_list_go(list);
+   evas_object_show(list);
+   evas_object_show(win);
+   get_me_to_those_events(win);
+
+   for (i = 0, it = elm_list_first_item_get(list); i < NUM_ITEMS; i++, it = elm_list_item_next(it))
+     {
+        Eo *rect = elm_object_item_content_get(it);
+        ck_assert(rect);
+        /* list is always homogeneous, so these should all have the size of the largest min size */
+        assert_object_size_eq(rect, (NUM_ITEMS - 1) * 5, (NUM_ITEMS - 1) * 5);
+     }
+
+   /* weird SIGILL in shutdown if the list isn't deleted here */
+   evas_object_del(list);
+}
+EFL_END_TEST
+
 void elm_test_list(TCase *tc)
 {
    tcase_add_test(tc, elm_list_legacy_type_check);
@@ -256,4 +350,6 @@ void elm_test_list(TCase *tc)
    tcase_add_test(tc, elm_list_atspi_selection_child_deselect);
 #endif
    tcase_add_test(tc, elm_atspi_children_parent);
+   tcase_add_test(tc, elm_list_test_callbacks);
+   tcase_add_test(tc, elm_list_test_sizing);
 }

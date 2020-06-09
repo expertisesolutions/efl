@@ -136,7 +136,7 @@ _efl_test_option_disp(int argc, char **argv, const Efl_Test_Case *etc)
           }
         else if (strcmp(argv[i], "--valgrind") == 0)
           {
-	     char *nav = (char *)malloc(sizeof(char) * (argc + 3));
+	           char **nav = malloc(sizeof(char*) * (argc + 3));
              int j, k;
 
              nav[0] = "valgrind";
@@ -251,10 +251,14 @@ _timing_end(void)
 # define EFL_START_TEST(TEST_NAME) \
   START_TEST(TEST_NAME) \
   { \
+   fprintf(stderr, #TEST_NAME "schultz!\n");\
+   fflush(stderr);\
   _timing_start();
 
 # define EFL_END_TEST \
   _timing_end(); \
+   fprintf(stderr, #TEST_NAME "schultz 2.0!\n");\
+   fflush(stderr);\
   } \
   END_TEST
 
