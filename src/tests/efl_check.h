@@ -245,14 +245,10 @@ _timing_end(void)
 # define EFL_START_TEST(TEST_NAME) \
   START_TEST(TEST_NAME) \
   { \
-   fprintf(stderr, #TEST_NAME "schultz!\n");\
-   fflush(stderr);\
   _timing_start();
 
 # define EFL_END_TEST \
   _timing_end(); \
-   fprintf(stderr, #TEST_NAME "schultz 2.0!\n");\
-   fflush(stderr);\
   } \
   END_TEST
 
