@@ -23,16 +23,17 @@ extern "C" {
 
 #include <evil_windows.h>
 
-#include <stdint.h> /* for mode_t in  */
 #include <sys/stat.h> /* for mkdir in evil_macro_wrapper */
-
-#include <sys/types.h> /* for mode_t in  */
 
 #include <evil_api.h>
 
 
 #ifndef PATH_MAX
 # define PATH_MAX MAX_PATH
+#endif
+
+#ifdef _WIN32
+# define _USE_MATH_DEFINES
 #endif
 
 #include "evil_basename.h"
@@ -42,6 +43,7 @@ extern "C" {
 #include "evil_locale.h"
 #include "evil_main.h"
 #include "evil_mman.h"
+#include "evil_stat.h"
 #include "evil_stdio.h"
 #include "evil_stdlib.h"
 #include "evil_string.h"
@@ -52,6 +54,15 @@ extern "C" {
 #include "evil_vasprintf.h"
 
 #define sigsetjmp(Env, Save) setjmp(Env)
+
+#ifdef _MSC_VER
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
+
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
 
 #include "evil_macro_wrapper.h"
 

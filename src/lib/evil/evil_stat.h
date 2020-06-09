@@ -1,15 +1,10 @@
-#ifndef UNPOSIX_SYS_STAT_H
-#define UNPOSIX_SYS_STAT_H
-
-#include <evil_windows.h>
-#include <../ucrt/sys/types.h>
-#include_next <sys/stat.h>
-#include <corecrt.h>
+#ifndef __EVIL_STAT_H__
+#define __EVIL_STAT_H__
 
 // Missing definitions:
 // Note: some pieces of code were based on LibreSSL-Portable's compat lib and
 // adapted to EFL standards.
-#if defined(_MSC_VER)
+#ifdef _MSC_VER
 # define S_IRWXU  0                           /* RWX user */
 # define S_IRUSR  S_IREAD                     /* Read user */
 # define S_IWUSR  S_IWRITE                    /* Write user */

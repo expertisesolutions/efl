@@ -45,7 +45,7 @@ if target_machine.system() == 'windows'
   )
 
   evil = declare_dependency(
-    include_directories: [include_directories('.', 'unposix')],
+    include_directories: [include_directories('.')],
     dependencies : evil_pub_deps,
     link_with: evil_lib,
     compile_args : ['-DPCRE_STATIC'],
