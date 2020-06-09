@@ -496,5 +496,8 @@ EAPI void eina_simple_xml_node_root_free(Eina_Simple_XML_Node_Root *root);
  */
 EAPI char * eina_simple_xml_node_dump(Eina_Simple_XML_Node *node, const char *indent);
 
+/**
+ * @}
+ */
 
 #endif /* EINA_SIMPLE_XML_H_ */
