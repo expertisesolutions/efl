@@ -15,7 +15,9 @@
 # include <sys/timerfd.h>
 #endif
 
-#include <evil_unistd.h>
+#ifdef _WIN32
+#include <evil_private.h>
+#endif /* _WIN32 */
 
 #ifdef HAVE_PRCTL
 # include <sys/prctl.h>
