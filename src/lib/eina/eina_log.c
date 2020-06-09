@@ -2161,7 +2161,7 @@ eina_log_print_cb_journald(const Eina_Log_Domain *d,
                                          "PRIORITY=%i", level,
                                          "MESSAGE=%s", message,
                                          "EFL_DOMAIN=%s", d->domain_str,
-                                         "THREAD=%lu", eina_self_thread_id(),
+                                         "THREAD=%lu", eina_thread_self_id(),
                                          NULL);
 #ifdef EINA_LOG_BACKTRACE
    else
