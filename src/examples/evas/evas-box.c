@@ -22,10 +22,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "evas-common.h"
+
 #define WIDTH  (640)
 #define HEIGHT (480)
 
-static const char *border_img_path = PACKAGE_EXAMPLES_DIR "/red.png";
+static const char *border_img_path = PACKAGE_EXAMPLES_DIR EVAS_IMAGE_FOLDER "/red.png";
 
 static const char *commands = \
   "commands are:\n"
@@ -150,13 +152,13 @@ list_free:
 
         evas_object_box_align_get(d.box, &h, &v);
 
-        if (h == 0.5)
+        if (EINA_DBL_EQ(h, 0.5))
           h = v = 1.0;
-        else if (h == 1.0)
+        else if (EINA_DBL_EQ(h, 1.0))
           h = v = -1.0;
-        else if (h == -1.0)
+        else if (EINA_DBL_EQ(h, -1.0))
           h = v = 0.0;
-        else if (h == 0.0)
+        else if (EINA_DBL_EQ(h, 0.0))
           h = v = 0.5;
 
         evas_object_box_align_set(d.box, h, v);

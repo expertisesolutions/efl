@@ -20,9 +20,6 @@
 
 #include "eina_thread_win32.h"
 
-#define EINA_THREAD_CLEANUP_PUSH(cleanup, data)
-#define EINA_THREAD_CLEANUP_POP(exec_cleanup)
-
 static inline void *
 _eina_thread_join(Eina_Thread t)
 {

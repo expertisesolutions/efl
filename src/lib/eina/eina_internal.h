@@ -8,6 +8,7 @@
  * not stable API.
  */
 
+#include "eina_types.h"
 #include "eina_prefix.h"
 #include "eina_promise.h"
 
@@ -68,8 +69,5 @@ EINA_API void eina_vpath_interface_app_set(const char *app_name, Eina_Prefix *p)
 EINA_API void eina_vpath_interface_user_set(Eina_Vpath_Interface_User *user);
 
 void eina_xdg_env_init(void);
-
-#undef EINA_API
-#define EINA_API
 
 #endif

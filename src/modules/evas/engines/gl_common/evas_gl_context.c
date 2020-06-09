@@ -1719,8 +1719,7 @@ _push_mask(Evas_Engine_GL_Context *gc, const int pn, int nm, Evas_GL_Texture *mt
            int mx, int my, int mw, int mh, Shader_Sampling msam, int nms)
 {
    double glmx, glmy, glmw, glmh, yinv = -1.f;
-   double gw = gc->w, gh = gc->h;
-   int i, cnt = 6;
+   int gw = gc->w, gh = gc->h, i, cnt = 6;
 
    if (!((gc->pipe[0].shader.surface == gc->def_surface) ||
          (!gc->pipe[0].shader.surface)))
@@ -2292,14 +2291,14 @@ evas_gl_common_context_image_push(Evas_Engine_GL_Context *gc,
         sy = tex->im->h - sh - sy;
      }
 
-   if (tex->im &&
+   else if (tex->im &&
        (tex->im->orient == EVAS_IMAGE_ORIENT_180))
      {
         sx = tex->im->w - sw - sx;
         sy = tex->im->h - sh - sy;
      }
 
-   if (tex->im &&
+   else if (tex->im &&
        (tex->im->orient == EVAS_IMAGE_ORIENT_270))
      {
         double tmp;
@@ -2310,19 +2309,19 @@ evas_gl_common_context_image_push(Evas_Engine_GL_Context *gc,
         sx = tex->im->w - sw - sx;
      }
 
-   if (tex->im &&
+   else if (tex->im &&
        (tex->im->orient == EVAS_IMAGE_FLIP_HORIZONTAL))
      {
         sx = tex->im->w - sw - sx;
      }
 
-   if (tex->im &&
+   else if (tex->im &&
        (tex->im->orient == EVAS_IMAGE_FLIP_VERTICAL))
      {
         sy = tex->im->h - sh - sy;
      }
 
-   if (tex->im &&
+   else if (tex->im &&
        (tex->im->orient == EVAS_IMAGE_FLIP_TRANSVERSE))
      {
         double tmp;
@@ -2334,7 +2333,7 @@ evas_gl_common_context_image_push(Evas_Engine_GL_Context *gc,
         sy = tex->im->h - sh - sy;
      }
 
-   if (tex->im &&
+   else if (tex->im &&
        (tex->im->orient == EVAS_IMAGE_FLIP_TRANSPOSE))
      {
         double tmp;
@@ -2479,7 +2478,7 @@ evas_gl_common_context_font_push(Evas_Engine_GL_Context *gc,
    pipe_region_expand(gc, pn, x, y, w, h);
    PIPE_GROW(gc, pn, 6);
 
-   if (sw == 0.0)
+   if (EINA_DBL_EQ(sw, 0.0))
      {
         tx1 = tex->sx1;
         ty1 = tex->sy1;

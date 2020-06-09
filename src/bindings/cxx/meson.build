@@ -9,15 +9,13 @@ cxx_sublibs = [
   ['Eet',         true,  true, false, []],
   ['Eio',        false, false,  true, []],
   ['Evas',       false,  true,  true, []],
-  ['Edje',       false, false,  true, []],]
+  ['Edje',       false, false,  true, []],
+  ['Elementary',  true,  true,  true, []],
+]
 
 if not sys_windows
   cxx_sublibs += [['Eldbus',      true,  true,  true, []]]
 endif
-
-cxx_sublibs += [
-  ['Elementary',  true,  true,  true, []]
-]
 
 increased_dependency = []
 growing_deps = []

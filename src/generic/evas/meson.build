@@ -40,7 +40,7 @@ foreach loader : generic_loaders
         generic_src,
         include_directories : config_dir + [include_directories('common')],
         link_with : common,
-        dependencies: [eina, generic_deps, evil_unposix],
+        dependencies: [eina, generic_deps],
         install_dir : join_paths(dir_lib, 'evas', 'utils'),
         install : true,
     )

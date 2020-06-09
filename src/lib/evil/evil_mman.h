@@ -109,7 +109,7 @@
  *
  * @ingroup Evil_Mman
  */
-EVIL_API void *mmap(void   *addr,
+EAPI void *mmap(void   *addr,
                 size_t len,
                 int    prot,
                 int    flags,
@@ -140,7 +140,7 @@ EVIL_API void *mmap(void   *addr,
  *
  * @ingroup Evil_Mman
  */
-EVIL_API int   munmap(void  *addr,
+EAPI int   munmap(void  *addr,
                   size_t len);
 
 /**
@@ -148,7 +148,7 @@ EVIL_API int   munmap(void  *addr,
  *
  * @param addr Pointer to the base address.
  * @param len  Length of the memory.
- * @param New protection.
+ * @param prot New protection.
  * @return 0 on success, -1 otherwise.
  *
  * Changes protection for the calling process' memory page.
@@ -161,7 +161,7 @@ EVIL_API int   munmap(void  *addr,
  *
  * @ingroup Evil_Mman
  */
-EVIL_API int mprotect(void *addr, size_t len, int prot);
+EAPI int mprotect(void *addr, size_t len, int prot);
 
 
 #endif /* __EVIL_SYS_MMAN_H__ */

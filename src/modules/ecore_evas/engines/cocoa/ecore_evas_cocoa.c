@@ -514,26 +514,31 @@ _ecore_evas_cocoa_selection_request(Ecore_Evas *ee EINA_UNUSED, unsigned int sea
      {
         int size;
         void *data;
-        Eina_Content *content;
+        Eina_Content *content = NULL;
         Eina_Rw_Slice slice;
 
         data = ecore_cocoa_clipboard_get(&size, mime_type);
-        if (!strncmp(mime_type, "text", strlen("text")))
+
+        if (eina_str_has_prefix(mime_type,"text"))
           {
              //ensure that we always have a \0 at the end, there is no assertion that \0 is included here.
              slice.len = size + 1;
              slice.mem = eina_memdup(data, size, EINA_TRUE);
+             free(data);
           }
         else
           {
              slice.len = size;
              slice.mem = data;
           }
-        content = eina_content_new(eina_rw_slice_slice_get(slice), mime_type);
+        if (slice.mem)
+          content = eina_content_new(eina_rw_slice_slice_get(slice), mime_type);
+        free(slice.mem); //memory got duplicated in eina_content_new
         if (!content) // construction can fail because of some validation reasons
           eina_promise_reject(promise, ecore_evas_no_matching_type);
         else
           eina_promise_resolve(promise, eina_value_content_init(content));
+
      }
    return future;
 }

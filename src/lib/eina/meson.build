@@ -3,7 +3,10 @@ if not sys_windows
 else
   eina_deps = [pcre_dep]
 endif
-eina_pub_deps = [thread_dep]
+
+eina_pub_deps = [thread_dep, m]
+eina_pc_deps = [m, rt, dl, thread_dep] #special case, this array is taken to drag in external deps to efl-one
+eina_ext_deps = eina_pc_deps
 
 if sys_windows == true
   eina_pub_deps += [evil]
@@ -118,7 +121,7 @@ public_headers = [
   'Eina.h'
 ]
 
-sources = [
+eina_src = files([
 'eina_abi.c',
 'eina_accessor.c',
 'eina_array.c',
@@ -194,21 +197,28 @@ sources = [
 'eina_vpath.c',
 'eina_vpath_xdg.c',
 'eina_abstract_content.c',
-]
+]) + eina_mp_sources
 
-if sys_windows == true
-  public_sub_headers += 'eina_thread_win32.h'
-  public_sub_headers += 'eina_inline_thread_win32.x'
-  sources += 'eina_file_win32.c'
-  sources += 'eina_sched_win32.c'
-  sources += 'eina_fnmatch.c'
-  public_sub_headers += 'eina_inline_lock_win32.x'
+if sys_windows
+  eina_src += files(
+    'eina_file_win32.c',
+    'eina_fnmatch.c',
+    'eina_sched_win32.c',
+    'eina_tls_win32.c',
+  )
+  public_sub_headers += files(
+    'eina_thread_win32.h',
+    'eina_inline_lock_win32.x',
+  )
 else
-  public_sub_headers += 'eina_thread_posix.h'
-  public_sub_headers += 'eina_inline_thread_posix.x'
-  sources += 'eina_file.c'
-  sources += 'eina_sched_posix.c'
-  public_sub_headers += 'eina_inline_lock_posix.x'
+  eina_src += files(
+    'eina_file.c',
+    'eina_sched_posix.c',
+  )
+  public_sub_headers += files(
+    'eina_thread_posix.h',
+    'eina_inline_lock_posix.x',
+  )
 endif
 
 eina_config = configuration_data()
@@ -254,7 +264,7 @@ if use_valgrind
    else
      config_h.set('HAVE_VALGRIND', 1)
    endif
-   eina_deps += valgrind
+   eina_ext_deps += valgrind
 else
    config_h.set('NVALGRIND', 1)
    valgrind = []
@@ -277,14 +287,7 @@ if default_mempool
 endif
 
 if get_option('systemd') == true
-  systemd = dependency('libsystemd')
-  eina_deps += systemd
   config_h.set('HAVE_SYSTEMD', '1')
-  if systemd.version().version_compare('>=209')
-    config_h.set('HAVE_SYSTEMD_LOGIN_209', '1')
-  endif
-else
-  systemd = []
 endif
 
 
@@ -322,7 +325,7 @@ if cc.has_header_symbol('WinBase.h', 'SetThreadAffinityMask')
    eina_config.set('EINA_HAVE_WIN32_THREAD_AFFINITY', '1')
 endif
 
-if debug_threads or get_option('debug-threads')
+if debug_threads and get_option('debug-threads')
    if cc.has_header_symbol('execinfo.h', 'backtrace')
       eina_config.set('EINA_HAVE_DEBUG_THREADS', '1')
    endif
@@ -383,7 +386,7 @@ public_headers += eina_config_file
 unwind = dependency('libunwind-generic', required: false)
 if unwind.found()
    config_h.set('HAVE_UNWIND', 1)
-   eina_deps += unwind
+   eina_ext_deps += unwind
    config_h.set('EINA_LOG_BACKTRACE_ENABLE', 1)
 endif
 
@@ -392,23 +395,15 @@ iconv = dependency('iconv', required: false)
 if iconv.found() == false
   iconv = cc.find_library('iconv', required: false)
 endif
+eina_ext_deps += [iconv]
 
 execinfo = cc.find_library('execinfo', required: false)
+eina_ext_deps += [execinfo]
 
-if sys_windows
-  eina_lib_deps = [execinfo, iconv, eina_deps, thread_dep
-    , eina_mem_pools
-    , evil]
-else
-  eina_lib_deps = [m, rt, dl, execinfo, iconv, eina_deps, thread_dep
-                    , eina_mem_pools
-  , evil]
-endif
-
-eina_lib = library('eina', sources,
-  c_args : ['-DEINA_BUILD'],
+eina_lib = library('eina', eina_src,
+  c_args : [package_c_args, '-DEINA_BUILD'],
   include_directories : config_dir,
-  dependencies: eina_lib_deps,
+  dependencies: eina_ext_deps + [eina_deps, evil],
   install: true,
   version : meson.project_version()
 )
@@ -428,13 +423,6 @@ install_headers(public_sub_headers,
   install_dir : join_paths(dir_package_include, 'eina')
 )
 
-automatic_pkgfile = false
-
-if not sys_windows
-pkgconfig.generate(eina_lib,
-  name : 'eina',
-  subdirs : ['eina-'+version_major, 'efl-'+version_major, join_paths('eina-'+version_major, 'eina')],
-  version : version_major + '.' + version_minor + '.' + version_micro,
-  libraries : eina_pub_deps,
-)
-endif
+package_header_subdirs += 'eina'
+#special case here to support -lm -ldl -threads
+eina_pub_deps += eina_pc_deps

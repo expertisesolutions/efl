@@ -931,6 +931,7 @@ void   _elm_entry_entry_paste(Evas_Object *obj, const char *entry);
 
 double _elm_atof(const char *s);
 
+void _elm_layout_legacy_icon_signal_emit(Evas_Object *obj);
 // elm_layout and elm_entry LEGACY signal API (returned the user data pointer)
 void _elm_layout_signal_callback_add_legacy(Eo *obj, Eo *edje, Eina_List **p_edje_signals, const char *emission, const char *source, Edje_Signal_Cb func, void *data);
 void *_elm_layout_signal_callback_del_legacy(Eo *obj, Eo *edje, Eina_List **p_edje_signals, const char *emission, const char *source, Edje_Signal_Cb func);
@@ -1061,5 +1062,6 @@ void _selection_changed_event_unregister(Eo *obj);
 void _drop_event_register(Eo *obj);
 void _drop_event_unregister(Eo *obj);
 void _register_selection_changed(Efl_Ui_Selection *selection);
+Efl_Ui_Win* efl_ui_win_get(Evas_Object *obj);
 
 #endif

@@ -4,6 +4,10 @@
 #include <evil_api.h>
 #include <sys/types.h>
 
+#ifndef HAVE_CYGWIN
+typedef int mode_t;
+#endif
+
 /**
  * @file evil_stdio.h
  * @brief The file that provides functions ported from Unix in stdio.h.
@@ -11,7 +15,7 @@
  * @ingroup Evil
  *
  * This header provides functions ported from Unix in stdio.h.
- *
+ * @{
  */
 
 #define EVIL_PATH_SEP_SWAP(p, s1, s2) \
@@ -43,11 +47,7 @@
  *
  * @since 1.8
  */
-EVIL_API int evil_rename(const char *src, const char *dst);
-
-#ifndef HAVE_CYGWIN
-typedef int mode_t;
-#endif
+EAPI int evil_rename(const char *src, const char *dst);
 
 /**
  * @brief Wrap the _mkdir() function on Windows.
@@ -60,7 +60,10 @@ typedef int mode_t;
  *
  * @since 1.15
  */
-EVIL_API int evil_mkdir(const char *dirname, mode_t mode);
+EAPI int evil_mkdir(const char *dirname, mode_t mode);
 
+/**
+ * @}
+ */
 
 #endif /* __EVIL_STDIO_H__ */

@@ -2,7 +2,9 @@
 # include "config.h"
 #endif
 
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 #include "Eina.h"
 #include "eina_thread_queue.h"
 #include "eina_safety_checks.h"

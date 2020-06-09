@@ -6,7 +6,8 @@ edje_bin_deps = [
   ecore_file, ecore_input,
   ecore_imf, ecore_imf_evas,
   embryo, efreet, eio,
-  edje, ecore_evas
+  edje, ecore_evas,
+  intl,
 ]
 
 edje_cc_src = [
@@ -30,6 +31,11 @@ edje_cc = executable('edje_cc',
         link_args : bin_linker_args
 )
 
+asan_option =[]
+if get_option('b_sanitize') == 'address'
+  asan_option= 'ASAN_OPTIONS=detect_leaks=0'
+endif
+
 if meson.is_cross_build()
   _edje_cc = find_program('edje_cc', native: true)
   edje_cc_path = _edje_cc.path()
@@ -40,7 +46,7 @@ else
     edje_cc_exe = [edje_cc.full_path()]
   else
     env = find_program('env', native: true)
-    edje_cc_exe = [env, 'EFL_RUN_IN_TREE=1', edje_cc.full_path()]
+    edje_cc_exe = [env, asan_option, 'EFL_RUN_IN_TREE=1', edje_cc.full_path()]
   endif
   edje_depends = [edje_cc, epp, evas_engine_buffer_mod, embryo_cc]
 endif
@@ -96,7 +102,7 @@ else
     edje_codegen_exe = [edje_codegen.full_path()]
   else
     env = find_program('env', native: true)
-    edje_codegen_exe = [env, 'EFL_RUN_IN_TREE=1', edje_codegen.full_path()]
+    edje_codegen_exe = [env, asan_option, 'EFL_RUN_IN_TREE=1', edje_codegen.full_path()]
   endif
 endif
 

@@ -27,7 +27,9 @@
 # ifdef HAVE_SYS_TYPES_H
 #  include <sys/types.h>
 # endif
-# include <unistd.h>
+# ifndef _MSC_VER
+#  include <unistd.h>
+# endif
 #endif
 
 #ifdef HAVE_MCHECK_H
@@ -319,7 +321,7 @@ eina_init(void)
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   eina_lock_take(&_eina_tracking_lock);
+   eina_lock_new(&_eina_tracking_lock);
 
    if (getenv("EINA_DEBUG_THREADS"))
      _eina_threads_debug = atoi(getenv("EINA_DEBUG_THREADS"));

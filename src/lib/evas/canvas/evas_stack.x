@@ -400,19 +400,22 @@ _evas_canvas_object_top_get(const Eo *eo_e EINA_UNUSED, Evas_Public_Data *e)
    list = EINA_INLIST_GET(e->layers);
    if (!list) return NULL;
 
-   layer = (Evas_Layer *) list->last;
-   if (!layer) return NULL;
-
-   list = EINA_INLIST_GET(layer->objects);
-   if (!list) return NULL;
-
-   obj = (Evas_Object_Protected_Data *) list->last;
-   if (!obj) return NULL;
-
-   while (obj)
+   //just in case if layer has no valid objects in the list.
+   EINA_INLIST_REVERSE_FOREACH(list, layer)
      {
-        if (!obj->delete_me) return obj->object;
-        obj = evas_object_below_get_internal(obj);
+        if (!layer->objects) continue;
+
+        list = EINA_INLIST_GET(layer->objects);
+        if (!list) return NULL;
+
+        obj = (Evas_Object_Protected_Data *) list->last;
+        if (!obj) return NULL;
+
+        while (obj)
+          {
+             if (!obj->delete_me) return obj->object;
+             obj = evas_object_below_get_internal(obj);
+          }
      }
 
    return NULL;

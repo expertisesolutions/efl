@@ -22,7 +22,16 @@
 
 #include <stdio.h> /* asprintf() */
 #include <inttypes.h> /* PRId64 and PRIu64 */
-#include <sys/time.h> /* struct timeval */
+
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <winsock.h> /* struct timeval */
+# undef WIN32_LEAN_AND_MEAN
+#else
+# include <sys/time.h> /* struct timeval */
+#endif
 
 #include "eina_config.h"
 #include "eina_private.h"
@@ -38,6 +47,10 @@
 /* undefs EINA_ARG_NONULL() so NULL checks are not compiled out! */
 #include "eina_safety_checks.h"
 #include "eina_value.h"
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 EINA_API Eina_Error EINA_ERROR_VALUE_FAILED = 0;
 
@@ -3567,11 +3580,14 @@ _eina_value_type_tm_compare(const Eina_Value_Type *type, const void *a, const vo
    struct tm tma = *(struct tm*)a;
    struct tm tmb = *(struct tm*)b;
    time_t ta, tb;
+   struct timeval tva = {0}, tvb = {0};
 
    ta = mktime(&tma);
    tb = mktime(&tmb);
+   tva.tv_sec = ta;
+   tvb.tv_sec = tb;
 
-   return _eina_value_type_timeval_compare(type, &ta, &tb);
+   return _eina_value_type_timeval_compare(type, &tva, &tvb);
 }
 
 static Eina_Bool

@@ -86,7 +86,7 @@ exit /B 0
             "-Devas-loaders-disabler=gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,eet,generic,gif,ico,jp2k,pmaps,png,psd,tga,tgv,tiff,wbmp,webp,xpm,json"^
             -Dopengl=none^
             "-Demotion-loaders-disabler=gstreamer1,libvlc,xine"^
-            -Dbuild-tests=false^
+            -Dbuild-tests=true^
             -Dbuild-examples=false^
             -Dbindings=^
             --buildtype=debug^

@@ -68,10 +68,22 @@ Fixes:
    * evas_object_box: respect static clipper.
    * ecore evas x - on argb dont create unused 1 bit pixmap masks
    * emotion - webcam - fix segv on webcam plug/unplug and clean
+   * ui textpath: update map before rendering begins.
+   * elm icon/image efl ui image - respect aspect hints at all if set
+   * elm icon/image efl ui image - respect aspect hints at all if set
+   * elm_cnp: fix memory leaks
+   * elm menu - fix segv on deletion/shutdown where parent was not done ok
+   * canvas svg: fix memory leak.
+   * ecore_wl2: EFL Wayland Build on FreeBSD (T8659)
+   * ecore_file - address issue about false positive of finding a file in ./ (T8678)
+   * evas gl - shader cache was needless losing and overwriting
+   * efreet - work around conconforming apps putting startupwmclass in quotes
+   * ecore-evas-drm: Fix broken init count
 
 Removals:
 
    * emotion & evas: remove gstreamer 0.10 support
+   * emotion: remove xine and vlc support
    * escape: remove library from tree
    * ecore_x: remove support XGesture extension
    * elocation: remove beta library

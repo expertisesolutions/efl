@@ -27,17 +27,14 @@
 #include <synchapi.h>
 #undef WIN32_LEAN_AND_MEAN
 
-#include "unimplemented.h"
-
 #include <errno.h>
 
-#include <sys/time.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <sys/types.h>
-#include <unistd.h>
 
 #ifdef EINA_HAVE_DEBUG_THREADS
 #include <assert.h>
@@ -47,6 +44,8 @@ typedef void (*Eina_Lock_Bt_Func) ();
 
 #include "eina_inlist.h"
 #endif
+
+#include "eina_hash.h"
 
 EINA_API void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
 EINA_API void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
@@ -58,14 +57,13 @@ EINA_API void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr
 
 /* For cond_timedwait */
 #include <time.h>
-#include <sys/time.h>
 
 #include <eina_error.h>
 
 typedef struct _Eina_Lock Eina_Lock;
 typedef struct _Eina_RWLock Eina_RWLock;
 typedef struct _Eina_Condition Eina_Condition;
-typedef struct _Eina_Barrier Eina_Barrier;
+typedef SYNCHRONIZATION_BARRIER Eina_Barrier;
 typedef DWORD Eina_TLS;
 typedef HANDLE Eina_Semaphore;
 
@@ -129,6 +127,11 @@ EINA_API void eina_condition_free(Eina_Condition *cond);
 EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
 EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 
+extern Eina_Hash *_eina_tls_map;
+extern Eina_Lock _eina_tls_map_lock;
+
+void _eina_free_tls_value(Eina_TLS *key, void *val);
+
 static inline Eina_Bool
 _eina_lock_new(Eina_Lock *mutex, Eina_Bool recursive)
 {
@@ -142,10 +145,10 @@ _eina_lock_free(Eina_Lock *mutex)
 #ifdef EINA_HAVE_DEBUG_THREADS
    if (mutex->locked)
      {
-        EnterCriticalSection(_eina_tracking_lock);
+        eina_lock_take(_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        LeaveCriticalSection(_eina_tracking_lock);
+        eina_lock_release(_eina_tracking_lock);
      }
 #endif
 
@@ -174,10 +177,10 @@ _eina_lock_take_try(Eina_Lock *mutex)
         mutex->lock_bt_num = backtrace((void **)(mutex->lock_bt), EINA_LOCK_DEBUG_BT_NUM);
         errno = err;
 
-        EnterCriticalSection(_eina_tracking_lock);
+        eina_lock_take(_eina_tracking_lock);
         _eina_tracking = eina_inlist_append(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        LeaveCriticalSection(_eina_tracking_lock);
+        eina_lock_release(_eina_tracking_lock);
      }
 #endif
 
@@ -224,10 +227,10 @@ _eina_lock_take(Eina_Lock *mutex)
    mutex->lock_bt_num = backtrace((void **)(mutex->lock_bt), EINA_LOCK_DEBUG_BT_NUM);
    errno = err;
 
-   EnterCriticalSection(_eina_tracking_lock);
+   eina_lock_take(_eina_tracking_lock);
    _eina_tracking = eina_inlist_append(_eina_tracking,
                                        EINA_INLIST_GET(mutex));
-   LeaveCriticalSection(_eina_tracking_lock);
+   eina_lock_release(_eina_tracking_lock);
 #endif
 
    return EINA_LOCK_SUCCEED;
@@ -248,17 +251,17 @@ _eina_lock_release(Eina_Lock *mutex)
         mutex->lock_thread_id = 0;
         memset(mutex->lock_bt, 0, EINA_LOCK_DEBUG_BT_NUM * sizeof(Eina_Lock_Bt_Func));
         mutex->lock_bt_num = 0;
-        EnterCriticalSection(_eina_tracking_lock);
+        eina_lock_take(_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        LeaveCriticalSection(_eina_tracking_lock);
+        eina_lock_release(_eina_tracking_lock);
      }
 #endif
    LeaveCriticalSection((&mutex->mutex));
    return EINA_LOCK_SUCCEED;
 }
 
-UNIMPLEMENTED static inline Eina_Bool
+static inline Eina_Bool
 _eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex)
 {
    InitializeConditionVariable(&cond->condition);
@@ -280,10 +283,10 @@ _eina_condition_wait_ex(Eina_Condition *cond, DWORD timeout)
    assert(_eina_threads_activated);
    assert(cond->lock != NULL);
 
-   EnterCriticalSection(_eina_tracking_lock);
+   eina_lock_take(_eina_tracking_lock);
    _eina_tracking = eina_inlist_remove(_eina_tracking,
                                        EINA_INLIST_GET(cond->lock));
-   LeaveCriticalSection(_eina_tracking_lock);
+   eina_lock_release(_eina_tracking_lock);
 #endif
 
    if (SleepConditionVariableCS(&cond->condition
@@ -300,13 +303,17 @@ _eina_condition_wait_ex(Eina_Condition *cond, DWORD timeout)
           {
              EINA_LOCK_ABORT_DEBUG((int) err, cond_wait, cond);
           }
+        else if (ERROR_TIMEOUT == err)
+          {
+             eina_error_set(ETIMEDOUT);
+          }
      }
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   EnterCriticalSection(_eina_tracking_lock);
+   eina_lock_take(_eina_tracking_lock);
    _eina_tracking = eina_inlist_append(_eina_tracking
                                       , EINA_INLIST_GET(cond->lock));
-   LeaveCriticalSection(_eina_tracking_lock);
+   eina_lock_release(_eina_tracking_lock);
 #endif
 
    return r;
@@ -417,13 +424,31 @@ _eina_rwlock_release(Eina_RWLock *mutex)
 static inline Eina_Bool
 _eina_tls_cb_new(Eina_TLS *key, Eina_TLS_Delete_Cb delete_cb)
 {
-   *key = TlsAlloc();
-   return TLS_OUT_OF_INDEXES == *key ? EINA_FALSE : EINA_TRUE;
+   const DWORD k = TlsAlloc();
+   if (TLS_OUT_OF_INDEXES != k)
+     {
+        if (delete_cb)
+          {
+             eina_lock_take(&_eina_tls_map_lock);
+             eina_hash_add(_eina_tls_map, &k, delete_cb);
+             eina_lock_release(&_eina_tls_map_lock);
+          }
+        *key = k;
+        return EINA_TRUE;
+     }
+   else
+     {
+        return EINA_FALSE;
+     }
 }
 
 static inline void
 _eina_tls_free(Eina_TLS key)
 {
+   eina_lock_take(&_eina_tls_map_lock);
+   _eina_free_tls_value(&key, TlsGetValue(key));
+   eina_hash_del_by_key(_eina_tls_map, &key);
+   eina_lock_release(&_eina_tls_map_lock);
    TlsFree(key);
 }
 
@@ -436,25 +461,26 @@ _eina_tls_get(Eina_TLS key)
 static inline Eina_Bool
 _eina_tls_set(Eina_TLS key, const void *data)
 {
-   return TlsSetValue(key, (void *) data) ? EINA_TRUE : EINA_FALSE;
+   void *p = TlsGetValue(key);
+   const Eina_Bool ret = TlsSetValue(key, (void *) data) ? EINA_TRUE : EINA_FALSE;
+   eina_lock_take(&_eina_tls_map_lock);
+   if (ret) _eina_free_tls_value(&key, p);
+   eina_lock_release(&_eina_tls_map_lock);
+   return ret;
 }
 
-struct _Eina_Barrier
-{
-   SYNCHRONIZATION_BARRIER barrier;
-};
 
 static inline Eina_Bool
 _eina_barrier_new(Eina_Barrier *barrier, int needed)
 {
-   return InitializeSynchronizationBarrier(&barrier->barrier, (LONG) needed, 10)
+   return InitializeSynchronizationBarrier(barrier, (LONG) needed, 10)
        ? EINA_TRUE : EINA_FALSE;
 }
 
 static inline  void
 _eina_barrier_free(Eina_Barrier *barrier)
 {
-   if (!DeleteSynchronizationBarrier(&barrier->barrier))
+   if (!DeleteSynchronizationBarrier(barrier))
      {
         EINA_LOCK_ABORT_DEBUG(GetLastError(), barrier_destroy, barrier);
      }
@@ -463,7 +489,7 @@ _eina_barrier_free(Eina_Barrier *barrier)
 static inline Eina_Bool
 _eina_barrier_wait(Eina_Barrier *barrier)
 {
-   EnterSynchronizationBarrier(&barrier->barrier, 0);
+   EnterSynchronizationBarrier(barrier, 0);
    return EINA_TRUE;
 }
 

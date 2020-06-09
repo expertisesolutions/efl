@@ -34,14 +34,18 @@
  */
 
 #ifdef EINA_API
-# undef EINA_API
+#error EINA_API should not be already defined
 #endif
 
 #ifdef _WIN32
-# ifdef EINA_BUILD
-#  define EINA_API __declspec(dllexport)
+# ifndef EINA_STATIC
+#  ifdef EINA_BUILD
+#   define EINA_API __declspec(dllexport)
+#  else
+#   define EINA_API __declspec(dllimport)
+#  endif
 # else
-#  define EINA_API __declspec(dllimport)
+#  define EINA_API
 # endif
 # define EINA_API_WEAK
 #else

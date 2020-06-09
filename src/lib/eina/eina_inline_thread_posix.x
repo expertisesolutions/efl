@@ -26,69 +26,6 @@
 #include <sys/types.h>
 #endif
 
-/**
- * @def EINA_THREAD_CLEANUP_PUSH(cleanup, data)
- *
- * @brief Pushes a cleanup function to be executed when the thread is
- * canceled.
- *
- * This macro will schedule a function cleanup(data) to be executed if
- * the thread is canceled with eina_thread_cancel() and the thread
- * was previously marked as cancellable with
- * eina_thread_cancellable_set().
- *
- * It @b must be paired with EINA_THREAD_CLEANUP_POP() in the same
- * code block as they will expand to do {} while ()!
- *
- * The cleanup function may also be executed if
- * EINA_THREAD_CLEANUP_POP(EINA_TRUE) is used.
- *
- * @note If the block within EINA_THREAD_CLEANUP_PUSH() and
- *       EINA_THREAD_CLEANUP_POP() returns, the cleanup callback will
- *       @b not be executed! To avoid problems prefer to use
- *       eina_thread_cancellable_run()!
- *
- * @param[in] cleanup The function to execute on cancellation.
- * @param[in] data The context to give to cleanup function.
- *
- * @see eina_thread_cancellable_run()
- *
- * @since 1.19
- */
-#define EINA_THREAD_CLEANUP_PUSH(cleanup, data) \
-  pthread_cleanup_push(cleanup, data)
-
-/**
- * @def EINA_THREAD_CLEANUP_POP(exec_cleanup)
- *
- * @brief Pops a cleanup function to be executed when the thread is
- * canceled.
- *
- * This macro will remove a previously pushed cleanup function, thus
- * if the thread is canceled with eina_thread_cancel() and the thread
- * was previously marked as cancellable with
- * eina_thread_cancellable_set(), that cleanup won't be executed
- * anymore.
- *
- * It @b must be paired with EINA_THREAD_CLEANUP_PUSH() in the same
- * code block as they will expand to do {} while ()!
- *
- * @note If the block within EINA_THREAD_CLEANUP_PUSH() and
- *       EINA_THREAD_CLEANUP_POP() returns, the cleanup callback will
- *       @b not be executed even if exec_cleanup is EINA_TRUE! To
- *       avoid problems prefer to use eina_thread_cancellable_run()!
- *
- * @param[in] exec_cleanup if EINA_TRUE, the function registered with
- *        EINA_THREAD_CLEANUP_PUSH() will be executed.
- *
- * @see eina_thread_cancellable_run()
- *
- * @since 1.19
- */
-#define EINA_THREAD_CLEANUP_POP(exec_cleanup) \
-  pthread_cleanup_pop(exec_cleanup)
-
-
 static inline void *
 _eina_thread_join(Eina_Thread t)
 {
@@ -100,14 +37,27 @@ _eina_thread_join(Eina_Thread t)
 }
 
 static inline Eina_Bool
-_eina_thread_name_set(Eina_Thread thread, char *buf)
+_eina_thread_name_set(Eina_Thread thread, char *name)
 {
-#ifndef __linux__
-   pthread_set_name_np((pthread_t)t, buf);
+#ifdef EINA_HAVE_PTHREAD_SETNAME
+   char buf[16];
+   if (name)
+     {
+        strncpy(buf, name, 15);
+        buf[15] = 0;
+     }
+   else buf[0] = 0;
+ #ifndef __linux__
+   pthread_set_name_np((pthread_t)thread, buf);
    return EINA_TRUE;
+ #else
+   if (pthread_setname_np((pthread_t)thread, buf) == 0) return EINA_TRUE;
+ #endif
 #else
-   return pthread_setname_np((pthread_t)thread, buf);
+   (void)thread;
+   (void)name;
 #endif
+   return EINA_FALSE;
 }
 
 static inline Eina_Bool

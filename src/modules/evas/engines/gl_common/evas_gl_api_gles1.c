@@ -9,10 +9,10 @@
 
 #define EVGLD_FUNC_BEGIN() \
 { \
-   _func_begin_debug(__FUNCTION__); \
+   _func_begin_debug(__func__); \
 }
 
-#define EVGLD_FUNC_END() GLERRV(__FUNCTION__)
+#define EVGLD_FUNC_END() GLERRV(__func__)
 
 static void *_gles1_handle = NULL;
 static Evas_GL_API _gles1_api;
@@ -544,15 +544,15 @@ _evgl_gles1_glClear(GLbitfield mask)
               */
              if (ctx->current_sfc->alpha && (mask & GL_COLOR_BUFFER_BIT))
                {
-                  if ((rsc->clear_color.a == 0) &&
-                      (rsc->clear_color.r == 0) &&
-                      (rsc->clear_color.g == 0) &&
-                      (rsc->clear_color.b == 0))
+                  if (EINA_DBL_EQ(rsc->clear_color.a, 0) &&
+                      EINA_DBL_EQ(rsc->clear_color.r, 0) &&
+                      EINA_DBL_EQ(rsc->clear_color.g, 0) &&
+                      EINA_DBL_EQ(rsc->clear_color.b, 0))
                     {
                        // Skip clear color as we don't want to write black
                        mask &= ~GL_COLOR_BUFFER_BIT;
                     }
-                  else if (rsc->clear_color.a != 1.0)
+                  else if (EINA_DBL_EQ(rsc->clear_color.a, 1.0))
                     {
                        // TODO: Draw a rectangle? This will never be the perfect solution though.
                        WRN("glClear() used with a semi-transparent color and direct rendering. "

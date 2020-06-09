@@ -9,12 +9,12 @@
 #include <stdio.h> /* fprintf, fputs */
 #include <string.h> /* strcmp */
 #include <errno.h> /* errno */
-#include <sys/time.h>
 
 #ifdef _WIN32
-#include <evil_private.h>
+# include <evil_private.h>
 #else
-#include <unistd.h> /* execvp */
+# include <unistd.h> /* execvp */
+# include <sys/time.h>
 #endif
 
 #ifdef HAVE_FORK
@@ -136,7 +136,7 @@ _efl_test_option_disp(int argc, char **argv, const Efl_Test_Case *etc)
           }
         else if (strcmp(argv[i], "--valgrind") == 0)
           {
-	     char *nav = (char *)malloc(sizeof(char) * (argc + 3));
+	           char **nav = (char **) malloc(sizeof(char*) * (argc + 3));
              int j, k;
 
              nav[0] = "valgrind";

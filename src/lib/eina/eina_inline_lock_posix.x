@@ -152,11 +152,19 @@ EINA_API extern Eina_Bool _eina_threads_activated;
 #ifdef EINA_HAVE_DEBUG_THREADS
 EINA_API extern int _eina_threads_debug;
 EINA_API extern pthread_t _eina_main_loop;
-EINA_API extern pthread_mutex_t _eina_tracking_lock;
+EINA_API extern Eina_Lock _eina_tracking_lock;
 EINA_API extern Eina_Inlist *_eina_tracking;
 #endif
 
+EINA_API Eina_Bool eina_lock_new(Eina_Lock *mutex);
+EINA_API void eina_lock_free(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
 EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
+EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
+EINA_API void eina_condition_free(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 EINA_API Eina_Lock_Result eina_spinlock_take_try(Eina_Spinlock *spinlock);
 
 static inline Eina_Bool
@@ -186,10 +194,10 @@ _eina_lock_free(Eina_Lock *mutex)
 #ifdef EINA_HAVE_DEBUG_THREADS
    if (mutex->locked)
      {
-        pthread_mutex_lock(&_eina_tracking_lock);
+        eina_lock_take(&_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        pthread_mutex_unlock(&_eina_tracking_lock);
+        eina_lock_release(&_eina_tracking_lock);
      }
 #endif
 
@@ -232,10 +240,10 @@ _eina_lock_take_try(Eina_Lock *mutex)
         mutex->lock_bt_num = backtrace((void **)(mutex->lock_bt), EINA_LOCK_DEBUG_BT_NUM);
         errno = err;
 
-        pthread_mutex_lock(&_eina_tracking_lock);
+        eina_lock_take(&_eina_tracking_lock);
         _eina_tracking = eina_inlist_append(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        pthread_mutex_unlock(&_eina_tracking_lock);
+        eina_lock_release(&_eina_tracking_lock);
      }
 #endif
    return ret;
@@ -305,10 +313,10 @@ _eina_lock_take(Eina_Lock *mutex)
    mutex->lock_bt_num = backtrace((void **)(mutex->lock_bt), EINA_LOCK_DEBUG_BT_NUM);
    errno = err;
 
-   pthread_mutex_lock(&_eina_tracking_lock);
+   eina_lock_take(&_eina_tracking_lock);
    _eina_tracking = eina_inlist_append(_eina_tracking,
                                        EINA_INLIST_GET(mutex));
-   pthread_mutex_unlock(&_eina_tracking_lock);
+   eina_lock_release(&_eina_tracking_lock);
 #endif
 
    return ret;
@@ -335,10 +343,10 @@ _eina_lock_release(Eina_Lock *mutex)
         mutex->lock_thread_id = 0;
         memset(mutex->lock_bt, 0, EINA_LOCK_DEBUG_BT_NUM * sizeof(Eina_Lock_Bt_Func));
         mutex->lock_bt_num = 0;
-        pthread_mutex_lock(&_eina_tracking_lock);
+        eina_lock_take(&_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(mutex));
-        pthread_mutex_unlock(&_eina_tracking_lock);
+        eina_lock_release(&_eina_tracking_lock);
      }
 #endif
    ok = pthread_mutex_unlock(&(mutex->mutex));
@@ -410,10 +418,10 @@ _eina_condition_wait(Eina_Condition *cond)
    assert(_eina_threads_activated);
    assert(cond->lock != NULL);
 
-   pthread_mutex_lock(&_eina_tracking_lock);
+   eina_lock_take(&_eina_tracking_lock);
    _eina_tracking = eina_inlist_remove(_eina_tracking,
                                        EINA_INLIST_GET(cond->lock));
-   pthread_mutex_unlock(&_eina_tracking_lock);
+   eina_lock_release(&_eina_tracking_lock);
 #endif
 
    ok = pthread_cond_wait(&(cond->condition), &(cond->lock->mutex));
@@ -422,10 +430,10 @@ _eina_condition_wait(Eina_Condition *cond)
    else EINA_LOCK_ABORT_DEBUG(ok, cond_wait, cond);
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-   pthread_mutex_lock(&_eina_tracking_lock);
+   eina_lock_take(&_eina_tracking_lock);
    _eina_tracking = eina_inlist_append(_eina_tracking,
                                        EINA_INLIST_GET(cond->lock));
-   pthread_mutex_unlock(&_eina_tracking_lock);
+   eina_lock_release(&_eina_tracking_lock);
 #endif
 
    return r;
@@ -462,10 +470,10 @@ _eina_condition_timedwait(Eina_Condition *cond, double t)
         assert(_eina_threads_activated);
         assert(cond->lock != NULL);
 
-        pthread_mutex_lock(&_eina_tracking_lock);
+        eina_lock_take(&_eina_tracking_lock);
         _eina_tracking = eina_inlist_remove(_eina_tracking,
                                             EINA_INLIST_GET(cond->lock));
-        pthread_mutex_unlock(&_eina_tracking_lock);
+        eina_lock_release(&_eina_tracking_lock);
 #endif
 
         sec = (time_t)t;
@@ -487,10 +495,10 @@ _eina_condition_timedwait(Eina_Condition *cond, double t)
         else EINA_LOCK_ABORT_DEBUG(err, cond_timedwait, cond);
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-        pthread_mutex_lock(&_eina_tracking_lock);
+        eina_lock_take(&_eina_tracking_lock);
         _eina_tracking = eina_inlist_append(_eina_tracking,
                                             EINA_INLIST_GET(cond->lock));
-        pthread_mutex_unlock(&_eina_tracking_lock);
+        eina_lock_release(&_eina_tracking_lock);
 #endif
      }
    errno = EINVAL;
@@ -707,9 +715,6 @@ _eina_barrier_wait(Eina_Barrier *barrier)
    return EINA_TRUE;
 #endif
 }
-
-EINA_API Eina_Bool _eina_barrier_new(Eina_Barrier *barrier, int needed);
-EINA_API void      _eina_barrier_free(Eina_Barrier *barrier);
 
 static inline Eina_Bool
 _eina_spinlock_new(Eina_Spinlock *spinlock)

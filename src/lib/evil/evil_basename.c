@@ -8,7 +8,7 @@
 
 #include <evil_windows.h>
 
-EVIL_API char* basename (char* path)
+EAPI char* basename (char* path)
 {
   static char base[MAX_PATH];
   _splitpath_s (path, NULL, 0, NULL, 0, base, MAX_PATH, NULL, 0);

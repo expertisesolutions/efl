@@ -318,7 +318,7 @@ _grp_text_get(void *data, Evas_Object *gl, const char *part EINA_UNUSED)
               if (!compare)
                 {
                    Exactness_Unit *unit = efl_key_data_get(gl, "unit");
-                   sprintf(buf2, "Fonts directory: %s", unit->fonts_path ? unit->fonts_path : "None");
+                   snprintf(buf2, sizeof(buf2), "Fonts directory: %s", unit->fonts_path ? unit->fonts_path : "None");
                 }
               else
                 {
@@ -326,13 +326,8 @@ _grp_text_get(void *data, Evas_Object *gl, const char *part EINA_UNUSED)
                    Eo *gl2 = eina_list_nth(_gls, 1);
                    Exactness_Unit *unit1 = efl_key_data_get(gl1, "unit");
                    Exactness_Unit *unit2 = efl_key_data_get(gl2, "unit");
-                   if (!!unit1->fonts_path || !!unit2->fonts_path)
-                      sprintf(buf2, "Fonts directory comparison: XXXXX");
-                   else if (!strcmp(unit1->fonts_path, unit2->fonts_path))
-                      sprintf(buf2, "Fonts directory comparison: %s", unit1->fonts_path);
-                   else
-                      sprintf(buf2, "Fonts directory comparison: "LDIFF(%s)"/"RDIFF(%s),
-                            unit1->fonts_path, unit2->fonts_path);
+                   snprintf(buf2, sizeof(buf2), "Fonts directory comparison: "LDIFF(%s)"/"RDIFF(%s),
+                           unit1 ? unit1->fonts_path : "(NULL)", unit2 ? unit2->fonts_path : "(NULL)");
                 }
               return strdup(buf2);
            }
@@ -587,6 +582,12 @@ _objs_text_get(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, const char 
    return strdup("Shot");
 }
 
+#define SAFE_PRINT(field, format, fallback) \
+   eina_strbuf_append_printf(buf, LDIFF(format)"/"RDIFF(format), \
+                 e_obj1 ? e_obj1->field : fallback, \
+                 e_obj2 ? e_obj2->field : fallback); \
+
+
 static char *
 _obj_text_get(void *data, Evas_Object *gl, const char *part EINA_UNUSED)
 {
@@ -598,44 +599,21 @@ _obj_text_get(void *data, Evas_Object *gl, const char *part EINA_UNUSED)
         _Compare_Item_Data *vv = data;
         Exactness_Object *e_obj1 = vv->p1;
         Exactness_Object *e_obj2 = vv->p2;
-        if ((!e_obj1 ^ !e_obj2) || strcmp(e_obj1->kl_name, e_obj2->kl_name))
-           eina_strbuf_append_printf(buf, "("LDIFF(%s)"/"RDIFF(%s)")",
-                 e_obj1 ? e_obj1->kl_name : "XXXXX",
-                 e_obj2 ? e_obj2->kl_name : "XXXXX");
-        else
-           eina_strbuf_append_printf(buf, "%s", e_obj1->kl_name);
+        eina_strbuf_append(buf, "(");
+        SAFE_PRINT(kl_name, %s, "(NULL)")
+        eina_strbuf_append(buf, ")");
 
         eina_strbuf_append(buf, " x = ");
-        if ((!e_obj1 ^ !e_obj2) || e_obj1->x != e_obj2->x)
-           eina_strbuf_append_printf(buf, LDIFF(%d)"/"RDIFF(%d),
-                 e_obj1 ? e_obj1->x : -1,
-                 e_obj2 ? e_obj2->x : -1);
-        else
-           eina_strbuf_append_printf(buf, "%d", e_obj1->x);
+        SAFE_PRINT(x, %d, -1)
 
         eina_strbuf_append(buf, " y = ");
-        if ((!e_obj1 ^ !e_obj2) || e_obj1->y != e_obj2->y)
-           eina_strbuf_append_printf(buf, LDIFF(%d)"/"RDIFF(%d),
-                 e_obj1 ? e_obj1->y : -1,
-                 e_obj2 ? e_obj2->y : -1);
-        else
-           eina_strbuf_append_printf(buf, "%d", e_obj1->y);
+        SAFE_PRINT(y, %d, -1)
 
         eina_strbuf_append(buf, " w = ");
-        if ((!e_obj1 ^ !e_obj2) || e_obj1->w != e_obj2->w)
-           eina_strbuf_append_printf(buf, LDIFF(%d)"/"RDIFF(%d),
-                 e_obj1 ? e_obj1->w : -1,
-                 e_obj2 ? e_obj2->w : -1);
-        else
-           eina_strbuf_append_printf(buf, "%d", e_obj1->w);
+        SAFE_PRINT(w, %d, -1)
 
         eina_strbuf_append(buf, " h = ");
-        if ((!e_obj1 ^ !e_obj2) || e_obj1->h != e_obj2->h)
-           eina_strbuf_append_printf(buf, LDIFF(%d)"/"RDIFF(%d),
-                 e_obj1 ? e_obj1->h : -1,
-                 e_obj2 ? e_obj2->h : -1);
-        else
-           eina_strbuf_append_printf(buf, "%d", e_obj1->h);
+        SAFE_PRINT(h, %d, -1)
 
         if (e_obj1 && e_obj2 && _are_objs_different(e_obj1, e_obj2, EINA_FALSE))
            eina_strbuf_append(buf, " - DIFF INSIDE");
@@ -895,15 +873,19 @@ _comp_gl_selected_cb(void *data EINA_UNUSED, Evas_Object *gl EINA_UNUSED, void *
    if (vv->p1)
      {
         _Item_Info *ii = eina_hash_find(_item_infos_hash, &(vv->p1));
-        if (!ii || !ii->gl_item) _obj_item_realize(vv->p1);
-        elm_genlist_item_selected_set(ii->gl_item, EINA_TRUE);
+        if (!ii || !ii->gl_item)
+          _obj_item_realize(vv->p1);
+        else
+          elm_genlist_item_selected_set(ii->gl_item, EINA_TRUE);
      }
 
    if (vv->p2)
      {
         _Item_Info *ii = eina_hash_find(_item_infos_hash, &(vv->p2));
-        if (!ii || !ii->gl_item) _obj_item_realize(vv->p2);
-        elm_genlist_item_selected_set(ii->gl_item, EINA_TRUE);
+        if (!ii || !ii->gl_item)
+          _obj_item_realize(vv->p2);
+        else
+          elm_genlist_item_selected_set(ii->gl_item, EINA_TRUE);
      }
 }
 
@@ -1015,9 +997,9 @@ _gui_unit_display(Exactness_Unit *unit1, Exactness_Unit *unit2)
      }
    _itc_init();
 
-   if (unit1->fonts_path || (unit2 && unit2->fonts_path))
+   if ((unit1->fonts_path) || (unit2 && unit2->fonts_path))
      {
-        if (!_show_only_diffs || !unit1 || !unit2 ||
+        if (!_show_only_diffs || !unit2 ||
               !unit1->fonts_path || !unit2->fonts_path ||
               strcmp(unit1->fonts_path, unit2->fonts_path))
           {
@@ -1026,7 +1008,7 @@ _gui_unit_display(Exactness_Unit *unit1, Exactness_Unit *unit2)
              elm_genlist_item_append(glc, _grp_itc, (void *)EX_FONTS_DIR, NULL, ELM_GENLIST_ITEM_GROUP, NULL, NULL);
           }
      }
-   itr1 = unit1 ? unit1->actions : NULL;
+   itr1 = unit1->actions;
    itr2 = unit2 ? unit2->actions : NULL;
 
    if (itr1 || itr2)
@@ -1060,7 +1042,7 @@ _gui_unit_display(Exactness_Unit *unit1, Exactness_Unit *unit2)
         if (itr2) itr2 = eina_list_next(itr2);
      }
 
-   itr1 = unit1 ? unit1->imgs : NULL;
+   itr1 = unit1->imgs;
    itr2 = unit2 ? unit2->imgs : NULL;
 
    if (itr1 || itr2)
@@ -1098,7 +1080,7 @@ _gui_unit_display(Exactness_Unit *unit1, Exactness_Unit *unit2)
         if (itr2) itr2 = eina_list_next(itr2);
      }
 
-   itr1 = unit1 ? unit1->objs : NULL;
+   itr1 = unit1->objs;
    itr2 = unit2 ? unit2->objs : NULL;
 
    if (itr1 || itr2)
@@ -1239,9 +1221,12 @@ static const Ecore_Getopt optdesc = {
   "exactness_inspect",
   "%prog [options] [<exu file> | <file1 file2>]",
   NULL,
-  "(C) 2016 Enlightenment",
+  "(C) 2016-2020 Enlightenment",
   "BSD",
-  "Inspector for Exactness",
+  "Inspector for Exactness\n"
+  "\n"
+  "Dumps the contents of `.exu` files obtained with `exactness_record` or"
+  "`exactness -i` in an easy-to-examine way.",
   0,
   {
     ECORE_GETOPT_STORE_USHORT('d', "delay", "Delay the given recording by a given time (in milliseconds)."),

@@ -1,5 +1,6 @@
-ector_deps = [eina, emile, eet, eo, efl]
+ector_deps = [eina, emile, eet, eo, efl, draw]
 ector_pub_deps = [eina, efl]
+ector_ext_deps = [triangulator, freetype, draw_without_deps, m]
 
 pub_eo_file_target = []
 ector_opt_lib = [ ]
@@ -9,7 +10,7 @@ ector_header_src = [
  # nothing for now ector stays only intree
 ]
 
-ector_src = [
+ector_src = files([
   'ector_main.c',
   'ector_gl_internal.h',
   'ector_buffer.c',
@@ -19,7 +20,7 @@ ector_src = [
   'ector_renderer_gradient.c',
   'ector_renderer_gradient_radial.c',
   'ector_renderer_gradient_linear.c'
-]
+])
 
 pub_eo_files = [
   'ector_surface.eo',
@@ -56,11 +57,14 @@ pub_eo_types_files = [
   'ector_types.eot'
 ]
 
-if get_option('install-eo-files')
-  install_data(ector_pub_eo_files + pub_eo_types_files,
-    install_dir: join_paths(eolian_include_dir, package_version_name)
-  )
-endif
+#
+# Only enable that again when the namespace problems are fixed. ref T8648
+#
+#if get_option('install-eo-files')
+#  install_data(ector_pub_eo_files + pub_eo_types_files,
+#    install_dir: join_paths(eolian_include_dir, package_version_name)
+#  )
+#endif
 
 foreach eo_file : pub_eo_types_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
@@ -77,13 +81,19 @@ endforeach
 
 subdir('software')
 
+ector_opt_lib_dep = declare_dependency(
+  link_with: ector_opt_lib
+)
+
+ector_ext_deps += ector_opt_lib_dep
+
 ector_lib = library('ector',
     ector_src, pub_eo_file_target,
-    dependencies: ector_pub_deps + [triangulator, freetype, draw, m] + ector_deps,
+    c_args : package_c_args,
+    dependencies: ector_pub_deps + ector_ext_deps + ector_deps,
     include_directories : config_dir,
     install: true,
     version : meson.project_version(),
-    link_with: ector_opt_lib
 )
 
 ector = declare_dependency(

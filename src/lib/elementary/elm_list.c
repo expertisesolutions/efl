@@ -1060,6 +1060,8 @@ _items_fix(Evas_Object *obj)
    //focus highlight in_theme is set by list item theme.
    _elm_widget_item_highlight_in_theme(
          obj, elm_list_first_item_get(obj));
+
+   eina_array_flush(&walk);
 }
 
 static void
@@ -2328,8 +2330,11 @@ _item_new(Evas_Object *obj,
         evas_object_event_callback_add
           (it->icon, EVAS_CALLBACK_CHANGED_SIZE_HINTS, _size_hints_changed_cb,
           obj);
-        efl_access_object_access_type_set(it->icon, EFL_ACCESS_TYPE_DISABLED);
-        elm_widget_tree_unfocusable_set(it->icon, EINA_TRUE);
+        if (elm_widget_is(it->icon))
+          {
+             efl_access_object_access_type_set(it->icon, EFL_ACCESS_TYPE_DISABLED);
+             elm_widget_tree_unfocusable_set(it->icon, EINA_TRUE);
+          }
      }
    if (it->end)
      {
@@ -2337,8 +2342,11 @@ _item_new(Evas_Object *obj,
         evas_object_event_callback_add
           (it->end, EVAS_CALLBACK_CHANGED_SIZE_HINTS, _size_hints_changed_cb,
           obj);
-        efl_access_object_access_type_set(it->end, EFL_ACCESS_TYPE_DISABLED);
-        elm_widget_tree_unfocusable_set(it->end, EINA_TRUE);
+        if (elm_widget_is(it->end))
+          {
+             efl_access_object_access_type_set(it->end, EFL_ACCESS_TYPE_DISABLED);
+             elm_widget_tree_unfocusable_set(it->end, EINA_TRUE);
+          }
      }
 
    if (_elm_config->atspi_mode)

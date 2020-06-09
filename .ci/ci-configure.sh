@@ -7,7 +7,7 @@ if [ "$DISTRO" != "" ] ; then
   # Why do we need to disable the imf loaders here?
   OPTS=" -Decore-imf-loaders-disabler=scim,ibus"
 
-  MONO_LINUX_COPTS=" -Dbindings=luajit,cxx,mono -Dmono-beta=true"
+  MONO_LINUX_COPTS=" -Dbindings=lua,cxx,mono -Dmono-beta=true"
 
   WAYLAND_LINUX_COPTS=" -Dwl=true -Ddrm=true -Dopengl=es-egl -Dwl-deprecated=true -Ddrm-deprecated=true"
 
@@ -17,8 +17,8 @@ if [ "$DISTRO" != "" ] ; then
   ENABLED_LINUX_COPTS=" -Dfb=true -Dsdl=true -Dbuffer=true -Dbuild-id=travis-build \
   -Ddebug-threads=true -Dglib=true -Dg-mainloop=true -Dxpresent=true -Dxinput22=true \
   -Devas-loaders-disabler=json -Decore-imf-loaders-disabler= \
-  -Dharfbuzz=true -Dpixman=true -Dhyphen=true \
-  -Dvnc-server=true -Dbindings=luajit,cxx,mono -Delogind=false -Dinstall-eo-files=true -Dphysics=true"
+  -Dharfbuzz=true -Dpixman=true -Dhyphen=true -Defl-one=true \
+  -Dvnc-server=true -Dbindings=lua,cxx,mono -Delogind=false -Dinstall-eo-files=true -Dphysics=true"
 
   # Enabled png, jpeg evas loader for in tree edje file builds
   DISABLED_LINUX_COPTS=" -Daudio=false -Davahi=false -Dx11=false -Dphysics=false -Deeze=false \
@@ -94,8 +94,11 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
   export CFLAGS="-I/usr/local/opt/openssl/include -frewrite-includes $CFLAGS"
   export LDFLAGS="-L/usr/local/opt/openssl/lib $LDFLAGS"
   LIBFFI_VER=$(brew list --versions libffi|head -n1|cut -d' ' -f2)
-  export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig:/usr/local/Cellar/libffi/$LIBFFI_VER/lib/pkgconfig"
   export CC="ccache gcc"
+  #force using system zlib, which doesn't have a pc file provided because that's the smartest thing possible
+  zlib_vers=$(grep ZLIB_VERSION /usr/include/zlib.h|head -n1|awk '{print $3}'|cut -d'"' -f2)
+  sed -iE "s/REPLACE_THIS/$zlib_vers/" .ci/zlib.pc
+  export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig:/usr/local/Cellar/libffi/$LIBFFI_VER/lib/pkgconfig:$(pwd)/.ci"
   travis_fold meson meson
   mkdir build && meson build -Dopengl=full -Decore-imf-loaders-disabler=scim,ibus -Dx11=false -Davahi=false -Deeze=false -Dsystemd=false -Dnls=false -Dcocoa=true -Dgstreamer=false
   travis_endfold meson
