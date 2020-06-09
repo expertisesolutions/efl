@@ -109,7 +109,7 @@
  *
  * @see eina_ustringshare_add()
  */
-EINA_API const Eina_Unicode *eina_ustringshare_add_length(const Eina_Unicode *str, unsigned int slen) EINA_WARN_UNUSED_RESULT;
+EAPI const Eina_Unicode *eina_ustringshare_add_length(const Eina_Unicode *str, unsigned int slen) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Retrieves an instance of a string for use in a program.
@@ -130,7 +130,7 @@ EINA_API const Eina_Unicode *eina_ustringshare_add_length(const Eina_Unicode *st
  *
  * @see eina_ustringshare_add_length()
  */
-EINA_API const Eina_Unicode *eina_ustringshare_add(const Eina_Unicode *str) EINA_WARN_UNUSED_RESULT;
+EAPI const Eina_Unicode *eina_ustringshare_add(const Eina_Unicode *str) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Increments references of the given shared string.
@@ -146,7 +146,7 @@ EINA_API const Eina_Unicode *eina_ustringshare_add(const Eina_Unicode *str) EINA
  *
  * There is no unref since this is the work of eina_ustringshare_del().
  */
-EINA_API const Eina_Unicode *eina_ustringshare_ref(const Eina_Unicode *str);
+EAPI const Eina_Unicode *eina_ustringshare_ref(const Eina_Unicode *str);
 
 /**
  * @brief Notes that the given string has lost an instance.
@@ -161,7 +161,7 @@ EINA_API const Eina_Unicode *eina_ustringshare_ref(const Eina_Unicode *str);
  * @note If the given pointer is not shared, bad things will happen, likely a
  * segmentation fault.
  */
-EINA_API void                eina_ustringshare_del(const Eina_Unicode *str);
+EAPI void                eina_ustringshare_del(const Eina_Unicode *str);
 
 /**
  * @brief Notes that the given string @b must be shared.
@@ -176,7 +176,7 @@ EINA_API void                eina_ustringshare_del(const Eina_Unicode *str);
  * @note If the given pointer is not shared, bad things will happen, likely a
  * segmentation fault. If in doubt, try strlen().
  */
-EINA_API int                 eina_ustringshare_strlen(const Eina_Unicode *str) EINA_PURE EINA_WARN_UNUSED_RESULT;
+EAPI int                 eina_ustringshare_strlen(const Eina_Unicode *str) EINA_PURE EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Dumps the contents of the share_common.
@@ -184,7 +184,7 @@ EINA_API int                 eina_ustringshare_strlen(const Eina_Unicode *str) E
  * This function dumps all strings in the share_common to stdout with a
  * DDD: prefix per line and a memory usage summary.
  */
-EINA_API void                eina_ustringshare_dump(void);
+EAPI void                eina_ustringshare_dump(void);
 
 static inline Eina_Bool  eina_ustringshare_replace(const Eina_Unicode **p_str, const Eina_Unicode *news) EINA_ARG_NONNULL(1);
 static inline Eina_Bool  eina_ustringshare_replace_length(const Eina_Unicode **p_str, const Eina_Unicode *news, unsigned int slen) EINA_ARG_NONNULL(1);

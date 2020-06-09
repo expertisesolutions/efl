@@ -50,12 +50,10 @@ static char *
 _fallback_runtime_dir(const char *home)
 {
    char buf[PATH_MAX];
-#if defined(HAVE_GETUID)
-   uid_t uid = getuid();
-#endif
    struct stat st;
-
 #if defined(HAVE_GETUID) && defined(HAVE_GETEUID)
+   uid_t uid = getuid();
+
    if (setuid(geteuid()) != 0)
       {
          fprintf(stderr,
@@ -325,7 +323,7 @@ _eina_vpath_resolve(const char *path, char *str, size_t size)
    return 0;
 }
 
-EINA_API char *
+EAPI char *
 eina_vpath_resolve(const char* path)
 {
    char buf[PATH_MAX];
@@ -336,7 +334,7 @@ eina_vpath_resolve(const char* path)
    return NULL;
 }
 
-EINA_API int
+EAPI int
 eina_vpath_resolve_snprintf(char *str, size_t size, const char *format, ...)
 {
    va_list args;
@@ -366,7 +364,7 @@ eina_vpath_resolve_snprintf(char *str, size_t size, const char *format, ...)
    return 0;
 }
 
-EINA_API void
+EAPI void
 eina_vpath_interface_app_set(const char *app_domain, Eina_Prefix *app_pfx)
 {
    char buf[PATH_MAX];
@@ -393,7 +391,7 @@ eina_vpath_interface_app_set(const char *app_domain, Eina_Prefix *app_pfx)
    _eina_vpath_data_add("app.tmp", buf);
 }
 
-EINA_API void
+EAPI void
 eina_vpath_interface_user_set(Eina_Vpath_Interface_User *user)
 {
    Eina_Bool free_run = EINA_FALSE;

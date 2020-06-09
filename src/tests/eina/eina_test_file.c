@@ -376,7 +376,7 @@ EFL_START_TEST(eina_file_map_new_test)
    fail_if(eina_file_refresh(e_file));
 
    e_file2 = eina_file_open(test_file2_path, EINA_FALSE);
-   fail_if(!e_file);
+   fail_if(!e_file2);
    file2_length = eina_file_size_get(e_file2);
    correct_file_open_check = file2_length - (big_buffer_size - file_min_offset);
    // check size of big_buffer == size of file
@@ -489,19 +489,17 @@ EFL_END_TEST
 static void *
 _eina_test_file_thread(void *data EINA_UNUSED, Eina_Thread t EINA_UNUSED)
 {
+#ifdef _WIN32
+   const char *filename = "cmd.exe";
+#else
+   const char *filename = "/bin/sh";
+#endif
    Eina_File *f;
    unsigned int i;
 
-   const char *const test_file =
-#if defined(_WIN32) && !defined(__CYGWIN__)
-    "C:/Windows/system.ini";
-#else
-    "/bin/sh";
-#endif
-
    for (i = 0; i < 100; ++i)
      {
-        f = eina_file_open(test_file, EINA_FALSE);
+        f = eina_file_open(filename, EINA_FALSE);
         fail_if(!f);
         eina_file_close(f);
      }

@@ -23,7 +23,7 @@
 #include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
 
-EINA_API void
+EAPI void
 eina_sched_prio_drop(void)
 {
    Eina_Thread thread;
@@ -63,4 +63,10 @@ eina_sched_prio_drop(void)
              EINA_LOG_ERR("Unable to query sched parameters");
           }
      }
+}
+
+EAPI void
+eina_sched_prio_init(Eina_Thread_Call* c)
+{
+    // TODO
 }

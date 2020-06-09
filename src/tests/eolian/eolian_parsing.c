@@ -539,7 +539,7 @@ EFL_START_TEST(eolian_simple_parsing)
    const Eolian_Type *tp;
    const Eolian_Unit *unit;
    Eina_Iterator *iter;
-   Eolian_Value v;
+   Eolian_Value v, vv;
    void *dummy;
 
    Eolian_State *eos = eolian_state_new();
@@ -579,13 +579,14 @@ EFL_START_TEST(eolian_simple_parsing)
    /* Set return */
    tp = eolian_function_return_type_get(fid, EOLIAN_PROP_SET);
    fail_if(!tp);
-   printf("BUILT %d\n", (int)eolian_type_builtin_type_get(tp));
    fail_if(eolian_type_builtin_type_get(tp) != EOLIAN_TYPE_BUILTIN_BOOL);
    fail_if(strcmp(eolian_type_short_name_get(tp), "bool"));
    expr = eolian_function_return_default_value_get(fid, EOLIAN_PROP_SET);
    fail_if(!expr);
    v = eolian_expression_eval(expr, EOLIAN_MASK_BOOL);
+   fail_if(!eolian_expression_eval_fill(expr, EOLIAN_MASK_BOOL, &vv));
    fail_if(v.type != EOLIAN_EXPR_BOOL);
+   fail_if(vv.type != EOLIAN_EXPR_BOOL);
    /* Get return */
    tp = eolian_function_return_type_get(fid, EOLIAN_PROP_GET);
    fail_if(tp);
@@ -639,7 +640,7 @@ EFL_START_TEST(eolian_simple_parsing)
    fail_if(!expr);
    v = eolian_expression_eval(expr, EOLIAN_MASK_FLOAT);
    fail_if(v.type != EOLIAN_EXPR_DOUBLE);
-   fail_if(v.value.d != 1337.6);
+   fail_if(!EINA_DBL_EQ(v.value.d, 1337.6));
    fail_if(!(eina_iterator_next(iter, (void**)&param)));
    fail_if(eolian_parameter_direction_get(param) != EOLIAN_PARAMETER_IN);
    fail_if(strcmp(eolian_type_short_name_get(eolian_parameter_type_get(param)), "int"));
@@ -805,6 +806,7 @@ EFL_START_TEST(eolian_error)
    const Eolian_Function *f1, *f2;
    const Eolian_Type *rtp1, *rtp2;
    const Eolian_Error *err1, *err2;
+   Eina_Stringshare *str;
 
    Eolian_State *eos = eolian_state_new();
 
@@ -822,6 +824,9 @@ EFL_START_TEST(eolian_error)
    fail_if(eolian_type_type_get(rtp1) != EOLIAN_TYPE_ERROR);
    fail_if(eolian_type_next_type_get(rtp1) != NULL);
    fail_if(strcmp(eolian_type_name_get(rtp1), "Foo"));
+   fail_if(!(str = eolian_type_c_type_get(rtp1)));
+   fail_if(strcmp(str, "Eina_Error"));
+   eina_stringshare_del(str);
    fail_if(!(err1 = eolian_type_error_get(rtp1)));
    fail_if(strcmp(eolian_error_message_get(err1), "something bad happened"));
 

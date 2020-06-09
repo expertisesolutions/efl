@@ -48,7 +48,7 @@
  *                                   API                                      *
  *============================================================================*/
 
-EINA_API const char *
+EAPI const char *
 eina_environment_home_get(void)
 {
    static char *home = NULL;
@@ -94,7 +94,7 @@ eina_environment_home_get(void)
    return home;
 }
 
-EINA_API const char *
+EAPI const char *
 eina_environment_tmp_get(void)
 {
    static char *tmp = NULL;

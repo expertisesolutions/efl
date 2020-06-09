@@ -42,8 +42,13 @@ evas_vg_load_file_open_eet(Eina_File *file, const char *key, int *error EINA_UNU
 }
 
 static Eina_Bool
-evas_vg_load_file_close_eet(Vg_File_Data *vfd EINA_UNUSED)
+evas_vg_load_file_close_eet(Vg_File_Data *vfd)
 {
+   if (!vfd) return EINA_FALSE;
+
+   if (vfd->root) efl_unref(vfd->root);
+   free(vfd);
+
    return EINA_TRUE;
 }
 

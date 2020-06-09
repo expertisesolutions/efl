@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <Eina.h>
+
 #include "Embryo.h"
 #include "embryo_private.h"
 
@@ -52,7 +54,7 @@ embryo_shutdown(void)
 {
    if (_embryo_init_count <= 0)
      {
-        printf("%s:%i Init count not greater than 0 in shutdown.", __FUNCTION__, __LINE__);
+        printf("%s:%i Init count not greater than 0 in shutdown.", __func__, __LINE__);
         return 0;
      }
    if (--_embryo_init_count != 0)

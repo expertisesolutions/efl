@@ -1755,6 +1755,9 @@ _evas_render_mapped_mask(Evas_Public_Data *evas, Evas_Object_Protected_Data *obj
                          Evas_Proxy_Render_Data *proxy_render_data, void *output, void *ctx, int off_x, int off_y, int level, Eina_Bool do_async)
 {
    if (!mask) return;
+   if (proxy_render_data &&
+       !proxy_render_data->source_clip &&
+       proxy_render_data->src_obj->clip.mask == mask) return;
 
    // This path can be hit when we're multiplying masks on top of each other...
    Evas_Object_Protected_Data *prev_mask = obj->clip.prev_mask;
@@ -2722,6 +2725,15 @@ _evas_render_cutout_add(Evas_Public_Data *evas, void *context,
                            obj->cur->cache.clip.w, obj->cur->cache.clip.h);
      }
    else return;
+   if (!_is_obj_in_framespace(obj, evas))
+     {
+        int fw, fh;
+
+        fw = evas->viewport.w - evas->framespace.w;
+        fh = evas->viewport.h - evas->framespace.h;
+        RECTS_CLIP_TO_RECT(cox, coy, cow, coh,
+                           0, 0, fw, fh);
+     }
    if (cutout_margin)
      {
         cox += cutout_margin->l;
@@ -3761,6 +3773,14 @@ evas_render_updates_internal(Evas *eo_e,
      }
    eina_evlog("-render_post_reset", eo_e, 0.0, NULL);
 
+   for (i = 0; i < e->render_post_change_objects.count; ++i)
+     {
+        obj = eina_array_data_get(&e->render_post_change_objects, i);
+        eo_obj = obj->object;
+        evas_object_change(eo_obj, obj);
+     }
+   OBJS_ARRAY_CLEAN(&e->render_post_change_objects);
+
    eina_evlog("+render_end", eo_e, 0.0, NULL);
    e->changed = EINA_FALSE;
    e->viewport.changed = EINA_FALSE;
@@ -3902,17 +3922,17 @@ evas_render_wakeup(Evas *eo_e)
 
    /* unref queues */
    eina_array_foreach(&evas->scie_unref_queue, _drop_scie_ref, NULL);
-   eina_array_clean(&evas->scie_unref_queue);
+   eina_array_flush(&evas->scie_unref_queue);
    evas_common_rgba_image_scalecache_prune();
 
    eina_array_foreach(&evas->image_unref_queue, _drop_image_cache_ref, NULL);
-   eina_array_clean(&evas->image_unref_queue);
+   eina_array_flush(&evas->image_unref_queue);
 
    eina_array_foreach(&evas->glyph_unref_queue, _drop_glyph_ref, NULL);
-   eina_array_clean(&evas->glyph_unref_queue);
+   eina_array_flush(&evas->glyph_unref_queue);
 
    eina_array_foreach(&evas->texts_unref_queue, _drop_texts_ref, NULL);
-   eina_array_clean(&evas->texts_unref_queue);
+   eina_array_flush(&evas->texts_unref_queue);
 
    SLKL(evas->post_render.lock);
    jobs_il = EINA_INLIST_GET(evas->post_render.jobs);
@@ -4127,6 +4147,7 @@ _evas_canvas_render_idle_flush(Eo *eo_e, Evas_Public_Data *evas)
    OBJS_ARRAY_FLUSH(&evas->delete_objects);
    OBJS_ARRAY_FLUSH(&evas->obscuring_objects);
    OBJS_ARRAY_FLUSH(&evas->temporary_objects);
+   OBJS_ARRAY_FLUSH(&evas->map_clip_objects);
    eina_array_foreach(&evas->clip_changes, _evas_clip_changes_free, NULL);
    eina_array_clean(&evas->clip_changes);
 
@@ -4243,6 +4264,7 @@ if (Cow) while (eina_cow_gc(Cow))
    OBJS_ARRAY_FLUSH(&evas->delete_objects);
    OBJS_ARRAY_FLUSH(&evas->obscuring_objects);
    OBJS_ARRAY_FLUSH(&evas->temporary_objects);
+   OBJS_ARRAY_FLUSH(&evas->map_clip_objects);
    eina_array_foreach(&evas->clip_changes, _evas_clip_changes_free, NULL);
    eina_array_clean(&evas->clip_changes);
 
@@ -4268,6 +4290,7 @@ evas_render_invalidate(Evas *eo_e)
    OBJS_ARRAY_FLUSH(&e->delete_objects);
 
    OBJS_ARRAY_FLUSH(&e->snapshot_objects);
+   OBJS_ARRAY_FLUSH(&e->map_clip_objects);
 
    e->invalidate = EINA_TRUE;
 }
@@ -4322,6 +4345,17 @@ evas_post_render_job_add(Evas_Public_Data *pd, void (*func)(void *), void *data)
    pd->post_render.jobs = (Evas_Post_Render_Job *)
          eina_inlist_append(EINA_INLIST_GET(pd->post_render.jobs), EINA_INLIST_GET(job));
    SLKU(pd->post_render.lock);
+}
+
+void
+evas_render_post_change_object_push(Evas_Object_Protected_Data *obj)
+{
+   Evas_Public_Data *e;
+
+   if (!obj || !obj->layer || !obj->layer->evas) return;
+
+   e = obj->layer->evas;
+   OBJ_ARRAY_PUSH(&e->render_post_change_objects, obj);
 }
 
 /* vim:set ts=8 sw=3 sts=3 expandtab cino=>5n-2f0^-2{2(0W1st0 :*/

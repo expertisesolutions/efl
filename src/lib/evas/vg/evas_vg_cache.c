@@ -226,7 +226,7 @@ _local_transform(Efl_VG *root, double w, double h, Vg_File_Data *vfd)
    Eina_Matrix3 m;
 
    if (!vfd->static_viewbox) return;
-   if (vfd->view_box.w == w && vfd->view_box.h == h) return;
+   if (EINA_DBL_EQ(vfd->view_box.w, w) && EINA_DBL_EQ(vfd->view_box.h, h)) return;
 
    sx = w / vfd->view_box.w;
    sy = h / vfd->view_box.h;
@@ -315,8 +315,8 @@ evas_cache_vg_shutdown(void)
      free(key);
    eina_list_free(vg_cache->vg_surface_keys);
 
-   eina_hash_free(vg_cache->vfd_hash);
    eina_hash_free(vg_cache->vg_entry_hash);
+   eina_hash_free(vg_cache->vfd_hash);
    free(vg_cache);
    vg_cache = NULL;
 }

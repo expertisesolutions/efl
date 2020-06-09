@@ -212,6 +212,13 @@ _efl_canvas_vg_container_render_pre(Evas_Object_Protected_Data *vg_pd,
         if (flag & EFL_GFX_CHANGE_FLAG_MATRIX)
           child_nd->flags |= EFL_GFX_CHANGE_FLAG_MATRIX;
 
+        // Note: If Vg.Container has transparency, this is calculated by _evas_vg_render in Efl.Canvas.Vg.Object.
+        //       Therefore, there is no need to propagate the transparency of the container to the child.
+        //       However, if there is a composition target, the child must refer to the parent's opacity.
+        //       Because _evas_vg_render does not support opacity calculation for containers that need to be composited.
+        //       These things need to be refactored in a better way later.
+        c_a = !comp ? 255 : c_a;
+
         _evas_vg_render_pre(vg_pd, child,
                             engine, output, context, surface,
                             ctransform, c_a, comp, comp_method);
@@ -486,7 +493,11 @@ evas_vg_container_add(Evas_Object *parent)
 {
    /* Warn it because the usage has been changed.
       We can remove this message after v1.21. */
-   if (!parent) CRI("Efl_VG Container doesn't allow null parent!");
+   if (!parent)
+     {
+        ERR("Efl_VG Container doesn't allow null parent!");
+        return NULL;
+     }
    return efl_add(MY_CLASS, parent);
 }
 

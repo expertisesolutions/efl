@@ -35,13 +35,8 @@
 #endif
 
 /**
- * @addtogroup Eina_Tools_Group Tools
- *
- * @{
- */
-
-/**
  * @defgroup Eina_Thread_Group Thread
+ * @ingroup Eina_Tools_Group
  *
  * Abstracts platform threads, providing a uniform API. It's modeled
  * after POSIX THREADS (pthreads), on Linux they are almost 1:1
@@ -65,10 +60,10 @@ typedef void *(*Eina_Thread_Cb)(void *data, Eina_Thread t);
  */
 typedef enum _Eina_Thread_Priority
 {
-  EINA_THREAD_URGENT,
-  EINA_THREAD_NORMAL,
-  EINA_THREAD_BACKGROUND,
-  EINA_THREAD_IDLE
+  EINA_THREAD_URGENT,     /**< Higher than average process priority */
+  EINA_THREAD_NORMAL,     /**< Standard process priority */
+  EINA_THREAD_BACKGROUND, /**< Lower than average process priority */
+  EINA_THREAD_IDLE        /**< Thread to be executed only when the processor is idle */
 } Eina_Thread_Priority;
 
 /**
@@ -76,7 +71,7 @@ typedef enum _Eina_Thread_Priority
  * @return identifier of current thread.
  * @since 1.8
  */
-EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Returns an integral compatible identifier of the current thread.
@@ -88,7 +83,7 @@ EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
  * @return integral identifier of current thread.
  * @since 1.25
  */
-EINA_API Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Checks if two thread identifiers are the same.
@@ -97,7 +92,7 @@ EINA_API Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
  * @return #EINA_TRUE if they are equal, #EINA_FALSE otherwise.
  * @since 1.8
  */
-EINA_API Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Creates a new thread, setting its priority and affinity.
@@ -110,7 +105,7 @@ EINA_API Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_U
  * @return #EINA_TRUE if thread was created, #EINA_FALSE on errors.
  * @since 1.8
  */
-EINA_API Eina_Bool eina_thread_create(Eina_Thread *t,
+EAPI Eina_Bool eina_thread_create(Eina_Thread *t,
                                   Eina_Thread_Priority prio, int affinity,
                                   Eina_Thread_Cb func, const void *data) EINA_ARG_NONNULL(1, 4) EINA_WARN_UNUSED_RESULT;
 
@@ -126,7 +121,7 @@ EINA_API Eina_Bool eina_thread_create(Eina_Thread *t,
  *
  * @since 1.19
  */
-EINA_API extern const void *EINA_THREAD_JOIN_CANCELED;
+EAPI extern const void *EINA_THREAD_JOIN_CANCELED;
 
 /**
  * @brief Joins a currently running thread, waiting until it finishes.
@@ -143,7 +138,7 @@ EINA_API extern const void *EINA_THREAD_JOIN_CANCELED;
  *         EINA_THREAD_JOIN_CANCELED.
  * @since 1.8
  */
-EINA_API void *eina_thread_join(Eina_Thread t);
+EAPI void *eina_thread_join(Eina_Thread t);
 
 /**
  * @brief Sets the name of a given thread for debugging purposes.
@@ -160,7 +155,7 @@ EINA_API void *eina_thread_join(Eina_Thread t);
  *         otherwise.
  * @since 1.16
  */
-EINA_API Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
+EAPI Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
 
 /**
  * @brief Attempts to cancel a running thread.
@@ -183,7 +178,7 @@ EINA_API Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
  *
  * @since 1.19
  */
-EINA_API Eina_Bool eina_thread_cancel(Eina_Thread t);
+EAPI Eina_Bool eina_thread_cancel(Eina_Thread t);
 
 /**
  * @brief Enables or disables if the current thread can be canceled.
@@ -221,7 +216,7 @@ EINA_API Eina_Bool eina_thread_cancel(Eina_Thread t);
  *
  * @since 1.19
  */
-EINA_API Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable);
+EAPI Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable);
 
 /**
  * If the current thread is cancellable, this introduces a
@@ -237,7 +232,7 @@ EINA_API Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool 
  *
  * @since 1.19
  */
-EINA_API void eina_thread_cancel_checkpoint(void);
+EAPI void eina_thread_cancel_checkpoint(void);
 
 /**
  * @typedef Eina_Thread_Cancellable_Run_Cb
@@ -289,7 +284,7 @@ typedef void *(*Eina_Thread_Cancellable_Run_Cb)(void *data);
  *
  * @since 1.19
  */
-EINA_API void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
+EAPI void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
 
 typedef struct _Eina_Thread_Call Eina_Thread_Call;
 struct _Eina_Thread_Call
@@ -300,9 +295,5 @@ struct _Eina_Thread_Call
    Eina_Thread_Priority prio;
    int affinity;
 };
-
-/**
- * @}
- */
 
 #endif

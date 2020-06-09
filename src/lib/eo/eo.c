@@ -577,6 +577,7 @@ obj_super_back:
    else
      {
         func = _vtable_func_get(vtable, op);
+        EINA_PREFETCH_NOCACHE(func);
         // this is not very likely to happen - but may if its an invalid
         // call or a composite object, but either way, it's not very likely
         // so make it a goto to save on instruction cache
@@ -905,6 +906,7 @@ efl_class_functions_set(const Efl_Class *klass_id, const Efl_Object_Ops *object_
    klass->class_id = _UNMASK_ID(klass->header.id) - 1;
 
    _vtable_init(&klass->vtable);
+   if (!klass->vtable.chain) goto err_vtable;
 
    hitmap = alloca(klass->vtable.size);
    memset(hitmap, 0, klass->vtable.size);
@@ -965,7 +967,7 @@ efl_class_functions_set(const Efl_Class *klass_id, const Efl_Object_Ops *object_
                   else
                     {
                        ERR("There is an API implemented, whoms type is not part of this class. %s vs. %s", klass->desc->name, required_klass->desc->name);
-                       _vtable_take_over(&klass->vtable, &required_klass->vtable);
+                       _vtable_prepare_empty_node(&klass->vtable, required_klass->vtable.chain[class_id].count, class_id);
                        hitmap[class_id] = EINA_TRUE;
                     }
 
@@ -979,12 +981,15 @@ err_funcs:
 err_klass:
    _EO_POINTER_ERR(klass_id, "Class (%p) is an invalid ref.", klass_id);
    return EINA_FALSE;
+err_vtable:
+   ERR("failed to allocate vtable for class '%s'", klass->desc->name);
+   return EINA_FALSE;
 }
 
 static Eo *
 _efl_add_internal_start_do(const char *file, int line, const Efl_Class *klass_id, Eo *parent_id, Eina_Bool ref, Eina_Bool is_fallback, Efl_Substitute_Ctor_Cb substitute_ctor, void *sub_ctor_data)
 {
-   const char *func_name = __FUNCTION__;
+   const char *func_name = __func__;
    _Eo_Object *obj;
    Eo_Stack_Frame *fptr = NULL;
 
@@ -1976,7 +1981,7 @@ efl_xref_internal(const char *file, int line, Eo *obj_id, const Eo *ref_obj_id)
    efl_ref(obj_id);
 
 #ifdef EO_DEBUG
-   const char *func_name = __FUNCTION__;
+   const char *func_name = __func__;
    EO_OBJ_POINTER_RETURN_VAL_PROXY(obj_id, obj, obj_id);
 
    Eo_Xref_Node *xref = calloc(1, sizeof(*xref));
@@ -2087,7 +2092,7 @@ efl_unref(const Eo *obj_id)
           {
              ERR("Obj:%s@%p. User refcount (%d) < 0. Too many unrefs.",
                  obj->klass->desc->name, obj_id, obj->user_refcount);
-             _eo_log_obj_report((Eo_Id)obj_id, EINA_LOG_LEVEL_ERR, __FUNCTION__, __FILE__, __LINE__);
+             _eo_log_obj_report((Eo_Id)obj_id, EINA_LOG_LEVEL_ERR, __func__, __FILE__, __LINE__);
              EO_OBJ_DONE(obj_id);
              _efl_unref(obj);
              return;
@@ -2331,7 +2336,7 @@ efl_data_xref_internal(const char *file, int line, const Eo *obj_id, const Efl_C
 {
    void *ret = NULL;
    _Efl_Class *klass = NULL;
-   const char *func_name = __FUNCTION__;
+   const char *func_name = __func__;
    EO_OBJ_POINTER_RETURN_VAL_PROXY(obj_id, obj, NULL);
    EO_OBJ_POINTER_PROXY(ref_obj_id, ref_obj);
    if (ref_obj)
@@ -3471,7 +3476,7 @@ _eo_log_obj_shutdown(void)
                                     entry->klass,
                                     entry->klass->desc->name,
                                     entry->timestamp - _eo_log_time_start, now - entry->timestamp);
-                  _eo_log_obj_entry_show(entry, EINA_LOG_LEVEL_DBG, __FUNCTION__, __FILE__, __LINE__, now);
+                  _eo_log_obj_entry_show(entry, EINA_LOG_LEVEL_DBG, __func__, __FILE__, __LINE__, now);
                   leaks++;
                }
           }

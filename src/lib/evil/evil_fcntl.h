@@ -108,7 +108,7 @@ struct flock
  *
  * @ingroup Evil
  */
-EVIL_API int fcntl(int fd, int cmd, ...);
+EAPI int fcntl(int fd, int cmd, ...);
 
 
 #endif /* __EVIL_FCNTL_H__ */

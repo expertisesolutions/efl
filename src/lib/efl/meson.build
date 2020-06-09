@@ -1,5 +1,6 @@
-efl_deps = []
+efl_deps = [m]
 efl_pub_deps = [eo]
+efl_ext_deps = []
 
 efl_header_src = [
   'Efl.h',
@@ -19,7 +20,8 @@ endif
 
 efl_lib = library('efl',
     efl_src, pub_eo_file_target,
-    dependencies: efl_lib_deps,
+    c_args : package_c_args,
+    dependencies: [efl_deps, efl_pub_deps, efl_ext_deps],
     install: true,
     version : meson.project_version()
 )

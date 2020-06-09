@@ -7,7 +7,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 #include <errno.h>
 
 #include <io.h>

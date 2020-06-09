@@ -338,7 +338,7 @@ eina_inarray_shutdown(void)
 /*============================================================================*
 *                                   API                                      *
 *============================================================================*/
-EINA_API Eina_Inarray *
+EAPI Eina_Inarray *
 eina_inarray_new(unsigned int member_size, unsigned int step)
 {
    Eina_Inarray *ret;
@@ -351,7 +351,7 @@ eina_inarray_new(unsigned int member_size, unsigned int step)
    return ret;
 }
 
-EINA_API void
+EAPI void
 eina_inarray_free(Eina_Inarray *array)
 {
    if (!array)
@@ -362,7 +362,7 @@ eina_inarray_free(Eina_Inarray *array)
    free(array);
 }
 
-EINA_API void
+EAPI void
 eina_inarray_step_set(Eina_Inarray *array,
 		      unsigned int sizeof_eina_inarray,
 		      unsigned int member_size,
@@ -384,7 +384,7 @@ eina_inarray_step_set(Eina_Inarray *array,
    _eina_inarray_setup(array, member_size, step);
 }
 
-EINA_API void
+EAPI void
 eina_inarray_flush(Eina_Inarray *array)
 {
    EINA_MAGIC_CHECK_INARRAY(array);
@@ -394,7 +394,7 @@ eina_inarray_flush(Eina_Inarray *array)
    array->members = NULL;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_inarray_resize(Eina_Inarray *array, unsigned int new_size)
 {
    Eina_Bool r;
@@ -407,7 +407,7 @@ eina_inarray_resize(Eina_Inarray *array, unsigned int new_size)
    return EINA_TRUE;
 }
 
-EINA_API int
+EAPI int
 eina_inarray_push(Eina_Inarray *array, const void *data)
 {
    void *p;
@@ -425,7 +425,7 @@ eina_inarray_push(Eina_Inarray *array, const void *data)
    return array->len - 1;
 }
 
-EINA_API void *
+EAPI void *
 eina_inarray_grow(Eina_Inarray *array, unsigned int size)
 {
    void *p;
@@ -442,7 +442,7 @@ eina_inarray_grow(Eina_Inarray *array, unsigned int size)
    return p;
 }
 
-EINA_API int
+EAPI int
 eina_inarray_insert(Eina_Inarray *array, const void *data, Eina_Compare_Cb compare)
 {
    const unsigned char *itr, *itr_end;
@@ -471,7 +471,7 @@ eina_inarray_insert(Eina_Inarray *array, const void *data, Eina_Compare_Cb compa
    return eina_inarray_push(array, data);
 }
 
-EINA_API int
+EAPI int
 eina_inarray_insert_sorted(Eina_Inarray *array, const void *data, Eina_Compare_Cb compare)
 {
    unsigned int pos;
@@ -490,7 +490,7 @@ eina_inarray_insert_sorted(Eina_Inarray *array, const void *data, Eina_Compare_C
    return pos;
 }
 
-EINA_API int
+EAPI int
 eina_inarray_remove(Eina_Inarray *array, const void *data)
 {
    const unsigned char *itr, *itr_end;
@@ -528,7 +528,7 @@ found:
    return position;
 }
 
-EINA_API void *
+EAPI void *
 eina_inarray_pop(Eina_Inarray *array)
 {
    EINA_MAGIC_CHECK_INARRAY(array, NULL);
@@ -539,7 +539,7 @@ eina_inarray_pop(Eina_Inarray *array)
    return _eina_inarray_get(array, array->len);
 }
 
-EINA_API void *
+EAPI void *
 eina_inarray_nth(const Eina_Inarray *array, unsigned int position)
 {
    EINA_MAGIC_CHECK_INARRAY(array, NULL);
@@ -547,7 +547,7 @@ eina_inarray_nth(const Eina_Inarray *array, unsigned int position)
    return _eina_inarray_get(array, position);
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_inarray_insert_at(Eina_Inarray *array, unsigned int position, const void *data)
 {
    unsigned int sz;
@@ -569,7 +569,7 @@ eina_inarray_insert_at(Eina_Inarray *array, unsigned int position, const void *d
    return EINA_TRUE;
 }
 
-EINA_API void *
+EAPI void *
 eina_inarray_alloc_at(Eina_Inarray *array, unsigned int position, unsigned int member_count)
 {
    unsigned int sz;
@@ -591,7 +591,7 @@ eina_inarray_alloc_at(Eina_Inarray *array, unsigned int position, unsigned int m
    return p;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_inarray_replace_at(Eina_Inarray *array, unsigned int position, const void *data)
 {
    unsigned char *p;
@@ -605,7 +605,7 @@ eina_inarray_replace_at(Eina_Inarray *array, unsigned int position, const void *
    return EINA_TRUE;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_inarray_remove_at(Eina_Inarray *array, unsigned int position)
 {
    EINA_MAGIC_CHECK_INARRAY(array, EINA_FALSE);
@@ -623,7 +623,7 @@ eina_inarray_remove_at(Eina_Inarray *array, unsigned int position)
    return EINA_TRUE;
 }
 
-EINA_API void
+EAPI void
 eina_inarray_reverse(Eina_Inarray *array)
 {
    size_t sz;
@@ -653,7 +653,7 @@ eina_inarray_reverse(Eina_Inarray *array)
      }
 }
 
-EINA_API void
+EAPI void
 eina_inarray_sort(Eina_Inarray *array, Eina_Compare_Cb compare)
 {
    EINA_MAGIC_CHECK_INARRAY(array);
@@ -661,7 +661,7 @@ eina_inarray_sort(Eina_Inarray *array, Eina_Compare_Cb compare)
    qsort(array->members, array->len, array->member_size, compare);
 }
 
-EINA_API int
+EAPI int
 eina_inarray_search(const Eina_Inarray *array, const void *data, Eina_Compare_Cb compare)
 {
    EINA_MAGIC_CHECK_INARRAY(array, -1);
@@ -670,7 +670,7 @@ eina_inarray_search(const Eina_Inarray *array, const void *data, Eina_Compare_Cb
    return _eina_inarray_search(array, data, compare);
 }
 
-EINA_API int
+EAPI int
 eina_inarray_search_sorted(const Eina_Inarray *array, const void *data, Eina_Compare_Cb compare)
 {
    unsigned int pos;
@@ -686,7 +686,7 @@ eina_inarray_search_sorted(const Eina_Inarray *array, const void *data, Eina_Com
    return -1;
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_inarray_foreach(const Eina_Inarray *array, Eina_Each_Cb function, const void *user_data)
 {
    unsigned char *itr, *itr_end;
@@ -704,7 +704,7 @@ eina_inarray_foreach(const Eina_Inarray *array, Eina_Each_Cb function, const voi
    return ret;
 }
 
-EINA_API int
+EAPI int
 eina_inarray_foreach_remove(Eina_Inarray *array, Eina_Each_Cb match, const void *user_data)
 {
    unsigned int i = 0, count = 0;
@@ -728,14 +728,14 @@ eina_inarray_foreach_remove(Eina_Inarray *array, Eina_Each_Cb match, const void 
    return count;
 }
 
-EINA_API unsigned int
+EAPI unsigned int
 eina_inarray_count(const Eina_Inarray *array)
 {
    EINA_MAGIC_CHECK_INARRAY(array, 0);
    return array->len;
 }
 
-EINA_API Eina_Iterator *
+EAPI Eina_Iterator *
 eina_inarray_iterator_new(const Eina_Inarray *array)
 {
    Eina_Iterator_Inarray *it;
@@ -759,7 +759,7 @@ eina_inarray_iterator_new(const Eina_Inarray *array)
    return &it->iterator;
 }
 
-EINA_API Eina_Iterator *
+EAPI Eina_Iterator *
 eina_inarray_iterator_reversed_new(const Eina_Inarray *array)
 {
    Eina_Iterator_Inarray *it;
@@ -784,7 +784,7 @@ eina_inarray_iterator_reversed_new(const Eina_Inarray *array)
    return &it->iterator;
 }
 
-EINA_API Eina_Accessor *
+EAPI Eina_Accessor *
 eina_inarray_accessor_new(const Eina_Inarray *array)
 {
    Eina_Accessor_Inarray *ac;

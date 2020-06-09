@@ -431,7 +431,7 @@ _eina_freeq_new_postponed(void)
    return fq;
 }
 
-EINA_API Eina_FreeQ *
+EAPI Eina_FreeQ *
 eina_freeq_new(Eina_FreeQ_Type type)
 {
    switch (type)
@@ -445,7 +445,7 @@ eina_freeq_new(Eina_FreeQ_Type type)
      }
 }
 
-EINA_API void
+EAPI void
 eina_freeq_free(Eina_FreeQ *fq)
 {
    if (!fq) return;
@@ -455,7 +455,7 @@ eina_freeq_free(Eina_FreeQ *fq)
    free(fq);
 }
 
-EINA_API Eina_FreeQ_Type
+EAPI Eina_FreeQ_Type
 eina_freeq_type_get(Eina_FreeQ *fq)
 {
    if (fq && fq->postponed)
@@ -470,13 +470,13 @@ eina_freeq_main_set(Eina_FreeQ *fq)
    _eina_freeq_main = fq;
 }
 
-EINA_API Eina_FreeQ *
+EAPI Eina_FreeQ *
 eina_freeq_main_get(void)
 {
    return _eina_freeq_main;
 }
 
-EINA_API void
+EAPI void
 eina_freeq_count_max_set(Eina_FreeQ *fq, int count)
 {
    if (!fq) return;
@@ -489,7 +489,7 @@ eina_freeq_count_max_set(Eina_FreeQ *fq, int count)
    UNLOCK_FQ(fq);
 }
 
-EINA_API int
+EAPI int
 eina_freeq_count_max_get(Eina_FreeQ *fq)
 {
    int count;
@@ -502,7 +502,7 @@ eina_freeq_count_max_get(Eina_FreeQ *fq)
    return count;
 }
 
-EINA_API void
+EAPI void
 eina_freeq_mem_max_set(Eina_FreeQ *fq, size_t mem)
 {
    if (!fq) return;
@@ -514,7 +514,7 @@ eina_freeq_mem_max_set(Eina_FreeQ *fq, size_t mem)
    UNLOCK_FQ(fq);
 }
 
-EINA_API size_t
+EAPI size_t
 eina_freeq_mem_max_get(Eina_FreeQ *fq)
 {
    size_t mem;
@@ -527,7 +527,7 @@ eina_freeq_mem_max_get(Eina_FreeQ *fq)
    return mem;
 }
 
-EINA_API void
+EAPI void
 eina_freeq_clear(Eina_FreeQ *fq)
 {
    if (!fq) return;
@@ -537,7 +537,7 @@ eina_freeq_clear(Eina_FreeQ *fq)
    UNLOCK_FQ(fq);
 }
 
-EINA_API void
+EAPI void
 eina_freeq_reduce(Eina_FreeQ *fq, int count)
 {
    if (!fq) return;
@@ -551,7 +551,7 @@ eina_freeq_reduce(Eina_FreeQ *fq, int count)
    UNLOCK_FQ(fq);
 }
 
-EINA_API Eina_Bool
+EAPI Eina_Bool
 eina_freeq_ptr_pending(Eina_FreeQ *fq)
 {
    Eina_Bool pending;
@@ -564,7 +564,7 @@ eina_freeq_ptr_pending(Eina_FreeQ *fq)
    return pending;
 }
 
-EINA_API void
+EAPI void
 eina_freeq_ptr_add(Eina_FreeQ *fq,
                    void *ptr,
                    void (*free_func) (void *ptr),

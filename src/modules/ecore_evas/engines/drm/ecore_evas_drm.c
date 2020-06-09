@@ -142,9 +142,8 @@ _drm_device_change(void *d EINA_UNUSED, int t EINA_UNUSED, void *event)
 static int
 _ecore_evas_drm_init(Ecore_Evas *ee, Ecore_Evas_Engine_Drm_Data *edata, const char *device)
 {
-   // XXX: this is broken. we init once but in a per ecore evas struct so
-   // we assume there will be only 1 of these drm ecore evas's ever...
-   if (++_drm_init_count != 1) return _drm_init_count;
+   _drm_init_count++;
+   if (_drm_init_count > 1) return _drm_init_count;
 
    if (!ecore_drm2_init())
      {
@@ -201,24 +200,31 @@ static int
 _ecore_evas_drm_shutdown(Ecore_Evas_Engine_Drm_Data *edata)
 {
    Ecore_Event_Handler *h;
-   if (--_drm_init_count != 0) return _drm_init_count;
 
-   if (edata->focus_job)
+   _drm_init_count--;
+   if (_drm_init_count == 0)
      {
-        ecore_job_del(edata->focus_job);
-        edata->focus_job = NULL;
-     }
-   if (edata->dev)
-     {
-        ecore_drm2_outputs_destroy(edata->dev);
-        ecore_drm2_device_close(edata->dev);
-        edata->dev = NULL;
-     }
-   ecore_drm2_shutdown();
-   ecore_event_evas_shutdown();
-   EINA_LIST_FREE(handlers, h)
-     ecore_event_handler_del(h);
+        if (edata->focus_job)
+          {
+             ecore_job_del(edata->focus_job);
+             edata->focus_job = NULL;
+          }
 
+        if (edata->dev)
+          {
+             ecore_drm2_outputs_destroy(edata->dev);
+             ecore_drm2_device_close(edata->dev);
+             edata->dev = NULL;
+          }
+
+        ecore_drm2_shutdown();
+        ecore_event_evas_shutdown();
+
+        EINA_LIST_FREE(handlers, h)
+          ecore_event_handler_del(h);
+     }
+
+   if (_drm_init_count < 0) _drm_init_count = 0;
    return _drm_init_count;
 }
 
@@ -397,8 +403,6 @@ _drm_show(Ecore_Evas *ee)
         ee->prop.withdrawn = EINA_FALSE;
         if (ee->func.fn_state_change) ee->func.fn_state_change(ee);
      }
-
-   if (ee->visible) return;
 
    ee->visible = 1;
    if (ee->func.fn_show) ee->func.fn_show(ee);
@@ -717,6 +721,7 @@ _cb_pageflip(int fd EINA_UNUSED, unsigned int frame EINA_UNUSED, unsigned int se
         ecore_drm2_output_info_get(output, &x, &y, &w, &h, NULL);
 
         if (!edata->once) t = ecore_time_get();
+//        printf("ECORE_EVAS: drm tick %1.5f @ %1.5f\n", t, ecore_time_get());
         ecore_evas_animator_tick(ee, &(Eina_Rectangle){x, y, w, h},
                                  t - edata->offset);
      }
