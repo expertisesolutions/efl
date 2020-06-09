@@ -7,51 +7,6 @@
 #include "eina_config.h"
 #include "Eina.h"
 
-#ifdef EINA_HAVE_OSX_SPINLOCK
-
-/*
- * macOS 10.12 introduced the os_unfair_lock API which
- * deprecates OSSpinLock, while keeping compatible.
- *
- * The Spinlock API is not inlined because it would imply including
- * stdbool.h, which is not wanted: it would introduce new macros,
- * and break compilation of existing programs.
- */
-# if __MAC_OS_X_VERSION_MIN_REQUIRED >= 101200
-#  include <os/lock.h>
-#  define SPINLOCK_GET(LCK) ((os_unfair_lock_t)(LCK))
-# else
-#  include <libkern/OSAtomic.h>
-#  define SPINLOCK_GET(LCK) ((OSSpinLock *)(LCK))
-#  define os_unfair_lock_lock(LCK) OSSpinLockLock(LCK)
-#  define os_unfair_lock_unlock(LCK) OSSpinLockUnlock(LCK)
-#  define os_unfair_lock_trylock(LCK) OSSpinLockTry(LCK)
-# endif
-
-EAPI Eina_Lock_Result
-_eina_spinlock_macos_take(Eina_Spinlock *spinlock)
-{
-   os_unfair_lock_lock(SPINLOCK_GET(spinlock));
-   return EINA_LOCK_SUCCEED;
-}
-
-EAPI Eina_Lock_Result
-_eina_spinlock_macos_take_try(Eina_Spinlock *spinlock)
-{
-   return (os_unfair_lock_trylock(SPINLOCK_GET(spinlock)) == true)
-      ? EINA_LOCK_SUCCEED
-      : EINA_LOCK_FAIL;
-}
-
-EAPI Eina_Lock_Result
-_eina_spinlock_macos_release(Eina_Spinlock *spinlock)
-{
-   os_unfair_lock_unlock(SPINLOCK_GET(spinlock));
-   return EINA_LOCK_SUCCEED;
-}
-#endif /* EINA_HAVE_OSX_SPINLOCK */
-
-
 Eina_Bool fork_resetting;
 
 EAPI void
