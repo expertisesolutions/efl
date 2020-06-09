@@ -178,13 +178,7 @@ _eina_thread_self(void)
 static inline Eina_ThreadId
 _eina_thread_self_id(void)
 {
-#if defined HAVE_PTHREAD_GETTHREADID_NP
-    return pthread_getthreadid_np();
-#elif defined __linux__
-    return gettid();
-#else
     return (Eina_ThreadId) pthread_self();
-#endif
 }
 
 static inline Eina_ThreadId
