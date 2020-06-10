@@ -3,11 +3,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <windows.h>
-# undef WIN32_LEAN_AND_MEAN
+# include <evil_private.h>
 #endif
 
 #include <assert.h>
@@ -537,7 +533,7 @@ evas_common_rgba_image_scalecache_prepare(Image_Entry *ie, RGBA_Image *dst EINA_
    ret = SLKT(im->cache.lock);
    if (ret == EINA_FALSE) /* can't get image lock */
      {
-        useconds_t slp = 1, slpt = 0;
+	int64_t slp = 1, slpt = 0;
         
         while (slpt < 500000)
           {
