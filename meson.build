@@ -502,12 +502,10 @@ if sys_windows
     'ecore_con',
     'ecore_drm',
     'ecore_drm2',
-    'ecore_evas',
     'ecore_fb',
     'ecore_file',
     'ecore_imf',
     'ecore_imf_evas',
-    'ecore_input_evas',
     'ecore_ipc',
     'ecore_sdl',
     'ecore_wayland',
@@ -526,7 +524,6 @@ if sys_windows
     'ephysics',
     'ethumb',
     'ethumb_client',
-    'evas',
     'exactness',
   ]
 else
