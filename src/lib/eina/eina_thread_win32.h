@@ -39,6 +39,9 @@
 #define EINA_THREAD_CANCEL_ASYNCHRONOUS 1
 #define EINA_THREAD_CANCELED   ((void *) -1)
 
+#define EINA_THREAD_CLEANUP_PUSH(cleanup, data)
+#define EINA_THREAD_CLEANUP_POP(exec_cleanup)
+
 struct _Eina_ThreadData
 {
    /*
