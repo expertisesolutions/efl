@@ -100,6 +100,7 @@ efl_libs.csv
 env.bat
 
 # Subprojects
+subprojects/lua*
 subprojects/pcre-*
 subprojects/zlib-*
 subprojects/getopt

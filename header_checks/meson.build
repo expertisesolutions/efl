@@ -240,6 +240,12 @@ if sys_windows
   getopt_project = subproject('getopt')
   getopt = getopt_project.get_variable('getopt')
   getopt_dep = getopt_project.get_variable('getopt_dep')
+
+  # lua
+  lua_project = subproject('lua')
+  lua_include_dir = lua_project.get_variable('incdir')
+  lua = lua_project.get_variable('lua_dep')
+
 else
   zlib_dep = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
