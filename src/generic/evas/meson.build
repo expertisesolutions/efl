@@ -36,11 +36,15 @@ foreach loader : generic_loaders
   if get_option('evas-loaders-disabler').contains(loader) == false
     subdir(loader)
 
+    evas_dep = [eina, generic_deps]
+    if sys_windows
+      evas_dep += [evil_unposixa]
+    endif
     tmp = executable('evas_image_loader.'+loader,
         generic_src,
         include_directories : config_dir + [include_directories('common')],
         link_with : common,
-        dependencies: [eina, generic_deps, evil_unposix],
+        dependencies: evas_dep,
         install_dir : join_paths(dir_lib, 'evas', 'utils'),
         install : true,
     )
