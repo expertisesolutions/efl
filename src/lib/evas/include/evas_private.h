@@ -10,7 +10,7 @@
 #endif
 
 #include "Evas.h"
-#include "Eet.h"
+#include <Eet.h>
 
 #include "../file/evas_module.h"
 #include "../file/evas_path.h"

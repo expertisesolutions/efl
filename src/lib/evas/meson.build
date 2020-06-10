@@ -221,7 +221,7 @@ if get_option('opengl') != 'none'
 endif
 
 evas_link = [ ]
-evas_pub_deps = [eina, ecore, ector, emile]
+evas_pub_deps = [eina, eet, ecore, ector, emile]
 
 if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
   evas_opt = static_library('evas_opt',
