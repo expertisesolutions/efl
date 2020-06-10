@@ -38,7 +38,7 @@ foreach loader : generic_loaders
 
     evas_dep = [eina, generic_deps]
     if sys_windows
-      evas_dep += [evil_unposixa]
+      evas_dep += [evil_unposix]
     endif
     tmp = executable('evas_image_loader.'+loader,
         generic_src,
