@@ -91,7 +91,7 @@ EAPI Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
  * @return integral identifier of the thread.
  * @since 1.25
  */
-EINA_API Eina_ThreadId eina_thread_id(Eina_Thread t) EINA_WARN_UNUSED_RESULT;
+EAPI Eina_ThreadId eina_thread_id(Eina_Thread t) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Checks if two thread identifiers are the same.
