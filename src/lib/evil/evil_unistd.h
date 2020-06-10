@@ -33,6 +33,10 @@ EAPI int execvp(const char *file, char *const argv[]);
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
 
+#ifndef S_ISDIR
+# define S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+#endif
+
 EAPI int ftruncate(int fd, off_t size);
 
 #else
