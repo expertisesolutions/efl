@@ -763,7 +763,7 @@ foreach package : subprojects
 endforeach
 
 #build this later, as the debug services are depending on ecore
-if 'ecore' in subprojects
+if 'ecore' not in ignored_subprojects
   subdir(join_paths('src', 'bin', 'efl'))
 
   subdir(join_paths('src', 'generic', 'evas'))
