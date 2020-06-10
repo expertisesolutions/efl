@@ -157,6 +157,8 @@ evas_src_opt = [ ]
 
 if not sys_windows
   evas_ext_none_static_deps += dependency('freetype2')
+else
+  evas_ext_none_static_deps += freetype2
 endif
 
 if (get_option('fontconfig'))

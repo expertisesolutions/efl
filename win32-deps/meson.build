@@ -1,6 +1,6 @@
 if sys_windows
 
-  # Freetype
+  # Freetype2
   freetype2_inc_dir = include_directories('freetype.2.8.0.1/build/native/include')
   freetype2_lib_dir = 'freetype.2.8.0.1/build/native/lib/x64/v141/static/Release'
   freetype2_lib = cc.find_library('freetype28',
