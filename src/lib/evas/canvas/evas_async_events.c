@@ -2,14 +2,14 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
-#include <errno.h>
-
-#ifdef _WIN32
+#ifndef _WIN32
+# include <unistd.h>
+#else
 # include <evil_private.h> /* fcntl */
 # include <winsock2.h>
 #endif
 
+#include <errno.h>
 #include <fcntl.h>
 
 #include "evas_common_private.h"
