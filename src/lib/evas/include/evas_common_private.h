@@ -22,15 +22,16 @@
 #include <time.h>
 #include <ctype.h>
 #include <stdint.h>
-#include <unistd.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #ifdef HAVE_PIXMAN
 #include <pixman.h>
 #endif
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #include <Eina.h>
 #include <Eo.h>

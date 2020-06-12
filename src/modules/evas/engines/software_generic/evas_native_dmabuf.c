@@ -2,12 +2,15 @@
 #include "evas_private.h"
 #include "evas_native_common.h"
 
-#if defined HAVE_DLSYM
-# include <dlfcn.h>      /* dlopen,dlclose,etc */
-#elif _WIN32
-# include <evil_private.h> /* dlopen dlclose dlsym mmap */
+#ifndef _WIN32
+# include <unistd.h>
+# if defined HAVE_DLSYM
+#  include <dlfcn.h>      /* dlopen,dlclose,etc */
+# else
+#  warning native_dmabuf should not get compiled if dlsym is not found on the system!
+# endif
 #else
-# warning native_dmabuf should not get compiled if dlsym is not found on the system!
+# include <evil_private.h> /* dlopen dlclose dlsym mmap */
 #endif
 
 #ifndef _WIN32
