@@ -3,17 +3,14 @@
 
 #include <evil_api.h>
 
+#include <stdint.h>
 #include <time.h>
 
-#include <stdint.h>
-
-#ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-#include "winsock2.h" // strcut timeval
-#undef WIN32_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
 #endif
+#include <winsock2.h> // strcut timeval
+#undef WIN32_LEAN_AND_MEAN
 
 /**
  * @file evil_time.h
