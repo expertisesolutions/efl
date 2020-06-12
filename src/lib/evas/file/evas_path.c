@@ -13,10 +13,11 @@
 #include <sys/stat.h>
 /* get the casefold feature! */
 #include <Eina.h>
-#include <unistd.h>
-#include <sys/param.h>
 
-#ifdef _WIN32
+#ifndef _WIN32
+# include <unistd.h>
+# include <sys/param.h>
+#else
 # include <evil_private.h> /* evil_path_is_absolute */
 #endif
 

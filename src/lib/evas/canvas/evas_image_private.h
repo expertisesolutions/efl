@@ -11,8 +11,13 @@
 #include "evas_common_private.h"
 
 #include <sys/types.h>
-#include <unistd.h>
 #include <math.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include "evas_private.h"
 #include "../common/evas_convert_color.h"

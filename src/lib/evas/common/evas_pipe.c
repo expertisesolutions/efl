@@ -1,5 +1,10 @@
 #include "evas_common_private.h"
-#include <unistd.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #ifdef BUILD_PIPE_RENDER
 

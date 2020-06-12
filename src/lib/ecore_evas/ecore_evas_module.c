@@ -7,7 +7,12 @@
 
 #include "Ecore_Evas.h"
 #include "ecore_evas_private.h"
-#include <unistd.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include "../../static_libs/buildsystem/buildsystem.h"
 
