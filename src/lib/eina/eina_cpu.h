@@ -64,7 +64,7 @@ typedef enum _Eina_Cpu_Features
  *
  * @return the current cpu features
  */
-EAPI EXTERN Eina_Cpu_Features eina_cpu_features;
+EAPI EFL_EXTERN Eina_Cpu_Features eina_cpu_features;
 
 /**
  * @brief Cpu features accessor.

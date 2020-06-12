@@ -530,7 +530,7 @@ EOAPI Elm_Widget_Item *elm_obj_toolbar_item_prepend(Eo *obj, const char *icon, c
  */
 EOAPI Elm_Widget_Item *elm_obj_toolbar_item_find_by_label(const Eo *obj, const char *label);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED;
 
 /** Called when toolbar item got focus
  * @return Efl_Object *
@@ -539,7 +539,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED;
  */
 #define ELM_TOOLBAR_EVENT_ITEM_FOCUSED (&(_ELM_TOOLBAR_EVENT_ITEM_FOCUSED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_UNFOCUSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_UNFOCUSED;
 
 /** Called when toolbar item lost focus
  * @return Efl_Object *

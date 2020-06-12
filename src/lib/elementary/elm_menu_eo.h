@@ -131,7 +131,7 @@ EOAPI void elm_obj_menu_close(Eo *obj);
  */
 EOAPI Elm_Widget_Item *elm_obj_menu_item_separator_add(Eo *obj, Elm_Widget_Item *parent);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED;
 
 /** Called when menu widget was dismissed
  *
@@ -139,7 +139,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED;
  */
 #define ELM_MENU_EVENT_DISMISSED (&(_ELM_MENU_EVENT_DISMISSED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU;
 
 /** Called when menu blocking have been enabled
  *
@@ -147,7 +147,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU;
  */
 #define ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU (&(_ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_UNBLOCK_MENU;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_UNBLOCK_MENU;
 
 /** Called when menu blocking has been disabled
  *

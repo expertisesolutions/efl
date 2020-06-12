@@ -133,10 +133,10 @@ struct _Ecore_Exe_Data
 
 typedef struct _Ecore_Exe_Data Ecore_Exe_Data;
 
-EAPI EXTERN int ECORE_EXE_EVENT_ADD;
-EAPI EXTERN int ECORE_EXE_EVENT_DEL;
-EAPI EXTERN int ECORE_EXE_EVENT_DATA;
-EAPI EXTERN int ECORE_EXE_EVENT_ERROR;
+EAPI EFL_EXTERN int ECORE_EXE_EVENT_ADD;
+EAPI EFL_EXTERN int ECORE_EXE_EVENT_DEL;
+EAPI EFL_EXTERN int ECORE_EXE_EVENT_DATA;
+EAPI EFL_EXTERN int ECORE_EXE_EVENT_ERROR;
 
 Ecore_Exe *_ecore_exe_find(pid_t pid);
 void *_ecore_exe_event_del_new(void);

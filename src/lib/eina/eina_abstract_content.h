@@ -113,7 +113,7 @@ EAPI Eina_Bool eina_content_converter_convert_can(const char *from, const char *
  */
 EAPI Eina_Iterator* eina_content_converter_possible_conversions(const char *from);
 
-EAPI EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_CONTENT;
+EAPI EFL_EXTERN const Eina_Value_Type *EINA_VALUE_TYPE_CONTENT;
 
 /**
  * Convert the Eina_Content object to an Eina_Value.

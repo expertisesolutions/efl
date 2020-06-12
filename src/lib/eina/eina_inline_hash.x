@@ -21,7 +21,7 @@
 
 #include "eina_crc.h"
 
-EAPI EXTERN unsigned int eina_seed;
+EAPI EFL_EXTERN unsigned int eina_seed;
 
 /*
   djb2 hash algorithm was first reported by dan bernstein, and was the old

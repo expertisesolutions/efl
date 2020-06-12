@@ -200,7 +200,7 @@ EAPI Eina_Bool   eina_magic_string_static_set(Eina_Magic  magic,
  * @var EINA_ERROR_MAGIC_FAILED
  * @brief The error identifier corresponding to the magic check failure.
  */
-EAPI EXTERN Eina_Error EINA_ERROR_MAGIC_FAILED;
+EAPI EFL_EXTERN Eina_Error EINA_ERROR_MAGIC_FAILED;
 
 #ifdef EINA_MAGIC_DEBUG
 

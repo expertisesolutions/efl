@@ -92,7 +92,7 @@ EOAPI const char *elm_obj_hover_best_content_location_get(const Eo *obj, Elm_Hov
  */
 EOAPI void elm_obj_hover_dismiss(Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
 
 /** Called when hover changed
  * @return const char *
@@ -101,7 +101,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
  */
 #define ELM_HOVER_EVENT_SMART_CHANGED (&(_ELM_HOVER_EVENT_SMART_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_HOVER_EVENT_DISMISSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_HOVER_EVENT_DISMISSED;
 
 /** Called when hover was dismissed
  *

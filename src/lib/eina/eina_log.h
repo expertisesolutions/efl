@@ -230,7 +230,7 @@
  * EINA_LOG_DOMAIN_GLOBAL is the general purpose log domain to be
  * used, it is always registered and available everywhere.
  */
-EAPI EXTERN int EINA_LOG_DOMAIN_GLOBAL;
+EAPI EFL_EXTERN int EINA_LOG_DOMAIN_GLOBAL;
 
 #ifndef EINA_LOG_DOMAIN_DEFAULT
 
@@ -979,9 +979,9 @@ EAPI void eina_log_console_color_set(FILE *fp,
                                      const char *color) EINA_ARG_NONNULL(1, 2);
 
 /** String that indicates the log system is initializing. */
-EXTERN EAPI const char *_eina_log_state_init;
+EAPI EFL_EXTERN const char *_eina_log_state_init;
 /** String that indicates the log system is shutting down. */
-EXTERN EAPI const char *_eina_log_state_shutdown;
+EAPI EFL_EXTERN const char *_eina_log_state_shutdown;
 /**
  * @def EINA_LOG_STATE_INIT
  * String that indicates the log system is initializing 

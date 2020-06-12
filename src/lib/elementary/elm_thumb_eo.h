@@ -21,7 +21,7 @@ typedef Eo Elm_Thumb;
 
 EWAPI const Efl_Class *elm_thumb_class_get(void);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_ERROR;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_ERROR;
 
 /** Called when an error occurred during thumbnail generation
  *
@@ -29,7 +29,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_ERROR;
  */
 #define ELM_THUMB_EVENT_GENERATE_ERROR (&(_ELM_THUMB_EVENT_GENERATE_ERROR))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_START;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_START;
 
 /** Called when thumbnail generation started
  *
@@ -37,7 +37,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_START;
  */
 #define ELM_THUMB_EVENT_GENERATE_START (&(_ELM_THUMB_EVENT_GENERATE_START))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_STOP;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_STOP;
 
 /** Called when thumbnail generation stopped
  *
@@ -45,7 +45,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_GENERATE_STOP;
  */
 #define ELM_THUMB_EVENT_GENERATE_STOP (&(_ELM_THUMB_EVENT_GENERATE_STOP))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_LOAD_ERROR;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_LOAD_ERROR;
 
 /** Called when an error occurred during loading
  *
@@ -53,7 +53,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_LOAD_ERROR;
  */
 #define ELM_THUMB_EVENT_LOAD_ERROR (&(_ELM_THUMB_EVENT_LOAD_ERROR))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_PRESS;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_THUMB_EVENT_PRESS;
 
 /** Called when pressed
  *

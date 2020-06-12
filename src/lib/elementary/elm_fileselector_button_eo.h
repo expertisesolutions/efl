@@ -21,7 +21,7 @@ typedef Eo Elm_Fileselector_Button;
 
 EWAPI const Efl_Class *elm_fileselector_button_class_get(void);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_BUTTON_EVENT_FILE_CHOSEN;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FILESELECTOR_BUTTON_EVENT_FILE_CHOSEN;
 
 /** Called when a file was chosen in the fileselector
  *

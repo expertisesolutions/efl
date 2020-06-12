@@ -193,7 +193,7 @@ EOAPI Elm_Widget_Item *elm_obj_flipselector_item_append(Eo *obj, const char *lab
  */
 EOAPI void elm_obj_flipselector_flip_prev(Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
 
 /** Called when flipselector is underflowed
  *
@@ -201,7 +201,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
  */
 #define ELM_FLIPSELECTOR_EVENT_UNDERFLOWED (&(_ELM_FLIPSELECTOR_EVENT_UNDERFLOWED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED;
 
 /** Called when flipselector is overflowed
  *

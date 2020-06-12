@@ -12,13 +12,13 @@ typedef void (*Elm_Sys_Notify_Send_Cb)(void *data, unsigned int id);
  * Emitted when the signal NotificationClosed is received.
  * @since 1.8
  */
-EAPI EXTERN int ELM_EVENT_SYS_NOTIFY_NOTIFICATION_CLOSED;
+EAPI EFL_EXTERN int ELM_EVENT_SYS_NOTIFY_NOTIFICATION_CLOSED;
 
 /**
  * Emitted when the signal ActionInvoked is received.
  * @since 1.8
  */
-EAPI EXTERN int ELM_EVENT_SYS_NOTIFY_ACTION_INVOKED; /**< A Action has been invoked. */
+EAPI EFL_EXTERN int ELM_EVENT_SYS_NOTIFY_ACTION_INVOKED; /**< A Action has been invoked. */
 
 
 /**

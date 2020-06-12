@@ -162,7 +162,7 @@ typedef struct _Edje_Version
  * Current Edje Version info
  *
  */
-EAPI EXTERN Edje_Version *edje_version;
+EAPI EFL_EXTERN Edje_Version *edje_version;
 
 #ifndef _EDJE_OBJECT_EO_CLASS_TYPE
 #define _EDJE_OBJECT_EO_CLASS_TYPE

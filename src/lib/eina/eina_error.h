@@ -114,7 +114,7 @@ typedef Eina_Bool Eina_Success_Flag;
  *
  * @deprecated since 1.19, same as @c ENOMEM from @c errno.h
  */
-EAPI EXTERN Eina_Error EINA_ERROR_OUT_OF_MEMORY EINA_DEPRECATED; /* use ENOMEM */
+EAPI EFL_EXTERN Eina_Error EINA_ERROR_OUT_OF_MEMORY EINA_DEPRECATED; /* use ENOMEM */
 
 /**
  * @brief Registers a new error type.

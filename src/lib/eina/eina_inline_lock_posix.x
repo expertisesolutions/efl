@@ -147,13 +147,13 @@ struct _Eina_RWLock
 };
 /** @} privatesection */
 
-EAPI EXTERN Eina_Bool _eina_threads_activated;
+EAPI EFL_EXTERN Eina_Bool _eina_threads_activated;
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-EAPI EXTERN int _eina_threads_debug;
-EAPI EXTERN pthread_t _eina_main_loop;
-EAPI EXTERN Eina_Lock _eina_tracking_lock;
-EAPI EXTERN Eina_Inlist *_eina_tracking;
+EAPI EFL_EXTERN int _eina_threads_debug;
+EAPI EFL_EXTERN pthread_t _eina_main_loop;
+EAPI EFL_EXTERN Eina_Lock _eina_tracking_lock;
+EAPI EFL_EXTERN Eina_Inlist *_eina_tracking;
 #endif
 
 EAPI Eina_Bool eina_lock_new(Eina_Lock *mutex);

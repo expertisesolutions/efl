@@ -179,7 +179,7 @@ typedef struct _Eet_Version
    int revision; /** < svn revision (0 if a proper release or the svn revision number Eet is built from) */
 } Eet_Version;
 
-EAPI EXTERN Eet_Version *eet_version;
+EAPI EFL_EXTERN Eet_Version *eet_version;
 
 /**
  * @defgroup Eet_Group Top level functions

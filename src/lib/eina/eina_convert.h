@@ -158,9 +158,9 @@
  * @{
  */
 
-EAPI EXTERN Eina_Error EINA_ERROR_CONVERT_P_NOT_FOUND; /**< Not used, perhaps a placeholder?  Defined as 0 in eina_convert.c*/
-EAPI EXTERN Eina_Error EINA_ERROR_CONVERT_0X_NOT_FOUND; /**< Not used, perhaps a placeholder?  Defined as 0 in eina_convert.c*/
-EAPI EXTERN Eina_Error EINA_ERROR_CONVERT_OUTRUN_STRING_LENGTH; /**< Not used, perhaps a placeholder?  Defined as 0 in eina_convert.c*/
+EAPI EFL_EXTERN Eina_Error EINA_ERROR_CONVERT_P_NOT_FOUND; /**< Not used, perhaps a placeholder?  Defined as 0 in eina_convert.c*/
+EAPI EFL_EXTERN Eina_Error EINA_ERROR_CONVERT_0X_NOT_FOUND; /**< Not used, perhaps a placeholder?  Defined as 0 in eina_convert.c*/
+EAPI EFL_EXTERN Eina_Error EINA_ERROR_CONVERT_OUTRUN_STRING_LENGTH; /**< Not used, perhaps a placeholder?  Defined as 0 in eina_convert.c*/
 
 /**
  * @brief Converts an integer number to a string in decimal base.

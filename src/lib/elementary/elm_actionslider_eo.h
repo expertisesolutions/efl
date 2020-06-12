@@ -122,7 +122,7 @@ EOAPI Elm_Actionslider_Pos elm_obj_actionslider_enabled_pos_get(const Eo *obj);
  */
 EOAPI const char *elm_obj_actionslider_selected_label_get(const Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_ACTIONSLIDER_EVENT_POS_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_ACTIONSLIDER_EVENT_POS_CHANGED;
 
 /** The position of the actionslider has changed
  * @return const char *

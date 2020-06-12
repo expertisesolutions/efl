@@ -53,7 +53,7 @@ EOAPI Efl_Canvas_Object *elm_obj_plug_image_object_get(const Eo *obj);
  */
 EOAPI Eina_Bool elm_obj_plug_connect(Eo *obj, const char *svcname, int svcnum, Eina_Bool svcsys);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_DELETED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_DELETED;
 
 /** Called when image was deleted
  *
@@ -61,7 +61,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_DELETED;
  */
 #define ELM_PLUG_EVENT_IMAGE_DELETED (&(_ELM_PLUG_EVENT_IMAGE_DELETED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_RESIZED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_RESIZED;
 
 /** Called when image was resized
  * @return Eina_Position2D

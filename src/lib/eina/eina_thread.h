@@ -121,7 +121,7 @@ EAPI Eina_Bool eina_thread_create(Eina_Thread *t,
  *
  * @since 1.19
  */
-EAPI EXTERN const void *EINA_THREAD_JOIN_CANCELED;
+EAPI EFL_EXTERN const void *EINA_THREAD_JOIN_CANCELED;
 
 /**
  * @brief Joins a currently running thread, waiting until it finishes.

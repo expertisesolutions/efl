@@ -255,9 +255,9 @@ EAPI void efreet_hash_free(Eina_Hash *hash, Eina_Free_Cb free_cb);
 EAPI void efreet_setowner(const char *path);
 EAPI void efreet_fsetowner(int fd);
 
-EAPI EXTERN int efreet_cache_update;
+EAPI EFL_EXTERN int efreet_cache_update;
 
-EAPI EXTERN void (*_efreet_mime_update_func) (void);
+EAPI EFL_EXTERN void (*_efreet_mime_update_func) (void);
 
 #undef EAPI
 #define EAPI

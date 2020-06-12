@@ -387,7 +387,7 @@ EOAPI Elm_Widget_Item *elm_obj_slideshow_item_add(Eo *obj, const Elm_Slideshow_I
  */
 EOAPI Elm_Widget_Item *elm_obj_slideshow_item_sorted_insert(Eo *obj, const Elm_Slideshow_Item_Class *itc, const void *data, Eina_Compare_Cb func);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED;
 
 /** Called when slideshow widget changed
  * @return Efl_Object *
@@ -396,7 +396,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED;
  */
 #define ELM_SLIDESHOW_EVENT_CHANGED (&(_ELM_SLIDESHOW_EVENT_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_SLIDESHOW_EVENT_TRANSITION_END;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_SLIDESHOW_EVENT_TRANSITION_END;
 
 /** Called on transition end
  * @return Efl_Object *

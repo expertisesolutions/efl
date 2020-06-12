@@ -21,7 +21,7 @@ typedef Eo Elm_Fileselector_Entry;
 
 EWAPI const Efl_Class *elm_fileselector_entry_class_get(void);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_CHANGED;
 
 /** Called when the entry changed
  *
@@ -29,7 +29,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_CHANGED;
  */
 #define ELM_FILESELECTOR_ENTRY_EVENT_CHANGED (&(_ELM_FILESELECTOR_ENTRY_EVENT_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_ACTIVATED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_ACTIVATED;
 
 /** Called when the entry was activated
  *
@@ -37,7 +37,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_ACTIVATED
  */
 #define ELM_FILESELECTOR_ENTRY_EVENT_ACTIVATED (&(_ELM_FILESELECTOR_ENTRY_EVENT_ACTIVATED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_FILE_CHOSEN;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_FILE_CHOSEN;
 
 /** Called when a file was chosen in the fileselector
  *
@@ -45,7 +45,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_FILE_CHOS
  */
 #define ELM_FILESELECTOR_ENTRY_EVENT_FILE_CHOSEN (&(_ELM_FILESELECTOR_ENTRY_EVENT_FILE_CHOSEN))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_PRESS;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_FILESELECTOR_ENTRY_EVENT_PRESS;
 
 /** Called when entry was pressed
  *

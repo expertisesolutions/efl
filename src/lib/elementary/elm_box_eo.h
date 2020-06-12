@@ -284,7 +284,7 @@ EOAPI void elm_obj_box_pack_before(Eo *obj, Efl_Canvas_Object *subobj, Efl_Canva
  */
 EOAPI void elm_obj_box_clear(Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
 
 /** Called when child was added
  * @return Efl_Object *
@@ -293,7 +293,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
  */
 #define ELM_BOX_EVENT_CHILD_ADDED (&(_ELM_BOX_EVENT_CHILD_ADDED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED;
 
 /** Called when child was removed
  * @return Efl_Object *

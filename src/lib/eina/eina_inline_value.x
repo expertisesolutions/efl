@@ -37,7 +37,7 @@
  * @since 1.2
  * @private
  */
-EAPI EXTERN const Eina_Value_Type *_EINA_VALUE_TYPE_BASICS_START;
+EAPI EFL_EXTERN const Eina_Value_Type *_EINA_VALUE_TYPE_BASICS_START;
 
 /**
  * @var _EINA_VALUE_TYPE_BASICS_END
@@ -45,7 +45,7 @@ EAPI EXTERN const Eina_Value_Type *_EINA_VALUE_TYPE_BASICS_START;
  * @since 1.2
  * @private
  */
-EAPI EXTERN const Eina_Value_Type *_EINA_VALUE_TYPE_BASICS_END;
+EAPI EFL_EXTERN const Eina_Value_Type *_EINA_VALUE_TYPE_BASICS_END;
 #define EINA_VALUE_TYPE_DEFAULT(type)           \
   ((_EINA_VALUE_TYPE_BASICS_START <= type) &&   \
    (type <= _EINA_VALUE_TYPE_BASICS_END))

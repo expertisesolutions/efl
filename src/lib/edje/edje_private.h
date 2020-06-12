@@ -96,7 +96,7 @@
 // This object is internal, only the interface needs to be exposed.
 #include "edje_global.eo.h"
 
-EAPI EXTERN int _edje_default_log_dom ;
+EAPI EFL_EXTERN int _edje_default_log_dom ;
 
 #ifdef EDJE_DEFAULT_LOG_COLOR
 # undef EDJE_DEFAULT_LOG_COLOR
@@ -2322,8 +2322,8 @@ EAPI void _edje_edd_init(void);
 EAPI void _edje_data_font_list_desc_make(Eet_Data_Descriptor **_font_list_edd, Eet_Data_Descriptor **_font_edd);
 EAPI void _edje_edd_shutdown(void);
 
-EAPI EXTERN Eet_Data_Descriptor *_edje_edd_edje_file;
-EAPI EXTERN Eet_Data_Descriptor *_edje_edd_edje_part_collection;
+EAPI EFL_EXTERN Eet_Data_Descriptor *_edje_edd_edje_file;
+EAPI EFL_EXTERN Eet_Data_Descriptor *_edje_edd_edje_part_collection;
 
 extern Eina_Inlist     *_edje_edjes;
 
@@ -2349,20 +2349,20 @@ extern Eina_Hash       *_edje_id_hash;
 extern const char      *_edje_language;
 extern const char      *_edje_cache_path;
 
-EAPI EXTERN Eina_Mempool *_emp_RECTANGLE;
-EAPI EXTERN Eina_Mempool *_emp_TEXT;
-EAPI EXTERN Eina_Mempool *_emp_IMAGE;
-EAPI EXTERN Eina_Mempool *_emp_PROXY;
-EAPI EXTERN Eina_Mempool *_emp_SWALLOW;
-EAPI EXTERN Eina_Mempool *_emp_TEXTBLOCK;
-EAPI EXTERN Eina_Mempool *_emp_GROUP;
-EAPI EXTERN Eina_Mempool *_emp_BOX;
-EAPI EXTERN Eina_Mempool *_emp_TABLE;
-EAPI EXTERN Eina_Mempool *_emp_EXTERNAL;
-EAPI EXTERN Eina_Mempool *_emp_SPACER;
-EAPI EXTERN Eina_Mempool *_emp_SNAPSHOT;
-EAPI EXTERN Eina_Mempool *_emp_part;
-EAPI EXTERN Eina_Mempool *_emp_VECTOR;
+EAPI EFL_EXTERN Eina_Mempool *_emp_RECTANGLE;
+EAPI EFL_EXTERN Eina_Mempool *_emp_TEXT;
+EAPI EFL_EXTERN Eina_Mempool *_emp_IMAGE;
+EAPI EFL_EXTERN Eina_Mempool *_emp_PROXY;
+EAPI EFL_EXTERN Eina_Mempool *_emp_SWALLOW;
+EAPI EFL_EXTERN Eina_Mempool *_emp_TEXTBLOCK;
+EAPI EFL_EXTERN Eina_Mempool *_emp_GROUP;
+EAPI EFL_EXTERN Eina_Mempool *_emp_BOX;
+EAPI EFL_EXTERN Eina_Mempool *_emp_TABLE;
+EAPI EFL_EXTERN Eina_Mempool *_emp_EXTERNAL;
+EAPI EFL_EXTERN Eina_Mempool *_emp_SPACER;
+EAPI EFL_EXTERN Eina_Mempool *_emp_SNAPSHOT;
+EAPI EFL_EXTERN Eina_Mempool *_emp_part;
+EAPI EFL_EXTERN Eina_Mempool *_emp_VECTOR;
 
 static inline Edje_Global *
 _edje_global(void)

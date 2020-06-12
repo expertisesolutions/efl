@@ -135,24 +135,24 @@ typedef enum
  * Event triggered when a Cocoa window receives focus
  * @since 1.18
  */
-EAPI EXTERN int ECORE_COCOA_EVENT_WINDOW_FOCUSED;
+EAPI EFL_EXTERN int ECORE_COCOA_EVENT_WINDOW_FOCUSED;
 
 /**
  * Event triggered when a Cocoa window loses focus
  * @since 1.18
  */
-EAPI EXTERN int ECORE_COCOA_EVENT_WINDOW_UNFOCUSED;
+EAPI EFL_EXTERN int ECORE_COCOA_EVENT_WINDOW_UNFOCUSED;
 
 /**
  * Event triggered when a Cocoa window is resized
  * @since 1.18
  */
-EAPI EXTERN int ECORE_COCOA_EVENT_WINDOW_RESIZE_REQUEST;
+EAPI EFL_EXTERN int ECORE_COCOA_EVENT_WINDOW_RESIZE_REQUEST;
 
 /** Event triggered when a Cocoa window get destroyed
  * @since 1.18
  */
-EAPI EXTERN int ECORE_COCOA_EVENT_WINDOW_DESTROY;
+EAPI EFL_EXTERN int ECORE_COCOA_EVENT_WINDOW_DESTROY;
 
 /**
  * @struct _Ecore_Cocoa_Event_Window_Resize_Request

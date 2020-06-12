@@ -345,7 +345,7 @@ EOAPI Elm_Widget_Item *elm_obj_index_selected_item_get(const Eo *obj, int level)
  */
 EOAPI Elm_Widget_Item *elm_obj_index_item_sorted_insert(Eo *obj, const char *letter, Evas_Smart_Cb func, const void *data, Eina_Compare_Cb cmp_func, Eina_Compare_Cb cmp_data_func);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED;
 
 /** Called when index changed
  * @return Efl_Object *
@@ -354,7 +354,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED;
  */
 #define ELM_INDEX_EVENT_CHANGED (&(_ELM_INDEX_EVENT_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED;
 
 /** Called when delay changed
  * @return Efl_Object *
@@ -363,7 +363,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED;
  */
 #define ELM_INDEX_EVENT_DELAY_CHANGED (&(_ELM_INDEX_EVENT_DELAY_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP;
 
 /** Called when level increased
  *
@@ -371,7 +371,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP;
  */
 #define ELM_INDEX_EVENT_LEVEL_UP (&(_ELM_INDEX_EVENT_LEVEL_UP))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_DOWN;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_DOWN;
 
 /** Called when level decreased
  *

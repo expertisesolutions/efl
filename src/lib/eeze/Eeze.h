@@ -309,7 +309,7 @@ typedef struct Eeze_Udev_Watch Eeze_Udev_Watch;
         int revision; /** < git revision (0 if a proper release or the git revision number Eeze is built from) */
      } Eeze_Version;
 
-   EAPI EXTERN Eeze_Version *eeze_version;
+   EAPI EFL_EXTERN Eeze_Version *eeze_version;
 
 /**
  * @addtogroup Eeze_Watch

@@ -293,7 +293,7 @@ EOAPI void elm_obj_clock_edit_mode_set(Eo *obj, Elm_Clock_Edit_Mode digedit);
  */
 EOAPI Elm_Clock_Edit_Mode elm_obj_clock_edit_mode_get(const Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_CLOCK_EVENT_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_CLOCK_EVENT_CHANGED;
 
 /** The clock's user changed the time
  *

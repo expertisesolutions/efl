@@ -504,21 +504,21 @@ struct _Ecore_Win32_Event_Selection_Notify
  */
 typedef int (*Ecore_Win32_Dnd_DropTarget_Callback)(void *window, int event, int pt_x, int pt_y, void *data, int size);
 
-EAPI EXTERN int ECORE_WIN32_EVENT_MOUSE_IN; /**< Ecore_Event for the #Ecore_Win32_Event_Mouse_In event */
-EAPI EXTERN int ECORE_WIN32_EVENT_MOUSE_OUT; /**< Ecore_Event for the #Ecore_Win32_Event_Mouse_Out event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_FOCUS_IN; /**< Ecore_Event for the #Ecore_Win32_Event_Window_Focus_In event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_FOCUS_OUT; /**< Ecore_Event for the #Ecore_Win32_Event_Window_Focus_Out event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_DAMAGE; /**< Ecore_Event for the Ecore_Win32_Event_Damage event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_CREATE; /**< Ecore_Event for the Ecore_Win32_Event_Create event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_DESTROY; /**< Ecore_Event for the Ecore_Win32_Event_Destroy event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_HIDE; /**< Ecore_Event for the Ecore_Win32_Event_Hide event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_SHOW; /**< Ecore_Event for the Ecore_Win32_Event_Show event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_CONFIGURE; /**< Ecore_Event for the Ecore_Win32_Event_Configure event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_RESIZE; /**< Ecore_Event for the Ecore_Win32_Event_Resize event */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_PROPERTY; /**< Ecore_Event for the Ecore_Win32_Event_Property event @since 1.20 */
-EAPI EXTERN int ECORE_WIN32_EVENT_WINDOW_DELETE_REQUEST; /**< Ecore_Event for the #Ecore_Win32_Event_Window_Delete_Request event */
-EAPI EXTERN int ECORE_WIN32_EVENT_SELECTION_CLEAR; /**< Ecore_Event for the #Ecore_Win32_Event_Selection_Clear event @since 1.16 */
-EAPI EXTERN int ECORE_WIN32_EVENT_SELECTION_NOTIFY; /**< Ecore_Event for the #Ecore_Win32_Event_Selection_Notify event @since 1.16 */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_MOUSE_IN; /**< Ecore_Event for the #Ecore_Win32_Event_Mouse_In event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_MOUSE_OUT; /**< Ecore_Event for the #Ecore_Win32_Event_Mouse_Out event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_FOCUS_IN; /**< Ecore_Event for the #Ecore_Win32_Event_Window_Focus_In event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_FOCUS_OUT; /**< Ecore_Event for the #Ecore_Win32_Event_Window_Focus_Out event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_DAMAGE; /**< Ecore_Event for the Ecore_Win32_Event_Damage event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_CREATE; /**< Ecore_Event for the Ecore_Win32_Event_Create event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_DESTROY; /**< Ecore_Event for the Ecore_Win32_Event_Destroy event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_HIDE; /**< Ecore_Event for the Ecore_Win32_Event_Hide event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_SHOW; /**< Ecore_Event for the Ecore_Win32_Event_Show event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_CONFIGURE; /**< Ecore_Event for the Ecore_Win32_Event_Configure event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_RESIZE; /**< Ecore_Event for the Ecore_Win32_Event_Resize event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_PROPERTY; /**< Ecore_Event for the Ecore_Win32_Event_Property event @since 1.20 */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_WINDOW_DELETE_REQUEST; /**< Ecore_Event for the #Ecore_Win32_Event_Window_Delete_Request event */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_SELECTION_CLEAR; /**< Ecore_Event for the #Ecore_Win32_Event_Selection_Clear event @since 1.16 */
+EAPI EFL_EXTERN int ECORE_WIN32_EVENT_SELECTION_NOTIFY; /**< Ecore_Event for the #Ecore_Win32_Event_Selection_Notify event @since 1.16 */
 
 
 /* Core */

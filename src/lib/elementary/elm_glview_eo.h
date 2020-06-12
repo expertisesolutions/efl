@@ -236,7 +236,7 @@ EOAPI int elm_obj_glview_rotation_get(const Eo *obj);
  */
 EOAPI void elm_obj_glview_draw_request(Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
 
 /**
  * @brief Event dispatched when first render happens.
@@ -250,7 +250,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
  */
 #define ELM_GLVIEW_EVENT_CREATED (&(_ELM_GLVIEW_EVENT_CREATED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
 
 /**
  * @brief Event dispatched when GLView object is deleted.
@@ -264,7 +264,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
  */
 #define ELM_GLVIEW_EVENT_DESTROYED (&(_ELM_GLVIEW_EVENT_DESTROYED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
 
 /**
  * @brief Event dispatched when resize happens.
@@ -278,7 +278,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
  */
 #define ELM_GLVIEW_EVENT_RESIZED (&(_ELM_GLVIEW_EVENT_RESIZED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER;
 
 /**
  * @brief Event dispatched when GLView is rendered.

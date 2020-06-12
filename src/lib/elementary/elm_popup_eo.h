@@ -243,7 +243,7 @@ EOAPI Elm_Widget_Item *elm_obj_popup_item_append(Eo *obj, const char *label, Efl
  */
 EOAPI void elm_obj_popup_dismiss(Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED;
 
 /** Called when popup was clicked
  *
@@ -251,7 +251,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED;
  */
 #define ELM_POPUP_EVENT_BLOCK_CLICKED (&(_ELM_POPUP_EVENT_BLOCK_CLICKED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT;
 
 /** Called when popup timed out
  *
@@ -259,7 +259,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT;
  */
 #define ELM_POPUP_EVENT_TIMEOUT (&(_ELM_POPUP_EVENT_TIMEOUT))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED;
 
 /** Called when popup got focus
  * @return Efl_Object *
@@ -268,7 +268,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED;
  */
 #define ELM_POPUP_EVENT_ITEM_FOCUSED (&(_ELM_POPUP_EVENT_ITEM_FOCUSED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED;
 
 /** Called when popup lost focus
  * @return Efl_Object *
@@ -277,7 +277,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED;
  */
 #define ELM_POPUP_EVENT_ITEM_UNFOCUSED (&(_ELM_POPUP_EVENT_ITEM_UNFOCUSED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_DISMISSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_POPUP_EVENT_DISMISSED;
 
 /** Called when popup was dismissed
  *

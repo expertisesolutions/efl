@@ -48,7 +48,7 @@
  * @see Elm_Cnp_Event_Selection_Changed
  * @since 1.20
  */
-EAPI EXTERN int ELM_CNP_EVENT_SELECTION_CHANGED;
+EAPI EFL_EXTERN int ELM_CNP_EVENT_SELECTION_CHANGED;
 
 /**
  * Defines the types of selection property names.

@@ -555,7 +555,7 @@ EOAPI void elm_obj_calendar_marks_draw(Eo *obj);
  */
 EOAPI Eina_Bool elm_obj_calendar_displayed_time_get(const Eo *obj, Efl_Time *displayed_time);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED;
 
 /** Emitted when the date in the calendar is changed
  *
@@ -563,7 +563,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED;
  */
 #define ELM_CALENDAR_EVENT_CHANGED (&(_ELM_CALENDAR_EVENT_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_CALENDAR_EVENT_DISPLAY_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_CALENDAR_EVENT_DISPLAY_CHANGED;
 
 /** Emitted when the current month displayed in the calendar is changed
  *

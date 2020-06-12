@@ -631,7 +631,7 @@ EOAPI void elm_obj_gengrid_reorder_mode_start(Eo *obj, Ecore_Pos_Map tween_mode)
  */
 EOAPI void elm_obj_gengrid_reorder_mode_stop(Eo *obj);
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_REALIZED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_REALIZED;
 
 /** Called when gengrid realized
  * @return Efl_Object *
@@ -640,7 +640,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_REALIZED;
  */
 #define ELM_GENGRID_EVENT_REALIZED (&(_ELM_GENGRID_EVENT_REALIZED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_UNREALIZED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_UNREALIZED;
 
 /** Called when gengrid unrealized
  * @return Efl_Object *
@@ -649,7 +649,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_UNREALIZED;
  */
 #define ELM_GENGRID_EVENT_UNREALIZED (&(_ELM_GENGRID_EVENT_UNREALIZED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_INDEX_UPDATE;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_INDEX_UPDATE;
 
 /** Called on gengrid index update
  * @return Efl_Object *
@@ -658,7 +658,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_INDEX_UPDATE;
  */
 #define ELM_GENGRID_EVENT_INDEX_UPDATE (&(_ELM_GENGRID_EVENT_INDEX_UPDATE))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED;
 
 /** Called when scroll page changed
  *
@@ -666,7 +666,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED;
  */
 #define ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED (&(_ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_BOTTOM;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_BOTTOM;
 
 /** Called when bottom edge is reached
  *
@@ -674,7 +674,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_BOTTOM;
  */
 #define ELM_GENGRID_EVENT_EDGE_BOTTOM (&(_ELM_GENGRID_EVENT_EDGE_BOTTOM))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_TOP;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_TOP;
 
 /** Called when top edge is reached
  *
@@ -682,7 +682,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_TOP;
  */
 #define ELM_GENGRID_EVENT_EDGE_TOP (&(_ELM_GENGRID_EVENT_EDGE_TOP))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_RIGHT;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_RIGHT;
 
 /** Called when right edge is reached
  *
@@ -690,7 +690,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_RIGHT;
  */
 #define ELM_GENGRID_EVENT_EDGE_RIGHT (&(_ELM_GENGRID_EVENT_EDGE_RIGHT))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_LEFT;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_LEFT;
 
 /** Called when left edge is reached
  *
@@ -698,7 +698,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_LEFT;
  */
 #define ELM_GENGRID_EVENT_EDGE_LEFT (&(_ELM_GENGRID_EVENT_EDGE_LEFT))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_FOCUSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_FOCUSED;
 
 /** Called when item got focus
  * @return Efl_Object *
@@ -707,7 +707,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_FOCUSED;
  */
 #define ELM_GENGRID_EVENT_ITEM_FOCUSED (&(_ELM_GENGRID_EVENT_ITEM_FOCUSED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_UNFOCUSED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_UNFOCUSED;
 
 /** Called when item no longer has focus
  * @return Efl_Object *
@@ -716,7 +716,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_UNFOCUSED;
  */
 #define ELM_GENGRID_EVENT_ITEM_UNFOCUSED (&(_ELM_GENGRID_EVENT_ITEM_UNFOCUSED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_START;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_START;
 
 /** Called when item reorder animation started
  * @return Efl_Object *
@@ -725,7 +725,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_ST
  */
 #define ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_START (&(_ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_START))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_STOP;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_STOP;
 
 /** Called when item reorder animation stopped
  * @return Efl_Object *
@@ -734,7 +734,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_ST
  */
 #define ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_STOP (&(_ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_STOP))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ACTIVATED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ACTIVATED;
 
 /** Called when gengrid got activated
  * @return Efl_Object *
@@ -743,7 +743,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_ACTIVATED;
  */
 #define ELM_GENGRID_EVENT_ACTIVATED (&(_ELM_GENGRID_EVENT_ACTIVATED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_HIGHLIGHTED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_HIGHLIGHTED;
 
 /** Called when gengrid is highlighted
  * @return Efl_Object *
@@ -752,7 +752,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_HIGHLIGHTED;
  */
 #define ELM_GENGRID_EVENT_HIGHLIGHTED (&(_ELM_GENGRID_EVENT_HIGHLIGHTED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_UNHIGHLIGHTED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_UNHIGHLIGHTED;
 
 /** Called when gengrid is no longer highlighted
  * @return Efl_Object *
@@ -761,7 +761,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_UNHIGHLIGHTED;
  */
 #define ELM_GENGRID_EVENT_UNHIGHLIGHTED (&(_ELM_GENGRID_EVENT_UNHIGHLIGHTED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_RELEASED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_RELEASED;
 
 /** Called when gengrid is released
  * @return Efl_Object *
@@ -770,7 +770,7 @@ EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_RELEASED;
  */
 #define ELM_GENGRID_EVENT_RELEASED (&(_ELM_GENGRID_EVENT_RELEASED))
 
-EWAPI EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_MOVED;
+EWAPI EFL_EXTERN const Efl_Event_Description _ELM_GENGRID_EVENT_MOVED;
 
 /** Called when gengrid item moved
  * @return Efl_Object *

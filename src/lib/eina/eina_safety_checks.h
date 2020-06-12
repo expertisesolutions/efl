@@ -87,7 +87,7 @@
 #include "eina_config.h"
 #include "eina_error.h"
 
-EAPI EXTERN Eina_Error EINA_ERROR_SAFETY_FAILED;
+EAPI EFL_EXTERN Eina_Error EINA_ERROR_SAFETY_FAILED;
 
 #ifdef EINA_SAFETY_CHECKS
 
