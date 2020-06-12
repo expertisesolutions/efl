@@ -22,7 +22,7 @@
 
 EFL_START_TEST(eina_thread_test_self_id)
 {
-    ck_assert(eina_thread_self_id() == eina_thread_id(eina_thread_self()));
+    ck_assert_int_eq(eina_thread_self_id(), eina_thread_id(eina_thread_self()));
 }
 EFL_END_TEST
 
