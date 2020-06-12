@@ -60,7 +60,7 @@ struct _Efl_Exe_Data
    } fd;
 #else
    Eo *exit_handler;
-   pid_t pid;
+   ecore_pid_t pid;
    struct {
       int in, out, exited_read, exited_write;
       Eo *in_handler, *out_handler;

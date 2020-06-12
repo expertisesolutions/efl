@@ -10,6 +10,12 @@
 #include "ecore_event_message.eo.h"
 #include "ecore_event_message_handler.eo.h"
 
+#ifndef _MSC_VER
+typedef pid_t ecore_pid_t;
+#else
+typedef DWORD ecore_pid_t;
+#endif
+
 extern int _ecore_log_dom;
 #ifdef  _ECORE_DEFAULT_LOG_DOM
 # undef _ECORE_DEFAULT_LOG_DOM
@@ -116,7 +122,7 @@ struct _Efl_Loop_Data
    unsigned int         throttle;
 
    int                  epoll_fd;
-   pid_t                epoll_pid;
+   ecore_pid_t          epoll_pid;
    int                  timer_fd;
 
    double               last_check;
@@ -354,7 +360,7 @@ typedef struct _Ecore_Signal_Pid_Info Ecore_Signal_Pid_Info;
 
 struct _Ecore_Signal_Pid_Info
 {
-   pid_t pid;
+   ecore_pid_t pid;
    int exit_code;
    int exit_signal;
    siginfo_t info;
@@ -367,15 +373,15 @@ int  _ecore_signal_count_get(Eo *obj, Efl_Loop_Data *pd);
 void _ecore_signal_call(Eo *obj, Efl_Loop_Data *pd);
 void _ecore_signal_pid_lock(void);
 void _ecore_signal_pid_unlock(void);
-void _ecore_signal_pid_register(pid_t pid, int fd);
-void _ecore_signal_pid_unregister(pid_t pid, int fd);
+void _ecore_signal_pid_register(ecore_pid_t pid, int fd);
+void _ecore_signal_pid_unregister(ecore_pid_t pid, int fd);
 
 #endif
 
 void       _ecore_exe_init(void);
 void       _ecore_exe_shutdown(void);
 #ifndef _WIN32
-Ecore_Exe *_ecore_exe_find(pid_t pid);
+Ecore_Exe *_ecore_exe_find(ecore_pid_t pid);
 void      *_ecore_exe_event_del_new(void);
 void       _ecore_exe_event_del_free(void *data,
                                      void *ev);
