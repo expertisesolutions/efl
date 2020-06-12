@@ -1,5 +1,5 @@
 /* EINA - EFL data type library
- * Copyright (C) 2013 ProFUSION embedded systems
+ * Copyright (C) 2020 Cauê Baasch de Souza
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
