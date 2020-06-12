@@ -5,13 +5,13 @@
 #undef EAPI
 #endif
 
-#ifdef EXTERN
-# undef EXTERN
+#ifdef EFL_EXTERN
+# undef EFL_EXTERN
 #endif
 #ifdef _WIN32
-# define EXTERN
+# define EFL_EXTERN
 #else
-# define EXTERN extern
+# define EFL_EXTERN extern
 #endif
 
 #ifdef _WIN32
