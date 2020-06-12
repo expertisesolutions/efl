@@ -54,7 +54,7 @@ EAPI double _efl_startup_time = 0;
 static Eina_Bool _ecore_memory_statistic(void *data);
 static int _ecore_memory_max_total = 0;
 static int _ecore_memory_max_free = 0;
-static pid_t _ecore_memory_pid = 0;
+static ECORE_PID _ecore_memory_pid = 0;
 #ifdef HAVE_MALLOC_INFO
 static FILE *_ecore_memory_statistic_file = NULL;
 #endif
