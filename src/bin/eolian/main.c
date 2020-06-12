@@ -1,5 +1,10 @@
 #include <stdlib.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
+#include <getopt.h>
 
 #include "main.h"
 #include "types.h"
