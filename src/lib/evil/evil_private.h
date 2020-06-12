@@ -56,9 +56,6 @@ extern "C" {
 #define sigsetjmp(Env, Save) setjmp(Env)
 
 #ifdef _MSC_VER
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
 
 #include <BaseTsd.h>
 typedef SSIZE_T ssize_t;

@@ -27,7 +27,7 @@
 # ifndef WIN32_LEAN_AND_MEAN
 #  define WIN32_LEAN_AND_MEAN
 # endif
-# include <winsock.h> /* struct timeval */
+# include <winsock2.h> /* struct timeval */
 # undef WIN32_LEAN_AND_MEAN
 #else
 # include <sys/time.h> /* struct timeval */
