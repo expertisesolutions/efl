@@ -175,8 +175,8 @@ static Ecore_Pthread_Worker *_ecore_thread_worker_new(void);
 static PH(get_main_loop_thread) (void)
 {
    static PH(main_loop_thread);
-   static pid_t main_loop_pid;
-   pid_t pid = getpid();
+   static ecore_pid_t main_loop_pid;
+   ecore_pid_t pid = getpid();
 
    if (pid != main_loop_pid)
      {
