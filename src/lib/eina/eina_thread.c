@@ -65,6 +65,7 @@ eina_thread_equal(Eina_Thread t1, Eina_Thread t2)
 {
    return _eina_thread_equal(t1, t2);
 }
+
 static void *
 _eina_internal_call(void *context)
 {
