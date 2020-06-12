@@ -22,7 +22,7 @@
 
 #ifdef EFL_HAVE_THREADS
 # ifdef _WIN32
-#  include <evil_windows.h>
+#  include <evil_private.h>
 # elif defined (__sun) || defined(__GNU__) || defined(__CYGWIN__)
 #  include <unistd.h>
 #  include <pthread.h>
@@ -45,7 +45,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
 
 #include "eina_log.h"
 #include "eina_cpu.h"

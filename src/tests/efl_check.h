@@ -9,12 +9,12 @@
 #include <stdio.h> /* fprintf, fputs */
 #include <string.h> /* strcmp */
 #include <errno.h> /* errno */
-#include <sys/time.h>
 
 #ifdef _WIN32
-#include <evil_private.h>
+# include <evil_private.h>
 #else
-#include <unistd.h> /* execvp */
+# include <unistd.h> /* execvp */
+# include <sys/time.h>
 #endif
 
 #ifdef HAVE_FORK

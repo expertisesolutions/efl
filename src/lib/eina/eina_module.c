@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
-#include <unistd.h>
 
 #if defined HAVE_DLOPEN && ! defined _WIN32
 # include <dlfcn.h>
@@ -35,7 +34,8 @@
 #endif
 
 #ifndef _MSC_VER
-#include <libgen.h>
+# include <libgen.h>
+# include <unistd.h>
 #endif
 
 #include "eina_config.h"

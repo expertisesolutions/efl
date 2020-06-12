@@ -27,17 +27,14 @@
 #include <synchapi.h>
 #undef WIN32_LEAN_AND_MEAN
 
-#include "unimplemented.h"
-
 #include <errno.h>
 
-#include <sys/time.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <sys/types.h>
-#include <unistd.h>
 
 #ifdef EINA_HAVE_DEBUG_THREADS
 #include <assert.h>
@@ -60,7 +57,6 @@ EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 
 /* For cond_timedwait */
 #include <time.h>
-#include <sys/time.h>
 
 #include <eina_error.h>
 
@@ -265,7 +261,7 @@ _eina_lock_release(Eina_Lock *mutex)
    return EINA_LOCK_SUCCEED;
 }
 
-UNIMPLEMENTED static inline Eina_Bool
+static inline Eina_Bool
 _eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex)
 {
    InitializeConditionVariable(&cond->condition);
