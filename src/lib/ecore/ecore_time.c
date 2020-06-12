@@ -5,7 +5,11 @@
 #define EFL_LOOP_PROTECTED
 
 #include <stdlib.h>
-#include <sys/time.h>
+#ifndef _WIN32
+# include <sys/time.h>
+#else
+# include <evil_private.h>
+#endif
 
 #if defined(__APPLE__) && defined(__MACH__)
 # include <mach/mach_time.h>
