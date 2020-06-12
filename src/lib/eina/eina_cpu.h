@@ -38,6 +38,7 @@
  */
 
 #include "eina_types.h"
+#include "eina_api.h"
 
 /**
  * @typedef Eina_Cpu_Features
