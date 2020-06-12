@@ -59,6 +59,8 @@ if target_machine.system() == 'windows'
   )
 else
   evil = declare_dependency()
+  evil_src = []
+  evil_ext_deps = []
 endif
 
 automatic_pkgfile = false
