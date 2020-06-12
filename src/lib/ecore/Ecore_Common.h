@@ -3,6 +3,12 @@
 
 #include <Efl_Config.h>
 
+#ifndef _MSC_VER
+typedef pid_t ecore_pid_t;
+#else
+typedef DWORD ecore_pid_t;
+#endif
+
 /**
  * @defgroup Ecore_Init_Group Ecore initialization, shutdown functions and reset on fork.
  * @ingroup Ecore
@@ -1064,7 +1070,7 @@ struct _Ecore_Exe_Event_Add
  */
 struct _Ecore_Exe_Event_Del
 {
-   pid_t      pid; /**< The process ID of the process that exited */
+   ecore_pid_t pid; /**< The process ID of the process that exited */
    int        exit_code; /**< The exit code of the process */
    Ecore_Exe *exe; /**< The handle to the exited process, or @c NULL if not found */
    int        exit_signal; /**< The signal that caused the process to exit */
@@ -1230,7 +1236,7 @@ ECORE_API void *ecore_exe_free(Ecore_Exe *exe);
  * @param   exe Handle to the given spawned process.
  * @return  The process ID on success,  @c -1 otherwise.
  */
-ECORE_API pid_t ecore_exe_pid_get(const Ecore_Exe *exe);
+ECORE_API ecore_pid_t ecore_exe_pid_get(const Ecore_Exe *exe);
 
 /**
  * Sets the string tag for the given process handle.
