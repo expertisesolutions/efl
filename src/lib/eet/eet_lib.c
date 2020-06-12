@@ -8,8 +8,13 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
 #include <fcntl.h>
+
+#ifndef _WIN32
+#include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include <Eina.h>
 #include <Emile.h>

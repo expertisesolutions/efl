@@ -3,7 +3,12 @@
 #endif
 
 #include <stdlib.h>
+
+#ifndef _WIN32
 #include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include <Eina.h>
 #include <Eet.h>
