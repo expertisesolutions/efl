@@ -4,20 +4,21 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+#else
+# include <evil_private.h>
+#endif
 
 #if defined(HAVE_SYS_EPOLL_H) && defined(HAVE_SYS_TIMERFD_H)
 # define HAVE_EPOLL   1
 # include <sys/epoll.h>
 # include <sys/timerfd.h>
 #endif
-
-#ifdef _WIN32
-#include <evil_private.h>
-#endif /* _WIN32 */
 
 #ifdef HAVE_PRCTL
 # include <sys/prctl.h>

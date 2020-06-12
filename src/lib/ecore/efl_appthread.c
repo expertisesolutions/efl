@@ -10,8 +10,13 @@
 
 #include "ecore_private.h"
 
-#include <unistd.h>
 #include <fcntl.h>
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
+
 #include <string.h>
 
 #define MY_CLASS EFL_APPTHREAD_CLASS

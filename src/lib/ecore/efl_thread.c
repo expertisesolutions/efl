@@ -7,16 +7,21 @@
 #define EFL_IO_CLOSER_PROTECTED 1
 
 #ifdef _WIN32
-# include <evil_private.h> /* pipe fcntl */
 #endif
 
 #include <Ecore.h>
 
 #include "ecore_private.h"
 
-#include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h> /* pipe fcntl */
+#endif
+
 
 #define MY_CLASS EFL_THREAD_CLASS
 

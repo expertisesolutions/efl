@@ -3,10 +3,14 @@
 #endif
 
 #include <stdlib.h>
-#include <sys/time.h>
 #include <assert.h>
 #include <sys/types.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <sys/time.h>
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include "Ecore.h"
 #include "ecore_private.h"
