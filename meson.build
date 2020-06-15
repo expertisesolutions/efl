@@ -763,15 +763,17 @@ foreach package : subprojects
 endforeach
 
 #build this later, as the debug services are depending on ecore
-#subdir(join_paths('src', 'bin', 'efl'))
+if 'ecore' not in ignored_subprojects
+  subdir(join_paths('src', 'bin', 'efl'))
 
-#subdir(join_paths('src', 'generic', 'evas'))
-#subdir('cmakeconfig')
-#subdir(join_paths('src', 'bindings'))
-#subdir(join_paths('src', 'edje_external'))
-#subdir(join_paths('data'))
+  subdir(join_paths('src', 'generic', 'evas'))
+  subdir('cmakeconfig')
+  subdir(join_paths('src', 'bindings'))
+  subdir(join_paths('src', 'edje_external'))
+  subdir(join_paths('data'))
+endif
 
-if true # get_option('build-tests')
+if get_option('build-tests')
   if not sys_windows
     check = dependency('check')
   endif
@@ -785,32 +787,35 @@ if true # get_option('build-tests')
   endforeach
 endif
 
-# if get_option('build-examples')
-#   foreach example : example_dirs
-#     package_c_args = [
-#       '-DPACKAGE_DATA_DIR="'+ join_paths(dir_data, example)+'"',
-#       '-DNEED_RUN_IN_TREE=1',
-#     ]
-#     subdir(join_paths(local_examples, example))
-#   endforeach
-# endif
+if get_option('build-examples')
+  foreach example : example_dirs
+    package_c_args = [
+      '-DPACKAGE_DATA_DIR="'+ join_paths(dir_data, example)+'"',
+      '-DNEED_RUN_IN_TREE=1',
+    ]
+    subdir(join_paths(local_examples, example))
+  endforeach
+endif
 
-# subdir(join_paths(local_scripts))
+# disabled for windows for now
+if not sys_windows
+  subdir(join_paths(local_scripts))
 
-# meson.add_install_script('meson/meson_modules.sh', module_files)
+  meson.add_install_script('meson/meson_modules.sh', module_files)
 
-# foreach evas_loader_map_inst : evas_loader_map
-#   evas_loader_original = evas_loader_map_inst[0]
-#   evas_loader_link_types = evas_loader_map_inst[1]
+  foreach evas_loader_map_inst : evas_loader_map
+    evas_loader_original = evas_loader_map_inst[0]
+    evas_loader_link_types = evas_loader_map_inst[1]
 
-#   meson.add_install_script('meson/evas_loader_conf.sh', evas_loader_original, evas_loader_link_types)
-# endforeach
+    meson.add_install_script('meson/evas_loader_conf.sh', evas_loader_original, evas_loader_link_types)
+  endforeach
 
-# doxygen = find_program('doxygen', required : false)
+  doxygen = find_program('doxygen', required : false)
 
-# if doxygen.found()
-#   subdir('doc')
-# endif
+  if doxygen.found()
+    subdir('doc')
+  endif
+endif
 
 #
 # Configure files
@@ -837,34 +842,37 @@ configure_file(
   configuration: efl_config_h
 )
 
-# configure_file(
-#   input: 'elm_intro.h.in',
-#   output: 'elm_intro.h',
-#   configuration: config_h,
-#   install_dir : join_paths(dir_include,'elementary-'+version_major)
-# )
+# desabled for windows for now
+if not sys_windows
+  configure_file(
+    input: 'elm_intro.h.in',
+    output: 'elm_intro.h',
+    configuration: config_h,
+    install_dir : join_paths(dir_include,'elementary-'+version_major)
+  )
+endif
 
-# subdir(join_paths('systemd-services'))
+subdir(join_paths('systemd-services'))
 
-# if not sys_windows and get_option('dbus')
-#   subdir(join_paths('dbus-services'))
-# endif
+if not sys_windows and get_option('dbus')
+  subdir(join_paths('dbus-services'))
+endif
 
-# if sys_windows == false
-# #output the three new efl-* .pc files
-# efl_20_pc_files = [
-#   ['efl-ui', ['elementary']],
-#   ['efl-core', ['ecore', 'efl', 'emile']],
-#   ['efl-net', ['ecore', 'ecore-con', 'emile']],
-# ]
+if not sys_windows
+  #output the three new efl-* .pc files
+  efl_20_pc_files = [
+    ['efl-ui', ['elementary']],
+    ['efl-core', ['ecore', 'efl', 'emile']],
+    ['efl-net', ['ecore', 'ecore-con', 'emile']],
+  ]
 
-# foreach pc_file : efl_20_pc_files
-#   name = pc_file[0]
-#   libraries = pc_file[1]
-#   pkgconfig.generate(
-#     name : '-'.join(name.split('_')),
-#     description: name+' configutation file',
-#     requires : libraries,
-#   )
-# endforeach
-# endif
+  foreach pc_file : efl_20_pc_files
+    name = pc_file[0]
+    libraries = pc_file[1]
+    pkgconfig.generate(
+      name : '-'.join(name.split('_')),
+      description: name+' configutation file',
+      requires : libraries,
+    )
+  endforeach
+endif
