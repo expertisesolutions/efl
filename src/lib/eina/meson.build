@@ -114,6 +114,7 @@ public_sub_headers = [
 'eina_vpath.h',
 'eina_abstract_content.h',
 'eina_fnmatch.h',
+'eina_pipe.h',
 ]
 
 public_headers = [
@@ -207,6 +208,7 @@ if sys_windows
   )
   public_sub_headers += files(
     'eina_thread_win32.h',
+    'eina_inline_lock_win32.x',
   )
 else
   eina_src += files(
@@ -215,6 +217,7 @@ else
   )
   public_sub_headers += files(
     'eina_thread_posix.h',
+    'eina_inline_lock_posix.x',
   )
 endif
 
