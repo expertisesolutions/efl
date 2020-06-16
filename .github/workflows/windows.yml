@@ -34,16 +34,21 @@ jobs:
       if: steps.cache-llvm.outputs.cache-hit != 'true'
       run: choco install llvm
     - name: Add clang-cl to PATH
-      run: echo "::add-path::C:\Program Files\LLVM\bin"
+      run: echo "::add-path::$Env:ProgramFiles\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: install nasm
       if: steps.cache-nasm.outputs.cache-hit != 'true'
       run: choco install nasm
     - name: Add Nasm to PATH
-      run: echo "::add-path::C:\Program Files\Nasm"
+      run: echo "::add-path::$Env:ProgramFiles\Nasm"
 #    - name: test nasm
 #      run: nasm.exe -v
+    - name: Install bzip2
+      if: steps.cache-bzip2.outputs.cache-hit != 'true'
+      run: choco install bzip2
+    - name: Add bzip2 to PATH
+      run: echo "::add-path::$Env:ProgramData\chocolatey\lib\bzip2\tools"
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: choco install ninja
