@@ -240,6 +240,10 @@ if sys_windows
   getopt_project = subproject('getopt')
   getopt = getopt_project.get_variable('getopt')
   getopt_dep = getopt_project.get_variable('getopt_dep')
+
+  # jpeg
+  jpeg_project = subproject('libjpeg')
+  jpeg = jpeg_project.get_variable('jpeg_dep')
 else
   zlib_dep = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
