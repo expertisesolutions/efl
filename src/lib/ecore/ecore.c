@@ -21,10 +21,9 @@
 # include <unistd.h>
 #endif
 
-#ifdef HAVE_SYSTEMD
-# include <systemd/sd-daemon.h>
+#ifdef _WIN32
+# include <evil_private.h> /* evil_init/shutdown */
 #endif
-
 #include <Eina.h>
 #include <Efl.h>
 

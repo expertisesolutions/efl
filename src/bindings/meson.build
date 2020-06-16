@@ -1,10 +1,6 @@
 
 bindings = get_option('bindings')
-if not sys_windows
-  bindings_order = ['luajit', 'cxx', 'mono']
-else
-  bindings_order = ['lua', 'cxx', 'mono']
-endif
+bindings_order = ['lua', 'cxx', 'mono']
 
 if (get_option('dotnet') and not bindings.contains('mono'))
   message('dotnet support requires the C# bindings')
@@ -20,6 +16,10 @@ if (bindings.contains('cxx') == false and bindings.contains('mono'))
     include_directories: inc_dir,
     dependencies : eolian
   )
+endif
+
+if bindings.contains('lua') and not have_elua
+  error('Elua is necessary for Lua bindings')
 endif
 
 foreach binding : bindings_order

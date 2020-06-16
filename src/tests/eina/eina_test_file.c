@@ -819,7 +819,7 @@ EFL_START_TEST(eina_test_file_mktemp)
 
    fd = eina_file_mkstemp(buf, &tmpfile);
    fail_if((fd < 0) || !tmpfile);
-   close(fd);
+   fail_if(close(fd));
 
    it = eina_file_direct_ls(tmpdir);
    fail_if(!it);
@@ -830,8 +830,8 @@ EFL_START_TEST(eina_test_file_mktemp)
 
    eina_iterator_free(it);
 
-   unlink(tmpfile);
-   remove(tmpdir);
+   fail_if(unlink(tmpfile));
+   fail_if(remove(tmpdir));
 }
 EFL_END_TEST
 

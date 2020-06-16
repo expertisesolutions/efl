@@ -25,12 +25,6 @@ elif (get_option('crypto') == 'openssl')
   emile_src += files('emile_cipher_openssl.c')
 endif
 
-if not sys_windows
-  emili_lib_deps = [lz4, rg_etc, m]
-else
-  emili_lib_deps = [lz4, rg_etc]
-endif
-
 emile_lib = library('emile',
     emile_src,
     c_args : [package_c_args, '-DEMILE_BUILD'],

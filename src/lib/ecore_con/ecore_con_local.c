@@ -19,9 +19,9 @@
 # include <pwd.h>
 #endif
 
-#ifdef HAVE_SYSTEMD
-# include <systemd/sd-daemon.h>
-#endif 
+#ifdef _WIN32
+# include <ws2tcpip.h>
+#endif
 
 #include <Ecore.h>
 #include <ecore_private.h>
