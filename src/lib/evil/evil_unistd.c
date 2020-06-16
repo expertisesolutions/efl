@@ -23,7 +23,7 @@ LONGLONG _evil_time_freq;
 LONGLONG _evil_time_count;
 long     _evil_time_second;
 
-long 
+long
 _evil_systemtime_to_time(SYSTEMTIME st);
 
 long
@@ -57,6 +57,24 @@ execvp(const char *file, char *const argv[])
    return _execvp(file, (const char *const *)argv);
 }
 
+int
+ftruncate(int fd, off_t size)
+{
+   HANDLE file = (HANDLE)_get_osfhandle(fd);
+
+   if (SetFilePointer(file, (LONG)size, 0, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+     {
+       return EINVAL;
+     }
+
+   if (!SetEndOfFile(file))
+     {
+       return EIO;
+     }
+
+    return 0;
+}
+
 
 /*
  * Time related functions
@@ -71,6 +89,20 @@ evil_time_get(void)
    QueryPerformanceCounter(&count);
 
    return (double)_evil_time_second + (double)(count.QuadPart - _evil_time_count)/ (double)_evil_time_freq;
+}
+
+void
+usleep(__int64 usec)
+{
+   HANDLE timer;
+   LARGE_INTEGER ft;
+
+   ft.QuadPart = -(10*usec); // Convert to 100 nanosecond interval, negative value indicates relative time
+
+   timer = CreateWaitableTimer(NULL, TRUE, NULL);
+   SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+   WaitForSingleObject(timer, INFINITE);
+   CloseHandle(timer);
 }
 
 
