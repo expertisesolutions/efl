@@ -30,9 +30,12 @@ cc = meson.get_compiler('c')
 host_os = host_machine.system()
 
 if host_os == 'windows'
-  nuget_download = meson.get_cross_property('nuget-download')
-  if cc.has_header_symbol('stdio.h', '_MSC_VER') and nuget_download
-    run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
+  win_msvc = cc.has_header_symbol('stdio.h', '_MSC_VER')
+  if win_msvc
+    nuget_download = meson.get_cross_property('nuget-download')
+    if nuget_download
+      run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
+    endif
   endif
 endif
 
@@ -410,7 +413,7 @@ if sys_osx == true and get_option('lua-interpreter') == 'luajit'
   )
 endif
 
-if sys_windows and nuget_download
+if sys_windows and win_msvc and nuget_download
   r = run_command('build/nuget.exe', 'restore', 'win32-deps/packages.config', '-PackagesDirectory', 'win32-deps')
   output = r.stdout().strip()
   if r.returncode() != 0
