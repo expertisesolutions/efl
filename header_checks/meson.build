@@ -219,7 +219,7 @@ endif
 # libcheck
 check = dependency('check', fallback : ['check', 'check_dep'])
 
-if sys_windows
+if sys_windows and win_msvc
   # pcre
   pcre_project = subproject('pcre')
 
