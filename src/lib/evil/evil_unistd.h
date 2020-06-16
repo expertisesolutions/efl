@@ -33,6 +33,8 @@ EVIL_API int execvp(const char *file, char *const argv[]);
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
 
+EVIL_API int ftruncate(int fd, off_t size);
+
 #else
 #include <unistd.h>
 #endif // _WIN32
