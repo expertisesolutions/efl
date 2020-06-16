@@ -29,8 +29,8 @@ elif get_option('evas-loaders-disabler').contains('gif')
   giflib = declare_dependency()
 endif
 
-webp = dependency('libwebp', required: get_option('evas-loaders-disabler').contains('webp') == false)
-webpdemux = dependency('libwebpdemux', required: get_option('evas-loaders-disabler').contains('webp') == false)
+webp = dependency('libwebp', version: ['>=0.5.0'], required: get_option('evas-loaders-disabler').contains('webp') == false)
+webpdemux = dependency('libwebpdemux', version: ['>=0.5.0'], required: get_option('evas-loaders-disabler').contains('webp') == false)
 libopenjp2 = dependency('libopenjp2', required: get_option('evas-loaders-disabler').contains('jp2k') == false)
 
 if sys_windows and get_option('evas-loaders-disabler').contains('generic')
@@ -76,8 +76,8 @@ evas_vg_savers_file = ['eet', 'svg']
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
 evas_deps = [eo, eet, eina, efl, emile, ector, ecore, draw, buildsystem]
-evas_ext_deps = []
-evas_ext_none_static_deps = [buildsystem_simple, intl, m, draw_simple, valgrind, libunibreak, lua, vg_common]
+evas_ext_deps = [vg_common, draw_simple]
+evas_ext_none_static_deps = [buildsystem_simple, intl, m, valgrind, libunibreak, lua]
 
 pub_eo_file_target = []
 priv_eo_files = []

@@ -167,8 +167,7 @@ eng_engine_free(void *engine)
    Render_Engine_GL_Generic *e = engine;
    Render_Output_GL_Generic *output;
 
-   //@FIXME this causes some deadlock while freeing the engine image.
-   //generic_cache_destroy(e->software.surface_cache);
+   generic_cache_destroy(e->software.surface_cache);
 
    EINA_LIST_FREE(e->software.outputs, output)
      ERR("Output %p not properly cleaned before engine destruction.", output);
@@ -1906,6 +1905,18 @@ eng_gl_surface_read_pixels(void *engine EINA_UNUSED, void *surface,
      {
         glReadPixels(x, y, w, h, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
         done = (glGetError() == GL_NO_ERROR);
+#ifdef WORDS_BIGENDIAN
+        if (done)
+          {
+             DATA32 *ptr = pixels;
+             int k;
+             for (k = w * h; k; --k)
+               {
+                  const DATA32 v = *ptr;
+                  *ptr++ = eina_swap32(v);
+               }
+          }
+#endif
      }
 
    if (!done)
@@ -1917,9 +1928,13 @@ eng_gl_surface_read_pixels(void *engine EINA_UNUSED, void *surface,
         for (k = w * h; k; --k)
           {
              const DATA32 v = *ptr;
+#ifdef WORDS_BIGENDIAN
+             *ptr++ = (v << 24) | (v >> 8);
+#else
              *ptr++ = (v & 0xFF00FF00)
                    | ((v & 0x00FF0000) >> 16)
                    | ((v & 0x000000FF) << 16);
+#endif
           }
      }
 

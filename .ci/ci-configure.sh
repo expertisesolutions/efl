@@ -1,13 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
-. .ci/travis.sh
 
+travis_fold start "meson"
+travis_time_start "meson"
 if [ "$DISTRO" != "" ] ; then
   # Why do we need to disable the imf loaders here?
   OPTS=" -Decore-imf-loaders-disabler=scim,ibus"
 
-  MONO_LINUX_COPTS=" -Dbindings=lua,cxx,mono -Dmono-beta=true"
+  MONO_LINUX_COPTS=" -Dbindings=cxx,mono -Dmono-beta=true"
 
   WAYLAND_LINUX_COPTS=" -Dwl=true -Ddrm=true -Dopengl=es-egl -Dwl-deprecated=true -Ddrm-deprecated=true"
 
@@ -50,39 +51,35 @@ if [ "$DISTRO" != "" ] ; then
   elif [ "$1" = "release-ready" ]; then
     OPTS="$OPTS $RELEASE_READY_LINUX_COPTS"
   elif [ "$1" = "coverity" ]; then
+    travis_fold start "cov-download"
+    travis_time_start "cov-download"
     OPTS="$OPTS $WAYLAND_LINUX_COPTS"
-    travis_fold cov-download cov-download
     docker exec --env COVERITY_SCAN_TOKEN=$COVERITY_SCAN_TOKEN $(cat $HOME/cid) sh -c '.ci/coverity-tools-install.sh'
-    travis_endfold cov-download
+    travis_time_finish "cov-download"
+    travis_fold end "cov-download"
   elif [ "$1" = "mingw" ]; then
+    travis_fold start "cross-native"
+    travis_time_start "cross-native"
     OPTS="$OPTS $MINGW_COPTS"
-    travis_fold cross-native cross-native
     docker exec $(cat $HOME/cid) sh -c '.ci/bootstrap-efl-native-for-cross.sh'
-    travis_endfold cross-native
+    travis_time_finish "cross-native"
+    travis_fold end "cross-native"
   fi
 
   if [ "$1" = "asan" ]; then
-    travis_fold meson meson
     docker exec --env EIO_MONITOR_POLL=1 --env CC="ccache gcc" \
       --env CXX="ccache g++" --env CFLAGS="-O0 -g" --env CXXFLAGS="-O0 -g" \
       --env LD="ld.gold" $(cat $HOME/cid) sh -c "mkdir build && meson build $OPTS -Db_sanitize=address"
-    travis_endfold meson
   elif [ "$1" = "mingw" ]; then
-    travis_fold meson meson
     docker exec --env EIO_MONITOR_POLL=1 --env PKG_CONFIG_PATH="/ewpi-64-install/lib/pkgconfig/" \
        $(cat $HOME/cid) sh -c "mkdir build && meson build $OPTS"
-    travis_endfold meson
   elif [ "$1" = "coverity" ]; then
-    travis_fold meson meson
     docker exec --env EIO_MONITOR_POLL=1 --env CFLAGS="-fdirectives-only"  --env CC="gcc" --env CXX="g++"\
     --env CXXFLAGS="-fdirectives-only" $(cat $HOME/cid) sh -c "mkdir build && meson build $OPTS"
-    travis_endfold meson
   else
-    travis_fold meson meson
     docker exec --env EIO_MONITOR_POLL=1 --env CC="ccache gcc" \
       --env CXX="ccache g++" --env CFLAGS="-fdirectives-only" --env CXXFLAGS="-fdirectives-only" \
       --env LD="ld.gold" $(cat $HOME/cid) sh -c "mkdir build && meson build $OPTS"
-    travis_endfold meson
   fi
 elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
   # Prepare OSX env for build
@@ -101,23 +98,18 @@ elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
   export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig:/usr/local/Cellar/libffi/$LIBFFI_VER/lib/pkgconfig:$(pwd)/.ci"
   travis_fold meson meson
   mkdir build && meson build -Dopengl=full -Decore-imf-loaders-disabler=scim,ibus -Dx11=false -Davahi=false -Deeze=false -Dsystemd=false -Dnls=false -Dcocoa=true -Dgstreamer=false
-  travis_endfold meson
 else # Native Ubuntu Linux Travis builds (non-docker)
   OPTS=" -Decore-imf-loaders-disabler=scim,ibus"
 
   if [ "$TRAVIS_CPU_ARCH" = "ppc64le" ]; then
-    travis_fold meson meson
       OPTS="$OPTS -Dbindings="
-    travis_endfold meson
   elif [ "$TRAVIS_CPU_ARCH" = "s390x" ] ; then
-    travis_fold meson meson
       OPTS="$OPTS -Dbindings= -Delua=false -Dlua-interpreter=lua"
-    travis_endfold meson
   fi
   if [ "$1" = "codecov" ]; then
-    travis_fold meson meson
       OPTS="$OPTS -Db_coverage=true"
-    travis_endfold meson
   fi
   mkdir build && meson build $OPTS
 fi
+travis_time_finish "meson"
+travis_fold end "meson"

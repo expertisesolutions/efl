@@ -17,9 +17,11 @@
 #include <Evas.h>
 #include <Ecore_Evas.h>
 #include <Ecore.h>
+#include <Eina.h> // pipe_close
 
 #include "evas_suite.h"
 #include "evas_tests_helpers.h"
+
 
 #define TESTS_IMG_DIR TESTS_SRC_DIR"/images"
 
@@ -911,7 +913,8 @@ EFL_START_TEST(evas_object_image_map_unmap)
 
    // save file, verify its pixels
    fd = eina_file_mkstemp("/tmp/evas-test.XXXXXX.png", &tmp);
-   close(fd);
+   fail_if(fd <= 0);
+   fail_if(pipe_close(fd));
    if (efl_file_save(o, tmp, NULL, NULL))
      {
         Eina_Rw_Slice sorig, sdest;
