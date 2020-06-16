@@ -240,6 +240,11 @@ if sys_windows
   getopt_project = subproject('getopt')
   getopt = getopt_project.get_variable('getopt')
   getopt_dep = getopt_project.get_variable('getopt_dep')
+
+  # freetype2
+  freetype2_project = subproject('freetype2')
+  freetype2 = freetype2_project.get_variable('libfreetype')
+  freetype2_dep = freetype2_project.get_variable('freetype_dep')
 else
   zlib_dep = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
