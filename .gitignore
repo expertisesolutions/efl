@@ -100,8 +100,5 @@ efl_libs.csv
 env.bat
 
 # Subprojects
-subprojects/pcre-*
-subprojects/zlib-*
-subprojects/getopt
-subprojects/packagecache
-subprojects/check*
+subprojects/*
+!subprojects/*.wrap
