@@ -18,7 +18,7 @@ jobs:
       env:
         cache-name: cache-nasm
       with:
-        path: "C:\\Program Files\\Nasm"
+        path: "($Env:Programfiles)\\Nasm"
         key: cache-nasm-v1
         restore-keys: cache-nasm-v1
     - name: Cache LLVM install
@@ -27,23 +27,28 @@ jobs:
       env:
         cache-name: cache-llvm
       with:
-        path: "C:\\Program Files\\LLVM"
+        path: "($Env:Programfiles)\\LLVM"
         key: cache-llvm-v10.0.0.0-1
         restore-keys: cache-llvm-v10.0.0.0-1
     - name: Install LLVM
       if: steps.cache-llvm.outputs.cache-hit != 'true'
       run: choco install llvm
     - name: Add clang-cl to PATH
-      run: echo "::add-path::C:\Program Files\LLVM\bin"
+      run: echo "::add-path::($Env:Programfiles)\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
     - name: install nasm
       if: steps.cache-nasm.outputs.cache-hit != 'true'
       run: choco install nasm
     - name: Add Nasm to PATH
-      run: echo "::add-path::C:\Program Files\Nasm"
+      run: echo "::add-path::($Env:Programfiles)\Nasm"
 #    - name: test nasm
 #      run: nasm.exe -v
+    - name: Install bzip2
+      if: steps.cache-bzip2.outputs.cache-hit != 'true'
+      run: choco install bzip2
+    - name: Add clang-cl to PATH
+      run: echo "::add-path::($Env:Programfiles)\bzip2\bin"
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: choco install ninja
