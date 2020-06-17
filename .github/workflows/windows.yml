@@ -45,8 +45,9 @@ jobs:
 #    - name: test nasm
 #      run: nasm.exe -v
     - name: Add Strawberry includes to PATH
-      run: echo "::add-path::C:\Strawberry\c\includes"
-      run: echo "::add-path::C:\Strawberry\c\lib"
+      run: |
+        echo "::add-path::C:\Strawberry\c\includes"
+        echo "::add-path::C:\Strawberry\c\lib"
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: choco install ninja
