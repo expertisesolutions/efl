@@ -2,35 +2,28 @@
 #define __EVIL_STAT_H__
 
 #include <evil_windows.h>
-#include <../ucrt/sys/types.h>
-#include <evil_windows.h>
 #include <sys/types.h>
-#include_next <sys/stat.h>
-#include <corecrt.h>
+#include <sys/stat.h>
 #include <evil_macro_wrapper.h>
+#include <evil_api.h>
+#include <corecrt_io.h>
+#include <corecrt.h>
 #include <errno.h>
 
-// loading as functions: chmod and umask (for umask, it is necessary to include: errno.h)
-//  fstat ja incluido em <sys/stat.h>
-
-#include <corecrt_io.h>
-
-// loading as functions: chmod and umask (for umask, it is necessary to include: errno.h)
-// from corecrt_io import chmod and umask
-// fstat ja incluido em <sys/stat.h>
 
 typedef  int  mode_t ; 
 #ifndef stat64
 # define stat64 _stat64
 #endif
 
-int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
+EAPI int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
-int fstatat64(int fd, const char *restrict path, struct stat *restrict buf, int flag);
+EAPI int fstatat64(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
 // Missing definitions:
 // Note: some pieces of code were based on LibreSSL-Portable's compat lib and
 // adapted to EFL standards.
+
 #ifdef _MSC_VER
 # define S_IRWXU  0                           /* RWX user */
 # define S_IRUSR  S_IREAD                     /* Read user */
