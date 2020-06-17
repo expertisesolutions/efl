@@ -63,7 +63,7 @@ EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 typedef struct _Eina_Lock Eina_Lock;
 typedef struct _Eina_RWLock Eina_RWLock;
 typedef struct _Eina_Condition Eina_Condition;
-typedef struct _Eina_Barrier Eina_Barrier;
+typedef SYNCHRONIZATION_BARRIER Eina_Barrier;
 typedef DWORD Eina_TLS;
 typedef HANDLE Eina_Semaphore;
 
@@ -469,22 +469,18 @@ _eina_tls_set(Eina_TLS key, const void *data)
    return ret;
 }
 
-struct _Eina_Barrier
-{
-   SYNCHRONIZATION_BARRIER barrier;
-};
 
 static inline Eina_Bool
 _eina_barrier_new(Eina_Barrier *barrier, int needed)
 {
-   return InitializeSynchronizationBarrier(&barrier->barrier, (LONG) needed, 10)
+   return InitializeSynchronizationBarrier(barrier, (LONG) needed, 10)
        ? EINA_TRUE : EINA_FALSE;
 }
 
 static inline  void
 _eina_barrier_free(Eina_Barrier *barrier)
 {
-   if (!DeleteSynchronizationBarrier(&barrier->barrier))
+   if (!DeleteSynchronizationBarrier(barrier))
      {
         EINA_LOCK_ABORT_DEBUG(GetLastError(), barrier_destroy, barrier);
      }
@@ -493,7 +489,7 @@ _eina_barrier_free(Eina_Barrier *barrier)
 static inline Eina_Bool
 _eina_barrier_wait(Eina_Barrier *barrier)
 {
-   EnterSynchronizationBarrier(&barrier->barrier, 0);
+   EnterSynchronizationBarrier(barrier, 0);
    return EINA_TRUE;
 }
 
