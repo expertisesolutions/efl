@@ -1,0 +1,11 @@
+[wrap-file]
+directory = lua-5.3.4
+
+source_url = http://www.lua.org/ftp/lua-5.3.4.tar.gz
+source_filename = lua-5.3.4.tar.gz
+source_hash = f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c
+
+
+patch_url = https://github.com/JPTIZ/lua/archive/5.3.4.zip
+patch_filename = lua-5.3.4.zip
+patch_hash = f9bc87692217e85743890e47f440a1120e02423c7e26a950b5790eb52e092d46

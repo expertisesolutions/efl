@@ -12,6 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    # Install tools:
     - name: Cache Nasm install
       uses: actions/cache@v1
       id: cache-nasm
@@ -58,6 +59,7 @@ jobs:
         echo "::add-path::$meson_path"
     - name: test meson
       run: meson -v
+    # Install Dependencies:
     - name: Cache OpenSSL compilation
       id: cache-openssl
       uses: actions/cache@v1
@@ -83,6 +85,10 @@ jobs:
       if: steps.cache-openssl.outputs.cache-hit != 'true'
       run: nmake
       working-directory: .\openssl
+    - name: Install Lua
+      run: choco install lua
+    - name: Add lua to PATH
+      run: echo "::add-path::C:\Program Files\Lua"
     - name: configure
       run: .\configure.bat
       env:
