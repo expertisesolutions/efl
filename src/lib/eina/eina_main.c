@@ -92,13 +92,13 @@ static int _eina_log_dom = -1;
 #endif
 #define DBG(...) EINA_LOG_DOM_DBG(_eina_log_dom, __VA_ARGS__)
 
-EAPI Eina_Bool _eina_threads_activated = EINA_FALSE;
-EAPI Eina_Error EINA_ERROR_NOT_MAIN_LOOP = 0;
-EAPI Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
-EAPI unsigned int eina_seed = 0;
+Eina_Bool _eina_threads_activated = EINA_FALSE;
+Eina_Error EINA_ERROR_NOT_MAIN_LOOP = 0;
+Eina_Error EINA_ERROR_NOT_IMPLEMENTED = 0;
+unsigned int eina_seed = 0;
 
 #ifdef EFL_HAVE_THREADS
-EAPI pthread_t _eina_main_loop;
+pthread_t _eina_main_loop;
 #endif
 
 #ifdef MT
@@ -106,9 +106,9 @@ static int _mt_enabled = 0;
 #endif
 
 #ifdef EFL_HAVE_THREADS
-EAPI int _eina_threads_debug = 0;
-EAPI pthread_mutex_t _eina_tracking_lock;
-EAPI Eina_Inlist *_eina_tracking = NULL;
+int _eina_threads_debug = 0;
+pthread_mutex_t _eina_tracking_lock;
+Eina_Inlist *_eina_tracking = NULL;
 extern Eina_Lock       _sysmon_lock;
 #endif
 
@@ -273,9 +273,9 @@ _eina_threads_do_shutdown(void)
  * @var eina_version
  * @brief Eina version (defined at configuration time)
  */
-EAPI Eina_Version *eina_version = &_version;
+Eina_Version *eina_version = &_version;
 
-EAPI int
+int
 eina_init(void)
 {
    const struct eina_desc_setup *itr, *itr_end;
@@ -346,7 +346,7 @@ eina_init(void)
    return 1;
 }
 
-EAPI int
+int
 eina_shutdown(void)
 {
    if (_eina_main_count <= 0)
@@ -382,7 +382,7 @@ eina_shutdown(void)
 }
 
 
-EAPI int
+int
 eina_threads_init(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -408,7 +408,7 @@ eina_threads_init(void)
 #endif
 }
 
-EAPI int
+int
 eina_threads_shutdown(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -432,7 +432,7 @@ eina_threads_shutdown(void)
 #endif
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_main_loop_is(void)
 {
 #ifdef EFL_HAVE_THREADS
@@ -449,7 +449,7 @@ eina_main_loop_is(void)
 }
 
 /** The purpose of this API should not be documented, it is used only by the one who know what they are doing. */
-EAPI void
+void
 eina_main_loop_define(void)
 {
 #ifdef EFL_HAVE_THREADS

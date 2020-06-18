@@ -591,7 +591,7 @@ eina_rectangle_shutdown(void)
 *                                   API                                      *
 *============================================================================*/
 
-EAPI Eina_Rectangle *
+Eina_Rectangle *
 eina_rectangle_new(int x, int y, int w, int h)
 {
    Eina_Rectangle *rect = NULL;
@@ -615,7 +615,7 @@ eina_rectangle_new(int x, int y, int w, int h)
    return rect;
 }
 
-EAPI void
+void
 eina_rectangle_free(Eina_Rectangle *rect)
 {
    EINA_SAFETY_ON_NULL_RETURN(rect);
@@ -631,7 +631,7 @@ eina_rectangle_free(Eina_Rectangle *rect)
      }
 }
 
-EAPI Eina_Rectangle_Pool *
+Eina_Rectangle_Pool *
 eina_rectangle_pool_new(int w, int h)
 {
    Eina_Rectangle_Pool *new;
@@ -660,7 +660,7 @@ eina_rectangle_pool_new(int w, int h)
    return new;
 }
 
-EAPI void
+void
 eina_rectangle_pool_free(Eina_Rectangle_Pool *pool)
 {
    Eina_Rectangle_Alloc *del;
@@ -690,14 +690,14 @@ eina_rectangle_pool_free(Eina_Rectangle_Pool *pool)
    MAGIC_FREE(pool);
 }
 
-EAPI int
+int
 eina_rectangle_pool_count(Eina_Rectangle_Pool *pool)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(pool, 0);
    return pool->references;
 }
 
-EAPI Eina_Rectangle *
+Eina_Rectangle *
 eina_rectangle_pool_request(Eina_Rectangle_Pool *pool, int w, int h)
 {
    Eina_Rectangle_Alloc *new;
@@ -763,7 +763,7 @@ eina_rectangle_pool_request(Eina_Rectangle_Pool *pool, int w, int h)
    return rect;
 }
 
-EAPI void
+void
 eina_rectangle_pool_release(Eina_Rectangle *rect)
 {
    Eina_Rectangle_Alloc *era = ((Eina_Rectangle_Alloc *)rect) - 1;
@@ -817,7 +817,7 @@ eina_rectangle_pool_release(Eina_Rectangle *rect)
      }
 }
 
-EAPI Eina_Rectangle_Pool *
+Eina_Rectangle_Pool *
 eina_rectangle_pool_get(Eina_Rectangle *rect)
 {
    Eina_Rectangle_Alloc *era = ((Eina_Rectangle_Alloc *)rect) - 1;
@@ -830,7 +830,7 @@ eina_rectangle_pool_get(Eina_Rectangle *rect)
    return era->pool;
 }
 
-EAPI void
+void
 eina_rectangle_pool_packing_set(Eina_Rectangle_Pool *pool, Eina_Rectangle_Packing type)
 {
    EINA_MAGIC_CHECK_RECTANGLE_POOL(pool);
@@ -853,7 +853,7 @@ eina_rectangle_pool_packing_set(Eina_Rectangle_Pool *pool, Eina_Rectangle_Packin
      }
 }
 
-EAPI void
+void
 eina_rectangle_pool_data_set(Eina_Rectangle_Pool *pool, const void *data)
 {
    EINA_MAGIC_CHECK_RECTANGLE_POOL(pool);
@@ -865,7 +865,7 @@ eina_rectangle_pool_data_set(Eina_Rectangle_Pool *pool, const void *data)
    pool->data = (void *)data;
 }
 
-EAPI void *
+void *
 eina_rectangle_pool_data_get(Eina_Rectangle_Pool *pool)
 {
    EINA_MAGIC_CHECK_RECTANGLE_POOL(pool);
@@ -874,7 +874,7 @@ eina_rectangle_pool_data_get(Eina_Rectangle_Pool *pool)
    return pool->data;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_rectangle_pool_geometry_get(Eina_Rectangle_Pool *pool, int *w, int *h)
 {
    if (!pool)
@@ -892,7 +892,7 @@ eina_rectangle_pool_geometry_get(Eina_Rectangle_Pool *pool, int *w, int *h)
    return EINA_TRUE;
 }
 
-EAPI Eina_Rectangle_Outside
+Eina_Rectangle_Outside
 eina_rectangle_outside_position(Eina_Rectangle *rect1, Eina_Rectangle *rect2)
 {
    Eina_Rectangle_Outside ret = 0;

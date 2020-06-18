@@ -33,6 +33,7 @@
 #include "eina_config.h"
 #include "eina_private.h"
 #include "eina_tmpstr.h"
+#include "eina_util.h"
 
 /*============================================================================*
  *                                  Local                                     *
@@ -48,7 +49,7 @@
  *                                   API                                      *
  *============================================================================*/
 
-EAPI const char *
+const char *
 eina_environment_home_get(void)
 {
    static char *home = NULL;
@@ -94,7 +95,7 @@ eina_environment_home_get(void)
    return home;
 }
 
-EAPI const char *
+const char *
 eina_environment_tmp_get(void)
 {
    static char *tmp = NULL;
