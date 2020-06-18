@@ -64,12 +64,14 @@ ftruncate(int fd, off_t size)
 
    if (SetFilePointer(file, (LONG)size, 0, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
      {
-       return EINVAL;
+       _set_errno(EINVAL);
+       return -1;
      }
 
    if (!SetEndOfFile(file))
      {
-       return EIO;
+       _set_errno(EIO);
+       return -1;
      }
 
     return 0;
