@@ -107,7 +107,7 @@ _cos(double x)
 /*============================================================================*
  *                                   API                                      *
  *============================================================================*/
-EAPI Eina_Matrix_Type
+Eina_Matrix_Type
 eina_matrix3_type_get(const Eina_Matrix3 *m)
 {
    if (!EINA_DBL_EQ(MATRIX_ZX(m), 0.0) ||
@@ -128,7 +128,7 @@ eina_matrix3_type_get(const Eina_Matrix3 *m)
      }
 }
 
-EAPI Eina_Matrix_Type
+Eina_Matrix_Type
 eina_matrix4_type_get(const Eina_Matrix4 *m)
 {
    if (EINA_DBL_EQ(MATRIX_XX(m), 1.0) &&
@@ -151,7 +151,7 @@ eina_matrix4_type_get(const Eina_Matrix4 *m)
    return EINA_MATRIX_TYPE_AFFINE;
 }
 
-EAPI Eina_Matrix_Type
+Eina_Matrix_Type
 eina_matrix3_f16p16_type_get(const Eina_Matrix3_F16p16 *m)
 {
    if ((MATRIX_ZX(m) != 0) || (MATRIX_ZY(m) != 0) || (MATRIX_ZZ(m) != 65536))
@@ -166,7 +166,7 @@ eina_matrix3_f16p16_type_get(const Eina_Matrix3_F16p16 *m)
      }
 }
 
-EAPI void
+void
 eina_matrix3_values_set(Eina_Matrix3 *m,
                         double xx, double xy, double xz,
                         double yx, double yy, double yz,
@@ -183,7 +183,7 @@ eina_matrix3_values_set(Eina_Matrix3 *m,
    MATRIX_ZZ(m) = zz;
 }
 
-EAPI void
+void
 eina_matrix3_values_get(const Eina_Matrix3 *m,
                         double *xx, double *xy, double *xz,
                         double *yx, double *yy, double *yz,
@@ -200,7 +200,7 @@ eina_matrix3_values_get(const Eina_Matrix3 *m,
    if (zz) *zz = MATRIX_ZZ(m);
 }
 
-EAPI void
+void
 eina_matrix4_values_set(Eina_Matrix4 *m,
                         double xx, double xy, double xz, double xw,
                         double yx, double yy, double yz, double yw,
@@ -225,7 +225,7 @@ eina_matrix4_values_set(Eina_Matrix4 *m,
    MATRIX_WW(m) = ww;
 }
 
-EAPI void
+void
 eina_matrix4_values_get(const Eina_Matrix4 *m,
                         double *xx, double *xy, double *xz, double *xw,
                         double *yx, double *yy, double *yz, double *yw,
@@ -250,7 +250,7 @@ eina_matrix4_values_get(const Eina_Matrix4 *m,
    if (ww) *ww = MATRIX_WW(m);
 }
 
-EAPI void
+void
 eina_matrix3_fixed_values_get(const Eina_Matrix3 *m,
                               Eina_F16p16 *xx, Eina_F16p16 *xy, Eina_F16p16 *xz,
                               Eina_F16p16 *yx, Eina_F16p16 *yy, Eina_F16p16 *yz,
@@ -267,7 +267,7 @@ eina_matrix3_fixed_values_get(const Eina_Matrix3 *m,
    if (zz) *zz = eina_f16p16_double_from(MATRIX_ZZ(m));
 }
 
-EAPI void
+void
 eina_matrix3_matrix3_f16p16_to(const Eina_Matrix3 *m,
                                Eina_Matrix3_F16p16 *fm)
 {
@@ -277,7 +277,7 @@ eina_matrix3_matrix3_f16p16_to(const Eina_Matrix3 *m,
                                  &fm->zx, &fm->zy, &fm->zz);
 }
 
-EAPI void
+void
 eina_matrix3_point_transform(const Eina_Matrix3 *m,
                              double x, double y,
                              double *xr, double *yr)
@@ -302,7 +302,7 @@ eina_matrix3_point_transform(const Eina_Matrix3 *m,
    if (yr) *yr = yrr;
 }
 
-EAPI void
+void
 eina_matrix3_rectangle_transform(const Eina_Matrix3 *m,
                                  const Eina_Rectangle *r,
                                  const Eina_Quad *q)
@@ -313,7 +313,7 @@ eina_matrix3_rectangle_transform(const Eina_Matrix3 *m,
    eina_matrix3_point_transform(m, r->x, r->y + r->h, &((Eina_Quad *)q)->x3, &((Eina_Quad *)q)->y3);
 }
 
-EAPI void
+void
 eina_matrix3_cofactor(const Eina_Matrix3 *m, Eina_Matrix3 *a)
 {
    double a11, a12, a13, a21, a22, a23, a31, a32, a33;
@@ -343,7 +343,7 @@ eina_matrix3_cofactor(const Eina_Matrix3 *m, Eina_Matrix3 *a)
    MATRIX_ZZ(a) = a33;
 }
 
-EAPI void
+void
 eina_matrix3_transpose(const Eina_Matrix3 *m, Eina_Matrix3 *a)
 {
    MATRIX_XX(a) = MATRIX_XX(m);
@@ -359,7 +359,7 @@ eina_matrix3_transpose(const Eina_Matrix3 *m, Eina_Matrix3 *a)
    MATRIX_ZZ(a) = MATRIX_ZZ(m);
 }
 
-EAPI void
+void
 eina_matrix3_adjoint(const Eina_Matrix3 *m, Eina_Matrix3 *a)
 {
    Eina_Matrix3 cofactor;
@@ -370,7 +370,7 @@ eina_matrix3_adjoint(const Eina_Matrix3 *m, Eina_Matrix3 *a)
    eina_matrix3_transpose(&cofactor, a);
 }
 
-EAPI double
+double
 eina_matrix3_determinant(const Eina_Matrix3 *m)
 {
    double det;
@@ -382,7 +382,7 @@ eina_matrix3_determinant(const Eina_Matrix3 *m)
    return det;
 }
 
-EAPI void
+void
 eina_matrix3_divide(Eina_Matrix3 *m, double scalar)
 {
    MATRIX_XX(m) /= scalar;
@@ -398,7 +398,7 @@ eina_matrix3_divide(Eina_Matrix3 *m, double scalar)
    MATRIX_ZZ(m) /= scalar;
 }
 
-EAPI void
+void
 eina_matrix3_inverse(const Eina_Matrix3 *m, Eina_Matrix3 *m2)
 {
    double scalar;
@@ -416,7 +416,7 @@ eina_matrix3_inverse(const Eina_Matrix3 *m, Eina_Matrix3 *m2)
    eina_matrix3_divide(m2, scalar);
 }
 
-EAPI void
+void
 eina_matrix3_compose(const Eina_Matrix3 *m1,
                      const Eina_Matrix3 *m2,
                      Eina_Matrix3 *dst)
@@ -446,7 +446,7 @@ eina_matrix3_compose(const Eina_Matrix3 *m1,
    MATRIX_ZZ(dst) = a33;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_matrix3_equal(const Eina_Matrix3 *m1, const Eina_Matrix3 *m2)
 {
    if (!EINA_DBL_EQ(m1->xx, m2->xx) ||
@@ -462,7 +462,7 @@ eina_matrix3_equal(const Eina_Matrix3 *m1, const Eina_Matrix3 *m2)
    return EINA_TRUE;
 }
 
-EAPI void
+void
 eina_matrix3_f16p16_compose(const Eina_Matrix3_F16p16 *m1,
                             const Eina_Matrix3_F16p16 *m2,
                             Eina_Matrix3_F16p16 *dst)
@@ -510,7 +510,7 @@ eina_matrix3_f16p16_compose(const Eina_Matrix3_F16p16 *m1,
    MATRIX_ZZ(dst) = a33;
 }
 
-EAPI void
+void
 eina_matrix3_translate(Eina_Matrix3 *m, double tx, double ty)
 {
    Eina_Matrix3 tmp;
@@ -526,7 +526,7 @@ eina_matrix3_translate(Eina_Matrix3 *m, double tx, double ty)
    eina_matrix3_compose(m, &tmp, m);
 }
 
-EAPI void
+void
 eina_matrix3_scale(Eina_Matrix3 *m, double sx, double sy)
 {
    Eina_Matrix3 tmp;
@@ -542,7 +542,7 @@ eina_matrix3_scale(Eina_Matrix3 *m, double sx, double sy)
    eina_matrix3_compose(m, &tmp, m);
 }
 
-EAPI void
+void
 eina_matrix3_rotate(Eina_Matrix3 *m, double rad)
 {
    double c, s;
@@ -577,7 +577,7 @@ eina_matrix3_rotate(Eina_Matrix3 *m, double rad)
    eina_matrix3_compose(m, &tmp, m);
 }
 
-EAPI void
+void
 eina_matrix3_identity(Eina_Matrix3 *m)
 {
    MATRIX_XX(m) = 1;
@@ -591,7 +591,7 @@ eina_matrix3_identity(Eina_Matrix3 *m)
    MATRIX_ZZ(m) = 1;
 }
 
-EAPI void
+void
 eina_matrix3_f16p16_identity(Eina_Matrix3_F16p16 *m)
 {
    MATRIX_XX(m) = 65536;
@@ -605,7 +605,7 @@ eina_matrix3_f16p16_identity(Eina_Matrix3_F16p16 *m)
    MATRIX_ZZ(m) = 65536;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_matrix3_square_quad_map(Eina_Matrix3 *m, const Eina_Quad *q)
 {
    // x0 - x1 + x2 - x3
@@ -656,7 +656,7 @@ eina_matrix3_square_quad_map(Eina_Matrix3 *m, const Eina_Quad *q)
      }
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_matrix3_quad_square_map(Eina_Matrix3 *m,
                              const Eina_Quad *q)
 {
@@ -676,7 +676,7 @@ eina_matrix3_quad_square_map(Eina_Matrix3 *m,
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_matrix3_quad_quad_map(Eina_Matrix3 *m,
                            const Eina_Quad *src,
                            const Eina_Quad *dst)
@@ -693,7 +693,7 @@ eina_matrix3_quad_quad_map(Eina_Matrix3 *m,
    return EINA_TRUE;
 }
 
-EAPI void
+void
 eina_matrix4_matrix3_to(Eina_Matrix3 *m3, const Eina_Matrix4 *m4)
 {
    MATRIX_XX(m3) = MATRIX_XX(m4);
@@ -707,7 +707,7 @@ eina_matrix4_matrix3_to(Eina_Matrix3 *m3, const Eina_Matrix4 *m4)
    MATRIX_ZZ(m3) = MATRIX_WW(m4);
 }
 
-EAPI void
+void
 eina_matrix3_matrix4_to(Eina_Matrix4 *m4, const Eina_Matrix3 *m3)
 {
    MATRIX_XX(m4) = MATRIX_XX(m3);
@@ -728,7 +728,7 @@ eina_matrix3_matrix4_to(Eina_Matrix4 *m4, const Eina_Matrix3 *m3)
    MATRIX_WW(m4) = MATRIX_ZZ(m3);
 }
 
-EAPI double
+double
 eina_matrix4_determinant(const Eina_Matrix4 *m)
 {
    return
@@ -758,7 +758,7 @@ eina_matrix4_determinant(const Eina_Matrix4 *m)
      + MATRIX_XX(m) * MATRIX_YY(m) * MATRIX_ZZ(m) * MATRIX_WW(m);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_matrix4_normalized(Eina_Matrix4 *out, const Eina_Matrix4 *in)
 {
    double det;
@@ -786,7 +786,7 @@ eina_matrix4_normalized(Eina_Matrix4 *out, const Eina_Matrix4 *in)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_matrix4_inverse(Eina_Matrix4 *out, const Eina_Matrix4 *in)
 {
    double det;
@@ -949,7 +949,7 @@ eina_matrix4_inverse(Eina_Matrix4 *out, const Eina_Matrix4 *in)
    return EINA_TRUE;
 }
 
-EAPI void
+void
 eina_matrix4_transpose(Eina_Matrix4 *out, const Eina_Matrix4 *in)
 {
    MATRIX_XX(out) = MATRIX_XX(in);
@@ -970,7 +970,7 @@ eina_matrix4_transpose(Eina_Matrix4 *out, const Eina_Matrix4 *in)
    MATRIX_WW(out) = MATRIX_WW(in);
 }
 
-EAPI void
+void
 eina_matrix4_multiply_copy(Eina_Matrix4 *out,
                       const Eina_Matrix4 *mat_a, const Eina_Matrix4 *mat_b)
 {
@@ -987,7 +987,7 @@ eina_matrix4_multiply_copy(Eina_Matrix4 *out,
      }
 }
 
-EAPI void
+void
 eina_matrix4_identity(Eina_Matrix4 *out)
 {
    memset(out, 0, sizeof (Eina_Matrix4));
@@ -998,7 +998,7 @@ eina_matrix4_identity(Eina_Matrix4 *out)
    MATRIX_WW(out) = 1.0;
 }
 
-EAPI Eina_Matrix_Type
+Eina_Matrix_Type
 eina_matrix2_type_get(const Eina_Matrix2 *m)
 {
    if (EINA_DBL_EQ(MATRIX_XX(m), 1.0) &&
@@ -1009,19 +1009,19 @@ eina_matrix2_type_get(const Eina_Matrix2 *m)
    return EINA_MATRIX_TYPE_AFFINE;
 }
 
-EAPI void
+void
 eina_matrix4_array_set(Eina_Matrix4 *m, const double *v)
 {
    memcpy(&MATRIX_XX(m), v, sizeof(double) * 16);
 }
 
-EAPI void
+void
 eina_matrix4_copy(Eina_Matrix4 *dst, const Eina_Matrix4 *src)
 {
    memcpy(dst, src, sizeof(Eina_Matrix4));
 }
 
-EAPI void
+void
 eina_matrix4_multiply(Eina_Matrix4 *out, const Eina_Matrix4 *mat_a,
                            const Eina_Matrix4 *mat_b)
 {
@@ -1040,7 +1040,7 @@ eina_matrix4_multiply(Eina_Matrix4 *out, const Eina_Matrix4 *mat_a,
    eina_matrix4_compose(mat_a, mat_b, out);
 }
 
-EAPI void
+void
 eina_matrix4_ortho_set(Eina_Matrix4 *m,
                     double left, double right, double bottom, double top,
                     double dnear, double dfar)
@@ -1070,7 +1070,7 @@ eina_matrix4_ortho_set(Eina_Matrix4 *m,
    MATRIX_WW(m) = 1.0f;
 }
 
-EAPI void
+void
 eina_matrix4_compose(const Eina_Matrix4 *mat_a,
                      const Eina_Matrix4 *mat_b,
                      Eina_Matrix4 *out)
@@ -1137,7 +1137,7 @@ eina_matrix4_compose(const Eina_Matrix4 *mat_a,
    MATRIX_WW(out) = ww;
 }
 
-EAPI void
+void
 eina_matrix4_translate(Eina_Matrix4 *t, double tx, double ty, double tz)
 {
    Eina_Matrix4 tmp;
@@ -1164,7 +1164,7 @@ eina_matrix4_translate(Eina_Matrix4 *t, double tx, double ty, double tz)
    eina_matrix4_compose(&tmp, t, t);
 }
 
-EAPI void
+void
 eina_matrix4_scale(Eina_Matrix4 *t, double sx, double sy, double sz)
 {
    Eina_Matrix4 tmp;
@@ -1191,7 +1191,7 @@ eina_matrix4_scale(Eina_Matrix4 *t, double sx, double sy, double sz)
    eina_matrix4_compose(&tmp, t, t);
 }
 
-EAPI void
+void
 eina_matrix4_rotate(Eina_Matrix4 *t, double rad, Eina_Matrix_Axis axis)
 {
    double c, s;
@@ -1240,19 +1240,19 @@ eina_matrix4_rotate(Eina_Matrix4 *t, double rad, Eina_Matrix_Axis axis)
    eina_matrix4_compose(&tmp, t, t);
 }
 
-EAPI void
+void
 eina_matrix3_array_set(Eina_Matrix3 *m, const double *v)
 {
    memcpy(&MATRIX_XX(m), v, sizeof(double) * 9);
 }
 
-EAPI void
+void
 eina_matrix3_copy(Eina_Matrix3 *dst, const Eina_Matrix3 *src)
 {
    memcpy(dst, src, sizeof(Eina_Matrix3));
 }
 
-EAPI void
+void
 eina_matrix3_multiply(Eina_Matrix3 *out, const Eina_Matrix3 *mat_a, const Eina_Matrix3 *mat_b)
 {
    if (eina_matrix3_type_get(mat_a) == EINA_MATRIX_TYPE_IDENTITY)
@@ -1270,7 +1270,7 @@ eina_matrix3_multiply(Eina_Matrix3 *out, const Eina_Matrix3 *mat_a, const Eina_M
    eina_matrix3_compose(mat_a, mat_b, out);
 }
 
-EAPI void
+void
 eina_matrix3_multiply_copy(Eina_Matrix3 *out, const Eina_Matrix3 *mat_a, const Eina_Matrix3 *mat_b)
 {
    if (out != mat_a && out != mat_b)
@@ -1286,7 +1286,7 @@ eina_matrix3_multiply_copy(Eina_Matrix3 *out, const Eina_Matrix3 *mat_a, const E
      }
 }
 
-EAPI void
+void
 eina_matrix3_position_transform_set(Eina_Matrix3 *out, const double p_x,
 								 const double p_y)
 {
@@ -1295,7 +1295,7 @@ eina_matrix3_position_transform_set(Eina_Matrix3 *out, const double p_x,
    MATRIX_YZ(out) = p_y;
 }
 
-EAPI void
+void
 eina_matrix3_scale_transform_set(Eina_Matrix3 *out, double s_x, double s_y)
 {
    eina_matrix3_identity(out);
@@ -1303,7 +1303,7 @@ eina_matrix3_scale_transform_set(Eina_Matrix3 *out, double s_x, double s_y)
    MATRIX_YY(out) = s_y;
 }
 
-EAPI void
+void
 eina_normal3_matrix_get(Eina_Matrix3 *out, const Eina_Matrix4 *m)
 {
    /* Normal matrix is a transposed matrix of inversed modelview.
@@ -1341,7 +1341,7 @@ eina_normal3_matrix_get(Eina_Matrix3 *out, const Eina_Matrix4 *m)
    MATRIX_ZZ(out) = (a * e - d * b) * det;
 }
 
-EAPI void
+void
 eina_matrix2_values_set(Eina_Matrix2 *m,
                         double xx, double xy,
                         double yx, double yy)
@@ -1352,7 +1352,7 @@ eina_matrix2_values_set(Eina_Matrix2 *m,
    MATRIX_YY(m) = yy;
 }
 
-EAPI void
+void
 eina_matrix2_values_get(const Eina_Matrix2 *m,
                         double *xx, double *xy,
                         double *yx, double *yy)
@@ -1363,7 +1363,7 @@ eina_matrix2_values_get(const Eina_Matrix2 *m,
    if (yy) *yy = MATRIX_YY(m);
 }
 
-EAPI void
+void
 eina_matrix2_inverse(Eina_Matrix2 *out, const Eina_Matrix2 *mat)
 {
    double         det;
@@ -1387,7 +1387,7 @@ eina_matrix2_inverse(Eina_Matrix2 *out, const Eina_Matrix2 *mat)
    MATRIX_YY(out) =  MATRIX_XX(mat) * det;
 }
 
-EAPI void
+void
 eina_matrix2_identity(Eina_Matrix2 *m)
 {
    MATRIX_XX(m) = 1.0;
@@ -1397,19 +1397,19 @@ eina_matrix2_identity(Eina_Matrix2 *m)
    MATRIX_YY(m) = 1.0;
 }
 
-EAPI void
+void
 eina_matrix2_array_set(Eina_Matrix2 *m, const double *v)
 {
    memcpy(&MATRIX_XX(m), v, sizeof(double) * 4);
 }
 
-EAPI void
+void
 eina_matrix2_copy(Eina_Matrix2 *dst, const Eina_Matrix2 *src)
 {
    memcpy(dst, src, sizeof(Eina_Matrix2));
 }
 
-EAPI void
+void
 eina_matrix2_multiply(Eina_Matrix2 *out, const Eina_Matrix2 *mat_a, const Eina_Matrix2 *mat_b)
 {
    if (eina_matrix2_type_get(mat_a) == EINA_MATRIX_TYPE_IDENTITY)
@@ -1431,7 +1431,7 @@ eina_matrix2_multiply(Eina_Matrix2 *out, const Eina_Matrix2 *mat_a, const Eina_M
    MATRIX_YY(out) = MATRIX_XY(mat_a) * MATRIX_YX(mat_b) + MATRIX_YY(mat_a) * MATRIX_YY(mat_b);
 }
 
-EAPI void
+void
 eina_matrix2_multiply_copy(Eina_Matrix2 *out, const Eina_Matrix2 *mat_a, const Eina_Matrix2 *mat_b)
 {
    if (out != mat_a && out != mat_b)

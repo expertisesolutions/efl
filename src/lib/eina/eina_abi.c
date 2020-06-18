@@ -25,12 +25,12 @@
 #include "eina_unicode.h"
 #include "eina_safety_checks.h"
 
-EAPI Eina_Unicode eina_unicode_utf8_get_next(const char *buf, int *iindex)
+Eina_Unicode eina_unicode_utf8_get_next(const char *buf, int *iindex)
 {
    return eina_unicode_utf8_next_get(buf, iindex);
 }
 
-EAPI unsigned int
+unsigned int
 eina_mempool_alignof(unsigned int size)
 {
    unsigned int align;

@@ -491,7 +491,7 @@ static void *
 _eina_test_file_thread(void *data EINA_UNUSED, Eina_Thread t EINA_UNUSED)
 {
 #ifdef _WIN32
-   const char *filename = "cmd.exe";
+   const char *filename = "C:/Windows/system.ini";
 #else
    const char *filename = "/bin/sh";
 #endif

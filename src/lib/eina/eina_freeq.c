@@ -431,7 +431,7 @@ _eina_freeq_new_postponed(void)
    return fq;
 }
 
-EAPI Eina_FreeQ *
+Eina_FreeQ *
 eina_freeq_new(Eina_FreeQ_Type type)
 {
    switch (type)
@@ -445,7 +445,7 @@ eina_freeq_new(Eina_FreeQ_Type type)
      }
 }
 
-EAPI void
+void
 eina_freeq_free(Eina_FreeQ *fq)
 {
    if (!fq) return;
@@ -455,7 +455,7 @@ eina_freeq_free(Eina_FreeQ *fq)
    free(fq);
 }
 
-EAPI Eina_FreeQ_Type
+Eina_FreeQ_Type
 eina_freeq_type_get(Eina_FreeQ *fq)
 {
    if (fq && fq->postponed)
@@ -470,13 +470,13 @@ eina_freeq_main_set(Eina_FreeQ *fq)
    _eina_freeq_main = fq;
 }
 
-EAPI Eina_FreeQ *
+Eina_FreeQ *
 eina_freeq_main_get(void)
 {
    return _eina_freeq_main;
 }
 
-EAPI void
+void
 eina_freeq_count_max_set(Eina_FreeQ *fq, int count)
 {
    if (!fq) return;
@@ -489,7 +489,7 @@ eina_freeq_count_max_set(Eina_FreeQ *fq, int count)
    UNLOCK_FQ(fq);
 }
 
-EAPI int
+int
 eina_freeq_count_max_get(Eina_FreeQ *fq)
 {
    int count;
@@ -502,7 +502,7 @@ eina_freeq_count_max_get(Eina_FreeQ *fq)
    return count;
 }
 
-EAPI void
+void
 eina_freeq_mem_max_set(Eina_FreeQ *fq, size_t mem)
 {
    if (!fq) return;
@@ -514,7 +514,7 @@ eina_freeq_mem_max_set(Eina_FreeQ *fq, size_t mem)
    UNLOCK_FQ(fq);
 }
 
-EAPI size_t
+size_t
 eina_freeq_mem_max_get(Eina_FreeQ *fq)
 {
    size_t mem;
@@ -527,7 +527,7 @@ eina_freeq_mem_max_get(Eina_FreeQ *fq)
    return mem;
 }
 
-EAPI void
+void
 eina_freeq_clear(Eina_FreeQ *fq)
 {
    if (!fq) return;
@@ -537,7 +537,7 @@ eina_freeq_clear(Eina_FreeQ *fq)
    UNLOCK_FQ(fq);
 }
 
-EAPI void
+void
 eina_freeq_reduce(Eina_FreeQ *fq, int count)
 {
    if (!fq) return;
@@ -551,7 +551,7 @@ eina_freeq_reduce(Eina_FreeQ *fq, int count)
    UNLOCK_FQ(fq);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_freeq_ptr_pending(Eina_FreeQ *fq)
 {
    Eina_Bool pending;
@@ -564,7 +564,7 @@ eina_freeq_ptr_pending(Eina_FreeQ *fq)
    return pending;
 }
 
-EAPI void
+void
 eina_freeq_ptr_add(Eina_FreeQ *fq,
                    void *ptr,
                    void (*free_func) (void *ptr),

@@ -317,7 +317,7 @@ eina_str_split_full_helper(const char *str,
 *                                   API                                      *
 *============================================================================*/
 
-EAPI size_t
+size_t
 eina_strlcpy(char *dst, const char *src, size_t siz)
 {
 #ifdef HAVE_STRLCPY
@@ -349,7 +349,7 @@ eina_strlcpy(char *dst, const char *src, size_t siz)
 #endif
 }
 
-EAPI size_t
+size_t
 eina_strlcat(char *dst, const char *src, size_t siz)
 {
    char *d = dst;
@@ -383,7 +383,7 @@ eina_strlcat(char *dst, const char *src, size_t siz)
    return(dlen + (s - src)); /* count does not include NUL */
 }
 
-EAPI char *
+char *
 eina_strftime(const char *format, const struct tm *tm)
 {
    const size_t flen = strlen(format);
@@ -416,7 +416,7 @@ eina_strftime(const char *format, const struct tm *tm)
    return NULL;
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_str_has_prefix(const char *str, const char *prefix)
 {
    size_t str_len;
@@ -430,19 +430,19 @@ eina_str_has_prefix(const char *str, const char *prefix)
    return (strncmp(str, prefix, prefix_len) == 0);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_str_has_suffix(const char *str, const char *suffix)
 {
    return eina_str_has_suffix_helper(str, suffix, strcmp);
 }
 
-EAPI Eina_Bool
+Eina_Bool
 eina_str_has_extension(const char *str, const char *ext)
 {
    return eina_str_has_suffix_helper(str, ext, strcasecmp);
 }
 
-EAPI char **
+char **
 eina_str_split_full(const char *str,
                     const char *delim,
                     int max_tokens,
@@ -452,13 +452,13 @@ eina_str_split_full(const char *str,
 }
 
 
-EAPI char **
+char **
 eina_str_split(const char *str, const char *delim, int max_tokens)
 {
    return eina_str_split_full_helper(str, delim, max_tokens, NULL);
 }
 
-EAPI size_t
+size_t
 eina_str_join_len(char *dst,
                   size_t size,
                   char sep,
@@ -505,7 +505,7 @@ eina_str_join_len(char *dst,
 }
 
 #ifdef HAVE_ICONV
-EAPI char *
+char *
 eina_str_convert(const char *enc_from, const char *enc_to, const char *text)
 {
    iconv_t ic;
@@ -567,7 +567,7 @@ eina_str_convert(const char *enc_from, const char *enc_to, const char *text)
    return new_txt;
 }
 #else
-EAPI char *
+char *
 eina_str_convert(const char *enc_from EINA_UNUSED,
                  const char *enc_to EINA_UNUSED,
                  const char *text EINA_UNUSED)
@@ -577,7 +577,7 @@ eina_str_convert(const char *enc_from EINA_UNUSED,
 #endif
 
 #ifdef HAVE_ICONV
-EAPI char *
+char *
 eina_str_convert_len(const char *enc_from, const char *enc_to, const char *text, size_t len, size_t *retlen)
 {
    iconv_t ic;
@@ -640,7 +640,7 @@ eina_str_convert_len(const char *enc_from, const char *enc_to, const char *text,
    return new_txt;
 }
 #else
-EAPI char *
+char *
 eina_str_convert_len(const char *enc_from EINA_UNUSED, const char *enc_to EINA_UNUSED, const char *text EINA_UNUSED, size_t len EINA_UNUSED, size_t *retlen)
 {
    if (retlen) *retlen = 0;
@@ -648,7 +648,7 @@ eina_str_convert_len(const char *enc_from EINA_UNUSED, const char *enc_to EINA_U
 }
 #endif
 
-EAPI char *
+char *
 eina_str_escape(const char *str)
 {
    char *s2, *d;
@@ -698,7 +698,7 @@ eina_str_escape(const char *str)
    return s2;
 }
 
-EAPI void
+void
 eina_str_tolower(char **str)
 {
    char *p;
@@ -709,7 +709,7 @@ eina_str_tolower(char **str)
       *p = tolower((unsigned char )(*p));
 }
 
-EAPI void
+void
 eina_str_toupper(char **str)
 {
    char *p;
@@ -720,7 +720,7 @@ eina_str_toupper(char **str)
       *p = toupper((unsigned char)(*p));
 }
 
-EAPI unsigned char *
+unsigned char *
 eina_memdup(unsigned char *mem, size_t size, Eina_Bool terminate)
 {
    unsigned char *ret;

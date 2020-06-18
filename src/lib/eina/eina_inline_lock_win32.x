@@ -47,8 +47,8 @@ typedef void (*Eina_Lock_Bt_Func) ();
 
 #include "eina_hash.h"
 
-EAPI void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
-EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
+EINA_API void _eina_lock_debug_abort(int err, const char *fn, const volatile void *ptr);
+EINA_API void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 
 #define EINA_LOCK_ABORT_DEBUG(err, fn, ptr) \
    _eina_lock_debug_abort(err, #fn, ptr)
@@ -63,13 +63,13 @@ EAPI void _eina_lock_debug_deadlock(const char *fn, const volatile void *ptr);
 typedef struct _Eina_Lock Eina_Lock;
 typedef struct _Eina_RWLock Eina_RWLock;
 typedef struct _Eina_Condition Eina_Condition;
-typedef struct _Eina_Barrier Eina_Barrier;
+typedef SYNCHRONIZATION_BARRIER Eina_Barrier;
 typedef DWORD Eina_TLS;
 typedef HANDLE Eina_Semaphore;
 
 typedef volatile LONG Eina_Spinlock;
 
-EAPI void eina_lock_debug(const Eina_Lock *mutex);
+EINA_API void eina_lock_debug(const Eina_Lock *mutex);
 
 /** @privatesection  @{ */
 typedef CRITICAL_SECTION _Eina_Mutex_t;
@@ -108,24 +108,24 @@ struct _Eina_RWLock
 };
 /** @} privatesection */
 
-EAPI extern Eina_Bool _eina_threads_activated;
+EINA_API extern Eina_Bool _eina_threads_activated;
 
 #ifdef EINA_HAVE_DEBUG_THREADS
-EAPI extern int _eina_threads_debug;
-EAPI extern _Eina_Thread _eina_main_loop;
-EAPI extern Eina_Lock _eina_tracking_lock;
-EAPI extern Eina_Inlist *_eina_tracking;
+EINA_API extern int _eina_threads_debug;
+EINA_API extern _Eina_Thread _eina_main_loop;
+EINA_API extern Eina_Lock _eina_tracking_lock;
+EINA_API extern Eina_Inlist *_eina_tracking;
 #endif
 
-EAPI Eina_Bool eina_lock_new(Eina_Lock *mutex);
-EAPI void eina_lock_free(Eina_Lock *mutex);
-EAPI Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
-EAPI Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
-EAPI Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
-EAPI Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
-EAPI void eina_condition_free(Eina_Condition *cond);
-EAPI Eina_Bool eina_condition_wait(Eina_Condition *cond);
-EAPI Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
+EINA_API Eina_Bool eina_lock_new(Eina_Lock *mutex);
+EINA_API void eina_lock_free(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_take(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_take_try(Eina_Lock *mutex);
+EINA_API Eina_Lock_Result eina_lock_release(Eina_Lock *mutex);
+EINA_API Eina_Bool eina_condition_new(Eina_Condition *cond, Eina_Lock *mutex);
+EINA_API void eina_condition_free(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_wait(Eina_Condition *cond);
+EINA_API Eina_Bool eina_condition_broadcast(Eina_Condition *cond);
 
 extern Eina_Hash *_eina_tls_map;
 extern Eina_Lock _eina_tls_map_lock;
@@ -469,22 +469,18 @@ _eina_tls_set(Eina_TLS key, const void *data)
    return ret;
 }
 
-struct _Eina_Barrier
-{
-   SYNCHRONIZATION_BARRIER barrier;
-};
 
 static inline Eina_Bool
 _eina_barrier_new(Eina_Barrier *barrier, int needed)
 {
-   return InitializeSynchronizationBarrier(&barrier->barrier, (LONG) needed, 10)
+   return InitializeSynchronizationBarrier(barrier, (LONG) needed, 10)
        ? EINA_TRUE : EINA_FALSE;
 }
 
 static inline  void
 _eina_barrier_free(Eina_Barrier *barrier)
 {
-   if (!DeleteSynchronizationBarrier(&barrier->barrier))
+   if (!DeleteSynchronizationBarrier(barrier))
      {
         EINA_LOCK_ABORT_DEBUG(GetLastError(), barrier_destroy, barrier);
      }
@@ -493,7 +489,7 @@ _eina_barrier_free(Eina_Barrier *barrier)
 static inline Eina_Bool
 _eina_barrier_wait(Eina_Barrier *barrier)
 {
-   EnterSynchronizationBarrier(&barrier->barrier, 0);
+   EnterSynchronizationBarrier(barrier, 0);
    return EINA_TRUE;
 }
 

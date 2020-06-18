@@ -33,43 +33,43 @@
  * @{
  */
 
-#ifdef EAPI
-# undef EAPI
+#ifdef EINA_API
+#error EINA_API should not be already defined
 #endif
 
 #ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+# ifndef EINA_STATIC
+#  ifdef EINA_BUILD
+#   define EINA_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define EINA_API __declspec(dllimport)
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define EINA_API
 # endif
-# define EAPI_WEAK
+# define EINA_API_WEAK
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#   define EAPI_WEAK __attribute__ ((weak))
+#   define EINA_API __attribute__ ((visibility("default")))
+#   define EINA_API_WEAK __attribute__ ((weak))
 #  else
-#   define EAPI
-#   define EAPI_WEAK
+#   define EINA_API
+#   define EINA_API_WEAK
 #  endif
 # else
 /**
- * @def EAPI
+ * @def EINA_API
  * @brief Used to export functions (by changing visibility).
  */
-#  define EAPI
+#  define EINA_API
 /**
- * @def EAPI_WEAK
+ * @def EINA_API_WEAK
  * @brief Weak symbol, primarily useful in defining library functions which
  * can be overridden in user code.
  * Note: Not supported on all platforms.
  */
-#  define EAPI_WEAK
+#  define EINA_API_WEAK
 #  endif
 #endif
 
@@ -78,7 +78,7 @@
  * @brief Weak symbols part of the EFL API.
  * Note: Not supported on all platforms.
  */
-#define EWAPI EAPI EAPI_WEAK
+#define EWAPI EINA_API EINA_API_WEAK
 
 #ifdef _WIN32
 # ifdef DLL_EXPORT
@@ -96,7 +96,7 @@
 # else
 /**
  * @def EXPORTAPI
- * @brief An alias for #EAPI.
+ * @brief An alias for #EINA_API.
  */
 #  define EXPORTAPI
 # endif
@@ -278,8 +278,11 @@
 # define EINA_UNUSED
 # define EINA_WARN_UNUSED_RESULT
 # define EINA_ARG_NONNULL(...)
-# if defined (_MSC_VER) && !defined (__clang__) && _MSC_VER >= 1300
+// clang-cl 6.0 doesn't like __declspec(deprecated) for some reason
+# if !defined(__clang__) && _MSC_VER >= 1300
 #  define EINA_DEPRECATED __declspec(deprecated)
+# elif defined(__clang__)
+#  define EINA_DEPRECATED __attribute__ ((__deprecated__))
 # else
 #  define EINA_DEPRECATED
 # endif
@@ -293,7 +296,7 @@
 # define EINA_UNLIKELY(exp) exp
 # define EINA_LIKELY(exp)   exp
 # define EINA_SENTINEL
-# define EINA_FALLTHROUGH __attribute__ ((fallthrough));
+# define EINA_FALLTHROUGH
 # define EINA_PREFETCH(arg) ((void) (arg))
 # define EINA_PREFETCH_WRITE(arg) ((void) (arg))
 # define EINA_PREFETCH_NOCACHE(arg) ((void) (arg))

@@ -16,13 +16,14 @@
  * a lot easier since those are essentially the same just with different sizes.
  */
 
+#include "eina_binbuf.h"
 #include "eina_binbuf_template_c.x"
 
 /*============================================================================*
  *                                   API                                      *
  *============================================================================*/
 
-EAPI _STRBUF_STRUCT_NAME *
+EINA_API _STRBUF_STRUCT_NAME *
 _FUNC_EXPAND(manage_new)(_STRBUF_DATA_TYPE *str)
 {
    _STRBUF_STRUCT_NAME *buf = eina_strbuf_common_manage_new(_STRBUF_CSIZE,
@@ -31,14 +32,14 @@ _FUNC_EXPAND(manage_new)(_STRBUF_DATA_TYPE *str)
    return buf;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 _FUNC_EXPAND(append)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *str)
 {
    EINA_MAGIC_CHECK_STRBUF(buf, EINA_FALSE);
    return eina_strbuf_common_append(_STRBUF_CSIZE, buf, (const void *) str, _STRBUF_STRLEN_FUNC(str));
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 _FUNC_EXPAND(append_escaped)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *str)
 {
    _STRBUF_DATA_TYPE *esc;
@@ -56,21 +57,21 @@ _FUNC_EXPAND(append_escaped)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *
    return ret;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 _FUNC_EXPAND(append_n)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *str, size_t maxlen)
 {
    EINA_MAGIC_CHECK_STRBUF(buf, EINA_FALSE);
    return eina_strbuf_common_append_n(_STRBUF_CSIZE, buf, (const void *) str, _STRBUF_STRLEN_FUNC(str), maxlen);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 _FUNC_EXPAND(insert)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *str, size_t pos)
 {
    EINA_MAGIC_CHECK_STRBUF(buf, EINA_FALSE);
    return eina_strbuf_common_insert(_STRBUF_CSIZE, buf, (const void *) str, _STRBUF_STRLEN_FUNC(str), pos);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 _FUNC_EXPAND(insert_escaped)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *str, size_t pos)
 {
    _STRBUF_DATA_TYPE *esc;
@@ -88,7 +89,7 @@ _FUNC_EXPAND(insert_escaped)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *
    return ret;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 _FUNC_EXPAND(insert_n)(_STRBUF_STRUCT_NAME *buf, const _STRBUF_DATA_TYPE *str, size_t maxlen, size_t pos)
 {
    EINA_MAGIC_CHECK_STRBUF(buf, EINA_FALSE);
