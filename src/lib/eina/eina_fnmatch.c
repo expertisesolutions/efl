@@ -1,3 +1,4 @@
+#include "eina_api.h"
 #include "eina_fnmatch.h"
 
 #include <stdlib.h>
@@ -212,7 +213,7 @@ _wildcards_to_regex(const char *pattern, int flags)
    return reg_pattern;
 }
 
-int
+EAPI int
 eina_fnmatch(const char *pattern, const char *string, int flags)
 {
    // Converts wildcard pattern to regex pattern
