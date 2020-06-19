@@ -80,3 +80,4 @@ static inline Eina_Range eina_range_from_to(size_t min, size_t max)
 }
 
 #endif // EINA_INLINE_RANGE_H_
+
