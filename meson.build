@@ -540,6 +540,7 @@ foreach package : subprojects
 
   if package_name in ignored_subprojects
     warning('Ignoring package ' + package_name)
+    set_variable(package_name, declare_dependency())
     continue
   endif
   message('Including package ' + package_name)
