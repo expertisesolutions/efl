@@ -23,7 +23,7 @@ static Eina_Bool _ecore_time_got_clock_id = EINA_FALSE;
 static double _ecore_time_clock_conversion = 1e-9;
 #endif
 
-EAPI double
+ECORE_API double
 ecore_time_get(void)
 {
 #if defined (HAVE_CLOCK_GETTIME)
@@ -48,7 +48,7 @@ ecore_time_get(void)
 #endif
 }
 
-EAPI double
+ECORE_API double
 ecore_time_unix_get(void)
 {
 #ifdef HAVE_GETTIMEOFDAY
@@ -61,13 +61,13 @@ ecore_time_unix_get(void)
 #endif
 }
 
-EAPI double
+ECORE_API double
 ecore_loop_time_get(void)
 {
    return efl_loop_time_get(ML_OBJ);
 }
 
-EAPI void
+ECORE_API void
 ecore_loop_time_set(double t)
 {
    efl_loop_time_set(ML_OBJ, t);
