@@ -33,7 +33,7 @@
 #include "../efl_check.h"
 
 static const Efl_Test_Case etc[] = {
-   // { "Dlfcn", evil_test_dlfcn },
+   { "Dlfcn", evil_test_dlfcn },
    /* { "Fcntl", evil_test_fcntl }, */
    /* { "Langinfo", evil_test_langinfo }, */
    { "Main", evil_test_main },
