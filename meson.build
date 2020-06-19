@@ -517,7 +517,6 @@ if sys_windows
     'ecore_x',
     'ector',
     'edje',
-    'eet',
     'eeze',
     'efl_canvas_wl',
     'efreet',
