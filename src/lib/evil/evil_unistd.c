@@ -62,7 +62,7 @@ ftruncate(int fd, off_t size)
 {
    HANDLE file = (HANDLE)_get_osfhandle(fd);
 
-   if (SetFilePointer(file, (LONG)size, 0, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+   if (SetFilePointer(file, (LONG)size, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
      {
        _set_errno(EINVAL);
        return -1;
