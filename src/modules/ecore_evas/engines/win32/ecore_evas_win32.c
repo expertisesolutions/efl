@@ -37,14 +37,14 @@
 
 #ifdef _WIN32
 # ifdef DLL_EXPORT
-#  define EAPI __declspec(dllexport)
+#  define EMODAPI __declspec(dllexport)
 # else
 #  define EAPI
 # endif /* ! DLL_EXPORT */
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define EMODAPI __attribute__ ((visibility("default")))
 #  else
 #   define EAPI
 #  endif
@@ -1593,7 +1593,7 @@ _ecore_evas_win32_new_internal(int (*_ecore_evas_engine_backend_init)(Ecore_Evas
    return ee;
 }
 
-EAPI Ecore_Evas *
+EMODAPI Ecore_Evas *
 ecore_evas_software_gdi_new_internal(Ecore_Win32_Window *parent,
 				     int                 x,
 				     int                 y,
@@ -1617,7 +1617,7 @@ ecore_evas_software_gdi_new_internal(Ecore_Win32_Window *parent,
 #endif
 }
 
-EAPI Ecore_Evas *
+EMODAPI Ecore_Evas *
 ecore_evas_software_ddraw_new_internal(Ecore_Win32_Window *parent,
 				       int                 x,
 				       int                 y,

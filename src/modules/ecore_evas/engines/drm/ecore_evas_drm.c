@@ -30,14 +30,14 @@
 
 #ifdef _WIN32
 # ifdef DLL_EXPORT
-#  define EAPI __declspec(dllexport)
+#  define EMODAPI __declspec(dllexport)
 # else
 #  define EAPI
 # endif /* ! DLL_EXPORT */
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define EMODAPI __attribute__ ((visibility("default")))
 #  else
 #   define EAPI
 #  endif
@@ -1139,14 +1139,14 @@ eng_err:
    return NULL;
 }
 
-EAPI Ecore_Evas *
+EMODAPI Ecore_Evas *
 ecore_evas_drm_new_internal(const char *device, unsigned int parent EINA_UNUSED, int x, int y, int w, int h)
 {
    return _ecore_evas_new_internal(device, x, y, w, h, EINA_FALSE);
 }
 
 #ifdef BUILD_ECORE_EVAS_GL_DRM
-EAPI Ecore_Evas *
+EMODAPI Ecore_Evas *
 ecore_evas_gl_drm_new_internal(const char *device, unsigned int parent EINA_UNUSED, int x, int y, int w, int h)
 {
    static void *libglapi = NULL;
