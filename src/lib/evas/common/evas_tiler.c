@@ -3,12 +3,12 @@
 
 
 #ifdef NEWTILER
-EAPI void
+EVAS_API void
 evas_common_tilebuf_init(void)
 {
 }
 
-EAPI Tilebuf *
+EVAS_API Tilebuf *
 evas_common_tilebuf_new(int w, int h)
 {
    Tilebuf *tb = malloc(sizeof(Tilebuf));
@@ -18,51 +18,51 @@ evas_common_tilebuf_new(int w, int h)
    return tb;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_free(Tilebuf *tb)
 {
    region_free(tb->region);
    free(tb);
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_set_tile_size(Tilebuf *tb EINA_UNUSED, int tw EINA_UNUSED, int th EINA_UNUSED)
 {
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_get_tile_size(Tilebuf *tb EINA_UNUSED, int *tw, int *th)
 {
    if (tw) *tw = 1;
    if (th) *th = 1;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_tile_strict_set(Tilebuf *tb EINA_UNUSED, Eina_Bool strict EINA_UNUSED)
 {
 }
 
-EAPI int
+EVAS_API int
 evas_common_tilebuf_add_redraw(Tilebuf *tb, int x, int y, int w, int h)
 {
    region_rect_add(tb->region, x, y, w, h);
    return 1;
 }
 
-EAPI int
+EVAS_API int
 evas_common_tilebuf_del_redraw(Tilebuf *tb, int x, int y, int w, int h)
 {
    region_rect_del(tb->region, x, y, w, h);
    return 1;
 }
 
-EAPI int
+EVAS_API int
 evas_common_tilebuf_add_motion_vector(Tilebuf *tb EINA_UNUSED, int x EINA_UNUSED, int y EINA_UNUSED, int w EINA_UNUSED, int h EINA_UNUSED, int dx EINA_UNUSED, int dy EINA_UNUSED, int alpha EINA_UNUSED)
 {
    return 0;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_clear(Tilebuf *tb)
 {
    region_free(tb->region);
@@ -93,7 +93,7 @@ _region_round(Region *region, int tsize)
    return region2;
 }
 
-EAPI Tilebuf_Rect *
+EVAS_API Tilebuf_Rect *
 evas_common_tilebuf_get_render_rects(Tilebuf *tb)
 {
    Tilebuf_Rect *rects = NULL, *r, *rend, *rbuf;
@@ -144,7 +144,7 @@ evas_common_tilebuf_get_render_rects(Tilebuf *tb)
    return rects;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_free_render_rects(Tilebuf_Rect *rects)
 {
    free(rects);
@@ -832,12 +832,12 @@ _add_redraw(list_t *rects, int x, int y, int w, int h, int fuzz)
 
 /////////////////////////////////////////////////////////////////
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_init(void)
 {
 }
 
-EAPI Tilebuf *
+EVAS_API Tilebuf *
 evas_common_tilebuf_new(int w, int h)
 {
    Tilebuf *tb;
@@ -851,7 +851,7 @@ evas_common_tilebuf_new(int w, int h)
    return tb;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_free(Tilebuf *tb)
 {
    rect_list_clear(&tb->rects);
@@ -859,27 +859,27 @@ evas_common_tilebuf_free(Tilebuf *tb)
    free(tb);
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_set_tile_size(Tilebuf *tb, int tw, int th)
 {
    tb->tile_size.w = tw;
    tb->tile_size.h = th;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_get_tile_size(Tilebuf *tb, int *tw, int *th)
 {
    if (tw) *tw = tb->tile_size.w;
    if (th) *th = tb->tile_size.h;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_tile_strict_set(Tilebuf *tb, Eina_Bool strict)
 {
    tb->strict_tiles = strict;
 }
 
-EAPI int
+EVAS_API int
 evas_common_tilebuf_add_redraw(Tilebuf *tb, int x, int y, int w, int h)
 {
    if ((w <= 0) || (h <= 0)) return 0;
@@ -894,7 +894,7 @@ evas_common_tilebuf_add_redraw(Tilebuf *tb, int x, int y, int w, int h)
    return _add_redraw(&tb->rects, x, y, w, h, FUZZ * FUZZ);
 }
 
-EAPI int
+EVAS_API int
 evas_common_tilebuf_del_redraw(Tilebuf *tb, int x, int y, int w, int h)
 {
    rect_t r;
@@ -915,13 +915,13 @@ evas_common_tilebuf_del_redraw(Tilebuf *tb, int x, int y, int w, int h)
    return 0;
 }
 
-EAPI int
+EVAS_API int
 evas_common_tilebuf_add_motion_vector(Tilebuf *tb EINA_UNUSED, int x EINA_UNUSED, int y EINA_UNUSED, int w EINA_UNUSED, int h EINA_UNUSED, int dx EINA_UNUSED, int dy EINA_UNUSED, int alpha EINA_UNUSED)
 {
    return 0;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_clear(Tilebuf *tb)
 {
    tb->prev_add.x = tb->prev_add.y = tb->prev_add.w = tb->prev_add.h = 0;
@@ -930,7 +930,7 @@ evas_common_tilebuf_clear(Tilebuf *tb)
    tb->need_merge = 0;
 }
 
-EAPI Tilebuf_Rect *
+EVAS_API Tilebuf_Rect *
 evas_common_tilebuf_get_render_rects(Tilebuf *tb)
 {
    list_node_t *n;
@@ -1055,7 +1055,7 @@ evas_common_tilebuf_get_render_rects(Tilebuf *tb)
    return rects;
 }
 
-EAPI void
+EVAS_API void
 evas_common_tilebuf_free_render_rects(Tilebuf_Rect *rects)
 {
    free(rects);
