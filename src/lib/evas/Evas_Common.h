@@ -44,7 +44,7 @@ typedef struct _Evas_Version
    int revision;  /**< git revision (0 if a proper release or the git revision number Evas is built from) */
 } Evas_Version;
 
-EAPI extern Evas_Version * evas_version;
+EVAS_API extern Evas_Version * evas_version;
 
 /**
  * @file
@@ -477,7 +477,7 @@ typedef void      (*Evas_Async_Events_Put_Cb)(void *target, Evas_Callback_Type t
  * @since 1.8
  */
 EINA_DEPRECATED
-EAPI const char *evas_cserve_path_get(void);
+EVAS_API const char *evas_cserve_path_get(void);
 
 /**
  * @brief Directly initialize Evas and its required dependencies.
@@ -509,7 +509,7 @@ EAPI const char *evas_cserve_path_get(void);
  *
  * @ingroup Evas_Main_Group
  */
-EAPI int               evas_init(void);
+EVAS_API int               evas_init(void);
 
 /**
  * @brief Directly shutdown Evas.
@@ -535,7 +535,7 @@ EAPI int               evas_init(void);
  *
  * @ingroup Evas_Main_Group
  */
-EAPI int               evas_shutdown(void);
+EVAS_API int               evas_shutdown(void);
 
 /**
  * @brief Get the error status of the most recent memory allocation call
@@ -583,7 +583,7 @@ EAPI int               evas_shutdown(void);
  *
  * @ingroup Evas_Main_Group
  */
-EAPI Evas_Alloc_Error  evas_alloc_error(void);
+EVAS_API Evas_Alloc_Error  evas_alloc_error(void);
 
 /**
  * @brief Access the canvas' asynchronous event queue.
@@ -602,7 +602,7 @@ EAPI Evas_Alloc_Error  evas_alloc_error(void);
  *
  * @ingroup Evas_Main_Group
  */
-EAPI int               evas_async_events_fd_get(void) EINA_WARN_UNUSED_RESULT;
+EVAS_API int               evas_async_events_fd_get(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Process the asynchronous event queue.
@@ -615,7 +615,7 @@ EAPI int               evas_async_events_fd_get(void) EINA_WARN_UNUSED_RESULT;
  *
  * @ingroup Evas_Main_Group
  */
-EAPI int               evas_async_events_process(void);
+EVAS_API int               evas_async_events_process(void);
 
 /**
  * @brief Insert asynchronous events on the canvas.
@@ -633,7 +633,7 @@ EAPI int               evas_async_events_process(void);
  *
  * @ingroup Evas_Main_Group
  */
-EAPI Eina_Bool         evas_async_events_put(const void *target, Evas_Callback_Type type, void *event_info, Evas_Async_Events_Put_Cb func) EINA_ARG_NONNULL(1, 4);
+EVAS_API Eina_Bool         evas_async_events_put(const void *target, Evas_Callback_Type type, void *event_info, Evas_Async_Events_Put_Cb func) EINA_ARG_NONNULL(1, 4);
 
 /**
  * @defgroup Evas_Canvas Canvas Functions
@@ -740,7 +740,7 @@ EAPI Eina_Bool         evas_async_events_put(const void *target, Evas_Callback_T
  * evas_output_method_set(evas, engine_id);
  * @endcode
  */
-EAPI int               evas_render_method_lookup(const char *name) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EVAS_API int               evas_render_method_lookup(const char *name) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * List all the rendering engines compiled into the copy of the Evas library
@@ -773,7 +773,7 @@ EAPI int               evas_render_method_lookup(const char *name) EINA_WARN_UNU
  * evas_render_method_list_free(engine_list);
  * @endcode
  */
-EAPI Eina_List        *evas_render_method_list(void) EINA_WARN_UNUSED_RESULT;
+EVAS_API Eina_List        *evas_render_method_list(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * This function should be called to free a list of engine names
@@ -803,7 +803,7 @@ EAPI Eina_List        *evas_render_method_list(void) EINA_WARN_UNUSED_RESULT;
  * evas_render_method_list_free(engine_list);
  * @endcode
  */
-EAPI void              evas_render_method_list_free(Eina_List *list);
+EVAS_API void              evas_render_method_list_free(Eina_List *list);
 
 /**
  * @}
@@ -852,7 +852,7 @@ EAPI void              evas_render_method_list_free(Eina_List *list);
  *
  * @ingroup Evas_Canvas
  */
-EAPI void              evas_render_updates_free(Eina_List *updates);
+EVAS_API void              evas_render_updates_free(Eina_List *updates);
 
 
 /**
@@ -926,7 +926,7 @@ EAPI void              evas_render_updates_free(Eina_List *updates);
  * @see evas_device_add_full
  * @since 1.8
  */
-EAPI Evas_Device *evas_device_add(Evas *e);
+EVAS_API Evas_Device *evas_device_add(Evas *e);
 
 /**
  * Add a new device type
@@ -948,7 +948,7 @@ EAPI Evas_Device *evas_device_add(Evas *e);
  * @see evas_device_del
  * @since 1.19
  */
-EAPI Evas_Device *evas_device_add_full(Evas *e, const char *name,
+EVAS_API Evas_Device *evas_device_add_full(Evas *e, const char *name,
                                        const char *desc,
                                        Evas_Device *parent_dev,
                                        Evas_Device *emulation_dev,
@@ -965,7 +965,7 @@ EAPI Evas_Device *evas_device_add_full(Evas *e, const char *name,
  * @see evas_device_pop
  * @since 1.8
  */
-EAPI void evas_device_del(Evas_Device *dev);
+EVAS_API void evas_device_del(Evas_Device *dev);
 
 /**
  * Push the current context device onto the device stack
@@ -994,7 +994,7 @@ EAPI void evas_device_del(Evas_Device *dev);
  * @see evas_device_pop
  * @since 1.8
  */
-EAPI void evas_device_push(Evas *e, Evas_Device *dev);
+EVAS_API void evas_device_push(Evas *e, Evas_Device *dev);
 
 /**
  * This pops the top of the device stack for the canvas
@@ -1008,7 +1008,7 @@ EAPI void evas_device_push(Evas *e, Evas_Device *dev);
  * @see evas_device_push
  * @since 1.8
  */
-EAPI void evas_device_pop(Evas *e);
+EVAS_API void evas_device_pop(Evas *e);
 
 /**
  * List all current devices attached to the given canvas and/or device
@@ -1034,7 +1034,7 @@ EAPI void evas_device_pop(Evas *e);
  * @see evas_device_emulation_source_get
  * @since 1.8
  */
-EAPI const Eina_List *evas_device_list(Evas *e, const Evas_Device *dev);
+EVAS_API const Eina_List *evas_device_list(Evas *e, const Evas_Device *dev);
 
 /**
  * Get a device by its name
@@ -1050,7 +1050,7 @@ EAPI const Eina_List *evas_device_list(Evas *e, const Evas_Device *dev);
  *
  * @since 1.19
  */
-EAPI Evas_Device *evas_device_get(Evas *e, const char *name);
+EVAS_API Evas_Device *evas_device_get(Evas *e, const char *name);
 
 /**
  * Get a device by its seat id
@@ -1064,7 +1064,7 @@ EAPI Evas_Device *evas_device_get(Evas *e, const char *name);
  *
  * @since 1.20
  */
-EAPI Evas_Device *evas_device_get_by_seat_id(Evas *eo_e, unsigned int id);
+EVAS_API Evas_Device *evas_device_get_by_seat_id(Evas *eo_e, unsigned int id);
 
 /**
  * Set the name of a device as a string
@@ -1074,7 +1074,7 @@ EAPI Evas_Device *evas_device_get_by_seat_id(Evas *eo_e, unsigned int id);
  *
  * @since 1.8
  */
-EAPI void evas_device_name_set(Evas_Device *dev, const char *name);
+EVAS_API void evas_device_name_set(Evas_Device *dev, const char *name);
 
 /**
  * Get the name of a device
@@ -1090,7 +1090,7 @@ EAPI void evas_device_name_set(Evas_Device *dev, const char *name);
  *
  * @since 1.8
  */
-EAPI const char *evas_device_name_get(const Evas_Device *dev);
+EVAS_API const char *evas_device_name_get(const Evas_Device *dev);
 
 /**
  * Set the seat id of a device
@@ -1100,7 +1100,7 @@ EAPI const char *evas_device_name_get(const Evas_Device *dev);
  *
  * @since 1.20
  */
-EAPI void evas_device_seat_id_set(Evas_Device *dev, unsigned int id);
+EVAS_API void evas_device_seat_id_set(Evas_Device *dev, unsigned int id);
 
 /**
  * Get the seat id of a device
@@ -1114,7 +1114,7 @@ EAPI void evas_device_seat_id_set(Evas_Device *dev, unsigned int id);
  *
  * @since 1.20
  */
-EAPI unsigned int evas_device_seat_id_get(const Evas_Device *dev);
+EVAS_API unsigned int evas_device_seat_id_get(const Evas_Device *dev);
 
 /**
  * Set the description of a device as a string
@@ -1124,7 +1124,7 @@ EAPI unsigned int evas_device_seat_id_get(const Evas_Device *dev);
  *
  * @since 1.8
  */
-EAPI void evas_device_description_set(Evas_Device *dev, const char *desc);
+EVAS_API void evas_device_description_set(Evas_Device *dev, const char *desc);
 
 /**
  * Get the description of a device
@@ -1142,7 +1142,7 @@ EAPI void evas_device_description_set(Evas_Device *dev, const char *desc);
  *
  * @since 1.8
  */
-EAPI const char *evas_device_description_get(const Evas_Device *dev);
+EVAS_API const char *evas_device_description_get(const Evas_Device *dev);
 
 /**
  * Set the parent of a device
@@ -1164,7 +1164,7 @@ EAPI const char *evas_device_description_get(const Evas_Device *dev);
  *
  * @since 1.8
  */
-EAPI void evas_device_parent_set(Evas_Device *dev, Evas_Device *parent) EINA_DEPRECATED;
+EVAS_API void evas_device_parent_set(Evas_Device *dev, Evas_Device *parent) EINA_DEPRECATED;
 
 /**
  * Get the parent of a device
@@ -1177,7 +1177,7 @@ EAPI void evas_device_parent_set(Evas_Device *dev, Evas_Device *parent) EINA_DEP
  *
  * @since 1.8
  */
-EAPI const Evas_Device *evas_device_parent_get(const Evas_Device *dev);
+EVAS_API const Evas_Device *evas_device_parent_get(const Evas_Device *dev);
 
 /**
  * Set the major class of device
@@ -1192,7 +1192,7 @@ EAPI const Evas_Device *evas_device_parent_get(const Evas_Device *dev);
  *
  * @since 1.8
  */
-EAPI void evas_device_class_set(Evas_Device *dev, Evas_Device_Class clas) EINA_DEPRECATED;
+EVAS_API void evas_device_class_set(Evas_Device *dev, Evas_Device_Class clas) EINA_DEPRECATED;
 
 /**
  * Get the major class of a device
@@ -1204,7 +1204,7 @@ EAPI void evas_device_class_set(Evas_Device *dev, Evas_Device_Class clas) EINA_D
  *
  * @since 1.8
  */
-EAPI Evas_Device_Class evas_device_class_get(const Evas_Device *dev);
+EVAS_API Evas_Device_Class evas_device_class_get(const Evas_Device *dev);
 
 /**
  * Set the sub-class of a device
@@ -1217,7 +1217,7 @@ EAPI Evas_Device_Class evas_device_class_get(const Evas_Device *dev);
  *
  * @since 1.8
  */
-EAPI void evas_device_subclass_set(Evas_Device *dev, Evas_Device_Subclass clas);
+EVAS_API void evas_device_subclass_set(Evas_Device *dev, Evas_Device_Subclass clas);
 
 /**
  * Get the device sub-class
@@ -1227,7 +1227,7 @@ EAPI void evas_device_subclass_set(Evas_Device *dev, Evas_Device_Subclass clas);
  *
  * @since 1.8
  */
-EAPI Evas_Device_Subclass evas_device_subclass_get(const Evas_Device *dev);
+EVAS_API Evas_Device_Subclass evas_device_subclass_get(const Evas_Device *dev);
 
 /**
  * Set the emulation source device
@@ -1244,7 +1244,7 @@ EAPI Evas_Device_Subclass evas_device_subclass_get(const Evas_Device *dev);
  *
  * @since 1.8
  */
-EAPI void evas_device_emulation_source_set(Evas_Device *dev, Evas_Device *src);
+EVAS_API void evas_device_emulation_source_set(Evas_Device *dev, Evas_Device *src);
 
 /**
  * Get the emulation source device
@@ -1254,7 +1254,7 @@ EAPI void evas_device_emulation_source_set(Evas_Device *dev, Evas_Device *src);
  *
  * @since 1.8
  */
-EAPI const Evas_Device *evas_device_emulation_source_get(const Evas_Device *dev);
+EVAS_API const Evas_Device *evas_device_emulation_source_get(const Evas_Device *dev);
 
 /**
  * @}
@@ -1766,7 +1766,7 @@ typedef void (*Evas_Object_Image_Pixels_Get_Cb)(void *data, Evas_Object *o);
  *
  * This functions is threadsafe.
  */
-EAPI Eina_Bool                     evas_object_image_extension_can_load_get(const char *file);
+EVAS_API Eina_Bool                     evas_object_image_extension_can_load_get(const char *file);
 
 /**
  * Check if a file extension may be supported by @ref Evas_Object_Image.
@@ -1778,7 +1778,7 @@ EAPI Eina_Bool                     evas_object_image_extension_can_load_get(cons
  *
  * This functions is threadsafe.
  */
-EAPI Eina_Bool                     evas_object_image_extension_can_load_fast_get(const char *file);
+EVAS_API Eina_Bool                     evas_object_image_extension_can_load_fast_get(const char *file);
 /**
  * @}
  */
@@ -2325,7 +2325,7 @@ struct _Evas_Smart_Cb_Description
  * when they are not referenced anymore. Thus, this function is of no use
  * for Evas users, most probably.
  */
-EAPI void                              evas_smart_free(Evas_Smart *s) EINA_ARG_NONNULL(1);
+EVAS_API void                              evas_smart_free(Evas_Smart *s) EINA_ARG_NONNULL(1);
 
 /**
  * Creates a new #Evas_Smart from a given #Evas_Smart_Class struct
@@ -2342,7 +2342,7 @@ EAPI void                              evas_smart_free(Evas_Smart *s) EINA_ARG_N
  * construct yours, consider using the #EVAS_SMART_SUBCLASS_NEW macro,
  * which will make use of this function automatically for you.
  */
-EAPI Evas_Smart                       *evas_smart_class_new(const Evas_Smart_Class *sc) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1) EINA_MALLOC;
+EVAS_API Evas_Smart                       *evas_smart_class_new(const Evas_Smart_Class *sc) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1) EINA_MALLOC;
 
 /**
  * Get the #Evas_Smart_Class handle of an #Evas_Smart struct
@@ -2350,7 +2350,7 @@ EAPI Evas_Smart                       *evas_smart_class_new(const Evas_Smart_Cla
  * @param s a valid #Evas_Smart pointer
  * @return the #Evas_Smart_Class in it
  */
-EAPI const Evas_Smart_Class           *evas_smart_class_get(const Evas_Smart *s) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EVAS_API const Evas_Smart_Class           *evas_smart_class_get(const Evas_Smart *s) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * @brief Get the data pointer set on an #Evas_Smart struct
@@ -2360,7 +2360,7 @@ EAPI const Evas_Smart_Class           *evas_smart_class_get(const Evas_Smart *s)
  * This data pointer is set as the data field in the #Evas_Smart_Class
  * passed in to evas_smart_class_new().
  */
-EAPI void                             *evas_smart_data_get(const Evas_Smart *s) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EVAS_API void                             *evas_smart_data_get(const Evas_Smart *s) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * Get the smart callbacks known by this #Evas_Smart handle's smart
@@ -2399,7 +2399,7 @@ EAPI void                             *evas_smart_data_get(const Evas_Smart *s) 
  *       as well.
  * @see evas_object_smart_callbacks_descriptions_get()
  */
-EAPI const Evas_Smart_Cb_Description **evas_smart_callbacks_descriptions_get(const Evas_Smart *s, unsigned int *count) EINA_ARG_NONNULL(1, 1);
+EVAS_API const Evas_Smart_Cb_Description **evas_smart_callbacks_descriptions_get(const Evas_Smart *s, unsigned int *count) EINA_ARG_NONNULL(1, 1);
 
 /**
  * Find a callback description for the callback named @a name.
@@ -2414,7 +2414,7 @@ EAPI const Evas_Smart_Cb_Description **evas_smart_callbacks_descriptions_get(con
  *
  * @see evas_smart_callbacks_descriptions_get()
  */
-EAPI const Evas_Smart_Cb_Description  *evas_smart_callback_description_find(const Evas_Smart *s, const char *name) EINA_ARG_NONNULL(1, 2);
+EVAS_API const Evas_Smart_Cb_Description  *evas_smart_callback_description_find(const Evas_Smart *s, const char *name) EINA_ARG_NONNULL(1, 2);
 
 /**
  * Sets one class to inherit from the other.
@@ -2433,7 +2433,7 @@ EAPI const Evas_Smart_Cb_Description  *evas_smart_callback_description_find(cons
  *        this size. Everything after @c Evas_Smart_Class size is copied
  *        using regular memcpy().
  */
-EAPI Eina_Bool                         evas_smart_class_inherit_full(Evas_Smart_Class *sc, const Evas_Smart_Class *parent_sc, unsigned int parent_sc_size) EINA_ARG_NONNULL(1, 2);
+EVAS_API Eina_Bool                         evas_smart_class_inherit_full(Evas_Smart_Class *sc, const Evas_Smart_Class *parent_sc, unsigned int parent_sc_size) EINA_ARG_NONNULL(1, 2);
 
 /**
  * Get the number of uses of the smart instance
@@ -2454,7 +2454,7 @@ EAPI Eina_Bool                         evas_smart_class_inherit_full(Evas_Smart_
  * Evas_Smart_Class data from memory (have it be a constant structure and
  * data), or use this API call and be very careful.
  */
-EAPI int                               evas_smart_usage_get(const Evas_Smart *s);
+EVAS_API int                               evas_smart_usage_get(const Evas_Smart *s);
 
 /**
  * @def evas_smart_class_inherit
@@ -2532,7 +2532,7 @@ EAPI int                               evas_smart_usage_get(const Evas_Smart *s)
  *
  * @ingroup Evas_Smart_Object_Group
  */
-EAPI void evas_smart_legacy_type_register(const char *type, const Efl_Class *klass) EINA_ARG_NONNULL(1, 2);
+EVAS_API void evas_smart_legacy_type_register(const char *type, const Efl_Class *klass) EINA_ARG_NONNULL(1, 2);
 
 /**
  * @}
@@ -2623,7 +2623,7 @@ struct _Evas_Object_Smart_Clipped_Data
  * child ones, like the #EVAS_SMART_SUBCLASS_NEW macro or the
  * evas_smart_class_inherit_full() function.
  */
-EAPI void                    evas_object_smart_clipped_smart_set(Evas_Smart_Class *sc) EINA_ARG_NONNULL(1);
+EVAS_API void                    evas_object_smart_clipped_smart_set(Evas_Smart_Class *sc) EINA_ARG_NONNULL(1);
 
 /**
  * Get a pointer to the <b>clipped smart object's</b> class, to use
@@ -2632,7 +2632,7 @@ EAPI void                    evas_object_smart_clipped_smart_set(Evas_Smart_Clas
  * @see #Evas_Smart_Object_Clipped for more information on this smart
  * class
  */
-EAPI const Evas_Smart_Class *evas_object_smart_clipped_class_get(void) EINA_CONST;
+EVAS_API const Evas_Smart_Class *evas_object_smart_clipped_class_get(void) EINA_CONST;
 /**
  * @}
  */
@@ -2872,7 +2872,7 @@ struct _Evas_Object_Box_Option
  * @param api The box API struct to set back, most probably with
  * overridden fields (on class extensions scenarios)
  */
-EAPI void                       evas_object_box_smart_set(Evas_Object_Box_Api *api) EINA_ARG_NONNULL(1);
+EVAS_API void                       evas_object_box_smart_set(Evas_Object_Box_Api *api) EINA_ARG_NONNULL(1);
 
 /**
  * Get the Evas box smart class, for inheritance purposes.
@@ -2882,7 +2882,7 @@ EAPI void                       evas_object_box_smart_set(Evas_Object_Box_Api *a
  * The returned value is @b not to be modified, just use it as your
  * parent class.
  */
-EAPI const Evas_Object_Box_Api *evas_object_box_smart_class_get(void) EINA_CONST;
+EVAS_API const Evas_Object_Box_Api *evas_object_box_smart_class_get(void) EINA_CONST;
 
 /**
  * @}
@@ -2997,7 +2997,7 @@ struct _Evas_Cserve_Config
  * @return @c EINA_TRUE if it wants, @c EINA_FALSE otherwise.
  * @ingroup Evas_Cserve
  */
-EAPI Eina_Bool   evas_cserve_want_get(void) EINA_WARN_UNUSED_RESULT;
+EVAS_API Eina_Bool   evas_cserve_want_get(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Retrieves if the system is connected to the server used to share
@@ -3006,7 +3006,7 @@ EAPI Eina_Bool   evas_cserve_want_get(void) EINA_WARN_UNUSED_RESULT;
  * @return @c EINA_TRUE if it's connected, @c EINA_FALSE otherwise.
  * @ingroup Evas_Cserve
  */
-EAPI Eina_Bool   evas_cserve_connected_get(void) EINA_WARN_UNUSED_RESULT;
+EVAS_API Eina_Bool   evas_cserve_connected_get(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Retrieves statistics from a running bitmap sharing server.
@@ -3017,14 +3017,14 @@ EAPI Eina_Bool   evas_cserve_connected_get(void) EINA_WARN_UNUSED_RESULT;
  *         @c EINA_FALSE otherwise (when @p stats is untouched)
  * @ingroup Evas_Cserve
  */
-EAPI Eina_Bool   evas_cserve_stats_get(Evas_Cserve_Stats *stats) EINA_WARN_UNUSED_RESULT;
+EVAS_API Eina_Bool   evas_cserve_stats_get(Evas_Cserve_Stats *stats) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Completely discard/clean a given images cache, thus re-setting it.
  *
  * @param cache A handle to the given images cache.
  */
-EAPI void        evas_cserve_image_cache_contents_clean(Evas_Cserve_Image_Cache *cache);
+EVAS_API void        evas_cserve_image_cache_contents_clean(Evas_Cserve_Image_Cache *cache);
 
 /**
  * Retrieves the current configuration of the Evas image caching
@@ -3043,7 +3043,7 @@ EAPI void        evas_cserve_image_cache_contents_clean(Evas_Cserve_Image_Cache 
  *
  * @ingroup Evas_Cserve
  */
-EAPI Eina_Bool   evas_cserve_config_get(Evas_Cserve_Config *config) EINA_WARN_UNUSED_RESULT;
+EVAS_API Eina_Bool   evas_cserve_config_get(Evas_Cserve_Config *config) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Changes the configurations of the Evas image caching server.
@@ -3057,14 +3057,14 @@ EAPI Eina_Bool   evas_cserve_config_get(Evas_Cserve_Config *config) EINA_WARN_UN
  *
  * @ingroup Evas_Cserve
  */
-EAPI Eina_Bool   evas_cserve_config_set(const Evas_Cserve_Config *config) EINA_WARN_UNUSED_RESULT;
+EVAS_API Eina_Bool   evas_cserve_config_set(const Evas_Cserve_Config *config) EINA_WARN_UNUSED_RESULT;
 
 /**
  * Force the system to disconnect from the bitmap caching server.
  *
  * @ingroup Evas_Cserve
  */
-EAPI void        evas_cserve_disconnect(void);
+EVAS_API void        evas_cserve_disconnect(void);
 
 /**
  * @defgroup Evas_Utils General Utilities
@@ -3103,7 +3103,7 @@ EAPI void        evas_cserve_disconnect(void);
  *
  * @ingroup Evas_Utils
  */
-EAPI const char *evas_load_error_str(Evas_Load_Error error);
+EVAS_API const char *evas_load_error_str(Evas_Load_Error error);
 
 /* Evas utility routines for color space conversions */
 /* hsv color space has h in the range 0.0 to 360.0, and s,v in the range 0.0 to 1.0 */
@@ -3124,7 +3124,7 @@ EAPI const char *evas_load_error_str(Evas_Load_Error error);
  *
  * @ingroup Evas_Utils
  **/
-EAPI void evas_color_hsv_to_rgb(float h, float s, float v, int *r, int *g, int *b);
+EVAS_API void evas_color_hsv_to_rgb(float h, float s, float v, int *r, int *g, int *b);
 
 /**
  * Convert a given color from RGB to HSV format.
@@ -3141,7 +3141,7 @@ EAPI void evas_color_hsv_to_rgb(float h, float s, float v, int *r, int *g, int *
  *
  * @ingroup Evas_Utils
  **/
-EAPI void evas_color_rgb_to_hsv(int r, int g, int b, float *h, float *s, float *v);
+EVAS_API void evas_color_rgb_to_hsv(int r, int g, int b, float *h, float *s, float *v);
 
 /* argb color space has a,r,g,b in the range 0 to 255 */
 
@@ -3158,7 +3158,7 @@ EAPI void evas_color_rgb_to_hsv(int r, int g, int b, float *h, float *s, float *
  *
  * @ingroup Evas_Utils
  **/
-EAPI void evas_color_argb_premul(int a, int *r, int *g, int *b);
+EVAS_API void evas_color_argb_premul(int a, int *r, int *g, int *b);
 
 /**
  * Undo pre-multiplication of a rgb triplet by an alpha factor.
@@ -3175,7 +3175,7 @@ EAPI void evas_color_argb_premul(int a, int *r, int *g, int *b);
  *
  * @ingroup Evas_Utils
  **/
-EAPI void evas_color_argb_unpremul(int a, int *r, int *g, int *b);
+EVAS_API void evas_color_argb_unpremul(int a, int *r, int *g, int *b);
 
 /**
  * Pre-multiplies data by an alpha factor.
@@ -3188,7 +3188,7 @@ EAPI void evas_color_argb_unpremul(int a, int *r, int *g, int *b);
  *
  * @ingroup Evas_Utils
  **/
-EAPI void evas_data_argb_premul(unsigned int *data, unsigned int len);
+EVAS_API void evas_data_argb_premul(unsigned int *data, unsigned int len);
 
 /**
  * Undo pre-multiplication data by an alpha factor.
@@ -3201,7 +3201,7 @@ EAPI void evas_data_argb_premul(unsigned int *data, unsigned int len);
  *
  * @ingroup Evas_Utils
  **/
-EAPI void evas_data_argb_unpremul(unsigned int *data, unsigned int len);
+EVAS_API void evas_data_argb_unpremul(unsigned int *data, unsigned int len);
 
 /* string and font handling */
 
@@ -3224,7 +3224,7 @@ EAPI void evas_data_argb_unpremul(unsigned int *data, unsigned int len);
  *
  * @ingroup Evas_Utils
  */
-EAPI int  evas_string_char_next_get(const char *str, int pos, int *decoded) EINA_ARG_NONNULL(1);
+EVAS_API int  evas_string_char_next_get(const char *str, int pos, int *decoded) EINA_ARG_NONNULL(1);
 
 /**
  * Gets the previous character in the string
@@ -3245,7 +3245,7 @@ EAPI int  evas_string_char_next_get(const char *str, int pos, int *decoded) EINA
  *
  * @ingroup Evas_Utils
  */
-EAPI int  evas_string_char_prev_get(const char *str, int pos, int *decoded) EINA_ARG_NONNULL(1);
+EVAS_API int  evas_string_char_prev_get(const char *str, int pos, int *decoded) EINA_ARG_NONNULL(1);
 
 /**
  * Get the length in characters of the string.
@@ -3255,7 +3255,7 @@ EAPI int  evas_string_char_prev_get(const char *str, int pos, int *decoded) EINA
  *
  * @ingroup Evas_Utils
  */
-EAPI int  evas_string_char_len_get(const char *str) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
+EVAS_API int  evas_string_char_len_get(const char *str) EINA_WARN_UNUSED_RESULT EINA_ARG_NONNULL(1);
 
 /**
  * Get language direction.
@@ -3263,7 +3263,7 @@ EAPI int  evas_string_char_len_get(const char *str) EINA_WARN_UNUSED_RESULT EINA
  * @ingroup Evas_Utils
  * @since 1.20
  */
-EAPI Evas_BiDi_Direction     evas_language_direction_get(void);
+EVAS_API Evas_BiDi_Direction     evas_language_direction_get(void);
 
 /**
  * Reinitialize language from the environment.
@@ -3274,7 +3274,7 @@ EAPI Evas_BiDi_Direction     evas_language_direction_get(void);
  * @ingroup Evas_Utils
  * @since 1.18
  */
-EAPI void                    evas_language_reinit(void);
+EVAS_API void                    evas_language_reinit(void);
 
 /**
  * @defgroup Evas_Keys Key Input Functions
@@ -3330,28 +3330,28 @@ EAPI void                    evas_language_reinit(void);
  * for the application.
  * @since 1.9
  */
-EAPI void                    evas_font_path_global_clear(void);
+EVAS_API void                    evas_font_path_global_clear(void);
 
 /**
  * Appends a font path to the list of font paths used by the application.
  * @param   path The new font path.
  * @since 1.9
  */
-EAPI void                    evas_font_path_global_append(const char *path) EINA_ARG_NONNULL(1);
+EVAS_API void                    evas_font_path_global_append(const char *path) EINA_ARG_NONNULL(1);
 
 /**
  * Prepends a font path to the list of font paths used by the application.
  * @param   path The new font path.
  * @since 1.9
  */
-EAPI void                    evas_font_path_global_prepend(const char *path) EINA_ARG_NONNULL(1);
+EVAS_API void                    evas_font_path_global_prepend(const char *path) EINA_ARG_NONNULL(1);
 
 /**
  * Retrieves the list of font paths used by the application.
  * @return  The list of font paths used.
  * @since 1.9
  */
-EAPI const Eina_List        *evas_font_path_global_list(void) EINA_WARN_UNUSED_RESULT;
+EVAS_API const Eina_List        *evas_font_path_global_list(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @}
@@ -3363,7 +3363,7 @@ EAPI const Eina_List        *evas_font_path_global_list(void) EINA_WARN_UNUSED_R
  *
  * @since 1.14
  */
-EAPI void                    evas_font_reinit(void);
+EVAS_API void                    evas_font_reinit(void);
 
 /**
  * @}

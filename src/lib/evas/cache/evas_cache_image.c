@@ -547,21 +547,21 @@ _evas_cache_image_entry_preload_remove(Image_Entry *ie, const Eo *target, Eina_B
 //   evas_cache_image_drop(ie);
 }
 
-EAPI int
+EVAS_API int
 evas_cache_image_usage_get(Evas_Cache_Image *cache)
 {
    if (!cache) return 0;
    return cache->usage;
 }
 
-EAPI int
+EVAS_API int
 evas_cache_image_get(Evas_Cache_Image *cache)
 {
    if (!cache) return 0;
    return cache->limit;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_set(Evas_Cache_Image *cache, unsigned int limit)
 {
    if (!cache) return;
@@ -573,7 +573,7 @@ evas_cache_image_set(Evas_Cache_Image *cache, unsigned int limit)
    evas_cache_image_flush(cache);
 }
 
-EAPI Evas_Cache_Image *
+EVAS_API Evas_Cache_Image *
 evas_cache_image_init(const Evas_Cache_Image_Func *cb)
 {
    Evas_Cache_Image *cache;
@@ -602,7 +602,7 @@ _evas_cache_image_free_cb(EINA_UNUSED const Eina_Hash *hash, EINA_UNUSED const v
    return EINA_TRUE;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_shutdown(Evas_Cache_Image *cache)
 {
    Eina_List *delete_list;
@@ -750,7 +750,7 @@ _evas_cache_image_loadopts_append(char *hkey, Evas_Image_Load_Opts **plo)
    return offset;
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_mmap_request(Evas_Cache_Image *cache,
                               Eina_File *f, const char *key,
                               Evas_Image_Load_Opts *lo, int *error)
@@ -849,7 +849,7 @@ evas_cache_image_mmap_request(Evas_Cache_Image *cache,
 }
 
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_request(Evas_Cache_Image *cache, const char *file, 
                          const char *key, Evas_Image_Load_Opts *lo, int *error)
 {
@@ -1012,7 +1012,7 @@ on_stat_error:
    return NULL;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_ref(Image_Entry *im)
 {
    SLKL(engine_lock);
@@ -1020,7 +1020,7 @@ evas_cache_image_ref(Image_Entry *im)
    SLKU(engine_lock);
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_drop(Image_Entry *im)
 {
    Evas_Cache_Image *cache;
@@ -1061,7 +1061,7 @@ evas_cache_image_drop(Image_Entry *im)
      }
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_data_not_needed(Image_Entry *im)
 {
    int references;
@@ -1074,7 +1074,7 @@ evas_cache_image_data_not_needed(Image_Entry *im)
    SLKU(engine_lock);
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_dirty(Image_Entry *im, unsigned int x, unsigned int y, unsigned int w, unsigned int h)
 {
    Image_Entry *im_dirty = im;
@@ -1113,7 +1113,7 @@ on_error:
    return NULL;
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_alone(Image_Entry *im)
 {
    Evas_Cache_Image *cache;
@@ -1150,7 +1150,7 @@ on_error:
    return NULL;
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_copied_data(Evas_Cache_Image *cache, 
                              unsigned int w, unsigned int h, 
                              DATA32 *image_data, int alpha,
@@ -1185,7 +1185,7 @@ evas_cache_image_copied_data(Evas_Cache_Image *cache,
    return im;
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_data(Evas_Cache_Image *cache, unsigned int w, unsigned int h,
                       DATA32 *image_data, int alpha, Evas_Colorspace cspace)
 {
@@ -1218,7 +1218,7 @@ evas_cache_image_data(Evas_Cache_Image *cache, unsigned int w, unsigned int h,
    return im;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_surface_alloc(Image_Entry *im, unsigned int w, unsigned int h)
 {
    Evas_Cache_Image *cache = im->cache;
@@ -1233,7 +1233,7 @@ evas_cache_image_surface_alloc(Image_Entry *im, unsigned int w, unsigned int h)
    if (cache->func.debug) cache->func.debug("surface-alloc", im);
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_size_set(Image_Entry *im, unsigned int w, unsigned int h)
 {
    Evas_Cache_Image *cache;
@@ -1284,7 +1284,7 @@ on_error:
    return NULL;
 }
 
-EAPI int
+EVAS_API int
 evas_cache_image_load_data(Image_Entry *im)
 {
    Eina_Bool preload = EINA_FALSE;
@@ -1342,7 +1342,7 @@ evas_cache_image_load_data(Image_Entry *im)
    return error;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_unload_data(Image_Entry *im)
 {
    if (!im->cache) return;
@@ -1386,7 +1386,7 @@ _evas_cache_image_unload_cb(EINA_UNUSED const Eina_Hash *hash, EINA_UNUSED const
    return EINA_TRUE;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_unload_all(Evas_Cache_Image *cache)
 {
    Image_Entry *im;
@@ -1404,32 +1404,32 @@ evas_cache_image_unload_all(Evas_Cache_Image *cache)
 
 static int async_frozen = 0;
 
-EAPI int
+EVAS_API int
 evas_cache_async_frozen_get(void)
 {
    return async_frozen;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_async_freeze(void)
 {
    async_frozen++;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_async_thaw(void)
 {
    async_frozen--;
 }
 
-EAPI Eina_Bool
+EVAS_API Eina_Bool
 evas_cache_image_is_loaded(Image_Entry *im)
 {
    if (im->flags.loaded) return EINA_TRUE;
    return EINA_FALSE;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_preload_data(Image_Entry *im, const Eo *target, void (*preloaded_cb)(void *), void *preloaded_data)
 {
    RGBA_Image *img = (RGBA_Image *)im;
@@ -1451,7 +1451,7 @@ evas_cache_image_preload_data(Image_Entry *im, const Eo *target, void (*preloade
    evas_cache_image_drop(im);
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_preload_cancel(Image_Entry *im, const Eo *target, Eina_Bool force)
 {
    if (!target) return;
@@ -1510,7 +1510,7 @@ _dump_cache(Evas_Cache_Image *cache)
 }
 #endif
 
-EAPI int
+EVAS_API int
 evas_cache_image_flush(Evas_Cache_Image *cache)
 {
    if (!cache) return 0;
@@ -1544,7 +1544,7 @@ evas_cache_image_flush(Evas_Cache_Image *cache)
    return cache->usage;
 }
 
-EAPI Image_Entry *
+EVAS_API Image_Entry *
 evas_cache_image_empty(Evas_Cache_Image *cache)
 {
    int err;
@@ -1559,7 +1559,7 @@ evas_cache_image_empty(Evas_Cache_Image *cache)
    return im;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_image_colorspace(Image_Entry *im, Evas_Colorspace cspace)
 {
    if (!im->cache) return;
@@ -1572,7 +1572,7 @@ done:
    evas_cache_image_drop(im);
 }
 
-EAPI void *
+EVAS_API void *
 evas_cache_private_from_image_entry_get(Image_Entry *im)
 {
    void *data;
@@ -1583,21 +1583,21 @@ evas_cache_private_from_image_entry_get(Image_Entry *im)
    return data;
 }
 
-EAPI void *
+EVAS_API void *
 evas_cache_private_get(Evas_Cache_Image *cache)
 {
    if (!cache) return NULL;
    return cache->data;
 }
 
-EAPI void
+EVAS_API void
 evas_cache_private_set(Evas_Cache_Image *cache, const void *data)
 {
    if (!cache) return;
    cache->data = (void *)data;
 }
 
-EAPI DATA32 *
+EVAS_API DATA32 *
 evas_cache_image_pixels(Image_Entry *im)
 {
    if (!im->cache) return NULL;
