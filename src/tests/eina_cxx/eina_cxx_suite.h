@@ -19,4 +19,7 @@ void eina_test_optional(TCase* tc);
 void eina_test_value(TCase* tc);
 void eina_test_log(TCase* tc);
 
+#define EINACXXTEST_API
+#define EINACXXTEST_API_WEAK
+
 #endif /* _EINA_CXX_SUITE_H */
