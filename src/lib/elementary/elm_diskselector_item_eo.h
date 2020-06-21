@@ -38,7 +38,7 @@ EWAPI const Efl_Class *elm_diskselector_item_class_get(void);
  *
  * @ingroup Elm_Diskselector_Item
  */
-EOAPI Elm_Widget_Item *elm_obj_diskselector_item_prev_get(const Eo *obj);
+ELM_API Elm_Widget_Item *elm_obj_diskselector_item_prev_get(const Eo *obj);
 
 /**
  * @brief Get the item after @c item in diskselector.
@@ -57,7 +57,7 @@ EOAPI Elm_Widget_Item *elm_obj_diskselector_item_prev_get(const Eo *obj);
  *
  * @ingroup Elm_Diskselector_Item
  */
-EOAPI Elm_Widget_Item *elm_obj_diskselector_item_next_get(const Eo *obj);
+ELM_API Elm_Widget_Item *elm_obj_diskselector_item_next_get(const Eo *obj);
 
 /**
  * @brief Set the selected state of an item.
@@ -84,7 +84,7 @@ EOAPI Elm_Widget_Item *elm_obj_diskselector_item_next_get(const Eo *obj);
  *
  * @ingroup Elm_Diskselector_Item
  */
-EOAPI void elm_obj_diskselector_item_selected_set(Eo *obj, Eina_Bool selected);
+ELM_API void elm_obj_diskselector_item_selected_set(Eo *obj, Eina_Bool selected);
 
 /**
  * @brief Get whether the @c item is selected or not.
@@ -98,6 +98,6 @@ EOAPI void elm_obj_diskselector_item_selected_set(Eo *obj, Eina_Bool selected);
  *
  * @ingroup Elm_Diskselector_Item
  */
-EOAPI Eina_Bool elm_obj_diskselector_item_selected_get(const Eo *obj);
+ELM_API Eina_Bool elm_obj_diskselector_item_selected_get(const Eo *obj);
 
 #endif

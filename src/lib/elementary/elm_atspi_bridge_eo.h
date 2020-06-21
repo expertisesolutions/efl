@@ -30,7 +30,7 @@ EWAPI const Efl_Class *elm_atspi_bridge_class_get(void);
  *
  * @ingroup Elm_Atspi_Bridge
  */
-EOAPI Eina_Bool elm_obj_atspi_bridge_connected_get(const Eo *obj);
+ELM_API Eina_Bool elm_obj_atspi_bridge_connected_get(const Eo *obj);
 
 EWAPI extern const Efl_Event_Description _ELM_ATSPI_BRIDGE_EVENT_CONNECTED;
 

@@ -35,7 +35,7 @@ typedef Eo Elm_Genlist_Item;
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Elm_Widget_Item *elm_genlist_item_prev_get(const Elm_Genlist_Item *obj);
+ELM_API Elm_Widget_Item *elm_genlist_item_prev_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the next item in a genlist widget's internal lis of items, given
@@ -58,7 +58,7 @@ EAPI Elm_Widget_Item *elm_genlist_item_prev_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Elm_Widget_Item *elm_genlist_item_next_get(const Elm_Genlist_Item *obj);
+ELM_API Elm_Widget_Item *elm_genlist_item_next_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the parent item of the given item
@@ -72,7 +72,7 @@ EAPI Elm_Widget_Item *elm_genlist_item_next_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Elm_Widget_Item *elm_genlist_item_parent_get(const Elm_Genlist_Item *obj);
+ELM_API Elm_Widget_Item *elm_genlist_item_parent_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the list of subitems of a given item
@@ -88,7 +88,7 @@ EAPI Elm_Widget_Item *elm_genlist_item_parent_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI const Eina_List *elm_genlist_item_subitems_get(const Elm_Genlist_Item *obj);
+ELM_API const Eina_List *elm_genlist_item_subitems_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Set whether a given genlist item is selected or not
@@ -103,7 +103,7 @@ EAPI const Eina_List *elm_genlist_item_subitems_get(const Elm_Genlist_Item *obj)
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_selected_set(Elm_Genlist_Item *obj, Eina_Bool selected);
+ELM_API void elm_genlist_item_selected_set(Elm_Genlist_Item *obj, Eina_Bool selected);
 
 /**
  * @brief Get whether a given genlist item is selected or not.
@@ -114,7 +114,7 @@ EAPI void elm_genlist_item_selected_set(Elm_Genlist_Item *obj, Eina_Bool selecte
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Eina_Bool elm_genlist_item_selected_get(const Elm_Genlist_Item *obj);
+ELM_API Eina_Bool elm_genlist_item_selected_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Sets the expanded state of an item.
@@ -136,7 +136,7 @@ EAPI Eina_Bool elm_genlist_item_selected_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_expanded_set(Elm_Genlist_Item *obj, Eina_Bool expanded);
+ELM_API void elm_genlist_item_expanded_set(Elm_Genlist_Item *obj, Eina_Bool expanded);
 
 /**
  * @brief Get the expanded state of an item
@@ -149,7 +149,7 @@ EAPI void elm_genlist_item_expanded_set(Elm_Genlist_Item *obj, Eina_Bool expande
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Eina_Bool elm_genlist_item_expanded_get(const Elm_Genlist_Item *obj);
+ELM_API Eina_Bool elm_genlist_item_expanded_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the depth of expanded item.
@@ -160,7 +160,7 @@ EAPI Eina_Bool elm_genlist_item_expanded_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI int elm_genlist_item_expanded_depth_get(const Elm_Genlist_Item *obj);
+ELM_API int elm_genlist_item_expanded_depth_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the Genlist Item class for the given Genlist Item.
@@ -174,7 +174,7 @@ EAPI int elm_genlist_item_expanded_depth_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI const Elm_Genlist_Item_Class *elm_genlist_item_item_class_get(const Elm_Genlist_Item *obj);
+ELM_API const Elm_Genlist_Item_Class *elm_genlist_item_item_class_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the index of the item. It is only valid once displayed.
@@ -187,7 +187,7 @@ EAPI const Elm_Genlist_Item_Class *elm_genlist_item_item_class_get(const Elm_Gen
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI int elm_genlist_item_index_get(const Elm_Genlist_Item *obj);
+ELM_API int elm_genlist_item_index_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the item's decorate mode.
@@ -200,7 +200,7 @@ EAPI int elm_genlist_item_index_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI const char *elm_genlist_item_decorate_mode_get(const Elm_Genlist_Item *obj);
+ELM_API const char *elm_genlist_item_decorate_mode_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Set the flip state of a given genlist item.
@@ -214,7 +214,7 @@ EAPI const char *elm_genlist_item_decorate_mode_get(const Elm_Genlist_Item *obj)
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_flip_set(Elm_Genlist_Item *obj, Eina_Bool flip);
+ELM_API void elm_genlist_item_flip_set(Elm_Genlist_Item *obj, Eina_Bool flip);
 
 /**
  * @brief Get the flip state of a given genlist item.
@@ -228,7 +228,7 @@ EAPI void elm_genlist_item_flip_set(Elm_Genlist_Item *obj, Eina_Bool flip);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Eina_Bool elm_genlist_item_flip_get(const Elm_Genlist_Item *obj);
+ELM_API Eina_Bool elm_genlist_item_flip_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Set the genlist item's select mode.
@@ -256,7 +256,7 @@ EAPI Eina_Bool elm_genlist_item_flip_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_select_mode_set(Elm_Genlist_Item *obj, Elm_Object_Select_Mode mode);
+ELM_API void elm_genlist_item_select_mode_set(Elm_Genlist_Item *obj, Elm_Object_Select_Mode mode);
 
 /**
  * @brief Get the genlist item's select mode.
@@ -269,7 +269,7 @@ EAPI void elm_genlist_item_select_mode_set(Elm_Genlist_Item *obj, Elm_Object_Sel
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Elm_Object_Select_Mode elm_genlist_item_select_mode_get(const Elm_Genlist_Item *obj);
+ELM_API Elm_Object_Select_Mode elm_genlist_item_select_mode_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the Item's type.
@@ -283,7 +283,7 @@ EAPI Elm_Object_Select_Mode elm_genlist_item_select_mode_get(const Elm_Genlist_I
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Elm_Genlist_Item_Type elm_genlist_item_type_get(const Elm_Genlist_Item *obj);
+ELM_API Elm_Genlist_Item_Type elm_genlist_item_type_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Set whether a given genlist item is pinned or not
@@ -299,7 +299,7 @@ EAPI Elm_Genlist_Item_Type elm_genlist_item_type_get(const Elm_Genlist_Item *obj
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_pin_set(Elm_Genlist_Item *obj, Eina_Bool pin);
+ELM_API void elm_genlist_item_pin_set(Elm_Genlist_Item *obj, Eina_Bool pin);
 
 /**
  * @brief Get whether a given genlist item is pinned or not.
@@ -310,7 +310,7 @@ EAPI void elm_genlist_item_pin_set(Elm_Genlist_Item *obj, Eina_Bool pin);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI Eina_Bool elm_genlist_item_pin_get(const Elm_Genlist_Item *obj);
+ELM_API Eina_Bool elm_genlist_item_pin_get(const Elm_Genlist_Item *obj);
 
 /**
  * @brief Get the number of subitems of a given item.
@@ -325,7 +325,7 @@ EAPI Eina_Bool elm_genlist_item_pin_get(const Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI unsigned int elm_genlist_item_subitems_count(Elm_Genlist_Item *obj);
+ELM_API unsigned int elm_genlist_item_subitems_count(Elm_Genlist_Item *obj);
 
 /**
  * @brief Remove all sub-items (children) of the given item.
@@ -336,19 +336,19 @@ EAPI unsigned int elm_genlist_item_subitems_count(Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_subitems_clear(Elm_Genlist_Item *obj);
+ELM_API void elm_genlist_item_subitems_clear(Elm_Genlist_Item *obj);
 
 /** Promote an item to the top of the list.
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_promote(Elm_Genlist_Item *obj);
+ELM_API void elm_genlist_item_promote(Elm_Genlist_Item *obj);
 
 /** Demote an item to the end of the list.
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_demote(Elm_Genlist_Item *obj);
+ELM_API void elm_genlist_item_demote(Elm_Genlist_Item *obj);
 
 /**
  * @brief Show the portion of a genlist's internal list containing a given
@@ -363,7 +363,7 @@ EAPI void elm_genlist_item_demote(Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_show(Elm_Genlist_Item *obj, Elm_Genlist_Item_Scrollto_Type type);
+ELM_API void elm_genlist_item_show(Elm_Genlist_Item *obj, Elm_Genlist_Item_Scrollto_Type type);
 
 /**
  * @brief Animatedly bring in, to the visible area of a genlist, a given item
@@ -379,7 +379,7 @@ EAPI void elm_genlist_item_show(Elm_Genlist_Item *obj, Elm_Genlist_Item_Scrollto
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_bring_in(Elm_Genlist_Item *obj, Elm_Genlist_Item_Scrollto_Type type);
+ELM_API void elm_genlist_item_bring_in(Elm_Genlist_Item *obj, Elm_Genlist_Item_Scrollto_Type type);
 
 /**
  * @brief Unset all contents fetched by the item class.
@@ -393,7 +393,7 @@ EAPI void elm_genlist_item_bring_in(Elm_Genlist_Item *obj, Elm_Genlist_Item_Scro
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_all_contents_unset(Elm_Genlist_Item *obj, Eina_List **l);
+ELM_API void elm_genlist_item_all_contents_unset(Elm_Genlist_Item *obj, Eina_List **l);
 
 /**
  * @brief Update all the contents of an item.
@@ -414,7 +414,7 @@ EAPI void elm_genlist_item_all_contents_unset(Elm_Genlist_Item *obj, Eina_List *
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_update(Elm_Genlist_Item *obj);
+ELM_API void elm_genlist_item_update(Elm_Genlist_Item *obj);
 
 /**
  * @brief Update the part of an item.
@@ -433,7 +433,7 @@ EAPI void elm_genlist_item_update(Elm_Genlist_Item *obj);
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_fields_update(Elm_Genlist_Item *obj, const char *parts, Elm_Genlist_Item_Field_Type itf);
+ELM_API void elm_genlist_item_fields_update(Elm_Genlist_Item *obj, const char *parts, Elm_Genlist_Item_Field_Type itf);
 
 /**
  * @brief Update the item class of an item.
@@ -447,7 +447,7 @@ EAPI void elm_genlist_item_fields_update(Elm_Genlist_Item *obj, const char *part
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_item_class_update(Elm_Genlist_Item *obj, const Elm_Genlist_Item_Class *itc);
+ELM_API void elm_genlist_item_item_class_update(Elm_Genlist_Item *obj, const Elm_Genlist_Item_Class *itc);
 
 /**
  * @brief Activate a genlist mode on an item.
@@ -484,6 +484,6 @@ EAPI void elm_genlist_item_item_class_update(Elm_Genlist_Item *obj, const Elm_Ge
  *
  * @ingroup Elm_Genlist_Item_Group
  */
-EAPI void elm_genlist_item_decorate_mode_set(Elm_Genlist_Item *obj, const char *decorate_it_type, Eina_Bool decorate_it_set);
+ELM_API void elm_genlist_item_decorate_mode_set(Elm_Genlist_Item *obj, const char *decorate_it_type, Eina_Bool decorate_it_set);
 
 #endif

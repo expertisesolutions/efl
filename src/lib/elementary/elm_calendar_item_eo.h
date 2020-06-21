@@ -29,7 +29,7 @@ EWAPI const Efl_Class *elm_calendar_item_class_get(void);
  *
  * @ingroup Elm_Calendar_Item
  */
-EOAPI void elm_calendar_item_day_number_set(Eo *obj, int i);
+ELM_API void elm_calendar_item_day_number_set(Eo *obj, int i);
 
 /**
  * @brief Day number property
@@ -40,6 +40,6 @@ EOAPI void elm_calendar_item_day_number_set(Eo *obj, int i);
  *
  * @ingroup Elm_Calendar_Item
  */
-EOAPI int elm_calendar_item_day_number_get(const Eo *obj);
+ELM_API int elm_calendar_item_day_number_get(const Eo *obj);
 
 #endif

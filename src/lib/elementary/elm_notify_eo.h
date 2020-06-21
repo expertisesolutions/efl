@@ -37,7 +37,7 @@ EWAPI const Efl_Class *elm_notify_class_get(void);
  *
  * @ingroup Elm_Notify
  */
-EOAPI void elm_obj_notify_align_set(Eo *obj, double horizontal, double vertical);
+ELM_API void elm_obj_notify_align_set(Eo *obj, double horizontal, double vertical);
 
 /**
  * @brief Get the alignment of the notify object
@@ -50,7 +50,7 @@ EOAPI void elm_obj_notify_align_set(Eo *obj, double horizontal, double vertical)
  *
  * @ingroup Elm_Notify
  */
-EOAPI void elm_obj_notify_align_get(const Eo *obj, double *horizontal, double *vertical);
+ELM_API void elm_obj_notify_align_get(const Eo *obj, double *horizontal, double *vertical);
 
 /**
  * @brief Sets whether events should be passed to by a click outside its area.
@@ -65,7 +65,7 @@ EOAPI void elm_obj_notify_align_get(const Eo *obj, double *horizontal, double *v
  *
  * @ingroup Elm_Notify
  */
-EOAPI void elm_obj_notify_allow_events_set(Eo *obj, Eina_Bool allow);
+ELM_API void elm_obj_notify_allow_events_set(Eo *obj, Eina_Bool allow);
 
 /**
  * @brief Return true if events are allowed below the notify object.
@@ -76,7 +76,7 @@ EOAPI void elm_obj_notify_allow_events_set(Eo *obj, Eina_Bool allow);
  *
  * @ingroup Elm_Notify
  */
-EOAPI Eina_Bool elm_obj_notify_allow_events_get(const Eo *obj);
+ELM_API Eina_Bool elm_obj_notify_allow_events_get(const Eo *obj);
 
 /**
  * @brief Set the time interval after which the notify window is going to be
@@ -97,7 +97,7 @@ EOAPI Eina_Bool elm_obj_notify_allow_events_get(const Eo *obj);
  *
  * @ingroup Elm_Notify
  */
-EOAPI void elm_obj_notify_timeout_set(Eo *obj, double timeout);
+ELM_API void elm_obj_notify_timeout_set(Eo *obj, double timeout);
 
 /**
  * @brief Return the timeout value (in seconds)
@@ -108,7 +108,7 @@ EOAPI void elm_obj_notify_timeout_set(Eo *obj, double timeout);
  *
  * @ingroup Elm_Notify
  */
-EOAPI double elm_obj_notify_timeout_get(const Eo *obj);
+ELM_API double elm_obj_notify_timeout_get(const Eo *obj);
 
 /** Dismiss a notify object.
  *
@@ -116,7 +116,7 @@ EOAPI double elm_obj_notify_timeout_get(const Eo *obj);
  *
  * @ingroup Elm_Notify
  */
-EOAPI void elm_obj_notify_dismiss(Eo *obj);
+ELM_API void elm_obj_notify_dismiss(Eo *obj);
 
 EWAPI extern const Efl_Event_Description _ELM_NOTIFY_EVENT_BLOCK_CLICKED;
 

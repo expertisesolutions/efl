@@ -454,7 +454,7 @@ _efl_ui_win_type_to_elm_win_type(Efl_Ui_Win_Type type)
 static void _elm_win_xwin_update(Efl_Ui_Win_Data *sd);
 #endif
 
-EAPI double _elm_startup_time = 0;
+ELM_API double _elm_startup_time = 0;
 
 static void
 _elm_win_first_frame_do(void *data, Evas *e EINA_UNUSED, void *event_info EINA_UNUSED)
@@ -573,7 +573,7 @@ _win_noblank_eval(void)
 
 static Elm_Process_State _elm_process_state = ELM_PROCESS_STATE_FOREGROUND;
 
-EAPI Elm_Process_State
+ELM_API Elm_Process_State
 elm_process_state_get(void)
 {
    return _elm_process_state;
@@ -1778,13 +1778,13 @@ _efl_ui_win_win_rotation_get(const Eo *obj EINA_UNUSED, Efl_Ui_Win_Data *pd)
    return pd->rot;
 }
 
-EAPI void
+ELM_API void
 elm_win_rotation_set(Evas_Object *obj, int rotation)
 {
    efl_ui_win_rotation_set(obj, rotation);
 }
 
-EAPI int
+ELM_API int
 elm_win_rotation_get(const Evas_Object *obj)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(obj, -1);
@@ -6184,14 +6184,14 @@ _efl_ui_win_exit_on_close_set(Eo *obj EINA_UNUSED, Efl_Ui_Win_Data *sd, const Ei
 }
 
 /* Only for C API */
-EAPI void
+ELM_API void
 elm_win_autodel_set(Eo *obj, Eina_Bool autodel)
 {
    ELM_WIN_DATA_GET_OR_RETURN(obj, sd);
    sd->autodel = autodel;
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_autodel_get(const Eo *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -6223,7 +6223,7 @@ _efl_ui_win_efl_gfx_stack_raise_to_top(Eo *obj EINA_UNUSED, Efl_Ui_Win_Data *pd)
    TRAP(pd, raise);
 }
 
-EAPI void
+ELM_API void
 elm_win_raise(Eo *obj)
 {
    efl_gfx_stack_raise_to_top(obj);
@@ -6779,7 +6779,7 @@ _efl_ui_win_hint_step_get(const Eo *obj EINA_UNUSED, Efl_Ui_Win_Data *sd)
    return EINA_SIZE2D(sd->size_step_w, sd->size_step_h);
 }
 
-EAPI void
+ELM_API void
 elm_win_norender_push(Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -6789,7 +6789,7 @@ elm_win_norender_push(Evas_Object *obj)
    if (sd->norender == 1) ecore_evas_manual_render_set(sd->ee, EINA_TRUE);
 }
 
-EAPI void
+ELM_API void
 elm_win_norender_pop(Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -6800,7 +6800,7 @@ elm_win_norender_pop(Evas_Object *obj)
    if (sd->norender == 0) ecore_evas_manual_render_set(sd->ee, EINA_FALSE);
 }
 
-EAPI int
+ELM_API int
 elm_win_norender_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -6809,7 +6809,7 @@ elm_win_norender_get(const Evas_Object *obj)
    return sd->norender;
 }
 
-EAPI void
+ELM_API void
 elm_win_render(Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -6876,7 +6876,7 @@ end:
    return !!sd->wm_rot.use;
 }
 
-EAPI void
+ELM_API void
 elm_win_wm_rotation_available_rotations_set(Elm_Win *obj, const int *rotations, unsigned int count)
 {
    Eina_Bool allow[4] = { 0, };
@@ -6897,7 +6897,7 @@ end:
    efl_ui_win_wm_available_rotations_set(obj, allow[0], allow[1], allow[2], allow[3]);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_wm_rotation_available_rotations_get(const Elm_Win *obj, int **rotations, unsigned int *count)
 {
    int rots[4] = { 0, };
@@ -7291,7 +7291,7 @@ _efl_ui_win_stack_pop_to(Eo *obj EINA_UNUSED, Efl_Ui_Win_Data *sd)
    // win32/osx ?
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_trap_set(const Elm_Win_Trap *t)
 {
    DBG("old %p, new %p", trap, t);
@@ -7307,7 +7307,7 @@ elm_win_trap_set(const Elm_Win_Trap *t)
    return EINA_TRUE;
 }
 
-EAPI void
+ELM_API void
 elm_win_floating_mode_set(Evas_Object *obj, Eina_Bool floating)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -7331,7 +7331,7 @@ elm_win_floating_mode_set(Evas_Object *obj, Eina_Bool floating)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_floating_mode_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -7920,7 +7920,7 @@ _efl_ui_win_move_resize_start(Eo *obj EINA_UNUSED, Efl_Ui_Win_Data *sd, Efl_Ui_W
    return _win_move_resize_start(sd, mode);
 }
 
-EAPI Evas_Object *
+ELM_API Evas_Object *
 elm_win_get(Evas_Object *obj)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(obj, NULL);
@@ -7929,7 +7929,7 @@ elm_win_get(Evas_Object *obj)
 
 /* windowing specific calls - shall we do this differently? */
 
-EAPI Ecore_X_Window
+ELM_API Ecore_X_Window
 elm_win_xwindow_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -7943,7 +7943,7 @@ elm_win_xwindow_get(const Evas_Object *obj)
    return 0;
 }
 
-EAPI Ecore_Wl2_Window *
+ELM_API Ecore_Wl2_Window *
 elm_win_wl_window_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -7964,7 +7964,7 @@ elm_win_wl_window_get(const Evas_Object *obj)
    return NULL;
 }
 
-EAPI Ecore_Cocoa_Window *
+ELM_API Ecore_Cocoa_Window *
 elm_win_cocoa_window_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -7982,7 +7982,7 @@ elm_win_cocoa_window_get(const Evas_Object *obj)
    return NULL;
 }
 
-EAPI Ecore_Win32_Window *
+ELM_API Ecore_Win32_Window *
 elm_win_win32_window_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8011,7 +8011,7 @@ elm_win_win32_window_get(const Evas_Object *obj)
    return ret;
 }
 
-EAPI void *
+ELM_API void *
 elm_win_trap_data_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8020,7 +8020,7 @@ elm_win_trap_data_get(const Evas_Object *obj)
    return sd->trap_data;
 }
 
-EAPI void
+ELM_API void
 elm_win_override_set(Evas_Object *obj, Eina_Bool override)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8032,7 +8032,7 @@ elm_win_override_set(Evas_Object *obj, Eina_Bool override)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_override_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8041,7 +8041,7 @@ elm_win_override_get(const Evas_Object *obj)
    return ecore_evas_override_get(sd->ee);
 }
 
-EAPI void
+ELM_API void
 elm_win_lower(Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8050,7 +8050,7 @@ elm_win_lower(Evas_Object *obj)
    TRAP(sd, lower);
 }
 
-EAPI void
+ELM_API void
 elm_win_quickpanel_set(Evas_Object *obj, Eina_Bool quickpanel)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8078,7 +8078,7 @@ elm_win_quickpanel_set(Evas_Object *obj, Eina_Bool quickpanel)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_quickpanel_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8098,7 +8098,7 @@ elm_win_quickpanel_get(const Evas_Object *obj)
    return EINA_FALSE;
 }
 
-EAPI void
+ELM_API void
 elm_win_quickpanel_priority_major_set(Evas_Object *obj, int priority)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8117,7 +8117,7 @@ elm_win_quickpanel_priority_major_set(Evas_Object *obj, int priority)
 #endif
 }
 
-EAPI int
+ELM_API int
 elm_win_quickpanel_priority_major_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8137,7 +8137,7 @@ elm_win_quickpanel_priority_major_get(const Evas_Object *obj)
    return -1;
 }
 
-EAPI void
+ELM_API void
 elm_win_quickpanel_priority_minor_set(Evas_Object *obj, int priority)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8156,7 +8156,7 @@ elm_win_quickpanel_priority_minor_set(Evas_Object *obj, int priority)
 #endif
 }
 
-EAPI int
+ELM_API int
 elm_win_quickpanel_priority_minor_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8176,7 +8176,7 @@ elm_win_quickpanel_priority_minor_get(const Evas_Object *obj)
    return -1;
 }
 
-EAPI void
+ELM_API void
 elm_win_quickpanel_zone_set(Evas_Object *obj, int zone)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8195,7 +8195,7 @@ elm_win_quickpanel_zone_set(Evas_Object *obj, int zone)
 #endif
 }
 
-EAPI int
+ELM_API int
 elm_win_quickpanel_zone_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8215,7 +8215,7 @@ elm_win_quickpanel_zone_get(const Evas_Object *obj)
    return 0;
 }
 
-EAPI void
+ELM_API void
 elm_win_indicator_mode_set(Evas_Object *obj, Elm_Win_Indicator_Mode mode)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8248,7 +8248,7 @@ elm_win_indicator_mode_set(Evas_Object *obj, Elm_Win_Indicator_Mode mode)
      (obj, EFL_UI_WIN_EVENT_INDICATOR_PROP_CHANGED, NULL);
 }
 
-EAPI Elm_Win_Indicator_Mode
+ELM_API Elm_Win_Indicator_Mode
 elm_win_indicator_mode_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8263,7 +8263,7 @@ elm_win_indicator_mode_get(const Evas_Object *obj)
    return sd->legacy.indmode;
 }
 
-EAPI void
+ELM_API void
 elm_win_indicator_opacity_set(Evas_Object *obj, Elm_Win_Indicator_Opacity_Mode mode)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8297,7 +8297,7 @@ elm_win_indicator_opacity_set(Evas_Object *obj, Elm_Win_Indicator_Opacity_Mode m
      (obj, EFL_UI_WIN_EVENT_INDICATOR_PROP_CHANGED, NULL);
 }
 
-EAPI Elm_Win_Indicator_Opacity_Mode
+ELM_API Elm_Win_Indicator_Opacity_Mode
 elm_win_indicator_opacity_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8312,7 +8312,7 @@ elm_win_indicator_opacity_get(const Evas_Object *obj)
    return sd->legacy.ind_o_mode;
 }
 
-EAPI void
+ELM_API void
 elm_win_keyboard_win_set(Evas_Object *obj, Eina_Bool is_keyboard)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8331,7 +8331,7 @@ elm_win_keyboard_win_set(Evas_Object *obj, Eina_Bool is_keyboard)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_keyboard_win_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8350,7 +8350,7 @@ elm_win_keyboard_win_get(const Evas_Object *obj)
    return EINA_FALSE;
 }
 
-EAPI void
+ELM_API void
 elm_win_conformant_set(Evas_Object *obj, Eina_Bool conformant)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8369,7 +8369,7 @@ elm_win_conformant_set(Evas_Object *obj, Eina_Bool conformant)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_conformant_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8389,7 +8389,7 @@ elm_win_conformant_get(const Evas_Object *obj)
    return EINA_FALSE;
 }
 
-EAPI void
+ELM_API void
 elm_win_wm_rotation_manual_rotation_done_set(Evas_Object *obj, Eina_Bool set)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8399,7 +8399,7 @@ elm_win_wm_rotation_manual_rotation_done_set(Evas_Object *obj, Eina_Bool set)
    ecore_evas_wm_rotation_manual_rotation_done_set(sd->ee, set);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_wm_rotation_manual_rotation_done_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8409,7 +8409,7 @@ elm_win_wm_rotation_manual_rotation_done_get(const Evas_Object *obj)
    return ecore_evas_wm_rotation_manual_rotation_done_get(sd->ee);
 }
 
-EAPI void
+ELM_API void
 elm_win_wm_rotation_manual_rotation_done(Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8423,7 +8423,7 @@ elm_win_wm_rotation_manual_rotation_done(Evas_Object *obj)
  * This API does not resize the internal window (ex: X window).
  * But this resizes evas_output, elm window, and its contents.
  */
-EAPI void
+ELM_API void
 elm_win_rotation_with_resize_set(Evas_Object *obj, int rotation)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8432,7 +8432,7 @@ elm_win_rotation_with_resize_set(Evas_Object *obj, int rotation)
    _win_rotate(obj, sd, rotation, EINA_TRUE);
 }
 
-EAPI int
+ELM_API int
 elm_win_wm_rotation_preferred_rotation_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8441,7 +8441,7 @@ elm_win_wm_rotation_preferred_rotation_get(const Evas_Object *obj)
    return sd->wm_rot.preferred_rot;
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_wm_rotation_supported_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8450,7 +8450,7 @@ elm_win_wm_rotation_supported_get(const Evas_Object *obj)
    return sd->wm_rot.wm_supported;
 }
 
-EAPI void
+ELM_API void
 elm_win_wm_rotation_preferred_rotation_set(Evas_Object *obj, int rotation)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8472,7 +8472,7 @@ elm_win_wm_rotation_preferred_rotation_set(Evas_Object *obj, int rotation)
    ecore_evas_wm_rotation_preferred_rotation_set(sd->ee, rot);
 }
 
-EAPI void
+ELM_API void
 elm_win_screen_size_get(const Evas_Object *obj, int *x, int *y, int *w, int *h)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8481,7 +8481,7 @@ elm_win_screen_size_get(const Evas_Object *obj, int *x, int *y, int *w, int *h)
    ecore_evas_screen_geometry_get(sd->ee, x, y, w, h);
 }
 
-EAPI void
+ELM_API void
 elm_win_screen_position_get(const Evas_Object *obj, int *x, int *y)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8491,7 +8491,7 @@ elm_win_screen_position_get(const Evas_Object *obj, int *x, int *y)
    if (y) *y = sd->screen.y;
 }
 
-EAPI void
+ELM_API void
 elm_win_screen_dpi_get(const Evas_Object *obj, int *xdpi, int *ydpi)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8500,7 +8500,7 @@ elm_win_screen_dpi_get(const Evas_Object *obj, int *xdpi, int *ydpi)
    ecore_evas_screen_dpi_get(sd->ee, xdpi, ydpi);
 }
 
-EAPI void
+ELM_API void
 elm_win_icon_name_set(Evas_Object *obj, const char *icon_name)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8513,7 +8513,7 @@ elm_win_icon_name_set(Evas_Object *obj, const char *icon_name)
 #endif
 }
 
-EAPI const char*
+ELM_API const char*
 elm_win_icon_name_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8522,7 +8522,7 @@ elm_win_icon_name_get(const Evas_Object *obj)
    return sd->icon_name;
 }
 
-EAPI void
+ELM_API void
 elm_win_withdrawn_set(Evas_Object *obj, Eina_Bool withdrawn)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8535,7 +8535,7 @@ elm_win_withdrawn_set(Evas_Object *obj, Eina_Bool withdrawn)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_withdrawn_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8544,7 +8544,7 @@ elm_win_withdrawn_get(const Evas_Object *obj)
    return sd->withdrawn;
 }
 
-EAPI void
+ELM_API void
 elm_win_urgent_set(Evas_Object *obj, Eina_Bool urgent)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8559,7 +8559,7 @@ elm_win_urgent_set(Evas_Object *obj, Eina_Bool urgent)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_urgent_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8568,7 +8568,7 @@ elm_win_urgent_get(const Evas_Object *obj)
    return sd->urgent;
 }
 
-EAPI void
+ELM_API void
 elm_win_demand_attention_set(Evas_Object *obj, Eina_Bool demand_attention)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8581,7 +8581,7 @@ elm_win_demand_attention_set(Evas_Object *obj, Eina_Bool demand_attention)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_demand_attention_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8590,7 +8590,7 @@ elm_win_demand_attention_get(const Evas_Object *obj)
    return sd->demand_attention;
 }
 
-EAPI void
+ELM_API void
 elm_win_modal_set(Evas_Object *obj, Eina_Bool modal)
 {
    Efl_Ui_Win_Modal_Mode modality;
@@ -8599,7 +8599,7 @@ elm_win_modal_set(Evas_Object *obj, Eina_Bool modal)
    efl_ui_win_modal_set(obj, modality);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_modal_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Modal_Mode modality;
@@ -8608,7 +8608,7 @@ elm_win_modal_get(const Evas_Object *obj)
    return (modality != EFL_UI_WIN_MODAL_MODE_NONE);
 }
 
-EAPI void
+ELM_API void
 elm_win_shaped_set(Evas_Object *obj, Eina_Bool shaped)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8623,7 +8623,7 @@ elm_win_shaped_set(Evas_Object *obj, Eina_Bool shaped)
 #endif
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_shaped_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8632,25 +8632,25 @@ elm_win_shaped_get(const Evas_Object *obj)
    return ecore_evas_shaped_get(sd->ee);
 }
 
-EAPI void
+ELM_API void
 elm_win_title_set(Evas_Object *obj, const char *title)
 {
    efl_text_set(obj, title);
 }
 
-EAPI const char*
+ELM_API const char*
 elm_win_title_get(const Evas_Object *obj)
 {
    return efl_text_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_size_base_set(Evas_Object *obj, int w, int h)
 {
    efl_ui_win_hint_base_set(obj, EINA_SIZE2D(w, h));
 }
 
-EAPI void
+ELM_API void
 elm_win_size_base_get(const Evas_Object *obj, int *w, int *h)
 {
    Eina_Size2D sz;
@@ -8659,13 +8659,13 @@ elm_win_size_base_get(const Evas_Object *obj, int *w, int *h)
    if (h) *h = sz.h;
 }
 
-EAPI void
+ELM_API void
 elm_win_size_step_set(Evas_Object *obj, int w, int h)
 {
    efl_ui_win_hint_step_set(obj, EINA_SIZE2D(w, h));
 }
 
-EAPI void
+ELM_API void
 elm_win_size_step_get(const Evas_Object *obj, int *w, int *h)
 {
    Eina_Size2D sz;
@@ -8674,7 +8674,7 @@ elm_win_size_step_get(const Evas_Object *obj, int *w, int *h)
    if (h) *h = sz.h;
 }
 
-EAPI void
+ELM_API void
 elm_win_illume_command_send(Evas_Object *obj, Elm_Illume_Command command, void *params EINA_UNUSED)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8713,7 +8713,7 @@ elm_win_illume_command_send(Evas_Object *obj, Elm_Illume_Command command, void *
 #endif
 }
 
-EAPI void
+ELM_API void
 elm_win_profile_set(Evas_Object *obj, const char *profile)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8738,7 +8738,7 @@ elm_win_profile_set(Evas_Object *obj, const char *profile)
      }
 }
 
-EAPI const char*
+ELM_API const char*
 elm_win_profile_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8747,7 +8747,7 @@ elm_win_profile_get(const Evas_Object *obj)
    return sd->profile.name;
 }
 
-EAPI void
+ELM_API void
 elm_win_layer_set(Evas_Object *obj, int layer)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8759,7 +8759,7 @@ elm_win_layer_set(Evas_Object *obj, int layer)
 #endif
 }
 
-EAPI int
+ELM_API int
 elm_win_layer_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8768,7 +8768,7 @@ elm_win_layer_get(const Evas_Object *obj)
    return ecore_evas_layer_get(sd->ee);
 }
 
-EAPI Evas_Object*
+ELM_API Evas_Object*
 elm_win_inlined_image_object_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8827,7 +8827,7 @@ _elm_win_window_id_get(Efl_Ui_Win_Data *sd)
    return 0;
 }
 
-EAPI Ecore_Window
+ELM_API Ecore_Window
 elm_win_window_id_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd;
@@ -8845,7 +8845,7 @@ elm_win_window_id_get(const Evas_Object *obj)
    return _elm_win_window_id_get(sd);
 }
 
-EAPI Evas_Object *
+ELM_API Evas_Object *
 elm_win_main_menu_get(Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8879,7 +8879,7 @@ end:
    return sd->main_menu;
 }
 
-EAPI void
+ELM_API void
 elm_win_aspect_set(Eo *obj, double aspect)
 {
    Eina_Size2D sz = { 0, 0 };
@@ -8890,7 +8890,7 @@ elm_win_aspect_set(Eo *obj, double aspect)
    efl_gfx_hint_aspect_set(obj, EFL_GFX_HINT_ASPECT_NONE, sz);
 }
 
-EAPI double
+ELM_API double
 elm_win_aspect_get(const Eo *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -8988,7 +8988,7 @@ _elm_win_legacy_init(Efl_Ui_Win_Data *sd)
      }
 }
 
-EAPI void
+ELM_API void
 elm_win_resize_object_add(Eo *obj, Evas_Object *subobj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -9015,7 +9015,7 @@ elm_win_resize_object_add(Eo *obj, Evas_Object *subobj)
      ERR("could not add sub object %p to window %p", subobj, obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_resize_object_del(Eo *obj, Evas_Object *subobj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -9036,7 +9036,7 @@ elm_win_resize_object_del(Eo *obj, Evas_Object *subobj)
      ERR("could not remove sub object %p from window %p", subobj, obj);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_keygrab_set(Elm_Win *obj, const char *key,
                     Evas_Modifier_Mask modifiers EINA_UNUSED,
                     Evas_Modifier_Mask not_modifiers EINA_UNUSED,
@@ -9079,7 +9079,7 @@ elm_win_keygrab_set(Elm_Win *obj, const char *key,
    return ret;
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_keygrab_unset(Elm_Win *obj, const char *key,
                       Evas_Modifier_Mask modifiers EINA_UNUSED,
                       Evas_Modifier_Mask not_modifiers EINA_UNUSED)
@@ -9102,20 +9102,20 @@ elm_win_keygrab_unset(Elm_Win *obj, const char *key,
    return ret;
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_socket_listen(Efl_Ui_Win *obj, const char *svcname, int svcnum, Eina_Bool svcsys)
 {
    return efl_ui_win_socket_listen(obj, svcname, svcnum, svcsys);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_focus_get(const Efl_Ui_Win *obj)
 {
    EINA_SAFETY_ON_FALSE_RETURN_VAL(efl_isa(obj, MY_CLASS), EINA_FALSE);
    return efl_ui_focus_object_focus_get(obj);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_available_profiles_get(const Elm_Win *obj, char ***profiles, unsigned int *count)
 {
    const Eina_Array *ar;
@@ -9134,7 +9134,7 @@ elm_win_available_profiles_get(const Elm_Win *obj, char ***profiles, unsigned in
    return EINA_TRUE;
 }
 
-EAPI void
+ELM_API void
 elm_win_available_profiles_set(Elm_Win *obj, const char **profiles, unsigned int count)
 {
    if (!efl_isa(obj, MY_CLASS)) return;
@@ -9157,45 +9157,45 @@ elm_win_available_profiles_set(Elm_Win *obj, const char **profiles, unsigned int
 
 // deprecated
 
-EAPI void
+ELM_API void
 elm_win_fake_canvas_set(Evas_Object *obj EINA_UNUSED, Ecore_Evas *oee EINA_UNUSED)
 {
    ERR("Calling deprecrated function '%s'", __func__);
 }
 
-EAPI void
+ELM_API void
 elm_win_name_set(Evas_Object *obj, const char *name)
 {
    ERR("Calling deprecrated function '%s'", __func__);
    efl_ui_win_name_set(obj, name);
 }
 
-EAPI void
+ELM_API void
 elm_win_type_set(Evas_Object *obj, Elm_Win_Type type)
 {
    ERR("Calling deprecrated function '%s'", __func__);
    efl_ui_win_type_set(obj, _elm_win_type_to_efl_ui_win_type(type));
 }
 
-EAPI void
+ELM_API void
 elm_win_teamwork_uri_preload(Efl_Ui_Win *obj EINA_UNUSED, const char *uri EINA_UNUSED)
 {
    ERR("Calling deprecrated function '%s'", __func__);
 }
 
-EAPI void
+ELM_API void
 elm_win_teamwork_uri_show(Efl_Ui_Win *obj EINA_UNUSED, const char *uri EINA_UNUSED)
 {
    ERR("Calling deprecrated function '%s'", __func__);
 }
 
-EAPI void
+ELM_API void
 elm_win_teamwork_uri_hide(Efl_Ui_Win *obj EINA_UNUSED)
 {
    ERR("Calling deprecrated function '%s'", __func__);
 }
 
-EAPI void
+ELM_API void
 elm_win_teamwork_uri_open(Efl_Ui_Win *obj EINA_UNUSED, const char *uri EINA_UNUSED)
 {
    ERR("Calling deprecrated function '%s'", __func__);
@@ -9540,7 +9540,7 @@ static const Efl_Class_Description _efl_ui_win_legacy_class_desc = {
 EFL_DEFINE_CLASS(efl_ui_win_legacy_class_get, &_efl_ui_win_legacy_class_desc, EFL_UI_WIN_CLASS, EFL_UI_LEGACY_INTERFACE, NULL);
 
 
-EAPI Evas_Object *
+ELM_API Evas_Object *
 elm_win_add(Evas_Object *parent, const char *name, Elm_Win_Type type)
 {
    const Efl_Class *klass = EFL_UI_WIN_LEGACY_CLASS;
@@ -9563,7 +9563,7 @@ elm_win_add(Evas_Object *parent, const char *name, Elm_Win_Type type)
 }
 
 
-EAPI Evas_Object *
+ELM_API Evas_Object *
 elm_win_fake_add(Ecore_Evas *ee)
 {
    return elm_legacy_add(EFL_UI_WIN_LEGACY_CLASS, NULL,
@@ -9572,7 +9572,7 @@ elm_win_fake_add(Ecore_Evas *ee)
                         efl_ui_win_type_set(efl_added, EFL_UI_WIN_TYPE_FAKE));
 }
 
-EAPI Evas_Object *
+ELM_API Evas_Object *
 elm_win_util_standard_add(const char *name, const char *title)
 {
    Evas_Object *win;
@@ -9587,7 +9587,7 @@ elm_win_util_standard_add(const char *name, const char *title)
    return win;
 }
 
-EAPI Evas_Object *
+ELM_API Evas_Object *
 elm_win_util_dialog_add(Evas_Object *parent, const char *name, const char *title)
 {
    Evas_Object *win;
@@ -9603,121 +9603,121 @@ elm_win_util_dialog_add(Evas_Object *parent, const char *name, const char *title
 }
 
 
-EAPI void
+ELM_API void
 elm_win_keyboard_mode_set(Evas_Object *obj, Elm_Win_Keyboard_Mode mode)
 {
    efl_ui_win_keyboard_mode_set(obj, mode);
 }
 
-EAPI Elm_Win_Keyboard_Mode
+ELM_API Elm_Win_Keyboard_Mode
 elm_win_keyboard_mode_get(const Evas_Object *obj)
 {
    return efl_ui_win_keyboard_mode_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_screen_constrain_set(Evas_Object *obj, Eina_Bool constrain)
 {
    efl_ui_win_screen_constrain_set(obj, constrain);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_screen_constrain_get(const Evas_Object *obj)
 {
    return efl_ui_win_screen_constrain_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_prop_focus_skip_set(Evas_Object *obj, Eina_Bool skip)
 {
    efl_ui_win_prop_focus_skip_set(obj, skip);
 }
 
-EAPI void
+ELM_API void
 elm_win_autohide_set(Evas_Object *obj, Eina_Bool autohide)
 {
    efl_ui_win_autohide_set(obj, autohide);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_autohide_get(const Evas_Object *obj)
 {
    return efl_ui_win_autohide_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_exit_on_close_set(Evas_Object *obj, const Eina_Value *exit_code)
 {
    efl_ui_win_exit_on_close_set(obj, exit_code);
 }
 
-EAPI const Eina_Value *
+ELM_API const Eina_Value *
 elm_win_exit_on_close_get(const Evas_Object *obj)
 {
    return efl_ui_win_exit_on_close_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_icon_object_set(Evas_Object *obj, Evas_Object *icon)
 {
    efl_ui_win_icon_object_set(obj, icon);
 }
 
-EAPI const Evas_Object *
+ELM_API const Evas_Object *
 elm_win_icon_object_get(const Evas_Object *obj)
 {
    return efl_ui_win_icon_object_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_iconified_set(Evas_Object *obj, Eina_Bool iconified)
 {
    efl_ui_win_minimized_set(obj, iconified);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_iconified_get(const Evas_Object *obj)
 {
    return efl_ui_win_minimized_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_maximized_set(Evas_Object *obj, Eina_Bool maximized)
 {
    efl_ui_win_maximized_set(obj, maximized);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_maximized_get(const Evas_Object *obj)
 {
    return efl_ui_win_maximized_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_fullscreen_set(Evas_Object *obj, Eina_Bool fullscreen)
 {
    efl_ui_win_fullscreen_set(obj, fullscreen);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_fullscreen_get(const Evas_Object *obj)
 {
    return efl_ui_win_fullscreen_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_sticky_set(Evas_Object *obj, Eina_Bool sticky)
 {
    efl_ui_win_sticky_set(obj, sticky);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_sticky_get(const Evas_Object *obj)
 {
    return efl_ui_win_sticky_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_noblank_set(Evas_Object *obj, Eina_Bool noblank)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -9728,7 +9728,7 @@ elm_win_noblank_set(Evas_Object *obj, Eina_Bool noblank)
    _win_noblank_eval();
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_noblank_get(const Evas_Object *obj)
 {
    Efl_Ui_Win_Data *sd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -9736,37 +9736,37 @@ elm_win_noblank_get(const Evas_Object *obj)
    return sd->noblank;
 }
 
-EAPI void
+ELM_API void
 elm_win_borderless_set(Evas_Object *obj, Eina_Bool borderless)
 {
    efl_ui_win_borderless_set(obj, borderless);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_borderless_get(const Evas_Object *obj)
 {
    return efl_ui_win_borderless_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_role_set(Evas_Object *obj, const char *role)
 {
    efl_ui_win_role_set(obj, role);
 }
 
-EAPI const char *
+ELM_API const char *
 elm_win_role_get(const Evas_Object *obj)
 {
    return efl_ui_win_role_get(obj);
 }
 
-EAPI const char *
+ELM_API const char *
 elm_win_name_get(const Evas_Object *obj)
 {
    return efl_ui_win_name_get(obj);
 }
 
-EAPI Elm_Win_Type
+ELM_API Elm_Win_Type
 elm_win_type_get(const Evas_Object *obj)
 {
    if (!(efl_isa(obj, EFL_UI_WIN_CLASS) ||
@@ -9776,79 +9776,79 @@ elm_win_type_get(const Evas_Object *obj)
    return _efl_ui_win_type_to_elm_win_type(efl_ui_win_type_get(obj));
 }
 
-EAPI const char *
+ELM_API const char *
 elm_win_accel_preference_get(const Evas_Object *obj)
 {
    return efl_ui_win_accel_preference_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_alpha_set(Evas_Object *obj, Eina_Bool alpha)
 {
    efl_ui_win_alpha_set(obj, alpha);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_alpha_get(const Evas_Object *obj)
 {
    return efl_ui_win_alpha_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_activate(Evas_Object *obj)
 {
    efl_ui_win_activate(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_center(Evas_Object *obj, Eina_Bool h, Eina_Bool v)
 {
    efl_ui_win_center(obj, h, v);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_move_resize_start(Evas_Object *obj, Elm_Win_Move_Resize_Mode mode)
 {
    return efl_ui_win_move_resize_start(obj, mode);
 }
 
-EAPI void
+ELM_API void
 elm_win_focus_highlight_animate_set(Efl_Ui_Win *obj, Eina_Bool animate)
 {
    efl_ui_win_focus_highlight_animate_set(obj, animate);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_focus_highlight_animate_get(const Efl_Ui_Win *obj)
 {
    return efl_ui_win_focus_highlight_animate_get(obj);
 }
 
-EAPI void
+ELM_API void
 elm_win_focus_highlight_enabled_set(Efl_Ui_Win *obj, Eina_Bool enabled)
 {
    efl_ui_win_focus_highlight_enabled_set(obj, enabled);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_focus_highlight_enabled_get(const Efl_Ui_Win *obj)
 {
    return efl_ui_win_focus_highlight_enabled_get(obj);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 elm_win_focus_highlight_style_set(Efl_Ui_Win *obj, const char *style)
 {
    return efl_ui_win_focus_highlight_style_set(obj, style);
 }
 
-EAPI const char *
+ELM_API const char *
 elm_win_focus_highlight_style_get(const Efl_Ui_Win *obj)
 {
    return efl_ui_win_focus_highlight_style_get(obj);
 }
 
-EAPI Efl_Ui_Shared_Win_Data*
+ELM_API Efl_Ui_Shared_Win_Data*
 efl_ui_win_shared_data_get(Efl_Ui_Win *obj)
 {
    Efl_Ui_Win_Data *pd = efl_data_scope_safe_get(obj, MY_CLASS);
@@ -9857,13 +9857,13 @@ efl_ui_win_shared_data_get(Efl_Ui_Win *obj)
    return &pd->spd;
 }
 
-EAPI void
+ELM_API void
 efl_ui_win_autodel_set(Efl_Ui_Win *obj, Eina_Bool autodel)
 {
    elm_win_autodel_set(obj, autodel);
 }
 
-EAPI Eina_Bool
+ELM_API Eina_Bool
 efl_ui_win_autodel_get(const Efl_Ui_Win *obj)
 {
    return elm_win_autodel_get(obj);

@@ -47,7 +47,7 @@ EWAPI const Efl_Class *elm_spinner_class_get(void);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_wrap_set(Eo *obj, Eina_Bool wrap);
+ELM_API void elm_obj_spinner_wrap_set(Eo *obj, Eina_Bool wrap);
 
 /**
  * @brief Control whether the spinner should wrap when it reaches its minimum
@@ -76,7 +76,7 @@ EOAPI void elm_obj_spinner_wrap_set(Eo *obj, Eina_Bool wrap);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI Eina_Bool elm_obj_spinner_wrap_get(const Eo *obj);
+ELM_API Eina_Bool elm_obj_spinner_wrap_get(const Eo *obj);
 
 /**
  * @brief Control the interval on time updates for an user mouse button hold on
@@ -100,7 +100,7 @@ EOAPI Eina_Bool elm_obj_spinner_wrap_get(const Eo *obj);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_interval_set(Eo *obj, double interval);
+ELM_API void elm_obj_spinner_interval_set(Eo *obj, double interval);
 
 /**
  * @brief Control the interval on time updates for an user mouse button hold on
@@ -125,7 +125,7 @@ EOAPI void elm_obj_spinner_interval_set(Eo *obj, double interval);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI double elm_obj_spinner_interval_get(const Eo *obj);
+ELM_API double elm_obj_spinner_interval_get(const Eo *obj);
 
 /**
  * @brief Control the round value for rounding
@@ -137,7 +137,7 @@ EOAPI double elm_obj_spinner_interval_get(const Eo *obj);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_round_set(Eo *obj, int rnd);
+ELM_API void elm_obj_spinner_round_set(Eo *obj, int rnd);
 
 /**
  * @brief Control the round value for rounding
@@ -150,7 +150,7 @@ EOAPI void elm_obj_spinner_round_set(Eo *obj, int rnd);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI int elm_obj_spinner_round_get(const Eo *obj);
+ELM_API int elm_obj_spinner_round_get(const Eo *obj);
 
 /**
  * @brief Control whether the spinner can be directly edited by the user or
@@ -169,7 +169,7 @@ EOAPI int elm_obj_spinner_round_get(const Eo *obj);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_editable_set(Eo *obj, Eina_Bool editable);
+ELM_API void elm_obj_spinner_editable_set(Eo *obj, Eina_Bool editable);
 
 /**
  * @brief Control whether the spinner can be directly edited by the user or
@@ -189,7 +189,7 @@ EOAPI void elm_obj_spinner_editable_set(Eo *obj, Eina_Bool editable);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI Eina_Bool elm_obj_spinner_editable_get(const Eo *obj);
+ELM_API Eina_Bool elm_obj_spinner_editable_get(const Eo *obj);
 
 /**
  * @brief Control the base for rounding
@@ -213,7 +213,7 @@ EOAPI Eina_Bool elm_obj_spinner_editable_get(const Eo *obj);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_base_set(Eo *obj, double base);
+ELM_API void elm_obj_spinner_base_set(Eo *obj, double base);
 
 /**
  * @brief Control the base for rounding
@@ -238,7 +238,7 @@ EOAPI void elm_obj_spinner_base_set(Eo *obj, double base);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI double elm_obj_spinner_base_get(const Eo *obj);
+ELM_API double elm_obj_spinner_base_get(const Eo *obj);
 
 /**
  * @brief Control the format string of the displayed label.
@@ -258,7 +258,7 @@ EOAPI double elm_obj_spinner_base_get(const Eo *obj);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_label_format_set(Eo *obj, const char *fmt);
+ELM_API void elm_obj_spinner_label_format_set(Eo *obj, const char *fmt);
 
 /**
  * @brief Control the format string of the displayed label.
@@ -279,7 +279,7 @@ EOAPI void elm_obj_spinner_label_format_set(Eo *obj, const char *fmt);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI const char *elm_obj_spinner_label_format_get(const Eo *obj);
+ELM_API const char *elm_obj_spinner_label_format_get(const Eo *obj);
 
 /**
  * @brief Control special string to display in the place of the numerical
@@ -297,7 +297,7 @@ EOAPI const char *elm_obj_spinner_label_format_get(const Eo *obj);
  *
  * @ingroup Elm_Spinner
  */
-EOAPI void elm_obj_spinner_special_value_add(Eo *obj, double value, const char *label);
+ELM_API void elm_obj_spinner_special_value_add(Eo *obj, double value, const char *label);
 
 EWAPI extern const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
 

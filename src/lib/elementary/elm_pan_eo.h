@@ -30,7 +30,7 @@ EWAPI const Efl_Class *elm_pan_class_get(void);
  *
  * @ingroup Elm_Pan
  */
-EOAPI void elm_obj_pan_pos_set(Eo *obj, int x, int y);
+ELM_API void elm_obj_pan_pos_set(Eo *obj, int x, int y);
 
 /**
  * @brief Position
@@ -41,7 +41,7 @@ EOAPI void elm_obj_pan_pos_set(Eo *obj, int x, int y);
  *
  * @ingroup Elm_Pan
  */
-EOAPI void elm_obj_pan_pos_get(const Eo *obj, int *x, int *y);
+ELM_API void elm_obj_pan_pos_get(const Eo *obj, int *x, int *y);
 
 /**
  * @brief Content size
@@ -52,7 +52,7 @@ EOAPI void elm_obj_pan_pos_get(const Eo *obj, int *x, int *y);
  *
  * @ingroup Elm_Pan
  */
-EOAPI void elm_obj_pan_content_size_get(const Eo *obj, int *w, int *h);
+ELM_API void elm_obj_pan_content_size_get(const Eo *obj, int *w, int *h);
 
 /**
  * @brief Minimal position
@@ -63,7 +63,7 @@ EOAPI void elm_obj_pan_content_size_get(const Eo *obj, int *w, int *h);
  *
  * @ingroup Elm_Pan
  */
-EOAPI void elm_obj_pan_pos_min_get(const Eo *obj, int *x, int *y);
+ELM_API void elm_obj_pan_pos_min_get(const Eo *obj, int *x, int *y);
 
 /**
  * @brief Maximal position
@@ -74,7 +74,7 @@ EOAPI void elm_obj_pan_pos_min_get(const Eo *obj, int *x, int *y);
  *
  * @ingroup Elm_Pan
  */
-EOAPI void elm_obj_pan_pos_max_get(const Eo *obj, int *x, int *y);
+ELM_API void elm_obj_pan_pos_max_get(const Eo *obj, int *x, int *y);
 
 EWAPI extern const Efl_Event_Description _ELM_PAN_EVENT_CHANGED;
 

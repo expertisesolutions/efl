@@ -30,7 +30,7 @@ EWAPI const Efl_Class *elm_scroller_class_get(void);
  *
  * @ingroup Elm_Scroller
  */
-EOAPI void elm_obj_scroller_custom_widget_base_theme_set(Eo *obj, const char *klass, const char *group);
+ELM_API void elm_obj_scroller_custom_widget_base_theme_set(Eo *obj, const char *klass, const char *group);
 
 /**
  * @brief Set the maximum of the movable page at a flicking.
@@ -45,7 +45,7 @@ EOAPI void elm_obj_scroller_custom_widget_base_theme_set(Eo *obj, const char *kl
  *
  * @ingroup Elm_Scroller
  */
-EOAPI void elm_obj_scroller_page_scroll_limit_set(const Eo *obj, int page_limit_h, int page_limit_v);
+ELM_API void elm_obj_scroller_page_scroll_limit_set(const Eo *obj, int page_limit_h, int page_limit_v);
 
 /**
  * @brief Get the maximum of the movable page at a flicking.
@@ -58,7 +58,7 @@ EOAPI void elm_obj_scroller_page_scroll_limit_set(const Eo *obj, int page_limit_
  *
  * @ingroup Elm_Scroller
  */
-EOAPI void elm_obj_scroller_page_scroll_limit_get(const Eo *obj, int *page_limit_h, int *page_limit_v);
+ELM_API void elm_obj_scroller_page_scroll_limit_get(const Eo *obj, int *page_limit_h, int *page_limit_v);
 
 EWAPI extern const Efl_Event_Description _ELM_SCROLLER_EVENT_SCROLL_PAGE_CHANGED;
 

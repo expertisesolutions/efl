@@ -13,7 +13,7 @@ __eolian_elm_atspi_bridge_connected_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-EOAPI EFL_FUNC_BODY_CONST(elm_obj_atspi_bridge_connected_get, Eina_Bool, 0);
+ELM_API EFL_FUNC_BODY_CONST(elm_obj_atspi_bridge_connected_get, Eina_Bool, 0);
 
 Efl_Object *_elm_atspi_bridge_efl_object_constructor(Eo *obj, Elm_Atspi_Bridge_Data *pd);
 
