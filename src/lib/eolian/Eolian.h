@@ -2949,7 +2949,7 @@ EOLIAN_API Eolian_Value eolian_expression_eval(const Eolian_Expression *expr, Eo
  *
  * @ingroup Eolian
  */
-EAPI Eina_Bool eolian_expression_eval_fill(const Eolian_Expression *expr, Eolian_Expression_Mask m, Eolian_Value *val);
+EOLIAN_API Eina_Bool eolian_expression_eval_fill(const Eolian_Expression *expr, Eolian_Expression_Mask m, Eolian_Value *val);
 
 /*
  * @brief Convert the result of expression evaluation to a literal as in how
@@ -3087,7 +3087,7 @@ EOLIAN_API Eolian_Value eolian_expression_value_get(const Eolian_Expression *exp
  *
  * @ingroup Eolian
  */
-EAPI Eina_Bool eolian_expression_value_get_fill(const Eolian_Expression *expr, Eolian_Value *val);
+EOLIAN_API Eina_Bool eolian_expression_value_get_fill(const Eolian_Expression *expr, Eolian_Value *val);
 
 /*
  * @brief Get the documentation of a constant.
@@ -3445,8 +3445,5 @@ EOLIAN_API Eina_Bool eolian_type_is_ptr(const Eolian_Type *tp);
 #ifdef __cplusplus
 } // extern "C" {
 #endif
-
-#undef EOLIAN_API
-#define EOLIAN_API
 
 #endif

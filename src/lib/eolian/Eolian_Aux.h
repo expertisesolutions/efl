@@ -148,7 +148,4 @@ EOLIAN_API const Eolian_Documentation *eolian_aux_implement_documentation_fallba
 } // extern "C" {
 #endif
 
-#undef EOLIAN_API
-#define EOLIAN_API
-
 #endif
