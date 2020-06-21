@@ -23,6 +23,7 @@ foreach eo_file : pub_eo_files
                            '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
                            '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                           '-e', 'ELDBUS_API',
                            '-gchd', '@INPUT@'])
 endforeach
 
@@ -41,6 +42,7 @@ foreach eo_file : pub_eo_types_files
     command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
                            '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                           '-e', 'ELDBUS_API',
                            '-ghd', '@INPUT@'])
 endforeach
 
