@@ -401,14 +401,14 @@ int _ecore_x_shutdown(void);
 
 #ifdef __GNUC__
 # if __GNUC__ >= 4
-#  define EAPI __attribute__ ((visibility("default")))
+#  define ECORE_X_API __attribute__ ((visibility("default")))
 # else // if __GNUC__ >= 4
 #  define EAPI
 # endif // if __GNUC__ >= 4
 #else // ifdef __GNUC__
 # define EAPI
 #endif // ifdef __GNUC__
-EAPI void ecore_x_window_root_properties_select(void);
+ECORE_X_API void ecore_x_window_root_properties_select(void);
 #undef EAPI
 #define EAPI
 
