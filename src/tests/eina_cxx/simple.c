@@ -8,6 +8,9 @@
 
 #include <stdlib.h>
 
+#define EINACXXTEST_API
+#define EINACXXTEST_API_WEAK
+
 #include "eina_simple.eo.h"
 
 #define MY_CLASS EINA_SIMPLE_CLASS
