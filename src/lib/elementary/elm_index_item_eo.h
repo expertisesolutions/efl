@@ -38,7 +38,7 @@ EWAPI const Efl_Class *elm_index_item_class_get(void);
  *
  * @ingroup Elm_Index_Item
  */
-EOAPI void elm_obj_index_item_selected_set(Eo *obj, Eina_Bool selected);
+ELM_API void elm_obj_index_item_selected_set(Eo *obj, Eina_Bool selected);
 
 /**
  * @brief Sets the priority of an item.
@@ -55,7 +55,7 @@ EOAPI void elm_obj_index_item_selected_set(Eo *obj, Eina_Bool selected);
  *
  * @ingroup Elm_Index_Item
  */
-EOAPI void elm_obj_index_item_priority_set(Eo *obj, int priority);
+ELM_API void elm_obj_index_item_priority_set(Eo *obj, int priority);
 
 /**
  * @brief Get the letter (string) set on a given index widget item.
@@ -66,6 +66,6 @@ EOAPI void elm_obj_index_item_priority_set(Eo *obj, int priority);
  *
  * @ingroup Elm_Index_Item
  */
-EOAPI const char *elm_obj_index_item_letter_get(const Eo *obj);
+ELM_API const char *elm_obj_index_item_letter_get(const Eo *obj);
 
 #endif

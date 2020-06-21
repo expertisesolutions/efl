@@ -9,35 +9,35 @@ EWAPI const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER =
 
 void _elm_glview_version_constructor(Eo *obj, Elm_Glview_Data *pd, Evas_GL_Context_Version version);
 
-EOAPI EFL_VOID_FUNC_BODYV(elm_obj_glview_version_constructor, EFL_FUNC_CALL(version), Evas_GL_Context_Version version);
+ELM_API EFL_VOID_FUNC_BODYV(elm_obj_glview_version_constructor, EFL_FUNC_CALL(version), Evas_GL_Context_Version version);
 
 Eina_Bool _elm_glview_resize_policy_set(Eo *obj, Elm_Glview_Data *pd, Elm_GLView_Resize_Policy policy);
 
-EOAPI EFL_FUNC_BODYV(elm_obj_glview_resize_policy_set, Eina_Bool, 0, EFL_FUNC_CALL(policy), Elm_GLView_Resize_Policy policy);
+ELM_API EFL_FUNC_BODYV(elm_obj_glview_resize_policy_set, Eina_Bool, 0, EFL_FUNC_CALL(policy), Elm_GLView_Resize_Policy policy);
 
 Eina_Bool _elm_glview_render_policy_set(Eo *obj, Elm_Glview_Data *pd, Elm_GLView_Render_Policy policy);
 
-EOAPI EFL_FUNC_BODYV(elm_obj_glview_render_policy_set, Eina_Bool, 0, EFL_FUNC_CALL(policy), Elm_GLView_Render_Policy policy);
+ELM_API EFL_FUNC_BODYV(elm_obj_glview_render_policy_set, Eina_Bool, 0, EFL_FUNC_CALL(policy), Elm_GLView_Render_Policy policy);
 
 Eina_Bool _elm_glview_mode_set(Eo *obj, Elm_Glview_Data *pd, Elm_GLView_Mode mode);
 
-EOAPI EFL_FUNC_BODYV(elm_obj_glview_mode_set, Eina_Bool, 0, EFL_FUNC_CALL(mode), Elm_GLView_Mode mode);
+ELM_API EFL_FUNC_BODYV(elm_obj_glview_mode_set, Eina_Bool, 0, EFL_FUNC_CALL(mode), Elm_GLView_Mode mode);
 
 Evas_GL_API *_elm_glview_gl_api_get(const Eo *obj, Elm_Glview_Data *pd);
 
-EOAPI EFL_FUNC_BODY_CONST(elm_obj_glview_gl_api_get, Evas_GL_API *, NULL);
+ELM_API EFL_FUNC_BODY_CONST(elm_obj_glview_gl_api_get, Evas_GL_API *, NULL);
 
 Evas_GL *_elm_glview_evas_gl_get(const Eo *obj, Elm_Glview_Data *pd);
 
-EOAPI EFL_FUNC_BODY_CONST(elm_obj_glview_evas_gl_get, Evas_GL *, NULL);
+ELM_API EFL_FUNC_BODY_CONST(elm_obj_glview_evas_gl_get, Evas_GL *, NULL);
 
 int _elm_glview_rotation_get(const Eo *obj, Elm_Glview_Data *pd);
 
-EOAPI EFL_FUNC_BODY_CONST(elm_obj_glview_rotation_get, int, 0);
+ELM_API EFL_FUNC_BODY_CONST(elm_obj_glview_rotation_get, int, 0);
 
 void _elm_glview_draw_request(Eo *obj, Elm_Glview_Data *pd);
 
-EOAPI EFL_VOID_FUNC_BODY(elm_obj_glview_draw_request);
+ELM_API EFL_VOID_FUNC_BODY(elm_obj_glview_draw_request);
 
 Efl_Object *_elm_glview_efl_object_constructor(Eo *obj, Elm_Glview_Data *pd);
 

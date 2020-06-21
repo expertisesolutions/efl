@@ -32,7 +32,7 @@ EWAPI const Efl_Class *elm_slideshow_item_class_get(void);
  *
  * @ingroup Elm_Slideshow_Item
  */
-EOAPI void elm_obj_slideshow_item_show(Eo *obj);
+ELM_API void elm_obj_slideshow_item_show(Eo *obj);
 
 /**
  * @brief Get the real Evas object created to implement the view of a given
@@ -52,6 +52,6 @@ EOAPI void elm_obj_slideshow_item_show(Eo *obj);
  *
  * @ingroup Elm_Slideshow_Item
  */
-EOAPI Efl_Canvas_Object *elm_obj_slideshow_item_object_get(const Eo *obj);
+ELM_API Efl_Canvas_Object *elm_obj_slideshow_item_object_get(const Eo *obj);
 
 #endif

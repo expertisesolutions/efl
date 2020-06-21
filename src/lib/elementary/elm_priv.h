@@ -40,19 +40,19 @@
 # ifdef _WIN32
 #  ifdef EFL_BUILD
 #   ifdef DLL_EXPORT
-#    define EAPI __declspec(dllexport)
+#    define ELM_API __declspec(dllexport)
 #   else
 #    error "no DLL_EXPORT"
 #    define EAPI
 #   endif
 #  else
-#   define EAPI __declspec(dllimport)
+#   define ELM_API __declspec(dllimport)
 #  endif
 #  define EAPI_WEAK
 # else
 #  ifdef __GNUC__
 #   if __GNUC__ >= 4
-#    define EAPI __attribute__ ((visibility("default")))
+#    define ELM_API __attribute__ ((visibility("default")))
 #    define EAPI_WEAK __attribute__ ((weak))
 #   else
 #    define EAPI
@@ -64,7 +64,7 @@
 #  endif
 # endif
 
-# define EWAPI EAPI EAPI_WEAK
+# define EWAPI ELM_API EAPI_WEAK
 
 # include "elm_widget.h"
 # include "elm_code_private.h"
@@ -848,8 +848,8 @@ void                 _elm_win_wl_cursor_set(Evas_Object *obj, const char *cursor
 void _efl_ui_focus_manager_redirect_events_del(Efl_Ui_Focus_Manager *manager, Eo *obj);
 void _efl_ui_focus_manager_redirect_events_add(Efl_Ui_Focus_Manager *manager, Eo *obj);
 
-EOAPI Eina_Bool efl_ui_focus_manager_calc_update_children(Eo *obj, Efl_Ui_Focus_Object *parent, Eina_List *children EFL_TRANSFER_OWNERSHIP);
-EOAPI void efl_ui_focus_manager_calc_update_order(Eo *obj, Efl_Ui_Focus_Object *parent, Eina_List *children EFL_TRANSFER_OWNERSHIP);
+ELM_API Eina_Bool efl_ui_focus_manager_calc_update_children(Eo *obj, Efl_Ui_Focus_Object *parent, Eina_List *children EFL_TRANSFER_OWNERSHIP);
+ELM_API void efl_ui_focus_manager_calc_update_order(Eo *obj, Efl_Ui_Focus_Object *parent, Eina_List *children EFL_TRANSFER_OWNERSHIP);
 
 
 void _efl_access_shutdown(void);
