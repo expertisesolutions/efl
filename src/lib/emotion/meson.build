@@ -16,6 +16,7 @@ foreach eo_file : pub_eo_file
                            '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
                            '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                           '-e', 'EMOTION_API',
                            '-gchd', '@INPUT@'])
 endforeach
 
