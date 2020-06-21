@@ -15,7 +15,7 @@ eolian_expression_eval(const Eolian_Expression *expr, Eolian_Expression_Mask m)
    return database_expr_eval(NULL, (Eolian_Expression *)expr, m, NULL, NULL);
 }
 
-EAPI Eina_Bool
+EOLIAN_API Eina_Bool
 eolian_expression_eval_fill(const Eolian_Expression *expr,
                             Eolian_Expression_Mask m, Eolian_Value *val)
 {
@@ -283,7 +283,7 @@ eolian_expression_value_get(const Eolian_Expression *expr)
    return v;
 }
 
-EAPI Eina_Bool
+EOLIAN_API Eina_Bool
 eolian_expression_value_get_fill(const Eolian_Expression *expr, Eolian_Value *val)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(expr, EINA_FALSE);
