@@ -13,31 +13,7 @@
 
 #include <Efl_Core.h>
 
-#ifdef EAPI
-# undef EAPI
-#endif
-
-#ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
-#  else
-#   define EAPI
-#  endif
-# else
-#  define EAPI __declspec(dllimport)
-# endif
-#else
-# ifdef __GNUC__
-#  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#  else
-#   define EAPI
-#  endif
-# else
-#  define EAPI
-# endif
-#endif
+#include <ecore_con_api.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,7 +27,7 @@ extern "C" {
  * @note This function already calls ecore_init() internally, so you don't need
  * to call it explicitly.
  */
-EAPI int               ecore_con_init(void);
+ECORE_CON_API int               ecore_con_init(void);
 
 /**
  * @brief Shuts down the Ecore_Con library.
@@ -60,7 +36,7 @@ EAPI int               ecore_con_init(void);
  * @note This function already calls ecore_shutdown() internally, so you don't
  * need to call it explicitly unless you called ecore_init() explicitly too.
  */
-EAPI int               ecore_con_shutdown(void);
+ECORE_CON_API int               ecore_con_shutdown(void);
 
 /**
  * @brief Initializes the Ecore_Con_Url library.
@@ -70,7 +46,7 @@ EAPI int               ecore_con_shutdown(void);
  * @note This function doesn't call ecore_con_init(). You still need to call it
  * explicitly before calling this one.
  */
-EAPI int               ecore_con_url_init(void);
+ECORE_CON_API int               ecore_con_url_init(void);
 
 /**
  * @brief Shuts down the Ecore_Con_Url library.
@@ -79,7 +55,7 @@ EAPI int               ecore_con_url_init(void);
  * @note This function doesn't call ecore_con_shutdown(). You still need to call
  * it explicitly after calling this one.
  */
-EAPI int               ecore_con_url_shutdown(void);
+ECORE_CON_API int               ecore_con_url_shutdown(void);
 
 #ifdef EFL_BETA_API_SUPPORT
 /** HTTP error: bad content encoding */
