@@ -23,14 +23,14 @@
 
 #ifdef _WIN32
 # ifdef DLL_EXPORT
-#  define EAPI __declspec(dllexport)
+#  define EMODAPI __declspec(dllexport)
 # else
 #  define EAPI
 # endif /* ! DLL_EXPORT */
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
+#   define EMODAPI __attribute__ ((visibility("default")))
 #  else
 #   define EAPI
 #  endif
@@ -564,7 +564,7 @@ static Ecore_Evas_Engine_Func _ecore_fb_engine_func =
      NULL, //fn_last_tick_get
 };
 
-EAPI Ecore_Evas *
+EMODAPI Ecore_Evas *
 ecore_evas_fb_new_internal(const char *disp_name, int rotation, int w, int h)
 {
    Evas_Engine_Info_FB *einfo;

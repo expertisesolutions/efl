@@ -20,7 +20,7 @@
 
 #ifdef __GNUC__
 # if __GNUC__ >= 4
-#  define EAPI __attribute__ ((visibility("default")))
+#  define EMODAPI __attribute__ ((visibility("default")))
 # else
 #  define EAPI
 # endif
@@ -651,7 +651,7 @@ _ecore_evas_cocoa_window_get(const Ecore_Evas *ee)
    return (Ecore_Cocoa_Window *)(ee->prop.window);
 }
 
-EAPI Ecore_Evas *
+EMODAPI Ecore_Evas *
 ecore_evas_cocoa_new_internal(Ecore_Cocoa_Window *parent EINA_UNUSED, int x, int y, int w, int h)
 {
    Ecore_Evas *ee;
