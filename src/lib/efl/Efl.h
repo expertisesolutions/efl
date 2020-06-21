@@ -7,44 +7,7 @@ extern "C" {
 
 #include <Eo.h>
 
-#ifdef EAPI
-# undef EAPI
-#endif
-#ifdef EWAPI
-# undef EWAPI
-#endif
-#ifdef EOAPI
-# undef EOAPI
-#endif
-
-#ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
-#  else
-#   define EAPI
-#  endif
-# else
-#  define EAPI __declspec(dllimport)
-# endif
-# define EAPI_WEAK
-#else
-# ifdef __GNUC__
-#  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#   define EAPI_WEAK __attribute__ ((weak))
-#  else
-#   define EAPI
-#   define EAPI_WEAK
-#  endif
-# else
-#  define EAPI
-#  define EAPI_WEAK
-# endif
-#endif
-
-#define EWAPI EAPI EAPI_WEAK
-#define EOAPI EAPI EAPI_WEAK
+#include <efl_api.h>
 
 #define EFL_VERSION_1_18 1
 #define EFL_VERSION_1_19 1
@@ -230,11 +193,11 @@ typedef Efl_Gfx_Path_Command_Type Efl_Gfx_Path_Command;
  *
  * @since 1.21
  */
-EAPI Efl_Object *efl_part(const Eo *obj, const char *name);
+EFL_API Efl_Object *efl_part(const Eo *obj, const char *name);
 
 #ifdef EFL_BETA_API_SUPPORT
 
-EAPI void efl_observable_tuple_free(Efl_Observable_Tuple *tuple);
+EFL_API void efl_observable_tuple_free(Efl_Observable_Tuple *tuple);
 
 
 
@@ -341,13 +304,13 @@ efl_config_string_get(const Efl_Config *obj, const char *name)
 #endif
 
 /* work-around bug in gcc --as-needed link optimization */
-EAPI void __efl_internal_init(void);
+EFL_API void __efl_internal_init(void);
 
 #if defined ( __cplusplus )
 }
 #endif
 
-#undef EAPI
-#define EAPI
+#undef EFL_API
+#define EFL_API
 
 #endif
