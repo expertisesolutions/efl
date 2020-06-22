@@ -2,6 +2,7 @@
 #define EINA_PIPE_H
 
 # ifdef _WIN32
+#include <io.h>
 #  define pipe_write(fd, buffer, size) send((fd), (char *)(buffer), size, 0)
 #  define pipe_read(fd, buffer, size)  recv((fd), (char *)(buffer), size, 0)
 #  define pipe_close(fd)               closesocket(fd)
