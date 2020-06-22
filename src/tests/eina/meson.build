@@ -25,6 +25,7 @@ eina_test_src = files(
 'eina_test_module.c',
 'eina_test_convert.c',
 'eina_test_rbtree.c',
+'eina_test_thread.c',
 'eina_test_file.c',
 'eina_test_benchmark.c',
 'eina_test_mempool.c',
