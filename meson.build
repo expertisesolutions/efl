@@ -764,12 +764,18 @@ foreach package : subprojects
 endforeach
 
 #build this later, as the debug services are depending on ecore
-if 'ecore' not in ignored_subprojects
+if 'ecore_con' not in ignored_subprojects
   subdir(join_paths('src', 'bin', 'efl'))
+endif
 
+if 'evas' not in ignored_subprojects
   subdir(join_paths('src', 'generic', 'evas'))
-  subdir('cmakeconfig')
-  subdir(join_paths('src', 'bindings'))
+endif
+
+subdir('cmakeconfig')
+subdir(join_paths('src', 'bindings'))
+
+if 'edje' not in ignored_subprojects
   subdir(join_paths('src', 'edje_external'))
   subdir(join_paths('data'))
 endif
