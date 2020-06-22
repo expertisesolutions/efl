@@ -123,12 +123,6 @@ _eina_thread_self_id(void)
     return GetCurrentThreadId();
 }
 
-static inline Eina_ThreadId
-_eina_thread_id(Eina_Thread t)
-{
-    return t.id;
-}
-
 static inline Eina_Bool
 _eina_thread_name_set(Eina_Thread thread, char *buf)
 {

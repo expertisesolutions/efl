@@ -111,6 +111,12 @@ typedef uintptr_t Eina_Thread;
  * Type for a generic thread.
  */
 
-typedef Eina_Thread Eina_ThreadId;
+#if defined HAVE_PTHREAD_GETTHREADID_NP
+typedef int Eina_ThreadId;
+#elif defined __linux__
+typedef pid_t Eina_ThreadId;
+#else
+typedef size_t Eina_ThreadId;
+#endif
 
 #endif

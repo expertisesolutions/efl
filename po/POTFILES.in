@@ -415,7 +415,6 @@ src/tests/eina/eina_test_quaternion.c
 src/tests/eina/eina_test_strbuf.c
 src/tests/eina/eina_test_lalloc.c
 src/tests/eina/eina_test_bezier.c
-src/tests/eina/eina_test_thread.c
 src/tests/eina/eina_test_file.c
 src/tests/eina/eina_test_tmpstr.c
 src/tests/eina/eina_test_slstr.c

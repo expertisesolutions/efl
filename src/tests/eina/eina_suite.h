@@ -41,7 +41,6 @@ void eina_test_accessor(TCase *tc);
 void eina_test_module(TCase *tc);
 void eina_test_convert(TCase *tc);
 void eina_test_rbtree(TCase *tc);
-void eina_test_thread(TCase *tc);
 void eina_test_file(TCase *tc);
 void eina_test_benchmark(TCase *tc);
 void eina_test_mempool(TCase *tc);

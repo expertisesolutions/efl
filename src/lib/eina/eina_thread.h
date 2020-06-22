@@ -86,14 +86,6 @@ EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
 EINA_API Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
 
 /**
- * @brief Returns an integral compatible identifier of a given thread.
- *
- * @return integral identifier of the thread.
- * @since 1.25
- */
-EINA_API Eina_ThreadId eina_thread_id(Eina_Thread t) EINA_WARN_UNUSED_RESULT;
-
-/**
  * @brief Checks if two thread identifiers are the same.
  * @param[in] t1 first thread identifier to compare.
  * @param[in] t2 second thread identifier to compare.
