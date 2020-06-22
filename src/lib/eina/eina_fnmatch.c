@@ -11,7 +11,7 @@ _is_escapable(char c)
    switch (c)
      {
       case '[': case '|': case '(': case ')': case '*': case '?':
-      case '!': case '^': case '$': case '.': case '+': case '\\': 
+      case '!': case '^': case '$': case '.': case '+': case '\\':
         return 1;
       default:
         return 0;
@@ -47,7 +47,7 @@ _wildcards_to_regex(const char *pattern, int flags)
                        else if ((j == 0) || (pattern[j - 1] == '/')) count += 10;
                        else count += 4;
                     }
-                  else if (pattern[j] == '*') count += 5;   // PATHNAME 
+                  else if (pattern[j] == '*') count += 5;   // PATHNAME
                   else count += 4;
                }
              else if (flags & FNM_PERIOD)
@@ -57,11 +57,11 @@ _wildcards_to_regex(const char *pattern, int flags)
                        if (pattern[j] == '*') count += 5;
                        else count += 4;
                     }
-                  // period at other places  
+                  // period at other places
                   else if (pattern[j] == '*') count += 2;
                   else count++;
                }
-             else if (pattern[j] == '*') count += 2;  // NORMAL 
+             else if (pattern[j] == '*') count += 2;  // NORMAL
              else count++;
           }
         else if (pattern[j] == '.') count += 4;
@@ -103,21 +103,21 @@ _wildcards_to_regex(const char *pattern, int flags)
                             if ( (j == 0) || (pattern[j - 1] == '/') )
                               {
                                  strcpy_s(reg_pattern + i,
-                                          sizeof(reg_pattern + i), 
+                                          sizeof(reg_pattern + i),
                                           "[^\\.][^/]*");
                                  i += 10;
                               }
                             else
                               {
-                                 strcpy_s(reg_pattern + i, 
-                                         sizeof(reg_pattern + i), 
+                                 strcpy_s(reg_pattern + i,
+                                         sizeof(reg_pattern + i),
                                          "[^/]*");
                                  i += 5;
                               }
                          }
                        else if (j == 0)
                          {
-                            strcpy_s(reg_pattern + i, 
+                            strcpy_s(reg_pattern + i,
                                      sizeof(reg_pattern + i),
                                      "[^\\.][^/]?");
                             i += 10;
@@ -137,7 +137,7 @@ _wildcards_to_regex(const char *pattern, int flags)
                             i += 4;
                          }
                     }
-                  else if (pattern[j] == '*')  // PATHNAME 
+                  else if (pattern[j] == '*')  // PATHNAME
                     {
                        strcpy_s(reg_pattern + i,
                                 sizeof(reg_pattern + i),
@@ -171,7 +171,7 @@ _wildcards_to_regex(const char *pattern, int flags)
                             i += 4;
                          }
                     }
-                  else if (pattern[j] == '*')  // period at other places 
+                  else if (pattern[j] == '*')  // period at other places
                     {
                        strcpy_s(reg_pattern + i,
                                 sizeof(reg_pattern + i),
@@ -198,21 +198,21 @@ _wildcards_to_regex(const char *pattern, int flags)
           }
         else if (pattern[j] == '.')
           {
-             strcpy_s(reg_pattern + i, 
+             strcpy_s(reg_pattern + i,
                       sizeof(reg_pattern + i),
                       "[\\.]");
              i += 4;
           }
         else reg_pattern[i++] = pattern[j];  // OTHERS
      }
-   strcpy_s(reg_pattern + i, 
+   strcpy_s(reg_pattern + i,
             sizeof(reg_pattern + i),
             "$\0");
 
    return reg_pattern;
 }
 
-int
+EINA_API int
 eina_fnmatch(const char *pattern, const char *string, int flags)
 {
    // Converts wildcard pattern to regex pattern
