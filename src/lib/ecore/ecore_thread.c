@@ -43,14 +43,15 @@
 # define PH(x)        Eina_Thread x
 # define PHE(x, y)    eina_thread_equal(x, y)
 # define PHS()        eina_thread_self()
+# define PHSID()        eina_thread_self_id()
 # define PHC(x, f, d) eina_thread_create(&(x), EINA_THREAD_BACKGROUND, -1, (void *)f, d)
 # define PHC2(x, f, d)eina_thread_create(&(x), EINA_THREAD_URGENT, -1, (void *)f, d)
 # define PHJ(x)       eina_thread_join(x)
 
-typedef struct _Ecore_Pthread_Worker Ecore_Pthread_Worker;
-typedef struct _Ecore_Pthread        Ecore_Pthread;
-typedef struct _Ecore_Thread_Data    Ecore_Thread_Data;
-typedef struct _Ecore_Thread_Waiter  Ecore_Thread_Waiter;
+typedef struct _Ecore_Thread_Worker Ecore_Thread_Worker;
+typedef struct _Ecore_Thread        Ecore_Thread;
+typedef struct _Ecore_Thread_Data   Ecore_Thread_Data;
+typedef struct _Ecore_Thread_Waiter Ecore_Thread_Waiter;
 
 struct _Ecore_Thread_Waiter
 {
@@ -65,7 +66,7 @@ struct _Ecore_Thread_Data
    Eina_Free_Cb cb;
 };
 
-struct _Ecore_Pthread_Worker
+struct _Ecore_Thread_Worker
 {
    union
    {
@@ -78,7 +79,7 @@ struct _Ecore_Pthread_Worker
          Ecore_Thread_Cb        func_heavy;
          Ecore_Thread_Notify_Cb func_notify;
 
-         Ecore_Pthread_Worker  *direct_worker;
+         Ecore_Thread_Worker  *direct_worker;
 
          int                    send;
          int                    received;
@@ -89,7 +90,7 @@ struct _Ecore_Pthread_Worker
          Ecore_Thread_Notify_Cb func_notify;
 
          Ecore_Pipe            *send;
-         Ecore_Pthread_Worker  *direct_worker;
+         Ecore_Thread_Worker  *direct_worker;
 
          struct
          {
@@ -120,17 +121,17 @@ struct _Ecore_Pthread_Worker
    Eina_Bool            no_queue : 1;
 };
 
-typedef struct _Ecore_Pthread_Notify Ecore_Pthread_Notify;
-struct _Ecore_Pthread_Notify
+typedef struct _Ecore_Thread_Notify Ecore_Thread_Notify;
+struct _Ecore_Thread_Notify
 {
-   Ecore_Pthread_Worker *work;
+   Ecore_Thread_Worker *work;
    const void           *user_data;
 };
 
 typedef void                       *(*Ecore_Thread_Sync_Cb)(void *data, Ecore_Thread *thread);
 
-typedef struct _Ecore_Pthread_Message Ecore_Pthread_Message;
-struct _Ecore_Pthread_Message
+typedef struct _Ecore_Thread_Message Ecore_Thread_Message;
+struct _Ecore_Thread_Message
 {
    union
    {
@@ -170,7 +171,7 @@ static Eina_Trash *_ecore_thread_worker_trash = NULL;
 static int _ecore_thread_worker_count = 0;
 
 static void                 *_ecore_thread_worker(void *, Eina_Thread);
-static Ecore_Pthread_Worker *_ecore_thread_worker_new(void);
+static Ecore_Thread_Worker *_ecore_thread_worker_new(void);
 
 static PH(get_main_loop_thread) (void)
 {
@@ -189,7 +190,7 @@ static PH(get_main_loop_thread) (void)
 }
 
 static void
-_ecore_thread_worker_free(Ecore_Pthread_Worker *worker)
+_ecore_thread_worker_free(Ecore_Thread_Worker *worker)
 {
    SLKD(worker->cancel_mutex);
    CDD(worker->cond);
@@ -217,13 +218,13 @@ _ecore_thread_data_free(void *data)
 void
 _ecore_thread_join(void *data)
 {
-   PH(thread) = (uintptr_t)data;
-   DBG("joining thread=%" PRIu64, (uint64_t)thread);
+   PH(thread) = *(Eina_Thread*)data;
+   DBG("joining thread=%" PRIu64, eina_thread_id(thread));
    PHJ(thread);
 }
 
 static void
-_ecore_thread_kill(Ecore_Pthread_Worker *work)
+_ecore_thread_kill(Ecore_Thread_Worker *work)
 {
    if (work->cancel)
      {
@@ -249,7 +250,7 @@ _ecore_thread_kill(Ecore_Pthread_Worker *work)
 static void
 _ecore_thread_handler(void *data)
 {
-   Ecore_Pthread_Worker *work = data;
+   Ecore_Thread_Worker *work = data;
 
    if (work->feedback_run)
      {
@@ -274,8 +275,8 @@ _ecore_nothing_handler(void *data EINA_UNUSED, void *buffer EINA_UNUSED, unsigne
 static void
 _ecore_notify_handler(void *data)
 {
-   Ecore_Pthread_Notify *notify = data;
-   Ecore_Pthread_Worker *work = notify->work;
+   Ecore_Thread_Notify *notify = data;
+   Ecore_Thread_Worker *work = notify->work;
    void *user_data = (void *)notify->user_data;
 
    work->u.feedback_run.received++;
@@ -295,9 +296,9 @@ _ecore_notify_handler(void *data)
 static void
 _ecore_message_notify_handler(void *data)
 {
-   Ecore_Pthread_Notify *notify = data;
-   Ecore_Pthread_Worker *work = notify->work;
-   Ecore_Pthread_Message *user_data = (void *)notify->user_data;
+   Ecore_Thread_Notify *notify = data;
+   Ecore_Thread_Worker *work = notify->work;
+   Ecore_Thread_Message *user_data = (void *)notify->user_data;
    Eina_Bool delete = EINA_TRUE;
 
    work->u.message_run.from.received++;
@@ -314,7 +315,7 @@ _ecore_message_notify_handler(void *data)
              user_data->data = user_data->u.sync((void *)user_data->data, (Ecore_Thread *)work);
              user_data->callback = EINA_FALSE;
              user_data->code = INT_MAX;
-             ecore_pipe_write(work->u.message_run.send, &user_data, sizeof (Ecore_Pthread_Message *));
+             ecore_pipe_write(work->u.message_run.send, &user_data, sizeof (Ecore_Thread_Message *));
 
              delete = EINA_FALSE;
           }
@@ -340,9 +341,9 @@ _ecore_message_notify_handler(void *data)
 static void
 _ecore_short_job_cleanup(void *data)
 {
-   Ecore_Pthread_Worker *work = data;
+   Ecore_Thread_Worker *work = data;
 
-   DBG("cleanup work=%p, thread=%" PRIu64, work, (uint64_t)work->self);
+   DBG("cleanup work=%p, thread=%" PRIu64, work, eina_thread_id(work->self));
 
    SLKL(_ecore_running_job_mutex);
    _ecore_running_job = eina_list_remove(_ecore_running_job, work);
@@ -365,7 +366,7 @@ _ecore_short_job_cleanup(void *data)
 static void
 _ecore_short_job(PH(thread))
 {
-   Ecore_Pthread_Worker *work;
+   Ecore_Thread_Worker *work;
    int cancel;
 
    SLKL(_ecore_pending_job_threads_mutex);
@@ -400,9 +401,9 @@ _ecore_short_job(PH(thread))
 static void
 _ecore_feedback_job_cleanup(void *data)
 {
-   Ecore_Pthread_Worker *work = data;
+   Ecore_Thread_Worker *work = data;
 
-   DBG("cleanup work=%p, thread=%" PRIu64, work, (uint64_t)work->self);
+   DBG("cleanup work=%p, thread=%" PRIu64, work, eina_thread_id(work->self));
 
    SLKL(_ecore_running_job_mutex);
    _ecore_running_job = eina_list_remove(_ecore_running_job, work);
@@ -425,7 +426,7 @@ _ecore_feedback_job_cleanup(void *data)
 static void
 _ecore_feedback_job(PH(thread))
 {
-   Ecore_Pthread_Worker *work;
+   Ecore_Thread_Worker *work;
    int cancel;
 
    SLKL(_ecore_pending_job_threads_mutex);
@@ -459,23 +460,23 @@ _ecore_feedback_job(PH(thread))
 static void
 _ecore_direct_worker_cleanup(void *data)
 {
-   Ecore_Pthread_Worker *work = data;
+   Ecore_Thread_Worker *work = data;
 
-   DBG("cleanup work=%p, thread=%" PRIu64 " (should join)", work, (uint64_t)work->self);
+   DBG("cleanup work=%p, thread=%" PRIu64 " (should join)", work, eina_thread_id(work->self));
 
    SLKL(_ecore_pending_job_threads_mutex);
    _ecore_thread_count_no_queue--;
    ecore_main_loop_thread_safe_call_async(_ecore_thread_handler, work);
 
    ecore_main_loop_thread_safe_call_async((Ecore_Cb)_ecore_thread_join,
-                                          (void *)(intptr_t)PHS());
+                                          (void *)(Eina_Thread*)&PHS());
    SLKU(_ecore_pending_job_threads_mutex);
 }
 
 static void *
 _ecore_direct_worker(void *data, Eina_Thread t EINA_UNUSED)
 {
-   Ecore_Pthread_Worker *work = data;
+   Ecore_Thread_Worker *work = data;
    eina_thread_cancellable_set(EINA_FALSE, NULL);
    eina_thread_name_set(eina_thread_self(), "Ethread-feedback");
    work->self = PHS();
@@ -546,21 +547,21 @@ restart:
    return NULL;
 }
 
-static Ecore_Pthread_Worker *
+static Ecore_Thread_Worker *
 _ecore_thread_worker_new(void)
 {
-   Ecore_Pthread_Worker *result;
+   Ecore_Thread_Worker *result;
 
    result = eina_trash_pop(&_ecore_thread_worker_trash);
 
    if (!result)
      {
-        result = calloc(1, sizeof(Ecore_Pthread_Worker));
+        result = calloc(1, sizeof(Ecore_Thread_Worker));
         _ecore_thread_worker_count++;
      }
    else
      {
-        memset(result, 0, sizeof(Ecore_Pthread_Worker));
+        memset(result, 0, sizeof(Ecore_Thread_Worker));
      }
 
    SLKI(result->cancel_mutex);
@@ -588,7 +589,7 @@ void
 _ecore_thread_shutdown(void)
 {
    /* FIXME: If function are still running in the background, should we kill them ? */
-   Ecore_Pthread_Worker *work;
+   Ecore_Thread_Worker *work;
    Eina_List *l;
    Eina_Bool test;
    int iteration = 0;
@@ -664,7 +665,7 @@ ecore_thread_run(Ecore_Thread_Cb func_blocking,
                  Ecore_Thread_Cb func_cancel,
                  const void *data)
 {
-   Ecore_Pthread_Worker *work;
+   Ecore_Thread_Worker *work;
    Eina_Bool tried = EINA_FALSE;
    PH(thread);
 
@@ -744,7 +745,7 @@ retry:
 ECORE_API Eina_Bool
 ecore_thread_cancel(Ecore_Thread *thread)
 {
-   Ecore_Pthread_Worker *volatile work = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *volatile work = (Ecore_Thread_Worker *)thread;
    Eina_List *l;
    int cancel;
 
@@ -805,7 +806,7 @@ ecore_thread_cancel(Ecore_Thread *thread)
 
    SLKU(_ecore_pending_job_threads_mutex);
 
-   work = (Ecore_Pthread_Worker *)thread;
+   work = (Ecore_Thread_Worker *)thread;
 
    /* Delay the destruction */
 on_exit:
@@ -819,7 +820,7 @@ on_exit:
 
 static void
 _ecore_thread_wait_reset(Ecore_Thread_Waiter *waiter,
-                         Ecore_Pthread_Worker *worker)
+                         Ecore_Thread_Worker *worker)
 {
    worker->func_cancel = waiter->func_cancel;
    worker->func_end = waiter->func_end;
@@ -833,7 +834,7 @@ _ecore_thread_wait_reset(Ecore_Thread_Waiter *waiter,
 static void
 _ecore_thread_wait_cancel(void *data EINA_UNUSED, Ecore_Thread *thread)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Ecore_Thread_Waiter *waiter = worker->waiter;
 
    if (waiter->func_cancel) waiter->func_cancel(data, thread);
@@ -843,7 +844,7 @@ _ecore_thread_wait_cancel(void *data EINA_UNUSED, Ecore_Thread *thread)
 static void
 _ecore_thread_wait_end(void *data EINA_UNUSED, Ecore_Thread *thread)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Ecore_Thread_Waiter *waiter = worker->waiter;
 
    if (waiter->func_end) waiter->func_end(data, thread);
@@ -853,7 +854,7 @@ _ecore_thread_wait_end(void *data EINA_UNUSED, Ecore_Thread *thread)
 ECORE_API Eina_Bool
 ecore_thread_wait(Ecore_Thread *thread, double wait)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Ecore_Thread_Waiter waiter;
 
    if (!thread) return EINA_TRUE;
@@ -895,7 +896,7 @@ ecore_thread_wait(Ecore_Thread *thread, double wait)
 ECORE_API Eina_Bool
 ecore_thread_check(Ecore_Thread *thread)
 {
-   Ecore_Pthread_Worker *volatile worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *volatile worker = (Ecore_Thread_Worker *)thread;
    int cancel;
 
    if (!worker) return EINA_TRUE;
@@ -919,7 +920,7 @@ ecore_thread_feedback_run(Ecore_Thread_Cb func_heavy,
                           const void *data,
                           Eina_Bool try_no_queue)
 {
-   Ecore_Pthread_Worker *worker;
+   Ecore_Thread_Worker *worker;
    Eina_Bool tried = EINA_FALSE;
    PH(thread);
 
@@ -1041,7 +1042,7 @@ ECORE_API Eina_Bool
 ecore_thread_feedback(Ecore_Thread *thread,
                       const void *data)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
 
    if (!worker) return EINA_FALSE;
 
@@ -1049,9 +1050,9 @@ ecore_thread_feedback(Ecore_Thread *thread,
 
    if (worker->feedback_run)
      {
-        Ecore_Pthread_Notify *notify;
+        Ecore_Thread_Notify *notify;
 
-        notify = malloc(sizeof (Ecore_Pthread_Notify));
+        notify = malloc(sizeof (Ecore_Thread_Notify));
         if (!notify) return EINA_FALSE;
 
         notify->user_data = data;
@@ -1062,16 +1063,16 @@ ecore_thread_feedback(Ecore_Thread *thread,
      }
    else if (worker->message_run)
      {
-        Ecore_Pthread_Message *msg;
-        Ecore_Pthread_Notify *notify;
+        Ecore_Thread_Message *msg;
+        Ecore_Thread_Notify *notify;
 
-        msg = malloc(sizeof (Ecore_Pthread_Message));
+        msg = malloc(sizeof (Ecore_Thread_Message));
         if (!msg) return EINA_FALSE;
         msg->data = data;
         msg->callback = EINA_FALSE;
         msg->sync = EINA_FALSE;
 
-        notify = malloc(sizeof (Ecore_Pthread_Notify));
+        notify = malloc(sizeof (Ecore_Thread_Notify));
         if (!notify)
           {
              free(msg);
@@ -1097,7 +1098,7 @@ ecore_thread_message_run(Ecore_Thread_Cb func_main,
                          Ecore_Thread_Cb func_cancel,
                          const void *data)
 {
-   Ecore_Pthread_Worker *worker;
+   Ecore_Thread_Worker *worker;
    PH(t);
 
    if (!func_main) return NULL;
@@ -1152,7 +1153,7 @@ ecore_thread_message_run(Ecore_Thread_Cb func_main,
 ECORE_API Eina_Bool
 ecore_thread_reschedule(Ecore_Thread *thread)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
 
    if (!worker) return EINA_FALSE;
 
@@ -1248,7 +1249,7 @@ ecore_thread_local_data_add(Ecore_Thread *thread,
                             Eina_Free_Cb cb,
                             Eina_Bool direct)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Ecore_Thread_Data *d;
    Eina_Bool ret;
 
@@ -1285,7 +1286,7 @@ ecore_thread_local_data_set(Ecore_Thread *thread,
                             void *value,
                             Eina_Free_Cb cb)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Ecore_Thread_Data *d, *r;
    void *ret;
 
@@ -1324,7 +1325,7 @@ ECORE_API void *
 ecore_thread_local_data_find(Ecore_Thread *thread,
                              const char *key)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Ecore_Thread_Data *d;
 
    if ((!thread) || (!key))
@@ -1345,7 +1346,7 @@ ECORE_API Eina_Bool
 ecore_thread_local_data_del(Ecore_Thread *thread,
                             const char *key)
 {
-   Ecore_Pthread_Worker *worker = (Ecore_Pthread_Worker *)thread;
+   Ecore_Thread_Worker *worker = (Ecore_Thread_Worker *)thread;
    Eina_Bool r;
 
    if ((!thread) || (!key))
