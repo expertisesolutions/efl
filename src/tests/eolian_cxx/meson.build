@@ -1,4 +1,4 @@
-eolian_cxx_suite_deps = [check, eolian_cxx, eina_cxx, eo_cxx, ecore]
+eolian_cxx_suite_deps = [check_dep, eolian_cxx, eina_cxx, eo_cxx, ecore]
 
 eolian_cxx_suite_src = files([
   'eolian_cxx_suite.cc',
@@ -60,7 +60,7 @@ endforeach
 
 eolian_cxx_suite = executable('eolian_cxx_suite',
   eolian_cxx_suite_src + pub_eo_file_target,
-  dependencies: [eolian_cxx_suite_deps, eo_cxx, check],
+  dependencies: [eolian_cxx_suite_deps, eo_cxx, check_dep],
   # package_c_args contains -D definitions for the package
   cpp_args : package_c_args +[
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',

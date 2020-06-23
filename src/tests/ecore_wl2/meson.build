@@ -19,7 +19,7 @@ endif
 
 ecore_wl2_suite = executable('ecore_wl2_suite',
   ecore_wl2_suite_src,
-  dependencies: [ecore_wl2, ecore, ecore_input, check, wayland_protocol, wayland_client, dependency('wayland-egl'), wl2_test_gl_deps],
+  dependencies: [ecore_wl2, ecore, ecore_input, check_dep, wayland_protocol, wayland_client, dependency('wayland-egl'), wl2_test_gl_deps],
 
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',

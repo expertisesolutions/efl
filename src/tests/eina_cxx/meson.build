@@ -42,7 +42,7 @@ endforeach
 eina_cxx_suite = executable('eina_cxx_suite',
   eina_cxx_suite_src + priv_eo_file_target,
   include_directories : config_dir,
-  dependencies: [eina_cxx_suite_deps, check, eina, eina_cxx, eo_cxx, ecore],
+  dependencies: [eina_cxx_suite_deps, check_dep, eina, eina_cxx, eo_cxx, ecore],
   cpp_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"'

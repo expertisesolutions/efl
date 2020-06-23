@@ -7,7 +7,7 @@ efreet_suite_src = [
 
 efreet_suite = executable('efreet_suite',
   efreet_suite_src,
-  dependencies: [check, efreet],
+  dependencies: [check_dep, efreet],
   include_directories : config_dir,
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
@@ -31,7 +31,7 @@ efreet_test_src = [
   'main.c'
 ]
 
-efreet_test_deps = [check, efreet, ecore, ecore_file, intl]
+efreet_test_deps = [check_dep, efreet, ecore, ecore_file, intl]
 
 efreet_test = executable('efreet_test',
   efreet_test_src,
