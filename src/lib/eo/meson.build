@@ -69,7 +69,7 @@ endif
 
 eo_lib = library('eo',
     eo_src, pub_eo_file_target,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DEO_BUILD'],
     dependencies: [eo_deps, eo_pub_deps, eo_ext_deps],
     install: true,
     version : meson.project_version(),
@@ -83,7 +83,7 @@ endif
 
 eo_lib_dbg = library('eo_dbg',
     eo_src, pub_eo_file_target,
-    c_args : package_c_args + [ '-DEO_DEBUG' ],
+    c_args : [package_c_args, '-DEO_DEBUG', '-DEO_BUILD'],
     dependencies: [eo_deps, eo_pub_deps, eo_ext_deps],
     install: true,
     version : meson.project_version()
