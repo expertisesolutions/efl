@@ -32,7 +32,7 @@ _is_socket(SOCKET s)
  *
  */
 
-EAPI int
+EVIL_API int
 fcntl(int fd, int cmd, ...)
 {
    va_list va;

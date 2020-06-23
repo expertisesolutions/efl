@@ -1,25 +1,25 @@
 #ifndef EVIL_API_H
 #define EVIL_API_H
 
-#ifdef EAPI
-#undef EAPI
+#ifdef EVIL_API
+#undef EVIL_API
 #endif
 
 #ifdef _WIN32
 # ifdef EFL_BUILD
 #  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
+#   define EVIL_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define EVIL_API
 #  endif
 # else
-#  define EAPI __declspec(dllimport)
+#  define EVIL_API __declspec(dllimport)
 # endif
 #else
 # if __GNUC__ >= 4
-#  define EAPI __attribute__ ((visibility("default")))
+#  define EVIL_API __attribute__ ((visibility("default")))
 # else
-#  define EAPI
+#  define EVIL_API
 # endif
 #endif
 

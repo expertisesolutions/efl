@@ -17,7 +17,7 @@ static char _evil_locale_buf[18];
 
 #undef setlocale
 
-EAPI char *
+EVIL_API char *
 evil_setlocale(int category, const char *locale)
 {
    char buf[9];
