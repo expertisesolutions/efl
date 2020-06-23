@@ -33,7 +33,7 @@ generated_test_parts = custom_target('generate_test_suite',
 
 efl_ui_behavior_suite = executable('efl_ui_spec_suite',
   efl_ui_suite_behavior_src + [generated_test_parts] + [priv_eo_file_target],
-  dependencies: [check, eina, elementary, elementary_deps],
+  dependencies: [check_dep, eina, elementary, elementary_deps],
   include_directories : [config_dir] + [elementary_config_dir] + [include_directories('../')],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
