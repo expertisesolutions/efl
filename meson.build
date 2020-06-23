@@ -521,8 +521,6 @@ if sys_windows
     'embryo',
     'emile',
     'emotion',
-    'eo',
-    'eolian',
     'ephysics',
     'ethumb',
     'ethumb_client',
