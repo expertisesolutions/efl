@@ -64,7 +64,7 @@ endif
 
 ecore_suite = executable('ecore_suite',
   ecore_suite_src,
-  dependencies: [ecore_suite_deps, check],
+  dependencies: [ecore_suite_deps, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']
@@ -103,7 +103,7 @@ efl_app_suite_deps += ecore
 
 efl_app_suite = executable('efl_app_suite',
   efl_app_suite_src, priv_eo_file_target,
-  dependencies: [efl_app_suite_deps, check],
+  dependencies: [efl_app_suite_deps, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

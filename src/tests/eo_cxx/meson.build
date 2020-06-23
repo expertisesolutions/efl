@@ -1,4 +1,4 @@
-eo_cxx_suite_deps = [check, eina_cxx, eo_cxx]
+eo_cxx_suite_deps = [check_dep, eina_cxx, eo_cxx]
 
 eo_cxx_suite_src = [
   'eo_cxx_suite.cc',
@@ -8,7 +8,7 @@ eo_cxx_suite_src = [
 eo_cxx_suite = executable('eo_cxx_suite',
   eo_cxx_suite_src,
   include_directories : config_dir,
-  dependencies: [eo_cxx_suite_deps, check],
+  dependencies: [eo_cxx_suite_deps, check_dep],
   cpp_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

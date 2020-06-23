@@ -1,4 +1,4 @@
-ecore_cxx_suite_deps = [check, ecore_cxx]
+ecore_cxx_suite_deps = [check_dep, ecore_cxx]
 
 ecore_cxx_suite_src = [
   'ecore_cxx_suite.cc',
@@ -9,7 +9,7 @@ ecore_cxx_suite_src = [
 
 ecore_cxx_suite = executable('ecore_cxx_suite',
   ecore_cxx_suite_src,
-  dependencies: [ecore_cxx_suite_deps, check],
+  dependencies: [ecore_cxx_suite_deps, check_dep],
   cpp_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']
@@ -17,7 +17,7 @@ ecore_cxx_suite = executable('ecore_cxx_suite',
 
 executable('ecore_cxx_suite_compile_test',
   'cxx_compile_test.cc',
-  dependencies: [ecore_cxx_suite_deps, check],
+  dependencies: [ecore_cxx_suite_deps, check_dep],
   cpp_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

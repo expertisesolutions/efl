@@ -205,7 +205,7 @@ if (get_option('dotnet'))
 
   lib_csproj_conf_data = configuration_data()
 
-  dotnet_version = run_command(dotnet, ['--version'], check: true)
+  dotnet_version = run_command(dotnet, ['--version'], check_dep: true)
   message('Found dotnet core version ' + dotnet_version.stdout().strip())
 
   # The major version should be enough for now while we don't have to deal

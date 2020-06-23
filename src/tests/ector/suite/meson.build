@@ -7,7 +7,7 @@ ector_suite_src = [
 ector_suite = executable('ector_suite',
   ector_suite_src,
   include_directories : include_directories('..'),
-  dependencies: [eo, ector, check],
+  dependencies: [eo, ector, check_dep],
   c_args : [
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']

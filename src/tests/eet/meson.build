@@ -15,7 +15,7 @@ eet_suite_src = [
 
 eet_suite = executable('eet_suite',
   eet_suite_src,
-  dependencies: [eet, check],
+  dependencies: [eet, check_dep],
   c_args : [
   '-DTESTS_WD="`pwd`"',
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
