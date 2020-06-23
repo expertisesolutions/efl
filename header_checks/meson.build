@@ -211,21 +211,33 @@ if sys_linux and config_h.has('HAVE_LISTXATTR') and config_h.has('HAVE_SETXATTR'
   config_h.set10('HAVE_XATTR', true)
 endif
 
-regexp = []
-if sys_windows == true
-   regexp = cc.find_library('regex',
-                            has_headers: ['regex.h', 'fnmatch.h'],
-                            required: true)
-   if regexp.found() == false
-      error('regex can not be found')
-   endif
+
+# libraries
+
+# zlib
+zlib = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
+
+if sys_windows
+  # For pcre, since the wrap doesn't provide a dependency-object for the posix
+  # implementation (just the multiplatform one), we need to make some
+  # workarounds in order to use the posix-compliant part of the lib
+  pcre_project = subproject('pcre')
+
+  pcre_lib = pcre_project.get_variable('pcre8')
+  pcre_posix_lib = pcre_project.get_variable('pcre_posix')
+  original_pcre = pcre_project.get_variable('pcre_dep')
+
+  regexp = declare_dependency(link_with : [pcre_lib, pcre_posix_lib], dependencies : original_pcre)
 else
-   if cc.has_header_symbol('fnmatch.h', 'fnmatch') == false
-      error('fnmatch can not be found')
-   endif
-   if cc.has_header_symbol('regex.h', 'regcomp') == false
-      error('regcomp can not be found')
-   endif
+  regexp = declare_dependency()
+
+  if not cc.has_header_symbol('regex.h', 'regcomp')
+    error('regcomp can not be found')
+  endif
+
+  if not cc.has_header_symbol('fnmatch.h', 'fnmatch')
+    error('fnmatch can not be found')
+  endif
 endif
 
 config_h.set('VMAJ', version_major)

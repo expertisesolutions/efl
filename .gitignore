@@ -95,3 +95,9 @@ Session.vim
 efl_libs.csv
 .vscode/
 .uuid
+
+# Subprojects
+subprojects/pcre-*
+subprojects/zlib-*
+subprojects/packagecache
+subprojects/check*

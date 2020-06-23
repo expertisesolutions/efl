@@ -1,6 +1,6 @@
 emile_deps = []
 emile_pub_deps = [eina, efl]
-emile_ext_deps = [jpeg, crypto, dependency('zlib'), lz4, rg_etc, m]
+emile_ext_deps = [jpeg, crypto, zlib, lz4, rg_etc, m]
 
 emile_headers = [
   'Emile.h',

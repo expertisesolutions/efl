@@ -583,7 +583,8 @@ subdir(join_paths('src', 'edje_external'))
 subdir(join_paths('data'))
 
 if get_option('build-tests')
-  check = dependency('check')
+  check = dependency('check', fallback : ['check', 'check_dep'])
+
   subdir(join_paths('src', 'tests'))
   foreach test : test_dirs
     package_c_args = [
