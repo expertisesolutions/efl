@@ -440,7 +440,7 @@ subprojects = [
 ['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], []],
 ['ecore'            ,[]                    , false,  true, false, false, false, false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
 ['eldbus'           ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
-['ecore'            ,[]                    ,  true, false, false, false,  true,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
+['ecore'            ,[]                    ,  true, false, false, false, false,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
 ['ecore_audio'      ,['audio']             , false,  true, false, false, false, false,  true, ['eina', 'eo'], []],
 ['ecore_avahi'      ,['avahi']             , false,  true, false, false, false,  true, false, ['eina', 'ecore'], []],
 ['ecore_con'        ,[]                    , false,  true,  true, false,  true, false,  true, ['eina', 'eo', 'efl', 'ecore'], ['http-parser']],
@@ -486,7 +486,6 @@ if sys_windows
     'eldbus',
     'elput',
     # temporarily ignored
-    'ecore',
     'ecore_audio',
     'ecore_avahi',
     'ecore_buffer',
