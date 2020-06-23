@@ -22,7 +22,7 @@
  *
  */
 
-int
+EAPI int
 setenv(const char *name,
        const char *value,
        int         overwrite)
@@ -65,7 +65,7 @@ setenv(const char *name,
    return res;
 }
 
-int
+EAPI int
 unsetenv(const char *name)
 {
    return setenv(name, NULL, 1);
@@ -157,7 +157,7 @@ mkdtemp(char *__template)
    return NULL;
 }
 
-int
+EAPI int
 mkstemps(char *__template, int suffixlen)
 {
    char      *suffix;
@@ -186,7 +186,7 @@ mkstemps(char *__template, int suffixlen)
    return -1;
 }
 
-char *
+EAPI char *
 realpath(const char *file_name, char *resolved_name)
 {
    char *retname = NULL;  /* we will return this, if we fail */

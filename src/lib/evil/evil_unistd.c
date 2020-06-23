@@ -51,7 +51,7 @@ _evil_systemtime_to_time(SYSTEMTIME st)
 }
 
 
-int
+EAPI int
 execvp(const char *file, char *const argv[])
 {
    return _execvp(file, (const char *const *)argv);
@@ -63,7 +63,7 @@ execvp(const char *file, char *const argv[])
  *
  */
 
-double
+EAPI double
 evil_time_get(void)
 {
    LARGE_INTEGER count;
@@ -79,7 +79,7 @@ evil_time_get(void)
  *
  */
 
-int
+EAPI int
 evil_sockets_init(void)
 {
    WSADATA wsa_data;
@@ -101,7 +101,7 @@ evil_sockets_init(void)
    return 0;
 }
 
-void
+EAPI void
 evil_sockets_shutdown(void)
 {
    WSACleanup();
@@ -111,7 +111,7 @@ evil_sockets_shutdown(void)
  * The code of the following functions has been kindly offered
  * by Tor Lillqvist.
  */
-int
+EAPI int
 evil_pipe(int *fds)
 {
    struct sockaddr_in saddr;

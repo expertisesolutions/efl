@@ -50,7 +50,7 @@ _evil_mmap_protection_get(int prot)
 /***** API *****/
 
 
-void *
+EAPI void *
 mmap(void  *addr EVIL_UNUSED,
      size_t len,
      int    prot,
@@ -138,7 +138,7 @@ mmap(void  *addr EVIL_UNUSED,
    return data;
 }
 
-int
+EAPI int
 munmap(void  *addr,
        size_t len EVIL_UNUSED)
 {
@@ -152,7 +152,7 @@ munmap(void  *addr,
    return (res == 0) ? -1 : 0;
 }
 
-int
+EAPI int
 mprotect(void *addr, size_t len, int prot)
 {
    DWORD old;

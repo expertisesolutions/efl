@@ -14,7 +14,7 @@
  *
  */
 
-char *strcasestr(const char *haystack, const char *needle)
+EAPI char *strcasestr(const char *haystack, const char *needle)
 {
    size_t length_needle;
    size_t length_haystack;
@@ -50,7 +50,7 @@ char *strcasestr(const char *haystack, const char *needle)
    return NULL;
 }
 
-char *
+EAPI char *
 strsep (char **stringp, const char *delim)
 {
   char *begin, *end;

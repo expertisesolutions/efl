@@ -130,7 +130,7 @@ conv_num(const unsigned char *buf, int *dest, unsigned int llim, unsigned int ul
    return buf;
 }
 
-char *
+EAPI char *
 strptime(const char *buf, const char *fmt, struct tm *tm)
 {
    unsigned char c;

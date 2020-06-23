@@ -39,7 +39,7 @@ _dl_get_last_error(char *desc)
    _dl_err_viewed = 0;
 }
 
-void *
+EAPI void *
 dlopen(const char* path, int mode EVIL_UNUSED)
 {
    HMODULE module = NULL;
@@ -95,7 +95,7 @@ dlopen(const char* path, int mode EVIL_UNUSED)
    return module;
 }
 
-int
+EAPI int
 dlclose(void* handle)
 {
    if (FreeLibrary(handle))
@@ -107,7 +107,7 @@ dlclose(void* handle)
      }
 }
 
-void *
+EAPI void *
 dlsym(void *handle, const char *symbol)
 {
    FARPROC fp = NULL;
@@ -157,7 +157,7 @@ dlsym(void *handle, const char *symbol)
    return fp;
 }
 
-char *
+EAPI char *
 dlerror (void)
 {
    if (!_dl_err_viewed)
@@ -184,7 +184,7 @@ _dladdr_comp(const void *p1, const void *p2)
    return ( *(int *)p1 - *(int *)p2);
 }
 
-int
+EAPI int
 dladdr (const void *addr, Dl_info *info)
 {
    TCHAR tpath[PATH_MAX];

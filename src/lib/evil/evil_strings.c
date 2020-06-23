@@ -1,6 +1,6 @@
 #include "evil_strings.h"
 
-int
+EAPI int
 ffs(int i)
 {
    for (int j = 0; j < sizeof(i)*8; j++)

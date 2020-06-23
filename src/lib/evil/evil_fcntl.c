@@ -32,7 +32,8 @@ _is_socket(SOCKET s)
  *
  */
 
-int fcntl(int fd, int cmd, ...)
+EAPI int
+fcntl(int fd, int cmd, ...)
 {
    va_list va;
    int     res = -1;

@@ -18,6 +18,6 @@
 #define strncasecmp_l _strnicmp_l
 #define strcasecmp_l _strncmp_l
 
-int ffs(int i);
+EAPI int ffs(int i);
 
 #endif
