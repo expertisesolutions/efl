@@ -6,12 +6,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <errno.h>
 #include <sys/types.h>
+#include <errno.h>
+#include <fcntl.h>
 
 #ifndef _WIN32
 # include <unistd.h>
-# include <fcntl.h>
 # include <sys/time.h>
 #else
 # include <evil_private.h>

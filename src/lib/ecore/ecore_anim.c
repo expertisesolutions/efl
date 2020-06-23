@@ -6,10 +6,11 @@
 #include <math.h>
 #include <string.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #ifndef _WIN32
 # include <unistd.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 #else
 # include <evil_private.h>
 #endif
