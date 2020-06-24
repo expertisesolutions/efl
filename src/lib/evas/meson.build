@@ -314,7 +314,7 @@ evas_lib = library('evas',
     dependencies: [evas_deps, evas_ext_deps],
     link_with: evas_link,
     install: true,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DEVAS_BUILD'],
     version : meson.project_version()
 )
 
