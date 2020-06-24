@@ -191,7 +191,7 @@ ecore_con_lib = library('ecore_con',
     dependencies: [ecore_con_deps, ecore_con_ext_deps, ecore_con_pub_deps],
     include_directories : config_dir,
     install: true,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DECORE_CON_BUILD'],
     version : meson.project_version()
 )
 
