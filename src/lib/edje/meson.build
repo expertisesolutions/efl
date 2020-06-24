@@ -153,7 +153,7 @@ edje_lib = library('edje',
     dependencies: edje_pub_deps + edje_deps + edje_ext_deps,
     include_directories : config_dir + [include_directories('.')],
     install: true,
-    c_args : [package_c_args],
+    c_args : [package_c_args, '-DEDJE_BUILD'],
     version : meson.project_version()
 )
 
