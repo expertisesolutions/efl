@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "evil_private.h"
+#include <evil_api.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "evil_stat.h"
 
 #define	AT_SYMLINK_NOFOLLOW	0x01
 
-
-int 
+EAPI int 
 fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
 {
    int r_fstatat;
@@ -67,7 +67,7 @@ fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
      }
 }
 
-int 
+EAPI int 
 fstatat64(int dirfd, const char *pathname, struct stat *statbuf, int flags)
 {
    int r_fstatat;
