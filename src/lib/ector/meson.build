@@ -91,7 +91,7 @@ ector_ext_deps += ector_opt_lib_dep
 
 ector_lib = library('ector',
     ector_src, pub_eo_file_target,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DECTOR_BUILD'],
     dependencies: ector_pub_deps + ector_ext_deps + ector_deps,
     include_directories : config_dir,
     install: true,
