@@ -3254,7 +3254,4 @@ typedef RemixBase* (*MULTISENSE_SOUND_PLAYER_GET_FUNC) (Edje_Multisense_Env *);
 
 #include "efl_canvas_layout_part_invalid.eo.h"
 
-#undef EAPI
-#define EAPI
-
 #endif

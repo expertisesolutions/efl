@@ -8927,7 +8927,4 @@ EDJE_API extern Eina_Error EDJE_EDIT_ERROR_GROUP_DOES_NOT_EXIST;
 }
 #endif
 
-#undef EAPI
-#define EAPI
-
 #endif
