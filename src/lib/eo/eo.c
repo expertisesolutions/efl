@@ -2978,7 +2978,7 @@ _eo_log_obj_entry_show(const Eo_Log_Obj_Entry *entry, int log_level, const char 
                   entry->timestamp - _eo_log_time_start, now - entry->timestamp,
                   entry->bt_hits);
 
-   // Skip EAPI and _eo_log_obj_ref_op()
+   // Skip EO_API and _eo_log_obj_ref_op()
    for (i = 2; i < entry->bt_size; i++)
      {
 #ifdef HAVE_DLADDR
