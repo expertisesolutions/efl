@@ -6,9 +6,12 @@
 #include <sys/stat.h>
 #include <evil_macro_wrapper.h>
 #include <evil_api.h>
-#include <corecrt_io.h>
-#include <corecrt.h>
 #include <errno.h>
+
+#ifndef _MSC_VER
+# include <corecrt_io.h>
+# include <corecrt.h>
+#endif
 
 
 typedef  int  mode_t ; 
@@ -17,8 +20,6 @@ typedef  int  mode_t ;
 #endif
 
 EVIL_API_H int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
-
-EVIL_API_H int fstatat64(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
 // Missing definitions:
 // Note: some pieces of code were based on LibreSSL-Portable's compat lib and
