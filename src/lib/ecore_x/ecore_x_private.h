@@ -394,23 +394,7 @@ int _ecore_x_shutdown(void);
 #endif /* ifdef LOGFNS */
 
 
-
-#ifdef EAPI
-# undef EAPI
-#endif // ifdef EAPI
-
-#ifdef __GNUC__
-# if __GNUC__ >= 4
-#  define ECORE_X_API __attribute__ ((visibility("default")))
-# else // if __GNUC__ >= 4
-#  define EAPI
-# endif // if __GNUC__ >= 4
-#else // ifdef __GNUC__
-# define EAPI
-#endif // ifdef __GNUC__
+#include "ecore_x_api.h"
 ECORE_X_API void ecore_x_window_root_properties_select(void);
-#undef EAPI
-#define EAPI
-
 
 #endif /* ifndef _ECORE_X_PRIVATE_H */

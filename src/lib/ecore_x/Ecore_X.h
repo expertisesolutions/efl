@@ -2787,7 +2787,4 @@ ECORE_X_API Ecore_X_Stack_Position                ecore_x_e_stack_position_get(E
 }
 #endif // ifdef __cplusplus
 
-#undef EAPI
-#define EAPI
-
 #endif // ifndef _ECORE_X_H
