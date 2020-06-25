@@ -21,10 +21,10 @@ typedef Eo Function_As_Argument;
  */
 #define FUNCTION_AS_ARGUMENT_CLASS function_as_argument_class_get()
 
-EAPI EAPI_WEAK const Efl_Class *function_as_argument_class_get(void);
+ const Efl_Class *function_as_argument_class_get(void);
 
-EAPI EAPI_WEAK void function_as_argument_set_cb(Eo *obj, void *cb_data, SimpleFunc cb, Eina_Free_Cb cb_free_cb);
+ void function_as_argument_set_cb(Eo *obj, void *cb_data, SimpleFunc cb, Eina_Free_Cb cb_free_cb);
 
-EAPI EAPI_WEAK char *function_as_argument_call_cb(Eo *obj, int a, double b) EFL_TRANSFER_OWNERSHIP EINA_WARN_UNUSED_RESULT;
+ char *function_as_argument_call_cb(Eo *obj, int a, double b) EFL_TRANSFER_OWNERSHIP EINA_WARN_UNUSED_RESULT;
 
 #endif
