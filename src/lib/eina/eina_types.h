@@ -73,13 +73,6 @@
 #  endif
 #endif
 
-/**
- * @def EWAPI
- * @brief Weak symbols part of the EFL API.
- * Note: Not supported on all platforms.
- */
-#define EWAPI EINA_API EINA_API_WEAK
-
 #ifdef _WIN32
 # ifdef DLL_EXPORT
 #  define EXPORTAPI __declspec(dllexport)
