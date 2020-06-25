@@ -1,5 +1,6 @@
 #ifndef EINA_FNMATCH_H
 #define EINA_FNMATCH_H
+#include "eina_types.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -20,7 +21,7 @@ extern "C"
 /* Value returned by `fnmatch' if STRING does not match PATTERN.  */
 #define FNM_NOMATCH 1
 
-int eina_fnmatch(const char *pattern, const char *string, int flags);
+EINA_API int eina_fnmatch(const char *pattern, const char *string, int flags);
 
 #else /* _WIN32 */
 
@@ -32,6 +33,6 @@ int eina_fnmatch(const char *pattern, const char *string, int flags);
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* EINA_FNMATCH_H */
