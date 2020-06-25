@@ -3,8 +3,8 @@
 
 #include "Emotion.h"
 
-#ifdef EAPI
-# undef EAPI
+#ifdef EMOTION_API
+# undef EMOTION_API
 #endif
 
 #ifdef _WIN32
@@ -12,7 +12,7 @@
 #  ifdef DLL_EXPORT
 #   define EMOTION_API __declspec(dllexport)
 #  else
-#   define EAPI
+#   define EMOTION_API
 #  endif
 # else
 #  define EMOTION_API __declspec(dllimport)
@@ -22,10 +22,10 @@
 #  if __GNUC__ >= 4
 #   define EMOTION_API __attribute__ ((visibility("default")))
 #  else
-#   define EAPI
+#   define EMOTION_API
 #  endif
 # else
-#  define EAPI
+#  define EMOTION_API
 # endif
 #endif
 
@@ -163,7 +163,7 @@ EMOTION_API const char *emotion_webcam_custom_get(const char *device);
 EMOTION_API Eina_Bool _emotion_module_register(const Emotion_Engine *api);
 EMOTION_API Eina_Bool _emotion_module_unregister(const Emotion_Engine *api);
 
-#undef EAPI
-#define EAPI
+#undef EMOTION_API
+#define EMOTION_API
 
 #endif
