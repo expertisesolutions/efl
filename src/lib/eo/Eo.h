@@ -1282,7 +1282,7 @@ __##Name##_failed: EINA_COLD; \
 #define _EFL_OBJECT_API_AFTER_HOOK
 #define _EFL_OBJECT_API_CALL_HOOK(x) x
 
-// to define an EAPI function
+// to define an EO_API function
 #define _EFL_OBJECT_FUNC_BODY(Name, ObjType, Ret, DefRet, ErrorCase) \
   Ret \
   Name(ObjType obj) \
