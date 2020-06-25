@@ -262,16 +262,16 @@ EVAS_API void efl_canvas_object_is_frame_object_set(Eo *obj, Eina_Bool is_frame)
  */
 EVAS_API Eina_Bool efl_canvas_object_is_frame_object_get(const Eo *obj);
 
-EWAPI extern const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE;
 #define EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE (&(_EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE))
 
-EWAPI extern const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_POST;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_POST;
 #define EVAS_CANVAS_EVENT_RENDER_FLUSH_POST (&(_EVAS_CANVAS_EVENT_RENDER_FLUSH_POST))
 
-EWAPI extern const Efl_Event_Description _EVAS_CANVAS_EVENT_AXIS_UPDATE;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_CANVAS_EVENT_AXIS_UPDATE;
 #define EVAS_CANVAS_EVENT_AXIS_UPDATE (&(_EVAS_CANVAS_EVENT_AXIS_UPDATE))
 
-EWAPI extern const Efl_Event_Description _EVAS_CANVAS_EVENT_VIEWPORT_RESIZE;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_CANVAS_EVENT_VIEWPORT_RESIZE;
 #define EVAS_CANVAS_EVENT_VIEWPORT_RESIZE (&(_EVAS_CANVAS_EVENT_VIEWPORT_RESIZE))
 
 #define EFL_CANVAS_GROUP_DEL_OPS(kls) EFL_OBJECT_OP_FUNC(efl_canvas_group_del, _##kls##_efl_canvas_group_group_del)
@@ -279,7 +279,7 @@ EWAPI extern const Efl_Event_Description _EVAS_CANVAS_EVENT_VIEWPORT_RESIZE;
 #define EFL_CANVAS_GROUP_ADD_DEL_OPS(kls) EFL_CANVAS_GROUP_ADD_OPS(kls), EFL_CANVAS_GROUP_DEL_OPS(kls)
 
 /* Efl.Animation.Player */
-EWAPI extern const Efl_Event_Description _EFL_ANIMATION_PLAYER_EVENT_PRE_STARTED;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EFL_ANIMATION_PLAYER_EVENT_PRE_STARTED;
 #define EFL_ANIMATION_PLAYER_EVENT_PRE_STARTED (&(_EFL_ANIMATION_PLAYER_EVENT_PRE_STARTED))
 /* Efl.Animation.Player END */
 
@@ -309,7 +309,7 @@ EVAS_API Eina_Bool efl_text_formatter_item_geometry_get(const Efl_Text_Attribute
 }
 #endif
 
-#undef EAPI
-#define EAPI
+#undef EVAS_API
+#define EVAS_API
 
 #endif

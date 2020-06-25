@@ -1454,13 +1454,13 @@ Evas_Load_Error _efl_gfx_image_load_error_to_evas_load_error(Eina_Error err);
   while (0);
 
 /* BEGIN: events to maintain compatibility with legacy */
-EWAPI extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_SHOW;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_SHOW;
 #define EFL_GFX_ENTITY_EVENT_SHOW (&(_EFL_GFX_ENTITY_EVENT_SHOW))
-EWAPI extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_HIDE;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_HIDE;
 #define EFL_GFX_ENTITY_EVENT_HIDE (&(_EFL_GFX_ENTITY_EVENT_HIDE))
-EWAPI extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_IMAGE_PRELOAD;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_IMAGE_PRELOAD;
 #define EFL_GFX_IMAGE_EVENT_IMAGE_PRELOAD (&(_EFL_GFX_ENTITY_EVENT_IMAGE_PRELOAD))
-EWAPI extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_IMAGE_UNLOAD;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EFL_GFX_ENTITY_EVENT_IMAGE_UNLOAD;
 #define EFL_GFX_IMAGE_EVENT_IMAGE_UNLOAD (&(_EFL_GFX_ENTITY_EVENT_IMAGE_UNLOAD))
 /* END: events to maintain compatibility with legacy */
 
@@ -1552,8 +1552,8 @@ _gfx_to_evas_render_op(Efl_Gfx_Render_Op rop)
 }
 #endif
 
-#undef EAPI
-#define EAPI
+#undef EVAS_API
+#define EVAS_API
 
 #endif
 

@@ -1151,7 +1151,7 @@ EVAS_API void generic_cache_data_drop(Generic_Cache *cache, void *key);
 }
 #endif
 
-#undef EAPI
-#define EAPI
+#undef EVAS_API
+#define EVAS_API
 
 #endif

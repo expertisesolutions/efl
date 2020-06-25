@@ -19,7 +19,7 @@ typedef Eo Evas_Text;
  */
 #define EVAS_TEXT_CLASS evas_text_class_get()
 
-EWAPI const Efl_Class *evas_text_class_get(void);
+EVAS_API EVAS_WEAK_API const Efl_Class *evas_text_class_get(void);
 
 /**
  * @brief Controls the shadow color for the given text object.

@@ -6116,7 +6116,7 @@ EvasGLImage *img = glapi->evasglCreateImageForContext
 }
 #endif
 
-#undef EAPI
-#define EAPI
+#undef EVAS_API
+#define EVAS_API
 
 #endif

@@ -19,7 +19,7 @@ typedef Eo Evas_Line;
  */
 #define EVAS_LINE_CLASS evas_line_class_get()
 
-EWAPI const Efl_Class *evas_line_class_get(void);
+EVAS_API EVAS_WEAK_API const Efl_Class *evas_line_class_get(void);
 
 /**
  * @brief Sets the coordinates of the end points of the given evas line object.

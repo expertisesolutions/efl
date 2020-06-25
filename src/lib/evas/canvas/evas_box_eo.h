@@ -19,7 +19,7 @@ typedef Eo Evas_Box;
  */
 #define EVAS_BOX_CLASS evas_box_class_get()
 
-EWAPI const Efl_Class *evas_box_class_get(void);
+EVAS_API EVAS_WEAK_API const Efl_Class *evas_box_class_get(void);
 
 /**
  * @brief Set the alignment of the whole bounding box of contents, for a given
@@ -224,7 +224,7 @@ EVAS_API void evas_obj_box_layout_vertical(Eo *obj, Evas_Object_Box_Data *priv, 
 EVAS_API void evas_obj_box_layout_homogeneous_max_size_horizontal(Eo *obj, Evas_Object_Box_Data *priv, void *data);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child Child object to be removed
@@ -251,7 +251,7 @@ EVAS_API Efl_Canvas_Object *evas_obj_box_internal_remove(Eo *obj, Efl_Canvas_Obj
 EVAS_API void evas_obj_box_layout_flow_vertical(Eo *obj, Evas_Object_Box_Data *priv, void *data);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] opt Box option to be freed
@@ -409,7 +409,7 @@ EVAS_API Evas_Object_Box_Option *evas_obj_box_prepend(Eo *obj, Efl_Canvas_Object
 EVAS_API Eina_Accessor *evas_obj_box_accessor_new(const Eo *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child Child object to be appended
@@ -441,7 +441,7 @@ EVAS_API Evas_Object_Box_Option *evas_obj_box_internal_append(Eo *obj, Efl_Canva
 EVAS_API Eina_Bool evas_obj_box_option_property_vset(Eo *obj, Evas_Object_Box_Option *opt, int property, va_list *args) EINA_ARG_NONNULL(2);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] pos Position of object to be removed
@@ -499,7 +499,7 @@ EVAS_API Eina_Bool evas_obj_box_remove_at(Eo *obj, unsigned int pos);
 EVAS_API Eina_Bool evas_obj_box_option_property_vget(const Eo *obj, Evas_Object_Box_Option *opt, int property, va_list *args) EINA_ARG_NONNULL(2);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child Child object to be inserted
@@ -558,7 +558,7 @@ EVAS_API Evas_Object_Box_Option *evas_obj_box_insert_before(Eo *obj, Efl_Canvas_
 EVAS_API const char *evas_obj_box_option_property_name_get(const Eo *obj, int property) EINA_WARN_UNUSED_RESULT;
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child Object to be inserted
@@ -608,7 +608,7 @@ EVAS_API Evas_Object_Box_Option *evas_obj_box_internal_insert_before(Eo *obj, Ef
 EVAS_API void evas_obj_box_layout_homogeneous_horizontal(Eo *obj, Evas_Object_Box_Data *priv, void *data);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child New box object
@@ -636,7 +636,7 @@ EVAS_API Evas_Object_Box_Option *evas_obj_box_internal_option_new(Eo *obj, Efl_C
 EVAS_API void evas_obj_box_layout_homogeneous_max_size_vertical(Eo *obj, Evas_Object_Box_Data *priv, void *data);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child Object to be inserted
@@ -676,7 +676,7 @@ EVAS_API Evas_Object_Box_Option *evas_obj_box_internal_insert_after(Eo *obj, Efl
 EVAS_API Evas_Object_Box_Option *evas_obj_box_insert_at(Eo *obj, Efl_Canvas_Object *child, unsigned int pos) EINA_ARG_NONNULL(2);
 
 /**
- * @brief No description supplied by the EAPI.
+ * @brief No description supplied by the EVAS_API.
  *
  * @param[in] obj The object.
  * @param[in] child Object to be prepended
@@ -797,7 +797,7 @@ EVAS_API void evas_obj_box_layout_flow_horizontal(Eo *obj, Evas_Object_Box_Data 
  */
 EVAS_API int evas_obj_box_count(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
 
 /** Called when a child object was added to the box
  * @return Evas_Object_Box_Option *
@@ -806,7 +806,7 @@ EWAPI extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
  */
 #define EVAS_BOX_EVENT_CHILD_ADDED (&(_EVAS_BOX_EVENT_CHILD_ADDED))
 
-EWAPI extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED;
+EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED;
 
 /** Called when a child object was removed from the box
  * @return Efl_Canvas_Object *

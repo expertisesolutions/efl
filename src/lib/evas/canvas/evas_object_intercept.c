@@ -219,7 +219,7 @@ _evas_object_intercept_call_internal(Evas_Object *eo_obj,
 /* This is a legacy-only compatibility function.
  * Made public for other parts of EFL (elm, ecore_evas).
  */
-EWAPI Eina_Bool
+EVAS_API EVAS_WEAK_API Eina_Bool
 _evas_object_intercept_call(Evas_Object *eo_obj, Evas_Object_Intercept_Cb_Type cb_type,
                             int internal, ...)
 {

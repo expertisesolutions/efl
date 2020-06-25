@@ -293,7 +293,7 @@ EVAS_API void efl_text_cursor_object_handle_set(Eo *obj, Efl_Text_Cursor_Handle 
  */
 EVAS_API Efl_Text_Cursor_Handle *efl_text_cursor_object_handle_get(const Eo *obj);
 
-#undef EAPI
-#define EAPI
+#undef EVAS_API
+#define EVAS_API
 
 #endif//#ifndef _EFL_CANVAS_TEXTBLOCK_INTERNAL_H

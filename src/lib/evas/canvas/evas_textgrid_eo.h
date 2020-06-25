@@ -53,7 +53,7 @@ typedef struct _Evas_Textgrid_Cell Evas_Textgrid_Cell;
  */
 #define EVAS_TEXTGRID_CLASS evas_textgrid_class_get()
 
-EWAPI const Efl_Class *evas_textgrid_class_get(void);
+EVAS_API EVAS_WEAK_API const Efl_Class *evas_textgrid_class_get(void);
 
 /**
  * @brief This function is not implemented yet, do not use.
