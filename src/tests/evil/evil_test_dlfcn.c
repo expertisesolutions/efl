@@ -24,6 +24,11 @@
 
 #include "evil_suite.h"
 
+#ifdef _MSC_VER
+# define EVIL_DLL "evil-1.dll"
+#else
+# define EVIL_DLL "libevil-1.dll"
+#endif
 
 typedef int (*_evil_init)(void);
 typedef int (*_evil_shutdwon)(void);
@@ -59,7 +64,7 @@ EFL_START_TEST(evil_dlfcn_dlsym_success)
    void *mod;
    int res;
 
-   mod = dlopen("evil-1.dll", 0);
+   mod = dlopen(EVIL_DLL, 0);
    fail_if(mod == NULL);
 
    sym_init = dlsym(mod, "evil_init");
@@ -81,7 +86,7 @@ EFL_START_TEST(evil_dlfcn_dlsym_failure)
    void *sym;
    int res;
 
-   mod = dlopen("evil-1.dll", 0);
+   mod = dlopen(EVIL_DLL, 0);
    fail_if(mod == NULL);
 
    /* non-existent symbol */
@@ -101,7 +106,7 @@ EFL_START_TEST(evil_dlfcn_dladdr)
    char *dll;
    int res;
 
-   mod = dlopen("evil-1.dll", 0);
+   mod = dlopen(EVIL_DLL, 0);
    fail_if(mod == NULL);
 
    sym = dlsym(mod, "evil_init");
@@ -112,7 +117,7 @@ EFL_START_TEST(evil_dlfcn_dladdr)
 
    fail_if(mod != info.dli_fbase);
    dll = strrchr(info.dli_fname, '\\') + 1;
-   fail_if(strcmp("evil-1.dll", dll) != 0);
+   fail_if(strcmp(EVIL_DLL, dll) != 0);
    fail_if(sym != info.dli_saddr);
    fail_if(strcmp("evil_init", info.dli_sname) != 0);
 
