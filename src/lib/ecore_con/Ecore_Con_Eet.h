@@ -291,7 +291,4 @@ ECORE_CON_API void ecore_con_eet_raw_send(Ecore_Con_Reply *reply, const char *pr
 }
 #endif
 
-#undef EAPI
-#define EAPI
-
 #endif
