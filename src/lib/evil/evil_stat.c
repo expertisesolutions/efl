@@ -9,7 +9,7 @@
 
 #define	AT_SYMLINK_NOFOLLOW	0x01
 
-EAPI int 
+EVIL_API_H int 
 fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
 {
    int r_fstatat;
@@ -39,7 +39,7 @@ fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
         copied = GetModuleFileName(NULL, pathbuf, pathbuf_size);
 
         int size_str;
-        for (size_str = strlen(pathbuf); size_str >= 0; size_str -- )
+        for (size_str = strlen(pathbuf); size_str >= 0; size_str --)
          {
             if (pathbuf[size_str] == '\\')
               {
@@ -67,7 +67,7 @@ fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
      }
 }
 
-EAPI int 
+EVIL_API_H int 
 fstatat64(int dirfd, const char *pathname, struct stat *statbuf, int flags)
 {
    int r_fstatat;
@@ -97,7 +97,7 @@ fstatat64(int dirfd, const char *pathname, struct stat *statbuf, int flags)
         copied = GetModuleFileName(NULL, pathbuf, pathbuf_size);
 
         int size_str;
-        for (size_str = strlen(pathbuf); size_str >= 0; size_str -- )
+        for (size_str = strlen(pathbuf); size_str >= 0; size_str --)
          {
             if (pathbuf[size_str] == '\\')
               {

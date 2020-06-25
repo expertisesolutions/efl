@@ -16,9 +16,9 @@ typedef  int  mode_t ;
 # define stat64 _stat64
 #endif
 
-EAPI int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
+EVIL_API_H int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
-EAPI int fstatat64(int fd, const char *restrict path, struct stat *restrict buf, int flag);
+EVIL_API_H int fstatat64(int fd, const char *restrict path, struct stat *restrict buf, int flag);
 
 // Missing definitions:
 // Note: some pieces of code were based on LibreSSL-Portable's compat lib and
