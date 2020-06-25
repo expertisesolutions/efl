@@ -310,7 +310,4 @@ EFL_API void __efl_internal_init(void);
 }
 #endif
 
-#undef EFL_API
-#define EFL_API
-
 #endif
