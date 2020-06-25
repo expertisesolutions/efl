@@ -36,6 +36,8 @@ exit /B %errorlevel%
         exit /B 1
     )
     set all_set=
+
+    set pkg_config_libdir=thistotallydoesnotexist
 exit /B 0
 
 
