@@ -431,7 +431,7 @@ endif
 
 subprojects = [
 # name              |   option              | mod  | lib  | bin  | bench | tests | examples | true if build in efl-one | pkg-config options | name of static libs
-['evil'             ,[]                    , false,  true, false, false, false, false,  true, [], []],
+['evil'             ,[]                    , false,  true, false, false,  true, false,  true, [], []],
 ['eina'             ,[]                    , false,  true,  true,  true,  true,  true,  true, [], []],
 ['eolian'           ,[]                    , false,  true,  true, false,  true, false, false, ['eina'], []],
 ['eo'               ,[]                    , false,  true, false,  true,  true, false,  true, ['eina'], []],
