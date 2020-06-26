@@ -1028,7 +1028,7 @@ elementary_lib = library('elementary',
     dependencies: elementary_pub_deps + elementary_deps + elementary_ext_deps,
     include_directories : config_dir + [include_directories('.')] + [include_directories(join_paths('..', '..', '..'))],
     install: true,
-    c_args : elm_package_c_args,
+    c_args : [elm_package_c_args, '-DELM_BUILD'],
     version : meson.project_version()
 )
 
