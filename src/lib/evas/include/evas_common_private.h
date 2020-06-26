@@ -62,7 +62,7 @@
 #endif
 
 /* macros needed to log message through eina_log */
-extern EVAS_API int _evas_log_dom_global;
+EVAS_API extern int _evas_log_dom_global;
 #ifdef  _EVAS_DEFAULT_LOG_DOM
 # undef _EVAS_DEFAULT_LOG_DOM
 #endif
