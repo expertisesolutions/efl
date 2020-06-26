@@ -5,12 +5,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <math.h>
 #include <sys/types.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <sys/time.h>
+
+#ifndef _WIN32
+# include <unistd.h>
+# include <sys/time.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include "Ecore.h"
 #include "ecore_private.h"

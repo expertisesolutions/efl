@@ -35,7 +35,7 @@
  *
  * Supported OS: Windows XP.
  */
-EAPI char *strptime(const char *buf, const char *fmt, struct tm *tm);
+EVIL_API char *strptime(const char *buf, const char *fmt, struct tm *tm);
 
 
 /**

@@ -7,10 +7,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <math.h>
-#include <sys/time.h>
 #include <errno.h>
+
+#ifndef _WIN32
+# include <sys/time.h>
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 
 #include "Ecore.h"
 #include "ecore_private.h"

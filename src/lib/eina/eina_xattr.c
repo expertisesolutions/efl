@@ -183,7 +183,7 @@ _eina_xattr_ls_iterator_free(Eina_Xattr_Iterator *it)
  *                                   API                                      *
  *============================================================================*/
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_xattr_value_fd_ls(int fd)
 {
 #ifdef HAVE_XATTR
@@ -227,7 +227,7 @@ eina_xattr_value_fd_ls(int fd)
 #endif
 }
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_xattr_fd_ls(int fd)
 {
 #ifdef HAVE_XATTR
@@ -263,7 +263,7 @@ eina_xattr_fd_ls(int fd)
 #endif
 }
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_xattr_ls(const char *file)
 {
 #ifdef HAVE_XATTR
@@ -299,7 +299,7 @@ eina_xattr_ls(const char *file)
 #endif
 }
 
-EAPI Eina_Iterator *
+EINA_API Eina_Iterator *
 eina_xattr_value_ls(const char *file)
 {
 #ifdef HAVE_XATTR
@@ -345,7 +345,7 @@ eina_xattr_value_ls(const char *file)
 #endif
 }
 
-EAPI void *
+EINA_API void *
 eina_xattr_get(const char *file, const char *attribute, ssize_t *size)
 {
 #ifdef HAVE_XATTR
@@ -384,7 +384,7 @@ eina_xattr_get(const char *file, const char *attribute, ssize_t *size)
 #endif
 }
 
-EAPI void *
+EINA_API void *
 eina_xattr_fd_get(int fd, const char *attribute, ssize_t *size)
 {
 #ifdef HAVE_XATTR
@@ -422,7 +422,7 @@ eina_xattr_fd_get(int fd, const char *attribute, ssize_t *size)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_set(const char *file, const char *attribute, const void *data, ssize_t length, Eina_Xattr_Flags flags)
 {
 #ifdef HAVE_XATTR
@@ -455,7 +455,7 @@ eina_xattr_set(const char *file, const char *attribute, const void *data, ssize_
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_fd_set(int fd, const char *attribute, const void *data, ssize_t length, Eina_Xattr_Flags flags)
 {
 #ifdef HAVE_XATTR
@@ -487,7 +487,7 @@ eina_xattr_fd_set(int fd, const char *attribute, const void *data, ssize_t lengt
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_del(const char *file, const char *attribute)
 {
 #ifdef HAVE_XATTR
@@ -501,7 +501,7 @@ eina_xattr_del(const char *file, const char *attribute)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_fd_del(int fd, const char *attribute)
 {
 #ifdef HAVE_XATTR
@@ -514,7 +514,7 @@ eina_xattr_fd_del(int fd, const char *attribute)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_string_set(const char *file, const char *attribute, const char *data, Eina_Xattr_Flags flags)
 {
    EINA_SAFETY_ON_NULL_RETURN_VAL(data, EINA_FALSE);
@@ -522,7 +522,7 @@ eina_xattr_string_set(const char *file, const char *attribute, const char *data,
    return eina_xattr_set(file, attribute, data, strlen(data) + 1, flags);
 }
 
-EAPI char *
+EINA_API char *
 eina_xattr_string_get(const char *file, const char *attribute)
 {
    char *tmp;
@@ -540,7 +540,7 @@ eina_xattr_string_get(const char *file, const char *attribute)
    return tmp;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_double_set(const char *file, const char *attribute, double value, Eina_Xattr_Flags flags)
 {
    char buffer[128];
@@ -549,7 +549,7 @@ eina_xattr_double_set(const char *file, const char *attribute, double value, Ein
    return eina_xattr_string_set(file, attribute, buffer, flags);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_double_get(const char *file, const char *attribute, double *value)
 {
    char *tmp;
@@ -573,7 +573,7 @@ eina_xattr_double_get(const char *file, const char *attribute, double *value)
    return EINA_TRUE;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_int_set(const char *file, const char *attribute, int value, Eina_Xattr_Flags flags)
 {
    char buffer[10];
@@ -582,7 +582,7 @@ eina_xattr_int_set(const char *file, const char *attribute, int value, Eina_Xatt
    return eina_xattr_string_set(file, attribute, buffer, flags);
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_int_get(const char *file, const char *attribute, int *value)
 {
    char *tmp;
@@ -601,7 +601,7 @@ eina_xattr_int_get(const char *file, const char *attribute, int *value)
    return result;
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_copy(const char *src, const char *dst)
 {
 #ifdef HAVE_XATTR
@@ -632,7 +632,7 @@ eina_xattr_copy(const char *src, const char *dst)
 #endif
 }
 
-EAPI Eina_Bool
+EINA_API Eina_Bool
 eina_xattr_fd_copy(int src, int dst)
 {
 #ifdef HAVE_XATTR

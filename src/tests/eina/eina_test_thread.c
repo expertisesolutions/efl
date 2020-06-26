@@ -1,5 +1,5 @@
 /* EINA - EFL data type library
- * Copyright (C) 2008 Cedric Bail
+ * Copyright (C) 2020 Cauê Baasch de Souza
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,38 +16,18 @@
  * if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EINA_HAMSTER_H_
-#define EINA_HAMSTER_H_
+#include <Eina.h>
 
-/**
- * @addtogroup Eina_Core_Group Core
- *
- * @{
- */
+#include "eina_suite.h"
 
-/**
- * @defgroup Eina_Hamster_Group Hamster
- *
- * @brief These functions provide hamster calls.
- *
- * @{
- */
+EFL_START_TEST(eina_thread_test_self_id)
+{
+    ck_assert_int_eq(eina_thread_self_id(), eina_thread_id(eina_thread_self()));
+}
+EFL_END_TEST
 
-/**
- * @brief Gets the hamster count.
- *
- * @return The number of available hamsters.
- *
- * This function returns how many hamsters you have.
- */
-EINA_API int eina_hamster_count(void);
-
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-#endif /* EINA_HAMSTER_H_ */
+void
+eina_test_thread(TCase *tc)
+{
+   tcase_add_test(tc, eina_thread_test_self_id);
+}

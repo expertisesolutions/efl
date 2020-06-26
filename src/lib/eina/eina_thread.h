@@ -71,7 +71,7 @@ typedef enum _Eina_Thread_Priority
  * @return identifier of current thread.
  * @since 1.8
  */
-EAPI Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
+EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Returns an integral compatible identifier of the current thread.
@@ -83,7 +83,15 @@ EAPI Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
  * @return integral identifier of current thread.
  * @since 1.25
  */
-EAPI Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
+EINA_API Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
+
+/**
+ * @brief Returns an integral compatible identifier of a given thread.
+ *
+ * @return integral identifier of the thread.
+ * @since 1.25
+ */
+EINA_API Eina_ThreadId eina_thread_id(Eina_Thread t) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Checks if two thread identifiers are the same.
@@ -92,7 +100,7 @@ EAPI Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
  * @return #EINA_TRUE if they are equal, #EINA_FALSE otherwise.
  * @since 1.8
  */
-EAPI Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSED_RESULT;
+EINA_API Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Creates a new thread, setting its priority and affinity.
@@ -105,7 +113,7 @@ EAPI Eina_Bool eina_thread_equal(Eina_Thread t1, Eina_Thread t2) EINA_WARN_UNUSE
  * @return #EINA_TRUE if thread was created, #EINA_FALSE on errors.
  * @since 1.8
  */
-EAPI Eina_Bool eina_thread_create(Eina_Thread *t,
+EINA_API Eina_Bool eina_thread_create(Eina_Thread *t,
                                   Eina_Thread_Priority prio, int affinity,
                                   Eina_Thread_Cb func, const void *data) EINA_ARG_NONNULL(1, 4) EINA_WARN_UNUSED_RESULT;
 
@@ -121,7 +129,7 @@ EAPI Eina_Bool eina_thread_create(Eina_Thread *t,
  *
  * @since 1.19
  */
-EAPI extern const void *EINA_THREAD_JOIN_CANCELED;
+EINA_API extern const void *EINA_THREAD_JOIN_CANCELED;
 
 /**
  * @brief Joins a currently running thread, waiting until it finishes.
@@ -138,7 +146,7 @@ EAPI extern const void *EINA_THREAD_JOIN_CANCELED;
  *         EINA_THREAD_JOIN_CANCELED.
  * @since 1.8
  */
-EAPI void *eina_thread_join(Eina_Thread t);
+EINA_API void *eina_thread_join(Eina_Thread t);
 
 /**
  * @brief Sets the name of a given thread for debugging purposes.
@@ -155,7 +163,7 @@ EAPI void *eina_thread_join(Eina_Thread t);
  *         otherwise.
  * @since 1.16
  */
-EAPI Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
+EINA_API Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
 
 /**
  * @brief Attempts to cancel a running thread.
@@ -178,7 +186,7 @@ EAPI Eina_Bool eina_thread_name_set(Eina_Thread t, const char *name);
  *
  * @since 1.19
  */
-EAPI Eina_Bool eina_thread_cancel(Eina_Thread t);
+EINA_API Eina_Bool eina_thread_cancel(Eina_Thread t);
 
 /**
  * @brief Enables or disables if the current thread can be canceled.
@@ -216,7 +224,7 @@ EAPI Eina_Bool eina_thread_cancel(Eina_Thread t);
  *
  * @since 1.19
  */
-EAPI Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable);
+EINA_API Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was_cancellable);
 
 /**
  * If the current thread is cancellable, this introduces a
@@ -232,7 +240,7 @@ EAPI Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool *was
  *
  * @since 1.19
  */
-EAPI void eina_thread_cancel_checkpoint(void);
+EINA_API void eina_thread_cancel_checkpoint(void);
 
 /**
  * @typedef Eina_Thread_Cancellable_Run_Cb
@@ -284,7 +292,7 @@ typedef void *(*Eina_Thread_Cancellable_Run_Cb)(void *data);
  *
  * @since 1.19
  */
-EAPI void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
+EINA_API void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
 
 typedef struct _Eina_Thread_Call Eina_Thread_Call;
 struct _Eina_Thread_Call

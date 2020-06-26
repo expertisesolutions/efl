@@ -54,6 +54,7 @@ static const Efl_Test_Case etc[] = {
    { "Convert", eina_test_convert },
    { "Rbtree", eina_test_rbtree },
    { "File", eina_test_file },
+   { "Thread", eina_test_thread },
    { "Benchmark", eina_test_benchmark },
    { "Mempool", eina_test_mempool },
    { "Rectangle", eina_test_rectangle },

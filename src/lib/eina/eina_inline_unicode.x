@@ -19,10 +19,10 @@
 #ifndef EINA_INLINE_UNICODE_
 # define EINA_INLINE_UNICODE_
 
-EAPI Eina_Unicode _eina_unicode_utf8_next_get(int ind,
-                                              unsigned char d,
-                                              const char *buf,
-                                              int *iindex);
+EINA_API Eina_Unicode _eina_unicode_utf8_next_get(int ind,
+                                                  unsigned char d,
+                                                  const char *buf,
+                                                  int *iindex);
 
 #define ERROR_REPLACEMENT_BASE  0xDC80
 #define EINA_IS_INVALID_BYTE(x)      ((x == 192) || (x == 193) || (x >= 245))
