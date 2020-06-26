@@ -445,7 +445,4 @@ const char *evas_font_lang_normalize(const char *lang);
 void * evas_font_load(const Eina_List *font_paths, int hinting, Evas_Font_Description *fdesc, const char *source, Evas_Font_Size size, Efl_Text_Font_Bitmap_Scalable bitmap_scalable);
 void evas_font_load_hinting_set(void *font, int hinting);
 
-#undef EVAS_API
-#define EVAS_API
-
 #endif /* _EVAS_FONT_H */

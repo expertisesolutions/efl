@@ -322,7 +322,4 @@ struct _Evas_Filter_Data_Binding
    Eina_Bool execute : 1;
 };
 
-#undef EVAS_API
-#define EVAS_API
-
 #endif

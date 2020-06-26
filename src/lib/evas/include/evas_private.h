@@ -1552,8 +1552,5 @@ _gfx_to_evas_render_op(Efl_Gfx_Render_Op rop)
 }
 #endif
 
-#undef EVAS_API
-#define EVAS_API
-
 #endif
 

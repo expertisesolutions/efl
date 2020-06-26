@@ -309,7 +309,4 @@ EVAS_API Eina_Bool efl_text_formatter_item_geometry_get(const Efl_Text_Attribute
 }
 #endif
 
-#undef EVAS_API
-#define EVAS_API
-
 #endif
