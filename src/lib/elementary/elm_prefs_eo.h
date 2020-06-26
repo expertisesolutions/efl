@@ -19,7 +19,7 @@ typedef Eo Elm_Prefs;
  */
 #define ELM_PREFS_CLASS elm_prefs_class_get()
 
-EWAPI const Efl_Class *elm_prefs_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_prefs_class_get(void);
 
 /**
  * @brief Set user data for a given prefs widget
@@ -333,7 +333,7 @@ ELM_API void elm_obj_prefs_item_visible_set(Eo *obj, const char *name, Eina_Bool
  */
 ELM_API Eina_Bool elm_obj_prefs_item_visible_get(const Eo *obj, const char *name);
 
-EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_CHANGED;
 
 /** Called when page changed
  * @return const char *
@@ -342,7 +342,7 @@ EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_CHANGED;
  */
 #define ELM_PREFS_EVENT_PAGE_CHANGED (&(_ELM_PREFS_EVENT_PAGE_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_SAVED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_SAVED;
 
 /** Called when page was saved
  * @return const char *
@@ -351,7 +351,7 @@ EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_SAVED;
  */
 #define ELM_PREFS_EVENT_PAGE_SAVED (&(_ELM_PREFS_EVENT_PAGE_SAVED))
 
-EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_LOADED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_LOADED;
 
 /** Called when page got loaded
  * @return const char *
@@ -360,7 +360,7 @@ EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_LOADED;
  */
 #define ELM_PREFS_EVENT_PAGE_LOADED (&(_ELM_PREFS_EVENT_PAGE_LOADED))
 
-EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_ITEM_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_PREFS_EVENT_ITEM_CHANGED;
 
 /** Called when item changed
  * @return const char *
@@ -369,7 +369,7 @@ EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_ITEM_CHANGED;
  */
 #define ELM_PREFS_EVENT_ITEM_CHANGED (&(_ELM_PREFS_EVENT_ITEM_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_PREFS_EVENT_ACTION;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_PREFS_EVENT_ACTION;
 
 /** Called when action was done
  * @return const char *

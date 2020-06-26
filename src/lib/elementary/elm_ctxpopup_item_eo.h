@@ -19,7 +19,7 @@ typedef Eo Elm_Ctxpopup_Item;
  */
 #define ELM_CTXPOPUP_ITEM_CLASS elm_ctxpopup_item_class_get()
 
-EWAPI const Efl_Class *elm_ctxpopup_item_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_ctxpopup_item_class_get(void);
 
 /**
  * @brief Get the item before this one in the widget's list of items.

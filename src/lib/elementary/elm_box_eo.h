@@ -19,7 +19,7 @@ typedef Eo Elm_Box;
  */
 #define ELM_BOX_CLASS elm_box_class_get()
 
-EWAPI const Efl_Class *elm_box_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_box_class_get(void);
 
 /**
  * @brief Set the box to arrange its children homogeneously
@@ -284,7 +284,7 @@ ELM_API void elm_obj_box_pack_before(Eo *obj, Efl_Canvas_Object *subobj, Efl_Can
  */
 ELM_API void elm_obj_box_clear(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
 
 /** Called when child was added
  * @return Efl_Object *
@@ -293,7 +293,7 @@ EWAPI extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
  */
 #define ELM_BOX_EVENT_CHILD_ADDED (&(_ELM_BOX_EVENT_CHILD_ADDED))
 
-EWAPI extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED;
 
 /** Called when child was removed
  * @return Efl_Object *

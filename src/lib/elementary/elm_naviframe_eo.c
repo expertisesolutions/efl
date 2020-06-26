@@ -1,10 +1,10 @@
-EWAPI const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED =
+ELM_API_WEAK const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED =
    EFL_EVENT_DESCRIPTION("transition,finished");
-EWAPI const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED =
+ELM_API_WEAK const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED =
    EFL_EVENT_DESCRIPTION("title,transition,finished");
-EWAPI const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED =
+ELM_API_WEAK const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED =
    EFL_EVENT_DESCRIPTION("title,clicked");
-EWAPI const Efl_Event_Description _ELM_NAVIFRAME_EVENT_ITEM_ACTIVATED =
+ELM_API_WEAK const Efl_Event_Description _ELM_NAVIFRAME_EVENT_ITEM_ACTIVATED =
    EFL_EVENT_DESCRIPTION("item,activated");
 
 void _elm_naviframe_event_enabled_set(Eo *obj, Elm_Naviframe_Data *pd, Eina_Bool enabled);

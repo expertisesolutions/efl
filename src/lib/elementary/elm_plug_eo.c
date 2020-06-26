@@ -1,6 +1,6 @@
-EWAPI const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_DELETED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_DELETED =
    EFL_EVENT_DESCRIPTION("image,deleted");
-EWAPI const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_RESIZED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_RESIZED =
    EFL_EVENT_DESCRIPTION("image,resized");
 
 Efl_Canvas_Object *_elm_plug_image_object_get(const Eo *obj, void *pd);

@@ -1,12 +1,12 @@
-EWAPI const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_CHANGED =
    EFL_EVENT_DESCRIPTION("page,changed");
-EWAPI const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_SAVED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_SAVED =
    EFL_EVENT_DESCRIPTION("page,saved");
-EWAPI const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_LOADED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PREFS_EVENT_PAGE_LOADED =
    EFL_EVENT_DESCRIPTION("page,loaded");
-EWAPI const Efl_Event_Description _ELM_PREFS_EVENT_ITEM_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PREFS_EVENT_ITEM_CHANGED =
    EFL_EVENT_DESCRIPTION("item,changed");
-EWAPI const Efl_Event_Description _ELM_PREFS_EVENT_ACTION =
+ELM_API_WEAK const Efl_Event_Description _ELM_PREFS_EVENT_ACTION =
    EFL_EVENT_DESCRIPTION("action");
 
 Eina_Bool _elm_prefs_data_set(Eo *obj, Elm_Prefs_Data *pd, Elm_Prefs_Data *data);

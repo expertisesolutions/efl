@@ -1,12 +1,12 @@
-EWAPI const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED =
+ELM_API_WEAK const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED =
    EFL_EVENT_DESCRIPTION("block,clicked");
-EWAPI const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT =
+ELM_API_WEAK const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT =
    EFL_EVENT_DESCRIPTION("timeout");
-EWAPI const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED =
+ELM_API_WEAK const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED =
    EFL_EVENT_DESCRIPTION("item,focused");
-EWAPI const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED =
+ELM_API_WEAK const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED =
    EFL_EVENT_DESCRIPTION("item,unfocused");
-EWAPI const Efl_Event_Description _ELM_POPUP_EVENT_DISMISSED =
+ELM_API_WEAK const Efl_Event_Description _ELM_POPUP_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
 
 void _elm_popup_align_set(Eo *obj, Elm_Popup_Data *pd, double horizontal, double vertical);

@@ -1,8 +1,8 @@
-EWAPI const Efl_Event_Description _ELM_NOTIFY_EVENT_BLOCK_CLICKED =
+ELM_API_WEAK const Efl_Event_Description _ELM_NOTIFY_EVENT_BLOCK_CLICKED =
    EFL_EVENT_DESCRIPTION("block,clicked");
-EWAPI const Efl_Event_Description _ELM_NOTIFY_EVENT_TIMEOUT =
+ELM_API_WEAK const Efl_Event_Description _ELM_NOTIFY_EVENT_TIMEOUT =
    EFL_EVENT_DESCRIPTION("timeout");
-EWAPI const Efl_Event_Description _ELM_NOTIFY_EVENT_DISMISSED =
+ELM_API_WEAK const Efl_Event_Description _ELM_NOTIFY_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
 
 void _elm_notify_align_set(Eo *obj, Elm_Notify_Data *pd, double horizontal, double vertical);

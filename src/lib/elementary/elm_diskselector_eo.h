@@ -19,7 +19,7 @@ typedef Eo Elm_Diskselector;
  */
 #define ELM_DISKSELECTOR_CLASS elm_diskselector_class_get()
 
-EWAPI const Efl_Class *elm_diskselector_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_diskselector_class_get(void);
 
 /**
  * @brief Set the side labels max length.

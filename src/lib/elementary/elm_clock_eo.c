@@ -1,4 +1,4 @@
-EWAPI const Efl_Event_Description _ELM_CLOCK_EVENT_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_CLOCK_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
 
 void _elm_clock_show_am_pm_set(Eo *obj, Elm_Clock_Data *pd, Eina_Bool am_pm);

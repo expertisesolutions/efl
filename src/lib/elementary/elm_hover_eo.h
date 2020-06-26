@@ -32,7 +32,7 @@ typedef enum
  */
 #define ELM_HOVER_CLASS elm_hover_class_get()
 
-EWAPI const Efl_Class *elm_hover_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_hover_class_get(void);
 
 /**
  * @brief Sets the target object for the hover.
@@ -92,7 +92,7 @@ ELM_API const char *elm_obj_hover_best_content_location_get(const Eo *obj, Elm_H
  */
 ELM_API void elm_obj_hover_dismiss(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
 
 /** Called when hover changed
  * @return const char *
@@ -101,7 +101,7 @@ EWAPI extern const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
  */
 #define ELM_HOVER_EVENT_SMART_CHANGED (&(_ELM_HOVER_EVENT_SMART_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_HOVER_EVENT_DISMISSED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVER_EVENT_DISMISSED;
 
 /** Called when hover was dismissed
  *

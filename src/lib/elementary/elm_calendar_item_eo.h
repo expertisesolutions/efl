@@ -19,7 +19,7 @@ typedef Eo Elm_Calendar_Item;
  */
 #define ELM_CALENDAR_ITEM_CLASS elm_calendar_item_class_get()
 
-EWAPI const Efl_Class *elm_calendar_item_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_calendar_item_class_get(void);
 
 /**
  * @brief Day number property

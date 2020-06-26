@@ -128,7 +128,7 @@ typedef struct _Elm_Calendar_Mark Elm_Calendar_Mark;
  */
 #define ELM_CALENDAR_CLASS elm_calendar_class_get()
 
-EWAPI const Efl_Class *elm_calendar_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_calendar_class_get(void);
 
 /**
  * @brief The first day of week to use on calendar widgets'.
@@ -555,7 +555,7 @@ ELM_API void elm_obj_calendar_marks_draw(Eo *obj);
  */
 ELM_API Eina_Bool elm_obj_calendar_displayed_time_get(const Eo *obj, Efl_Time *displayed_time);
 
-EWAPI extern const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED;
 
 /** Emitted when the date in the calendar is changed
  *
@@ -563,7 +563,7 @@ EWAPI extern const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED;
  */
 #define ELM_CALENDAR_EVENT_CHANGED (&(_ELM_CALENDAR_EVENT_CHANGED))
 
-EWAPI extern const Efl_Event_Description _ELM_CALENDAR_EVENT_DISPLAY_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_CALENDAR_EVENT_DISPLAY_CHANGED;
 
 /** Emitted when the current month displayed in the calendar is changed
  *

@@ -19,7 +19,7 @@ typedef Eo Elm_Multibuttonentry;
  */
 #define ELM_MULTIBUTTONENTRY_CLASS elm_multibuttonentry_class_get()
 
-EWAPI const Efl_Class *elm_multibuttonentry_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_multibuttonentry_class_get(void);
 
 /**
  * @brief Control if the multibuttonentry is to be editable or not.
@@ -273,7 +273,7 @@ ELM_API void elm_obj_multibuttonentry_item_filter_append(Eo *obj, Elm_Multibutto
  */
 ELM_API Elm_Widget_Item *elm_obj_multibuttonentry_item_insert_after(Eo *obj, Elm_Widget_Item *after, const char *label, Evas_Smart_Cb func, void *data);
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_SELECTED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_SELECTED;
 
 /** Called when item was selected
  * @return Efl_Object *
@@ -282,7 +282,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_SELECT
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_ITEM_SELECTED (&(_ELM_MULTIBUTTONENTRY_EVENT_ITEM_SELECTED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_ADDED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_ADDED;
 
 /** Called when item was added
  * @return Efl_Object *
@@ -291,7 +291,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_ADDED;
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_ITEM_ADDED (&(_ELM_MULTIBUTTONENTRY_EVENT_ITEM_ADDED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_DELETED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_DELETED;
 
 /** Called when item was deleted
  * @return Efl_Object *
@@ -300,7 +300,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_DELETE
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_ITEM_DELETED (&(_ELM_MULTIBUTTONENTRY_EVENT_ITEM_DELETED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_CLICKED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_CLICKED;
 
 /** Called when item was clicked
  * @return Efl_Object *
@@ -309,7 +309,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_CLICKE
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_ITEM_CLICKED (&(_ELM_MULTIBUTTONENTRY_EVENT_ITEM_CLICKED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_LONGPRESSED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_LONGPRESSED;
 
 /** Called when item got a longpress
  * @return Efl_Object *
@@ -318,7 +318,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_ITEM_LONGPR
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_ITEM_LONGPRESSED (&(_ELM_MULTIBUTTONENTRY_EVENT_ITEM_LONGPRESSED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_EXPANDED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_EXPANDED;
 
 /** Called when expanded
  *
@@ -326,7 +326,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_EXPANDED;
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_EXPANDED (&(_ELM_MULTIBUTTONENTRY_EVENT_EXPANDED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_CONTRACTED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_CONTRACTED;
 
 /** Called when contracted
  *
@@ -334,7 +334,7 @@ EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_CONTRACTED;
  */
 #define ELM_MULTIBUTTONENTRY_EVENT_CONTRACTED (&(_ELM_MULTIBUTTONENTRY_EVENT_CONTRACTED))
 
-EWAPI extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_EXPAND_STATE_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MULTIBUTTONENTRY_EVENT_EXPAND_STATE_CHANGED;
 
 /** Called when expanded state changed
  * @return int

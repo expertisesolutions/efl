@@ -30,42 +30,7 @@
 
 #include "Elementary.h"
 #include "Efl_Ui.h"
-# ifdef EAPI
-#  undef EAPI
-# endif
-# ifdef EWAPI
-#  undef EWAPI
-# endif
-
-# ifdef _WIN32
-#  ifdef EFL_BUILD
-#   ifdef DLL_EXPORT
-#    define ELM_API __declspec(dllexport)
-#   else
-#    error "no DLL_EXPORT"
-#    define EAPI
-#   endif
-#  else
-#   define ELM_API __declspec(dllimport)
-#  endif
-#  define EAPI_WEAK
-# else
-#  ifdef __GNUC__
-#   if __GNUC__ >= 4
-#    define ELM_API __attribute__ ((visibility("default")))
-#    define EAPI_WEAK __attribute__ ((weak))
-#   else
-#    define EAPI
-#    define EAPI_WEAK
-#   endif
-#  else
-#   define EAPI
-#   define EAPI_WEAK
-#  endif
-# endif
-
-# define EWAPI ELM_API EAPI_WEAK
-
+#include "elementary_api.h"
 # include "elm_widget.h"
 # include "elm_code_private.h"
 #include "elm_access_eo.h"

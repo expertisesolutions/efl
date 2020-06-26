@@ -341,9 +341,6 @@ ELM_API int       elm_shutdown(void);
 }
 #endif
 
-#undef EAPI
-#define EAPI
-
 #endif
 
 // We are including efl_general.h again, just in case Efl_Core.h was already included before this

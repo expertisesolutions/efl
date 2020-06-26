@@ -1,4 +1,4 @@
-EWAPI const Efl_Event_Description _ELM_ACTIONSLIDER_EVENT_POS_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_ACTIONSLIDER_EVENT_POS_CHANGED =
    EFL_EVENT_DESCRIPTION("pos_changed");
 
 void _elm_actionslider_indicator_pos_set(Eo *obj, Elm_Actionslider_Data *pd, Elm_Actionslider_Pos pos);

@@ -1,72 +1,72 @@
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED =
    EFL_EVENT_DESCRIPTION("item,focused");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED =
    EFL_EVENT_DESCRIPTION("item,unfocused");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG =
    EFL_EVENT_DESCRIPTION("vbar,drag");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS =
    EFL_EVENT_DESCRIPTION("vbar,press");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS =
    EFL_EVENT_DESCRIPTION("vbar,unpress");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG =
    EFL_EVENT_DESCRIPTION("hbar,drag");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS =
    EFL_EVENT_DESCRIPTION("hbar,press");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS =
    EFL_EVENT_DESCRIPTION("hbar,unpress");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP =
    EFL_EVENT_DESCRIPTION("edge,top");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM =
    EFL_EVENT_DESCRIPTION("edge,bottom");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT =
    EFL_EVENT_DESCRIPTION("edge,left");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT =
    EFL_EVENT_DESCRIPTION("edge,right");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED =
    EFL_EVENT_DESCRIPTION("moved");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE =
    EFL_EVENT_DESCRIPTION("moved,before");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER =
    EFL_EVENT_DESCRIPTION("moved,after");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE =
    EFL_EVENT_DESCRIPTION("swipe");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN =
    EFL_EVENT_DESCRIPTION("multi,pinch,in");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT =
    EFL_EVENT_DESCRIPTION("multi,pinch,out");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN =
    EFL_EVENT_DESCRIPTION("multi,swipe,down");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP =
    EFL_EVENT_DESCRIPTION("multi,swipe,up");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT =
    EFL_EVENT_DESCRIPTION("multi,swipe,right");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT =
    EFL_EVENT_DESCRIPTION("multi,swipe,left");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED =
    EFL_EVENT_DESCRIPTION("released");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED =
    EFL_EVENT_DESCRIPTION("activated");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED =
    EFL_EVENT_DESCRIPTION("highlighted");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED =
    EFL_EVENT_DESCRIPTION("unhighlighted");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED =
    EFL_EVENT_DESCRIPTION("realized");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED =
    EFL_EVENT_DESCRIPTION("unrealized");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST =
    EFL_EVENT_DESCRIPTION("contract,request");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST =
    EFL_EVENT_DESCRIPTION("expand,request");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED =
    EFL_EVENT_DESCRIPTION("contracted");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED =
    EFL_EVENT_DESCRIPTION("expanded");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE =
    EFL_EVENT_DESCRIPTION("index,update");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED =
    EFL_EVENT_DESCRIPTION("tree,effect,finished");
-EWAPI const Efl_Event_Description _ELM_GENLIST_EVENT_FILTER_DONE =
+ELM_API_WEAK const Efl_Event_Description _ELM_GENLIST_EVENT_FILTER_DONE =
    EFL_EVENT_DESCRIPTION("filter,done");
 
 void _elm_genlist_homogeneous_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool homogeneous);

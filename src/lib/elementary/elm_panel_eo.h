@@ -31,7 +31,7 @@ typedef enum
  */
 #define ELM_PANEL_CLASS elm_panel_class_get()
 
-EWAPI const Efl_Class *elm_panel_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_panel_class_get(void);
 
 /**
  * @brief Set the orientation of the panel
@@ -129,7 +129,7 @@ ELM_API double elm_obj_panel_scrollable_content_size_get(const Eo *obj);
  */
 ELM_API void elm_obj_panel_toggle(Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_PANEL_EVENT_TOGGLED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_PANEL_EVENT_TOGGLED;
 
 /** Called when the hidden state was toggled
  *

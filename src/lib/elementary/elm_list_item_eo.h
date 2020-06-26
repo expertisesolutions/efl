@@ -19,7 +19,7 @@ typedef Eo Elm_List_Item;
  */
 #define ELM_LIST_ITEM_CLASS elm_list_item_class_get()
 
-EWAPI const Efl_Class *elm_list_item_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_list_item_class_get(void);
 
 /**
  * @brief Set or unset item as a separator.

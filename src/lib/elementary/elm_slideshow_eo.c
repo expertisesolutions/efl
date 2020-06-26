@@ -1,6 +1,6 @@
-EWAPI const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
-EWAPI const Efl_Event_Description _ELM_SLIDESHOW_EVENT_TRANSITION_END =
+ELM_API_WEAK const Efl_Event_Description _ELM_SLIDESHOW_EVENT_TRANSITION_END =
    EFL_EVENT_DESCRIPTION("transition,end");
 
 void _elm_slideshow_cache_after_set(Eo *obj, Elm_Slideshow_Data *pd, int count);

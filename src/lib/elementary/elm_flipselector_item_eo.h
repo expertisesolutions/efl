@@ -19,7 +19,7 @@ typedef Eo Elm_Flipselector_Item;
  */
 #define ELM_FLIPSELECTOR_ITEM_CLASS elm_flipselector_item_class_get()
 
-EWAPI const Efl_Class *elm_flipselector_item_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_flipselector_item_class_get(void);
 
 /**
  * @brief Set whether a given flip selector widget's item should be the

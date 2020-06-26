@@ -1,4 +1,4 @@
-EWAPI const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END =
+ELM_API_WEAK const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END =
    EFL_EVENT_DESCRIPTION("slide,end");
 
 void _elm_label_wrap_width_set(Eo *obj, Elm_Label_Data *pd, int w);

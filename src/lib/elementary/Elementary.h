@@ -78,44 +78,7 @@
 #include <EMap.h>
 #endif
 
-#ifdef EAPI
-# undef EAPI
-#endif
-#ifdef EWAPI
-# undef EWAPI
-#endif
-#ifdef EAPI_WEAK
-# undef EAPI_WEAK
-#endif
-
-#ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define ELM_API __declspec(dllexport)
-#  else
-#   define EAPI
-#  endif
-# else
-#  define ELM_API __declspec(dllimport)
-# endif
-# define EAPI_WEAK
-#else
-# ifdef __GNUC__
-#  if __GNUC__ >= 4
-#   define ELM_API __attribute__ ((visibility("default")))
-#   define EAPI_WEAK __attribute__ ((weak))
-#  else
-#   define EAPI
-#   define EAPI_WEAK
-# endif
-# else
-#  define EAPI
-#  define EAPI_WEAK
-# endif
-#endif
-
-#define EWAPI ELM_API EAPI_WEAK
-
+#include "elementary_api.h"
 
 /* allow usage from c++ */
 #ifdef __cplusplus
@@ -274,11 +237,6 @@ ELM_API extern Elm_Version *elm_version;
 
 #ifdef __cplusplus
 }
-#endif
-
-#ifndef EFL_BUILD
-# undef EAPI
-# define EAPI
 #endif
 
 #endif

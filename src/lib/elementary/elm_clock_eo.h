@@ -56,7 +56,7 @@ typedef enum
  */
 #define ELM_CLOCK_CLASS elm_clock_class_get()
 
-EWAPI const Efl_Class *elm_clock_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_clock_class_get(void);
 
 /**
  * @brief If the given clock widget must show hours in military or am/pm mode
@@ -293,7 +293,7 @@ ELM_API void elm_obj_clock_edit_mode_set(Eo *obj, Elm_Clock_Edit_Mode digedit);
  */
 ELM_API Elm_Clock_Edit_Mode elm_obj_clock_edit_mode_get(const Eo *obj);
 
-EWAPI extern const Efl_Event_Description _ELM_CLOCK_EVENT_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_CLOCK_EVENT_CHANGED;
 
 /** The clock's user changed the time
  *

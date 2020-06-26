@@ -1,6 +1,6 @@
-EWAPI const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_CALENDAR_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
-EWAPI const Efl_Event_Description _ELM_CALENDAR_EVENT_DISPLAY_CHANGED =
+ELM_API_WEAK const Efl_Event_Description _ELM_CALENDAR_EVENT_DISPLAY_CHANGED =
    EFL_EVENT_DESCRIPTION("display,changed");
 
 void _elm_calendar_first_day_of_week_set(Eo *obj, Elm_Calendar_Data *pd, Elm_Calendar_Weekday day);

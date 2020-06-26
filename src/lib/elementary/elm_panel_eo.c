@@ -1,4 +1,4 @@
-EWAPI const Efl_Event_Description _ELM_PANEL_EVENT_TOGGLED =
+ELM_API_WEAK const Efl_Event_Description _ELM_PANEL_EVENT_TOGGLED =
    EFL_EVENT_DESCRIPTION("toggled");
 
 void _elm_panel_orient_set(Eo *obj, Elm_Panel_Data *pd, Elm_Panel_Orient orient);

@@ -19,7 +19,7 @@ typedef Eo Elm_Route;
  */
 #define ELM_ROUTE_CLASS elm_route_class_get()
 
-EWAPI const Efl_Class *elm_route_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_route_class_get(void);
 
 /**
  * @brief Set map widget for this route

@@ -19,7 +19,7 @@ typedef Eo Elm_Segment_Control;
  */
 #define ELM_SEGMENT_CONTROL_CLASS elm_segment_control_class_get()
 
-EWAPI const Efl_Class *elm_segment_control_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_segment_control_class_get(void);
 
 /**
  * @brief Get the Segment items count from segment control.
@@ -174,7 +174,7 @@ ELM_API Elm_Widget_Item *elm_obj_segment_control_item_add(Eo *obj, Efl_Canvas_Ob
  */
 ELM_API Efl_Canvas_Object *elm_obj_segment_control_item_icon_get(const Eo *obj, int idx);
 
-EWAPI extern const Efl_Event_Description _ELM_SEGMENT_CONTROL_EVENT_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_SEGMENT_CONTROL_EVENT_CHANGED;
 
 /** Called when segment control changed
  * @return Efl_Object *

@@ -52,7 +52,7 @@ typedef enum
  */
 #define ELM_GESTURE_LAYER_CLASS elm_gesture_layer_class_get()
 
-EWAPI const Efl_Class *elm_gesture_layer_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_gesture_layer_class_get(void);
 
 /**
  * @brief Control step value for zoom action.
