@@ -64,7 +64,7 @@
 #endif
 
 #include "Edje.h"
-#include "edje_api.h"
+#include <edje_api.h>
 #define EFL_INTERNAL_UNSTABLE
 #include <Evas_Internal.h>
 

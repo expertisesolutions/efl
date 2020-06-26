@@ -5,7 +5,7 @@
 #error "Do not use the Edje_Edit API unless you know what you are doing. It's meant only for writing editors and nothing else."
 #endif
 
-#include "edje_api.h"
+#include <edje_api.h>
 #include <Edje.h>
 
 /**
