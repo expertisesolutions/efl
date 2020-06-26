@@ -154,7 +154,4 @@ ECTOR_API Eina_Bool ector_glsym_set(void *(*glsym)(void *lib, const char *name),
 }
 #endif
 
-#undef EAPI
-#define EAPI
-
 #endif
