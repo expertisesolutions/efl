@@ -72,10 +72,10 @@
 extern "C" {
 #endif
 
-extern ELM_API double _efl_startup_time;
+ELM_API extern double _efl_startup_time;
 
 /** Successfully applied the requested style from the current theme. */
-extern ELM_API Eina_Error EFL_UI_THEME_APPLY_ERROR_NONE;
+ELM_API extern Eina_Error EFL_UI_THEME_APPLY_ERROR_NONE;
 
 // EO types. Defined for legacy-only builds as legacy uses typedef of EO types.
 #include "efl_ui.eot.h"

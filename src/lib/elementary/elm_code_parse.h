@@ -12,9 +12,9 @@ extern "C" {
 
 typedef struct _Elm_Code_Parser Elm_Code_Parser;
 
-extern ELM_API Elm_Code_Parser *ELM_CODE_PARSER_STANDARD_SYNTAX; /**< A provided parser to provide syntax highlighting */
-extern ELM_API Elm_Code_Parser *ELM_CODE_PARSER_STANDARD_DIFF; /**< A provided parser that will mark up diff text */
-extern ELM_API Elm_Code_Parser *ELM_CODE_PARSER_STANDARD_TODO; /**< A provided parser that will highlight TODO and FIXME lines */
+ELM_API extern Elm_Code_Parser *ELM_CODE_PARSER_STANDARD_SYNTAX; /**< A provided parser to provide syntax highlighting */
+ELM_API extern Elm_Code_Parser *ELM_CODE_PARSER_STANDARD_DIFF; /**< A provided parser that will mark up diff text */
+ELM_API extern Elm_Code_Parser *ELM_CODE_PARSER_STANDARD_TODO; /**< A provided parser that will highlight TODO and FIXME lines */
 
 /**
  * @brief Parser helper functions.
