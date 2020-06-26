@@ -99,7 +99,7 @@ typedef struct _Opaque Opaque;
  */
 #define EO_DOCS_CLASS eo_docs_class_get()
 
- const Efl_Class *eo_docs_class_get(void);
+const Efl_Class *eo_docs_class_get(void);
 
 /**
  * @brief Method documentation.
@@ -115,7 +115,7 @@ typedef struct _Opaque Opaque;
  *
  * @ingroup Eo_Docs
  */
- int eo_docs_meth(Eo *obj, int a, float *b, long *c);
+int eo_docs_meth(Eo *obj, int a, float *b, long *c);
 
 /**
  * @brief Property common documentation.
@@ -129,7 +129,7 @@ typedef struct _Opaque Opaque;
  *
  * @ingroup Eo_Docs
  */
- void eo_docs_prop_set(Eo *obj, int val);
+void eo_docs_prop_set(Eo *obj, int val);
 
 /**
  * @brief Property common documentation.
@@ -144,9 +144,9 @@ typedef struct _Opaque Opaque;
  *
  * @ingroup Eo_Docs
  */
- int eo_docs_prop_get(const Eo *obj);
+int eo_docs_prop_get(const Eo *obj);
 
- void eo_docs_no_doc_meth(Eo *obj);
+void eo_docs_no_doc_meth(Eo *obj);
 
 /** No description supplied.
  *
@@ -154,9 +154,9 @@ typedef struct _Opaque Opaque;
  *
  * @ingroup Eo_Docs
  */
- void eo_docs_doc_with_empty_doc(Eo *obj);
+void eo_docs_doc_with_empty_doc(Eo *obj);
 
- extern const Efl_Event_Description _EO_DOCS_EVENT_CLICKED;
+extern const Efl_Event_Description _EO_DOCS_EVENT_CLICKED;
 
 /** Event docs.
  *
