@@ -3,31 +3,7 @@
 
 #include "Emotion.h"
 
-#ifdef EMOTION_API
-# undef EMOTION_API
-#endif
-
-#ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EMOTION_API __declspec(dllexport)
-#  else
-#   define EMOTION_API
-#  endif
-# else
-#  define EMOTION_API __declspec(dllimport)
-# endif
-#else
-# ifdef __GNUC__
-#  if __GNUC__ >= 4
-#   define EMOTION_API __attribute__ ((visibility("default")))
-#  else
-#   define EMOTION_API
-#  endif
-# else
-#  define EMOTION_API
-# endif
-#endif
+#include <emotion_api.h>
 
 #define META_TRACK_TITLE 1
 #define META_TRACK_ARTIST 2
@@ -162,8 +138,5 @@ EMOTION_API const char *emotion_webcam_custom_get(const char *device);
 
 EMOTION_API Eina_Bool _emotion_module_register(const Emotion_Engine *api);
 EMOTION_API Eina_Bool _emotion_module_unregister(const Emotion_Engine *api);
-
-#undef EMOTION_API
-#define EMOTION_API
 
 #endif
