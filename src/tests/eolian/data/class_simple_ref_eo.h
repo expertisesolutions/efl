@@ -31,7 +31,7 @@ typedef Eo Class_Simple;
  */
 #define CLASS_SIMPLE_CLASS class_simple_class_get()
 
- const Efl_Class *class_simple_class_get(void);
+const Efl_Class *class_simple_class_get(void);
 
 #ifdef EFL_BETA_API_SUPPORT
 /**
@@ -48,7 +48,7 @@ typedef Eo Class_Simple;
  *
  * @ingroup Class_Simple
  */
- Eina_Bool efl_canvas_object_simple_a_set(Eo *obj, int value);
+Eina_Bool efl_canvas_object_simple_a_set(Eo *obj, int value);
 #endif /* EFL_BETA_API_SUPPORT */
 
 #ifdef EFL_BETA_API_SUPPORT
@@ -63,7 +63,7 @@ typedef Eo Class_Simple;
  *
  * @ingroup Class_Simple
  */
- int efl_canvas_object_simple_a_get(const Eo *obj);
+int efl_canvas_object_simple_a_get(const Eo *obj);
 #endif /* EFL_BETA_API_SUPPORT */
 
 #ifdef EFL_BETA_API_SUPPORT
@@ -82,7 +82,7 @@ typedef Eo Class_Simple;
  *
  * @ingroup Class_Simple
  */
- char *efl_canvas_object_simple_foo(Eo *obj, int a, char *b, double *c, int *d);
+char *efl_canvas_object_simple_foo(Eo *obj, int a, char *b, double *c, int *d);
 #endif /* EFL_BETA_API_SUPPORT */
 
 #endif
