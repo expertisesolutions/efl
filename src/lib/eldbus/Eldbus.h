@@ -234,7 +234,4 @@ typedef struct _Eldbus_Object Eldbus_Object;
 }
 #endif
 
-#undef EAPI
-#define EAPI
-
 #endif
