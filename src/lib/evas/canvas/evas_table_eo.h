@@ -78,7 +78,7 @@ EVAS_API EVAS_WEAK_API const Efl_Class *evas_table_class_get(void);
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_homogeneous_set(Eo *obj, Evas_Object_Table_Homogeneous_Mode homogeneous);
+EVAS_API EVAS_API_WEAK void evas_obj_table_homogeneous_set(Eo *obj, Evas_Object_Table_Homogeneous_Mode homogeneous);
 
 /**
  * @brief Set how this table should layout children.
@@ -123,7 +123,7 @@ EVAS_API void evas_obj_table_homogeneous_set(Eo *obj, Evas_Object_Table_Homogene
  *
  * @ingroup Evas_Table
  */
-EVAS_API Evas_Object_Table_Homogeneous_Mode evas_obj_table_homogeneous_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK Evas_Object_Table_Homogeneous_Mode evas_obj_table_homogeneous_get(const Eo *obj);
 
 /**
  * @brief Control the alignment of the whole bounding box of contents.
@@ -134,7 +134,7 @@ EVAS_API Evas_Object_Table_Homogeneous_Mode evas_obj_table_homogeneous_get(const
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_align_set(Eo *obj, double horizontal, double vertical);
+EVAS_API EVAS_API_WEAK void evas_obj_table_align_set(Eo *obj, double horizontal, double vertical);
 
 /**
  * @brief Control the alignment of the whole bounding box of contents.
@@ -145,7 +145,7 @@ EVAS_API void evas_obj_table_align_set(Eo *obj, double horizontal, double vertic
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_align_get(const Eo *obj, double *horizontal, double *vertical);
+EVAS_API EVAS_API_WEAK void evas_obj_table_align_get(const Eo *obj, double *horizontal, double *vertical);
 
 /**
  * @brief Control the padding between cells.
@@ -156,7 +156,7 @@ EVAS_API void evas_obj_table_align_get(const Eo *obj, double *horizontal, double
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_padding_set(Eo *obj, int horizontal, int vertical);
+EVAS_API EVAS_API_WEAK void evas_obj_table_padding_set(Eo *obj, int horizontal, int vertical);
 
 /**
  * @brief Control the padding between cells.
@@ -167,7 +167,7 @@ EVAS_API void evas_obj_table_padding_set(Eo *obj, int horizontal, int vertical);
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_padding_get(const Eo *obj, int *horizontal, int *vertical);
+EVAS_API EVAS_API_WEAK void evas_obj_table_padding_get(const Eo *obj, int *horizontal, int *vertical);
 
 /**
  * @brief Get the number of columns and rows this table takes.
@@ -182,7 +182,7 @@ EVAS_API void evas_obj_table_padding_get(const Eo *obj, int *horizontal, int *ve
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_col_row_size_get(const Eo *obj, int *cols, int *rows);
+EVAS_API EVAS_API_WEAK void evas_obj_table_col_row_size_get(const Eo *obj, int *cols, int *rows);
 
 /**
  * @brief Get the list of children for the table.
@@ -198,7 +198,7 @@ EVAS_API void evas_obj_table_col_row_size_get(const Eo *obj, int *cols, int *row
  *
  * @ingroup Evas_Table
  */
-EVAS_API Eina_List *evas_obj_table_children_get(const Eo *obj) EINA_WARN_UNUSED_RESULT;
+EVAS_API EVAS_API_WEAK Eina_List *evas_obj_table_children_get(const Eo *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Get the child of the table at the given coordinates
@@ -213,7 +213,7 @@ EVAS_API Eina_List *evas_obj_table_children_get(const Eo *obj) EINA_WARN_UNUSED_
  *
  * @ingroup Evas_Table
  */
-EVAS_API Efl_Canvas_Object *evas_obj_table_child_get(const Eo *obj, unsigned short col, unsigned short row);
+EVAS_API EVAS_API_WEAK Efl_Canvas_Object *evas_obj_table_child_get(const Eo *obj, unsigned short col, unsigned short row);
 
 /**
  * @brief Faster way to remove all child objects from a table object.
@@ -223,7 +223,7 @@ EVAS_API Efl_Canvas_Object *evas_obj_table_child_get(const Eo *obj, unsigned sho
  *
  * @ingroup Evas_Table
  */
-EVAS_API void evas_obj_table_clear(Eo *obj, Eina_Bool clear);
+EVAS_API EVAS_API_WEAK void evas_obj_table_clear(Eo *obj, Eina_Bool clear);
 
 /**
  * @brief Get an accessor to get random access to the list of children for the
@@ -237,7 +237,7 @@ EVAS_API void evas_obj_table_clear(Eo *obj, Eina_Bool clear);
  *
  * @ingroup Evas_Table
  */
-EVAS_API Eina_Accessor *evas_obj_table_accessor_new(const Eo *obj) EINA_WARN_UNUSED_RESULT;
+EVAS_API EVAS_API_WEAK Eina_Accessor *evas_obj_table_accessor_new(const Eo *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Get an iterator to walk the list of children for the table.
@@ -250,7 +250,7 @@ EVAS_API Eina_Accessor *evas_obj_table_accessor_new(const Eo *obj) EINA_WARN_UNU
  *
  * @ingroup Evas_Table
  */
-EVAS_API Eina_Iterator *evas_obj_table_iterator_new(const Eo *obj) EINA_WARN_UNUSED_RESULT;
+EVAS_API EVAS_API_WEAK Eina_Iterator *evas_obj_table_iterator_new(const Eo *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Create a table that is child of a given element @c parent.
@@ -261,7 +261,7 @@ EVAS_API Eina_Iterator *evas_obj_table_iterator_new(const Eo *obj) EINA_WARN_UNU
  *
  * @ingroup Evas_Table
  */
-EVAS_API Efl_Canvas_Object *evas_obj_table_add_to(Eo *obj) EINA_WARN_UNUSED_RESULT;
+EVAS_API EVAS_API_WEAK Efl_Canvas_Object *evas_obj_table_add_to(Eo *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Get packing location of a child of table
@@ -282,7 +282,7 @@ EVAS_API Efl_Canvas_Object *evas_obj_table_add_to(Eo *obj) EINA_WARN_UNUSED_RESU
  *
  * @ingroup Evas_Table
  */
-EVAS_API Eina_Bool evas_obj_table_pack_get(const Eo *obj, Efl_Canvas_Object *child, unsigned short *col, unsigned short *row, unsigned short *colspan, unsigned short *rowspan);
+EVAS_API EVAS_API_WEAK Eina_Bool evas_obj_table_pack_get(const Eo *obj, Efl_Canvas_Object *child, unsigned short *col, unsigned short *row, unsigned short *colspan, unsigned short *rowspan);
 
 /**
  * @brief Add a new child to a table object or set its current packing.
@@ -306,7 +306,7 @@ EVAS_API Eina_Bool evas_obj_table_pack_get(const Eo *obj, Efl_Canvas_Object *chi
  *
  * @ingroup Evas_Table
  */
-EVAS_API Eina_Bool evas_obj_table_pack(Eo *obj, Efl_Canvas_Object *child, unsigned short col, unsigned short row, unsigned short colspan, unsigned short rowspan) EINA_ARG_NONNULL(2);
+EVAS_API EVAS_API_WEAK Eina_Bool evas_obj_table_pack(Eo *obj, Efl_Canvas_Object *child, unsigned short col, unsigned short row, unsigned short colspan, unsigned short rowspan) EINA_ARG_NONNULL(2);
 
 /**
  * @brief Remove child from table.
@@ -322,7 +322,7 @@ EVAS_API Eina_Bool evas_obj_table_pack(Eo *obj, Efl_Canvas_Object *child, unsign
  *
  * @ingroup Evas_Table
  */
-EVAS_API Eina_Bool evas_obj_table_unpack(Eo *obj, Efl_Canvas_Object *child) EINA_ARG_NONNULL(2);
+EVAS_API EVAS_API_WEAK Eina_Bool evas_obj_table_unpack(Eo *obj, Efl_Canvas_Object *child) EINA_ARG_NONNULL(2);
 
 /**
  * @brief Returns the number of items in the table
@@ -333,6 +333,6 @@ EVAS_API Eina_Bool evas_obj_table_unpack(Eo *obj, Efl_Canvas_Object *child) EINA
  *
  * @ingroup Evas_Table
  */
-EVAS_API int evas_obj_table_count(Eo *obj);
+EVAS_API EVAS_API_WEAK int evas_obj_table_count(Eo *obj);
 
 #endif

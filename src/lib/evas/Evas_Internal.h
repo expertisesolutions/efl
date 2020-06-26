@@ -16,16 +16,16 @@ extern "C" {
 
 typedef struct _Evas_Object_Pointer_Data Evas_Object_Pointer_Data;
 
-EVAS_API const Eina_List *efl_input_device_children_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK const Eina_List *efl_input_device_children_get(const Eo *obj);
 
-EVAS_API void efl_input_device_evas_set(Eo *obj, Evas *e);
-EVAS_API Evas *efl_input_device_evas_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK void efl_input_device_evas_set(Eo *obj, Evas *e);
+EVAS_API EVAS_API_WEAK Evas *efl_input_device_evas_get(const Eo *obj);
 
-EVAS_API void efl_input_device_subclass_set(Eo *obj, Evas_Device_Subclass sub_clas);
-EVAS_API Evas_Device_Subclass efl_input_device_subclass_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK void efl_input_device_subclass_set(Eo *obj, Evas_Device_Subclass sub_clas);
+EVAS_API EVAS_API_WEAK Evas_Device_Subclass efl_input_device_subclass_get(const Eo *obj);
 
-EVAS_API void efl_input_device_grab_register(Eo *obj, Efl_Canvas_Object *grab, Evas_Object_Pointer_Data *pdata);
-EVAS_API void efl_input_device_grab_unregister(Eo *obj, Efl_Canvas_Object *grab, Evas_Object_Pointer_Data *pdata);
+EVAS_API EVAS_API_WEAK void efl_input_device_grab_register(Eo *obj, Efl_Canvas_Object *grab, Evas_Object_Pointer_Data *pdata);
+EVAS_API EVAS_API_WEAK void efl_input_device_grab_unregister(Eo *obj, Efl_Canvas_Object *grab, Evas_Object_Pointer_Data *pdata);
 
 typedef struct _Efl_Input_Pointer_Data  Efl_Input_Pointer_Data;
 typedef struct _Efl_Input_Key_Data      Efl_Input_Key_Data;
@@ -206,23 +206,23 @@ evas_object_size_hint_combined_max_get(const Eo *obj, int *w, int *h)
 }
 
 /* Internal EO APIs */
-EVAS_API Eo *evas_find(const Eo *obj);
-EVAS_API void efl_canvas_object_legacy_ctor(Eo *obj);
-EVAS_API void efl_canvas_object_type_set(Eo *obj, const char *type);
-EVAS_API void efl_canvas_group_add(Eo *obj);
-EVAS_API void efl_canvas_group_del(Eo *obj);
-EVAS_API void efl_canvas_group_clipped_set(Eo *obj, Eina_Bool unclipped);
-EVAS_API void evas_canvas_touch_point_list_nth_xy_get(Eo *obj, unsigned int n, double *x, double *y);
-EVAS_API void evas_canvas_seat_focus_in(Eo *obj, Efl_Input_Device *seat);
-EVAS_API void evas_canvas_seat_focus_out(Eo *obj, Efl_Input_Device *seat);
-EVAS_API Eo* evas_canvas_seat_focus_get(const Eo *obj, Efl_Input_Device *seat);
+EAPI Eo *evas_find(const Eo *obj);
+EVAS_API EVAS_API_WEAK void efl_canvas_object_legacy_ctor(Eo *obj);
+EVAS_API EVAS_API_WEAK void efl_canvas_object_type_set(Eo *obj, const char *type);
+EVAS_API EVAS_API_WEAK void efl_canvas_group_add(Eo *obj);
+EVAS_API EVAS_API_WEAK void efl_canvas_group_del(Eo *obj);
+EVAS_API EVAS_API_WEAK void efl_canvas_group_clipped_set(Eo *obj, Eina_Bool unclipped);
+EVAS_API EVAS_API_WEAK void evas_canvas_touch_point_list_nth_xy_get(Eo *obj, unsigned int n, double *x, double *y);
+EVAS_API EVAS_API_WEAK void evas_canvas_seat_focus_in(Eo *obj, Efl_Input_Device *seat);
+EVAS_API EVAS_API_WEAK void evas_canvas_seat_focus_out(Eo *obj, Efl_Input_Device *seat);
+EVAS_API EVAS_API_WEAK Eo* evas_canvas_seat_focus_get(const Eo *obj, Efl_Input_Device *seat);
 
-EVAS_API void *efl_input_legacy_info_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK void *efl_input_legacy_info_get(const Eo *obj);
 
-EVAS_API Eo *efl_input_focus_instance_get(Efl_Object *owner, void **priv);
-EVAS_API Eo *efl_input_hold_instance_get(Efl_Object *owner, void **priv);
-EVAS_API Eo *efl_input_key_instance_get(Efl_Object *owner, void **priv);
-EVAS_API Eo *efl_input_pointer_instance_get(Efl_Object *owner, void **priv);
+EVAS_API EVAS_API_WEAK Eo *efl_input_focus_instance_get(Efl_Object *owner, void **priv);
+EVAS_API EVAS_API_WEAK Eo *efl_input_hold_instance_get(Efl_Object *owner, void **priv);
+EVAS_API EVAS_API_WEAK Eo *efl_input_key_instance_get(Efl_Object *owner, void **priv);
+EVAS_API EVAS_API_WEAK Eo *efl_input_pointer_instance_get(Efl_Object *owner, void **priv);
 /**
  * @brief If @c true the object belongs to the window border decorations.
  *
@@ -240,7 +240,7 @@ EVAS_API Eo *efl_input_pointer_instance_get(Efl_Object *owner, void **priv);
  *
  * @ingroup Efl_Canvas_Object
  */
-EVAS_API void efl_canvas_object_is_frame_object_set(Eo *obj, Eina_Bool is_frame);
+EVAS_API EVAS_API_WEAK void efl_canvas_object_is_frame_object_set(Eo *obj, Eina_Bool is_frame);
 
 /**
  * @brief If @c true the object belongs to the window border decorations.
@@ -260,7 +260,7 @@ EVAS_API void efl_canvas_object_is_frame_object_set(Eo *obj, Eina_Bool is_frame)
  *
  * @ingroup Efl_Canvas_Object
  */
-EVAS_API Eina_Bool efl_canvas_object_is_frame_object_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK Eina_Bool efl_canvas_object_is_frame_object_get(const Eo *obj);
 
 EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE;
 #define EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE (&(_EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE))

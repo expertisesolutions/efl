@@ -2721,10 +2721,10 @@ evas_object_is_frame_object_get(const Efl_Canvas_Object *obj)
 
 /* Internal EO APIs and hidden overrides */
 
-EVAS_API EFL_VOID_FUNC_BODYV(efl_canvas_object_is_frame_object_set, EFL_FUNC_CALL(is_frame), Eina_Bool is_frame);
-EVAS_API EFL_FUNC_BODY_CONST(efl_canvas_object_is_frame_object_get, Eina_Bool, 0);
-EVAS_API EFL_VOID_FUNC_BODY(efl_canvas_object_legacy_ctor)
-EVAS_API EFL_VOID_FUNC_BODYV(efl_canvas_object_type_set, EFL_FUNC_CALL(type), const char *type)
+EVAS_API EVAS_API_WEAK EFL_VOID_FUNC_BODYV(efl_canvas_object_is_frame_object_set, EFL_FUNC_CALL(is_frame), Eina_Bool is_frame);
+EVAS_API EVAS_API_WEAK EFL_FUNC_BODY_CONST(efl_canvas_object_is_frame_object_get, Eina_Bool, 0);
+EVAS_API EVAS_API_WEAK EFL_VOID_FUNC_BODY(efl_canvas_object_legacy_ctor)
+EVAS_API EVAS_API_WEAK EFL_VOID_FUNC_BODYV(efl_canvas_object_type_set, EFL_FUNC_CALL(type), const char *type)
 
 #define EFL_CANVAS_OBJECT_EXTRA_OPS \
    EFL_OBJECT_OP_FUNC(efl_dbg_info_get, _efl_canvas_object_efl_object_dbg_info_get), \

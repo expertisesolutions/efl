@@ -21,7 +21,7 @@
  */
 
 /* internal eo */
-EVAS_API Eo*
+EVAS_API EVAS_API_WEAK Eo*
 efl_input_pointer_instance_get(Efl_Object *owner, void **priv)
 {
    Efl_Input_Pointer_Data *ev;

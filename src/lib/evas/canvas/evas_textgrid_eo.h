@@ -63,7 +63,7 @@ EVAS_API EVAS_WEAK_API const Efl_Class *evas_textgrid_class_get(void);
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_supported_font_styles_set(Eo *obj, Evas_Textgrid_Font_Style styles);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_supported_font_styles_set(Eo *obj, Evas_Textgrid_Font_Style styles);
 
 /**
  * @brief This function is not implemented yet, do not use.
@@ -74,7 +74,7 @@ EVAS_API void evas_obj_textgrid_supported_font_styles_set(Eo *obj, Evas_Textgrid
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API Evas_Textgrid_Font_Style evas_obj_textgrid_supported_font_styles_get(const Eo *obj);
+EVAS_API EVAS_API_WEAK Evas_Textgrid_Font_Style evas_obj_textgrid_supported_font_styles_get(const Eo *obj);
 
 /**
  * @brief Set the size of the textgrid object.
@@ -91,7 +91,7 @@ EVAS_API Evas_Textgrid_Font_Style evas_obj_textgrid_supported_font_styles_get(co
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_grid_size_set(Eo *obj, int w, int h);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_grid_size_set(Eo *obj, int w, int h);
 
 /**
  * @brief Get the size of the textgrid object.
@@ -108,7 +108,7 @@ EVAS_API void evas_obj_textgrid_grid_size_set(Eo *obj, int w, int h);
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_grid_size_get(const Eo *obj, int *w, int *h);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_grid_size_get(const Eo *obj, int *w, int *h);
 
 /**
  * @brief Retrieve the size of a cell of the given textgrid object in pixels.
@@ -132,7 +132,7 @@ EVAS_API void evas_obj_textgrid_grid_size_get(const Eo *obj, int *w, int *h);
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_cell_size_get(const Eo *obj, int *width, int *height);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_cell_size_get(const Eo *obj, int *width, int *height);
 
 /**
  * @brief Indicate for evas that part of a textgrid region (cells) has been
@@ -155,7 +155,7 @@ EVAS_API void evas_obj_textgrid_cell_size_get(const Eo *obj, int *width, int *he
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_update_add(Eo *obj, int x, int y, int w, int h);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_update_add(Eo *obj, int x, int y, int w, int h);
 
 /**
  * @brief Set the string at the given row of the given textgrid object.
@@ -176,7 +176,7 @@ EVAS_API void evas_obj_textgrid_update_add(Eo *obj, int x, int y, int w, int h);
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_cellrow_set(Eo *obj, int y, const Evas_Textgrid_Cell *row);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_cellrow_set(Eo *obj, int y, const Evas_Textgrid_Cell *row);
 
 /**
  * @brief Get the string at the given row of the given textgrid object.
@@ -197,7 +197,7 @@ EVAS_API void evas_obj_textgrid_cellrow_set(Eo *obj, int y, const Evas_Textgrid_
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API Evas_Textgrid_Cell *evas_obj_textgrid_cellrow_get(const Eo *obj, int y);
+EVAS_API EVAS_API_WEAK Evas_Textgrid_Cell *evas_obj_textgrid_cellrow_get(const Eo *obj, int y);
 
 /**
  * @brief The set color to the given palette at the given index of the given
@@ -227,7 +227,7 @@ EVAS_API Evas_Textgrid_Cell *evas_obj_textgrid_cellrow_get(const Eo *obj, int y)
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_palette_set(Eo *obj, Evas_Textgrid_Palette pal, int idx, int r, int g, int b, int a);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_palette_set(Eo *obj, Evas_Textgrid_Palette pal, int idx, int r, int g, int b, int a);
 
 /**
  * @brief The retrieve color to the given palette at the given index of the
@@ -254,6 +254,6 @@ EVAS_API void evas_obj_textgrid_palette_set(Eo *obj, Evas_Textgrid_Palette pal, 
  *
  * @ingroup Evas_Textgrid
  */
-EVAS_API void evas_obj_textgrid_palette_get(const Eo *obj, Evas_Textgrid_Palette pal, int idx, int *r, int *g, int *b, int *a);
+EVAS_API EVAS_API_WEAK void evas_obj_textgrid_palette_get(const Eo *obj, Evas_Textgrid_Palette pal, int idx, int *r, int *g, int *b, int *a);
 
 #endif

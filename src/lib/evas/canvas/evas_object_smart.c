@@ -2008,9 +2008,9 @@ _efl_canvas_group_efl_object_event_callback_array_priority_add(Eo *obj, Evas_Sma
      }
    return efl_event_callback_array_priority_add(efl_super(obj, MY_CLASS), array, priority, user_data);
 }
-EVAS_API EFL_VOID_FUNC_BODY(efl_canvas_group_add)
-EVAS_API EFL_VOID_FUNC_BODY(efl_canvas_group_del)
-EVAS_API EFL_VOID_FUNC_BODYV(efl_canvas_group_clipped_set, EFL_FUNC_CALL(enable), Eina_Bool enable)
+EVAS_API EVAS_API_WEAK EFL_VOID_FUNC_BODY(efl_canvas_group_add)
+EVAS_API EVAS_API_WEAK EFL_VOID_FUNC_BODY(efl_canvas_group_del)
+EVAS_API EVAS_API_WEAK EFL_VOID_FUNC_BODYV(efl_canvas_group_clipped_set, EFL_FUNC_CALL(enable), Eina_Bool enable)
 
 #define EFL_CANVAS_GROUP_EXTRA_OPS \
    EFL_OBJECT_OP_FUNC(efl_canvas_group_add, _efl_canvas_group_group_add), \
