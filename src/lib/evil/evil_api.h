@@ -37,7 +37,7 @@
  * can be overridden in user code.
  * Note: Not supported on all platforms.
  */
-#  define EINA_API_WEAK
+#  define EVIL_API_WEAK
 # endif
 #endif
 
