@@ -19,7 +19,7 @@ typedef Eo Elm_Entry;
  */
 #define ELM_ENTRY_CLASS elm_entry_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_entry_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_entry_class_get(void);
 
 /**
  * @brief Enable or disable scrolling in entry
@@ -1268,7 +1268,7 @@ ELM_API Eina_Bool elm_obj_entry_prediction_hint_hash_set(Eo *obj, const char *ke
  */
 ELM_API Eina_Bool elm_obj_entry_prediction_hint_hash_del(Eo *obj, const char *key);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED;
 
 /** Called when entry got activated
  *
@@ -1276,7 +1276,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED;
  */
 #define ELM_ENTRY_EVENT_ACTIVATED (&(_ELM_ENTRY_EVENT_ACTIVATED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED;
 
 /** Called when entry changed
  *
@@ -1284,7 +1284,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED;
  */
 #define ELM_ENTRY_EVENT_CHANGED (&(_ELM_ENTRY_EVENT_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER;
 
 /** Called when the object changed due to user interaction
  * @return Elm_Entry_Change_Info
@@ -1293,7 +1293,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER;
  */
 #define ELM_ENTRY_EVENT_CHANGED_USER (&(_ELM_ENTRY_EVENT_CHANGED_USER))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE;
 
 /** Called when validating
  * @return Elm_Validate_Content
@@ -1302,7 +1302,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE;
  */
 #define ELM_ENTRY_EVENT_VALIDATE (&(_ELM_ENTRY_EVENT_VALIDATE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN;
 
 /** Called when context menu was opened
  *
@@ -1310,7 +1310,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN;
  */
 #define ELM_ENTRY_EVENT_CONTEXT_OPEN (&(_ELM_ENTRY_EVENT_CONTEXT_OPEN))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED;
 
 /** Called when anchor was clicked
  * @return Elm_Entry_Anchor_Info
@@ -1319,7 +1319,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_CLICKED (&(_ELM_ENTRY_EVENT_ANCHOR_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED;
 
 /** Called when entry was rejected
  *
@@ -1327,7 +1327,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED;
  */
 #define ELM_ENTRY_EVENT_REJECTED (&(_ELM_ENTRY_EVENT_REJECTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED;
 
 /** Called when maximum entry length has been reached
  *
@@ -1335,7 +1335,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACH
  */
 #define ELM_ENTRY_EVENT_MAXLENGTH_REACHED (&(_ELM_ENTRY_EVENT_MAXLENGTH_REACHED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED;
 
 /** Called when entry preedit changed
  *
@@ -1343,7 +1343,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED
  */
 #define ELM_ENTRY_EVENT_PREEDIT_CHANGED (&(_ELM_ENTRY_EVENT_PREEDIT_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS;
 
 /** Called when entry pressed
  *
@@ -1351,7 +1351,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS;
  */
 #define ELM_ENTRY_EVENT_PRESS (&(_ELM_ENTRY_EVENT_PRESS))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST;
 
 /** Called when redo was requested
  *
@@ -1359,7 +1359,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST;
  */
 #define ELM_ENTRY_EVENT_REDO_REQUEST (&(_ELM_ENTRY_EVENT_REDO_REQUEST))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST;
 
 /** Called when undo was requested
  *
@@ -1367,7 +1367,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST;
  */
 #define ELM_ENTRY_EVENT_UNDO_REQUEST (&(_ELM_ENTRY_EVENT_UNDO_REQUEST))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE;
 
 /** Called when text set finished
  *
@@ -1375,7 +1375,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE;
  */
 #define ELM_ENTRY_EVENT_TEXT_SET_DONE (&(_ELM_ENTRY_EVENT_TEXT_SET_DONE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED;
 
 /** Called when entry was aborted
  *
@@ -1383,7 +1383,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED;
  */
 #define ELM_ENTRY_EVENT_ABORTED (&(_ELM_ENTRY_EVENT_ABORTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN;
 
 /** Called on anchor down
  * @return Elm_Entry_Anchor_Info
@@ -1392,7 +1392,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_DOWN (&(_ELM_ENTRY_EVENT_ANCHOR_DOWN))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED;
 
 /** Called when hover opened
  * @return Elm_Entry_Anchor_Hover_Info
@@ -1401,7 +1401,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OP
  */
 #define ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED (&(_ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN;
 
 /** Called on anchor in
  * @return Elm_Entry_Anchor_Info
@@ -1410,7 +1410,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_IN (&(_ELM_ENTRY_EVENT_ANCHOR_IN))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT;
 
 /** Called on anchor out
  * @return Elm_Entry_Anchor_Info
@@ -1419,7 +1419,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_OUT (&(_ELM_ENTRY_EVENT_ANCHOR_OUT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP;
 
 /** called on anchor up
  * @return Elm_Entry_Anchor_Info
@@ -1428,7 +1428,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP;
  */
 #define ELM_ENTRY_EVENT_ANCHOR_UP (&(_ELM_ENTRY_EVENT_ANCHOR_UP))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED;
 
 /** Called on cursor changed
  *
@@ -1436,7 +1436,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED;
  */
 #define ELM_ENTRY_EVENT_CURSOR_CHANGED (&(_ELM_ENTRY_EVENT_CURSOR_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED_MANUAL;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED_MANUAL;
 
 /** Called on manual cursor change
  *

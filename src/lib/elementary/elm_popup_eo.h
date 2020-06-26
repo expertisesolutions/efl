@@ -49,7 +49,7 @@ typedef enum
  */
 #define ELM_POPUP_CLASS elm_popup_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_popup_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_popup_class_get(void);
 
 /**
  * @brief Set the alignment of the popup object.
@@ -243,7 +243,7 @@ ELM_API Elm_Widget_Item *elm_obj_popup_item_append(Eo *obj, const char *label, E
  */
 ELM_API void elm_obj_popup_dismiss(Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED;
 
 /** Called when popup was clicked
  *
@@ -251,7 +251,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_BLOCK_CLICKED;
  */
 #define ELM_POPUP_EVENT_BLOCK_CLICKED (&(_ELM_POPUP_EVENT_BLOCK_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT;
 
 /** Called when popup timed out
  *
@@ -259,7 +259,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_TIMEOUT;
  */
 #define ELM_POPUP_EVENT_TIMEOUT (&(_ELM_POPUP_EVENT_TIMEOUT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED;
 
 /** Called when popup got focus
  * @return Efl_Object *
@@ -268,7 +268,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_FOCUSED;
  */
 #define ELM_POPUP_EVENT_ITEM_FOCUSED (&(_ELM_POPUP_EVENT_ITEM_FOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED;
 
 /** Called when popup lost focus
  * @return Efl_Object *
@@ -277,7 +277,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_ITEM_UNFOCUSED;
  */
 #define ELM_POPUP_EVENT_ITEM_UNFOCUSED (&(_ELM_POPUP_EVENT_ITEM_UNFOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_DISMISSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_POPUP_EVENT_DISMISSED;
 
 /** Called when popup was dismissed
  *

@@ -1,10 +1,10 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED =
    EFL_EVENT_DESCRIPTION("color,item,selected");
-ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED =
    EFL_EVENT_DESCRIPTION("color,item,longpressed");
-ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED_USER =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED_USER =
    EFL_EVENT_DESCRIPTION("changed,user");
 
 void _elm_colorselector_picked_color_set(Eo *obj, Elm_Colorselector_Data *pd, int r, int g, int b, int a);

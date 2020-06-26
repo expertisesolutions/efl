@@ -1,6 +1,6 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED =
    EFL_EVENT_DESCRIPTION("child,added");
-ELM_API_WEAK const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED =
    EFL_EVENT_DESCRIPTION("child,removed");
 
 void _elm_box_homogeneous_set(Eo *obj, Elm_Box_Data *pd, Eina_Bool homogeneous);

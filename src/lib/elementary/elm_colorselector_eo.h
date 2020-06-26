@@ -37,7 +37,7 @@ typedef enum
  */
 #define ELM_COLORSELECTOR_CLASS elm_colorselector_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_colorselector_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_colorselector_class_get(void);
 
 /**
  * @brief Set color to colorselector.
@@ -166,7 +166,7 @@ ELM_API Elm_Widget_Item *elm_obj_colorselector_palette_color_add(Eo *obj, int r,
  */
 ELM_API void elm_obj_colorselector_palette_clear(Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED;
 
 /** Called when color item was selected
  * @return Efl_Object *
@@ -175,7 +175,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_I
  */
 #define ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED (&(_ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED;
 
 /** Called when color item got a long press
  * @return Efl_Object *
@@ -184,7 +184,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_I
  */
 #define ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED (&(_ELM_COLORSELECTOR_EVENT_COLOR_ITEM_LONGPRESSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED;
 
 /** Called when colorselector changed
  *
@@ -192,7 +192,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED
  */
 #define ELM_COLORSELECTOR_EVENT_CHANGED (&(_ELM_COLORSELECTOR_EVENT_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED_USER;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_CHANGED_USER;
 
 /** Called when the object changed due to user interaction
  *

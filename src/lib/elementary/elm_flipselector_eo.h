@@ -19,7 +19,7 @@ typedef Eo Elm_Flipselector;
  */
 #define ELM_FLIPSELECTOR_CLASS elm_flipselector_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_flipselector_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_flipselector_class_get(void);
 
 /**
  * @brief Get the internal list of items in a given flip selector widget.
@@ -193,7 +193,7 @@ ELM_API Elm_Widget_Item *elm_obj_flipselector_item_append(Eo *obj, const char *l
  */
 ELM_API void elm_obj_flipselector_flip_prev(Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
 
 /** Called when flipselector is underflowed
  *
@@ -201,7 +201,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLO
  */
 #define ELM_FLIPSELECTOR_EVENT_UNDERFLOWED (&(_ELM_FLIPSELECTOR_EVENT_UNDERFLOWED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED;
 
 /** Called when flipselector is overflowed
  *

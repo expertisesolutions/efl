@@ -118,7 +118,7 @@ typedef enum
  */
 #define ELM_GLVIEW_CLASS elm_glview_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_glview_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_glview_class_get(void);
 
 /**
  * @brief Constructor with context version number.
@@ -236,7 +236,7 @@ ELM_API int elm_obj_glview_rotation_get(const Eo *obj);
  */
 ELM_API void elm_obj_glview_draw_request(Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
 
 /**
  * @brief Event dispatched when first render happens.
@@ -250,7 +250,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
  */
 #define ELM_GLVIEW_EVENT_CREATED (&(_ELM_GLVIEW_EVENT_CREATED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
 
 /**
  * @brief Event dispatched when GLView object is deleted.
@@ -264,7 +264,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
  */
 #define ELM_GLVIEW_EVENT_DESTROYED (&(_ELM_GLVIEW_EVENT_DESTROYED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
 
 /**
  * @brief Event dispatched when resize happens.
@@ -278,7 +278,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
  */
 #define ELM_GLVIEW_EVENT_RESIZED (&(_ELM_GLVIEW_EVENT_RESIZED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER;
 
 /**
  * @brief Event dispatched when GLView is rendered.

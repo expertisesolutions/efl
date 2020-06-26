@@ -1,10 +1,10 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED =
    EFL_EVENT_DESCRIPTION("created");
-ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED =
    EFL_EVENT_DESCRIPTION("destroyed");
-ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED =
    EFL_EVENT_DESCRIPTION("resized");
-ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER =
    EFL_EVENT_DESCRIPTION("render");
 
 void _elm_glview_version_constructor(Eo *obj, Elm_Glview_Data *pd, Evas_GL_Context_Version version);

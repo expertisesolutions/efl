@@ -19,7 +19,7 @@ typedef Eo Elm_Notify;
  */
 #define ELM_NOTIFY_CLASS elm_notify_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_notify_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_notify_class_get(void);
 
 /**
  * @brief Set the alignment of the notify object
@@ -118,7 +118,7 @@ ELM_API double elm_obj_notify_timeout_get(const Eo *obj);
  */
 ELM_API void elm_obj_notify_dismiss(Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_BLOCK_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_BLOCK_CLICKED;
 
 /** Called when block was clicked
  *
@@ -126,7 +126,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_BLOCK_CLICKED;
  */
 #define ELM_NOTIFY_EVENT_BLOCK_CLICKED (&(_ELM_NOTIFY_EVENT_BLOCK_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_TIMEOUT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_TIMEOUT;
 
 /** Called when notify timed out
  *
@@ -134,7 +134,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_TIMEOUT;
  */
 #define ELM_NOTIFY_EVENT_TIMEOUT (&(_ELM_NOTIFY_EVENT_TIMEOUT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_DISMISSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NOTIFY_EVENT_DISMISSED;
 
 /** Called when notify was dismissed
  *

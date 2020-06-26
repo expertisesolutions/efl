@@ -1,44 +1,44 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ACTIVATED =
    EFL_EVENT_DESCRIPTION("activated");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CHANGED_USER =
    EFL_EVENT_DESCRIPTION("changed,user");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_VALIDATE =
    EFL_EVENT_DESCRIPTION("validate");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CONTEXT_OPEN =
    EFL_EVENT_DESCRIPTION("context,open");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_CLICKED =
    EFL_EVENT_DESCRIPTION("anchor,clicked");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_REJECTED =
    EFL_EVENT_DESCRIPTION("rejected");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_MAXLENGTH_REACHED =
    EFL_EVENT_DESCRIPTION("maxlength,reached");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_PREEDIT_CHANGED =
    EFL_EVENT_DESCRIPTION("preedit,changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_PRESS =
    EFL_EVENT_DESCRIPTION("press");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_REDO_REQUEST =
    EFL_EVENT_DESCRIPTION("redo,request");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_UNDO_REQUEST =
    EFL_EVENT_DESCRIPTION("undo,request");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_TEXT_SET_DONE =
    EFL_EVENT_DESCRIPTION("text,set,done");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ABORTED =
    EFL_EVENT_DESCRIPTION("aborted");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_DOWN =
    EFL_EVENT_DESCRIPTION("anchor,down");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_HOVER_OPENED =
    EFL_EVENT_DESCRIPTION("anchor,hover,opened");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_IN =
    EFL_EVENT_DESCRIPTION("anchor,in");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_OUT =
    EFL_EVENT_DESCRIPTION("anchor,out");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_ANCHOR_UP =
    EFL_EVENT_DESCRIPTION("anchor,up");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED =
    EFL_EVENT_DESCRIPTION("cursor,changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED_MANUAL =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_ENTRY_EVENT_CURSOR_CHANGED_MANUAL =
    EFL_EVENT_DESCRIPTION("cursor,changed,manual");
 
 void _elm_entry_scrollable_set(Eo *obj, Elm_Entry_Data *pd, Eina_Bool scroll);

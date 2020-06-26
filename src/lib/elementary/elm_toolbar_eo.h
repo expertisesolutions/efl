@@ -47,7 +47,7 @@ typedef enum
  */
 #define ELM_TOOLBAR_CLASS elm_toolbar_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_toolbar_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_toolbar_class_get(void);
 
 /**
  * @brief Get the selected item in the widget.
@@ -530,7 +530,7 @@ ELM_API Elm_Widget_Item *elm_obj_toolbar_item_prepend(Eo *obj, const char *icon,
  */
 ELM_API Elm_Widget_Item *elm_obj_toolbar_item_find_by_label(const Eo *obj, const char *label);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED;
 
 /** Called when toolbar item got focus
  * @return Efl_Object *
@@ -539,7 +539,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED;
  */
 #define ELM_TOOLBAR_EVENT_ITEM_FOCUSED (&(_ELM_TOOLBAR_EVENT_ITEM_FOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_UNFOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_UNFOCUSED;
 
 /** Called when toolbar item lost focus
  * @return Efl_Object *

@@ -1,6 +1,6 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_FOCUSED =
    EFL_EVENT_DESCRIPTION("item,focused");
-ELM_API_WEAK const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_UNFOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_TOOLBAR_EVENT_ITEM_UNFOCUSED =
    EFL_EVENT_DESCRIPTION("item,unfocused");
 
 Elm_Widget_Item *_elm_toolbar_selected_item_get(const Eo *obj, Elm_Toolbar_Data *pd);

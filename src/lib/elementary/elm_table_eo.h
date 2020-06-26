@@ -19,7 +19,7 @@ typedef Eo Elm_Table;
  */
 #define ELM_TABLE_CLASS elm_table_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_table_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_table_class_get(void);
 
 /**
  * @brief Control the homogenous state in a table.

@@ -19,9 +19,9 @@ typedef Eo Elm_Player;
  */
 #define ELM_PLAYER_CLASS elm_player_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_player_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_player_class_get(void);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_FORWARD_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_FORWARD_CLICKED;
 
 /** Called when forward was clicked
  *
@@ -29,7 +29,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_FORWARD_CLICKE
  */
 #define ELM_PLAYER_EVENT_FORWARD_CLICKED (&(_ELM_PLAYER_EVENT_FORWARD_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_INFO_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_INFO_CLICKED;
 
 /** Called when info was clicked
  *
@@ -37,7 +37,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_INFO_CLICKED;
  */
 #define ELM_PLAYER_EVENT_INFO_CLICKED (&(_ELM_PLAYER_EVENT_INFO_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_NEXT_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_NEXT_CLICKED;
 
 /** Called when next was clicked
  *
@@ -45,7 +45,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_NEXT_CLICKED;
  */
 #define ELM_PLAYER_EVENT_NEXT_CLICKED (&(_ELM_PLAYER_EVENT_NEXT_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PAUSE_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PAUSE_CLICKED;
 
 /** Called when pause was clicked
  *
@@ -53,7 +53,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PAUSE_CLICKED;
  */
 #define ELM_PLAYER_EVENT_PAUSE_CLICKED (&(_ELM_PLAYER_EVENT_PAUSE_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PLAY_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PLAY_CLICKED;
 
 /** Called when play was clicked
  *
@@ -61,7 +61,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PLAY_CLICKED;
  */
 #define ELM_PLAYER_EVENT_PLAY_CLICKED (&(_ELM_PLAYER_EVENT_PLAY_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PREV_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PREV_CLICKED;
 
 /** Called when previous was clicked
  *
@@ -69,7 +69,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_PREV_CLICKED;
  */
 #define ELM_PLAYER_EVENT_PREV_CLICKED (&(_ELM_PLAYER_EVENT_PREV_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_REWIND_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_REWIND_CLICKED;
 
 /** Called when rewind was clicked
  *
@@ -77,7 +77,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_REWIND_CLICKED
  */
 #define ELM_PLAYER_EVENT_REWIND_CLICKED (&(_ELM_PLAYER_EVENT_REWIND_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_QUALITY_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_QUALITY_CLICKED;
 
 /** Called when quality was clicked
  *
@@ -85,7 +85,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_QUALITY_CLICKE
  */
 #define ELM_PLAYER_EVENT_QUALITY_CLICKED (&(_ELM_PLAYER_EVENT_QUALITY_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_EJECT_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_EJECT_CLICKED;
 
 /** Called when eject was clicked
  *
@@ -93,7 +93,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_EJECT_CLICKED;
  */
 #define ELM_PLAYER_EVENT_EJECT_CLICKED (&(_ELM_PLAYER_EVENT_EJECT_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_VOLUME_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_VOLUME_CLICKED;
 
 /** Called when volume was clicked
  *
@@ -101,7 +101,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_VOLUME_CLICKED
  */
 #define ELM_PLAYER_EVENT_VOLUME_CLICKED (&(_ELM_PLAYER_EVENT_VOLUME_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_MUTE_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_PLAYER_EVENT_MUTE_CLICKED;
 
 /** Called when mute was clicked
  *

@@ -1,22 +1,22 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_ACTIVATED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_ACTIVATED =
    EFL_EVENT_DESCRIPTION("activated");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_TOP =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_TOP =
    EFL_EVENT_DESCRIPTION("edge,top");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_BOTTOM =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_BOTTOM =
    EFL_EVENT_DESCRIPTION("edge,bottom");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_LEFT =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_LEFT =
    EFL_EVENT_DESCRIPTION("edge,left");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_RIGHT =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_EDGE_RIGHT =
    EFL_EVENT_DESCRIPTION("edge,right");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_SWIPE =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_SWIPE =
    EFL_EVENT_DESCRIPTION("swipe");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_HIGHLIGHTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_HIGHLIGHTED =
    EFL_EVENT_DESCRIPTION("highlighted");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_UNHIGHLIGHTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_UNHIGHLIGHTED =
    EFL_EVENT_DESCRIPTION("unhighlighted");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_ITEM_FOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_ITEM_FOCUSED =
    EFL_EVENT_DESCRIPTION("item,focused");
-ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_ITEM_UNFOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_LIST_EVENT_ITEM_UNFOCUSED =
    EFL_EVENT_DESCRIPTION("item,unfocused");
 
 void _elm_list_horizontal_set(Eo *obj, Elm_List_Data *pd, Eina_Bool horizontal);

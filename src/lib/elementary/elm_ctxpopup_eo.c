@@ -1,6 +1,6 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
-ELM_API_WEAK const Efl_Event_Description _ELM_CTXPOPUP_EVENT_GEOMETRY_UPDATE =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_CTXPOPUP_EVENT_GEOMETRY_UPDATE =
    EFL_EVENT_DESCRIPTION("geometry,update");
 
 Elm_Widget_Item *_elm_ctxpopup_selected_item_get(const Eo *obj, Elm_Ctxpopup_Data *pd);

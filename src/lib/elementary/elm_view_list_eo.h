@@ -19,7 +19,7 @@ typedef Eo Elm_View_List;
  */
 #define ELM_VIEW_LIST_CLASS elm_view_list_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_view_list_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_view_list_class_get(void);
 
 /**
  * @brief Constructor wrapper
@@ -85,7 +85,7 @@ ELM_API void elm_view_list_model_set(Eo *obj, Efl_Model *model);
  */
 ELM_API Efl_Model *elm_view_list_model_get(const Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_VIEW_LIST_EVENT_MODEL_SELECTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_VIEW_LIST_EVENT_MODEL_SELECTED;
 
 /** Called when model was selected
  * @return Efl_Object *

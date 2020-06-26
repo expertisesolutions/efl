@@ -1,6 +1,6 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED =
    EFL_EVENT_DESCRIPTION("smart,changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_HOVER_EVENT_DISMISSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_HOVER_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
 
 void _elm_hover_target_set(Eo *obj, Elm_Hover_Data *pd, Efl_Canvas_Object *target);

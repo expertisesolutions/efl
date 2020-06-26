@@ -19,7 +19,7 @@ typedef Eo Elm_Spinner;
  */
 #define ELM_SPINNER_CLASS elm_spinner_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_spinner_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_spinner_class_get(void);
 
 /**
  * @brief Control whether the spinner should wrap when it reaches its minimum
@@ -299,7 +299,7 @@ ELM_API const char *elm_obj_spinner_label_format_get(const Eo *obj);
  */
 ELM_API void elm_obj_spinner_special_value_add(Eo *obj, double value, const char *label);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
 
 /** Called when spinner changed
  *
@@ -307,7 +307,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED;
  */
 #define ELM_SPINNER_EVENT_CHANGED (&(_ELM_SPINNER_EVENT_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED;
 
 /** Called when spinner delay changed
  *
@@ -315,7 +315,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED
  */
 #define ELM_SPINNER_EVENT_DELAY_CHANGED (&(_ELM_SPINNER_EVENT_DELAY_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START;
 
 /** Called when spinner drag started
  *
@@ -323,7 +323,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_
  */
 #define ELM_SPINNER_EVENT_SPINNER_DRAG_START (&(_ELM_SPINNER_EVENT_SPINNER_DRAG_START))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP;
 
 /** Called when spinner drag stopped
  *
@@ -331,7 +331,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_
  */
 #define ELM_SPINNER_EVENT_SPINNER_DRAG_STOP (&(_ELM_SPINNER_EVENT_SPINNER_DRAG_STOP))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED;
 
 /** Called when spinner value reached min
  *
@@ -339,7 +339,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED;
  */
 #define ELM_SPINNER_EVENT_MIN_REACHED (&(_ELM_SPINNER_EVENT_MIN_REACHED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_MAX_REACHED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SPINNER_EVENT_MAX_REACHED;
 
 /** Called when spinner value reached max
  *

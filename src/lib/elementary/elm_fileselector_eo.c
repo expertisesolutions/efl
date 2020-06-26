@@ -1,10 +1,10 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE =
    EFL_EVENT_DESCRIPTION("done");
-ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED =
    EFL_EVENT_DESCRIPTION("activated");
-ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALID =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALID =
    EFL_EVENT_DESCRIPTION("selected,invalid");
-ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DIRECTORY_OPEN =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DIRECTORY_OPEN =
    EFL_EVENT_DESCRIPTION("directory,open");
 
 void _elm_fileselector_buttons_ok_cancel_set(Eo *obj, Elm_Fileselector_Data *pd, Eina_Bool visible);

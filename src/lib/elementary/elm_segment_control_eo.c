@@ -1,4 +1,4 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_SEGMENT_CONTROL_EVENT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SEGMENT_CONTROL_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
 
 int _elm_segment_control_item_count_get(const Eo *obj, Elm_Segment_Control_Data *pd);

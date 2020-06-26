@@ -19,7 +19,7 @@ typedef Eo Elm_Index;
  */
 #define ELM_INDEX_CLASS elm_index_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_index_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_index_class_get(void);
 
 /**
  * @brief Enable or disable auto hiding feature for a given index widget.
@@ -345,7 +345,7 @@ ELM_API Elm_Widget_Item *elm_obj_index_selected_item_get(const Eo *obj, int leve
  */
 ELM_API Elm_Widget_Item *elm_obj_index_item_sorted_insert(Eo *obj, const char *letter, Evas_Smart_Cb func, const void *data, Eina_Compare_Cb cmp_func, Eina_Compare_Cb cmp_data_func);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED;
 
 /** Called when index changed
  * @return Efl_Object *
@@ -354,7 +354,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED;
  */
 #define ELM_INDEX_EVENT_CHANGED (&(_ELM_INDEX_EVENT_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED;
 
 /** Called when delay changed
  * @return Efl_Object *
@@ -363,7 +363,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED;
  */
 #define ELM_INDEX_EVENT_DELAY_CHANGED (&(_ELM_INDEX_EVENT_DELAY_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP;
 
 /** Called when level increased
  *
@@ -371,7 +371,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP;
  */
 #define ELM_INDEX_EVENT_LEVEL_UP (&(_ELM_INDEX_EVENT_LEVEL_UP))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_DOWN;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_DOWN;
 
 /** Called when level decreased
  *

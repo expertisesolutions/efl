@@ -20,7 +20,7 @@ typedef Eo Efl_Ui_Radio_Legacy;
  */
 #define EFL_UI_RADIO_LEGACY_CLASS efl_ui_radio_legacy_class_get()
 
-ELM_API_WEAK const Efl_Class *efl_ui_radio_legacy_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *efl_ui_radio_legacy_class_get(void);
 #endif /* EFL_BETA_API_SUPPORT */
 
 #endif

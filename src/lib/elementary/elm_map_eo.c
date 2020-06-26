@@ -1,28 +1,28 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_PRESS =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_PRESS =
    EFL_EVENT_DESCRIPTION("press");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_LOADED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_LOADED =
    EFL_EVENT_DESCRIPTION("loaded");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOAD =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOAD =
    EFL_EVENT_DESCRIPTION("tile,load");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED =
    EFL_EVENT_DESCRIPTION("tile,loaded");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED_FAIL =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_TILE_LOADED_FAIL =
    EFL_EVENT_DESCRIPTION("tile,loaded,fail");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOAD =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOAD =
    EFL_EVENT_DESCRIPTION("route,load");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED =
    EFL_EVENT_DESCRIPTION("route,loaded");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED_FAIL =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_ROUTE_LOADED_FAIL =
    EFL_EVENT_DESCRIPTION("route,loaded,fail");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOAD =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOAD =
    EFL_EVENT_DESCRIPTION("name,load");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED =
    EFL_EVENT_DESCRIPTION("name,loaded");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED_FAIL =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_NAME_LOADED_FAIL =
    EFL_EVENT_DESCRIPTION("name,loaded,fail");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_CLICKED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_CLICKED =
    EFL_EVENT_DESCRIPTION("overlay,clicked");
-ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_DEL =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MAP_EVENT_OVERLAY_DEL =
    EFL_EVENT_DESCRIPTION("overlay,del");
 
 void _elm_map_zoom_min_set(Eo *obj, Elm_Map_Data *pd, int zoom);

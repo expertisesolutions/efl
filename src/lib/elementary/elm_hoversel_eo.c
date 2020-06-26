@@ -1,10 +1,10 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
-ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED =
    EFL_EVENT_DESCRIPTION("expanded");
-ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED =
    EFL_EVENT_DESCRIPTION("item,focused");
-ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_UNFOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_UNFOCUSED =
    EFL_EVENT_DESCRIPTION("item,unfocused");
 
 void _elm_hoversel_horizontal_set(Eo *obj, Elm_Hoversel_Data *pd, Eina_Bool horizontal);

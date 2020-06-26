@@ -1,4 +1,4 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_PAN_EVENT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_PAN_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
 
 void _elm_pan_pos_set(Eo *obj, Elm_Pan_Smart_Data *pd, int x, int y);

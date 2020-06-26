@@ -19,9 +19,9 @@ typedef Eo Elm_Icon;
  */
 #define ELM_ICON_CLASS elm_icon_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_icon_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_icon_class_get(void);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_DONE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_DONE;
 
 /** Called when thumb nailing is successfully done
  *
@@ -29,7 +29,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_DONE;
  */
 #define ELM_ICON_EVENT_THUMB_DONE (&(_ELM_ICON_EVENT_THUMB_DONE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_ERROR;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ICON_EVENT_THUMB_ERROR;
 
 /** Called when thumb nailing failed
  *

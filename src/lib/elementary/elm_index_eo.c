@@ -1,10 +1,10 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_DELAY_CHANGED =
    EFL_EVENT_DESCRIPTION("delay,changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_UP =
    EFL_EVENT_DESCRIPTION("level,up");
-ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_DOWN =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_INDEX_EVENT_LEVEL_DOWN =
    EFL_EVENT_DESCRIPTION("level,down");
 
 void _elm_index_autohide_disabled_set(Eo *obj, Elm_Index_Data *pd, Eina_Bool disabled);

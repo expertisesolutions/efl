@@ -1,8 +1,8 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
-ELM_API_WEAK const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU =
    EFL_EVENT_DESCRIPTION("elm,action,block_menu");
-ELM_API_WEAK const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_UNBLOCK_MENU =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_UNBLOCK_MENU =
    EFL_EVENT_DESCRIPTION("elm,action,unblock_menu");
 
 Elm_Widget_Item *_elm_menu_selected_item_get(const Eo *obj, Elm_Menu_Data *pd);

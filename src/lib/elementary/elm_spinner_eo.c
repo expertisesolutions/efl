@@ -1,14 +1,14 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_CHANGED =
    EFL_EVENT_DESCRIPTION("changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_DELAY_CHANGED =
    EFL_EVENT_DESCRIPTION("delay,changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_START =
    EFL_EVENT_DESCRIPTION("spinner,drag,start");
-ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_SPINNER_DRAG_STOP =
    EFL_EVENT_DESCRIPTION("spinner,drag,stop");
-ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_MIN_REACHED =
    EFL_EVENT_DESCRIPTION("min,reached");
-ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_MAX_REACHED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SPINNER_EVENT_MAX_REACHED =
    EFL_EVENT_DESCRIPTION("max,reached");
 
 void _elm_spinner_wrap_set(Eo *obj, Elm_Spinner_Data *pd, Eina_Bool wrap);

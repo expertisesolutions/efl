@@ -19,7 +19,7 @@ typedef Eo Elm_Multibuttonentry_Item;
  */
 #define ELM_MULTIBUTTONENTRY_ITEM_CLASS elm_multibuttonentry_item_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_multibuttonentry_item_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_multibuttonentry_item_class_get(void);
 
 /**
  * @brief Control the selected state of an item

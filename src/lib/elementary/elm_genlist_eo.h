@@ -19,7 +19,7 @@ typedef Eo Elm_Genlist;
  */
 #define ELM_GENLIST_CLASS elm_genlist_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_genlist_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_genlist_class_get(void);
 
 /**
  * @brief Enable/disable homogeneous mode.
@@ -708,7 +708,7 @@ ELM_API Elm_Widget_Item *elm_obj_genlist_item_sorted_insert(Eo *obj, const Elm_G
  */
 ELM_API Elm_Widget_Item *elm_obj_genlist_search_by_text_item_get(Eo *obj, Elm_Widget_Item *item_to_search_from, const char *part_name, const char *pattern, Elm_Glob_Match_Flags flags);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED;
 
 /** Called when genlist item got focus
  * @return Efl_Object *
@@ -717,7 +717,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_FOCUSED;
  */
 #define ELM_GENLIST_EVENT_ITEM_FOCUSED (&(_ELM_GENLIST_EVENT_ITEM_FOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSED;
 
 /** Called when genlist item lost focus
  * @return Efl_Object *
@@ -726,7 +726,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ITEM_UNFOCUSE
  */
 #define ELM_GENLIST_EVENT_ITEM_UNFOCUSED (&(_ELM_GENLIST_EVENT_ITEM_UNFOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG;
 
 /** Called when vertical bar is dragged
  *
@@ -734,7 +734,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_DRAG;
  */
 #define ELM_GENLIST_EVENT_VBAR_DRAG (&(_ELM_GENLIST_EVENT_VBAR_DRAG))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS;
 
 /** Called when vertical bar is pressed
  *
@@ -742,7 +742,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_PRESS;
  */
 #define ELM_GENLIST_EVENT_VBAR_PRESS (&(_ELM_GENLIST_EVENT_VBAR_PRESS))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS;
 
 /** Called when vertical bar is no longer pressed
  *
@@ -750,7 +750,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_VBAR_UNPRESS;
  */
 #define ELM_GENLIST_EVENT_VBAR_UNPRESS (&(_ELM_GENLIST_EVENT_VBAR_UNPRESS))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG;
 
 /** Called when horizontal bar is dragged
  *
@@ -758,7 +758,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_DRAG;
  */
 #define ELM_GENLIST_EVENT_HBAR_DRAG (&(_ELM_GENLIST_EVENT_HBAR_DRAG))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS;
 
 /** Called when horizontal bar is pressed
  *
@@ -766,7 +766,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_PRESS;
  */
 #define ELM_GENLIST_EVENT_HBAR_PRESS (&(_ELM_GENLIST_EVENT_HBAR_PRESS))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS;
 
 /** Called when horizontal bar is no longer pressed
  *
@@ -774,7 +774,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HBAR_UNPRESS;
  */
 #define ELM_GENLIST_EVENT_HBAR_UNPRESS (&(_ELM_GENLIST_EVENT_HBAR_UNPRESS))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP;
 
 /** Called when top edge is reached
  *
@@ -782,7 +782,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_TOP;
  */
 #define ELM_GENLIST_EVENT_EDGE_TOP (&(_ELM_GENLIST_EVENT_EDGE_TOP))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM;
 
 /** Called when bottom edge is reached
  *
@@ -790,7 +790,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_BOTTOM;
  */
 #define ELM_GENLIST_EVENT_EDGE_BOTTOM (&(_ELM_GENLIST_EVENT_EDGE_BOTTOM))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT;
 
 /** Called when left edge is reached
  *
@@ -798,7 +798,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_LEFT;
  */
 #define ELM_GENLIST_EVENT_EDGE_LEFT (&(_ELM_GENLIST_EVENT_EDGE_LEFT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT;
 
 /** Called when right edge is reached
  *
@@ -806,7 +806,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EDGE_RIGHT;
  */
 #define ELM_GENLIST_EVENT_EDGE_RIGHT (&(_ELM_GENLIST_EVENT_EDGE_RIGHT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED;
 
 /** Called when genlist item moved
  * @return Efl_Object *
@@ -815,7 +815,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED;
  */
 #define ELM_GENLIST_EVENT_MOVED (&(_ELM_GENLIST_EVENT_MOVED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE;
 
 /** Called when genlist item moved before
  * @return Efl_Object *
@@ -824,7 +824,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_BEFORE;
  */
 #define ELM_GENLIST_EVENT_MOVED_BEFORE (&(_ELM_GENLIST_EVENT_MOVED_BEFORE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER;
 
 /** Called when genlist item moved after
  * @return Efl_Object *
@@ -833,7 +833,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MOVED_AFTER;
  */
 #define ELM_GENLIST_EVENT_MOVED_AFTER (&(_ELM_GENLIST_EVENT_MOVED_AFTER))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE;
 
 /** Called when swipe is detected
  * @return Efl_Object *
@@ -842,7 +842,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_SWIPE;
  */
 #define ELM_GENLIST_EVENT_SWIPE (&(_ELM_GENLIST_EVENT_SWIPE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_IN;
 
 /** Called when multitouch pinch in detected
  * @return Efl_Object *
@@ -851,7 +851,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_I
  */
 #define ELM_GENLIST_EVENT_MULTI_PINCH_IN (&(_ELM_GENLIST_EVENT_MULTI_PINCH_IN))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_OUT;
 
 /** Called when multitouch pinch out detected
  * @return Efl_Object *
@@ -860,7 +860,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_PINCH_O
  */
 #define ELM_GENLIST_EVENT_MULTI_PINCH_OUT (&(_ELM_GENLIST_EVENT_MULTI_PINCH_OUT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN;
 
 /** Called when multitouch swipe down detected
  * @return Efl_Object *
@@ -869,7 +869,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_D
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_DOWN))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_UP;
 
 /** Called when multitouch swipe up detected
  * @return Efl_Object *
@@ -878,7 +878,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_U
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_UP (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_UP))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT;
 
 /** Called when multitouch swipe right detected
  * @return Efl_Object *
@@ -887,7 +887,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_R
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_RIGHT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT;
 
 /** Called when multitouch swipe left detected
  * @return Efl_Object *
@@ -896,7 +896,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_MULTI_SWIPE_L
  */
 #define ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT (&(_ELM_GENLIST_EVENT_MULTI_SWIPE_LEFT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED;
 
 /** Called when genlist is released
  * @return Efl_Object *
@@ -905,7 +905,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_RELEASED;
  */
 #define ELM_GENLIST_EVENT_RELEASED (&(_ELM_GENLIST_EVENT_RELEASED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED;
 
 /** called when genlist is activated
  * @return Efl_Object *
@@ -914,7 +914,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_ACTIVATED;
  */
 #define ELM_GENLIST_EVENT_ACTIVATED (&(_ELM_GENLIST_EVENT_ACTIVATED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED;
 
 /** Called when genlist is highlighted
  * @return Efl_Object *
@@ -923,7 +923,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_HIGHLIGHTED;
  */
 #define ELM_GENLIST_EVENT_HIGHLIGHTED (&(_ELM_GENLIST_EVENT_HIGHLIGHTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED;
 
 /** Called when genlist is no longer highlighted
  * @return Efl_Object *
@@ -932,7 +932,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNHIGHLIGHTED
  */
 #define ELM_GENLIST_EVENT_UNHIGHLIGHTED (&(_ELM_GENLIST_EVENT_UNHIGHLIGHTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED;
 
 /** Called when genlist is realized
  * @return Efl_Object *
@@ -941,7 +941,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_REALIZED;
  */
 #define ELM_GENLIST_EVENT_REALIZED (&(_ELM_GENLIST_EVENT_REALIZED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED;
 
 /** Called when genlist is unrealized
  * @return Efl_Object *
@@ -950,7 +950,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_UNREALIZED;
  */
 #define ELM_GENLIST_EVENT_UNREALIZED (&(_ELM_GENLIST_EVENT_UNREALIZED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQUEST;
 
 /** Called when contract is requested
  * @return Efl_Object *
@@ -959,7 +959,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACT_REQU
  */
 #define ELM_GENLIST_EVENT_CONTRACT_REQUEST (&(_ELM_GENLIST_EVENT_CONTRACT_REQUEST))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUEST;
 
 /** Called when expand is requested
  * @return Efl_Object *
@@ -968,7 +968,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPAND_REQUES
  */
 #define ELM_GENLIST_EVENT_EXPAND_REQUEST (&(_ELM_GENLIST_EVENT_EXPAND_REQUEST))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED;
 
 /** called when genlist is contracted
  * @return Efl_Object *
@@ -977,7 +977,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_CONTRACTED;
  */
 #define ELM_GENLIST_EVENT_CONTRACTED (&(_ELM_GENLIST_EVENT_CONTRACTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED;
 
 /** Called when genlist is expanded
  * @return Efl_Object *
@@ -986,7 +986,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_EXPANDED;
  */
 #define ELM_GENLIST_EVENT_EXPANDED (&(_ELM_GENLIST_EVENT_EXPANDED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE;
 
 /** Called when genlist index updated
  * @return Efl_Object *
@@ -995,7 +995,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_INDEX_UPDATE;
  */
 #define ELM_GENLIST_EVENT_INDEX_UPDATE (&(_ELM_GENLIST_EVENT_INDEX_UPDATE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED;
 
 /** Called when genlist tree effect finished
  *
@@ -1003,7 +1003,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_TREE_EFFECT_F
  */
 #define ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED (&(_ELM_GENLIST_EVENT_TREE_EFFECT_FINISHED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_FILTER_DONE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GENLIST_EVENT_FILTER_DONE;
 
 /** Called when genlist filter is done
  *

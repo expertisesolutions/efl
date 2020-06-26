@@ -1,36 +1,36 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_REALIZED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_REALIZED =
    EFL_EVENT_DESCRIPTION("realized");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_UNREALIZED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_UNREALIZED =
    EFL_EVENT_DESCRIPTION("unrealized");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_INDEX_UPDATE =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_INDEX_UPDATE =
    EFL_EVENT_DESCRIPTION("index,update");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_SCROLL_PAGE_CHANGED =
    EFL_EVENT_DESCRIPTION("scroll,page,changed");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_BOTTOM =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_BOTTOM =
    EFL_EVENT_DESCRIPTION("edge,bottom");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_TOP =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_TOP =
    EFL_EVENT_DESCRIPTION("edge,top");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_RIGHT =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_RIGHT =
    EFL_EVENT_DESCRIPTION("edge,right");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_LEFT =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_EDGE_LEFT =
    EFL_EVENT_DESCRIPTION("edge,left");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_FOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_FOCUSED =
    EFL_EVENT_DESCRIPTION("item,focused");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_UNFOCUSED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_UNFOCUSED =
    EFL_EVENT_DESCRIPTION("item,unfocused");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_START =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_START =
    EFL_EVENT_DESCRIPTION("item,reorder,anim,start");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_STOP =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ITEM_REORDER_ANIM_STOP =
    EFL_EVENT_DESCRIPTION("item,reorder,anim,stop");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ACTIVATED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_ACTIVATED =
    EFL_EVENT_DESCRIPTION("activated");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_HIGHLIGHTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_HIGHLIGHTED =
    EFL_EVENT_DESCRIPTION("highlighted");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_UNHIGHLIGHTED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_UNHIGHLIGHTED =
    EFL_EVENT_DESCRIPTION("unhighlighted");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_RELEASED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_RELEASED =
    EFL_EVENT_DESCRIPTION("released");
-ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_MOVED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_GENGRID_EVENT_MOVED =
    EFL_EVENT_DESCRIPTION("moved");
 
 void _elm_gengrid_align_set(Eo *obj, Elm_Gengrid_Data *pd, double align_x, double align_y);

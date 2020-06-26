@@ -1,6 +1,6 @@
-ELM_API_WEAK const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED =
    EFL_EVENT_DESCRIPTION("underflowed");
-ELM_API_WEAK const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED =
+ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED =
    EFL_EVENT_DESCRIPTION("overflowed");
 
 const Eina_List *_elm_flipselector_items_get(const Eo *obj, Elm_Flipselector_Data *pd);

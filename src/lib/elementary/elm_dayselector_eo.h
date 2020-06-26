@@ -41,7 +41,7 @@ typedef enum
  */
 #define ELM_DAYSELECTOR_CLASS elm_dayselector_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_dayselector_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_dayselector_class_get(void);
 
 /**
  * @brief Set the starting day of Dayselector.

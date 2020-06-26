@@ -19,7 +19,7 @@ typedef Eo Elm_Naviframe;
  */
 #define ELM_NAVIFRAME_CLASS elm_naviframe_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_naviframe_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_naviframe_class_get(void);
 
 /**
  * @brief Control the event enabled when pushing/popping items
@@ -250,7 +250,7 @@ ELM_API void elm_obj_naviframe_item_simple_promote(Eo *obj, Efl_Canvas_Object *c
  */
 ELM_API Elm_Widget_Item *elm_obj_naviframe_item_insert_after(Eo *obj, Elm_Widget_Item *after, const char *title_label, Efl_Canvas_Object *prev_btn, Efl_Canvas_Object *next_btn, Efl_Canvas_Object *content, const char *item_style);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED;
 
 /** Called when naviframe transition finished
  * @return Efl_Object *
@@ -259,7 +259,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TRANSITION_
  */
 #define ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED (&(_ELM_NAVIFRAME_EVENT_TRANSITION_FINISHED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED;
 
 /** Called when naviframe title transaction finished
  * @return Efl_Object *
@@ -268,7 +268,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_TRANS
  */
 #define ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED (&(_ELM_NAVIFRAME_EVENT_TITLE_TRANSITION_FINISHED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICKED;
 
 /** Called when naviframe title was clicked
  * @return Efl_Object *
@@ -277,7 +277,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_TITLE_CLICK
  */
 #define ELM_NAVIFRAME_EVENT_TITLE_CLICKED (&(_ELM_NAVIFRAME_EVENT_TITLE_CLICKED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_ITEM_ACTIVATED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_NAVIFRAME_EVENT_ITEM_ACTIVATED;
 
 /** Called when naviframe item was activated
  * @return Efl_Object *

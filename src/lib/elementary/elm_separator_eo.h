@@ -19,7 +19,7 @@ typedef Eo Elm_Separator;
  */
 #define ELM_SEPARATOR_CLASS elm_separator_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_separator_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_separator_class_get(void);
 
 /**
  * @brief Set the horizontal mode of a separator object

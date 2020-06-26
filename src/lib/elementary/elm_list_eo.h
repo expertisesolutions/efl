@@ -19,7 +19,7 @@ typedef Eo Elm_List;
  */
 #define ELM_LIST_CLASS elm_list_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_list_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_list_class_get(void);
 
 /**
  * @brief Control horizontal mode on the list object.
@@ -551,7 +551,7 @@ ELM_API void elm_obj_list_clear(Eo *obj);
  */
 ELM_API Elm_Widget_Item *elm_obj_list_item_sorted_insert(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data, Eina_Compare_Cb cmp_func);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ACTIVATED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ACTIVATED;
 
 /** Called when activated
  * @return Efl_Object *
@@ -560,7 +560,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ACTIVATED;
  */
 #define ELM_LIST_EVENT_ACTIVATED (&(_ELM_LIST_EVENT_ACTIVATED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_TOP;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_TOP;
 
 /** Called when top edge was reached
  *
@@ -568,7 +568,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_TOP;
  */
 #define ELM_LIST_EVENT_EDGE_TOP (&(_ELM_LIST_EVENT_EDGE_TOP))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_BOTTOM;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_BOTTOM;
 
 /** Called when bottom edge was reached
  *
@@ -576,7 +576,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_BOTTOM;
  */
 #define ELM_LIST_EVENT_EDGE_BOTTOM (&(_ELM_LIST_EVENT_EDGE_BOTTOM))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_LEFT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_LEFT;
 
 /** Called when left edge was reached
  *
@@ -584,7 +584,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_LEFT;
  */
 #define ELM_LIST_EVENT_EDGE_LEFT (&(_ELM_LIST_EVENT_EDGE_LEFT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_RIGHT;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_RIGHT;
 
 /** Called when right edge was reached
  *
@@ -592,7 +592,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_EDGE_RIGHT;
  */
 #define ELM_LIST_EVENT_EDGE_RIGHT (&(_ELM_LIST_EVENT_EDGE_RIGHT))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_SWIPE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_SWIPE;
 
 /** Called when swipe is detected
  * @return Efl_Object *
@@ -601,7 +601,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_SWIPE;
  */
 #define ELM_LIST_EVENT_SWIPE (&(_ELM_LIST_EVENT_SWIPE))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_HIGHLIGHTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_HIGHLIGHTED;
 
 /** Called when highlighted
  * @return Efl_Object *
@@ -610,7 +610,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_HIGHLIGHTED;
  */
 #define ELM_LIST_EVENT_HIGHLIGHTED (&(_ELM_LIST_EVENT_HIGHLIGHTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_UNHIGHLIGHTED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_UNHIGHLIGHTED;
 
 /** Called when no longer highlighted
  * @return Efl_Object *
@@ -619,7 +619,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_UNHIGHLIGHTED;
  */
 #define ELM_LIST_EVENT_UNHIGHLIGHTED (&(_ELM_LIST_EVENT_UNHIGHLIGHTED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ITEM_FOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ITEM_FOCUSED;
 
 /** Called when item got focus
  * @return Efl_Object *
@@ -628,7 +628,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ITEM_FOCUSED;
  */
 #define ELM_LIST_EVENT_ITEM_FOCUSED (&(_ELM_LIST_EVENT_ITEM_FOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ITEM_UNFOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ITEM_UNFOCUSED;
 
 /** Called when item no longer has focus
  * @return Efl_Object *

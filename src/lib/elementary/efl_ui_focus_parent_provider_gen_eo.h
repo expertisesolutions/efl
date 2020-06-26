@@ -20,7 +20,7 @@ typedef Eo Efl_Ui_Focus_Parent_Provider_Gen;
  */
 #define EFL_UI_FOCUS_PARENT_PROVIDER_GEN_CLASS efl_ui_focus_parent_provider_gen_class_get()
 
-ELM_API_WEAK const Efl_Class *efl_ui_focus_parent_provider_gen_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *efl_ui_focus_parent_provider_gen_class_get(void);
 
 /**
  * @brief Content item map property

@@ -47,7 +47,7 @@ typedef enum
  */
 #define ELM_SYSTRAY_CLASS elm_systray_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_systray_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_systray_class_get(void);
 
 /**
  * @brief Set the id of the Status Notifier Item.

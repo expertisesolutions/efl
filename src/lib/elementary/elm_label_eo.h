@@ -31,7 +31,7 @@ typedef enum
  */
 #define ELM_LABEL_CLASS elm_label_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_label_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_label_class_get(void);
 
 /**
  * @brief Control wrap width of the label
@@ -247,7 +247,7 @@ ELM_API Eina_Bool elm_obj_label_ellipsis_get(const Eo *obj);
  */
 ELM_API void elm_obj_label_slide_go(Eo *obj);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END;
 
 /** Called when slide stopped
  *

@@ -73,7 +73,7 @@ typedef struct _Elm_Sys_Notify_Action_Invoked
  */
 #define ELM_SYS_NOTIFY_CLASS elm_sys_notify_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_sys_notify_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_sys_notify_class_get(void);
 
 /**
  * @brief Set the notifications server to be used.

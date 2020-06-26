@@ -37,7 +37,7 @@ typedef enum
  */
 #define ELM_CTXPOPUP_CLASS elm_ctxpopup_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_ctxpopup_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_ctxpopup_class_get(void);
 
 /**
  * @brief Get the selected item in the widget.
@@ -320,7 +320,7 @@ ELM_API Elm_Widget_Item *elm_obj_ctxpopup_item_append(Eo *obj, const char *label
  */
 ELM_API Elm_Widget_Item *elm_obj_ctxpopup_item_prepend(Eo *obj, const char *label, Efl_Canvas_Object *icon, Evas_Smart_Cb func, const void *data);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED;
 
 /** Called when context popup was dismissed
  *
@@ -328,7 +328,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_DISMISSED;
  */
 #define ELM_CTXPOPUP_EVENT_DISMISSED (&(_ELM_CTXPOPUP_EVENT_DISMISSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_GEOMETRY_UPDATE;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_CTXPOPUP_EVENT_GEOMETRY_UPDATE;
 
 /** Called when context popup geometry was updated
  * @return const Eina_Rect *

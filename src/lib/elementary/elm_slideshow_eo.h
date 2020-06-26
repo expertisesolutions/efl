@@ -19,7 +19,7 @@ typedef Eo Elm_Slideshow;
  */
 #define ELM_SLIDESHOW_CLASS elm_slideshow_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_slideshow_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_slideshow_class_get(void);
 
 /**
  * @brief Set the number of items to cache, on a given slideshow widget, after
@@ -387,7 +387,7 @@ ELM_API Elm_Widget_Item *elm_obj_slideshow_item_add(Eo *obj, const Elm_Slideshow
  */
 ELM_API Elm_Widget_Item *elm_obj_slideshow_item_sorted_insert(Eo *obj, const Elm_Slideshow_Item_Class *itc, const void *data, Eina_Compare_Cb func);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED;
 
 /** Called when slideshow widget changed
  * @return Efl_Object *
@@ -396,7 +396,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_SLIDESHOW_EVENT_CHANGED;
  */
 #define ELM_SLIDESHOW_EVENT_CHANGED (&(_ELM_SLIDESHOW_EVENT_CHANGED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_SLIDESHOW_EVENT_TRANSITION_END;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_SLIDESHOW_EVENT_TRANSITION_END;
 
 /** Called on transition end
  * @return Efl_Object *

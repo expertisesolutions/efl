@@ -19,7 +19,7 @@ typedef Eo Elm_Widget_Item;
  */
 #define ELM_WIDGET_ITEM_CLASS elm_widget_item_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_widget_item_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_widget_item_class_get(void);
 
 /**
  * @brief Control size restriction state of an object's tooltip

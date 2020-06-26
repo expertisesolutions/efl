@@ -19,7 +19,7 @@ typedef Eo Elm_Hoversel;
  */
 #define ELM_HOVERSEL_CLASS elm_hoversel_class_get()
 
-ELM_API_WEAK const Efl_Class *elm_hoversel_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_hoversel_class_get(void);
 
 /**
  * @brief Control if the hoversel should expand horizontally.
@@ -169,7 +169,7 @@ ELM_API void elm_obj_hoversel_hover_end(Eo *obj);
  */
 ELM_API Elm_Widget_Item *elm_obj_hoversel_item_add(Eo *obj, const char *label, const char *icon_file, Elm_Icon_Type icon_type, Evas_Smart_Cb func, const void *data);
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED;
 
 /** Called when hoversel is dismissed
  *
@@ -177,7 +177,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_DISMISSED;
  */
 #define ELM_HOVERSEL_EVENT_DISMISSED (&(_ELM_HOVERSEL_EVENT_DISMISSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED;
 
 /** Called when hoversel is expanded
  *
@@ -185,7 +185,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_EXPANDED;
  */
 #define ELM_HOVERSEL_EVENT_EXPANDED (&(_ELM_HOVERSEL_EVENT_EXPANDED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED;
 
 /** Called when hoversel item got focus
  * @return Efl_Object *
@@ -194,7 +194,7 @@ ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_FOCUSED
  */
 #define ELM_HOVERSEL_EVENT_ITEM_FOCUSED (&(_ELM_HOVERSEL_EVENT_ITEM_FOCUSED))
 
-ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_UNFOCUSED;
+ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVERSEL_EVENT_ITEM_UNFOCUSED;
 
 /** Called when hoversel item lost focus
  * @return Efl_Object *
