@@ -30,7 +30,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_menu_class_get(void);
  *
  * @ingroup Elm_Menu
  */
-ELM_API Elm_Widget_Item *elm_obj_menu_selected_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_selected_item_get(const Eo *obj);
 
 /**
  * @brief Get the first item in the widget.
@@ -41,7 +41,7 @@ ELM_API Elm_Widget_Item *elm_obj_menu_selected_item_get(const Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API Elm_Widget_Item *elm_obj_menu_first_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_first_item_get(const Eo *obj);
 
 /**
  * @brief Get the last item in the widget.
@@ -52,7 +52,7 @@ ELM_API Elm_Widget_Item *elm_obj_menu_first_item_get(const Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API Elm_Widget_Item *elm_obj_menu_last_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_last_item_get(const Eo *obj);
 
 /**
  * @brief Returns a list of the widget item.
@@ -63,7 +63,7 @@ ELM_API Elm_Widget_Item *elm_obj_menu_last_item_get(const Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API const Eina_List *elm_obj_menu_items_get(const Eo *obj);
+ELM_API ELM_API_WEAK const Eina_List *elm_obj_menu_items_get(const Eo *obj);
 
 /**
  * @brief Move the menu to a new position
@@ -78,7 +78,7 @@ ELM_API const Eina_List *elm_obj_menu_items_get(const Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API void elm_obj_menu_relative_move(Eo *obj, int x, int y);
+ELM_API ELM_API_WEAK void elm_obj_menu_relative_move(Eo *obj, int x, int y);
 
 /**
  * @brief Add an item at the end of the given menu widget.
@@ -97,7 +97,7 @@ ELM_API void elm_obj_menu_relative_move(Eo *obj, int x, int y);
  *
  * @ingroup Elm_Menu
  */
-ELM_API Elm_Widget_Item *elm_obj_menu_item_add(Eo *obj, Elm_Widget_Item *parent, const char *icon, const char *label, Evas_Smart_Cb func, const void *data);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_add(Eo *obj, Elm_Widget_Item *parent, const char *icon, const char *label, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Open a closed menu
@@ -107,7 +107,7 @@ ELM_API Elm_Widget_Item *elm_obj_menu_item_add(Eo *obj, Elm_Widget_Item *parent,
  *
  * @ingroup Elm_Menu
  */
-ELM_API void elm_obj_menu_open(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_menu_open(Eo *obj);
 
 /**
  * @brief Close a opened menu
@@ -117,7 +117,7 @@ ELM_API void elm_obj_menu_open(Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API void elm_obj_menu_close(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_menu_close(Eo *obj);
 
 /**
  * @brief Add a separator item to menu @c obj under @c parent.
@@ -129,7 +129,7 @@ ELM_API void elm_obj_menu_close(Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API Elm_Widget_Item *elm_obj_menu_item_separator_add(Eo *obj, Elm_Widget_Item *parent);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_separator_add(Eo *obj, Elm_Widget_Item *parent);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED;
 

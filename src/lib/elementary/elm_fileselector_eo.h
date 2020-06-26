@@ -35,7 +35,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_fileselector_class_get(void);
  *
  * @ingroup Elm_Fileselector
  */
-ELM_API void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Eina_Bool visible);
+ELM_API ELM_API_WEAK void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Eina_Bool visible);
 
 /**
  * @brief Get whether the "ok" and "cancel" buttons on a given file selector
@@ -49,7 +49,7 @@ ELM_API void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Eina_Bool visib
  *
  * @ingroup Elm_Fileselector
  */
-ELM_API Eina_Bool elm_obj_fileselector_buttons_ok_cancel_get(const Eo *obj);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_fileselector_buttons_ok_cancel_get(const Eo *obj);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE;
 

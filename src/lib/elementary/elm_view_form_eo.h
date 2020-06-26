@@ -31,7 +31,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_view_form_class_get(void);
  *
  * @ingroup Elm_View_Form
  */
-ELM_API void elm_view_form_model_set(Eo *obj, Efl_Model *model);
+ELM_API ELM_API_WEAK void elm_view_form_model_set(Eo *obj, Efl_Model *model);
 
 /**
  * @brief Add new widget
@@ -44,6 +44,6 @@ ELM_API void elm_view_form_model_set(Eo *obj, Efl_Model *model);
  *
  * @ingroup Elm_View_Form
  */
-ELM_API void elm_view_form_widget_add(Eo *obj, const char *propname, Efl_Canvas_Object *evas);
+ELM_API ELM_API_WEAK void elm_view_form_widget_add(Eo *obj, const char *propname, Efl_Canvas_Object *evas);
 
 #endif

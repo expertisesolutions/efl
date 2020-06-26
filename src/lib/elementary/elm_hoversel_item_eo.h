@@ -36,7 +36,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_hoversel_item_class_get(void);
  *
  * @ingroup Elm_Hoversel_Item
  */
-ELM_API void elm_obj_hoversel_item_icon_set(Eo *obj, const char *icon_file, const char *icon_group, Elm_Icon_Type icon_type);
+ELM_API ELM_API_WEAK void elm_obj_hoversel_item_icon_set(Eo *obj, const char *icon_file, const char *icon_group, Elm_Icon_Type icon_type);
 
 /**
  * @brief This controls the icon for the given hoversel item.
@@ -53,6 +53,6 @@ ELM_API void elm_obj_hoversel_item_icon_set(Eo *obj, const char *icon_file, cons
  *
  * @ingroup Elm_Hoversel_Item
  */
-ELM_API void elm_obj_hoversel_item_icon_get(const Eo *obj, const char **icon_file, const char **icon_group, Elm_Icon_Type *icon_type);
+ELM_API ELM_API_WEAK void elm_obj_hoversel_item_icon_get(const Eo *obj, const char **icon_file, const char **icon_group, Elm_Icon_Type *icon_type);
 
 #endif

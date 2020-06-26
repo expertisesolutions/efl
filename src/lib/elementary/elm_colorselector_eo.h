@@ -50,7 +50,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_colorselector_class_get(void);
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API void elm_obj_colorselector_picked_color_set(Eo *obj, int r, int g, int b, int a);
+ELM_API ELM_API_WEAK void elm_obj_colorselector_picked_color_set(Eo *obj, int r, int g, int b, int a);
 
 /**
  * @brief Get current color from colorselector.
@@ -63,7 +63,7 @@ ELM_API void elm_obj_colorselector_picked_color_set(Eo *obj, int r, int g, int b
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API void elm_obj_colorselector_picked_color_get(const Eo *obj, int *r, int *g, int *b, int *a);
+ELM_API ELM_API_WEAK void elm_obj_colorselector_picked_color_get(const Eo *obj, int *r, int *g, int *b, int *a);
 
 /**
  * @brief Set current palette's name
@@ -77,7 +77,7 @@ ELM_API void elm_obj_colorselector_picked_color_get(const Eo *obj, int *r, int *
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API void elm_obj_colorselector_palette_name_set(Eo *obj, const char *palette_name);
+ELM_API ELM_API_WEAK void elm_obj_colorselector_palette_name_set(Eo *obj, const char *palette_name);
 
 /**
  * @brief Get current palette's name
@@ -91,7 +91,7 @@ ELM_API void elm_obj_colorselector_palette_name_set(Eo *obj, const char *palette
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API const char *elm_obj_colorselector_palette_name_get(const Eo *obj);
+ELM_API ELM_API_WEAK const char *elm_obj_colorselector_palette_name_get(const Eo *obj);
 
 /**
  * @brief Set Colorselector's mode.
@@ -103,7 +103,7 @@ ELM_API const char *elm_obj_colorselector_palette_name_get(const Eo *obj);
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API void elm_obj_colorselector_mode_set(Eo *obj, Elm_Colorselector_Mode mode);
+ELM_API ELM_API_WEAK void elm_obj_colorselector_mode_set(Eo *obj, Elm_Colorselector_Mode mode);
 
 /**
  * @brief Get Colorselector's mode.
@@ -114,7 +114,7 @@ ELM_API void elm_obj_colorselector_mode_set(Eo *obj, Elm_Colorselector_Mode mode
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API Elm_Colorselector_Mode elm_obj_colorselector_mode_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Colorselector_Mode elm_obj_colorselector_mode_get(const Eo *obj);
 
 /**
  * @brief Get list of palette items.
@@ -130,7 +130,7 @@ ELM_API Elm_Colorselector_Mode elm_obj_colorselector_mode_get(const Eo *obj);
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API const Eina_List *elm_obj_colorselector_palette_items_get(const Eo *obj);
+ELM_API ELM_API_WEAK const Eina_List *elm_obj_colorselector_palette_items_get(const Eo *obj);
 
 /**
  * @brief Get the selected item in colorselector palette.
@@ -143,7 +143,7 @@ ELM_API const Eina_List *elm_obj_colorselector_palette_items_get(const Eo *obj);
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API Elm_Widget_Item *elm_obj_colorselector_palette_selected_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_colorselector_palette_selected_item_get(const Eo *obj);
 
 /**
  * @brief Add a new color item to palette.
@@ -158,13 +158,13 @@ ELM_API Elm_Widget_Item *elm_obj_colorselector_palette_selected_item_get(const E
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API Elm_Widget_Item *elm_obj_colorselector_palette_color_add(Eo *obj, int r, int g, int b, int a);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_colorselector_palette_color_add(Eo *obj, int r, int g, int b, int a);
 
 /** Clear the palette items.
  *
  * @ingroup Elm_Colorselector
  */
-ELM_API void elm_obj_colorselector_palette_clear(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_colorselector_palette_clear(Eo *obj);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_COLORSELECTOR_EVENT_COLOR_ITEM_SELECTED;
 

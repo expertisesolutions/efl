@@ -36,7 +36,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_list_class_get(void);
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_horizontal_set(Eo *obj, Eina_Bool horizontal);
+ELM_API ELM_API_WEAK void elm_obj_list_horizontal_set(Eo *obj, Eina_Bool horizontal);
 
 /**
  * @brief Control horizontal mode on the list object.
@@ -54,7 +54,7 @@ ELM_API void elm_obj_list_horizontal_set(Eo *obj, Eina_Bool horizontal);
  *
  * @ingroup Elm_List
  */
-ELM_API Eina_Bool elm_obj_list_horizontal_get(const Eo *obj);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_list_horizontal_get(const Eo *obj);
 
 /**
  * @brief Control the list select mode.
@@ -73,7 +73,7 @@ ELM_API Eina_Bool elm_obj_list_horizontal_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_select_mode_set(Eo *obj, Elm_Object_Select_Mode mode);
+ELM_API ELM_API_WEAK void elm_obj_list_select_mode_set(Eo *obj, Elm_Object_Select_Mode mode);
 
 /**
  * @brief Control the list select mode.
@@ -93,7 +93,7 @@ ELM_API void elm_obj_list_select_mode_set(Eo *obj, Elm_Object_Select_Mode mode);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Object_Select_Mode elm_obj_list_select_mode_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Object_Select_Mode elm_obj_list_select_mode_get(const Eo *obj);
 
 /**
  * @brief Control focus upon items selection mode
@@ -110,7 +110,7 @@ ELM_API Elm_Object_Select_Mode elm_obj_list_select_mode_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_focus_on_selection_set(Eo *obj, Eina_Bool enabled);
+ELM_API ELM_API_WEAK void elm_obj_list_focus_on_selection_set(Eo *obj, Eina_Bool enabled);
 
 /**
  * @brief Control focus upon items selection mode
@@ -127,7 +127,7 @@ ELM_API void elm_obj_list_focus_on_selection_set(Eo *obj, Eina_Bool enabled);
  *
  * @ingroup Elm_List
  */
-ELM_API Eina_Bool elm_obj_list_focus_on_selection_get(const Eo *obj);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_list_focus_on_selection_get(const Eo *obj);
 
 /**
  * @brief Control multiple items selection on the list object.
@@ -144,7 +144,7 @@ ELM_API Eina_Bool elm_obj_list_focus_on_selection_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_multi_select_set(Eo *obj, Eina_Bool multi);
+ELM_API ELM_API_WEAK void elm_obj_list_multi_select_set(Eo *obj, Eina_Bool multi);
 
 /**
  * @brief Control multiple items selection on the list object.
@@ -161,7 +161,7 @@ ELM_API void elm_obj_list_multi_select_set(Eo *obj, Eina_Bool multi);
  *
  * @ingroup Elm_List
  */
-ELM_API Eina_Bool elm_obj_list_multi_select_get(const Eo *obj);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_list_multi_select_get(const Eo *obj);
 
 /**
  * @brief Control the list multi select mode.
@@ -181,7 +181,7 @@ ELM_API Eina_Bool elm_obj_list_multi_select_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_multi_select_mode_set(Eo *obj, Elm_Object_Multi_Select_Mode mode);
+ELM_API ELM_API_WEAK void elm_obj_list_multi_select_mode_set(Eo *obj, Elm_Object_Multi_Select_Mode mode);
 
 /**
  * @brief Control the list multi select mode.
@@ -202,7 +202,7 @@ ELM_API void elm_obj_list_multi_select_mode_set(Eo *obj, Elm_Object_Multi_Select
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Object_Multi_Select_Mode elm_obj_list_multi_select_mode_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Object_Multi_Select_Mode elm_obj_list_multi_select_mode_get(const Eo *obj);
 
 /**
  * @brief Control which mode to use for the list object.
@@ -224,7 +224,7 @@ ELM_API Elm_Object_Multi_Select_Mode elm_obj_list_multi_select_mode_get(const Eo
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_mode_set(Eo *obj, Elm_List_Mode mode);
+ELM_API ELM_API_WEAK void elm_obj_list_mode_set(Eo *obj, Elm_List_Mode mode);
 
 /**
  * @brief Control which mode to use for the list object.
@@ -247,7 +247,7 @@ ELM_API void elm_obj_list_mode_set(Eo *obj, Elm_List_Mode mode);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_List_Mode elm_obj_list_mode_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_List_Mode elm_obj_list_mode_get(const Eo *obj);
 
 /**
  * @brief Get the selected item.
@@ -263,7 +263,7 @@ ELM_API Elm_List_Mode elm_obj_list_mode_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_selected_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_selected_item_get(const Eo *obj);
 
 /**
  * @brief Get a list of all the list items.
@@ -274,7 +274,7 @@ ELM_API Elm_Widget_Item *elm_obj_list_selected_item_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API const Eina_List *elm_obj_list_items_get(const Eo *obj);
+ELM_API ELM_API_WEAK const Eina_List *elm_obj_list_items_get(const Eo *obj);
 
 /**
  * @brief Get the first item in the list
@@ -287,7 +287,7 @@ ELM_API const Eina_List *elm_obj_list_items_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_first_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_first_item_get(const Eo *obj);
 
 /**
  * @brief Return a list of the currently selected list items.
@@ -301,7 +301,7 @@ ELM_API Elm_Widget_Item *elm_obj_list_first_item_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API const Eina_List *elm_obj_list_selected_items_get(const Eo *obj);
+ELM_API ELM_API_WEAK const Eina_List *elm_obj_list_selected_items_get(const Eo *obj);
 
 /**
  * @brief Get the last item in the list
@@ -314,7 +314,7 @@ ELM_API const Eina_List *elm_obj_list_selected_items_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_last_item_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_last_item_get(const Eo *obj);
 
 /**
  * @brief Insert a new item into the list object before item @c before.
@@ -352,7 +352,7 @@ ELM_API Elm_Widget_Item *elm_obj_list_last_item_get(const Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_item_insert_before(Eo *obj, Elm_Widget_Item *before, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_item_insert_before(Eo *obj, Elm_Widget_Item *before, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Starts the list.
@@ -363,7 +363,7 @@ ELM_API Elm_Widget_Item *elm_obj_list_item_insert_before(Eo *obj, Elm_Widget_Ite
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_go(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_list_go(Eo *obj);
 
 /**
  * @brief Insert a new item into the list object after item @c after.
@@ -401,7 +401,7 @@ ELM_API void elm_obj_list_go(Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_item_insert_after(Eo *obj, Elm_Widget_Item *after, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_item_insert_after(Eo *obj, Elm_Widget_Item *after, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Get the item that is at the x, y canvas coords.
@@ -424,7 +424,7 @@ ELM_API Elm_Widget_Item *elm_obj_list_item_insert_after(Eo *obj, Elm_Widget_Item
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_at_xy_item_get(const Eo *obj, int x, int y, int *posret);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_at_xy_item_get(const Eo *obj, int x, int y, int *posret);
 
 /**
  * @brief Append a new item to the list object.
@@ -461,7 +461,7 @@ ELM_API Elm_Widget_Item *elm_obj_list_at_xy_item_get(const Eo *obj, int x, int y
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_item_append(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_item_append(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Prepend a new item to the list object.
@@ -498,13 +498,13 @@ ELM_API Elm_Widget_Item *elm_obj_list_item_append(Eo *obj, const char *label, Ef
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_item_prepend(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_item_prepend(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data);
 
 /** Remove all list's items.
  *
  * @ingroup Elm_List
  */
-ELM_API void elm_obj_list_clear(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_list_clear(Eo *obj);
 
 /**
  * @brief Insert a new item into the sorted list object.
@@ -549,7 +549,7 @@ ELM_API void elm_obj_list_clear(Eo *obj);
  *
  * @ingroup Elm_List
  */
-ELM_API Elm_Widget_Item *elm_obj_list_item_sorted_insert(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data, Eina_Compare_Cb cmp_func);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_list_item_sorted_insert(Eo *obj, const char *label, Efl_Canvas_Object *icon, Efl_Canvas_Object *end, Evas_Smart_Cb func, const void *data, Eina_Compare_Cb cmp_func);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LIST_EVENT_ACTIVATED;
 

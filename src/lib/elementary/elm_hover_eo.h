@@ -44,7 +44,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_hover_class_get(void);
  *
  * @ingroup Elm_Hover
  */
-ELM_API void elm_obj_hover_target_set(Eo *obj, Efl_Canvas_Object *target);
+ELM_API ELM_API_WEAK void elm_obj_hover_target_set(Eo *obj, Efl_Canvas_Object *target);
 
 /**
  * @brief Get the target object for the hover.
@@ -55,7 +55,7 @@ ELM_API void elm_obj_hover_target_set(Eo *obj, Efl_Canvas_Object *target);
  *
  * @ingroup Elm_Hover
  */
-ELM_API Efl_Canvas_Object *elm_obj_hover_target_get(const Eo *obj);
+ELM_API ELM_API_WEAK Efl_Canvas_Object *elm_obj_hover_target_get(const Eo *obj);
 
 /**
  * @brief Returns the best swallow location for content in the hover.
@@ -84,13 +84,13 @@ ELM_API Efl_Canvas_Object *elm_obj_hover_target_get(const Eo *obj);
  *
  * @ingroup Elm_Hover
  */
-ELM_API const char *elm_obj_hover_best_content_location_get(const Eo *obj, Elm_Hover_Axis pref_axis);
+ELM_API ELM_API_WEAK const char *elm_obj_hover_best_content_location_get(const Eo *obj, Elm_Hover_Axis pref_axis);
 
 /** Dismiss a hover object
  *
  * @ingroup Elm_Hover
  */
-ELM_API void elm_obj_hover_dismiss(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_hover_dismiss(Eo *obj);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_HOVER_EVENT_SMART_CHANGED;
 

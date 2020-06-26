@@ -54,7 +54,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_bubble_class_get(void);
  *
  * @ingroup Elm_Bubble
  */
-ELM_API void elm_obj_bubble_pos_set(Eo *obj, Elm_Bubble_Pos pos);
+ELM_API ELM_API_WEAK void elm_obj_bubble_pos_set(Eo *obj, Elm_Bubble_Pos pos);
 
 /**
  * @brief The corner of the bubble
@@ -69,6 +69,6 @@ ELM_API void elm_obj_bubble_pos_set(Eo *obj, Elm_Bubble_Pos pos);
  *
  * @ingroup Elm_Bubble
  */
-ELM_API Elm_Bubble_Pos elm_obj_bubble_pos_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Bubble_Pos elm_obj_bubble_pos_get(const Eo *obj);
 
 #endif

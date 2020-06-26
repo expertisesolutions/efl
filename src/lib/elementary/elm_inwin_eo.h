@@ -35,6 +35,6 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_inwin_class_get(void);
  *
  * @ingroup Elm_Inwin
  */
-ELM_API void elm_obj_win_inwin_activate(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_win_inwin_activate(Eo *obj);
 
 #endif

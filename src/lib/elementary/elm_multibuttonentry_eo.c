@@ -33,7 +33,7 @@ __eolian_elm_multibuttonentry_editable_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_editable_set, EFL_FUNC_CALL(editable), Eina_Bool editable);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_editable_set, EFL_FUNC_CALL(editable), Eina_Bool editable);
 
 Eina_Bool _elm_multibuttonentry_editable_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
@@ -45,7 +45,7 @@ __eolian_elm_multibuttonentry_editable_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_editable_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_editable_get, Eina_Bool, 0);
 
 void _elm_multibuttonentry_expanded_set(Eo *obj, Elm_Multibuttonentry_Data *pd, Eina_Bool expanded);
 
@@ -65,7 +65,7 @@ __eolian_elm_multibuttonentry_expanded_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_expanded_set, EFL_FUNC_CALL(expanded), Eina_Bool expanded);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_expanded_set, EFL_FUNC_CALL(expanded), Eina_Bool expanded);
 
 Eina_Bool _elm_multibuttonentry_expanded_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
@@ -77,63 +77,63 @@ __eolian_elm_multibuttonentry_expanded_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_expanded_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_expanded_get, Eina_Bool, 0);
 
 void _elm_multibuttonentry_format_function_set(Eo *obj, Elm_Multibuttonentry_Data *pd, Elm_Multibuttonentry_Format_Cb format_function, const void *data);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_format_function_set, EFL_FUNC_CALL(format_function, data), Elm_Multibuttonentry_Format_Cb format_function, const void *data);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_format_function_set, EFL_FUNC_CALL(format_function, data), Elm_Multibuttonentry_Format_Cb format_function, const void *data);
 
 const Eina_List *_elm_multibuttonentry_items_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_items_get, const Eina_List *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_items_get, const Eina_List *, NULL);
 
 Elm_Widget_Item *_elm_multibuttonentry_first_item_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_first_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_first_item_get, Elm_Widget_Item *, NULL);
 
 Elm_Widget_Item *_elm_multibuttonentry_last_item_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_last_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_last_item_get, Elm_Widget_Item *, NULL);
 
 Efl_Canvas_Object *_elm_multibuttonentry_entry_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_entry_get, Efl_Canvas_Object *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_entry_get, Efl_Canvas_Object *, NULL);
 
 Elm_Widget_Item *_elm_multibuttonentry_selected_item_get(const Eo *obj, Elm_Multibuttonentry_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_selected_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_multibuttonentry_selected_item_get, Elm_Widget_Item *, NULL);
 
 Elm_Widget_Item *_elm_multibuttonentry_item_prepend(Eo *obj, Elm_Multibuttonentry_Data *pd, const char *label, Evas_Smart_Cb func, void *data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_prepend, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(label, func, data), const char *label, Evas_Smart_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_prepend, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(label, func, data), const char *label, Evas_Smart_Cb func, void *data);
 
 void _elm_multibuttonentry_clear(Eo *obj, Elm_Multibuttonentry_Data *pd);
 
-ELM_API EFL_VOID_FUNC_BODY(elm_obj_multibuttonentry_clear);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_multibuttonentry_clear);
 
 void _elm_multibuttonentry_item_filter_remove(Eo *obj, Elm_Multibuttonentry_Data *pd, Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_item_filter_remove, EFL_FUNC_CALL(func, data), Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_item_filter_remove, EFL_FUNC_CALL(func, data), Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
 
 Elm_Widget_Item *_elm_multibuttonentry_item_insert_before(Eo *obj, Elm_Multibuttonentry_Data *pd, Elm_Widget_Item *before, const char *label, Evas_Smart_Cb func, void *data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_insert_before, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(before, label, func, data), Elm_Widget_Item *before, const char *label, Evas_Smart_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_insert_before, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(before, label, func, data), Elm_Widget_Item *before, const char *label, Evas_Smart_Cb func, void *data);
 
 Elm_Widget_Item *_elm_multibuttonentry_item_append(Eo *obj, Elm_Multibuttonentry_Data *pd, const char *label, Evas_Smart_Cb func, void *data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_append, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(label, func, data), const char *label, Evas_Smart_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_append, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(label, func, data), const char *label, Evas_Smart_Cb func, void *data);
 
 void _elm_multibuttonentry_item_filter_prepend(Eo *obj, Elm_Multibuttonentry_Data *pd, Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_item_filter_prepend, EFL_FUNC_CALL(func, data), Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_item_filter_prepend, EFL_FUNC_CALL(func, data), Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
 
 void _elm_multibuttonentry_item_filter_append(Eo *obj, Elm_Multibuttonentry_Data *pd, Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_item_filter_append, EFL_FUNC_CALL(func, data), Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_multibuttonentry_item_filter_append, EFL_FUNC_CALL(func, data), Elm_Multibuttonentry_Item_Filter_Cb func, void *data);
 
 Elm_Widget_Item *_elm_multibuttonentry_item_insert_after(Eo *obj, Elm_Multibuttonentry_Data *pd, Elm_Widget_Item *after, const char *label, Evas_Smart_Cb func, void *data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_insert_after, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(after, label, func, data), Elm_Widget_Item *after, const char *label, Evas_Smart_Cb func, void *data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_multibuttonentry_item_insert_after, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(after, label, func, data), Elm_Widget_Item *after, const char *label, Evas_Smart_Cb func, void *data);
 
 Efl_Object *_elm_multibuttonentry_efl_object_constructor(Eo *obj, Elm_Multibuttonentry_Data *pd);
 

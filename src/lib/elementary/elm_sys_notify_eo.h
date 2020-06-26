@@ -93,7 +93,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_sys_notify_class_get(void);
  *
  * @ingroup Elm_Sys_Notify
  */
-ELM_API Eina_Bool elm_obj_sys_notify_servers_set(Eo *obj, Elm_Sys_Notify_Server servers);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_sys_notify_servers_set(Eo *obj, Elm_Sys_Notify_Server servers);
 
 /**
  * @brief Get the notification servers that have been registered
@@ -107,7 +107,7 @@ ELM_API Eina_Bool elm_obj_sys_notify_servers_set(Eo *obj, Elm_Sys_Notify_Server 
  *
  * @ingroup Elm_Sys_Notify
  */
-ELM_API Elm_Sys_Notify_Server elm_obj_sys_notify_servers_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Sys_Notify_Server elm_obj_sys_notify_servers_get(const Eo *obj);
 
 /**
  * @brief Returns the singleton instance of the notification manager
@@ -119,6 +119,6 @@ ELM_API Elm_Sys_Notify_Server elm_obj_sys_notify_servers_get(const Eo *obj);
  *
  * @ingroup Elm_Sys_Notify
  */
-ELM_API Elm_Sys_Notify *elm_obj_sys_notify_singleton_get(void);
+ELM_API ELM_API_WEAK Elm_Sys_Notify *elm_obj_sys_notify_singleton_get(void);
 
 #endif

@@ -33,7 +33,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_view_list_class_get(void);
  *
  * @ingroup Elm_View_List
  */
-ELM_API void elm_view_list_genlist_set(Eo *obj, Efl_Canvas_Object *genlist, Elm_Genlist_Item_Type item_type, const char *item_style);
+ELM_API ELM_API_WEAK void elm_view_list_genlist_set(Eo *obj, Efl_Canvas_Object *genlist, Elm_Genlist_Item_Type item_type, const char *item_style);
 
 /**
  * @brief Return evas object
@@ -45,7 +45,7 @@ ELM_API void elm_view_list_genlist_set(Eo *obj, Efl_Canvas_Object *genlist, Elm_
  *
  * @ingroup Elm_View_List
  */
-ELM_API void elm_view_list_evas_object_get(Eo *obj, Efl_Canvas_Object **widget);
+ELM_API ELM_API_WEAK void elm_view_list_evas_object_get(Eo *obj, Efl_Canvas_Object **widget);
 
 /**
  * @brief Connect property
@@ -58,7 +58,7 @@ ELM_API void elm_view_list_evas_object_get(Eo *obj, Efl_Canvas_Object **widget);
  *
  * @ingroup Elm_View_List
  */
-ELM_API void elm_view_list_property_connect(Eo *obj, const char *property, const char *part);
+ELM_API ELM_API_WEAK void elm_view_list_property_connect(Eo *obj, const char *property, const char *part);
 
 /**
  * @brief Set model
@@ -70,7 +70,7 @@ ELM_API void elm_view_list_property_connect(Eo *obj, const char *property, const
  *
  * @ingroup Elm_View_List
  */
-ELM_API void elm_view_list_model_set(Eo *obj, Efl_Model *model);
+ELM_API ELM_API_WEAK void elm_view_list_model_set(Eo *obj, Efl_Model *model);
 
 /**
  * @brief Get model
@@ -83,7 +83,7 @@ ELM_API void elm_view_list_model_set(Eo *obj, Efl_Model *model);
  *
  * @ingroup Elm_View_List
  */
-ELM_API Efl_Model *elm_view_list_model_get(const Eo *obj);
+ELM_API ELM_API_WEAK Efl_Model *elm_view_list_model_get(const Eo *obj);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_VIEW_LIST_EVENT_MODEL_SELECTED;
 

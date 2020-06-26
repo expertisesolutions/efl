@@ -34,7 +34,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_segment_control_item_class_get(void);
  *
  * @ingroup Elm_Segment_Control_Item
  */
-ELM_API int elm_obj_segment_control_item_index_get(const Eo *obj);
+ELM_API ELM_API_WEAK int elm_obj_segment_control_item_index_get(const Eo *obj);
 
 /**
  * @brief Get the real Evas(Edje) object created to implement the view of a
@@ -48,7 +48,7 @@ ELM_API int elm_obj_segment_control_item_index_get(const Eo *obj);
  *
  * @ingroup Elm_Segment_Control_Item
  */
-ELM_API Efl_Canvas_Object *elm_obj_segment_control_item_object_get(const Eo *obj);
+ELM_API ELM_API_WEAK Efl_Canvas_Object *elm_obj_segment_control_item_object_get(const Eo *obj);
 
 /**
  * @brief Set the selected state of an item.
@@ -67,6 +67,6 @@ ELM_API Efl_Canvas_Object *elm_obj_segment_control_item_object_get(const Eo *obj
  *
  * @ingroup Elm_Segment_Control_Item
  */
-ELM_API void elm_obj_segment_control_item_selected_set(Eo *obj, Eina_Bool selected);
+ELM_API ELM_API_WEAK void elm_obj_segment_control_item_selected_set(Eo *obj, Eina_Bool selected);
 
 #endif

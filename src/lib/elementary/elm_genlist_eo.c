@@ -87,7 +87,7 @@ __eolian_elm_genlist_homogeneous_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_homogeneous_set, EFL_FUNC_CALL(homogeneous), Eina_Bool homogeneous);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_homogeneous_set, EFL_FUNC_CALL(homogeneous), Eina_Bool homogeneous);
 
 Eina_Bool _elm_genlist_homogeneous_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -99,15 +99,15 @@ __eolian_elm_genlist_homogeneous_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_homogeneous_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_homogeneous_get, Eina_Bool, 0);
 
 void _elm_genlist_select_mode_set(Eo *obj, Elm_Genlist_Data *pd, Elm_Object_Select_Mode mode);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_select_mode_set, EFL_FUNC_CALL(mode), Elm_Object_Select_Mode mode);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_select_mode_set, EFL_FUNC_CALL(mode), Elm_Object_Select_Mode mode);
 
 Elm_Object_Select_Mode _elm_genlist_select_mode_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_select_mode_get, Elm_Object_Select_Mode, 4 /* Elm.Object.Select_Mode.max */);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_select_mode_get, Elm_Object_Select_Mode, 4 /* Elm.Object.Select_Mode.max */);
 
 void _elm_genlist_focus_on_selection_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool enabled);
 
@@ -127,7 +127,7 @@ __eolian_elm_genlist_focus_on_selection_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_focus_on_selection_set, EFL_FUNC_CALL(enabled), Eina_Bool enabled);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_focus_on_selection_set, EFL_FUNC_CALL(enabled), Eina_Bool enabled);
 
 Eina_Bool _elm_genlist_focus_on_selection_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -139,7 +139,7 @@ __eolian_elm_genlist_focus_on_selection_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_focus_on_selection_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_focus_on_selection_get, Eina_Bool, 0);
 
 void _elm_genlist_longpress_timeout_set(Eo *obj, Elm_Genlist_Data *pd, double timeout);
 
@@ -159,7 +159,7 @@ __eolian_elm_genlist_longpress_timeout_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_longpress_timeout_set, EFL_FUNC_CALL(timeout), double timeout);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_longpress_timeout_set, EFL_FUNC_CALL(timeout), double timeout);
 
 double _elm_genlist_longpress_timeout_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -171,7 +171,7 @@ __eolian_elm_genlist_longpress_timeout_get_reflect(const Eo *obj)
    return eina_value_double_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_longpress_timeout_get, double, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_longpress_timeout_get, double, 0);
 
 void _elm_genlist_multi_select_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool multi);
 
@@ -191,7 +191,7 @@ __eolian_elm_genlist_multi_select_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_multi_select_set, EFL_FUNC_CALL(multi), Eina_Bool multi);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_multi_select_set, EFL_FUNC_CALL(multi), Eina_Bool multi);
 
 Eina_Bool _elm_genlist_multi_select_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -203,7 +203,7 @@ __eolian_elm_genlist_multi_select_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_multi_select_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_multi_select_get, Eina_Bool, 0);
 
 void _elm_genlist_reorder_mode_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool reorder_mode);
 
@@ -223,7 +223,7 @@ __eolian_elm_genlist_reorder_mode_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_reorder_mode_set, EFL_FUNC_CALL(reorder_mode), Eina_Bool reorder_mode);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_reorder_mode_set, EFL_FUNC_CALL(reorder_mode), Eina_Bool reorder_mode);
 
 Eina_Bool _elm_genlist_reorder_mode_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -235,7 +235,7 @@ __eolian_elm_genlist_reorder_mode_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_reorder_mode_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_reorder_mode_get, Eina_Bool, 0);
 
 void _elm_genlist_decorate_mode_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool decorated);
 
@@ -255,7 +255,7 @@ __eolian_elm_genlist_decorate_mode_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_decorate_mode_set, EFL_FUNC_CALL(decorated), Eina_Bool decorated);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_decorate_mode_set, EFL_FUNC_CALL(decorated), Eina_Bool decorated);
 
 Eina_Bool _elm_genlist_decorate_mode_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -267,15 +267,15 @@ __eolian_elm_genlist_decorate_mode_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_decorate_mode_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_decorate_mode_get, Eina_Bool, 0);
 
 void _elm_genlist_multi_select_mode_set(Eo *obj, Elm_Genlist_Data *pd, Elm_Object_Multi_Select_Mode mode);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_multi_select_mode_set, EFL_FUNC_CALL(mode), Elm_Object_Multi_Select_Mode mode);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_multi_select_mode_set, EFL_FUNC_CALL(mode), Elm_Object_Multi_Select_Mode mode);
 
 Elm_Object_Multi_Select_Mode _elm_genlist_multi_select_mode_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_multi_select_mode_get, Elm_Object_Multi_Select_Mode, 2 /* Elm.Object.Multi_Select_Mode.max */);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_multi_select_mode_get, Elm_Object_Multi_Select_Mode, 2 /* Elm.Object.Multi_Select_Mode.max */);
 
 void _elm_genlist_block_count_set(Eo *obj, Elm_Genlist_Data *pd, int count);
 
@@ -295,7 +295,7 @@ __eolian_elm_genlist_block_count_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_block_count_set, EFL_FUNC_CALL(count), int count);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_block_count_set, EFL_FUNC_CALL(count), int count);
 
 int _elm_genlist_block_count_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -307,7 +307,7 @@ __eolian_elm_genlist_block_count_get_reflect(const Eo *obj)
    return eina_value_int_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_block_count_get, int, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_block_count_get, int, 0);
 
 void _elm_genlist_tree_effect_enabled_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool enabled);
 
@@ -327,7 +327,7 @@ __eolian_elm_genlist_tree_effect_enabled_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_tree_effect_enabled_set, EFL_FUNC_CALL(enabled), Eina_Bool enabled);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_tree_effect_enabled_set, EFL_FUNC_CALL(enabled), Eina_Bool enabled);
 
 Eina_Bool _elm_genlist_tree_effect_enabled_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -339,7 +339,7 @@ __eolian_elm_genlist_tree_effect_enabled_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_tree_effect_enabled_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_tree_effect_enabled_get, Eina_Bool, 0);
 
 void _elm_genlist_highlight_mode_set(Eo *obj, Elm_Genlist_Data *pd, Eina_Bool highlight);
 
@@ -359,7 +359,7 @@ __eolian_elm_genlist_highlight_mode_set_reflect(Eo *obj, Eina_Value val)
    return r;
 }
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_highlight_mode_set, EFL_FUNC_CALL(highlight), Eina_Bool highlight);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_highlight_mode_set, EFL_FUNC_CALL(highlight), Eina_Bool highlight);
 
 Eina_Bool _elm_genlist_highlight_mode_get(const Eo *obj, Elm_Genlist_Data *pd);
 
@@ -371,91 +371,91 @@ __eolian_elm_genlist_highlight_mode_get_reflect(const Eo *obj)
    return eina_value_bool_init(val);
 }
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_highlight_mode_get, Eina_Bool, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_highlight_mode_get, Eina_Bool, 0);
 
 void _elm_genlist_mode_set(Eo *obj, Elm_Genlist_Data *pd, Elm_List_Mode mode);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_mode_set, EFL_FUNC_CALL(mode), Elm_List_Mode mode);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_mode_set, EFL_FUNC_CALL(mode), Elm_List_Mode mode);
 
 Elm_List_Mode _elm_genlist_mode_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_mode_get, Elm_List_Mode, 4 /* Elm.List.Mode.last */);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_mode_get, Elm_List_Mode, 4 /* Elm.List.Mode.last */);
 
 Elm_Widget_Item *_elm_genlist_decorated_item_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_decorated_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_decorated_item_get, Elm_Widget_Item *, NULL);
 
 Elm_Widget_Item *_elm_genlist_selected_item_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_selected_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_selected_item_get, Elm_Widget_Item *, NULL);
 
 Elm_Widget_Item *_elm_genlist_first_item_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_first_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_first_item_get, Elm_Widget_Item *, NULL);
 
 Eina_List *_elm_genlist_realized_items_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_realized_items_get, Eina_List *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_realized_items_get, Eina_List *, NULL);
 
 const Eina_List *_elm_genlist_selected_items_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_selected_items_get, const Eina_List *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_selected_items_get, const Eina_List *, NULL);
 
 Elm_Widget_Item *_elm_genlist_last_item_get(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_last_item_get, Elm_Widget_Item *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_last_item_get, Elm_Widget_Item *, NULL);
 
 Elm_Widget_Item *_elm_genlist_item_insert_before(Eo *obj, Elm_Genlist_Data *pd, const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Widget_Item *before_it, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_genlist_item_insert_before, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, before_it, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Widget_Item *before_it, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_genlist_item_insert_before, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, before_it, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Widget_Item *before_it, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
 void _elm_genlist_realized_items_update(Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_VOID_FUNC_BODY(elm_obj_genlist_realized_items_update);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_genlist_realized_items_update);
 
 Elm_Widget_Item *_elm_genlist_item_insert_after(Eo *obj, Elm_Genlist_Data *pd, const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Widget_Item *after_it, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_genlist_item_insert_after, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, after_it, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Widget_Item *after_it, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_genlist_item_insert_after, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, after_it, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Widget_Item *after_it, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
 Elm_Widget_Item *_elm_genlist_at_xy_item_get(const Eo *obj, Elm_Genlist_Data *pd, int x, int y, int *posret);
 
-ELM_API EFL_FUNC_BODYV_CONST(elm_obj_genlist_at_xy_item_get, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(x, y, posret), int x, int y, int *posret);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV_CONST(elm_obj_genlist_at_xy_item_get, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(x, y, posret), int x, int y, int *posret);
 
 void _elm_genlist_filter_set(Eo *obj, Elm_Genlist_Data *pd, void *key);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_genlist_filter_set, EFL_FUNC_CALL(key), void *key);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_genlist_filter_set, EFL_FUNC_CALL(key), void *key);
 
 Eina_Iterator *_elm_genlist_filter_iterator_new(Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY(elm_obj_genlist_filter_iterator_new, Eina_Iterator *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY(elm_obj_genlist_filter_iterator_new, Eina_Iterator *, NULL);
 
 unsigned int _elm_genlist_filtered_items_count(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_filtered_items_count, unsigned int, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_filtered_items_count, unsigned int, 0);
 
 unsigned int _elm_genlist_items_count(const Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_genlist_items_count, unsigned int, 0);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_genlist_items_count, unsigned int, 0);
 
 Elm_Widget_Item *_elm_genlist_item_prepend(Eo *obj, Elm_Genlist_Data *pd, const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_genlist_item_prepend, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_genlist_item_prepend, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
 void _elm_genlist_clear(Eo *obj, Elm_Genlist_Data *pd);
 
-ELM_API EFL_VOID_FUNC_BODY(elm_obj_genlist_clear);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_genlist_clear);
 
 Elm_Widget_Item *_elm_genlist_item_append(Eo *obj, Elm_Genlist_Data *pd, const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_genlist_item_append, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_genlist_item_append, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, type, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Evas_Smart_Cb func, const void *func_data);
 
 Elm_Widget_Item *_elm_genlist_item_sorted_insert(Eo *obj, Elm_Genlist_Data *pd, const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Eina_Compare_Cb comp, Evas_Smart_Cb func, const void *func_data);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_genlist_item_sorted_insert, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, type, comp, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Eina_Compare_Cb comp, Evas_Smart_Cb func, const void *func_data);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_genlist_item_sorted_insert, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(itc, data, parent, type, comp, func, func_data), const Elm_Genlist_Item_Class *itc, const void *data, Elm_Widget_Item *parent, Elm_Genlist_Item_Type type, Eina_Compare_Cb comp, Evas_Smart_Cb func, const void *func_data);
 
 Elm_Widget_Item *_elm_genlist_search_by_text_item_get(Eo *obj, Elm_Genlist_Data *pd, Elm_Widget_Item *item_to_search_from, const char *part_name, const char *pattern, Elm_Glob_Match_Flags flags);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_genlist_search_by_text_item_get, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(item_to_search_from, part_name, pattern, flags), Elm_Widget_Item *item_to_search_from, const char *part_name, const char *pattern, Elm_Glob_Match_Flags flags);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_genlist_search_by_text_item_get, Elm_Widget_Item *, NULL, EFL_FUNC_CALL(item_to_search_from, part_name, pattern, flags), Elm_Widget_Item *item_to_search_from, const char *part_name, const char *pattern, Elm_Glob_Match_Flags flags);
 
 Efl_Object *_elm_genlist_efl_object_constructor(Eo *obj, Elm_Genlist_Data *pd);
 

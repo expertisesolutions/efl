@@ -5,11 +5,11 @@ ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_PLUG_EVENT_IMAGE_RESIZED =
 
 Efl_Canvas_Object *_elm_plug_image_object_get(const Eo *obj, void *pd);
 
-ELM_API EFL_FUNC_BODY_CONST(elm_obj_plug_image_object_get, Efl_Canvas_Object *, NULL);
+ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_plug_image_object_get, Efl_Canvas_Object *, NULL);
 
 Eina_Bool _elm_plug_connect(Eo *obj, void *pd, const char *svcname, int svcnum, Eina_Bool svcsys);
 
-ELM_API EFL_FUNC_BODYV(elm_obj_plug_connect, Eina_Bool, 0, EFL_FUNC_CALL(svcname, svcnum, svcsys), const char *svcname, int svcnum, Eina_Bool svcsys);
+ELM_API ELM_API_WEAK EFL_FUNC_BODYV(elm_obj_plug_connect, Eina_Bool, 0, EFL_FUNC_CALL(svcname, svcnum, svcsys), const char *svcname, int svcnum, Eina_Bool svcsys);
 
 Efl_Object *_elm_plug_efl_object_constructor(Eo *obj, void *pd);
 

@@ -128,7 +128,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_glview_class_get(void);
  *
  * @ingroup Elm_Glview
  */
-ELM_API void elm_obj_glview_version_constructor(Eo *obj, Evas_GL_Context_Version version);
+ELM_API ELM_API_WEAK void elm_obj_glview_version_constructor(Eo *obj, Evas_GL_Context_Version version);
 
 /**
  * @brief Set the resize policy for the glview object.
@@ -146,7 +146,7 @@ ELM_API void elm_obj_glview_version_constructor(Eo *obj, Evas_GL_Context_Version
  *
  * @ingroup Elm_Glview
  */
-ELM_API Eina_Bool elm_obj_glview_resize_policy_set(Eo *obj, Elm_GLView_Resize_Policy policy);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_resize_policy_set(Eo *obj, Elm_GLView_Resize_Policy policy);
 
 /**
  * @brief Set the render policy for the glview object.
@@ -164,7 +164,7 @@ ELM_API Eina_Bool elm_obj_glview_resize_policy_set(Eo *obj, Elm_GLView_Resize_Po
  *
  * @ingroup Elm_Glview
  */
-ELM_API Eina_Bool elm_obj_glview_render_policy_set(Eo *obj, Elm_GLView_Render_Policy policy);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_render_policy_set(Eo *obj, Elm_GLView_Render_Policy policy);
 
 /**
  * @brief Set the mode of the GLView. Supports alpha, depth, stencil.
@@ -181,7 +181,7 @@ ELM_API Eina_Bool elm_obj_glview_render_policy_set(Eo *obj, Elm_GLView_Render_Po
  *
  * @ingroup Elm_Glview
  */
-ELM_API Eina_Bool elm_obj_glview_mode_set(Eo *obj, Elm_GLView_Mode mode);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_mode_set(Eo *obj, Elm_GLView_Mode mode);
 
 /**
  * @brief Get the gl api struct for gl rendering.
@@ -192,7 +192,7 @@ ELM_API Eina_Bool elm_obj_glview_mode_set(Eo *obj, Elm_GLView_Mode mode);
  *
  * @ingroup Elm_Glview
  */
-ELM_API Evas_GL_API *elm_obj_glview_gl_api_get(const Eo *obj);
+ELM_API ELM_API_WEAK Evas_GL_API *elm_obj_glview_gl_api_get(const Eo *obj);
 
 /**
  * @brief Get the internal Evas GL attached to this view.
@@ -208,7 +208,7 @@ ELM_API Evas_GL_API *elm_obj_glview_gl_api_get(const Eo *obj);
  *
  * @ingroup Elm_Glview
  */
-ELM_API Evas_GL *elm_obj_glview_evas_gl_get(const Eo *obj);
+ELM_API ELM_API_WEAK Evas_GL *elm_obj_glview_evas_gl_get(const Eo *obj);
 
 /**
  * @brief Get the current GL view's rotation when using direct rendering
@@ -226,7 +226,7 @@ ELM_API Evas_GL *elm_obj_glview_evas_gl_get(const Eo *obj);
  *
  * @ingroup Elm_Glview
  */
-ELM_API int elm_obj_glview_rotation_get(const Eo *obj);
+ELM_API ELM_API_WEAK int elm_obj_glview_rotation_get(const Eo *obj);
 
 /** Notifies that there has been changes in the GLView.
  *
@@ -234,7 +234,7 @@ ELM_API int elm_obj_glview_rotation_get(const Eo *obj);
  *
  * @ingroup Elm_Glview
  */
-ELM_API void elm_obj_glview_draw_request(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_glview_draw_request(Eo *obj);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
 

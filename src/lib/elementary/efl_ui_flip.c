@@ -2308,14 +2308,14 @@ elm_flip_interaction_direction_hitsize_get(Efl_Ui_Flip *obj, Elm_Flip_Direction 
    return efl_ui_flip_interaction_direction_hitsize_get(obj, uidir);
 }
 
-ELM_API void
+ELM_API ELM_API_WEAK void
 elm_flip_interaction_direction_enabled_set(Efl_Ui_Flip *obj, Elm_Flip_Direction dir, Eina_Bool enabled)
 {
    Efl_Ui_Layout_Orientation uidir = _flip_dir_to_efl_ui_dir(dir);
    efl_ui_flip_interaction_direction_enabled_set(obj, uidir, enabled);
 }
 
-ELM_API Eina_Bool
+ELM_API ELM_API_WEAK Eina_Bool
 elm_flip_interaction_direction_enabled_get(Efl_Ui_Flip *obj, Elm_Flip_Direction dir)
 {
    Efl_Ui_Layout_Orientation uidir = _flip_dir_to_efl_ui_dir(dir);

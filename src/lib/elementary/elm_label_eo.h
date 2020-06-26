@@ -45,7 +45,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_label_class_get(void);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_wrap_width_set(Eo *obj, int w);
+ELM_API ELM_API_WEAK void elm_obj_label_wrap_width_set(Eo *obj, int w);
 
 /**
  * @brief Control wrap width of the label
@@ -60,7 +60,7 @@ ELM_API void elm_obj_label_wrap_width_set(Eo *obj, int w);
  *
  * @ingroup Elm_Label
  */
-ELM_API int elm_obj_label_wrap_width_get(const Eo *obj);
+ELM_API ELM_API_WEAK int elm_obj_label_wrap_width_get(const Eo *obj);
 
 /**
  * @brief Control the slide speed of the label
@@ -76,7 +76,7 @@ ELM_API int elm_obj_label_wrap_width_get(const Eo *obj);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_slide_speed_set(Eo *obj, double speed);
+ELM_API ELM_API_WEAK void elm_obj_label_slide_speed_set(Eo *obj, double speed);
 
 /**
  * @brief Control the slide speed of the label
@@ -93,7 +93,7 @@ ELM_API void elm_obj_label_slide_speed_set(Eo *obj, double speed);
  *
  * @ingroup Elm_Label
  */
-ELM_API double elm_obj_label_slide_speed_get(const Eo *obj);
+ELM_API ELM_API_WEAK double elm_obj_label_slide_speed_get(const Eo *obj);
 
 /**
  * @brief Control the slide mode of the label widget.
@@ -116,7 +116,7 @@ ELM_API double elm_obj_label_slide_speed_get(const Eo *obj);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_slide_mode_set(Eo *obj, Elm_Label_Slide_Mode mode);
+ELM_API ELM_API_WEAK void elm_obj_label_slide_mode_set(Eo *obj, Elm_Label_Slide_Mode mode);
 
 /**
  * @brief Control the slide mode of the label widget.
@@ -140,7 +140,7 @@ ELM_API void elm_obj_label_slide_mode_set(Eo *obj, Elm_Label_Slide_Mode mode);
  *
  * @ingroup Elm_Label
  */
-ELM_API Elm_Label_Slide_Mode elm_obj_label_slide_mode_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Label_Slide_Mode elm_obj_label_slide_mode_get(const Eo *obj);
 
 /**
  * @brief Control the slide duration of the label
@@ -155,7 +155,7 @@ ELM_API Elm_Label_Slide_Mode elm_obj_label_slide_mode_get(const Eo *obj);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_slide_duration_set(Eo *obj, double duration);
+ELM_API ELM_API_WEAK void elm_obj_label_slide_duration_set(Eo *obj, double duration);
 
 /**
  * @brief Control the slide duration of the label
@@ -171,7 +171,7 @@ ELM_API void elm_obj_label_slide_duration_set(Eo *obj, double duration);
  *
  * @ingroup Elm_Label
  */
-ELM_API double elm_obj_label_slide_duration_get(const Eo *obj);
+ELM_API ELM_API_WEAK double elm_obj_label_slide_duration_get(const Eo *obj);
 
 /**
  * @brief Control the wrapping behavior of the label
@@ -186,7 +186,7 @@ ELM_API double elm_obj_label_slide_duration_get(const Eo *obj);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_line_wrap_set(Eo *obj, Elm_Wrap_Type wrap);
+ELM_API ELM_API_WEAK void elm_obj_label_line_wrap_set(Eo *obj, Elm_Wrap_Type wrap);
 
 /**
  * @brief Control the wrapping behavior of the label
@@ -202,7 +202,7 @@ ELM_API void elm_obj_label_line_wrap_set(Eo *obj, Elm_Wrap_Type wrap);
  *
  * @ingroup Elm_Label
  */
-ELM_API Elm_Wrap_Type elm_obj_label_line_wrap_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Wrap_Type elm_obj_label_line_wrap_get(const Eo *obj);
 
 /**
  * @brief Control the ellipsis behavior of the label
@@ -218,7 +218,7 @@ ELM_API Elm_Wrap_Type elm_obj_label_line_wrap_get(const Eo *obj);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_ellipsis_set(Eo *obj, Eina_Bool ellipsis);
+ELM_API ELM_API_WEAK void elm_obj_label_ellipsis_set(Eo *obj, Eina_Bool ellipsis);
 
 /**
  * @brief Control the ellipsis behavior of the label
@@ -235,7 +235,7 @@ ELM_API void elm_obj_label_ellipsis_set(Eo *obj, Eina_Bool ellipsis);
  *
  * @ingroup Elm_Label
  */
-ELM_API Eina_Bool elm_obj_label_ellipsis_get(const Eo *obj);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_label_ellipsis_get(const Eo *obj);
 
 /**
  * @brief Start slide effect.
@@ -245,7 +245,7 @@ ELM_API Eina_Bool elm_obj_label_ellipsis_get(const Eo *obj);
  *
  * @ingroup Elm_Label
  */
-ELM_API void elm_obj_label_slide_go(Eo *obj);
+ELM_API ELM_API_WEAK void elm_obj_label_slide_go(Eo *obj);
 
 ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_LABEL_EVENT_SLIDE_END;
 

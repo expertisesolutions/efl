@@ -31,15 +31,15 @@ ELM_API ELM_API_WEAK const Efl_Event_Description _ELM_SCROLLER_EVENT_EDGE_BOTTOM
 
 void _elm_scroller_custom_widget_base_theme_set(Eo *obj, Elm_Scroller_Data *pd, const char *klass, const char *group);
 
-ELM_API EFL_VOID_FUNC_BODYV(elm_obj_scroller_custom_widget_base_theme_set, EFL_FUNC_CALL(klass, group), const char *klass, const char *group);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV(elm_obj_scroller_custom_widget_base_theme_set, EFL_FUNC_CALL(klass, group), const char *klass, const char *group);
 
 void _elm_scroller_page_scroll_limit_set(const Eo *obj, Elm_Scroller_Data *pd, int page_limit_h, int page_limit_v);
 
-ELM_API EFL_VOID_FUNC_BODYV_CONST(elm_obj_scroller_page_scroll_limit_set, EFL_FUNC_CALL(page_limit_h, page_limit_v), int page_limit_h, int page_limit_v);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV_CONST(elm_obj_scroller_page_scroll_limit_set, EFL_FUNC_CALL(page_limit_h, page_limit_v), int page_limit_h, int page_limit_v);
 
 void _elm_scroller_page_scroll_limit_get(const Eo *obj, Elm_Scroller_Data *pd, int *page_limit_h, int *page_limit_v);
 
-ELM_API EFL_VOID_FUNC_BODYV_CONST(elm_obj_scroller_page_scroll_limit_get, EFL_FUNC_CALL(page_limit_h, page_limit_v), int *page_limit_h, int *page_limit_v);
+ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODYV_CONST(elm_obj_scroller_page_scroll_limit_get, EFL_FUNC_CALL(page_limit_h, page_limit_v), int *page_limit_h, int *page_limit_v);
 
 Efl_Object *_elm_scroller_efl_object_constructor(Eo *obj, Elm_Scroller_Data *pd);
 
