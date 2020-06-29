@@ -38,6 +38,7 @@
 
 /* When used, this indicates that the function is an Eo API. */
 #define EOAPI EAPI EAPI_WEAK
+#define EWAPI EAPI EAPI_WEAK
 
 #ifdef __cplusplus
 extern "C" {
