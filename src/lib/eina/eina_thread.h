@@ -19,20 +19,11 @@
 #ifndef EINA_THREAD_H_
 #define EINA_THREAD_H_
 
-#include <stdlib.h>
-#include "eina_config.h"
-#include "eina_cpu.h"
 #include "eina_config.h"
 #include "eina_types.h"
 #include "eina_error.h"
-#include <stdint.h>
-#include <errno.h>
 
-#ifdef _WIN32
-# include "eina_thread_win32.h"
-#else
-# include "eina_thread_posix.h"
-#endif
+#include <stdint.h>
 
 /**
  * @defgroup Eina_Thread_Group Thread
@@ -49,10 +40,22 @@
  */
 
 /**
+ * @typedef Eina_Thread
+ * Type for a generic thread.
+ */
+typedef uintptr_t Eina_Thread;
+
+/**
  * @typedef Eina_Thread_Cb
  * Type for the definition of a thread callback function
  */
 typedef void *(*Eina_Thread_Cb)(void *data, Eina_Thread t);
+
+/**
+ * @typedef Eina_Thread_Cleanup_Cb
+ * Type for the definition of a thread cleanup function
+ */
+typedef void (*Eina_Thread_Cleanup_Cb) (void *data);
 
 /**
  * @typedef Eina_Thread_Priority
@@ -72,26 +75,6 @@ typedef enum _Eina_Thread_Priority
  * @since 1.8
  */
 EINA_API Eina_Thread eina_thread_self(void) EINA_WARN_UNUSED_RESULT;
-
-/**
- * @brief Returns an integral compatible identifier of the current thread.
- *
- * Contrary to @eina_self_thread, this function returns an indentifier that
- * is an integral type. It means you can compare it with the == operator and
- * cast it to an integer type.
- *
- * @return integral identifier of current thread.
- * @since 1.25
- */
-EINA_API Eina_ThreadId eina_thread_self_id(void) EINA_WARN_UNUSED_RESULT;
-
-/**
- * @brief Returns an integral compatible identifier of a given thread.
- *
- * @return integral identifier of the thread.
- * @since 1.25
- */
-EINA_API Eina_ThreadId eina_thread_id(Eina_Thread t) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Checks if two thread identifiers are the same.
@@ -243,6 +226,84 @@ EINA_API Eina_Bool eina_thread_cancellable_set(Eina_Bool cancellable, Eina_Bool 
 EINA_API void eina_thread_cancel_checkpoint(void);
 
 /**
+ * @def EINA_THREAD_CLEANUP_PUSH(cleanup, data)
+ *
+ * @brief Pushes a cleanup function to be executed when the thread is
+ * canceled.
+ *
+ * This macro will schedule a function cleanup(data) to be executed if
+ * the thread is canceled with eina_thread_cancel() and the thread
+ * was previously marked as cancellable with
+ * eina_thread_cancellable_set().
+ *
+ * It @b must be paired with EINA_THREAD_CLEANUP_POP() in the same
+ * code block as they will expand to do {} while ()!
+ *
+ * The cleanup function may also be executed if
+ * EINA_THREAD_CLEANUP_POP(EINA_TRUE) is used.
+ *
+ * @note If the block within EINA_THREAD_CLEANUP_PUSH() and
+ *       EINA_THREAD_CLEANUP_POP() returns, the cleanup callback will
+ *       @b not be executed! To avoid problems prefer to use
+ *       eina_thread_cancellable_run()!
+ *
+ * @param[in] cleanup The function to execute on cancellation.
+ * @param[in] data The context to give to cleanup function.
+ *
+ * @see eina_thread_cancellable_run()
+ *
+ * @since 1.19
+ */
+#ifdef _WIN32
+EINA_API Eina_Bool
+eina_thread_cleanup_push(Eina_Thread_Cleanup_Cb fn, void *data);
+
+#define EINA_THREAD_CLEANUP_PUSH(cleanup, data) \
+  eina_thread_cleanup_push(cleanup, data)
+#else
+#define EINA_THREAD_CLEANUP_PUSH(cleanup, data) \
+  pthread_cleanup_push(cleanup, data)
+#endif
+
+/**
+ * @def EINA_THREAD_CLEANUP_POP(exec_cleanup)
+ *
+ * @brief Pops a cleanup function to be executed when the thread is
+ * canceled.
+ *
+ * This macro will remove a previously pushed cleanup function, thus
+ * if the thread is canceled with eina_thread_cancel() and the thread
+ * was previously marked as cancellable with
+ * eina_thread_cancellable_set(), that cleanup won't be executed
+ * anymore.
+ *
+ * It @b must be paired with EINA_THREAD_CLEANUP_PUSH() in the same
+ * code block as they will expand to do {} while ()!
+ *
+ * @note If the block within EINA_THREAD_CLEANUP_PUSH() and
+ *       EINA_THREAD_CLEANUP_POP() returns, the cleanup callback will
+ *       @b not be executed even if exec_cleanup is EINA_TRUE! To
+ *       avoid problems prefer to use eina_thread_cancellable_run()!
+ *
+ * @param[in] exec_cleanup if EINA_TRUE, the function registered with
+ *        EINA_THREAD_CLEANUP_PUSH() will be executed.
+ *
+ * @see eina_thread_cancellable_run()
+ *
+ * @since 1.19
+ */
+#ifdef _WIN32
+EINA_API void
+eina_thread_cleanup_pop(int execute);
+
+#define EINA_THREAD_CLEANUP_POP(exec_cleanup) \
+  eina_thread_cleanup_pop(exec_cleanup)
+#else
+#define EINA_THREAD_CLEANUP_POP(exec_cleanup) \
+  pthread_cleanup_pop(exec_cleanup)
+#endif
+
+/**
  * @typedef Eina_Thread_Cancellable_Run_Cb
  * Type for the definition of a cancellable callback to run.
  *
@@ -293,15 +354,5 @@ typedef void *(*Eina_Thread_Cancellable_Run_Cb)(void *data);
  * @since 1.19
  */
 EINA_API void *eina_thread_cancellable_run(Eina_Thread_Cancellable_Run_Cb cb, Eina_Free_Cb cleanup_cb, void *data);
-
-typedef struct _Eina_Thread_Call Eina_Thread_Call;
-struct _Eina_Thread_Call
-{
-   Eina_Thread_Cb func;
-   const void *data;
-
-   Eina_Thread_Priority prio;
-   int affinity;
-};
 
 #endif
