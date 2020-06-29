@@ -1,6 +1,8 @@
 #include "eina_hash.h"
 #include "eina_lock.h"
 
+void free_thread(void);
+
 Eina_Hash *_eina_tls_map;
 Eina_Lock _eina_tls_map_lock;
 
@@ -46,6 +48,7 @@ DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
             eina_hash_foreach(_eina_tls_map, _eina_tls_hash_foreach_cb, NULL);
             eina_lock_free(&_eina_tls_map_lock);
             eina_hash_free(_eina_tls_map);
+            free_thread();
             break;
         case DLL_THREAD_DETACH:
             eina_lock_take(&_eina_tls_map_lock);
