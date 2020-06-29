@@ -42,12 +42,6 @@
 # include <sys/mman.h>
 #endif
 
-#ifdef _WIN32
-# define THREAD_SELF_ID() eina_thread_self_id()
-#else
-# define THREAD_SELF_ID() eina_thread_self()
-#endif /* _WIN32 */
-
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 #define SWAP_64(x) x
 #define SWAP_32(x) x
@@ -182,8 +176,7 @@ eina_evlog(const char *event, void *obj, double srctime, const char *detail)
    item                = (Eina_Evlog_Item *)strings;
    item->tim           = SWAP_DBL(now);
    item->srctim        = SWAP_DBL(srctime);
-   item->thread        = SWAP_64((unsigned long long)
-                          (uintptr_t)THREAD_SELF_ID());
+   item->thread        = SWAP_64((unsigned long long) eina_thread_self());
    item->obj           = SWAP_64((unsigned long long)(uintptr_t)obj);
    item->event_offset  = SWAP_16(sizeof(Eina_Evlog_Item));
    item->detail_offset = SWAP_16(detail_offset);

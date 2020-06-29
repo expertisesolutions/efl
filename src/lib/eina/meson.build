@@ -203,21 +203,14 @@ if sys_windows
   eina_src += files(
     'eina_file_win32.c',
     'eina_fnmatch.c',
-    'eina_sched_win32.c',
-    'eina_tls_win32.c',
-  )
-  public_sub_headers += files(
-    'eina_thread_win32.h',
-    'eina_inline_lock_win32.x',
+    'eina_win32_dllmain.c',
+    'eina_thread_win32.c',
   )
 else
   eina_src += files(
     'eina_file.c',
-    'eina_sched_posix.c',
-  )
-  public_sub_headers += files(
-    'eina_thread_posix.h',
-    'eina_inline_lock_posix.x',
+    'eina_sched.c',
+    'eina_thread_posix.c',
   )
 endif
 

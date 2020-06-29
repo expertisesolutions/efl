@@ -53,7 +53,9 @@ header_checks = [
   'features.h',
   'langinfo.h',
   'locale.h',
-  'crt_externs.h'
+  'crt_externs.h',
+  'unistd.h',
+  'pthread.h',
 ]
 
 #### The below is logically broken
