@@ -29,7 +29,7 @@
 #include "Ecore_Con.h"
 #include "ecore_con_private.h"
 
-ECORE_CON_API char *
+EAPI char *
 ecore_con_local_path_new(Eina_Bool is_system, const char *name, int port)
 {
 #if _WIN32

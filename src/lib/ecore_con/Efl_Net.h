@@ -13,7 +13,31 @@
 
 #include <Efl_Core.h>
 
-#include <ecore_con_api.h>
+#ifdef EAPI
+# undef EAPI
+#endif
+
+#ifdef _WIN32
+# ifdef EFL_BUILD
+#  ifdef DLL_EXPORT
+#   define EAPI __declspec(dllexport)
+#  else
+#   define EAPI
+#  endif
+# else
+#  define EAPI __declspec(dllimport)
+# endif
+#else
+# ifdef __GNUC__
+#  if __GNUC__ >= 4
+#   define EAPI __attribute__ ((visibility("default")))
+#  else
+#   define EAPI
+#  endif
+# else
+#  define EAPI
+# endif
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +51,7 @@ extern "C" {
  * @note This function already calls ecore_init() internally, so you don't need
  * to call it explicitly.
  */
-ECORE_CON_API int               ecore_con_init(void);
+EAPI int               ecore_con_init(void);
 
 /**
  * @brief Shuts down the Ecore_Con library.
@@ -36,7 +60,7 @@ ECORE_CON_API int               ecore_con_init(void);
  * @note This function already calls ecore_shutdown() internally, so you don't
  * need to call it explicitly unless you called ecore_init() explicitly too.
  */
-ECORE_CON_API int               ecore_con_shutdown(void);
+EAPI int               ecore_con_shutdown(void);
 
 /**
  * @brief Initializes the Ecore_Con_Url library.
@@ -46,7 +70,7 @@ ECORE_CON_API int               ecore_con_shutdown(void);
  * @note This function doesn't call ecore_con_init(). You still need to call it
  * explicitly before calling this one.
  */
-ECORE_CON_API int               ecore_con_url_init(void);
+EAPI int               ecore_con_url_init(void);
 
 /**
  * @brief Shuts down the Ecore_Con_Url library.
@@ -55,161 +79,161 @@ ECORE_CON_API int               ecore_con_url_init(void);
  * @note This function doesn't call ecore_con_shutdown(). You still need to call
  * it explicitly after calling this one.
  */
-ECORE_CON_API int               ecore_con_url_shutdown(void);
+EAPI int               ecore_con_url_shutdown(void);
 
 #ifdef EFL_BETA_API_SUPPORT
 /** HTTP error: bad content encoding */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_BAD_CONTENT_ENCODING;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_BAD_CONTENT_ENCODING;
 
 /** HTTP error: bad download resume */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_BAD_DOWNLOAD_RESUME;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_BAD_DOWNLOAD_RESUME;
 
 /** HTTP error: bad function argument */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_BAD_FUNCTION_ARGUMENT;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_BAD_FUNCTION_ARGUMENT;
 
 /** HTTP error: chunk failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_CHUNK_FAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_CHUNK_FAILED;
 
 /** HTTP error: conv failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_CONV_FAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_CONV_FAILED;
 
 /** HTTP error: conv reqd */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_CONV_REQD;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_CONV_REQD;
 
 /** HTTP error: failed init */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_FAILED_INIT;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_FAILED_INIT;
 
 /** HTTP error: could not read file */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_FILE_COULDNT_READ_FILE;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_FILE_COULDNT_READ_FILE;
 
 /** HTTP error: filesize exceeded */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_FILESIZE_EXCEEDED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_FILESIZE_EXCEEDED;
 
 /** HTTP error: function not found */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_FUNCTION_NOT_FOUND;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_FUNCTION_NOT_FOUND;
 
 /** HTTP error: got nothing */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_GOT_NOTHING;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_GOT_NOTHING;
 
 /** HTTP error: http2 */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_HTTP2;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_HTTP2;
 
 /** HTTP error: http2 stream */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_HTTP2_STREAM;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_HTTP2_STREAM;
 
 /** HTTP error: http post error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_HTTP_POST_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_HTTP_POST_ERROR;
 
 /** HTTP error: http returned error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_HTTP_RETURNED_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_HTTP_RETURNED_ERROR;
 
 /** HTTP error: interface failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_INTERFACE_FAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_INTERFACE_FAILED;
 
 /** HTTP error: login denied */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_LOGIN_DENIED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_LOGIN_DENIED;
 
 /** HTTP error: no connection available */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_NO_CONNECTION_AVAILABLE;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_NO_CONNECTION_AVAILABLE;
 
 /** HTTP error: not built in */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_NOT_BUILT_IN;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_NOT_BUILT_IN;
 
 /** HTTP error: operation timeout */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_OPERATION_TIMEDOUT;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_OPERATION_TIMEDOUT;
 
 /** HTTP error: partial file */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_PARTIAL_FILE;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_PARTIAL_FILE;
 
 /** HTTP error: peer failed verification */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_PEER_FAILED_VERIFICATION;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_PEER_FAILED_VERIFICATION;
 
 /** HTTP error: range error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_RANGE_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_RANGE_ERROR;
 
 /** HTTP error: read error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_READ_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_READ_ERROR;
 
 /** HTTP error: receive error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_RECV_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_RECV_ERROR;
 
 /** HTTP error: remote access denied */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_REMOTE_ACCESS_DENIED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_REMOTE_ACCESS_DENIED;
 
 /** HTTP error: remote disk full */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_REMOTE_DISK_FULL;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_REMOTE_DISK_FULL;
 
 /** HTTP error: remote file exists */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_REMOTE_FILE_EXISTS;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_REMOTE_FILE_EXISTS;
 
 /** HTTP error: remote file not found */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_REMOTE_FILE_NOT_FOUND;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_REMOTE_FILE_NOT_FOUND;
 
 /** HTTP error: send error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SEND_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SEND_ERROR;
 
 /** HTTP error: send fail rewind */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SEND_FAIL_REWIND;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SEND_FAIL_REWIND;
 
 /** HTTP error: SSL cacert */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_CACERT;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_CACERT;
 
 /** HTTP error: SSL cacert bad file */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_CACERT_BADFILE;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_CACERT_BADFILE;
 
 /** HTTP error: SSL certproblem */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_CERTPROBLEM;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_CERTPROBLEM;
 
 /** HTTP error: SSL cipher */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_CIPHER;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_CIPHER;
 
 /** HTTP error: SSL connect error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_CONNECT_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_CONNECT_ERROR;
 
 /** HTTP error: SSL crl bad file */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_CRL_BADFILE;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_CRL_BADFILE;
 
 /** HTTP error: SSL engine init failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_ENGINE_INITFAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_ENGINE_INITFAILED;
 
 /** HTTP error: SSL engine not found */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_ENGINE_NOTFOUND;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_ENGINE_NOTFOUND;
 
 /** HTTP error: SSL engine set failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_ENGINE_SETFAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_ENGINE_SETFAILED;
 
 /** HTTP error: SSL invalid cert status */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_INVALIDCERTSTATUS;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_INVALIDCERTSTATUS;
 
 /** HTTP error: SSL issuer error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_ISSUER_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_ISSUER_ERROR;
 
 /** HTTP error: SSL pinned pub key does not match */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_PINNEDPUBKEYNOTMATCH;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_PINNEDPUBKEYNOTMATCH;
 
 /** HTTP error: SSL shutdown failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_SSL_SHUTDOWN_FAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_SSL_SHUTDOWN_FAILED;
 
 /** HTTP error: too many redirects */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_TOO_MANY_REDIRECTS;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_TOO_MANY_REDIRECTS;
 
 /** HTTP error: unknown option */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_UNKNOWN_OPTION;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_UNKNOWN_OPTION;
 
 /** HTTP error: unsupported protocol */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_UNSUPPORTED_PROTOCOL;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_UNSUPPORTED_PROTOCOL;
 
 /** HTTP error: upload failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_UPLOAD_FAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_UPLOAD_FAILED;
 
 /** HTTP error: URL mal-formatted */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_URL_MALFORMAT;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_URL_MALFORMAT;
 
 /** HTTP error: usage of SSL failed */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_USE_SSL_FAILED;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_USE_SSL_FAILED;
 
 /** HTTP error: write error */
-ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_WRITE_ERROR;
+extern EWAPI Eina_Error EFL_NET_HTTP_ERROR_WRITE_ERROR;
 #endif /* EFL_BETA_API_SUPPORT */
 
 #include "efl_net_types.eot.h"
@@ -268,5 +292,8 @@ ECORE_CON_API extern ECORE_CON_WEAK_API Eina_Error EFL_NET_HTTP_ERROR_WRITE_ERRO
 #ifdef __cplusplus
 }
 #endif
+
+#undef EAPI
+#define EAPI
 
 #endif
