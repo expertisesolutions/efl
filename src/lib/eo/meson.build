@@ -38,6 +38,7 @@ foreach eo_file : pub_eo_types_files
                            '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
                            '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                           '-e', 'EO_API',
                            '-gchd', '@INPUT@'])
 endforeach
 
@@ -54,6 +55,7 @@ foreach eo_file : pub_eo_files
                            '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
                            '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                           '-e', 'EO_API',
                            '-gchd', '@INPUT@'])
 endforeach
 
@@ -67,7 +69,7 @@ endif
 
 eo_lib = library('eo',
     eo_src, pub_eo_file_target,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DEO_BUILD'],
     dependencies: [eo_deps, eo_pub_deps, eo_ext_deps],
     install: true,
     version : meson.project_version(),
@@ -81,7 +83,7 @@ endif
 
 eo_lib_dbg = library('eo_dbg',
     eo_src, pub_eo_file_target,
-    c_args : package_c_args + [ '-DEO_DEBUG' ],
+    c_args : [package_c_args, '-DEO_DEBUG', '-DEO_BUILD'],
     dependencies: [eo_deps, eo_pub_deps, eo_ext_deps],
     install: true,
     version : meson.project_version()

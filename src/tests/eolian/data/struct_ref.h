@@ -52,7 +52,7 @@ typedef struct _Opaque Opaque;
  */
 #define STRUCT_CLASS struct_class_get()
 
-EWAPI const Efl_Class *struct_class_get(void);
+const Efl_Class *struct_class_get(void);
 
 /**
  * @brief Foo docs. This is @c monospace. This is alone-standing $.
@@ -64,8 +64,8 @@ EWAPI const Efl_Class *struct_class_get(void);
  *
  * @ingroup Struct
  */
-EOAPI char *struct_foo(Eo *obj, int idx) EFL_TRANSFER_OWNERSHIP EINA_WARN_UNUSED_RESULT;
+char *struct_foo(Eo *obj, int idx) EFL_TRANSFER_OWNERSHIP EINA_WARN_UNUSED_RESULT;
 
-EOAPI Named *struct_bar(Eo *obj);
+Named *struct_bar(Eo *obj);
 
 #endif

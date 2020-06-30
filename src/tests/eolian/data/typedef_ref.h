@@ -68,8 +68,8 @@ typedef enum
  */
 #define TYPEDEF_CLASS typedef_class_get()
 
-EWAPI const Efl_Class *typedef_class_get(void);
+const Efl_Class *typedef_class_get(void);
 
-EOAPI char *typedef_foo(Eo *obj, int idx) EFL_TRANSFER_OWNERSHIP EINA_WARN_UNUSED_RESULT;
+char *typedef_foo(Eo *obj, int idx) EFL_TRANSFER_OWNERSHIP EINA_WARN_UNUSED_RESULT;
 
 #endif
