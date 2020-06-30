@@ -22,12 +22,13 @@ foreach eo_file : priv_eo_files
                            '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
                            '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
-                           '-gchd', '@INPUT@'])
+                           '-e', 'EOTEST_API',
+                          '-gchd', '@INPUT@'])
 endforeach
 
 eolian_suite = executable('eolian_suite',
   eolian_test_src, priv_eo_file_target,
-  dependencies: [eolian, check, eo],
+  dependencies: [eolian, eo, check_dep],
   c_args : [
   '-DEOLIAN_GEN="'+eolian_gen_path+'"',
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
