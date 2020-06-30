@@ -15,12 +15,12 @@
 # else
 #  define EMOTION_API
 # endif
-# define EMOTION_API_WEAK
+# define EMOTION_API_WEAK EMOTION_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EMOTION_API __attribute__ ((visibility("default")))
-#   define EMOTION_API_WEAK __attribute__ ((weak))
+#   define EMOTION_API_WEAK EMOTION_API __attribute__ ((weak))
 #  else
 #   define EMOTION_API
 #   define EMOTION_API_WEAK
