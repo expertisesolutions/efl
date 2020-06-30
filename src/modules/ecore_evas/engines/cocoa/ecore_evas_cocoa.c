@@ -14,18 +14,22 @@
 #include "ecore_evas_private.h"
 #include "ecore_evas_cocoa.h"
 
-#ifdef EAPI
-# undef EAPI
-#endif
-
-#ifdef __GNUC__
-# if __GNUC__ >= 4
-#  define EMODAPI __attribute__ ((visibility("default")))
+#ifdef _WIN32
+# ifndef EFL_MODULE_STATIC
+#  define EMODAPI __declspec(dllexport)
 # else
-#  define EAPI
+#  define EMODAPI
 # endif
 #else
-# define EAPI
+# ifdef __GNUC__
+#  if __GNUC__ >= 4
+#   define EMODAPI __attribute__ ((visibility("default")))
+#  endif
+# endif
+#endif /* ! _WIN32 */
+
+#ifndef EMODAPI
+# define EMODAPI
 #endif
 
 static int                      _ecore_evas_init_count = 0;

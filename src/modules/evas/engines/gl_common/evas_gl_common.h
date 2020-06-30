@@ -80,6 +80,7 @@ typedef Eina_Bool (*evas_gl_make_current_cb)(void *engine_data, void *doit);
 # else
 #  define EMODAPI
 # endif
+# define EMODAPI_WEAK
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4

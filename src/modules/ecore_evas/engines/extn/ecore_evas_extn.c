@@ -1,26 +1,22 @@
 #include "ecore_evas_extn_engine.h"
 
-#ifdef EAPI
-# undef EAPI
-#endif
-
 #ifdef _WIN32
-# ifdef DLL_EXPORT
+# ifndef EFL_MODULE_STATIC
 #  define EMODAPI __declspec(dllexport)
 # else
-#  define EAPI
-# endif /* ! DLL_EXPORT */
+#  define EMODAPI
+# endif
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EMODAPI __attribute__ ((visibility("default")))
-#  else
-#   define EAPI
 #  endif
-# else
-#  define EAPI
 # endif
 #endif /* ! _WIN32 */
+
+#ifndef EMODAPI
+# define EMODAPI
+#endif
 
 #define NBUF 2
 
@@ -1030,7 +1026,7 @@ _ipc_server_data(void *data, int type EINA_UNUSED, void *event)
               Ipc_Data_Update *ipc;
               int n = e->response;
 
-              /* b->lockfd is not enough to ensure the size is same 
+              /* b->lockfd is not enough to ensure the size is same
                * between what server knows, and client knows.
                * So should check file lock also. */
               if ((n >= 0) && (n < NBUF))

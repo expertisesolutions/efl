@@ -24,27 +24,23 @@
 static int _ecore_evas_vnc_server_log_dom;
 static unsigned int _available_seat = 1;
 
-#ifdef EAPI
-# undef EAPI
-#endif
-
 #ifdef _WIN32
-# ifdef DLL_EXPORT
+# ifndef EFL_MODULE_STATIC
 #  define EMODAPI __declspec(dllexport)
 # else
-#  define EAPI
-# endif /* ! DLL_EXPORT */
+#  define EMODAPI
+# endif
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EMODAPI __attribute__ ((visibility("default")))
-#  else
-#   define EAPI
 #  endif
-# else
-#  define EAPI
 # endif
 #endif /* ! _WIN32 */
+
+#ifndef EMODAPI
+# define EMODAPI
+#endif
 
 #ifdef WRN
 #undef WRN

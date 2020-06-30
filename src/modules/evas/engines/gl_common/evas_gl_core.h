@@ -8,14 +8,10 @@
 #endif
 
 #ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EMODAPI __declspec(dllexport)
-#  else
-#   define EMODAPI
-#  endif
+# ifndef EFL_MODULE_STATIC
+#  define EMODAPI __declspec(dllexport)
 # else
-#  define EMODAPI __declspec(dllimport)
+#  define EMODAPI
 # endif
 #else
 # ifdef __GNUC__
