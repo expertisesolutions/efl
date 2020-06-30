@@ -19,7 +19,7 @@ typedef Eo Elm_Ctxpopup_Item;
  */
 #define ELM_CTXPOPUP_ITEM_CLASS elm_ctxpopup_item_class_get()
 
-EWAPI const Efl_Class *elm_ctxpopup_item_class_get(void);
+ELM_API ELM_API_WEAK const Efl_Class *elm_ctxpopup_item_class_get(void);
 
 /**
  * @brief Get the item before this one in the widget's list of items.
@@ -33,7 +33,7 @@ EWAPI const Efl_Class *elm_ctxpopup_item_class_get(void);
  *
  * @ingroup Elm_Ctxpopup_Item
  */
-EOAPI Elm_Widget_Item *elm_obj_ctxpopup_item_prev_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_ctxpopup_item_prev_get(const Eo *obj);
 
 /**
  * @brief Get the item after this one in the widget's list of items.
@@ -47,7 +47,7 @@ EOAPI Elm_Widget_Item *elm_obj_ctxpopup_item_prev_get(const Eo *obj);
  *
  * @ingroup Elm_Ctxpopup_Item
  */
-EOAPI Elm_Widget_Item *elm_obj_ctxpopup_item_next_get(const Eo *obj);
+ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_ctxpopup_item_next_get(const Eo *obj);
 
 /**
  * @brief Indicates whether this item is currently selected.
@@ -68,7 +68,7 @@ EOAPI Elm_Widget_Item *elm_obj_ctxpopup_item_next_get(const Eo *obj);
  *
  * @ingroup Elm_Ctxpopup_Item
  */
-EOAPI void elm_obj_ctxpopup_item_selected_set(Eo *obj, Eina_Bool selected);
+ELM_API ELM_API_WEAK void elm_obj_ctxpopup_item_selected_set(Eo *obj, Eina_Bool selected);
 
 /**
  * @brief Indicates whether this item is currently selected.
@@ -81,7 +81,7 @@ EOAPI void elm_obj_ctxpopup_item_selected_set(Eo *obj, Eina_Bool selected);
  *
  * @ingroup Elm_Ctxpopup_Item
  */
-EOAPI Eina_Bool elm_obj_ctxpopup_item_selected_get(const Eo *obj);
+ELM_API ELM_API_WEAK Eina_Bool elm_obj_ctxpopup_item_selected_get(const Eo *obj);
 
 /**
  * @brief Init context popup item
@@ -92,6 +92,6 @@ EOAPI Eina_Bool elm_obj_ctxpopup_item_selected_get(const Eo *obj);
  *
  * @ingroup Elm_Ctxpopup_Item
  */
-EOAPI void elm_obj_ctxpopup_item_init(Eo *obj, Evas_Smart_Cb func, const void *data);
+ELM_API ELM_API_WEAK void elm_obj_ctxpopup_item_init(Eo *obj, Evas_Smart_Cb func, const void *data);
 
 #endif

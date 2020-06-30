@@ -8,7 +8,7 @@
  *
  * @ingroup Elm_Box
  */
-EAPI Evas_Object        *elm_box_add(Evas_Object *parent);
+ELM_API Evas_Object        *elm_box_add(Evas_Object *parent);
 
 #include "elm_box_eo.legacy.h"
 
@@ -44,4 +44,4 @@ EAPI Evas_Object        *elm_box_add(Evas_Object *parent);
  * @param[in] data Data that will be passed to layout function
  * @param[in] free_data Function called to free @c data
  */
-EAPI void elm_box_layout_set(Evas_Object *obj, Evas_Object_Box_Layout cb, const void *data, Ecore_Cb free_data);
+ELM_API void elm_box_layout_set(Evas_Object *obj, Evas_Object_Box_Layout cb, const void *data, Ecore_Cb free_data);
