@@ -73,7 +73,7 @@ eio_lib = library('eio',
     dependencies: eio_deps + eio_pub_deps + eio_ext_deps,
     include_directories : config_dir + [include_directories('.')],
     install: true,
-    c_args : [package_c_args, ´-DEIO_BUILD`],
+    c_args : [package_c_args, '-DEIO_BUILD'],
     link_args : linker_args,
     version : meson.project_version()
 )
