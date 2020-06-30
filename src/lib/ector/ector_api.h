@@ -15,12 +15,12 @@
 # else
 #  define ECTOR_API
 # endif
-# define ECTOR_API_WEAK
+# define ECTOR_API_WEAK ECTOR_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define ECTOR_API __attribute__ ((visibility("default")))
-#   define ECTOR_API_WEAK __attribute__ ((weak))
+#   define ECTOR_API_WEAK ECTOR_API __attribute__ ((weak))
 #  else
 #   define ECTOR_API
 #   define ECTOR_API_WEAK
