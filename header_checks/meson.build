@@ -217,7 +217,7 @@ endif
 # libraries
 
 # libcheck
-check_dep = dependency('check', fallback : ['check', 'check_dep'])
+check = dependency('check', fallback : ['check', 'check_dep'])
 
 if sys_windows
   # pcre
@@ -227,21 +227,15 @@ if sys_windows
   pcre_posix = pcre_project.get_variable('pcre_posix')
   original_pcre_dep = pcre_project.get_variable('pcre_dep')
 
-  pcre_dep = declare_dependency(link_with : [pcre, pcre_posix], dependencies : original_pcre_dep)
+  pcre = declare_dependency(link_with : [pcre, pcre_posix], dependencies : original_pcre_dep)
 
   # zlib
-  zlib_project = subproject('zlib')
-
-  zlib = zlib_project.get_variable('zlib')
-  zlib_dep = zlib_project.get_variable('zlib_dep')
-  zlib_include_dir = zlib_project.get_variable('incdir')
+  zlib = subproject('zlib').get_variable('zlib_dep')
 
   # getopt
-  getopt_project = subproject('getopt')
-  getopt = getopt_project.get_variable('getopt')
-  getopt_dep = getopt_project.get_variable('getopt_dep')
+  getopt = subproject('getopt').get_variable('getopt_dep')
 else
-  zlib_dep = dependency('zlib')
+  zlib = dependency('zlib')
   if not cc.has_header_symbol('regex.h', 'regcomp')
     error('regcomp can not be found')
   endif
@@ -250,7 +244,7 @@ else
     error('fnmatch can not be found')
   endif
 
-  getopt_dep = declare_dependency()
+  getopt = declare_dependency()
 endif
 
 config_h.set('VMAJ', version_major)

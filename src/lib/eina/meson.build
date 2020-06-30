@@ -1,7 +1,7 @@
 if not sys_windows
   eina_deps = [dl]
 else
-  eina_deps = [pcre_dep]
+  eina_deps = []
 endif
 
 eina_pub_deps = [thread_dep, m]
