@@ -15,12 +15,12 @@
 # else
 #  define EVIL_API
 # endif
-# define EVIL_API_WEAK
+# define EVIL_API_WEAK EVIL_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EVIL_API __attribute__ ((visibility("default")))
-#   define EVIL_API_WEAK __attribute__ ((weak))
+#   define EVIL_API_WEAK EVIL_API __attribute__ ((weak))
 #  else
 #   define EVIL_API
 #   define EVIL_API_WEAK
