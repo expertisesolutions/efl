@@ -19,7 +19,7 @@ typedef Eo Evas_Line;
  */
 #define EVAS_LINE_CLASS evas_line_class_get()
 
-EWAPI const Efl_Class *evas_line_class_get(void);
+EVAS_API EVAS_WEAK_API const Efl_Class *evas_line_class_get(void);
 
 /**
  * @brief Sets the coordinates of the end points of the given evas line object.
@@ -34,7 +34,7 @@ EWAPI const Efl_Class *evas_line_class_get(void);
  *
  * @ingroup Evas_Line
  */
-EOAPI void evas_obj_line_xy_set(Eo *obj, int x1, int y1, int x2, int y2);
+EVAS_API EVAS_API_WEAK void evas_obj_line_xy_set(Eo *obj, int x1, int y1, int x2, int y2);
 
 /**
  * @brief Retrieves the coordinates of the end points of the given evas line
@@ -48,6 +48,6 @@ EOAPI void evas_obj_line_xy_set(Eo *obj, int x1, int y1, int x2, int y2);
  *
  * @ingroup Evas_Line
  */
-EOAPI void evas_obj_line_xy_get(const Eo *obj, int *x1, int *y1, int *x2, int *y2);
+EVAS_API EVAS_API_WEAK void evas_obj_line_xy_get(const Eo *obj, int *x1, int *y1, int *x2, int *y2);
 
 #endif
