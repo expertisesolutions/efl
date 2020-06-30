@@ -57,7 +57,7 @@ execvp(const char *file, char *const argv[])
    return _execvp(file, (const char *const *)argv);
 }
 
-int
+EVIL_API int
 ftruncate(int fd, off_t size)
 {
    HANDLE file = (HANDLE)_get_osfhandle(fd);
