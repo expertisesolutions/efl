@@ -45,39 +45,39 @@ typedef struct _Efl_Text_Attribute_Handle Efl_Text_Attribute_Handle;
 
 #ifdef EFL_BETA_API_SUPPORT
 /** No error on load */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_NONE;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_NONE;
 
 /** A non-specific error occurred */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_GENERIC;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_GENERIC;
 
 /** File (or file path) does not exist */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_DOES_NOT_EXIST;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_DOES_NOT_EXIST;
 
 /** Permission denied to an existing file (or path) */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_PERMISSION_DENIED;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_PERMISSION_DENIED;
 
 /** Allocation of resources failure prevented load */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_RESOURCE_ALLOCATION_FAILED;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_RESOURCE_ALLOCATION_FAILED;
 
 /** File corrupt (but was detected as a known format) */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_CORRUPT_FILE;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_CORRUPT_FILE;
 
 /** File is not a known format */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_UNKNOWN_FORMAT;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_UNKNOWN_FORMAT;
 
 /** Reading operation has been cancelled during decoding */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_CANCELLED;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_CANCELLED;
 
 /** (Edje only) The file pointed to is incompatible, i.e., it doesn't
  * match the library's current version's format. */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_INCOMPATIBLE_FILE;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_INCOMPATIBLE_FILE;
 
 /** (Edje only) The group/collection set to load from was not found in the file */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_UNKNOWN_COLLECTION;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_UNKNOWN_COLLECTION;
 
 /** (Edje only) The group/collection set to load from had recursive references
  * on its components */
-EFL_API EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_RECURSIVE_REFERENCE;
+EFL_API_WEAK extern Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_RECURSIVE_REFERENCE;
 #endif /* EFL_BETA_API_SUPPORT */
 
 #include "interfaces/efl_gfx_types.eot.h"

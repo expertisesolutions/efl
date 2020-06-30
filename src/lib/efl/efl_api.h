@@ -15,12 +15,12 @@
 # else
 #  define EFL_API
 # endif
-# define EFL_API_WEAK
+# define EFL_API_WEAK EFL_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EFL_API __attribute__ ((visibility("default")))
-#   define EFL_API_WEAK __attribute__ ((weak))
+#   define EFL_API_WEAK EFL_API __attribute__ ((weak))
 #  else
 #   define EFL_API
 #   define EFL_API_WEAK
