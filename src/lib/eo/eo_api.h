@@ -17,12 +17,12 @@
 # else
 #  define EO_API
 # endif
-# define EO_API_WEAK
+# define EO_API_WEAK EO_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EO_API __attribute__ ((visibility("default")))
-#   define EO_API_WEAK __attribute__ ((weak))
+#   define EO_API_WEAK EO_API __attribute__ ((weak))
 #  else
 #   define EO_API
 #   define EO_API_WEAK
