@@ -34,7 +34,7 @@ typedef enum
  */
 #define EVAS_TABLE_CLASS evas_table_class_get()
 
-EVAS_API EVAS_WEAK_API const Efl_Class *evas_table_class_get(void);
+EVAS_API EVAS_API_WEAK const Efl_Class *evas_table_class_get(void);
 
 /**
  * @brief Set how this table should layout children.
