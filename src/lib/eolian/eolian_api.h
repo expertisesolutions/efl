@@ -15,12 +15,12 @@
 # else
 #  define EOLIAN_API
 # endif
-# define EOLIAN_API_WEAK
+# define EOLIAN_API_WEAK EOLIAN_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EOLIAN_API __attribute__ ((visibility("default")))
-#   define EOLIAN_API_WEAK __attribute__ ((weak))
+#   define EOLIAN_API_WEAK EOLIAN_API __attribute__ ((weak))
 #  else
 #   define EOLIAN_API
 #   define EOLIAN_API_WEAK
