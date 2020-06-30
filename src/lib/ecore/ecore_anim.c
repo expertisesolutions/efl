@@ -518,14 +518,14 @@ _ecore_animator_add(Ecore_Task_Cb func,
    return animator;
 }
 
-EAPI Ecore_Animator *
+ECORE_API Ecore_Animator *
 ecore_animator_add(Ecore_Task_Cb func,
                    const void   *data)
 {
    return _ecore_animator_add(func, data);
 }
 
-EAPI Ecore_Animator *
+ECORE_API Ecore_Animator *
 ecore_animator_timeline_add(double            runtime,
                             Ecore_Timeline_Cb func,
                             const void       *data)
@@ -731,7 +731,7 @@ _pos_map_cubic_bezier(double pos,
 #define SUB(A, B) eina_f32p32_sub(A, B)
 #define MUL(A, B) eina_f32p32_mul(A, B)
 
-EAPI double
+ECORE_API double
 ecore_animator_pos_map_n(double        pos,
                          Ecore_Pos_Map map,
                          int           v_size,
@@ -814,7 +814,7 @@ ecore_animator_pos_map_n(double        pos,
     return pos;
 }
 
-EAPI double
+ECORE_API double
 ecore_animator_pos_map(double        pos,
                        Ecore_Pos_Map map,
                        double        v1,
@@ -827,7 +827,7 @@ ecore_animator_pos_map(double        pos,
     return ecore_animator_pos_map_n(pos, map, 2, v);
 }
 
-EAPI void *
+ECORE_API void *
 ecore_animator_del(Ecore_Animator *animator)
 {
    void *data = NULL;
@@ -855,7 +855,7 @@ ecore_animator_del(Ecore_Animator *animator)
    return data;
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_frametime_set(double frametime)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
@@ -866,14 +866,14 @@ ecore_animator_frametime_set(double frametime)
    if (_have_animators()) _begin_tick();
 }
 
-EAPI double
+ECORE_API double
 ecore_animator_frametime_get(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0.0);
    return animators_frametime;
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_freeze(Ecore_Animator *animator)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
@@ -891,7 +891,7 @@ ecore_animator_freeze(Ecore_Animator *animator)
    if (!_have_animators()) _end_tick();
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_thaw(Ecore_Animator *animator)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
@@ -909,7 +909,7 @@ ecore_animator_thaw(Ecore_Animator *animator)
    if (_have_animators()) _begin_tick();
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_source_set(Ecore_Animator_Source source)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
@@ -922,14 +922,14 @@ ecore_animator_source_set(Ecore_Animator_Source source)
    if (_have_animators()) _begin_tick();
 }
 
-EAPI Ecore_Animator_Source
+ECORE_API Ecore_Animator_Source
 ecore_animator_source_get(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN_VAL(0);
    return src;
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_custom_source_tick_begin_callback_set(Ecore_Cb    func,
                                                      const void *data)
 {
@@ -940,7 +940,7 @@ ecore_animator_custom_source_tick_begin_callback_set(Ecore_Cb    func,
    if (_have_animators()) _begin_tick();
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_custom_source_tick_end_callback_set(Ecore_Cb    func,
                                                    const void *data)
 {
@@ -951,7 +951,7 @@ ecore_animator_custom_source_tick_end_callback_set(Ecore_Cb    func,
    if (_have_animators()) _begin_tick();
 }
 
-EAPI void
+ECORE_API void
 ecore_animator_custom_tick(void)
 {
    EINA_MAIN_LOOP_CHECK_RETURN;
