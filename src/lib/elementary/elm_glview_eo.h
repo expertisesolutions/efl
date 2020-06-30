@@ -118,7 +118,7 @@ typedef enum
  */
 #define ELM_GLVIEW_CLASS elm_glview_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_glview_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_glview_class_get(void);
 
 /**
  * @brief Constructor with context version number.
@@ -128,7 +128,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_glview_class_get(void);
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK void elm_obj_glview_version_constructor(Eo *obj, Evas_GL_Context_Version version);
+ELM_API_WEAK void elm_obj_glview_version_constructor(Eo *obj, Evas_GL_Context_Version version);
 
 /**
  * @brief Set the resize policy for the glview object.
@@ -146,7 +146,7 @@ ELM_API ELM_API_WEAK void elm_obj_glview_version_constructor(Eo *obj, Evas_GL_Co
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_resize_policy_set(Eo *obj, Elm_GLView_Resize_Policy policy);
+ELM_API_WEAK Eina_Bool elm_obj_glview_resize_policy_set(Eo *obj, Elm_GLView_Resize_Policy policy);
 
 /**
  * @brief Set the render policy for the glview object.
@@ -164,7 +164,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_resize_policy_set(Eo *obj, Elm_GLV
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_render_policy_set(Eo *obj, Elm_GLView_Render_Policy policy);
+ELM_API_WEAK Eina_Bool elm_obj_glview_render_policy_set(Eo *obj, Elm_GLView_Render_Policy policy);
 
 /**
  * @brief Set the mode of the GLView. Supports alpha, depth, stencil.
@@ -181,7 +181,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_render_policy_set(Eo *obj, Elm_GLV
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_mode_set(Eo *obj, Elm_GLView_Mode mode);
+ELM_API_WEAK Eina_Bool elm_obj_glview_mode_set(Eo *obj, Elm_GLView_Mode mode);
 
 /**
  * @brief Get the gl api struct for gl rendering.
@@ -192,7 +192,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_glview_mode_set(Eo *obj, Elm_GLView_Mode 
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK Evas_GL_API *elm_obj_glview_gl_api_get(const Eo *obj);
+ELM_API_WEAK Evas_GL_API *elm_obj_glview_gl_api_get(const Eo *obj);
 
 /**
  * @brief Get the internal Evas GL attached to this view.
@@ -208,7 +208,7 @@ ELM_API ELM_API_WEAK Evas_GL_API *elm_obj_glview_gl_api_get(const Eo *obj);
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK Evas_GL *elm_obj_glview_evas_gl_get(const Eo *obj);
+ELM_API_WEAK Evas_GL *elm_obj_glview_evas_gl_get(const Eo *obj);
 
 /**
  * @brief Get the current GL view's rotation when using direct rendering
@@ -226,7 +226,7 @@ ELM_API ELM_API_WEAK Evas_GL *elm_obj_glview_evas_gl_get(const Eo *obj);
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK int elm_obj_glview_rotation_get(const Eo *obj);
+ELM_API_WEAK int elm_obj_glview_rotation_get(const Eo *obj);
 
 /** Notifies that there has been changes in the GLView.
  *
@@ -234,9 +234,9 @@ ELM_API ELM_API_WEAK int elm_obj_glview_rotation_get(const Eo *obj);
  *
  * @ingroup Elm_Glview
  */
-ELM_API ELM_API_WEAK void elm_obj_glview_draw_request(Eo *obj);
+ELM_API_WEAK void elm_obj_glview_draw_request(Eo *obj);
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATED;
 
 /**
  * @brief Event dispatched when first render happens.
@@ -250,7 +250,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_CREATE
  */
 #define ELM_GLVIEW_EVENT_CREATED (&(_ELM_GLVIEW_EVENT_CREATED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTROYED;
 
 /**
  * @brief Event dispatched when GLView object is deleted.
@@ -264,7 +264,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_DESTRO
  */
 #define ELM_GLVIEW_EVENT_DESTROYED (&(_ELM_GLVIEW_EVENT_DESTROYED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZED;
 
 /**
  * @brief Event dispatched when resize happens.
@@ -278,7 +278,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RESIZE
  */
 #define ELM_GLVIEW_EVENT_RESIZED (&(_ELM_GLVIEW_EVENT_RESIZED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_GLVIEW_EVENT_RENDER;
 
 /**
  * @brief Event dispatched when GLView is rendered.

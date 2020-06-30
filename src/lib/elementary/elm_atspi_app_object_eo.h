@@ -19,6 +19,6 @@ typedef Eo Elm_Atspi_App_Object;
  */
 #define ELM_ATSPI_APP_OBJECT_CLASS elm_atspi_app_object_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_atspi_app_object_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_atspi_app_object_class_get(void);
 
 #endif

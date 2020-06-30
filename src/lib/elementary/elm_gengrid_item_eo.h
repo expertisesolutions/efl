@@ -19,7 +19,7 @@ typedef Eo Elm_Gengrid_Item;
  */
 #define ELM_GENGRID_ITEM_CLASS elm_gengrid_item_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_gengrid_item_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_gengrid_item_class_get(void);
 
 /**
  * @brief Get the previous item in a gengrid widget's internal list of items,
@@ -33,7 +33,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_gengrid_item_class_get(void);
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_gengrid_item_prev_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_gengrid_item_prev_get(const Eo *obj);
 
 /**
  * @brief Get the next item in a gengrid widget's internal list of items, given
@@ -47,7 +47,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_gengrid_item_prev_get(const Eo *ob
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_gengrid_item_next_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_gengrid_item_next_get(const Eo *obj);
 
 /**
  * @brief Control whether a given gengrid item is selected or not
@@ -65,7 +65,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_gengrid_item_next_get(const Eo *ob
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_selected_set(Eo *obj, Eina_Bool selected);
+ELM_API_WEAK void elm_obj_gengrid_item_selected_set(Eo *obj, Eina_Bool selected);
 
 /**
  * @brief Control whether a given gengrid item is selected or not
@@ -83,7 +83,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_selected_set(Eo *obj, Eina_Bool s
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_gengrid_item_selected_get(const Eo *obj);
+ELM_API_WEAK Eina_Bool elm_obj_gengrid_item_selected_get(const Eo *obj);
 
 /**
  * @brief Get the Gengrid Item class for the given Gengrid Item.
@@ -97,7 +97,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_gengrid_item_selected_get(const Eo *obj);
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK const Elm_Gengrid_Item_Class *elm_obj_gengrid_item_class_get(const Eo *obj);
+ELM_API_WEAK const Elm_Gengrid_Item_Class *elm_obj_gengrid_item_class_get(const Eo *obj);
 
 /**
  * @brief Get the index of the item. It is only valid once displayed.
@@ -108,7 +108,7 @@ ELM_API ELM_API_WEAK const Elm_Gengrid_Item_Class *elm_obj_gengrid_item_class_ge
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK int elm_obj_gengrid_item_index_get(const Eo *obj);
+ELM_API_WEAK int elm_obj_gengrid_item_index_get(const Eo *obj);
 
 /**
  * @brief Get a given gengrid item's position, relative to the whole gengrid's
@@ -123,7 +123,7 @@ ELM_API ELM_API_WEAK int elm_obj_gengrid_item_index_get(const Eo *obj);
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_pos_get(const Eo *obj, unsigned int *x, unsigned int *y);
+ELM_API_WEAK void elm_obj_gengrid_item_pos_get(const Eo *obj, unsigned int *x, unsigned int *y);
 
 /**
  * @brief Control the gengrid item's select mode.
@@ -149,7 +149,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_pos_get(const Eo *obj, unsigned i
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_select_mode_set(Eo *obj, Elm_Object_Select_Mode mode);
+ELM_API_WEAK void elm_obj_gengrid_item_select_mode_set(Eo *obj, Elm_Object_Select_Mode mode);
 
 /**
  * @brief Control the gengrid item's select mode.
@@ -176,7 +176,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_select_mode_set(Eo *obj, Elm_Obje
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK Elm_Object_Select_Mode elm_obj_gengrid_item_select_mode_get(const Eo *obj);
+ELM_API_WEAK Elm_Object_Select_Mode elm_obj_gengrid_item_select_mode_get(const Eo *obj);
 
 /**
  * @brief Custom size mode for non-homogeneous gengrid.
@@ -198,7 +198,7 @@ ELM_API ELM_API_WEAK Elm_Object_Select_Mode elm_obj_gengrid_item_select_mode_get
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_custom_size_set(Eo *obj, int w, int h);
+ELM_API_WEAK void elm_obj_gengrid_item_custom_size_set(Eo *obj, int w, int h);
 
 /**
  * @brief Custom size mode for non-homogeneous gengrid.
@@ -217,7 +217,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_custom_size_set(Eo *obj, int w, i
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_custom_size_get(const Eo *obj, int *w, int *h);
+ELM_API_WEAK void elm_obj_gengrid_item_custom_size_get(const Eo *obj, int *w, int *h);
 
 /**
  * @brief Show the portion of a gengrid's internal grid containing a given
@@ -231,7 +231,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_custom_size_get(const Eo *obj, in
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_show(Eo *obj, Elm_Gengrid_Item_Scrollto_Type type);
+ELM_API_WEAK void elm_obj_gengrid_item_show(Eo *obj, Elm_Gengrid_Item_Scrollto_Type type);
 
 /**
  * @brief Animatedly bring in, to the visible area of a gengrid, a given item
@@ -246,7 +246,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_show(Eo *obj, Elm_Gengrid_Item_Sc
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_bring_in(Eo *obj, Elm_Gengrid_Item_Scrollto_Type type);
+ELM_API_WEAK void elm_obj_gengrid_item_bring_in(Eo *obj, Elm_Gengrid_Item_Scrollto_Type type);
 
 /**
  * @brief Update the contents of a given gengrid item
@@ -258,7 +258,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_bring_in(Eo *obj, Elm_Gengrid_Ite
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_update(Eo *obj);
+ELM_API_WEAK void elm_obj_gengrid_item_update(Eo *obj);
 
 /**
  * @brief Update the part of an item
@@ -279,7 +279,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_update(Eo *obj);
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_fields_update(Eo *obj, const char *parts, Elm_Gengrid_Item_Field_Type itf);
+ELM_API_WEAK void elm_obj_gengrid_item_fields_update(Eo *obj, const char *parts, Elm_Gengrid_Item_Field_Type itf);
 
 /**
  * @brief Update the item class of a gengrid item.
@@ -294,7 +294,7 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_fields_update(Eo *obj, const char
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_class_update(Eo *obj, const Elm_Gengrid_Item_Class *itc);
+ELM_API_WEAK void elm_obj_gengrid_item_class_update(Eo *obj, const Elm_Gengrid_Item_Class *itc);
 
 /**
  * @brief Unset all contents fetched by the item class
@@ -310,6 +310,6 @@ ELM_API ELM_API_WEAK void elm_obj_gengrid_item_class_update(Eo *obj, const Elm_G
  *
  * @ingroup Elm_Gengrid_Item
  */
-ELM_API ELM_API_WEAK void elm_obj_gengrid_item_all_contents_unset(Eo *obj, Eina_List **l);
+ELM_API_WEAK void elm_obj_gengrid_item_all_contents_unset(Eo *obj, Eina_List **l);
 
 #endif

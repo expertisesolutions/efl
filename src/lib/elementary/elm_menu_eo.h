@@ -19,7 +19,7 @@ typedef Eo Elm_Menu;
  */
 #define ELM_MENU_CLASS elm_menu_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_menu_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_menu_class_get(void);
 
 /**
  * @brief Get the selected item in the widget.
@@ -30,7 +30,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_menu_class_get(void);
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_selected_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_selected_item_get(const Eo *obj);
 
 /**
  * @brief Get the first item in the widget.
@@ -41,7 +41,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_selected_item_get(const Eo *o
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_first_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_first_item_get(const Eo *obj);
 
 /**
  * @brief Get the last item in the widget.
@@ -52,7 +52,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_first_item_get(const Eo *obj)
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_last_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_last_item_get(const Eo *obj);
 
 /**
  * @brief Returns a list of the widget item.
@@ -63,7 +63,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_last_item_get(const Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK const Eina_List *elm_obj_menu_items_get(const Eo *obj);
+ELM_API_WEAK const Eina_List *elm_obj_menu_items_get(const Eo *obj);
 
 /**
  * @brief Move the menu to a new position
@@ -78,7 +78,7 @@ ELM_API ELM_API_WEAK const Eina_List *elm_obj_menu_items_get(const Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK void elm_obj_menu_relative_move(Eo *obj, int x, int y);
+ELM_API_WEAK void elm_obj_menu_relative_move(Eo *obj, int x, int y);
 
 /**
  * @brief Add an item at the end of the given menu widget.
@@ -97,7 +97,7 @@ ELM_API ELM_API_WEAK void elm_obj_menu_relative_move(Eo *obj, int x, int y);
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_add(Eo *obj, Elm_Widget_Item *parent, const char *icon, const char *label, Evas_Smart_Cb func, const void *data);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_add(Eo *obj, Elm_Widget_Item *parent, const char *icon, const char *label, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Open a closed menu
@@ -107,7 +107,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_add(Eo *obj, Elm_Widget_
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK void elm_obj_menu_open(Eo *obj);
+ELM_API_WEAK void elm_obj_menu_open(Eo *obj);
 
 /**
  * @brief Close a opened menu
@@ -117,7 +117,7 @@ ELM_API ELM_API_WEAK void elm_obj_menu_open(Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK void elm_obj_menu_close(Eo *obj);
+ELM_API_WEAK void elm_obj_menu_close(Eo *obj);
 
 /**
  * @brief Add a separator item to menu @c obj under @c parent.
@@ -129,9 +129,9 @@ ELM_API ELM_API_WEAK void elm_obj_menu_close(Eo *obj);
  *
  * @ingroup Elm_Menu
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_separator_add(Eo *obj, Elm_Widget_Item *parent);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_menu_item_separator_add(Eo *obj, Elm_Widget_Item *parent);
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_DISMISSED;
 
 /** Called when menu widget was dismissed
  *
@@ -139,7 +139,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_DISMISSE
  */
 #define ELM_MENU_EVENT_DISMISSED (&(_ELM_MENU_EVENT_DISMISSED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU;
 
 /** Called when menu blocking have been enabled
  *
@@ -147,7 +147,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTI
  */
 #define ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU (&(_ELM_MENU_EVENT_ELM_ACTION_BLOCK_MENU))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_UNBLOCK_MENU;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_MENU_EVENT_ELM_ACTION_UNBLOCK_MENU;
 
 /** Called when menu blocking has been disabled
  *

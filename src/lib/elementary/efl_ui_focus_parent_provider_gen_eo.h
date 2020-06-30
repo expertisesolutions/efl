@@ -20,7 +20,7 @@ typedef Eo Efl_Ui_Focus_Parent_Provider_Gen;
  */
 #define EFL_UI_FOCUS_PARENT_PROVIDER_GEN_CLASS efl_ui_focus_parent_provider_gen_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *efl_ui_focus_parent_provider_gen_class_get(void);
+ELM_API_WEAK const Efl_Class *efl_ui_focus_parent_provider_gen_class_get(void);
 
 /**
  * @brief Content item map property
@@ -30,7 +30,7 @@ ELM_API ELM_API_WEAK const Efl_Class *efl_ui_focus_parent_provider_gen_class_get
  *
  * @ingroup Efl_Ui_Focus_Parent_Provider_Gen
  */
-ELM_API ELM_API_WEAK void efl_ui_focus_parent_provider_gen_content_item_map_set(Eo *obj, Eina_Hash *map);
+ELM_API_WEAK void efl_ui_focus_parent_provider_gen_content_item_map_set(Eo *obj, Eina_Hash *map);
 
 /**
  * @brief Content item map property
@@ -41,7 +41,7 @@ ELM_API ELM_API_WEAK void efl_ui_focus_parent_provider_gen_content_item_map_set(
  *
  * @ingroup Efl_Ui_Focus_Parent_Provider_Gen
  */
-ELM_API ELM_API_WEAK Eina_Hash *efl_ui_focus_parent_provider_gen_content_item_map_get(const Eo *obj);
+ELM_API_WEAK Eina_Hash *efl_ui_focus_parent_provider_gen_content_item_map_get(const Eo *obj);
 
 /**
  * @brief Container property
@@ -51,7 +51,7 @@ ELM_API ELM_API_WEAK Eina_Hash *efl_ui_focus_parent_provider_gen_content_item_ma
  *
  * @ingroup Efl_Ui_Focus_Parent_Provider_Gen
  */
-ELM_API ELM_API_WEAK void efl_ui_focus_parent_provider_gen_container_set(Eo *obj, Efl_Ui_Widget *container);
+ELM_API_WEAK void efl_ui_focus_parent_provider_gen_container_set(Eo *obj, Efl_Ui_Widget *container);
 
 /**
  * @brief Container property
@@ -62,7 +62,7 @@ ELM_API ELM_API_WEAK void efl_ui_focus_parent_provider_gen_container_set(Eo *obj
  *
  * @ingroup Efl_Ui_Focus_Parent_Provider_Gen
  */
-ELM_API ELM_API_WEAK Efl_Ui_Widget *efl_ui_focus_parent_provider_gen_container_get(const Eo *obj);
+ELM_API_WEAK Efl_Ui_Widget *efl_ui_focus_parent_provider_gen_container_get(const Eo *obj);
 
 /**
  * @brief Fetch the item where the item is a subchild from
@@ -72,7 +72,7 @@ ELM_API ELM_API_WEAK Efl_Ui_Widget *efl_ui_focus_parent_provider_gen_container_g
  *
  * @ingroup Efl_Ui_Focus_Parent_Provider_Gen
  */
-ELM_API ELM_API_WEAK Efl_Ui_Widget *efl_ui_focus_parent_provider_gen_item_fetch(Eo *obj, Efl_Ui_Widget *widget);
+ELM_API_WEAK Efl_Ui_Widget *efl_ui_focus_parent_provider_gen_item_fetch(Eo *obj, Efl_Ui_Widget *widget);
 #endif /* EFL_BETA_API_SUPPORT */
 
 #endif

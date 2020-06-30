@@ -19,6 +19,6 @@ typedef Eo Elm_Photo;
  */
 #define ELM_PHOTO_CLASS elm_photo_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_photo_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_photo_class_get(void);
 
 #endif

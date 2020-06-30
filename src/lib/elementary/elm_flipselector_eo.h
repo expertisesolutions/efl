@@ -19,7 +19,7 @@ typedef Eo Elm_Flipselector;
  */
 #define ELM_FLIPSELECTOR_CLASS elm_flipselector_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_flipselector_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_flipselector_class_get(void);
 
 /**
  * @brief Get the internal list of items in a given flip selector widget.
@@ -39,7 +39,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_flipselector_class_get(void);
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK const Eina_List *elm_obj_flipselector_items_get(const Eo *obj);
+ELM_API_WEAK const Eina_List *elm_obj_flipselector_items_get(const Eo *obj);
 
 /**
  * @brief Get the first item in the given flip selector widget's list of items.
@@ -53,7 +53,7 @@ ELM_API ELM_API_WEAK const Eina_List *elm_obj_flipselector_items_get(const Eo *o
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_first_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_first_item_get(const Eo *obj);
 
 /**
  * @brief Get the last item in the given flip selector widget's list of items.
@@ -67,7 +67,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_first_item_get(const 
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_last_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_last_item_get(const Eo *obj);
 
 /**
  * @brief Get the currently selected item in a flip selector widget.
@@ -79,7 +79,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_last_item_get(const E
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_selected_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_selected_item_get(const Eo *obj);
 
 /**
  * @brief Set the interval on time updates for a user mouse button hold on a
@@ -105,7 +105,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_selected_item_get(con
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK void elm_obj_flipselector_first_interval_set(Eo *obj, double interval);
+ELM_API_WEAK void elm_obj_flipselector_first_interval_set(Eo *obj, double interval);
 
 /**
  * @brief Get the interval on time updates for an user mouse button hold on a
@@ -119,7 +119,7 @@ ELM_API ELM_API_WEAK void elm_obj_flipselector_first_interval_set(Eo *obj, doubl
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK double elm_obj_flipselector_first_interval_get(const Eo *obj);
+ELM_API_WEAK double elm_obj_flipselector_first_interval_get(const Eo *obj);
 
 /**
  * @brief Prepend a (text) item to a flip selector widget
@@ -144,7 +144,7 @@ ELM_API ELM_API_WEAK double elm_obj_flipselector_first_interval_get(const Eo *ob
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_item_prepend(Eo *obj, const char *label, Evas_Smart_Cb func, void *data);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_item_prepend(Eo *obj, const char *label, Evas_Smart_Cb func, void *data);
 
 /**
  * @brief Programmatically select the next item of a flip selector widget
@@ -155,7 +155,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_item_prepend(Eo *obj,
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK void elm_obj_flipselector_flip_next(Eo *obj);
+ELM_API_WEAK void elm_obj_flipselector_flip_next(Eo *obj);
 
 /**
  * @brief Append a (text) item to a flip selector widget
@@ -180,7 +180,7 @@ ELM_API ELM_API_WEAK void elm_obj_flipselector_flip_next(Eo *obj);
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_item_append(Eo *obj, const char *label, Evas_Smart_Cb func, const void *data);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_item_append(Eo *obj, const char *label, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Programmatically select the previous item of a flip selector widget
@@ -191,9 +191,9 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_flipselector_item_append(Eo *obj, 
  *
  * @ingroup Elm_Flipselector
  */
-ELM_API ELM_API_WEAK void elm_obj_flipselector_flip_prev(Eo *obj);
+ELM_API_WEAK void elm_obj_flipselector_flip_prev(Eo *obj);
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_UNDERFLOWED;
 
 /** Called when flipselector is underflowed
  *
@@ -201,7 +201,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_
  */
 #define ELM_FLIPSELECTOR_EVENT_UNDERFLOWED (&(_ELM_FLIPSELECTOR_EVENT_UNDERFLOWED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_FLIPSELECTOR_EVENT_OVERFLOWED;
 
 /** Called when flipselector is overflowed
  *

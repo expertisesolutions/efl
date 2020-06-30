@@ -19,6 +19,6 @@ typedef Eo Elm_Slider;
  */
 #define ELM_SLIDER_CLASS elm_slider_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_slider_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_slider_class_get(void);
 
 #endif

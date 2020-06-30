@@ -15,12 +15,12 @@
 # else
 #  define ELM_API
 # endif
-# define ELM_API_WEAK
+# define ELM_API_WEAK ELM_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define ELM_API __attribute__ ((visibility("default")))
-#   define ELM_API_WEAK __attribute__ ((weak))
+#   define ELM_API_WEAK ELM_API __attribute__ ((weak))
 #  else
 #   define ELM_API
 #   define ELM_API_WEAK

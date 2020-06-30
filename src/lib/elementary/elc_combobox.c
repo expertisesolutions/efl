@@ -14,8 +14,8 @@
 #include "elm_genlist_eo.h"
 #include "elm_hover_eo.h"
 
-ELM_API ELM_API_WEAK void elm_obj_combobox_hover_begin(Eo *obj);
-ELM_API ELM_API_WEAK void elm_obj_combobox_hover_end(Eo *obj);
+ELM_API_WEAK void elm_obj_combobox_hover_begin(Eo *obj);
+ELM_API_WEAK void elm_obj_combobox_hover_end(Eo *obj);
 
 static const Efl_Event_Description _ELM_COMBOBOX_EVENT_DISMISSED =
    EFL_EVENT_DESCRIPTION("dismissed");
@@ -593,9 +593,9 @@ _elm_combobox_efl_gfx_entity_size_set(Eo *obj, Elm_Combobox_Data *pd, Eina_Size2
 
 ELM_WIDGET_KEY_DOWN_DEFAULT_IMPLEMENT(elm_combobox, Elm_Combobox_Data)
 
-ELM_API ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_combobox_expanded_get, Eina_Bool, 0);
-ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_combobox_hover_begin);
-ELM_API ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_combobox_hover_end);
+ELM_API_WEAK EFL_FUNC_BODY_CONST(elm_obj_combobox_expanded_get, Eina_Bool, 0);
+ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_combobox_hover_begin);
+ELM_API_WEAK EFL_VOID_FUNC_BODY(elm_obj_combobox_hover_end);
 
 static Eina_Bool
 _elm_combobox_class_initializer(Efl_Class *klass)

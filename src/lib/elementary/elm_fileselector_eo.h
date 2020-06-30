@@ -19,7 +19,7 @@ typedef Eo Elm_Fileselector;
  */
 #define ELM_FILESELECTOR_CLASS elm_fileselector_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_fileselector_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_fileselector_class_get(void);
 
 /**
  * @brief Enable/disable the "ok" and "cancel" buttons on a given file selector
@@ -35,7 +35,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_fileselector_class_get(void);
  *
  * @ingroup Elm_Fileselector
  */
-ELM_API ELM_API_WEAK void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Eina_Bool visible);
+ELM_API_WEAK void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Eina_Bool visible);
 
 /**
  * @brief Get whether the "ok" and "cancel" buttons on a given file selector
@@ -49,9 +49,9 @@ ELM_API ELM_API_WEAK void elm_obj_fileselector_buttons_ok_cancel_set(Eo *obj, Ei
  *
  * @ingroup Elm_Fileselector
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_fileselector_buttons_ok_cancel_get(const Eo *obj);
+ELM_API_WEAK Eina_Bool elm_obj_fileselector_buttons_ok_cancel_get(const Eo *obj);
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DONE;
 
 /** Called when OK button was pressed
  * @return const char *
@@ -60,7 +60,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_
  */
 #define ELM_FILESELECTOR_EVENT_DONE (&(_ELM_FILESELECTOR_EVENT_DONE))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_ACTIVATED;
 
 /** Called when the filesector was activated
  *
@@ -68,7 +68,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_
  */
 #define ELM_FILESELECTOR_EVENT_ACTIVATED (&(_ELM_FILESELECTOR_EVENT_ACTIVATED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALID;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_SELECTED_INVALID;
 
 /** Called when fileselector was selected
  *
@@ -76,7 +76,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_
  */
 #define ELM_FILESELECTOR_EVENT_SELECTED_INVALID (&(_ELM_FILESELECTOR_EVENT_SELECTED_INVALID))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DIRECTORY_OPEN;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_FILESELECTOR_EVENT_DIRECTORY_OPEN;
 
 /** Called when a directory was opened
  *

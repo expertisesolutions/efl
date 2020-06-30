@@ -19,7 +19,7 @@ typedef Eo Elm_Box;
  */
 #define ELM_BOX_CLASS elm_box_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_box_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_box_class_get(void);
 
 /**
  * @brief Set the box to arrange its children homogeneously
@@ -34,7 +34,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_box_class_get(void);
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_homogeneous_set(Eo *obj, Eina_Bool homogeneous);
+ELM_API_WEAK void elm_obj_box_homogeneous_set(Eo *obj, Eina_Bool homogeneous);
 
 /**
  * @brief Get whether the box is using homogeneous mode or not ($true if it's
@@ -46,7 +46,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_homogeneous_set(Eo *obj, Eina_Bool homogen
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_box_homogeneous_get(const Eo *obj);
+ELM_API_WEAK Eina_Bool elm_obj_box_homogeneous_get(const Eo *obj);
 
 /**
  * @brief Set the alignment of the whole bounding box of contents.
@@ -61,7 +61,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_box_homogeneous_get(const Eo *obj);
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_align_set(Eo *obj, double horizontal, double vertical);
+ELM_API_WEAK void elm_obj_box_align_set(Eo *obj, double horizontal, double vertical);
 
 /**
  * @brief Get the alignment of the whole bounding box of contents.
@@ -74,7 +74,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_align_set(Eo *obj, double horizontal, doub
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_align_get(const Eo *obj, double *horizontal, double *vertical);
+ELM_API_WEAK void elm_obj_box_align_get(const Eo *obj, double *horizontal, double *vertical);
 
 /**
  * @brief Set the horizontal orientation
@@ -90,7 +90,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_align_get(const Eo *obj, double *horizonta
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_horizontal_set(Eo *obj, Eina_Bool horizontal);
+ELM_API_WEAK void elm_obj_box_horizontal_set(Eo *obj, Eina_Bool horizontal);
 
 /**
  * @brief Get the horizontal orientation ($true if the box is set to horizontal
@@ -102,7 +102,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_horizontal_set(Eo *obj, Eina_Bool horizont
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_box_horizontal_get(const Eo *obj);
+ELM_API_WEAK Eina_Bool elm_obj_box_horizontal_get(const Eo *obj);
 
 /**
  * @brief Set the space (padding) between the box's elements.
@@ -118,7 +118,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_box_horizontal_get(const Eo *obj);
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_padding_set(Eo *obj, int horizontal, int vertical);
+ELM_API_WEAK void elm_obj_box_padding_set(Eo *obj, int horizontal, int vertical);
 
 /**
  * @brief Get the space (padding) between the box's elements.
@@ -131,7 +131,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_padding_set(Eo *obj, int horizontal, int v
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_padding_get(const Eo *obj, int *horizontal, int *vertical);
+ELM_API_WEAK void elm_obj_box_padding_get(const Eo *obj, int *horizontal, int *vertical);
 
 /**
  * @brief Get a list of the objects packed into the box
@@ -147,7 +147,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_padding_get(const Eo *obj, int *horizontal
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK Eina_List *elm_obj_box_children_get(const Eo *obj) EINA_WARN_UNUSED_RESULT;
+ELM_API_WEAK Eina_List *elm_obj_box_children_get(const Eo *obj) EINA_WARN_UNUSED_RESULT;
 
 /**
  * @brief Add an object at the end of the pack list
@@ -166,7 +166,7 @@ ELM_API ELM_API_WEAK Eina_List *elm_obj_box_children_get(const Eo *obj) EINA_WAR
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_pack_end(Eo *obj, Efl_Canvas_Object *subobj);
+ELM_API_WEAK void elm_obj_box_pack_end(Eo *obj, Efl_Canvas_Object *subobj);
 
 /**
  * @brief Remove all items from the box, without deleting them
@@ -182,7 +182,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_pack_end(Eo *obj, Efl_Canvas_Object *subob
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_unpack_all(Eo *obj);
+ELM_API_WEAK void elm_obj_box_unpack_all(Eo *obj);
 
 /**
  * @brief Unpack a box item
@@ -197,7 +197,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_unpack_all(Eo *obj);
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_unpack(Eo *obj, Efl_Canvas_Object *subobj);
+ELM_API_WEAK void elm_obj_box_unpack(Eo *obj, Efl_Canvas_Object *subobj);
 
 /**
  * @brief Adds an object to the box after the indicated object
@@ -217,7 +217,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_unpack(Eo *obj, Efl_Canvas_Object *subobj)
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_pack_after(Eo *obj, Efl_Canvas_Object *subobj, Efl_Canvas_Object *after);
+ELM_API_WEAK void elm_obj_box_pack_after(Eo *obj, Efl_Canvas_Object *subobj, Efl_Canvas_Object *after);
 
 /**
  * @brief Add an object to the beginning of the pack list
@@ -236,7 +236,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_pack_after(Eo *obj, Efl_Canvas_Object *sub
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_pack_start(Eo *obj, Efl_Canvas_Object *subobj);
+ELM_API_WEAK void elm_obj_box_pack_start(Eo *obj, Efl_Canvas_Object *subobj);
 
 /**
  * @brief Force the box to recalculate its children packing.
@@ -249,7 +249,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_pack_start(Eo *obj, Efl_Canvas_Object *sub
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_recalculate(Eo *obj);
+ELM_API_WEAK void elm_obj_box_recalculate(Eo *obj);
 
 /**
  * @brief Adds an object to the box before the indicated object
@@ -269,7 +269,7 @@ ELM_API ELM_API_WEAK void elm_obj_box_recalculate(Eo *obj);
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_pack_before(Eo *obj, Efl_Canvas_Object *subobj, Efl_Canvas_Object *before);
+ELM_API_WEAK void elm_obj_box_pack_before(Eo *obj, Efl_Canvas_Object *subobj, Efl_Canvas_Object *before);
 
 /**
  * @brief Clear the box of all children
@@ -282,9 +282,9 @@ ELM_API ELM_API_WEAK void elm_obj_box_pack_before(Eo *obj, Efl_Canvas_Object *su
  *
  * @ingroup Elm_Box
  */
-ELM_API ELM_API_WEAK void elm_obj_box_clear(Eo *obj);
+ELM_API_WEAK void elm_obj_box_clear(Eo *obj);
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADDED;
 
 /** Called when child was added
  * @return Efl_Object *
@@ -293,7 +293,7 @@ ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_ADD
  */
 #define ELM_BOX_EVENT_CHILD_ADDED (&(_ELM_BOX_EVENT_CHILD_ADDED))
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_BOX_EVENT_CHILD_REMOVED;
 
 /** Called when child was removed
  * @return Efl_Object *

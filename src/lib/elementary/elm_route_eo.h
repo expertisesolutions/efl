@@ -19,7 +19,7 @@ typedef Eo Elm_Route;
  */
 #define ELM_ROUTE_CLASS elm_route_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_route_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_route_class_get(void);
 
 /**
  * @brief Set map widget for this route
@@ -29,7 +29,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_route_class_get(void);
  *
  * @ingroup Elm_Route
  */
-ELM_API ELM_API_WEAK void elm_obj_route_emap_set(Eo *obj, void *emap);
+ELM_API_WEAK void elm_obj_route_emap_set(Eo *obj, void *emap);
 
 /**
  * @brief Get the minimum and maximum values along the longitude.
@@ -42,7 +42,7 @@ ELM_API ELM_API_WEAK void elm_obj_route_emap_set(Eo *obj, void *emap);
  *
  * @ingroup Elm_Route
  */
-ELM_API ELM_API_WEAK void elm_obj_route_longitude_min_max_get(const Eo *obj, double *min, double *max);
+ELM_API_WEAK void elm_obj_route_longitude_min_max_get(const Eo *obj, double *min, double *max);
 
 /**
  * @brief Get the minimum and maximum values along the latitude.
@@ -55,6 +55,6 @@ ELM_API ELM_API_WEAK void elm_obj_route_longitude_min_max_get(const Eo *obj, dou
  *
  * @ingroup Elm_Route
  */
-ELM_API ELM_API_WEAK void elm_obj_route_latitude_min_max_get(const Eo *obj, double *min, double *max);
+ELM_API_WEAK void elm_obj_route_latitude_min_max_get(const Eo *obj, double *min, double *max);
 
 #endif

@@ -19,7 +19,7 @@ typedef Eo Elm_Diskselector;
  */
 #define ELM_DISKSELECTOR_CLASS elm_diskselector_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_diskselector_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_diskselector_class_get(void);
 
 /**
  * @brief Set the side labels max length.
@@ -45,7 +45,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_diskselector_class_get(void);
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK void elm_obj_diskselector_side_text_max_length_set(Eo *obj, int len);
+ELM_API_WEAK void elm_obj_diskselector_side_text_max_length_set(Eo *obj, int len);
 
 /**
  * @brief Get the side labels max length.
@@ -58,7 +58,7 @@ ELM_API ELM_API_WEAK void elm_obj_diskselector_side_text_max_length_set(Eo *obj,
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK int elm_obj_diskselector_side_text_max_length_get(const Eo *obj);
+ELM_API_WEAK int elm_obj_diskselector_side_text_max_length_get(const Eo *obj);
 
 /**
  * @brief Enable or disable round mode.
@@ -74,7 +74,7 @@ ELM_API ELM_API_WEAK int elm_obj_diskselector_side_text_max_length_get(const Eo 
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK void elm_obj_diskselector_round_enabled_set(Eo *obj, Eina_Bool enabled);
+ELM_API_WEAK void elm_obj_diskselector_round_enabled_set(Eo *obj, Eina_Bool enabled);
 
 /**
  * @brief Get a value whether round mode is enabled or not.
@@ -87,7 +87,7 @@ ELM_API ELM_API_WEAK void elm_obj_diskselector_round_enabled_set(Eo *obj, Eina_B
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK Eina_Bool elm_obj_diskselector_round_enabled_get(const Eo *obj);
+ELM_API_WEAK Eina_Bool elm_obj_diskselector_round_enabled_get(const Eo *obj);
 
 /**
  * @brief Set the number of items to be displayed.
@@ -103,7 +103,7 @@ ELM_API ELM_API_WEAK Eina_Bool elm_obj_diskselector_round_enabled_get(const Eo *
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK void elm_obj_diskselector_display_item_num_set(Eo *obj, int num);
+ELM_API_WEAK void elm_obj_diskselector_display_item_num_set(Eo *obj, int num);
 
 /**
  * @brief Get the number of items in the diskselector object.
@@ -114,7 +114,7 @@ ELM_API ELM_API_WEAK void elm_obj_diskselector_display_item_num_set(Eo *obj, int
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK int elm_obj_diskselector_display_item_num_get(const Eo *obj);
+ELM_API_WEAK int elm_obj_diskselector_display_item_num_get(const Eo *obj);
 
 /**
  * @brief Get the first item of the diskselector.
@@ -131,7 +131,7 @@ ELM_API ELM_API_WEAK int elm_obj_diskselector_display_item_num_get(const Eo *obj
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_first_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_first_item_get(const Eo *obj);
 
 /**
  * @brief Get a list of all the diskselector items.
@@ -145,7 +145,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_first_item_get(const 
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK const Eina_List *elm_obj_diskselector_items_get(const Eo *obj);
+ELM_API_WEAK const Eina_List *elm_obj_diskselector_items_get(const Eo *obj);
 
 /**
  * @brief Get the last item of the diskselector.
@@ -162,7 +162,7 @@ ELM_API ELM_API_WEAK const Eina_List *elm_obj_diskselector_items_get(const Eo *o
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_last_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_last_item_get(const Eo *obj);
 
 /**
  * @brief Get the selected item.
@@ -181,7 +181,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_last_item_get(const E
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_selected_item_get(const Eo *obj);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_selected_item_get(const Eo *obj);
 
 /**
  * @brief Appends a new item to the diskselector object.
@@ -217,7 +217,7 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_selected_item_get(con
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_item_append(Eo *obj, const char *label, Efl_Canvas_Object *icon, Evas_Smart_Cb func, const void *data);
+ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_item_append(Eo *obj, const char *label, Efl_Canvas_Object *icon, Evas_Smart_Cb func, const void *data);
 
 /**
  * @brief Remove all diskselector's items.
@@ -227,6 +227,6 @@ ELM_API ELM_API_WEAK Elm_Widget_Item *elm_obj_diskselector_item_append(Eo *obj, 
  *
  * @ingroup Elm_Diskselector
  */
-ELM_API ELM_API_WEAK void elm_obj_diskselector_clear(Eo *obj);
+ELM_API_WEAK void elm_obj_diskselector_clear(Eo *obj);
 
 #endif

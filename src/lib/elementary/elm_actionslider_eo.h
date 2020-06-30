@@ -38,7 +38,7 @@ typedef enum
  */
 #define ELM_ACTIONSLIDER_CLASS elm_actionslider_class_get()
 
-ELM_API ELM_API_WEAK const Efl_Class *elm_actionslider_class_get(void);
+ELM_API_WEAK const Efl_Class *elm_actionslider_class_get(void);
 
 /**
  * @brief Actionslider position indicator
@@ -48,7 +48,7 @@ ELM_API ELM_API_WEAK const Efl_Class *elm_actionslider_class_get(void);
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK void elm_obj_actionslider_indicator_pos_set(Eo *obj, Elm_Actionslider_Pos pos);
+ELM_API_WEAK void elm_obj_actionslider_indicator_pos_set(Eo *obj, Elm_Actionslider_Pos pos);
 
 /**
  * @brief Actionslider position indicator
@@ -59,7 +59,7 @@ ELM_API ELM_API_WEAK void elm_obj_actionslider_indicator_pos_set(Eo *obj, Elm_Ac
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_indicator_pos_get(const Eo *obj);
+ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_indicator_pos_get(const Eo *obj);
 
 /**
  * @brief Actionslider magnet position.
@@ -72,7 +72,7 @@ ELM_API ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_indicator_pos_get
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK void elm_obj_actionslider_magnet_pos_set(Eo *obj, Elm_Actionslider_Pos pos);
+ELM_API_WEAK void elm_obj_actionslider_magnet_pos_set(Eo *obj, Elm_Actionslider_Pos pos);
 
 /**
  * @brief Actionslider magnet position.
@@ -83,7 +83,7 @@ ELM_API ELM_API_WEAK void elm_obj_actionslider_magnet_pos_set(Eo *obj, Elm_Actio
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_magnet_pos_get(const Eo *obj);
+ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_magnet_pos_get(const Eo *obj);
 
 /**
  * @brief Actionslider enabled position.
@@ -98,7 +98,7 @@ ELM_API ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_magnet_pos_get(co
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK void elm_obj_actionslider_enabled_pos_set(Eo *obj, Elm_Actionslider_Pos pos);
+ELM_API_WEAK void elm_obj_actionslider_enabled_pos_set(Eo *obj, Elm_Actionslider_Pos pos);
 
 /**
  * @brief Actionslider enabled position.
@@ -109,7 +109,7 @@ ELM_API ELM_API_WEAK void elm_obj_actionslider_enabled_pos_set(Eo *obj, Elm_Acti
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_enabled_pos_get(const Eo *obj);
+ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_enabled_pos_get(const Eo *obj);
 
 /**
  * @brief Get actionslider selected label.
@@ -120,9 +120,9 @@ ELM_API ELM_API_WEAK Elm_Actionslider_Pos elm_obj_actionslider_enabled_pos_get(c
  *
  * @ingroup Elm_Actionslider
  */
-ELM_API ELM_API_WEAK const char *elm_obj_actionslider_selected_label_get(const Eo *obj);
+ELM_API_WEAK const char *elm_obj_actionslider_selected_label_get(const Eo *obj);
 
-ELM_API ELM_API_WEAK extern const Efl_Event_Description _ELM_ACTIONSLIDER_EVENT_POS_CHANGED;
+ELM_API_WEAK extern const Efl_Event_Description _ELM_ACTIONSLIDER_EVENT_POS_CHANGED;
 
 /** The position of the actionslider has changed
  * @return const char *
