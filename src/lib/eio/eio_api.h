@@ -15,12 +15,12 @@
 # else
 #  define EIO_API
 # endif
-# define EIO_API_WEAK
+# define EIO_API_WEAK EIO_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define EIO_API __attribute__ ((visibility("default")))
-#   define EIO_API_WEAK __attribute__ ((weak))
+#   define EIO_API_WEAK EIO_API __attribute__ ((weak))
 #  else
 #   define EIO_API
 #   define EIO_API_WEAK
