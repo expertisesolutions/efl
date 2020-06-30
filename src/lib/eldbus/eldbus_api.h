@@ -15,12 +15,12 @@
 # else
 #  define ELDBUS_API
 # endif
-# define ELDBUS_API_WEAK
+# define ELDBUS_API_WEAK ELDBUS_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define ELDBUS_API __attribute__ ((visibility("default")))
-#   define ELDBUS_API_WEAK __attribute__ ((weak))
+#   define ELDBUS_API_WEAK ELDBUS_API __attribute__ ((weak))
 #  else
 #   define ELDBUS_API
 #   define ELDBUS_API_WEAK
