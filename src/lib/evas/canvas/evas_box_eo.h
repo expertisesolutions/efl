@@ -19,7 +19,7 @@ typedef Eo Evas_Box;
  */
 #define EVAS_BOX_CLASS evas_box_class_get()
 
-EVAS_API EVAS_WEAK_API const Efl_Class *evas_box_class_get(void);
+EVAS_API EVAS_API_WEAK const Efl_Class *evas_box_class_get(void);
 
 /**
  * @brief Set the alignment of the whole bounding box of contents, for a given
@@ -797,7 +797,7 @@ EVAS_API EVAS_API_WEAK void evas_obj_box_layout_flow_horizontal(Eo *obj, Evas_Ob
  */
 EVAS_API EVAS_API_WEAK int evas_obj_box_count(Eo *obj);
 
-EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
+EVAS_API EVAS_API_WEAK extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED;
 
 /** Called when a child object was added to the box
  * @return Evas_Object_Box_Option *
@@ -806,7 +806,7 @@ EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_
  */
 #define EVAS_BOX_EVENT_CHILD_ADDED (&(_EVAS_BOX_EVENT_CHILD_ADDED))
 
-EVAS_API EVAS_WEAK_API extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED;
+EVAS_API EVAS_API_WEAK extern const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED;
 
 /** Called when a child object was removed from the box
  * @return Efl_Canvas_Object *
