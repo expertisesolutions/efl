@@ -15,12 +15,12 @@
 # else
 #  define ECORE_CON_API
 # endif
-# define ECORE_CON_API_WEAK
+# define ECORE_CON_API_WEAK ECORE_CON_API
 #else
 # ifdef __GNUC__
 #  if __GNUC__ >= 4
 #   define ECORE_CON_API __attribute__ ((visibility("default")))
-#   define ECORE_CON_API_WEAK __attribute__ ((weak))
+#   define ECORE_CON_API_WEAK ECORE_CON_API __attribute__ ((weak))
 #  else
 #   define ECORE_CON_API
 #   define ECORE_CON_API_WEAK
