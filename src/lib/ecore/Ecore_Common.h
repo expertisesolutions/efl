@@ -94,7 +94,7 @@ ECORE_API unsigned int ecore_shutdown_ex(void);
  *
  * @since 1.18 (as beta)
  */
-ECORE_API ECORE_API_WEAK void efl_build_version_set(int vmaj, int vmin, int vmic, int revision, const char *flavor, const char *build_id);
+ECORE_API_WEAK void efl_build_version_set(int vmaj, int vmin, int vmic, int revision, const char *flavor, const char *build_id);
 
 /**
  * @}

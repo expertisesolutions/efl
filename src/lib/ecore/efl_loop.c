@@ -638,9 +638,9 @@ _efl_loop_message_process(Eo *obj, Efl_Loop_Data *pd)
    return EINA_TRUE;
 }
 
-ECORE_API ECORE_API_WEAK EFL_FUNC_BODY(efl_loop_message_process, Eina_Bool, 0);
+ECORE_API_WEAK EFL_FUNC_BODY(efl_loop_message_process, Eina_Bool, 0);
 
-ECORE_API ECORE_API_WEAK void
+ECORE_API_WEAK void
 efl_build_version_set(int vmaj, int vmin, int vmic, int revision,
                       const char *flavor, const char *build_id)
 {
