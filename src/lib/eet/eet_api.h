@@ -1,5 +1,5 @@
-#ifndef _EFL_CORE_API_H
-#define _EFL_CORE_API_H
+#ifndef _EFL_EET_API_H
+#define _EFL_EET_API_H
 
 #ifdef EET_API
 #error EET_API should not be already defined
