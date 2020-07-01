@@ -3,8 +3,16 @@
 
 
 #include <evil_api.h>
-# include <sys/types.h>
+#include <sys/types.h>
 
+
+/**
+ * @def O_ACCMODE
+ * O_ACCMODE is an AND mask to extract file access modes.
+ */
+#ifdef _MSV_VER
+# define O_ACCMODE 3
+#endif
 
 /**
  * @def FD_CLOEXEC
@@ -80,7 +88,6 @@ struct flock
    pid_t     l_pid;    /**< lock owner */
 #endif
 };
-
 
 /**
  * @brief Provide control over file descriptors.
