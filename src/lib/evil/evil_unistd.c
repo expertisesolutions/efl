@@ -23,7 +23,7 @@ LONGLONG _evil_time_freq;
 LONGLONG _evil_time_count;
 long     _evil_time_second;
 
-long 
+long
 _evil_systemtime_to_time(SYSTEMTIME st);
 
 long
@@ -57,6 +57,26 @@ execvp(const char *file, char *const argv[])
    return _execvp(file, (const char *const *)argv);
 }
 
+EVIL_API int
+ftruncate(int fd, off_t size)
+{
+   HANDLE file = (HANDLE)_get_osfhandle(fd);
+
+   if (SetFilePointer(file, (LONG)size, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+     {
+       _set_errno(EINVAL);
+       return -1;
+     }
+
+   if (!SetEndOfFile(file))
+     {
+       _set_errno(EIO);
+       return -1;
+     }
+
+    return 0;
+}
+
 
 /*
  * Time related functions
@@ -72,7 +92,6 @@ evil_time_get(void)
 
    return (double)_evil_time_second + (double)(count.QuadPart - _evil_time_count)/ (double)_evil_time_freq;
 }
-
 
 /*
  * Sockets and pipe related functions
