@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef ECTOR_STATIC
+# ifndef EFL_STATIC
 #  ifdef ECTOR_BUILD
 #   define ECTOR_API __declspec(dllexport)
 #  else
