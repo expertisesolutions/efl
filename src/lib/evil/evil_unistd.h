@@ -29,9 +29,9 @@ EVIL_API int execvp(const char *file, char *const argv[]);
 #define X_OK    0       /* execute permission, originally '1', just a bypass here*/
 #define F_OK    0       /* Test for existence.  */
 
-#define STDIN_FILENO 0
-#define STDOUT_FILENO 1
-#define STDERR_FILENO 2
+#define STDIN_FILENO __fileno(stdin)
+#define STDOUT_FILENO __fileno(stdout)
+#define STDERR_FILENO __fileno(stderr)
 
 #else
 #include <unistd.h>
