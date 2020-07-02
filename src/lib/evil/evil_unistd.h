@@ -16,6 +16,7 @@
 
 #ifdef _WIN32
 
+#include <stdio.h>
 #include <io.h> // for read, write, access, close
 
 #define execvp _ucrt_execvp  // overriding execvp below
@@ -30,9 +31,9 @@ EVIL_API int ftruncate(int fd, off_t size);
 #define X_OK    0       /* execute permission, originally '1', just a bypass here*/
 #define F_OK    0       /* Test for existence.  */
 
-#define STDIN_FILENO __fileno(stdin)
-#define STDOUT_FILENO __fileno(stdout)
-#define STDERR_FILENO __fileno(stderr)
+#define STDIN_FILENO  _fileno(stdin)
+#define STDOUT_FILENO _fileno(stdout)
+#define STDERR_FILENO _fileno(stderr)
 
 #else
 #include <unistd.h>
