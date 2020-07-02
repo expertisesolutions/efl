@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef EEZE_STATIC
 #  ifdef EEZE_BUILD
 #   define EEZE_API __declspec(dllexport)
 #  else
