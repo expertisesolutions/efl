@@ -1,6 +1,6 @@
-EVAS_API EVAS_WEAK_API const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED =
+EVAS_API EVAS_API_WEAK const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_ADDED =
    EFL_EVENT_DESCRIPTION("child,added");
-EVAS_API EVAS_WEAK_API const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED =
+EVAS_API EVAS_API_WEAK const Efl_Event_Description _EVAS_BOX_EVENT_CHILD_REMOVED =
    EFL_EVENT_DESCRIPTION("child,removed");
 
 void _evas_box_align_set(Eo *obj, Evas_Object_Box_Data *pd, double horizontal, double vertical);

@@ -2035,13 +2035,13 @@ evas_objects_at_xy_get(Eo *eo_e, int x, int y, Eina_Bool include_pass_events_obj
 }
 /* Internal EO APIs */
 
-EVAS_API EVAS_WEAK_API const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE =
+EVAS_API EVAS_API_WEAK const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_PRE =
    EFL_EVENT_DESCRIPTION("render,flush,pre");
-EVAS_API EVAS_WEAK_API const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_POST =
+EVAS_API EVAS_API_WEAK const Efl_Event_Description _EVAS_CANVAS_EVENT_RENDER_FLUSH_POST =
    EFL_EVENT_DESCRIPTION("render,flush,post");
-EVAS_API EVAS_WEAK_API const Efl_Event_Description _EVAS_CANVAS_EVENT_AXIS_UPDATE =
+EVAS_API EVAS_API_WEAK const Efl_Event_Description _EVAS_CANVAS_EVENT_AXIS_UPDATE =
    EFL_EVENT_DESCRIPTION("axis,update");
-EVAS_API EVAS_WEAK_API const Efl_Event_Description _EVAS_CANVAS_EVENT_VIEWPORT_RESIZE =
+EVAS_API EVAS_API_WEAK const Efl_Event_Description _EVAS_CANVAS_EVENT_VIEWPORT_RESIZE =
    EFL_EVENT_DESCRIPTION("viewport,resize");
 
 #define CHECK_ADD(var, ev, member) \
