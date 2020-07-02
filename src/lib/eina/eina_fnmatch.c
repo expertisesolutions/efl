@@ -68,10 +68,10 @@ _wildcards_to_regex(const char *pattern, int flags)
         else count++;  // OTHERS
      }
 
-   int reg_length = pattern_length + count;
+   int reg_length = pattern_length + count + 1;
 
    // Translates wildcards to regex
-   char *reg_pattern = (char *)malloc(reg_length * sizeof(char));
+   char *reg_pattern = calloc(sizeof(char), reg_length);
    if (reg_pattern == NULL) exit(ENOMEM);
    reg_pattern[0] = '^';
    int i = 1;
@@ -103,14 +103,14 @@ _wildcards_to_regex(const char *pattern, int flags)
                             if ( (j == 0) || (pattern[j - 1] == '/') )
                               {
                                  strcpy_s(reg_pattern + i,
-                                          sizeof(reg_pattern + i),
+                                          reg_length - i,
                                           "[^\\.][^/]*");
                                  i += 10;
                               }
                             else
                               {
                                  strcpy_s(reg_pattern + i,
-                                         sizeof(reg_pattern + i),
+                                          reg_length - i,
                                          "[^/]*");
                                  i += 5;
                               }
@@ -118,21 +118,21 @@ _wildcards_to_regex(const char *pattern, int flags)
                        else if (j == 0)
                          {
                             strcpy_s(reg_pattern + i,
-                                     sizeof(reg_pattern + i),
+                                     reg_length - i,
                                      "[^\\.][^/]?");
                             i += 10;
                          }
                        else if (pattern[j - 1] == '/')
                          {
                             strcpy_s(reg_pattern + i,
-                                     sizeof(reg_pattern + i),
+                                     reg_length - i,
                                      "[^\\.][^/]?");
                             i += 10;
                          }
                        else
                          {
                             strcpy_s(reg_pattern + i,
-                                     sizeof(reg_pattern + i),
+                                     reg_length - i,
                                      "[^/]");
                             i += 4;
                          }
@@ -140,14 +140,14 @@ _wildcards_to_regex(const char *pattern, int flags)
                   else if (pattern[j] == '*')  // PATHNAME
                     {
                        strcpy_s(reg_pattern + i,
-                                sizeof(reg_pattern + i),
+                                reg_length - i,
                                 "[^/]*");
                        i += 5;
                     }
                   else
                     {
                        strcpy_s(reg_pattern + i,
-                                sizeof(reg_pattern + i),
+                                reg_length - i,
                                 "[^/]");
                        i += 4;
                     }
@@ -159,14 +159,14 @@ _wildcards_to_regex(const char *pattern, int flags)
                        if (pattern[j] == '*')
                          {
                             strcpy_s(reg_pattern + i,
-                                     sizeof(reg_pattern + i),
+                                     reg_length - i,
                                      "[\\.]*");
                             i += 5;
                          }
                        else
                          {
                             strcpy_s(reg_pattern + i,
-                                     sizeof(reg_pattern + i),
+                                     reg_length - i,
                                      "[\\.]");
                             i += 4;
                          }
@@ -174,7 +174,7 @@ _wildcards_to_regex(const char *pattern, int flags)
                   else if (pattern[j] == '*')  // period at other places
                     {
                        strcpy_s(reg_pattern + i,
-                                sizeof(reg_pattern + i),
+                                reg_length - i,
                                 ".*");
                        i += 2;
                     }
@@ -184,14 +184,14 @@ _wildcards_to_regex(const char *pattern, int flags)
              else if (pattern[j] == '*')  // NORMAL
                {
                   strcpy_s(reg_pattern + i,
-                           sizeof(reg_pattern + i),
+                           reg_length - i,
                            ".*");
                   i += 2;
                }
              else
                {
                   strcpy_s(reg_pattern + i,
-                           sizeof(reg_pattern + i),
+                           reg_length - i,
                            ".");
                   i++;
                }
@@ -199,15 +199,15 @@ _wildcards_to_regex(const char *pattern, int flags)
         else if (pattern[j] == '.')
           {
              strcpy_s(reg_pattern + i,
-                      sizeof(reg_pattern + i),
+                      reg_length - i,
                       "[\\.]");
              i += 4;
           }
         else reg_pattern[i++] = pattern[j];  // OTHERS
      }
    strcpy_s(reg_pattern + i,
-            sizeof(reg_pattern + i),
-            "$\0");
+            reg_length - i,
+            "$");
 
    return reg_pattern;
 }
@@ -232,7 +232,7 @@ eina_fnmatch(const char *pattern, const char *string, int flags)
 
    // Replaces '\\' with '/'
    int string_length = strlen(string);
-   char *unix_path = (char *)malloc(string_length * sizeof(char));
+   char *unix_path = calloc(sizeof(char), string_length + 1);
    if (unix_path == NULL) exit(ENOMEM);
    unix_path[string_length] = '\0';
    for (int i = 0; i < string_length; ++i)
