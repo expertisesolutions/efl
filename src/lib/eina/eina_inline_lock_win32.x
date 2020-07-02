@@ -446,7 +446,6 @@ static inline void
 _eina_tls_free(Eina_TLS key)
 {
    eina_lock_take(&_eina_tls_map_lock);
-   _eina_free_tls_value(&key, TlsGetValue(key));
    eina_hash_del_by_key(_eina_tls_map, &key);
    eina_lock_release(&_eina_tls_map_lock);
    TlsFree(key);
@@ -461,10 +460,8 @@ _eina_tls_get(Eina_TLS key)
 static inline Eina_Bool
 _eina_tls_set(Eina_TLS key, const void *data)
 {
-   void *p = TlsGetValue(key);
    const Eina_Bool ret = TlsSetValue(key, (void *) data) ? EINA_TRUE : EINA_FALSE;
    eina_lock_take(&_eina_tls_map_lock);
-   if (ret) _eina_free_tls_value(&key, p);
    eina_lock_release(&_eina_tls_map_lock);
    return ret;
 }
