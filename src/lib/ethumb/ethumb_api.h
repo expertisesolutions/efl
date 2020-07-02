@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef ETHUMB_STATIC
 #  ifdef ETHUMB_BUILD
 #   define ETHUMB_API __declspec(dllexport)
 #  else
