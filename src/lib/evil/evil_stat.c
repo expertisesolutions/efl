@@ -14,7 +14,7 @@ fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
 {
    int r_fstatat;
 
-   if (pathname[2] == '\\')
+   if (pathname[1] == ':' && pathname[2] == '\\' || pathname[2] == '/' )
      {  
         if (flags == AT_SYMLINK_NOFOLLOW)
           r_fstatat = stat(pathname, statbuf);
@@ -34,10 +34,6 @@ fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
            copied = GetModuleFileName(NULL, pathbuf, pathbuf_size);
         } while (copied >= pathbuf_size);
        
-        pathbuf_size = copied;
-        pathbuf = realloc(pathbuf, pathbuf_size * sizeof(char)); 
-        copied = GetModuleFileName(NULL, pathbuf, pathbuf_size);
-
         int size_str;
         for (size_str = strlen(pathbuf) -1; size_str >= 0; size_str --)
          {

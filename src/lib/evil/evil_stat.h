@@ -38,7 +38,6 @@ EVIL_API int fstatat(int fd, const char *restrict path, struct stat *restrict bu
 # define S_IROTH  0                           /* Read others */
 # define S_IWOTH  0                           /* Write others */
 # define S_IXOTH  0                           /* Execute others */
-#endif
 
 #define	S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
 #define	S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
@@ -47,5 +46,7 @@ EVIL_API int fstatat(int fd, const char *restrict path, struct stat *restrict bu
 #define	S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
 #define	S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
 #define	S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
+
+#endif
 
 #endif
