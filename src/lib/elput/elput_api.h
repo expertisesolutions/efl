@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef ELPUT_STATIC
 #  ifdef ELPUT_BUILD
 #   define ELPUT_API __declspec(dllexport)
 #  else
