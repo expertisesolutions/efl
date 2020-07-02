@@ -16,6 +16,10 @@
 
 #include <efreet_api.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @return @c 1 on success or @c 0 on failure.
  * @brief Initializes the efreet mime settings
