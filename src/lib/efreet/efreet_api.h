@@ -12,7 +12,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef EFREET_STATIC
 #  ifdef EFREET_BUILD
 #   define EFREET_API __declspec(dllexport)
 #  else
