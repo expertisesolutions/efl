@@ -10,7 +10,7 @@
  * @def O_ACCMODE
  * O_ACCMODE is an AND mask to extract file access modes.
  */
-#ifdef _MSV_VER
+#ifdef _MSC_VER
 # define O_ACCMODE 3
 #endif
 
