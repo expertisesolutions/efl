@@ -29,6 +29,11 @@ EVIL_API int ftruncate(int fd, off_t size);
 #define W_OK    2       /* Test for write permission.  */
 #define X_OK    0       /* execute permission, originally '1', just a bypass here*/
 #define F_OK    0       /* Test for existence.  */
+
+#define STDIN_FILENO __fileno(stdin)
+#define STDOUT_FILENO __fileno(stdout)
+#define STDERR_FILENO __fileno(stderr)
+
 #else
 #include <unistd.h>
 #endif // _WIN32
