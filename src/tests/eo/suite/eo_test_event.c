@@ -236,10 +236,10 @@ EO_API_WEAK const Efl_Event_Description _EFL_TEST_EVENT_EVENT_TESTER =
    EFL_EVENT_DESCRIPTION("tester");
 
 EO_API_WEAK const Efl_Event_Description _EFL_TEST_EVENT_EVENT_TESTER_SUBSCRIBE =
-   EFL_EVENT_DESCRIPTION("tester");
+   EFL_EVENT_DESCRIPTION("tester_subscribe");
 
 EO_API_WEAK const Efl_Event_Description _EFL_TEST_EVENT_EVENT_TESTER_CLAMP_TEST =
-   EFL_EVENT_DESCRIPTION("tester");
+   EFL_EVENT_DESCRIPTION("tester_clamp");
 
 
 static const Efl_Class_Description _efl_test_event_class_desc = {
