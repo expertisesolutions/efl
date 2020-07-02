@@ -93,6 +93,22 @@ evil_time_get(void)
    return (double)_evil_time_second + (double)(count.QuadPart - _evil_time_count)/ (double)_evil_time_freq;
 }
 
+#ifdef _MSC_VER
+EVIL_API void
+usleep(uint64_t usec) 
+{ 
+   HANDLE timer; 
+   LARGE_INTEGER ft; 
+
+   ft.QuadPart = -(10*usec); // Convert to 100 nanosecond interval, negative value indicates relative time
+
+   timer = CreateWaitableTimer(NULL, TRUE, NULL); 
+   SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0); 
+   WaitForSingleObject(timer, INFINITE); 
+   CloseHandle(timer); 
+}
+#endif
+
 /*
  * Sockets and pipe related functions
  *
