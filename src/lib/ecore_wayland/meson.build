@@ -28,7 +28,7 @@ ecore_wayland_lib = library('ecore_wayland',
     dependencies: [m] + ecore_wayland_deps + ecore_wayland_pub_deps,
     include_directories : config_dir + [include_directories(join_paths('..','..'))],
     install: true,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DECORE_WAYLAND_BUILD'],
 )
 
 ecore_wayland = declare_dependency(
