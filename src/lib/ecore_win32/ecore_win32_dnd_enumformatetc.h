@@ -1,12 +1,8 @@
 #ifndef __ECORE_WIN32_DND_ENUMFORMATETC_H__
 #define __ECORE_WIN32_DND_ENUMFORMATETC_H__
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
+#include <evil_private.h>
 #include <objbase.h>
-#undef WIN32_LEAN_AND_MEAN
 
 
 class CEnumFormatEtc : public IEnumFORMATETC

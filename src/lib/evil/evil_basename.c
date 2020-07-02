@@ -3,10 +3,10 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <evil_api.h>
+#include <evil_private.h>
 
 #include <stdlib.h>
 
-#include <evil_windows.h>
 
 EVIL_API char* basename (char* path)
 {

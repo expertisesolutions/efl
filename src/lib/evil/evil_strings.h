@@ -1,12 +1,7 @@
 #ifndef EVIL_STRINGS_H__
 #define EVIL_STRINGS_H__
 
-#include <evil_api.h>
-#include <evil_windows.h>
-
-#ifndef _WIN32
-# include <string.h>
-#endif
+#include <evil_private.h>
 
 #define strncasecmp _strnicmp
 #define strcasecmp _stricmp

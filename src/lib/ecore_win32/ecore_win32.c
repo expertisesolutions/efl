@@ -4,13 +4,9 @@
 
 #include <stdlib.h>
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
+#include <evil_private.h>
 #include <windowsx.h>
 #include <dbt.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include <Eina.h>
 #include <Ecore.h>

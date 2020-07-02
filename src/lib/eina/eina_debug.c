@@ -52,7 +52,7 @@
 
 #ifdef _WIN32
 # include <evil_private.h> /* fcntl */
-# include <winsock2.h> /* fcntl */
+# include <winsock2.h> 
 # include <ws2tcpip.h>
 #endif
 

@@ -4,11 +4,7 @@
 
 #include <evil_private.h> /* evil_last_error_get */
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
 #include <process.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "Ecore.h"
 #include "ecore_private.h"
