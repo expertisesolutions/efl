@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef EMBRYO_STATIC
 #  ifdef EMBRYO_BUILD
 #   define EMBRYO_API __declspec(dllexport)
 #  else
