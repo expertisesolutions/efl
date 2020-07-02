@@ -23,6 +23,6 @@ typedef Eo Edje_Edit;
  */
 #define EDJE_EDIT_CLASS edje_edit_class_get()
 
-EDJE_API EDJE_WEAK_API const Efl_Class *edje_edit_class_get(void);
+EDJE_API EDJE_API_WEAK const Efl_Class *edje_edit_class_get(void);
 
 #endif
