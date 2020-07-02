@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef EPHYSICS_STATIC
 #  ifdef EPHYSICS_BUILD
 #   define EPHYSICS_API __declspec(dllexport)
 #  else
