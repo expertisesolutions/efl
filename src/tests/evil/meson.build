@@ -11,7 +11,7 @@ evil_test_src = files(
 evil_test_exe = executable('evil_suite',
   include_directories : config_dir,
   sources : evil_test_src,
-  dependencies: [m, check_dep, eina, evil],
+  dependencies: [m, check, eina, evil],
   c_args : [
   '-DTESTS_WD="`pwd`"',
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
