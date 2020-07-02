@@ -217,7 +217,7 @@ endif
 # libraries
 
 # libcheck
-check_dep = dependency('check', fallback : ['check', 'check_dep'])
+check = dependency('check', fallback : ['check', 'check_dep'])
 
 if sys_windows
   # pcre
