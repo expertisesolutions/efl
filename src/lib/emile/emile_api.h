@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef EMILE_STATIC
 #  ifdef EMILE_BUILD
 #   define EMILE_API __declspec(dllexport)
 #  else
