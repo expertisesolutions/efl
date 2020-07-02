@@ -74,7 +74,6 @@ deprecated_efreet_trash_lib = library('efreet_trash',
     version : meson.project_version()
 )
 
-if sys_windows == false
 pkgconfig.generate(efreet_lib,
         name : 'efreet-mime',
         description : 'Deprecated, please just use efreet',
@@ -90,4 +89,3 @@ pkgconfig.generate(efreet_lib,
         version : version_major + '.' + version_minor + '.' + version_micro,
         libraries : efreet_pub_deps,
 )
-endif

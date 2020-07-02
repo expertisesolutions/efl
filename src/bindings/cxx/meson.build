@@ -119,7 +119,7 @@ foreach lib : cxx_sublibs
   install_headers(cxx_header_src,
     subdir: package_version_name,
   )
-if sys_windows == false
+
   pkgconfig.generate(
     name : '-'.join(package_name.split('_')) + '-cxx',
     description : lib[0]+' cxx bindings',
@@ -129,5 +129,4 @@ if sys_windows == false
     requires : growing_deps + [package_name],
   )
   growing_deps += package_name + '-cxx'
-endif
 endforeach
