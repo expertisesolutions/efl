@@ -6,7 +6,7 @@
 #endif
 
 #ifdef _WIN32
-# ifndef EFL_STATIC
+# ifndef ECORE_INPUT_STATIC
 #  ifdef ECORE_INPUT_BUILD
 #   define ECORE_INPUT_API __declspec(dllexport)
 #  else
