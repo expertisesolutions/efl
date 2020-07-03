@@ -5,6 +5,7 @@ ecore_wl2_ext_deps = [dependency('wayland-client'), dependency('wayland-server')
 
 ecore_wl2_header_src = [
   'Ecore_Wl2.h'
+  'ecore_wl2_api.h'
 ]
 
 ecore_wl2_src = files([
