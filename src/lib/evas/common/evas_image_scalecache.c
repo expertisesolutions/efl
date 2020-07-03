@@ -2,12 +2,8 @@
 # include "config.h"
 #endif
 
-#ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <windows.h>
-# undef WIN32_LEAN_AND_MEAN
+#ifdef _MSC_VER
+# include <evil_private.h>
 #endif
 
 #include <assert.h>
@@ -541,11 +537,7 @@ evas_common_rgba_image_scalecache_prepare(Image_Entry *ie, RGBA_Image *dst EINA_
         
         while (slpt < 500000)
           {
-#ifdef _WIN32
-             Sleep(slp / 1000);
-#else
              usleep(slp);
-#endif
              slpt += slp;
              slp++;
              ret = SLKT(im->cache.lock);

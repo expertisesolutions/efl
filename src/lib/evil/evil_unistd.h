@@ -62,8 +62,9 @@ EVIL_API int ftruncate(int fd, off_t size);
 EVIL_API double evil_time_get(void);
 
 #ifdef _MSC_VER
-# include <stdint.h>
-EVIL_API void usleep(uint64_t usec);
+typedef unsigned long useconds_t;
+
+EVIL_API void usleep(useconds_t usec);
 #endif
 
 /*
