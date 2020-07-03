@@ -5,6 +5,7 @@ ephysics_pub_deps = [eina, eo, efl]
 ephysics_ext_deps = [m, bullet]
 ephysics_header_src = [
   'EPhysics.h'
+  'ephysics_api.h'
 ]
 
 ephysics_src = files([
