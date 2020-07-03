@@ -2,7 +2,7 @@
 # include "config.h"
 #endif
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 # include <evil_private.h>
 #endif
 
