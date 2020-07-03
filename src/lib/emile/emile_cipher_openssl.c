@@ -16,6 +16,10 @@
 
 #include "emile_private.h"
 
+#ifdef _MSC_VER
+# include <evil_private.h> /* S_ISDIR */
+#endif
+
 #define MAX_KEY_LEN   EVP_MAX_KEY_LENGTH
 #define MAX_IV_LEN    EVP_MAX_IV_LENGTH
 
