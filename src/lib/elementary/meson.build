@@ -717,6 +717,7 @@ elementary_pub_headers = [
 
 elementary_header_src = [
   'Elementary.h',
+  'elementary_api.h',
   'Elementary_Cursor.h'
 ] + elementary_pub_headers + elementary_headers_unstable
 

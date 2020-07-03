@@ -4,6 +4,7 @@ efl_ext_deps = []
 
 efl_header_src = [
   'Efl.h',
+  'efl_api.h',
   'Efl_MVVM_Common.h'
 ]
 

@@ -4,6 +4,7 @@ ecore_x_ext_deps = [dl, m]
 
 ecore_x_header_src = [
   'Ecore_X.h',
+  'ecore_x_api.h',
   'Ecore_X_Atoms.h',
   'Ecore_X_Cursor.h'
 ]

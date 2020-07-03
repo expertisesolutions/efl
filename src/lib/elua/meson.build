@@ -9,7 +9,7 @@ if get_option('lua-interpreter') == 'lua'
 endif
 
 elua_src = ['elua.c', 'io.c', 'cache.c']
-elua_header_src = ['Elua.h']
+elua_header_src = ['Elua.h', 'elua_api.h']
 
 elua_lib_deps = []
 if not sys_windows

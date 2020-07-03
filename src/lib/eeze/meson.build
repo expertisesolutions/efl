@@ -5,6 +5,7 @@ pub_eo_file_target = []
 
 eeze_header_src = [
   'Eeze.h',
+  'eeze_api.h',
   'Eeze_Net.h',
   'Eeze_Sensor.h',
   'Eeze_Disk.h',

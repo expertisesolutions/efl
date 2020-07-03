@@ -100,6 +100,7 @@ eolian_include_directories += ['-I', meson.current_source_dir()]
 
 ecore_con_header_src = [
   'Ecore_Con.h',
+  'ecore_con_api.h',
   'Efl_Net.h',
   'Ecore_Con_Eet.h',
   'Ecore_Con_Eet_Legacy.h',

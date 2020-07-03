@@ -90,6 +90,7 @@ eolian_include_directories += ['-I', meson.current_source_dir()]
 
 ecore_header_src = [
   'Ecore.h',
+  'ecore_api.h',
   'Ecore_Common.h',
   'Ecore_Legacy.h',
   'Ecore_Eo.h',

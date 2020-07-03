@@ -2,7 +2,7 @@ ecore_avahi_deps = []
 ecore_avahi_pub_deps = [eina, ecore]
 
 ecore_avahi_src = ['ecore_avahi.c']
-ecore_avahi_header_src = ['Ecore_Avahi.h']
+ecore_avahi_header_src = ['Ecore_Avahi.h', 'ecore_avahi_api.h']
 
 ecore_avahi_deps += dependency('avahi-client')
 config_h.set('HAVE_AVAHI', '1')

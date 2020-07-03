@@ -3,7 +3,8 @@ embryo_pub_deps = [eina, eo, efl]
 embryo_ext_deps = [buildsystem_simple, m]
 
 embryo_header_src = [
-  'Embryo.h'
+  'Embryo.h',
+  'embryo_api.h',
 ]
 
 embryo_src = files([

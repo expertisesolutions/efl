@@ -3,7 +3,8 @@ eet_pub_deps = [eina, emile, efl]
 eet_ext_deps = [crypto, jpeg, m, rg_etc_simple]
 
 eet_header_src = [
-  'Eet.h'
+  'Eet.h',
+  'eet_api.h',
 ]
 
 eet_src = files([

@@ -50,6 +50,7 @@ eolian_include_directories += ['-I', meson.current_source_dir()]
 
 eldbus_header_src = [
   'Eldbus.h',
+  'eldbus_api.h',
   'eldbus_connection.h',
   'eldbus_freedesktop.h',
   'eldbus_message.h',

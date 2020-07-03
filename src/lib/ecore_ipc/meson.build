@@ -2,7 +2,8 @@ ecore_ipc_deps = [ecore, ecore_con]
 ecore_ipc_pub_deps = [eina]
 ecore_ipc_ext_deps = []
 ecore_ipc_header_src = [
-  'Ecore_Ipc.h'
+  'Ecore_Ipc.h',
+  'ecore_ipc_api.h',
 ]
 
 ecore_ipc_src = files([

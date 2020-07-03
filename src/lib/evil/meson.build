@@ -28,6 +28,7 @@ if target_machine.system() == 'windows'
 
   evil_header_src = [
     'evil_private.h',
+    'evil_api.h',
   ]
 
   psapi = cc.find_library('psapi')
