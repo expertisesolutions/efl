@@ -17,6 +17,8 @@
 # define S_IROTH  0                           /* Read others */
 # define S_IWOTH  0                           /* Write others */
 # define S_IXOTH  0                           /* Execute others */
+
+#define S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
 #endif
 
 #endif
