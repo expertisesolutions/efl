@@ -95,7 +95,7 @@ evil_time_get(void)
 
 #ifdef _MSC_VER
 EVIL_API void
-usleep(uint64_t usec) 
+usleep(useconds_t usec) 
 { 
    HANDLE timer; 
    LARGE_INTEGER ft; 
