@@ -21,7 +21,7 @@ elua_lib = library('elua',
     dependencies: elua_lib_deps + elua_deps + elua_pub_deps,
     include_directories : config_dir + [include_directories(join_paths('..','..'))],
     install: true,
-    c_args : package_c_args,
+    c_args : [package_c_args, '-DELUA_BUILD'],
     version : meson.project_version()
 )
 
