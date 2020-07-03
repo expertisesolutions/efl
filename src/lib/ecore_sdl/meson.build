@@ -8,6 +8,7 @@ ecore_sdl_src = files([
 
 ecore_sdl_header_src = [
   'Ecore_Sdl.h',
+  'ecore_sdl_api.h',
   'Ecore_Sdl_Keys.h'
 ]
 
