@@ -1484,7 +1484,7 @@ ecore_main_fd_handler_del(Ecore_Fd_Handler *fd_handler)
 }
 
 #ifdef _WIN32
-ECORE_API Ecore_Win32_Handler *
+Ecore_Win32_Handler *
 _ecore_main_win32_handler_add(Eo                    *obj,
                               Efl_Loop_Data         *pd,
                               Eo                    *handler,
@@ -1556,7 +1556,7 @@ ecore_main_win32_handler_del(Ecore_Win32_Handler *win32_handler)
    return ret;
 }
 #else
-ECORE_API Ecore_Win32_Handler *
+Ecore_Win32_Handler *
 _ecore_main_win32_handler_add(Eo                    *obj EINA_UNUSED,
                               Efl_Loop_Data         *pd EINA_UNUSED,
                               Eo                    *handler EINA_UNUSED,
