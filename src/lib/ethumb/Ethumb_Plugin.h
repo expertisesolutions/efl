@@ -5,7 +5,7 @@
 #include <Ecore_Evas.h>
 #include <Ethumb.h>
 
-#include <ethumb_api.h.h>
+#include <ethumb_api.h>
 
 typedef struct _Ethumb_Plugin Ethumb_Plugin;
 
