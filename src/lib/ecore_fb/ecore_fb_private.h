@@ -33,7 +33,7 @@
 
 #include "Ecore_Fb.h"
 
-#include <ecore_fb.h>
+#include <ecore_fb_api.h>
 
 /* ecore_fb_li.c */
 struct _Ecore_Fb_Input_Device
