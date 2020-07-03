@@ -206,7 +206,7 @@ evas_object_size_hint_combined_max_get(const Eo *obj, int *w, int *h)
 }
 
 /* Internal EO APIs */
-EAPI Eo *evas_find(const Eo *obj);
+EVAS_API Eo *evas_find(const Eo *obj);
 EVAS_API EVAS_API_WEAK void efl_canvas_object_legacy_ctor(Eo *obj);
 EVAS_API EVAS_API_WEAK void efl_canvas_object_type_set(Eo *obj, const char *type);
 EVAS_API EVAS_API_WEAK void efl_canvas_group_add(Eo *obj);
