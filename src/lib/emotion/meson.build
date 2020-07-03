@@ -24,6 +24,7 @@ eolian_include_directories += ['-I', meson.current_source_dir()]
 
 emotion_header_src = [
   'Emotion.h',
+  'emotion_api.h',
   'Emotion_Legacy.h',
   'Emotion_Eo.h',
   'efl_canvas_video_eo.legacy.h',

@@ -18,7 +18,7 @@ else
   ecore_file_src += files([ 'ecore_file_monitor_poll.c'])
 endif
 
-ecore_file_header_src = ['Ecore_File.h']
+ecore_file_header_src = ['Ecore_File.h', 'ecore_file_api.h']
 
 
 ecore_file_lib = library('ecore_file',

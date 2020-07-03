@@ -1,5 +1,6 @@
 efreet_header_src = [
   'Efreet.h',
+  'efreet_api.h',
   'efreet_base.h',
   'efreet_desktop.h',
   'efreet_icon.h',

@@ -4,6 +4,7 @@ elput_ext_deps = []
 
 elput_header_src = [
   'Elput.h'
+  'elput_api.h'
 ]
 
 elput_src = files([

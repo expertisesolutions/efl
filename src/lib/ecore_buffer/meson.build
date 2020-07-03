@@ -4,6 +4,7 @@ ecore_buffer_ext_deps = [dependency('wayland-client'), dependency('wayland-serve
 
 ecore_buffer_header_src = [
   'Ecore_Buffer.h',
+  'ecore_buffer_api.h',
   'Ecore_Buffer_Queue.h'
 ]
 

@@ -4,6 +4,7 @@ embryo_ext_deps = [buildsystem_simple, m]
 
 embryo_header_src = [
   'Embryo.h'
+  'embryo_api.h'
 ]
 
 embryo_src = files([

@@ -96,6 +96,7 @@ eolian_include_directories += ['-I', meson.current_source_dir()]
 
 edje_header_src = [
   'Edje.h',
+  'edje_api.h',
   'Efl_Layout.h',
   'Edje_Common.h',
   'Edje_Eo.h',
