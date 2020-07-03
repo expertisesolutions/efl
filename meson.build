@@ -514,7 +514,6 @@ if sys_windows
     'elementary',
     'elua',
     'embryo',
-    'emile',
     'emotion',
     'ephysics',
     'ethumb',
