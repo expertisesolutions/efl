@@ -18,7 +18,7 @@
 #include <linux/vt.h>
 #include <linux/fb.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,15)) && (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18))
- #define kernel_ulong_t unsigned long 
+ #define kernel_ulong_t unsigned long
  #define BITS_PER_LONG 32
  #include <linux/input.h>
  #undef kernel_ulong_t
@@ -33,19 +33,7 @@
 
 #include "Ecore_Fb.h"
 
-#ifdef EAPI
-# undef EAPI
-#endif
-
-#ifdef __GNUC__
-# if __GNUC__ >= 4
-#  define EAPI __attribute__ ((visibility("default")))
-# else
-#  define EAPI
-# endif
-#else
-# define EAPI
-#endif
+#include <ecore_fb.h>
 
 /* ecore_fb_li.c */
 struct _Ecore_Fb_Input_Device
@@ -53,7 +41,7 @@ struct _Ecore_Fb_Input_Device
    int fd;
    Ecore_Fd_Handler *handler;
    int listen;
-   struct 
+   struct
      {
         Ecore_Fb_Input_Device_Cap cap;
         char *name;
@@ -88,11 +76,11 @@ struct _Ecore_Fb_Input_Device
 };
 
 /* ecore_fb_ts.c */
-EAPI int    ecore_fb_ts_init(void);
-EAPI void   ecore_fb_ts_shutdown(void);
-EAPI void   ecore_fb_ts_events_window_set(void *window);
-EAPI void  *ecore_fb_ts_events_window_get(void);
-EAPI void   ecore_fb_ts_event_window_set(void *window);
+ECORE_FB_API int    ecore_fb_ts_init(void);
+ECORE_FB_API void   ecore_fb_ts_shutdown(void);
+ECORE_FB_API void   ecore_fb_ts_events_window_set(void *window);
+ECORE_FB_API void  *ecore_fb_ts_events_window_get(void);
+ECORE_FB_API void   ecore_fb_ts_event_window_set(void *window);
 
 /* ecore_fb_vt.c */
 int  ecore_fb_vt_init(void);
@@ -105,8 +93,5 @@ void ecore_fb_vt_shutdown(void);
 #ifndef TS_GET_CAL
 #define TS_GET_CAL 0x8014660a
 #endif
-  
-#undef EAPI
-#define EAPI
 
 #endif
