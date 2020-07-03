@@ -42,7 +42,7 @@ foreach eo_file : pub_eo_types_files
                            '-gchd', '@INPUT@'])
 endforeach
 
-eo_header = ['Eo.h']
+eo_header = ['Eo.h', 'eo_api.h']
 
 foreach eo_file : pub_eo_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file,

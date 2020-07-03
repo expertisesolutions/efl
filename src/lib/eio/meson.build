@@ -28,6 +28,7 @@ eolian_include_directories += ['-I', meson.current_source_dir()]
 
 eio_header_src = [
   'Eio.h',
+  'eio_api.h',
   'Eio_Legacy.h',
   'Eio_Eo.h',
   'eio_inline_helper.x'

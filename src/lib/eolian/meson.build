@@ -53,7 +53,8 @@ eolian_include_dir = join_paths(dir_data, 'eolian', 'include')
 
 eolian_header_src = [
 'Eolian.h',
-'Eolian_Aux.h'
+'Eolian_Aux.h',
+'eolian_api.h',
 ]
 
 install_headers(eolian_header_src,

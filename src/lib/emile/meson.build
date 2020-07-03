@@ -4,6 +4,7 @@ emile_ext_deps = [jpeg, crypto, zlib, lz4, rg_etc, m]
 
 emile_headers = [
   'Emile.h',
+  'emile_api.h',
   'emile_cipher.h',
   'emile_compress.h',
   'emile_image.h',

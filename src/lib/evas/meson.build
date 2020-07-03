@@ -137,6 +137,7 @@ evas_src += pub_eo_file_target
 
 evas_header_src = [
   'Evas.h',
+  'evas_api.h',
   'Evas_Common.h',
   'Evas_Eo.h',
   'Evas_GL.h',

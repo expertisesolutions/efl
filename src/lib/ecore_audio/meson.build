@@ -32,6 +32,7 @@ pub_eo_types_files = []
 
 ecore_audio_header_src = [
   'Ecore_Audio.h',
+  'ecore_audio_api.h',
   'ecore_audio_obj.h',
   'ecore_audio_obj_in.h',
   'ecore_audio_obj_out.h',
