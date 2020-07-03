@@ -20,6 +20,7 @@ ecore_wayland_src = [
 ]
 ecore_wayland_header_src = [
   'Ecore_Wayland.h'
+  'ecore_wayland_api.h'
 ]
 
 
