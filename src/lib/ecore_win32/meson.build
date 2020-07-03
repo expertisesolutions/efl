@@ -23,8 +23,8 @@ if sys_windows == true
   ])
 
   ecore_win32_header_src = [
-    'Ecore_Win32.h'
-    'ecore_win32_api.h'
+    'Ecore_Win32.h',
+    'ecore_win32_api.h',
   ]
 
   ecore_win32_lib = library('ecore_win32',

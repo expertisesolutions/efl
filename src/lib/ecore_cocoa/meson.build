@@ -9,7 +9,7 @@ ecore_cocoa_ext_deps = [cocoa_external_dep]
 pub_eo_file_target = []
 
 ecore_cocoa_header_src = [
-  'Ecore_Cocoa.h'
+  'Ecore_Cocoa.h',
   'ecore_cocoa_api.h',
 ]
 

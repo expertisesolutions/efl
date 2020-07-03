@@ -4,8 +4,8 @@ ecore_input_evas_ext_deps = []
 pub_eo_file_target = []
 
 ecore_input_evas_header_src = [
-   'Ecore_Input_Evas.h'
-   'ecore_input_evas_api.h'
+   'Ecore_Input_Evas.h',
+   'ecore_input_evas_api.h',
 ]
 
 ecore_input_evas_src = files([

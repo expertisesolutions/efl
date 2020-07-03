@@ -3,8 +3,8 @@ ecore_drm2_pub_deps = [ecore]
 ecore_drm2_ext_deps = [dl, libdrm]
 
 ecore_drm2_header_src = [
-  'Ecore_Drm2.h'
-  'ecore_drm2_api.h'
+  'Ecore_Drm2.h',
+  'ecore_drm2_api.h',
 ]
 
 ecore_drm2_src = files([

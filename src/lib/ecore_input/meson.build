@@ -3,8 +3,8 @@ ecore_input_pub_deps = [eina, eo]
 ecore_input_ext_deps = []
 
 ecore_input_header_src = [
-  'Ecore_Input.h'
-  'ecore_input_api.h'
+  'Ecore_Input.h,'
+  'ecore_input_api.h',
 ]
 
 ecore_input_src = files([

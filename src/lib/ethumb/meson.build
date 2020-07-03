@@ -1,6 +1,6 @@
 ethumb_header_src = [
-  'Ethumb.h'
-  'ethumb_api.h'
+  'Ethumb.h',
+  'ethumb_api.h',
 ]
 
 ethumb_src = files([

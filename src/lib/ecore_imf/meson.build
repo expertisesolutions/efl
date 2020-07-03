@@ -3,8 +3,8 @@ ecore_imf_pub_deps = [eina]
 ecore_imf_ext_deps = [buildsystem_simple]
 
 ecore_imf_header_src = [
-   'Ecore_IMF.h'
-   'ecore_imf_api.h'
+   'Ecore_IMF.h',
+   'ecore_imf_api.h',
 ]
 
 ecore_imf_src = files([

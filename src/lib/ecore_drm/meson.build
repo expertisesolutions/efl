@@ -16,8 +16,8 @@ ecore_drm_src = [
   'ecore_drm_private.h'
 ]
 ecore_drm_header_src = [
-  'Ecore_Drm.h'
-  'ecore_drm_api.h'
+  'Ecore_Drm.h',
+  'ecore_drm_api.h',
 ]
 
 
