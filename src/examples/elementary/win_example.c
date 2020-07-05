@@ -1,11 +1,11 @@
 /*
  * gcc -o win_example win_example.c `pkg-config --cflags --libs elementary ecore-x`
  */
+#include <Elementary.h>
+
 #ifdef HAVE_ELEMENTARY_X
 # include <Ecore_X.h>
 #endif
-
-#include <Elementary.h>
 
 static Evas_Object *win2;
 
