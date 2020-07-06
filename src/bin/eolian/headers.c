@@ -120,7 +120,10 @@ _gen_func(const Eolian_State *state, const Eolian_Function *fid,
         eina_strbuf_append_char(buf, '\n');
         eina_strbuf_free(dbuf);
      }
-   eina_strbuf_append_printf(buf, "%s %s_WEAK ", _eolian_api_symbol, _eolian_api_symbol);
+   if (_eolian_api_symbol)
+     {
+        eina_strbuf_append_printf(buf, "%s %s_WEAK ", _eolian_api_symbol, _eolian_api_symbol);
+     }
    if (rtp)
      {
         if (!rtps)
@@ -226,9 +229,11 @@ eo_gen_header_gen(const Eolian_State *state, const Eolian_Class *cl,
    Eina_Stringshare *gname = eolian_class_c_get_function_name_get(cl);
    eina_strbuf_append_printf(buf, "#define %s %s()\n\n", mname, gname);
    eina_stringshare_del(mname);
-
-   eina_strbuf_append_printf(buf, "%s %s_WEAK const Efl_Class *%s(void);\n",
-                             _eolian_api_symbol, _eolian_api_symbol, gname);
+   if (_eolian_api_symbol)
+     {
+        eina_strbuf_append_printf(buf, "%s %s_WEAK ", _eolian_api_symbol, _eolian_api_symbol);
+     }
+   eina_strbuf_append_printf(buf, "const Efl_Class *%s(void);\n", gname);
    eina_stringshare_del(gname);
 
    /* method section */
@@ -286,10 +291,11 @@ events:
         if (!eolian_event_is_beta(ev) && evs == EOLIAN_SCOPE_PUBLIC)
           eina_strbuf_append_char(buf, '\n');
 
-        eina_strbuf_append_printf(buf, "%s %s_WEAK extern const "
-                                  "Efl_Event_Description _%s;\n\n",
-                                  _eolian_api_symbol, _eolian_api_symbol, evn);
-
+        if (_eolian_api_symbol)
+          {
+             eina_strbuf_append_printf(buf, "%s %s_WEAK ", _eolian_api_symbol, _eolian_api_symbol);
+          }
+        eina_strbuf_append_printf(buf, "extern const Efl_Event_Description _%s;\n\n", evn);
         Eina_Strbuf *evdbuf = eo_gen_docs_event_gen(state, ev,
            eolian_class_c_name_get(cl));
         eina_strbuf_append(buf, eina_strbuf_string_get(evdbuf));
