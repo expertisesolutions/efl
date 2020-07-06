@@ -76,7 +76,6 @@ _eolian_gen_execute(const char *eo_filename, const char *type, const char *outpu
         printf("eolian gen command too long for buffer\n");
         abort();
      }
-   fprintf(stderr, "%s\n", command);
    return system(command);
 }
 
