@@ -19,8 +19,8 @@ ecore_wayland_src = [
   'session-recovery-protocol.c'
 ]
 ecore_wayland_header_src = [
-  'Ecore_Wayland.h'
-  'ecore_wayland_api.h'
+  'Ecore_Wayland.h',
+  'ecore_wayland_api.h',
 ]
 
 
