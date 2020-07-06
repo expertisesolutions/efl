@@ -8,10 +8,6 @@ if host_machine.system() == 'darwin'
   add_languages('objc')
 endif
 
-if host_machine.system() != 'windows'
-  pkgconfig = import('pkgconfig')
-endif
-
 test_env = environment()
 test_env.set('EFL_RUN_IN_TREE', '1')
 
@@ -63,6 +59,12 @@ sys_linux = linux.contains(host_machine.system())
 sys_bsd = bsd.contains(host_machine.system())
 sys_windows = windows.contains(host_machine.system())
 sys_osx = osx.contains(host_machine.system())
+
+if sys_windows and cc.get_id() in ['msvc', 'clang-cl']
+  pkgconfig = disabler()
+else
+  pkgconfig = import('pkgconfig')
+endif
 
 module_files = []
 evas_loader_map = []
@@ -862,21 +864,19 @@ if not sys_windows and get_option('dbus')
   subdir(join_paths('dbus-services'))
 endif
 
-if not sys_windows
-  #output the three new efl-* .pc files
-  efl_20_pc_files = [
-    ['efl-ui', ['elementary']],
-    ['efl-core', ['ecore', 'efl', 'emile']],
-    ['efl-net', ['ecore', 'ecore-con', 'emile']],
-  ]
+#output the three new efl-* .pc files
+efl_20_pc_files = [
+  ['efl-ui', ['elementary']],
+  ['efl-core', ['ecore', 'efl', 'emile']],
+  ['efl-net', ['ecore', 'ecore-con', 'emile']],
+]
 
-  foreach pc_file : efl_20_pc_files
-    name = pc_file[0]
-    libraries = pc_file[1]
-    pkgconfig.generate(
-      name : '-'.join(name.split('_')),
-      description: name+' configutation file',
-      requires : libraries,
-    )
-  endforeach
-endif
+foreach pc_file : efl_20_pc_files
+  name = pc_file[0]
+  libraries = pc_file[1]
+  pkgconfig.generate(
+    name : '-'.join(name.split('_')),
+    description: name+' configutation file',
+    requires : libraries,
+  )
+endforeach
