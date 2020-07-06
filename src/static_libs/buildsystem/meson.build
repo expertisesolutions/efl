@@ -4,18 +4,11 @@ buildsystem_src = [
   'buildsystem_meson.c',
 ]
 
-if not sys_windows
-  buildsystem_c_args = ['-DPACKAGE_SRC_DIR="'+ meson.source_root() +'"']
-else
-  buildsystem_c_args = ''
-endif
-
 buildsystem_lib = static_library('buildsystem',
     buildsystem_src,
     dependencies : [eina, efl],
     include_directories : config_dir + [include_directories(join_paths('..', '..', 'lib'))],
     install: false,
-    c_args : buildsystem_c_args,
 )
 
 buildsystem = declare_dependency(
