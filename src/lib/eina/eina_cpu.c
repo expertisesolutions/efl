@@ -35,6 +35,7 @@
 #  include <pthread.h>
 # elif defined (__linux__) || defined(__GLIBC__)
 #  include <sched.h>
+#  include <unistd.h>
 #  include <pthread.h>
 # endif
 
