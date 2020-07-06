@@ -21,6 +21,7 @@ if target_machine.system() == 'windows'
     'evil_unistd.c',
     'evil_util.c',
     'evil_private.h',
+    'evil_stat.c',
   ])
 
   evil_header_src = [
