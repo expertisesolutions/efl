@@ -89,5 +89,6 @@ jobs:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
     - name: Build
       run: .\build.bat
+  tests:
     - name: Tests
       run: .\test.bat
