@@ -219,6 +219,9 @@ endif
 # libcheck
 check = dependency('check', fallback : ['check', 'check_dep'])
 
+# freetype2
+freetype2 = dependency('freetype2', fallback : ['freetype2', 'freetype_dep'])
+
 if sys_windows
   # pcre
   pcre_project = subproject('pcre')
