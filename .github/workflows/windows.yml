@@ -90,5 +90,7 @@ jobs:
     - name: Build
       run: .\build.bat
   tests:
+    runs-on: windows-latest
+    steps:
     - name: Tests
       run: .\test.bat
