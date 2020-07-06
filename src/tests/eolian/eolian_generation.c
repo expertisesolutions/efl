@@ -237,12 +237,12 @@ EFL_END_TEST
 void eolian_generation_test(TCase *tc)
 {
    tcase_add_test(tc, eolian_types_generation);
-   // tcase_add_test(tc, eolian_default_values_generation);
-   // tcase_add_test(tc, eolian_override_generation);
-   // tcase_add_test(tc, eolian_dev_impl_code);
-   // tcase_add_test(tc, eolian_functions_descriptions);
-   // tcase_add_test(tc, eolian_import);
-   // tcase_add_test(tc, eolian_docs);
-   // tcase_add_test(tc, eolian_function_pointers);
-   // tcase_add_test(tc, owning);
+   tcase_add_test(tc, eolian_default_values_generation);
+   tcase_add_test(tc, eolian_override_generation);
+   tcase_add_test(tc, eolian_dev_impl_code);
+   tcase_add_test(tc, eolian_functions_descriptions);
+   tcase_add_test(tc, eolian_import);
+   tcase_add_test(tc, eolian_docs);
+   tcase_add_test(tc, eolian_function_pointers);
+   tcase_add_test(tc, owning);
 }
