@@ -835,6 +835,9 @@ emile_cipher_cafile_add(Emile_SSL *emile, const char *file)
    unsigned long err;
 
    if (stat(file, &st)) return EINA_FALSE;
+#ifndef S_ISDIR
+# define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
    if (S_ISDIR(st.st_mode))
      {
         if (!SSL_CTX_load_verify_locations(emile->ssl_ctx, NULL, file))
