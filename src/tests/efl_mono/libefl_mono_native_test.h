@@ -25,42 +25,8 @@
 #include <Ecore.h>
 #include <Eo.h>
 
-#ifdef EOAPI
-#undef EOAPI
-#endif
-
-#ifdef EWAPI
-#undef EWAPI
-#endif
-
-#ifdef EAPI
-#undef EAPI
-#endif
-
-#define EOAPI EAPI EAPI_WEAK
-#define EWAPI EAPI EAPI_WEAK
-
-#ifdef _WIN32
-# ifdef EFL_BUILD
-#  ifdef DLL_EXPORT
-#   define EAPI __declspec(dllexport)
-#  else
-#   define EAPI
-#  endif
-# else
-#  define EAPI __declspec(dllimport)
-# endif
-#else
-# ifdef __GNUC__
-#  if __GNUC__ >= 4
-#   define EAPI __attribute__ ((visibility("default")))
-#  else
-#   define EAPI
-#  endif
-# else
-#  define EAPI
-# endif
-#endif
+#define EFL_MONO_TEST_API
+#define EFL_MONO_TEST_API_WEAK
 
 #include "dummy_test_iface.eo.h"
 #include "dummy_inherit_iface.eo.h"
