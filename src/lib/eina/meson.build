@@ -206,11 +206,17 @@ if sys_windows
     'eina_win32_dllmain.c',
     'eina_thread_win32.c',
   )
+  public_sub_headers += files(
+    'eina_inline_lock_win32.x'
+  )
 else
   eina_src += files(
     'eina_file.c',
     'eina_sched.c',
     'eina_thread_posix.c',
+  )
+  public_sub_headers += files(
+    'eina_inline_lock_posix.x'
   )
 endif
 
