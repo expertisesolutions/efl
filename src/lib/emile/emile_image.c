@@ -10,8 +10,6 @@
 
 #include <stdio.h>
 #include <setjmp.h>
-#include <jpeglib.h>
-#include <jerror.h>
 
 #include "rg_etc1.h"
 #include "Emile.h"
@@ -20,6 +18,9 @@
 #ifdef BUILD_NEON
 #include <arm_neon.h>
 #endif
+
+#include <jpeglib.h>
+#include <jerror.h>
 
 #define IMG_MAX_SIZE 65000
 
