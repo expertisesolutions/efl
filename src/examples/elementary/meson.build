@@ -123,8 +123,15 @@ examples = [
   'efl_canvas_textblock_obstacles_example'
 ]
 
+examples_deps = [elementary, ecore, eio, m]
+
+if get_option('x11')
+  config_h.set('HAVE_ELEMENTARY_X', '1')
+  examples_deps += ecore_x
+endif
+
 foreach example : examples
-  executable(example, example + '.c', dependencies: [elementary, ecore, eio, m])
+  executable(example, example + '.c', dependencies: examples_deps)
 endforeach
 if get_option('bindings').contains('cxx')
   cxx_examples = [

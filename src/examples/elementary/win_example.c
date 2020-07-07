@@ -1,6 +1,11 @@
 /*
  * gcc -o win_example win_example.c `pkg-config --cflags --libs elementary ecore-x`
  */
+
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #ifdef HAVE_ELEMENTARY_X
 # include <Ecore_X.h>
 #endif
