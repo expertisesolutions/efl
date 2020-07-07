@@ -501,7 +501,7 @@ main(int argc, char **argv)
      NULL, NULL, NULL, NULL, NULL, NULL
    };
    char *basen = NULL;
-   _eolian_api_symbol = strdup("EAPI");
+   _eolian_api_symbol = NULL;
    Eina_List *includes = NULL;
 
    eina_init();
