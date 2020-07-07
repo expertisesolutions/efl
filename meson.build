@@ -513,7 +513,6 @@ if sys_windows
     'ecore_win32',
     'ecore_wl2',
     'ecore_x',
-    'ector',
     'edje',
     'eeze',
     'efl_canvas_wl',
