@@ -43,13 +43,11 @@ fstatat(int dirfd, const char *pathname, struct stat *statbuf, int flags)
                  break;
               }
          }
-
-        size_str = strlen(pathbuf) + strlen(pathname);
-
-        char *path_complete = malloc(sizeof(char) * size_str);
-
-        path_complete =  strcat(pathbuf, pathname);
       
+        size_str = strlen(pathbuf) + strlen(pathname);
+        char *path_complete = malloc(sizeof(char) * size_str + 1);
+        strcpy(path_complete, pathbuf);
+        strcat(path_complete, pathname);
 
         if (flags == AT_SYMLINK_NOFOLLOW)
           {
