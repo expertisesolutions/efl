@@ -91,6 +91,7 @@ efl_mono_lib = library('eflcustomexportsmono',
     install : true,
     include_directories : config_dir + [include_directories(join_paths('.'))],
     dependencies : [eo, eina, ecore],
+    c_args = ['-DEFL_MONO_BUILD'],
     version : meson.project_version()
 )
 
