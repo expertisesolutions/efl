@@ -25,7 +25,7 @@
 #endif
 #include <Efl_Ui.hh>
 
-EAPI int
+EAPI_MAIN int
 elm_main(int argc EINA_UNUSED, char* argv[] EINA_UNUSED)
 {
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_HIDDEN);
@@ -148,7 +148,7 @@ elm_main(int argc EINA_UNUSED, char* argv[] EINA_UNUSED)
    efl::eolian::event_add(efl::ui::Selectable::selected_event, item_5, _item_5_selected_cb);
 
 #endif
-   
+
    elm_run();
    return 0;
 }
