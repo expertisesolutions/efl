@@ -5,7 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <unistd.h>
+#else
+# include <evil_private.h>
+#endif
 #include <math.h>
 #ifdef HAVE_NETINET_IN_H
 # include <netinet/in.h>
