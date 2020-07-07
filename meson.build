@@ -25,14 +25,6 @@ version_name = 'v-'+version_major + '.' + version_minor
 cc = meson.get_compiler('c')
 host_os = host_machine.system()
 
-if host_os == 'windows'
-  nuget_download = meson.get_cross_property('nuget-download')
-  if cc.has_header_symbol('stdio.h', '_MSC_VER') and nuget_download
-    run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
-  endif
-endif
-
-
 if host_os == 'linux'
   if cc.has_header_symbol('features.h', '__UCLIBC__')
     host_os = 'linux-uclibc'
@@ -59,6 +51,31 @@ sys_linux = linux.contains(host_machine.system())
 sys_bsd = bsd.contains(host_machine.system())
 sys_windows = windows.contains(host_machine.system())
 sys_osx = osx.contains(host_machine.system())
+
+if sys_windows
+  nuget_download = get_option('nuget-download')
+  if not nuget_download
+    message('needs -Dnuget-download=true to download deps')
+  endif
+  if cc.has_header_symbol('stdio.h', '_MSC_VER') and nuget_download
+    run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
+
+    r = run_command('build/nuget.exe', 'restore', 'win32-deps/packages.config', '-PackagesDirectory', 'win32-deps')
+    output = r.stdout().strip()
+    if r.returncode() != 0
+      errortxt = r.stderr().strip()
+      error(errortxt)
+    endif
+
+    message(output)
+
+    subdir('win32-deps')
+  else
+    message('no nuget download because download failed or something')
+  endif
+else
+  message('not on windows')
+endif
 
 if sys_windows and cc.get_id() in ['msvc', 'clang-cl']
   pkgconfig = disabler()
@@ -339,10 +356,8 @@ elif (get_option('crypto') == 'gnutls')
   config_h.set('HAVE_GNUTLS', '1')
 elif (get_option('crypto') == 'openssl')
   if (get_option('openssl_dir') != '')
-    crypto = declare_dependency(
-      link_args: ['-L' + get_option('openssl_dir'), '-L' + get_option('openssl_dir') + '/lib', '-llibssl_static', '-llibcrypto_static'],
-      compile_args: ['-I' + get_option('openssl_dir') + '/include'],
-    )
+    crypto = declare_dependency(include_directories: get_option('openssl_dir') + '/include',
+      link_args: ['-L' + get_option('openssl_dir'), '-L' + get_option('openssl_dir') + '/lib', '-llibssl_static', '-llibcrypto_static'])
   else
     crypto = dependency('openssl')
   endif
@@ -415,19 +430,6 @@ if sys_osx == true and get_option('lua-interpreter') == 'luajit'
   )
 endif
 
-if sys_windows and nuget_download
-  r = run_command('build/nuget.exe', 'restore', 'win32-deps/packages.config', '-PackagesDirectory', 'win32-deps')
-  output = r.stdout().strip()
-  if r.returncode() != 0
-    errortxt = r.stderr().strip()
-    error(errortxt)
-  endif
-
-  message(output)
-
-  subdir('win32-deps')
-endif
-
 subprojects = [
 # name              |   option              | mod  | lib  | bin  | bench | tests | examples | true if build in efl-one | pkg-config options | name of static libs
 ['evil'             ,[]                    , false,  true, false, false,  true, false,  true, [], []],
@@ -436,7 +438,7 @@ subprojects = [
 ['eo'               ,[]                    , false,  true, false,  true,  true, false,  true, ['eina'], []],
 ['efl'              ,[]                    , false,  true, false, false, false, false,  true, ['eo'], []],
 ['emile'            ,[]                    , false,  true, false, false,  true,  true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
-['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], []],
+['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], ['rg_etc']],
 ['ecore'            ,[]                    , false,  true, false, false, false, false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
 ['eldbus'           ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
 ['ecore'            ,[]                    ,  true, false, false, false,  true,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
@@ -485,26 +487,27 @@ if sys_windows
     'eldbus',
     'elput',
     # temporarily ignored
-    'ecore',
+    #'ecore',
     'ecore_audio',
     'ecore_avahi',
     'ecore_buffer',
     'ecore_cocoa',
-    'ecore_con',
+    #'ecore_con',
     'ecore_drm',
     'ecore_drm2',
-    'ecore_evas',
+    #'ecore_evas',
     'ecore_fb',
-    'ecore_file',
-    'ecore_imf',
-    'ecore_imf_evas',
-    'ecore_input_evas',
+    #'ecore_file',
+    #'ecore_imf',
+    #'ecore_imf_evas',
+    #'ecore_input_evas',
     'ecore_ipc',
     'ecore_sdl',
     'ecore_wayland',
     'ecore_wl2',
     'ecore_x',
     'edje',
+    #'eet',
     'eeze',
     'efl_canvas_wl',
     'efreet',
@@ -517,7 +520,7 @@ if sys_windows
     'ephysics',
     'ethumb',
     'ethumb_client',
-    'evas',
+    #'evas',
     'exactness',
   ]
 else
