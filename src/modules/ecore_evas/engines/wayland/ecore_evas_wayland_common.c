@@ -5,6 +5,7 @@
 #include "ecore_evas_wayland_private.h"
 #include <Evas_Engine_Wayland.h>
 #include "ecore_wl2_internal.h"
+#include <ecore_evas_wayland_api.h>
 
 EMODAPI extern Eina_List *_evas_canvas_image_data_unset(Evas *eo_e);
 EMODAPI extern void _evas_canvas_image_data_regenerate(Eina_List *list);
