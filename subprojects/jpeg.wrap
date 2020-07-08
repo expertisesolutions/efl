@@ -1,0 +1,5 @@
+[wrap-git]
+directory = jpeg
+
+url = https://github.com/expertisesolutions/libjpeg
+revision = head
