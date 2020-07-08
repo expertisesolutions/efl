@@ -3,14 +3,13 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <libgen.h>
 
 #ifdef _WIN32
 # include <evil_private.h> /* setenv */
+#else
+# include <fcntl.h>
 #endif
 
 #include <Eina.h>
@@ -22,7 +21,7 @@
 #ifndef O_BINARY
 # define O_BINARY 0
 #endif
-
+#ifndef _WIN32
 #define MAXSIZE 256
 
 void
@@ -557,12 +556,15 @@ end:
    fail_if(ret != 0);
 }
 EFL_END_TEST
-
+#endif
 void ecore_test_ecore_file(TCase *tc)
 {
+#ifndef _WIN32
    tcase_add_test(tc, ecore_test_ecore_file_init);
    tcase_add_test(tc, ecore_test_ecore_file_operations);
    tcase_add_test(tc, ecore_test_ecore_file_monitor);
    tcase_add_test(tc, ecore_test_ecore_file_download);
    tcase_add_test(tc, ecore_test_ecore_file_path);
+#endif
 }
+
