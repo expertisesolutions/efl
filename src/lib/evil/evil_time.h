@@ -4,7 +4,8 @@
 #include <evil_api.h>
 
 #include <time.h>
-
+#include <evil_windows.h>
+#include <winsock2.h>
 
 /**
  * @file evil_time.h
@@ -36,6 +37,15 @@
  * Supported OS: Windows XP.
  */
 EVIL_API char *strptime(const char *buf, const char *fmt, struct tm *tm);
+
+#ifdef _MSC_VER
+struct timezone {
+    int tz_minuteswest;
+    int tz_dsttime;
+};
+
+EVIL_API int gettimeofday(struct timeval * tp, struct timezone * tzp);
+#endif
 
 
 /**
