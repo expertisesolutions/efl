@@ -6,6 +6,7 @@ if target_machine.system() == 'windows'
 
   evil_src += files([
     'evil_basename.c',
+    'evil_dirname.c',
     'evil_strings.c',
     'evil_vasprintf.h',
     'evil_dlfcn.c',
