@@ -14,5 +14,6 @@ vg_common_inc_dir = include_directories('.')
 
 vg_common = declare_dependency(
   include_directories: vg_common_inc_dir,
+  dependencies: eet,
   sources: vg_common_src,
 )
