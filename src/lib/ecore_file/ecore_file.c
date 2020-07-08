@@ -5,12 +5,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
-#include <libgen.h>
 
 #ifdef _WIN32
 # include <evil_private.h> /* mkdir realpath */
 # include <direct.h>
+#else
+# include <unistd.h>
+# include <libgen.h>
 #endif
 
 #ifdef HAVE_FEATURES_H

@@ -15,9 +15,13 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
+#ifdef _WIN32
+# include <evil_private.h> /* mmap, evil_init/shutdown */
+#else
+# include <unistd.h>
+# include <libgen.h>
+#endif
 #include <fcntl.h>
-#include <libgen.h>
 
 #include "Ecore.h"
 #include "ecore_private.h"

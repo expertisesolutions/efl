@@ -2,11 +2,12 @@
 #define _EFL_NET_H
 
 #include <time.h>
-#include <libgen.h>
 #ifdef _WIN32
 # include <ws2tcpip.h>
+# include <evil_private.h>
 #else
 # include <netdb.h>
+# include <libgen.h>
 #endif
 
 #define __EFL_NET_IS_REQUIRED

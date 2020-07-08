@@ -22,7 +22,6 @@
 #include <time.h>
 #include <ctype.h>
 #include <stdint.h>
-
 #ifndef _WIN32
 # include <unistd.h>
 #else
@@ -32,6 +31,9 @@
 #ifdef HAVE_PIXMAN
 #include <pixman.h>
 #endif
+
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <Eina.h>
 #include <Eo.h>
