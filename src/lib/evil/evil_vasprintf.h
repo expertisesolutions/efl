@@ -28,3 +28,13 @@ vasprintf(char **strp, const char *fmt, va_list ap)
 
    return ret;
 }
+
+inline int
+asprintf(char **strp, const char *fmt, ...)
+{
+   va_list args;
+   va_start(args, fmt);
+   int i = vasprintf(strp, fmt, args);
+   va_end(args);
+   return i;
+}
