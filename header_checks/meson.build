@@ -223,6 +223,11 @@ endif
 # libcheck
 check = dependency('check', fallback : ['check', 'check_dep'])
 
+if sys_windows
+  lua_project = subproject('lua')
+  lua = lua_project.get_variable('lua_dep')
+endif
+
 # freetype2
 freetype2 = dependency('freetype2', fallback : ['freetype2', 'freetype_dep'])
 
