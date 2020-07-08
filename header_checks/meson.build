@@ -263,14 +263,14 @@ config_h.set('VMIC', version_micro)
 config_h.set('VREV', '0')
 
 #jpeg detection ... life is a bit more complex there
-if not sys_windows
-jpeg = dependency('libjpeg', required: false)
+#if not sys_windows
+jpeg = dependency('libjpeg', fallback: ['jpeg', 'jpeg_dep'], required: false)
 if jpeg.found() == false
   if not sys_windows
     jpeg = cc.find_library('jpeg')
   endif
 endif
-endif
+#endif
 
 if sys_bsd == true
   config_h.set('HAVE_NOTIFY_KEVENT', '1')
