@@ -14,6 +14,7 @@
 
 #include "Ecore_Evas.h"
 #include "ecore_evas_private.h"
+#include "ecore_evas_api.h"
 
 ECORE_EVAS_API int ECORE_EVAS_EWS_EVENT_MANAGER_CHANGE = 0;
 ECORE_EVAS_API int ECORE_EVAS_EWS_EVENT_ADD = 0;

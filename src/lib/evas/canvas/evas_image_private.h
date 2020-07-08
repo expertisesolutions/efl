@@ -8,6 +8,8 @@
 #define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
 #define EFL_CANVAS_OBJECT_PROTECTED
 
+#include "evas_api.h"
+
 #include "evas_common_private.h"
 
 #include <sys/types.h>
