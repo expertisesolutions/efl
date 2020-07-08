@@ -1,3 +1,5 @@
+if not sys_windows
+
 executable('efl_debug',
   'efl_debug.c',
   dependencies: [eina, ecore],
@@ -8,3 +10,5 @@ executable('efl_debugd',
   dependencies: [eina, ecore, ecore_con],
   install: true,
 )
+
+endif
