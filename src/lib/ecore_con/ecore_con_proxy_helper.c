@@ -7,7 +7,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include <unistd.h>
+#ifdef _WIN32
+# include <evil_private.h> /* mmap, evil_init/shutdown */
+#else
+# include <unistd.h>
+#endif
 #include <fcntl.h>
 
 #include "Ecore.h"

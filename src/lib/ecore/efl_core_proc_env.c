@@ -17,6 +17,9 @@
 # include <dlfcn.h>
 static char ***_dl_environ;
 #else
+#ifdef _WIN32
+__declspec(dllimport)
+#endif
 extern char **environ;
 #endif
 

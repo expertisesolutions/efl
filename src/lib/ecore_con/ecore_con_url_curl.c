@@ -6,7 +6,11 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
+#ifdef _WIN32
+# include <evil_private.h> /* mmap, evil_init/shutdown */
+#else
+# include <unistd.h>
+#endif
 
 #ifdef _WIN32
 # include <ws2tcpip.h>

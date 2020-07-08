@@ -2,11 +2,12 @@
 #define _ECORE_CON_H
 
 #include <time.h>
-#include <libgen.h>
 #ifdef _WIN32
 # include <ws2tcpip.h>
+# include <evil_private.h>
 #else
 # include <netdb.h>
+# include <libgen.h>
 #endif
 #include <Eina.h>
 #include <Eo.h>

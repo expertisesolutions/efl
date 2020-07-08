@@ -35,6 +35,13 @@ EVIL_API int ftruncate(int fd, off_t size);
 #define STDOUT_FILENO _fileno(stdout)
 #define STDERR_FILENO _fileno(stderr)
 
+#ifndef S_ISDIR
+# define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
+#ifndef S_ISREG
+# define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#endif
+
 #else
 #include <unistd.h>
 #endif // _WIN32
