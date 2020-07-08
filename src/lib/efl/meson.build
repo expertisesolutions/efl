@@ -8,7 +8,7 @@ efl_header_src = [
   'Efl_MVVM_Common.h'
 ]
 
-efl_src = []
+efl_src = ['efl_gfx_error.c']
 
 subdir('interfaces')
 package_header_subdirs += 'interfaces'
