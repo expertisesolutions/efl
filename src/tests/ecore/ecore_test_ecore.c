@@ -119,13 +119,13 @@ EFL_START_TEST(ecore_test_ecore_main_loop_fd_handler)
      (comm[0], ECORE_FD_READ, _fd_handler_cb, &did, NULL, NULL);
    fail_if(fd_handler == NULL);
 
-   ret = write(comm[1], &did, 1);
+   ret = pipe_write(comm[1], &did, 1);
    fail_if(ret != 1);
 
    ecore_main_loop_begin();
 
-   close(comm[0]);
-   close(comm[1]);
+   pipe_close(comm[0]);
+   pipe_close(comm[1]);
 
    fail_if(did == EINA_FALSE);
 
@@ -148,8 +148,8 @@ EFL_START_TEST(ecore_test_ecore_main_loop_fd_handler_valid_flags)
    if (fd_handler)
 	   ecore_main_fd_handler_del(fd_handler);
 
-   close(comm[0]);
-   close(comm[1]);
+   pipe_close(comm[0]);
+   pipe_close(comm[1]);
 }
 EFL_END_TEST
 
@@ -169,13 +169,13 @@ EFL_START_TEST(ecore_test_ecore_main_loop_fd_handler_activate_modify)
 
    ecore_main_fd_handler_active_set(fd_handler, ECORE_FD_READ);
 
-   ret = write(comm[1], "e", 1);
+   ret = pipe_write(comm[1], "e", 1);
    fail_if(ret != 1);
 
    ecore_main_loop_begin();
 
-   close(comm[0]);
-   close(comm[1]);
+   pipe_close(comm[0]);
+   pipe_close(comm[1]);
 
    fail_if(did != EINA_TRUE);
 
