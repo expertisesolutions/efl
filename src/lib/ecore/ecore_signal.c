@@ -24,7 +24,7 @@ typedef struct _Pid_Info Pid_Info;
 
 struct _Pid_Info
 {
-   ecore_pid_t pid;
+   pid_t pid;
    int fd;
 };
 
@@ -371,7 +371,7 @@ _ecore_signal_pid_unlock(void)
 }
 
 void
-_ecore_signal_pid_register(ecore_pid_t pid, int fd)
+_ecore_signal_pid_register(pid_t pid, int fd)
 {
    Pid_Info *pi = calloc(1, sizeof(Pid_Info));
    if (!pi) return;
@@ -381,7 +381,7 @@ _ecore_signal_pid_register(ecore_pid_t pid, int fd)
 }
 
 void
-_ecore_signal_pid_unregister(ecore_pid_t pid, int fd)
+_ecore_signal_pid_unregister(pid_t pid, int fd)
 {
    Eina_List *l;
    Pid_Info *pi;
@@ -412,7 +412,7 @@ _ecore_signal_exe_exit_delay(void *data, const Efl_Event *event)
 static void
 _ecore_signal_waitpid(Eina_Bool once, siginfo_t info)
 {
-   ecore_pid_t pid;
+   pid_t pid;
    int status;
 
    while ((pid = waitpid(-1, &status, WNOHANG)) > 0)

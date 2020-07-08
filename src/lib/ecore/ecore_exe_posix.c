@@ -284,7 +284,7 @@ _impl_ecore_exe_efl_object_finalize(Eo *obj, Ecore_Exe_Data *exe)
    }
    if (ok)
    {
-      ecore_pid_t pid = 0;
+      pid_t pid = 0;
       volatile int vfork_exec_errno = 0;
 
       /* FIXME: I should double check this.  After a quick look around, this is already done, but via a more modern method. */
