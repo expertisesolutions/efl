@@ -3,11 +3,14 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
 #define EFL_NOLEGACY_API_SUPPORT
 #include <Efl_Core.h>
 #include "efl_app_suite.h"
 #include "../efl_check.h"
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 EFL_START_TEST(efl_app_test_efl_build_version)
 {
