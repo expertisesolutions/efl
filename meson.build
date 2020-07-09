@@ -356,8 +356,10 @@ elif (get_option('crypto') == 'gnutls')
   config_h.set('HAVE_GNUTLS', '1')
 elif (get_option('crypto') == 'openssl')
   if (get_option('openssl_dir') != '')
-    crypto = declare_dependency(include_directories: get_option('openssl_dir') + '/include',
-      link_args: ['-L' + get_option('openssl_dir'), '-L' + get_option('openssl_dir') + '/lib', '-llibssl_static', '-llibcrypto_static'])
+	crypto = declare_dependency(
+      link_args: ['-L' + get_option('openssl_dir'), '-L' + get_option('openssl_dir') + '/lib', '-llibssl_static', '-llibcrypto_static'],
+      compile_args: ['-I' + get_option('openssl_dir') + '/include'],
+    )
   else
     crypto = dependency('openssl')
   endif
