@@ -6,6 +6,10 @@ set CLICOLOR_FORCE=1
 
 set NINJAFLAGS=%*
 
+if [%ninjaflags%] == [] (
+    set ninjaflags=-C build
+)
+
 set vcvars64="C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat"
 set CLICOLOR_FORCE=1
 
@@ -15,7 +19,7 @@ if not defined DevEnvDir (
     @set DevEnvDir=%cd%
 )
 
-ninja %NINJAFLAGS% -C build test
+ninja %NINJAFLAGS% test
 
 set vcvars64=%__OLD_vcvars64%
 set __OLD_vcvars64=

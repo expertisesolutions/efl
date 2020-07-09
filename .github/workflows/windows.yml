@@ -7,9 +7,7 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Cache Nasm install
@@ -42,8 +40,8 @@ jobs:
       run: choco install nasm
     - name: Add Nasm to PATH
       run: echo "::add-path::C:\Program Files\Nasm"
-#    - name: test nasm
-#      run: nasm.exe -v
+    - name: Test nasm
+      run: nasm -v
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: choco install ninja
@@ -89,3 +87,36 @@ jobs:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
     - name: Build
       run: .\build.bat
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: build
+        path: build
+  tests:
+    name: Tests
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: install ninja
+      # unexplicably, installation returns error code 1 if a cache location is used
+      run: choco install ninja
+    - name: test ninja
+      run: ninja --version
+    - name: install meson
+      run: py -3 -m pip install meson
+    - name: add meson to path
+      run: |
+        $python_version = (py -3 --version).replace("Python ", "")
+        $meson_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
+        echo "::add-path::$meson_path"
+    - name: test meson
+      run: meson -v
+    - name: Download artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: build
+    - name: tree .
+      run: tree .
+    - name: ninja? or test?
+      run: meson test --no-rebuild -C build --verbose
