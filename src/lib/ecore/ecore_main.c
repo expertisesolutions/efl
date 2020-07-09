@@ -2792,12 +2792,6 @@ _ecore_main_win32_select(int             nfds EINA_UNUSED,
    if (!tv) timeout = INFINITE;
    else timeout = (DWORD)((tv->tv_sec * 1000.0) + (tv->tv_usec / 1000.0));
 
-   if (timeout == 0)
-     {
-        res = 0;
-        goto err;
-     }
-
    result = _ecore_main_win32_objects_wait(objects_nbr,
                                            (const HANDLE *)objects,
                                            timeout);
