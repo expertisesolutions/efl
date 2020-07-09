@@ -7,7 +7,7 @@
 
 #ifdef _WIN32
 # ifndef EFL_STATIC
-#  ifdef EFL_BUILD
+#  ifdef EFL_LIB_BUILD
 #   define EFL_API __declspec(dllexport)
 #  else
 #   define EFL_API __declspec(dllimport)
