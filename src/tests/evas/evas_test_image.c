@@ -10,7 +10,7 @@
 # include <unistd.h>
 #endif
 
-#ifndef _WIN32
+#ifdef _WIN32
 # include <evil_private.h>
 #endif
 
