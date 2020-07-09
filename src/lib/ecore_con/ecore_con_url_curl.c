@@ -6,9 +6,14 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
 
 #ifdef _WIN32
+# include <evil_private.h>
 # include <ws2tcpip.h>
 #endif
 
