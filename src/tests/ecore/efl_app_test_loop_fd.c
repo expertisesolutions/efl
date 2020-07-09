@@ -38,13 +38,13 @@ EFL_START_TEST(ecore_test_efl_loop_fd)
                efl_event_callback_add(efl_added, EFL_LOOP_FD_EVENT_READ, _eo_read_cb, &did));
    fail_if(fd == NULL);
 
-   ret = write(comm[1], &did, 1);
+   ret = pipe_write(comm[1], &did, 1);
    fail_if(ret != 1);
 
    efl_loop_begin(efl_main_loop_get());
 
-   close(comm[0]);
-   close(comm[1]);
+   pipe_close(comm[0]);
+   pipe_close(comm[1]);
 
    fail_if(did == EINA_FALSE);
 
@@ -76,13 +76,13 @@ EFL_START_TEST(ecore_test_efl_loop_fd_lifecycle)
                efl_event_callback_add(efl_added, EFL_EVENT_DEL, _efl_del_cb, &dead));
    fail_if(fd == NULL);
 
-   ret = write(comm[1], &did, 1);
+   ret = pipe_write(comm[1], &did, 1);
    fail_if(ret != 1);
 
    efl_loop_begin(efl_main_loop_get());
 
-   close(comm[0]);
-   close(comm[1]);
+   pipe_close(comm[0]);
+   pipe_close(comm[1]);
 
    fail_if(did == EINA_FALSE);
    fail_if(dead == EINA_TRUE);
