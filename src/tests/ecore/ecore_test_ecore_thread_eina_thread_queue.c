@@ -664,7 +664,7 @@ EFL_START_TEST(ecore_test_ecore_thread_eina_thread_queue_t7)
      {
         char buf;
 
-        if (read(p[0], &buf, 1) != 1)
+        if (pipe_read(p[0], &buf, 1) != 1)
           if (DEBUG) printf("Error reading from pipe\n");
         msg = eina_thread_queue_wait(thq1, &ref);
         if (msg)
@@ -678,8 +678,8 @@ EFL_START_TEST(ecore_test_ecore_thread_eina_thread_queue_t7)
    if (DEBUG) printf("msg fd ok\n");
    ecore_thread_wait(eth1, 0.1);
    eina_thread_queue_free(thq1);
-   close(p[0]);
-   close(p[1]);
+   pipe_close(p[0]);
+   pipe_close(p[1]);
 }
 EFL_END_TEST
 
