@@ -5,7 +5,14 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
+#ifndef _WIN32
+# include <evil_private.h>
+#endif
 
 #include <Evas.h>
 #include <Ecore_Evas.h>

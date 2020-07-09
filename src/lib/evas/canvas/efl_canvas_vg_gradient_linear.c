@@ -3,7 +3,13 @@
 
 #include "evas_vg_private.h"
 
-#include <strings.h>
+#ifndef _MSC_VER
+# include <strings.h>
+#endif
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 #define MY_CLASS EFL_CANVAS_VG_GRADIENT_LINEAR_CLASS
 
