@@ -3,7 +3,15 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
+
 #define EFL_NOLEGACY_API_SUPPORT
 #include <Efl_Core.h>
 #include "efl_app_suite.h"

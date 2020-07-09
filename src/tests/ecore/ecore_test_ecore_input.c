@@ -3,7 +3,10 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Ecore_Input.h>
 
