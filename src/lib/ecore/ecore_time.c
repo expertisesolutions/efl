@@ -55,14 +55,10 @@ ecore_time_get(void)
 ECORE_API double
 ecore_time_unix_get(void)
 {
-#ifdef HAVE_GETTIMEOFDAY
    struct timeval timev;
 
    gettimeofday(&timev, NULL);
    return (double)timev.tv_sec + (((double)timev.tv_usec) / 1000000);
-#else
-   return ecore_time_get();
-#endif
 }
 
 ECORE_API double
