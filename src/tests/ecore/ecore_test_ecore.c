@@ -3,7 +3,10 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER_
+# include <unistd.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h> /* pipe */
