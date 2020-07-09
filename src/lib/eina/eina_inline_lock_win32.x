@@ -544,7 +544,7 @@ static inline Eina_Bool
 _eina_semaphore_new(Eina_Semaphore *sem, int count_init)
 {
    if (count_init < 0) return EINA_FALSE;
-   *sem = CreateSemaphoreW(NULL, count_init, count_init, NULL);
+   *sem = CreateSemaphoreW(NULL, count_init, INT_MAX, NULL);
    return *sem ? EINA_TRUE : EINA_FALSE;
 }
 
