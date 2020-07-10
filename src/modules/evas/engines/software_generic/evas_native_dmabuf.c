@@ -3,7 +3,7 @@
 #include "evas_native_common.h"
 
 #ifdef _MSC_VER
-# include <evil_private>
+# include <evil_private.h>
 #elif defined HAVE_DLSYM
 # include <dlfcn.h>      /* dlopen,dlclose,etc */
 #elif _WIN32
