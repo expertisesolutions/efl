@@ -77,7 +77,7 @@ exit /B 0
             -Dv4l2=false^
             -Delua=false^
             -Dx11=false^
-            -Dphysics=false^
+            -Dphysics=true^
             -Deeze=false^
             -Dpulseaudio=false^
             -Dharfbuzz=false^
