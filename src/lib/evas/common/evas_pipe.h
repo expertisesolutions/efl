@@ -1,7 +1,15 @@
 #ifndef _EVAS_PIPE_H
 #define _EVAS_PIPE_H
 
-#include <sys/time.h>
+
+#ifndef _MSC_VER
+# include <sys/time.h>
+#endif
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
+
 #include "language/evas_bidi_utils.h"
 
 /* image rendering pipelines... new optional system - non-immediate and
