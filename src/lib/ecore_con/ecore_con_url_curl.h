@@ -8,7 +8,7 @@
  */
 #include <curl/curl.h>
 #else
-#ifdef __WIN32
+#ifdef _WIN32
 # include <winsock2.h>
 #else
 # include <sys/socket.h>
