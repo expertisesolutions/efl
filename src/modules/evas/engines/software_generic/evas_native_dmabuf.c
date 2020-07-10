@@ -2,7 +2,9 @@
 #include "evas_private.h"
 #include "evas_native_common.h"
 
-#if defined HAVE_DLSYM
+#ifdef _MSC_VER
+# include <evil_private>
+#elif defined HAVE_DLSYM
 # include <dlfcn.h>      /* dlopen,dlclose,etc */
 #elif _WIN32
 # include <evil_private.h> /* dlopen dlclose dlsym mmap */
