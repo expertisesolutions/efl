@@ -2,7 +2,11 @@
 #define _EFL_NET_H
 
 #include <time.h>
-#include <libgen.h>
+
+#ifndef _MSC_VER
+# include <libgen.h>
+#endif
+
 #ifdef _WIN32
 # include <ws2tcpip.h>
 #else
