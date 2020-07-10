@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <math.h>
 #ifdef HAVE_NETINET_IN_H
 # include <netinet/in.h>
@@ -16,12 +15,12 @@
 #include <string.h>
 #include <zlib.h>
 
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
 #ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <windows.h>
-# undef WIN32_LEAN_AND_MEAN
+# include <evil_private.h>
 #else
 # include <sys/mman.h>
 #endif

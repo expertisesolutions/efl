@@ -3,11 +3,14 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <libgen.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+# include <fcntl.h>
+# include <libgen.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h> /* setenv */
