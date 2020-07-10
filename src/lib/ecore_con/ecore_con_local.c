@@ -5,12 +5,15 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <libgen.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+# include <libgen.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h> /* mkdir */
@@ -21,7 +24,7 @@
 
 #ifdef HAVE_SYSTEMD
 # include <systemd/sd-daemon.h>
-#endif 
+#endif
 
 #include <Ecore.h>
 #include <ecore_private.h>
