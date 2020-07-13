@@ -44,7 +44,7 @@ jobs:
       run: nasm -v
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
-      run: choco install ninja
+      run: py -3 -m pip install ninja
     - name: test ninja
       run: ninja --version
     - name: install meson
@@ -100,7 +100,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
-      run: choco install ninja
+      run: py -3 -m pip install ninja
     - name: test ninja
       run: ninja --version
     - name: install meson
