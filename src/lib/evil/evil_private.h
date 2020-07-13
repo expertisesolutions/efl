@@ -21,6 +21,10 @@ extern "C" {
 #define EVIL_UNUSED
 #endif
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif /* HAVE_CONFIG_H */
+
 #include <evil_windows.h>
 
 #include <sys/stat.h> /* for mkdir in evil_macro_wrapper */
@@ -53,6 +57,7 @@ extern "C" {
 #include "evil_util.h"
 #include "evil_vasprintf.h"
 #include "evil_sys_types.h"
+#include "evil_sys_time.h"
 
 #define sigsetjmp(Env, Save) setjmp(Env)
 

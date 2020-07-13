@@ -3,6 +3,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include "evil_string.h"
+#include "evil_time.h"
 #include <inttypes.h>
 #include <ctype.h>
 #include <time.h>
