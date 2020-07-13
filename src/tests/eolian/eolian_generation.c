@@ -62,6 +62,18 @@ end:
    if (tmp_content) free(tmp_content);
    if (ref_content) free(ref_content);
 
+   if (!result) {
+      char command[PATH_MAX] = "";
+      snprintf(command, PATH_MAX, "diff %s %s", ref_filename, tmp_filename);
+      for (int i = 0; i < PATH_MAX; ++i) {
+         if (command[i] == '/') {
+            command[i] = '\\';
+         }
+      }
+      printf("%s\n", command);
+      system(command);
+   }
+
    return result;
 }
 
