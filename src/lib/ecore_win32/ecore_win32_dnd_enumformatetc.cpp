@@ -1,5 +1,9 @@
 
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
 #include <ole2.h>
+#undef WIN32_LEAN_AND_MEAN
 
 #include "ecore_win32_dnd_enumformatetc.h"
 
