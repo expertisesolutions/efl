@@ -381,19 +381,25 @@ luaold_interpreters = [
 
 lua_pc_name = ''
 
-if sys_windows or get_option('lua-interpreter') == 'lua'
+if get_option('lua-interpreter') == 'lua'
   if sys_windows and get_option('lua-interpreter') != 'lua'
     warning('There is no "' + get_option('lua-interpreter')
             + '" binding option for Windows, backing up to "lua"')
   endif
   config_h.set('ENABLE_LUA_OLD', '1')
-  #foreach l : luaold_interpreters
-  #  lua = dependency(l[0], version: l[1], required:false)
-  #  lua_pc_name = l[0]
-  #  if lua.found() == true
-  #    break
-  #  endif
-  #endforeach
+  foreach l : luaold_interpreters
+    lua = dependency(l[0], version: l[1], required:false)
+    lua_pc_name = l[0]
+    if lua.found() == true
+      break
+    endif
+  endforeach
+  if not lua.found()
+    lua = dependency('lua', fallback : ['lua', 'lua_dep'])
+    if not lua.found()
+      error('Lua not found')
+    endif
+  endif
 else
   lua = dependency(get_option('lua-interpreter'))
   lua_pc_name = 'luajit'
