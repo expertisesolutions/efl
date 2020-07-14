@@ -1,6 +1,5 @@
 #define EFL_INPUT_EVENT_PROTECTED
 
-#include "evas_api.h"
 #include "evas_common_private.h"
 #include "evas_private.h"
 //#include "evas_cs.h"
@@ -40,7 +39,7 @@ const char *efl_gfx_image_load_error_msgs[] = {
  "Reading operation has been cancelled during decoding" ,
  "(Edje only) The file pointed to is incompatible, i.e., it doesn't match the library's current version's format." ,
  "(Edje only) The group/collection set to load from was not found in the file" ,
- "(Edje only) The group/collection set to load from had recursive references on its components" 
+ "(Edje only) The group/collection set to load from had recursive references on its components"
 };
 
 static void
