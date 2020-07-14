@@ -11,7 +11,7 @@
 #include <fcntl.h>
 
 #ifndef _WIN32
-#include <unistd.h>
+# include <unistd.h>
 #else
 # include <evil_private.h>
 #endif

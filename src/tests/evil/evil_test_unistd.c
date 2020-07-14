@@ -25,9 +25,7 @@
 #include <io.h>
 #include <fcntl.h>
 
-# define WIN32_LEAN_AND_MEAN
-# include <winsock2.h>
-# undef WIN32_LEAN_AND_MEAN
+#include <winsock2.h>
 
 #include <evil_private.h>
 

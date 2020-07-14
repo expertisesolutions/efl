@@ -8,11 +8,7 @@
 
 #include <evil_private.h> /* evil_wchar_to_char */
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
 #include <process.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "ecore_file_private.h"
 

@@ -44,11 +44,7 @@
 
 #ifdef _WIN32
 # include <evil_private.h>
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
 # include <winsock2.h>
-# undef WIN32_LEAN_AND_MEAN
 #endif
 
 #include "eina_thread.h"

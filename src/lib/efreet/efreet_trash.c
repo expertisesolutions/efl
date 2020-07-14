@@ -8,13 +8,7 @@
 #include <errno.h>
 
 #ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <windows.h> /* GetCurrentProcessId */
-# undef WIN32_LEAN_AND_MEAN
-
-# define getuid() GetCurrentProcessId()
+# include <evil_private.h> /* GetCurrentProcessId */
 #endif
 
 #include <Ecore_File.h>
@@ -33,7 +27,6 @@ static const char *efreet_trash_dir = NULL;
 #ifdef _WIN32
 # define getuid() GetCurrentProcessId()
 #endif
-
 
 int
 efreet_internal_trash_init(void)

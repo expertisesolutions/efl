@@ -24,11 +24,7 @@
 #include <inttypes.h> /* PRId64 and PRIu64 */
 
 #ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <winsock.h> /* struct timeval */
-# undef WIN32_LEAN_AND_MEAN
+# include <winsock2.h> /* struct timeval */
 #else
 # include <sys/time.h> /* struct timeval */
 #endif
