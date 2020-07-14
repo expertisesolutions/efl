@@ -8,6 +8,8 @@ if "%~1"=="--verbose" (
     echo Verbose OFF.
 )
 
+set MESONFLAGS_EXTRA=%*
+
 call :main || (echo Build configure failed.)
 exit /B %errorlevel%
 
@@ -108,6 +110,9 @@ exit /B 0
     @echo Here %NL%we go
     @echo Meson flags: %MESONFLAGS:        =!NL!%
     @echo ------------------------------
+    @echo Extra flags: %MESONFLAGS_EXTRA%
+    @echo ------------------------------
+    @set MESONFLAGS=%MESONFLAGS:            = %
 exit /B 0
 
 :generate_build
@@ -118,8 +123,8 @@ exit /B 0
     if not defined DevEnvDir (
         call %vcvars64%
     )
-    meson build %MESONFLAGS:            = %
-exit /B %ERRORLEVEL%
+    meson build %MESONFLAGS% %MESONFLAGS_EXTRA%
+exit /B 0
 
 :save_old_vars
     @echo ------------------------------
