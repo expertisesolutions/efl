@@ -41,7 +41,7 @@ jobs:
     - name: Search clang-cl
       run: clang-cl -v
 
-    - name: install nasm
+    - name: Install nasm
       if: steps.cache-nasm.outputs.cache-hit != 'true'
       run: choco install nasm
 
@@ -51,26 +51,26 @@ jobs:
     - name: Test nasm
       run: nasm -v
 
-    - name: add python scripts to path
+    - name: Add python scripts to path
       run: |
         $python_version = (py -3 --version).replace("Python ", "")
         $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
         echo "::add-path::$python_scripts_path"
 
-    - name: cache meson and ninja
+    - name: Cache meson and ninja
       uses: actions/cache@v1
       with:
         path: ~\AppData\Local\pip\Cache
         key: pip-cache
         restore-keys: pip-cache
 
-    - name: install meson and ninja
+    - name: Install meson and ninja
       run: py -3 -m pip install meson ninja
 
-    - name: test meson
+    - name: Test meson
       run: meson --version
 
-    - name: test ninja
+    - name: Test ninja
       run: ninja --version
 
     - name: Cache OpenSSL compilation
@@ -104,7 +104,7 @@ jobs:
       run: nmake
       working-directory: .\openssl
 
-    - name: configure
+    - name: Configure
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
@@ -112,48 +112,47 @@ jobs:
     - name: Build
       run: .\build.bat
 
-    - name: Upload artifact
+    - name: Upload build directory
       uses: actions/upload-artifact@v1.0.0
       with:
         name: build
         path: build
 
   tests:
-    name: Tests
     runs-on: windows-latest
     needs: build
     steps:
-    - name: set git line ending config
+    - name: Set git line ending config
       run: git config --global core.autocrlf input
 
     - uses: actions/checkout@v2
 
-    - name: add python scripts to path
+    - name: Add python scripts to path
       run: |
         $python_version = (py -3 --version).replace("Python ", "")
         $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
         echo "::add-path::$python_scripts_path"
 
-    - name: cache meson and ninja
+    - name: Cache meson and ninja
       uses: actions/cache@v1
       with:
         path: ~\AppData\Local\pip\Cache
         key: pip-cache
         restore-keys: pip-cache
 
-    - name: install meson and ninja
+    - name: Install meson and ninja
       run: py -3 -m pip install meson ninja
 
-    - name: test meson and ninja
+    - name: Test meson and ninja
       run: meson --version && ninja --version
 
-    - name: Download artifact
+    - name: Download build directory
       uses: actions/download-artifact@v1.0.0
       with:
         name: build
 
-    - name: tree .
+    - name: Print build directory tree
       run: tree .
 
-    - name: ninja? or test?
+    - name: Run tests
       run: meson test --no-rebuild -C build --verbose
