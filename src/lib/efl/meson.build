@@ -5,11 +5,10 @@ efl_ext_deps = []
 efl_header_src = [
   'Efl.h',
   'efl_api.h',
-  'Efl_MVVM_Common.h',
-  'efl_gfx_error.h',
+  'Efl_MVVM_Common.h'
 ]
 
-efl_src = []
+efl_src = files('efl_gfx_error.c')
 
 subdir('interfaces')
 package_header_subdirs += 'interfaces'
