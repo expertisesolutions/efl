@@ -12,7 +12,8 @@ subdir('common')
 inc_dir = config_dir
 common_deps = generic_deps
 if sys_windows
-  inc_dir = [inc_dir, zlib_include_dir]
+  inc_dir = [inc_dir]
+  common_deps = [evil, zlib]
 else
   common_deps = [generic_deps, rt]
 endif
