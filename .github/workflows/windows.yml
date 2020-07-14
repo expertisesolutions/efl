@@ -39,7 +39,9 @@ jobs:
         run: echo "::add-path::C:\Program Files\LLVM\bin"
 
       - name: Search clang-cl
-        run: clang-cl -v
+        run: |
+          where clang-cl
+          clang-cl -v
 
       - name: Install nasm
         if: steps.cache-nasm.outputs.cache-hit != 'true'
@@ -90,9 +92,6 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-
-      - name: Show from where clang-cl
-        run: where clang-cl
 
       - name: Configure OpenSSL
         if: steps.cache-openssl.outputs.cache-hit != 'true'
