@@ -47,14 +47,16 @@ jobs:
         $python_version = (py -3 --version).replace("Python ", "")
         $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
         echo "::add-path::$python_scripts_path"
-    - name: install ninja
-      run: py -3 -m pip install ninja
-    - name: test ninja
-      run: ninja --version
-    - name: install meson
-      run: py -3 -m pip install meson
-    - name: test meson
-      run: meson -v
+    - name: cache meson and ninja
+      uses: actions/cache@v1
+      with:
+        path: ~\AppData\Local\pip\Cache
+        key: pip-cache
+        restore-keys: pip-cache
+    - name: install meson and ninja
+      run: py -3 -m pip install meson ninja
+    - name: test meson and ninja
+      run: meson --version && ninja --version
     - name: Cache OpenSSL compilation
       id: cache-openssl
       uses: actions/cache@v1
@@ -104,15 +106,16 @@ jobs:
         $python_version = (py -3 --version).replace("Python ", "")
         $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
         echo "::add-path::$python_scripts_path"
-    - name: install ninja
-      # unexplicably, installation returns error code 1 if a cache location is used
-      run: py -3 -m pip install ninja
-    - name: test ninja
-      run: ninja --version
-    - name: install meson
-      run: py -3 -m pip install meson
-    - name: test meson
-      run: meson -v
+    - name: cache meson and ninja
+      uses: actions/cache@v1
+      with:
+        path: ~\AppData\Local\pip\Cache
+        key: pip-cache
+        restore-keys: pip-cache
+    - name: install meson and ninja
+      run: py -3 -m pip install meson ninja
+    - name: test meson and ninja
+      run: meson --version && ninja --version
     - name: Download artifact
       uses: actions/download-artifact@v1.0.0
       with:
