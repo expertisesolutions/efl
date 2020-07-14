@@ -8,6 +8,7 @@ extern "C" {
 #include <Eo.h>
 
 #include <efl_api.h>
+#include <efl_gfx_error.h>
 
 #define EFL_VERSION_1_18 1
 #define EFL_VERSION_1_19 1
