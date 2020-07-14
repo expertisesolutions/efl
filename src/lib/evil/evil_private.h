@@ -37,7 +37,6 @@ extern "C" {
 #endif
 
 #include "evil_basename.h"
-#include "evil_dirname.h"
 #include "evil_dlfcn.h"
 #include "evil_fcntl.h"
 #include "evil_langinfo.h"

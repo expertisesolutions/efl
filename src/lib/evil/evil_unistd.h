@@ -21,7 +21,7 @@
 
 #define execvp _ucrt_execvp  // overriding execvp below
 #include <process.h> // for _execvp (but not execvp), getpid
-#undef execvp
+#undef execvp 
 EVIL_API int execvp(const char *file, char *const argv[]);
 EVIL_API int ftruncate(int fd, off_t size);
 
