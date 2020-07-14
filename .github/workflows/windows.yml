@@ -55,8 +55,10 @@ jobs:
         restore-keys: pip-cache
     - name: install meson and ninja
       run: py -3 -m pip install meson ninja
-    - name: test meson and ninja
-      run: meson --version && ninja --version
+    - name: test meson
+      run: meson --version
+    - name: test ninja
+      run: ninja --version
     - name: Cache OpenSSL compilation
       id: cache-openssl
       uses: actions/cache@v1
