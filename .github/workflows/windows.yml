@@ -97,6 +97,8 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
+    - name: set git line ending config
+      run: git config --global core.autocrlf input
     - uses: actions/checkout@v2
     - name: install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
