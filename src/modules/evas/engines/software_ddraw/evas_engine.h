@@ -1,11 +1,9 @@
 #ifndef __EVAS_ENGINE_H__
 #define __EVAS_ENGINE_H__
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
+#ifdef _WIN32
+# include <evil_private.h>
 #endif
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include <ddraw.h>
 

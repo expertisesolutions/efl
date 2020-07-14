@@ -4,13 +4,10 @@
 
 #include <stdlib.h>
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
 #include <windowsx.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include <evil_private.h> /* evil_utf16_to_utf8() */
+
 #include <Eina.h>
 #include <Ecore.h>
 #include <Ecore_Input.h>

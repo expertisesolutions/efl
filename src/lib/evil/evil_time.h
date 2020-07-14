@@ -3,8 +3,10 @@
 
 #include <evil_api.h>
 
+#include <stdint.h>
 #include <time.h>
 
+#include <winsock2.h> // struct timeval
 
 /**
  * @file evil_time.h

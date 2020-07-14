@@ -1,12 +1,8 @@
 #ifndef __ECORE_WIN32_DND_DROP_TARGET_H__
 #define __ECORE_WIN32_DND_DROP_TARGET_H__
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
+#include <evil_private.h>
 #include <ole2.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "Ecore_Win32.h"
 

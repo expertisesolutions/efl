@@ -19,13 +19,8 @@
 #ifndef EINA_INLINE_LOCK_WIN32_X_
 #define EINA_INLINE_LOCK_WIN32_X_
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-
-#include <windows.h>
+#include <evil_private.h>
 #include <synchapi.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include <errno.h>
 

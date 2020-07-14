@@ -2,12 +2,8 @@
 # include <config.h>
 #endif
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
+#include <evil_private.h>
 #include <ole2.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "Ecore_Win32.h"
 #include "ecore_win32_private.h"

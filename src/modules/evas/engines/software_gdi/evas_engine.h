@@ -1,11 +1,9 @@
 #ifndef EVAS_ENGINE_H
 #define EVAS_ENGINE_H
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
+#ifdef _WIN32
+# include <evil_private.h>
 #endif
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "../software_generic/Evas_Engine_Software_Generic.h"
 
