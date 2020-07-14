@@ -18,7 +18,9 @@
 # define S_IWOTH  0                           /* Write others */
 # define S_IXOTH  0                           /* Execute others */
 
-#define S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+# define S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+# define S_ISREG(m)     (((m) & S_IFMT) == S_IFREG)
+
 #endif
 
 #endif

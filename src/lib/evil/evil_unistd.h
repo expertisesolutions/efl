@@ -21,7 +21,7 @@
 
 #define execvp _ucrt_execvp  // overriding execvp below
 #include <process.h> // for _execvp (but not execvp), getpid
-#undef execvp 
+#undef execvp
 EVIL_API int execvp(const char *file, char *const argv[]);
 EVIL_API int ftruncate(int fd, off_t size);
 
@@ -34,13 +34,6 @@ EVIL_API int ftruncate(int fd, off_t size);
 #define STDIN_FILENO  _fileno(stdin)
 #define STDOUT_FILENO _fileno(stdout)
 #define STDERR_FILENO _fileno(stderr)
-
-#ifndef S_ISDIR
-# define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
-#endif
-#ifndef S_ISREG
-# define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
-#endif
 
 #else
 #include <unistd.h>
