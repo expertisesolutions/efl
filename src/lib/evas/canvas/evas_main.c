@@ -26,18 +26,6 @@ EVAS_API int lockmax = 0;
 static int _evas_init_count = 0;
 int _evas_log_dom_global = -1;
 
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_NONE = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_GENERIC = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_DOES_NOT_EXIST = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_PERMISSION_DENIED = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_RESOURCE_ALLOCATION_FAILED = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_CORRUPT_FILE = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_UNKNOWN_FORMAT = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_CANCELLED = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_INCOMPATIBLE_FILE = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_UNKNOWN_COLLECTION = 0;
-EVAS_API Eina_Error EFL_GFX_IMAGE_LOAD_ERROR_RECURSIVE_REFERENCE = 0;
-
 #define NUM_ERRORS 11
 
 const char *efl_gfx_image_load_error_msgs[] = {
@@ -51,7 +39,7 @@ const char *efl_gfx_image_load_error_msgs[] = {
  "Reading operation has been cancelled during decoding" ,
  "(Edje only) The file pointed to is incompatible, i.e., it doesn't match the library's current version's format." ,
  "(Edje only) The group/collection set to load from was not found in the file" ,
- "(Edje only) The group/collection set to load from had recursive references on its components" 
+ "(Edje only) The group/collection set to load from had recursive references on its components"
 };
 
 static void
