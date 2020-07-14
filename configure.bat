@@ -103,6 +103,7 @@ exit /B 0
             -Dopengl=none^
             "-Demotion-loaders-disabler=gstreamer1,libvlc,xine"^
             -Dbuild-examples=false^
+            -Dlua-interpreter=lua^
             -Dbindings=^
             --buildtype=debug^
             --native-file native-file-windows.txt
