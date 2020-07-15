@@ -40,8 +40,8 @@ jobs:
       run: choco install nasm
     - name: Add Nasm to PATH
       run: echo "::add-path::C:\Program Files\Nasm"
-#    - name: Test nasm
-#      run: nasm -v
+    - name: Test nasm
+      run: nasm -v
 ### LLVM
     - name: Install LLVM
       if: steps.cache-all.outputs.cache-hit != 'true'
@@ -53,17 +53,17 @@ jobs:
 ### DEPENDENCIES WITH PIP: NINJA, MESON
     - name: "Install pip dependencies: ninja, meson"
       run: py -3 -m pip install --upgrade ninja meson 
-    - run: py -3 -m pip list -v
-#    - name: test ninja
-#      run: ninja --version
-#    - name: test meson
-#      run: meson -v
+#    - run: py -3 -m pip list -v
+    - name: test ninja
+      run: ninja --version
+    - name: test meson
+      run: meson -v
 ### OPENSSL
     - name: Download openssl source
       if: steps.cache-all.outputs.cache-hit != 'true'
       run: git clone -b OpenSSL_1_1_1g https://github.com/openssl/openssl
     - uses: ilammy/msvc-dev-cmd@v1
-      if: steps.cache-all.outputs.cache-hit != 'true'
+#      if: steps.cache-all.outputs.cache-hit != 'true'
       with:
         arch: x64
     - name: Configure OpenSSL
@@ -120,6 +120,14 @@ jobs:
           build
         key: cache-all
         restore-keys: cache-all
+### DEPENDENCIES WITH PIP: NINJA, MESON
+    - name: "Install pip dependencies: ninja, meson"
+      run: py -3 -m pip install --upgrade ninja meson 
+#    - run: py -3 -m pip list -v
+    - name: test ninja
+      run: ninja --version
+    - name: test meson
+      run: meson -v
 ### TEST EFL
 #    - name: Download artifact
 #      uses: actions/download-artifact@v1.0.0
