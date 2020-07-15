@@ -89,17 +89,26 @@ evil_time_get(void)
 
 #ifdef _MSC_VER
 EVIL_API void
-usleep(useconds_t usec) 
-{ 
-   HANDLE timer; 
-   LARGE_INTEGER ft; 
+usleep(useconds_t usec)
+{
+   HANDLE timer;
+   LARGE_INTEGER ft;
 
    ft.QuadPart = -(10*usec); // Convert to 100 nanosecond interval, negative value indicates relative time
 
-   timer = CreateWaitableTimer(NULL, TRUE, NULL); 
-   SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0); 
-   WaitForSingleObject(timer, INFINITE); 
-   CloseHandle(timer); 
+   timer = CreateWaitableTimer(NULL, TRUE, NULL);
+   SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+   WaitForSingleObject(timer, INFINITE);
+   CloseHandle(timer);
+}
+#endif
+
+#ifndef HAVE_SLEEP
+# define HAVE_SLEEP
+EVIL_API void
+sleep(unsigned int seconds)
+{
+   Sleep(seconds * 1000);
 }
 #endif
 

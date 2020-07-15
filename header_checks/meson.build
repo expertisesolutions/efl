@@ -105,6 +105,7 @@ function_checks = [
   ['gettimeofday', ['sys/time.h']],
   ['execvp', ['unistd.h']],
   ['pause', ['unistd.h']],
+  ['sleep', ['unistd.h']],
   ['isfinite', ['math.h']],
 #FIXME strlcpy is detected by meson but drops at compilation time
 #  ['strlcpy', ['string.h']],

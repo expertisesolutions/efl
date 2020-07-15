@@ -67,6 +67,10 @@ typedef unsigned int useconds_t;
 EVIL_API void usleep(useconds_t usec);
 #endif
 
+#ifndef HAVE_SLEEP
+EVIL_API void sleep(unsigned int seconds);
+#endif
+
 /*
  * Sockets and pipe related functions
  *
