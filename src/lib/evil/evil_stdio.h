@@ -62,6 +62,8 @@ EVIL_API int evil_rename(const char *src, const char *dst);
  */
 EVIL_API int evil_mkdir(const char *dirname, mode_t mode);
 
+EVIL_API int asprintf(char **strp, const char *fmt, ...);
+
 /**
  * @}
  */
