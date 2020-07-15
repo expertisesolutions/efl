@@ -21,7 +21,7 @@
 
 #define execvp _ucrt_execvp  // overriding execvp below
 #include <process.h> // for _execvp (but not execvp), getpid
-#undef execvp 
+#undef execvp
 EVIL_API int execvp(const char *file, char *const argv[]);
 EVIL_API int ftruncate(int fd, off_t size);
 
@@ -68,7 +68,12 @@ EVIL_API void usleep(useconds_t usec);
 #endif
 
 #ifndef HAVE_SLEEP
-EVIL_API void sleep(unsigned int seconds);
+
+# define HAVE_SLEEP
+# define sleep evil_sleep
+
+EVIL_API void evil_sleep(unsigned int seconds);
+
 #endif
 
 /*
