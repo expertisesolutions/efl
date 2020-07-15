@@ -2,7 +2,6 @@
 //gcc eina_value_03.c -o eina_value_03 `pkg-config --cflags --libs eina`
 
 #include <Eina.h>
-#include <sys/time.h>
 
 static Eina_Bool
 _tz_setup(const Eina_Value_Type *type, void *mem)
