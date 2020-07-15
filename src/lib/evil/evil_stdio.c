@@ -29,3 +29,12 @@ evil_mkdir(const char *dirname, mode_t mode EVIL_UNUSED)
    return _mkdir(dirname);
 }
 
+EVIL_API int
+asprintf(char **strp, const char *fmt, ...)
+{
+   va_list args;
+   va_start(args, fmt);
+   int i = vasprintf(strp, fmt, args);
+   va_end(args);
+   return i;
+}
