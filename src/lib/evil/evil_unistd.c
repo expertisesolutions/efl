@@ -104,7 +104,7 @@ usleep(useconds_t usec)
 #endif
 
 EVIL_API void
-evil sleep(unsigned int seconds)
+evil_sleep(unsigned int seconds)
 {
    Sleep(seconds * 1000);
 }
