@@ -6,7 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 #include <Ecore.h>
 #include <ecore_private.h>
