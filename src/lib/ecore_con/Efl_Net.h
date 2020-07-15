@@ -9,6 +9,7 @@
 
 #ifdef _WIN32
 # include <ws2tcpip.h>
+# include <evil_private.h>
 #else
 # include <netdb.h>
 #endif
