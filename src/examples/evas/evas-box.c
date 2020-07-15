@@ -311,8 +311,16 @@ _canvas_resize_cb(Ecore_Evas *ee)
    evas_object_resize(d.border, (w / 2) + 4, (h / 2) + 4);
 }
 
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int
+WinMain(HINSTANCE hInstance EINA_UNUSED
+       ,HINSTANCE hPrevInstance EINA_UNUSED
+       ,LPSTR     lpCmdLine EINA_UNUSED
+       ,int       nShowCmd EINA_UNUSED)
+#endif
 {
    Evas_Object *last, *o;
    int i;

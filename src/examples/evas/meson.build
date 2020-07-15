@@ -38,5 +38,6 @@ examples = [
 foreach example : examples
   executable(example, example + '.c',
     dependencies: [eina, ecore_evas, ecore_file, m],
-    c_args : ['-DPACKAGE_EXAMPLES_DIR="'+meson.current_source_dir()+'"'])
+    c_args : ['-DPACKAGE_EXAMPLES_DIR="'+meson.current_source_dir()+'"'],
+    gui_app: true)
 endforeach

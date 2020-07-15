@@ -224,8 +224,17 @@ _on_free(void *data EINA_UNUSED, Evas *e EINA_UNUSED, Evas_Object *o EINA_UNUSED
    ecore_main_loop_quit();
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int
+WinMain(HINSTANCE hInstance EINA_UNUSED
+       ,HINSTANCE hPrevInstance EINA_UNUSED
+       ,LPSTR     lpCmdLine EINA_UNUSED
+       ,int       nShowCmd EINA_UNUSED)
+#endif
 {
    Evas_Object *bg, *o, *osrc;
    static App_Data d = {

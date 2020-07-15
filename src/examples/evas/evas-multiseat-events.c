@@ -236,8 +236,17 @@ EFL_CALLBACKS_ARRAY_DEFINE(callbacks,
                            { EFL_EVENT_POINTER_MOVE, _pointer_move_cb },
                            { EFL_EVENT_POINTER_WHEEL, _pointer_wheel_cb });
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int
+WinMain(HINSTANCE hInstance EINA_UNUSED
+       ,HINSTANCE hPrevInstance EINA_UNUSED
+       ,LPSTR     lpCmdLine EINA_UNUSED
+       ,int       nShowCmd EINA_UNUSED)
+#endif
 {
    Evas_Object *bg, *red_rect, *blue_rect;
    const Eina_List *devices, *l;
