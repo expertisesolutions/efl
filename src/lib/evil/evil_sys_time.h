@@ -1,8 +1,6 @@
 #ifndef __EVIL_SYS_TIME_H__
 #define __EVIL_SYS_TIME_H__
 
-#include <evil_private.h>
-
 #include <stdint.h>
 #include <time.h>
 
