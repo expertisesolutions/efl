@@ -3,7 +3,6 @@
  */
 
 #include <Ecore.h>
-#include <unistd.h>
 
 struct context
 {

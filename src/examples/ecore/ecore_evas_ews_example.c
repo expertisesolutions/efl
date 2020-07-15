@@ -11,7 +11,6 @@
 
 #include <Ecore.h>
 #include <Ecore_Evas.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <ctype.h>
 

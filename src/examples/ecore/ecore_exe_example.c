@@ -6,6 +6,10 @@
 #include <string.h>
 #include <Ecore.h>
 
+#ifdef _WIN32
+typedef int pid_t;
+#endif
+
 #define BUFFER_SIZE 1024
 
 static Eina_Bool

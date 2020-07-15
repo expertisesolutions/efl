@@ -7,7 +7,6 @@
 
 #include <Ecore.h>
 #include <Eo.h>
-#include <unistd.h>
 
 struct context   // helper struct to give some context to the callbacks
 {

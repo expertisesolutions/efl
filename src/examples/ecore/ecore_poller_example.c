@@ -2,8 +2,6 @@
 // gcc -o ecore_poller_example ecore_poller_example.c `pkg-config --libs --cflags ecore eo`
 
 #include <Ecore.h>
-//#include <Ecore_Eo.h>
-#include <unistd.h>
 
 static double _initial_time = 0;
 

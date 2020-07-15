@@ -3,10 +3,14 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <Ecore.h>
 #include <Ecore_Getopt.h>
+
+#ifdef _WIN32
+#undef sleep
+#define sleep(x) Sleep(x*1000)
+#endif
 
 typedef struct
 {

@@ -2,7 +2,6 @@
 // gcc -o ecore_timer_example ecore_timer_example.c `pkg-config --libs --cflags ecore`
 
 #include <Ecore.h>
-#include <unistd.h>
 
 #define TIMEOUT_1 1.0 // interval for timer1
 #define TIMEOUT_2 3.0 // timer2 - delay timer1
