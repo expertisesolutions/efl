@@ -485,6 +485,10 @@ if sys_windows
     'eldbus',
     'elput',
     # temporarily ignored
+    'emile',
+    'ector',
+    'eet',
+    'efl',
     'ecore',
     'ecore_audio',
     'ecore_avahi',
