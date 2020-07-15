@@ -103,13 +103,11 @@ usleep(useconds_t usec)
 }
 #endif
 
-#ifndef HAVE_SLEEP
 EVIL_API void
 evil sleep(unsigned int seconds)
 {
    Sleep(seconds * 1000);
 }
-#endif
 
 /*
  * Sockets and pipe related functions
