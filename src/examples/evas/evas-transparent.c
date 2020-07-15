@@ -102,8 +102,17 @@ _on_delete(Ecore_Evas *ee EINA_UNUSED)
    ecore_main_loop_quit();
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    /* In other examples, evas_init() has been used to turn Evas on.  In this
     * example we're using Ecore-Evas' init routine, which takes care of

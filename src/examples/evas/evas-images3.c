@@ -133,8 +133,17 @@ _on_keydown(void        *data EINA_UNUSED,
      }
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    if (!ecore_evas_init())
      return EXIT_FAILURE;

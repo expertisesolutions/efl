@@ -562,8 +562,17 @@ _main_menu_key_handle(void        *data EINA_UNUSED,
 
 // Main Menu END
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    if (!ecore_evas_init())
      return EXIT_FAILURE;

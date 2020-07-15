@@ -82,8 +82,16 @@ print_help(void)
    printf("evas-animation example\n Press r to reverse the animation of the red rect.\n Press p to pause the animation of the red rect.\n");
 }
 
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    if (!ecore_evas_init())
      return EXIT_FAILURE;

@@ -284,8 +284,17 @@ _axis_update_cb(void *data EINA_UNUSED, Evas *e EINA_UNUSED, Evas_Object *obj EI
     _mouse_update_handle(ev->toolid, azimuth, tilt, twist, pressure);
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    if (!eina_init())
      return EXIT_FAILURE;

@@ -670,8 +670,17 @@ _on_example_smart_object_child_num_change(void *data EINA_UNUSED,
           " object changed to %llu\n", (unsigned long long)(uintptr_t)event_info);
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    const Evas_Smart_Cb_Description **descriptions;
    Evas_Smart_Example_Interface *iface;

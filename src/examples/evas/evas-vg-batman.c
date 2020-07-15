@@ -93,8 +93,17 @@ _animator(void *data EINA_UNUSED, double pos)
    return EINA_TRUE;
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    Ecore_Evas *ee;
    Evas *e;

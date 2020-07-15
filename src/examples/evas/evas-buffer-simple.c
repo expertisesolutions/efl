@@ -43,7 +43,15 @@ static void destroy_canvas(Evas *canvas);
 static void draw_scene(Evas *canvas);
 static void save_scene(Evas *canvas, const char *dest);
 
+#ifndef _MSC_VER
 int main(void)
+#else
+int WinMain(
+  HINSTANCE hInstance EINA_UNUSED,
+  HINSTANCE hPrevInstance EINA_UNUSED,
+  LPSTR     lpCmdLine EINA_UNUSED,
+  int       nShowCmd EINA_UNUSED)
+#endif
 {
    Evas *canvas;
    Evas_Object *bg, *r1, *r2, *r3;
