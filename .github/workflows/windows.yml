@@ -28,36 +28,32 @@ jobs:
           "C:\\Program Files\\LLVM"
           "C:\\Users\\runneradmin\\AppData\\local\\pip\\cache"
           "C:\\hostedtoolcache\\windows\\python\\$python_version\\x64\\lib\\site-packages"
+          "C:\\hostedtoolcache\\windows\\Python\\$python_version\\x64\\Scripts"
           openssl
           win32-deps
           subprojects
           build
         key: cache-all
         restore-keys: cache-all
-### NASM
-    - name: install nasm
-      if: steps.cache-all.outputs.cache-hit != 'true'
-      run: choco install nasm
-    - name: Add Nasm to PATH
-      run: echo "::add-path::C:\Program Files\Nasm"
-    - name: Test nasm
-      run: nasm -v
-### LLVM
-    - name: Install LLVM
-      if: steps.cache-all.outputs.cache-hit != 'true'
-      run: choco install llvm
-    - name: Add clang-cl to PATH
-      run: echo "::add-path::C:\Program Files\LLVM\bin"
-#    - name: Test clang-cl
-#      run: clang-cl -v 
 ### DEPENDENCIES WITH PIP: NINJA, MESON
-    - name: "Install pip dependencies: ninja, meson"
+    - name: "Install dependencies with pip: ninja, meson"
       run: py -3 -m pip install --upgrade ninja meson 
-#    - run: py -3 -m pip list -v
-    - name: test ninja
-      run: ninja --version
-    - name: test meson
-      run: meson -v
+    - name: "Test packages installed with pip"
+      run: |
+        ninja --version
+        meson -v
+### DEPENDENCIES WITH CHOCO: NASM, LLVM
+    - name: "Install dependencies with choco: nasm, llvm"
+ #     if: steps.cache-all.outputs.cache-hit != 'true'
+      run: choco install nasm llvm -y
+    - name: "Add packages installed with choco to to PATH"
+      run: |
+        echo "::add-path::C:\Program Files\Nasm"
+        echo "::add-path::C:\Program Files\LLVM\bin"
+    - name: "Test packages installed with choco"
+      run: |
+        nasm -v
+        clang-cl -v
 ### OPENSSL
     - name: Download openssl source
       if: steps.cache-all.outputs.cache-hit != 'true'
