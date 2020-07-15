@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <math.h>
 #ifdef HAVE_NETINET_IN_H
 # include <netinet/in.h>
@@ -15,6 +14,10 @@
 #include <fcntl.h>
 #include <string.h>
 #include <zlib.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h>
