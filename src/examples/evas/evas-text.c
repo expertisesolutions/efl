@@ -316,7 +316,11 @@ int WinMain(
     * example */
    struct text_preset_data init_data =
    {
+#if !defined(_WIN32) || defined(HAVE_FONTCONFIG)
       .font = {"DejaVu", "Courier", "Utopia"},
+#else
+      .font = {"C:\\Windows\\Fonts\\Arial.ttf", "C:\\Windows\\Fonts\\Cour.ttf", "C:\\Windows\\Fonts\\Comic.ttf"},
+#endif
       .text = {BLACK, WHITE, GREY, RED, GREEN, BLUE},
       .shadow = {WHITE, BLUE, GREEN, RED},
       .outline = {WHITE, RED, GREEN, BLUE},
@@ -379,7 +383,7 @@ int WinMain(
      d.text, d.t_data.shadow_ptr->r, d.t_data.shadow_ptr->g,
      d.t_data.shadow_ptr->b, d.t_data.shadow_ptr->a);
 
-   evas_object_text_font_set(d.text, *d.t_data.font_ptr, 30);
+   evas_object_text_font_set(d.text, d.t_data.font_ptr[1], 30);
    evas_object_text_text_set(d.text, "sample text");
 
    evas_object_resize(d.text, (3 * WIDTH) / 4, HEIGHT / 4);
