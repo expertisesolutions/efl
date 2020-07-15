@@ -7,7 +7,6 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 // complex real-world structures based on elmdentica database
 typedef struct
@@ -522,4 +521,3 @@ end:
 
    return ret;
 } /* main */
-

@@ -7,7 +7,6 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 // The struct that will be loaded and saved.
 // note that only the members described in the eet_data_descriptor
@@ -269,4 +268,3 @@ end:
 
    return ret;
 } /* main */
-
