@@ -790,8 +790,6 @@ endif
 if not sys_windows
   subdir(join_paths(local_scripts))
 
-  meson.add_install_script('meson/meson_modules.sh', module_files)
-
   foreach evas_loader_map_inst : evas_loader_map
     evas_loader_original = evas_loader_map_inst[0]
     evas_loader_link_types = evas_loader_map_inst[1]
@@ -800,7 +798,6 @@ if not sys_windows
   endforeach
 
   doxygen = find_program('doxygen', required : false)
-
   if doxygen.found()
     subdir('doc')
   endif
