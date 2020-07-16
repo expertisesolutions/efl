@@ -14,7 +14,7 @@ jobs:
     - name: add python scripts to path
       run: |
         $python_version = (py -3 --version).replace("Python ", "")
-        $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
+        $python_scripts_path = ($(echo C:\Users\runneradmin\AppData\Roaming\Python\$python_version\Scripts ) -join "")
         echo "::add-path::$python_scripts_path"
 ### CACHE ALL AT ONCE
     - name: Cache All
@@ -27,7 +27,7 @@ jobs:
           "C:\\Program Files\\Nasm"
           "C:\\Program Files\\LLVM"
           "C:\\Users\\runneradmin\\AppData\\local\\pip\\cache"
-          "C:\\hostedtoolcache\\windows\\python\\$python_version\\x64"
+          "$python_scripts_path"
           openssl
           win32-deps
           subprojects
