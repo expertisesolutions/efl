@@ -27,8 +27,7 @@ jobs:
           "C:\\Program Files\\Nasm"
           "C:\\Program Files\\LLVM"
           "C:\\Users\\runneradmin\\AppData\\local\\pip\\cache"
-          "C:\\hostedtoolcache\\windows\\python\\$python_version\\x64\\lib\\site-packages"
-          "C:\\hostedtoolcache\\windows\\Python\\$python_version\\x64\\Scripts"
+          "C:\\hostedtoolcache\\windows\\python\\$python_version\\x64"
           openssl
           win32-deps
           subprojects
@@ -37,7 +36,7 @@ jobs:
         restore-keys: cache-all
 ### DEPENDENCIES WITH PIP: NINJA, MESON
     - name: "Install dependencies with pip: ninja, meson"
-      run: py -3 -m pip install --upgrade ninja meson 
+      run: py -3 -m pip install --upgrade --user --prefer-binary --disable-pip-version-check ninja meson 
     - name: "Test packages installed with pip"
       run: |
         ninja --version
@@ -118,12 +117,7 @@ jobs:
         restore-keys: cache-all
 ### DEPENDENCIES WITH PIP: NINJA, MESON
     - name: "Install pip dependencies: ninja, meson"
-      run: py -3 -m pip install --upgrade ninja meson 
-#    - run: py -3 -m pip list -v
-    - name: test ninja
-      run: ninja --version
-    - name: test meson
-      run: meson -v
+      run: py -3 -m pip install --upgrade --user --prefer-binary --disable-pip-version-check ninja meson
 ### TEST EFL
 #    - name: Download artifact
 #      uses: actions/download-artifact@v1.0.0
