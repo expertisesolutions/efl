@@ -17,7 +17,11 @@ bs_mod_get(char *path, size_t maxlen, const char *subsystem, const char *mod_nam
    else if (!strcmp(subsystem, "evas/image_savers"))
       snprintf(path, maxlen, PACKAGE_BUILD_DIR"/src/modules/%s/libshared_saver_%s"MOD_SUFFIX, subsystem, mod_name);
    else
+#ifndef _MSC_VER
       snprintf(path, maxlen, PACKAGE_BUILD_DIR"/src/modules/%s/%s/lib%s"MOD_SUFFIX, subsystem, mod_name, mod_name);
+#else
+      snprintf(path, maxlen, PACKAGE_BUILD_DIR"/src/modules/%s/%s/%s"MOD_SUFFIX, subsystem, mod_name, mod_name);
+#endif
 
    return EINA_TRUE;
 }
