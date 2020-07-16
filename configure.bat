@@ -4,6 +4,22 @@ setlocal EnableDelayedExpansion
 :: Receive extra-flags
 set MESONFLAGS_EXTRA=%*
 
+:: Check if a custom build dir is being passed in args
+set BUILDDIR=build
+
+:: (The space before the value is necessary for proper token evaluation)
+set _BUILDDIR=!MESONFLAGS_EXTRA:*--builddir ==!
+if not "!_BUILDDIR!" == "*--builddir ==" (
+    for /f "tokens=1 delims== " %%d in ("!_BUILDDIR!") do (
+        set BUILDDIR=%%d
+        echo - Build directory: "!BUILDDIR!"
+        set pattern=--builddir !BUILDDIR!
+        call set MESONFLAGS_EXTRA=%%MESONFLAGS_EXTRA:!pattern!=%%
+    )
+    echo !MESONFLAGS_EXTRA!
+)
+set _BUILDDIR=
+
 :: Look for verbosity of this script and additional flags for meson
 (echo %MESONFLAGS_EXTRA% | findstr /i /c:"--verbose" >nul) && set VERBOSE=ON
 if defined VERBOSE (
@@ -119,7 +135,7 @@ exit /B 0
     @echo ------------------------------
     @echo Generating build...
     call ensure-vcvars64
-    meson build %MESONFLAGS% %MESONFLAGS_EXTRA%
+    meson !BUILDDIR! !MESONFLAGS! !MESONFLAGS_EXTRA!
 exit /B 0
 
 :save_old_vars
