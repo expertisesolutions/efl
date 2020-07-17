@@ -15,7 +15,9 @@ evil_dirname(char *path)
 
    // Search for the last slash ignoring trailing '\\'
    unsigned int len = strlen(path);
-   while(--len) if ((path[len] == '/') || (path[len] == '\\')) break;
+   while(--len)
+     if ((path[len] == '/') || (path[len] == '\\'))
+       break;
    path[len] = '\0';
 
    return path;
