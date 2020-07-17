@@ -115,7 +115,7 @@ init(void)
 }
 
 static void
-shutdown(void)
+proxy_helper_shutdown(void)
 {
    if (_libproxy.factory)
      {
@@ -253,7 +253,7 @@ main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
              clean_threads();
           }
         eina_spinlock_free(&pending_lock);
-        shutdown();
+        proxy_helper_shutdown();
      }
    else
      {
