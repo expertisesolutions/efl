@@ -118,11 +118,7 @@ exit /B 0
 :generate_build
     @echo ------------------------------
     @echo Generating build...
-    set vcvars64="C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat"
-
-    if not defined DevEnvDir (
-        call %vcvars64%
-    )
+    call ensure-vcvars64
     meson build %MESONFLAGS% %MESONFLAGS_EXTRA%
 exit /B 0
 
