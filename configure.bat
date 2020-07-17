@@ -1,14 +1,17 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-if "%~1"=="--verbose" (
+:: Receive extra-flags
+set MESONFLAGS_EXTRA=%*
+
+:: Look for verbosity of this script and additional flags for meson
+(echo %MESONFLAGS_EXTRA% | findstr /i /c:"--verbose" >nul) && set VERBOSE=ON
+if defined VERBOSE (
     echo Verbose ON.
-    set VERBOSE=ON
+    set MESONFLAGS_EXTRA=%MESONFLAGS_EXTRA:--verbose=%
 ) else (
     echo Verbose OFF.
 )
-
-set MESONFLAGS_EXTRA=%*
 
 call :main || (echo Build configure failed.)
 exit /B %errorlevel%
@@ -107,7 +110,7 @@ exit /B 0
     @echo Here %NL%we go
     @echo Meson flags: %MESONFLAGS:        =!NL!%
     @echo ------------------------------
-    @echo Extra flags: %MESONFLAGS_EXTRA%
+    @echo Extra flags: !MESONFLAGS_EXTRA!
     @echo ------------------------------
     @set MESONFLAGS=%MESONFLAGS:            = %
 exit /B 0
