@@ -2,6 +2,7 @@ if sys_windows
   evil_test_src = files(
     'evil_suite.c',
     'evil_suite.h',
+    'evil_test_dirname.c',
     'evil_test_dlfcn.c',
     'evil_test_main.c',
     'evil_test_stdio.c',

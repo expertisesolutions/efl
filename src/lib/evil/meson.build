@@ -8,6 +8,7 @@ if target_machine.system() == 'windows'
     'evil_basename.c',
     'evil_strings.c',
     'evil_vasprintf.h',
+    'evil_dirname.c',
     'evil_dlfcn.c',
     'evil_fcntl.c',
     'evil_langinfo.c',
