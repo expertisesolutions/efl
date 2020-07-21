@@ -180,6 +180,7 @@ if sys_windows
       '-Wno-old-style-cast',
       '-Wno-zero-as-null-pointer-constant',
       '-Wno-c++98-compat-pedantic',
+      '-Wno-c++-compat',
       '-Wno-conditional-uninitialized',
       '-Wno-array-bounds-pointer-arithmetic',
       '-Wno-self-assign',
@@ -473,7 +474,7 @@ subprojects = [
 ['ecore_wayland'    ,['wl-deprecated']     , false,  true, false, false, false, false, false, ['eina'], []],
 ['ecore_drm'        ,['drm-deprecated']    , false,  true, false, false, false, false, false, ['eina'], []],
 ['exactness'        ,[]                    , false,  false,  true, false, false, false, false, ['eina, evas, eet'], []],
-]
+ ]
 
 if sys_windows
   ignored_subprojects = [
@@ -491,11 +492,8 @@ if sys_windows
     'ecore_wayland',
     'ecore_wl2',
     'ecore_x',
-    'edje',
     'eeze',
     'efl_canvas_wl',
-    'elementary',
-    'elua',
     'ephysics',
     'exactness',
   ]
@@ -819,14 +817,12 @@ configure_file(
 )
 
 # desabled for windows for now
-if not sys_windows
-  configure_file(
-    input: 'elm_intro.h.in',
-    output: 'elm_intro.h',
-    configuration: config_h,
-    install_dir : join_paths(dir_include,'elementary-'+version_major)
-  )
-endif
+configure_file(
+  input: 'elm_intro.h.in',
+  output: 'elm_intro.h',
+  configuration: config_h,
+  install_dir : join_paths(dir_include,'elementary-'+version_major)
+)
 
 subdir(join_paths('systemd-services'))
 
