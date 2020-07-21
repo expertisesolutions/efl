@@ -135,6 +135,10 @@ exit /B 0
     @echo ------------------------------
     @echo Generating build...
     call ensure-vcvars64
+    if not defined devenvdir (
+        echo Failed: DevEnvDir still not accessible
+        exit /B 0
+    )
     meson !BUILDDIR! !MESONFLAGS! !MESONFLAGS_EXTRA!
 exit /B 0
 
