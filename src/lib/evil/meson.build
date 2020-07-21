@@ -25,6 +25,7 @@ if target_machine.system() == 'windows'
     'pcre/regex.h',
     'evil_vasprintf.h',
     'evil_private.h',
+    'evil_sys_time.c',
   ])
 
   evil_header_src = [

@@ -95,6 +95,7 @@ extern "C" {
 #include "evil_util.h"
 #include "evil_vasprintf.h"
 #include "evil_sys_types.h"
+#include "evil_sys_time.h"
 
 #define sigsetjmp(Env, Save) setjmp(Env)
 
