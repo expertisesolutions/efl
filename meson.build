@@ -251,7 +251,7 @@ config_h.set_quoted('PACKAGE_NAME', meson.project_name())
 config_h.set_quoted('PACKAGE_BIN_DIR', dir_bin)
 config_h.set_quoted('PACKAGE_LIB_DIR', dir_lib)
 config_h.set_quoted('PACKAGE_SRC_DIR', meson.source_root() / '')
-config_h.set_quoted('PACKAGE_BUILD_DIR', meson.current_build_dir() / '') 
+config_h.set_quoted('PACKAGE_BUILD_DIR', meson.current_build_dir() / '')
 config_h.set_quoted('PACKAGE_SYSCONF_DIR', dir_sysconf)
 config_h.set_quoted('BINDIR', dir_bin)
 config_h.set10('EFL_HAVE_THREADS', true)
@@ -489,20 +489,15 @@ if sys_windows
     'ecore_avahi',
     'ecore_buffer',
     'ecore_cocoa',
-    'ecore_con',
     'ecore_drm',
     'ecore_drm2',
     'ecore_evas',
     'ecore_fb',
-    'ecore_file',
-    'ecore_imf',
     'ecore_imf_evas',
-    'ecore_input',
     'ecore_input_evas',
     'ecore_ipc',
     'ecore_sdl',
     'ecore_wayland',
-    'ecore_win32',
     'ecore_wl2',
     'ecore_x',
     'edje',
