@@ -26,6 +26,8 @@
 #include <lua.h>
 #include <lauxlib.h>
 
+extern int in_tree;
+
 typedef struct _External_Lookup External_Lookup;
 typedef struct _Part_Lookup     Part_Lookup;
 typedef struct _Part_Lookup_Key Part_Lookup_Key;
@@ -2341,7 +2343,7 @@ data_write_scripts(Eet_File *ef)
 # define BIN_EXT
 #endif
 #ifdef NEED_RUN_IN_TREE
-   if (getenv("EFL_RUN_IN_TREE"))
+   if (in_tree || getenv("EFL_RUN_IN_TREE"))
      {
         snprintf(embryo_cc_path, sizeof(embryo_cc_path),
                  "%s/src/bin/embryo/embryo_cc" BIN_EXT,

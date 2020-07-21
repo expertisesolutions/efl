@@ -43,6 +43,8 @@
   EDJE_1_24_SUPPORTED                 \
   EDJE_1_25_SUPPORTED
 
+extern int in_tree;
+
 static void        new_object(void);
 static void        new_statement(void);
 static char       *perform_math(char *input);
@@ -1072,7 +1074,7 @@ compile(void)
 
         buf2[0] = '\0';
 #ifdef NEED_RUN_IN_TREE
-        if (getenv("EFL_RUN_IN_TREE"))
+        if (in_tree || getenv("EFL_RUN_IN_TREE"))
           {
              snprintf(buf2, sizeof(buf2),
                       "%s/src/bin/edje/epp/epp" EPP_EXT,
