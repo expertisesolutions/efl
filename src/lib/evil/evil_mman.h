@@ -1,7 +1,7 @@
 #ifndef __EVIL_SYS_MMAN_H__
 #define __EVIL_SYS_MMAN_H__
 
-#include <evil_api.h>
+#include "evil_private.h"
 
 #include <sys/types.h>
 

@@ -2,7 +2,6 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include "evil_string.h"
 #include <inttypes.h>
 #include <ctype.h>
 #include <time.h>

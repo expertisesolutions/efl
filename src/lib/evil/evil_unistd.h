@@ -1,7 +1,7 @@
 #ifndef __EVIL_UNISTD_H__
 #define __EVIL_UNISTD_H__
 
-#include "evil_api.h"
+#include "evil_private.h"
 
 /**
  * @file evil_unistd.h

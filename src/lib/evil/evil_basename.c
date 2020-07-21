@@ -2,8 +2,7 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include <evil_api.h>
-#include <evil_private.h>
+#include "evil_private.h"
 
 #include <stdlib.h>
 
