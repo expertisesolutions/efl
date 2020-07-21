@@ -182,6 +182,7 @@ if sys_windows
       '-Wno-old-style-cast',
       '-Wno-zero-as-null-pointer-constant',
       '-Wno-c++98-compat-pedantic',
+      '-Wno-c++-compat',
       '-Wno-conditional-uninitialized',
       '-Wno-array-bounds-pointer-arithmetic',
       '-Wno-self-assign',
@@ -478,11 +479,11 @@ subprojects = [
 ['efreet'           ,[]                    , false, false,  true, false, false, false,  true, ['eina', 'efl', 'eo'], []],
 ['ecore_imf_evas'   ,[]                    , false,  true, false, false, false, false,  true, ['eina', 'efl', 'eo'], []],
 ['ephysics'         ,['physics']           , false,  true, false, false, false, false,  true, ['eina', 'efl', 'eo'], []],
-['edje'             ,[]                    , false,  true,  true, false,  true,  true,  true, ['evas', 'eo', 'efl', lua_pc_name], []],
+['edje'             ,[]                    , false,  true,  true, false,  true, false,  true, ['evas', 'eo', 'efl', lua_pc_name], []],
 ['emotion'          ,['emotion']           ,  true,  true, false, false,  true,  true,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb'           ,['ethumb']            ,  true,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb_client'    ,['ethumb']            , false,  true,  true, false, false,  true,  true, ['eina', 'efl', 'eo', 'ethumb'], []],
-['elementary'       ,[]                    ,  true,  true,  true,  true,  true,  true,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'ecore-imf', 'ecore-con', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
+['elementary'       ,[]                    ,  true,  true,  true,  true,  true, false,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'ecore-imf', 'ecore-con', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
 ['efl_canvas_wl'    ,['wl']                , false,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo', 'evas', 'ecore'], []],
 ['elua'             ,['elua']              , false,  true,  true, false,  true, false, false, ['eina', lua_pc_name], []],
 ['ecore_wayland'    ,['wl-deprecated']     , false,  true, false, false, false, false, false, ['eina'], []],
@@ -492,26 +493,7 @@ subprojects = [
 
 if sys_windows
   ignored_subprojects = [
-    # don't make sense in windows
-    'elput',
     # temporarily ignored
-    'ecore_audio',
-    'ecore_avahi',
-    'ecore_buffer',
-    'ecore_cocoa',
-    'ecore_drm',
-    'ecore_drm2',
-    'ecore_fb',
-    'ecore_sdl',
-    'ecore_wayland',
-    'ecore_wl2',
-    'ecore_x',
-    'edje',
-    'eeze',
-    'efl_canvas_wl',
-    'elementary',
-    'elua',
-    'ephysics',
     'exactness',
   ]
 else
@@ -829,14 +811,12 @@ configure_file(
 )
 
 # desabled for windows for now
-if not sys_windows
-  configure_file(
-    input: 'elm_intro.h.in',
-    output: 'elm_intro.h',
-    configuration: config_h,
-    install_dir : join_paths(dir_include,'elementary-'+version_major)
-  )
-endif
+configure_file(
+  input: 'elm_intro.h.in',
+  output: 'elm_intro.h',
+  configuration: config_h,
+  install_dir : join_paths(dir_include,'elementary-'+version_major)
+)
 
 subdir(join_paths('systemd-services'))
 
