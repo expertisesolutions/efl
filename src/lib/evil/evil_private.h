@@ -40,7 +40,6 @@ extern "C" {
 # define _USE_MATH_DEFINES
 #endif
 
-#include "evil_basename.h"
 #include "evil_dlfcn.h"
 #include "evil_fcntl.h"
 #include "evil_langinfo.h"

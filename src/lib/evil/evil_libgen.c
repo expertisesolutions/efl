@@ -8,6 +8,26 @@
 #include <string.h> /* strlen */
 
 EVIL_API char *
+evil_basename(char *path)
+{
+   // Expected from posix
+   if ((path == NULL) || (*path == '\0') ) return ".";
+
+   // Remove trailing '\\'
+   unsigned int len = strlen(path);
+   if ((len > 1) && ((path[len -1] == '/') || (path[len -1] == '\\')))
+     path[len -1] = '\0';
+
+   // Search for the last slash
+   while(--len)
+     if ((path[len] == '/') || (path[len] == '\\'))
+       break;
+
+   if(!len) return path;
+   else return &path[len +1];
+}
+
+EVIL_API char *
 evil_dirname(char *path)
 {
    // Expected from posix
