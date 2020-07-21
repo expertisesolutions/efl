@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <setjmp.h>
-#include <jpeglib.h>
 
 #include "Eet.h"
 #include "Eet_private.h"
@@ -19,6 +18,8 @@
 #ifdef BUILD_NEON
 #include <arm_neon.h>
 #endif
+
+#include <jpeglib.h>
 
 #ifndef WORDS_BIGENDIAN
 /* x86 */
