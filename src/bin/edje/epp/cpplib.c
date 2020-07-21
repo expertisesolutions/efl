@@ -68,13 +68,12 @@ const char         *version_string = "0.0.0";
 #include <string.h>
 #include <signal.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
 
-#ifndef VMS
+#if !defined(VMS) && !defined(_WIN32)
 #ifndef USG
 #include <time.h>
 #include <sys/time.h>		/* for __DATE__ and __TIME__ */

@@ -17,7 +17,6 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 static Eina_Hash *icon_change_monitors = NULL;
 static Eina_Hash *icon_change_monitors_mon = NULL;

@@ -4,7 +4,6 @@
 
 #include <locale.h>
 #include <Eina.h>
-#include <unistd.h>
 #include <errno.h>
 
 #include "Edje.h"

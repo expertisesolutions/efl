@@ -1,6 +1,9 @@
 #include "private.h"
 #include "elm_widget.h"
 #include <sys/types.h>
+#ifdef _WIN32
+#include <evil_private.h>
+#endif
 #include <regex.h>
 #include "elm_entry_eo.h"
 

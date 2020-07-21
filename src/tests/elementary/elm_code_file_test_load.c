@@ -2,8 +2,6 @@
 # include "elementary_config.h"
 #endif
 
-#include <libgen.h>
-
 #ifdef _WIN32
 # include <evil_private.h> /* realpath() */
 #endif

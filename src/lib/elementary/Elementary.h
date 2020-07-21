@@ -15,12 +15,14 @@
 /* Standard headers for standard system calls etc. */
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef _WIN32
 #include <unistd.h>
+#include <sys/time.h>
+#include <sys/param.h>
+#endif
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/param.h>
 #include <math.h>
 #include <limits.h>
 #include <ctype.h>

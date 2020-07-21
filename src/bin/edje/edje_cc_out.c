@@ -13,9 +13,7 @@
 
 #include <string.h>
 #include <limits.h>
-#include <unistd.h>
 #include <sys/stat.h>
-#include <libgen.h>
 
 #include <Ecore_Evas.h>
 

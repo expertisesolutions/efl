@@ -2,7 +2,6 @@
 # include "config.h"
 #endif
 
-#include <sys/time.h>
 #include <time.h>
 
 #ifdef _WIN32

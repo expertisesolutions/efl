@@ -3,17 +3,10 @@
 #endif
 
 #include <sys/stat.h>
-#include <unistd.h>
-#include <libgen.h>
 #include <errno.h>
 
 #ifdef _WIN32
-# ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-# endif
-# include <windows.h> /* GetCurrentProcessId */
-# undef WIN32_LEAN_AND_MEAN
-
+# include <evil_windows.h> /* GetCurrentProcessId */
 # define getuid() GetCurrentProcessId()
 #endif
 

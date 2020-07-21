@@ -2,7 +2,6 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
 #include <stdio.h>
 
 #ifdef _WIN32

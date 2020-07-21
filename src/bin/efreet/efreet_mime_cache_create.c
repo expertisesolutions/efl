@@ -3,14 +3,12 @@
 #endif
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <errno.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
 
-#include <libgen.h>
 #include <ctype.h>
 
 #ifdef _WIN32

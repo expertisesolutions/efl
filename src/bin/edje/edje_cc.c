@@ -6,7 +6,9 @@
 #include <locale.h>
 #include <limits.h>
 #include <sys/stat.h>
+#ifndef _MSC_VER
 #include <sys/time.h>
+#endif
 
 #ifdef HAVE_SYS_RESOURCE_H
 # include <sys/resource.h>

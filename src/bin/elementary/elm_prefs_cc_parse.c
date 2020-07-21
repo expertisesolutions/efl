@@ -8,10 +8,9 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <math.h>
-#include <regex.h>
+#include <pcreposix.h>
 
 #include "elm_prefs_cc.h"
 #include <Ecore.h>

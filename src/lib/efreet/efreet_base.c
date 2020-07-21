@@ -5,7 +5,6 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
 #include <ctype.h>
 #include <sys/types.h>
 

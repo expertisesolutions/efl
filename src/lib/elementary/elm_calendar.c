@@ -13,6 +13,10 @@
 #include "elm_calendar_eo.h"
 #include "elm_calendar_item_eo.h"
 
+#ifdef _WIN32
+#include <evil_private.h>
+#endif
+
 #define MY_CLASS ELM_CALENDAR_CLASS
 
 #define MY_CLASS_NAME "Elm_Calendar"

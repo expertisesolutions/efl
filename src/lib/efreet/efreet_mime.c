@@ -5,7 +5,6 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <Eina.h>
 
 #include <Ecore.h>

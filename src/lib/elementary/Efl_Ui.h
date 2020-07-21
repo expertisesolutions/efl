@@ -7,12 +7,13 @@
 /* Standard headers for standard system calls etc. */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifndef _MSC_VER
 #include <sys/time.h>
 #include <sys/param.h>
+#endif
 #include <math.h>
 #include <Eina.h>
 #include <limits.h>

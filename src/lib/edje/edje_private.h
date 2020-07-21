@@ -20,14 +20,11 @@
 #endif
 
 #include <locale.h>
-#include <libgen.h>
 #include <string.h>
 #include <limits.h>
 #include <sys/stat.h>
 #include <time.h>
-#include <sys/time.h>
 #include <errno.h>
-#include <unistd.h>
 
 #include <fcntl.h>
 
