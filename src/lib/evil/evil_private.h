@@ -40,6 +40,7 @@ extern "C" {
 #include "evil_dlfcn.h"
 #include "evil_fcntl.h"
 #include "evil_langinfo.h"
+#include "evil_libgen.h"
 #include "evil_locale.h"
 #include "evil_main.h"
 #include "evil_mman.h"

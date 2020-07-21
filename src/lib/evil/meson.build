@@ -11,6 +11,7 @@ if target_machine.system() == 'windows'
     'evil_dlfcn.c',
     'evil_fcntl.c',
     'evil_langinfo.c',
+    'evil_libgen.c',
     'evil_locale.c',
     'evil_main.c',
     'evil_mman.c',

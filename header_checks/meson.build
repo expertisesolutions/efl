@@ -79,6 +79,7 @@ function_checks = [
   ['chown', ['unistd.h']],
   ['clock_gettime', ['time.h']],
   ['dirfd', ['dirent.h sys/types.h']],
+  ['dirname', ['libgen.h']],
   ['fchmod', ['sys/stat.h']],
   ['fcntl', ['fcntl.h']],
   ['fork', ['unistd.h']],
