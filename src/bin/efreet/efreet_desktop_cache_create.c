@@ -3,14 +3,16 @@
 #endif
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <errno.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
 
-#include <libgen.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+# include <libgen.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h> /* fcntl realpath */

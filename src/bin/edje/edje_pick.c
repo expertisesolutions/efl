@@ -6,9 +6,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <ctype.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
 #include <Ecore_Getopt.h>
 
 #include "edje_cc.h"

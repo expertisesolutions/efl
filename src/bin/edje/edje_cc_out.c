@@ -13,9 +13,12 @@
 
 #include <string.h>
 #include <limits.h>
-#include <unistd.h>
 #include <sys/stat.h>
-#include <libgen.h>
+
+#ifndef _MSC_VER
+ #include <unistd.h>
+ #include <libgen.h>
+#endif
 
 #include <Ecore_Evas.h>
 
@@ -736,7 +739,7 @@ check_program(Edje_Part_Collection *pc, Edje_Program *ep, Eet_File *ef)
 
         if (et->id >= (int) pc->parts_count)
           {
-             ERR("In group '%s' program '%s', target id '%d' greater than possible index '%d'.", 
+             ERR("In group '%s' program '%s', target id '%d' greater than possible index '%d'.",
                  pc->part ? pc->part : "", ep->name ? ep->name : "", et->id, (int) pc->parts_count - 1);
              exit(-1);
           }

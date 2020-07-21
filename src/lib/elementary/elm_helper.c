@@ -3,7 +3,12 @@
 #endif
 
 #include <Elementary.h>
-#include <regex.h>
+
+#ifndef _MSC_VER
+# include <regex.h>
+#else
+# include <pcreposix.h>
+#endif
 
 struct _Elm_Validator_Regexp
 {

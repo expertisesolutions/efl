@@ -14,7 +14,10 @@ static int _efreet_menu_log_dom = -1;
 #include "Efreet.h"
 #include "efreet_private.h"
 #include "efreet_xml.h"
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 typedef struct Efreet_Menu_Move Efreet_Menu_Move;
 

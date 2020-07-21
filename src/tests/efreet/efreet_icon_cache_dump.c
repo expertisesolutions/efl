@@ -6,8 +6,11 @@
 #include <limits.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <errno.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Eina.h>
 #include <Eet.h>

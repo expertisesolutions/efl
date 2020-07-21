@@ -6,8 +6,11 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <locale.h>
-#include <unistd.h>
 #include <errno.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Eina.h>
 #include <Ecore.h>

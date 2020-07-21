@@ -6,11 +6,14 @@
 
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h>
 #include <locale.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Ecore_File.h>
 #include <Ecore_Evas.h>
