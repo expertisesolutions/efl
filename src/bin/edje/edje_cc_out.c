@@ -1840,7 +1840,6 @@ data_write_mo(Eet_File *ef, int *mo_num)
              mw->ef = ef;
              mw->mo_entry = &edje_file->mo_dir->mo_entries[i];
              *mo_num += 1;
-             pending_threads++;
 
              po_entry = strdup(mw->mo_entry->mo_src);
              sub_str = strstr(mw->mo_entry->mo_src, ".po");
@@ -1876,6 +1875,7 @@ data_write_mo(Eet_File *ef, int *mo_num)
                }
              else
                {
+                  pending_threads++;
                   if (threads)
                     ecore_thread_run(data_thread_mo, data_thread_mo_end, NULL, mw);
                   else
