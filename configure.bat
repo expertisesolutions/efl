@@ -44,19 +44,15 @@ exit /B %errorlevel%
     )
     set envfile=
 
-    set all_set=1
-    if not defined OPENSSL_DIR set all_set=0
-
-    if %all_set%==1 (
-        @echo - Using OpenSSL: %OPENSSL_DIR%
-    ) else (
-        @echo At least one of the following variables were not set:
-        @echo     - OPENSSL_DIR: %OPENSSL_DIR%
-        @echo Please define them using by creating a "env.bat" file containing:
-        @echo     @set OPENSSL_DIR=^<your OpenSSL directory^>
-        exit /B 1
+    if not defined openssl_dir (
+        echo [INFO] "OPENSSL_DIR" environment variable is not defined. Relying
+        echo on meson to properly find OpenSSL with standard
+        echo `dependency('openssl'^)` command. If meson does not find OpenSSL,
+        echo consider setting it to your current OPENSSL library directory. In
+        echo this case, you may consider creating a env.bat file containing:
+        echo
+        echo     @set OPENSSL_DIR=^<your OpenSSL directory^>
     )
-    set all_set=
 
     set pkg_config_libdir=thistotallydoesnotexist
 exit /B 0
@@ -86,7 +82,6 @@ exit /B 0
 
     :: ------------------------------------------------------
     set MESONFLAGS=^
-            -Dopenssl_dir="%OPENSSL_DIR:"=%"^
             -Dnls=false^
             -Dsystemd=false^
             -Dgstreamer=false^
@@ -111,6 +106,10 @@ exit /B 0
             -Dbindings=^
             --buildtype=debug^
             --native-file native-file-windows.txt
+
+    if defined openssl_dir (
+        set MESONFLAGS=-Dopenssl_dir="%OPENSSL_DIR:"=%" %MESONFLAGS%
+    )
 
     if exist build (
         @echo "- Build directory ("build") already exists. Old config will be wiped with `--wipe`."
