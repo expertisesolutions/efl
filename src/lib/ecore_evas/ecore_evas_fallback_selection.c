@@ -68,7 +68,6 @@ available_types(Eina_Array *acceptable_types, Eina_Array *available_types)
           {
              found_type = eina_stringshare_ref(type);
           }
-        eina_stringshare_del(type);
      }
   eina_array_free(acceptable_types);
 
