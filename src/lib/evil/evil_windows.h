@@ -11,6 +11,6 @@
 #include <windows.h>
 #undef WIN32_LEAN_AND_MEAN
 
-#include <evil_api.h>
+#include "evil_private.h"
 
 #endif

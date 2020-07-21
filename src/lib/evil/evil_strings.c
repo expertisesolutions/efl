@@ -1,4 +1,4 @@
-#include "evil_strings.h"
+#include "evil_private.h"
 
 EVIL_API int
 ffs(int i)
