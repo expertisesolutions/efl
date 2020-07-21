@@ -68,13 +68,11 @@ EVIL_API void usleep(useconds_t usec);
 #endif
 
 #ifndef HAVE_SLEEP
-
 # define HAVE_SLEEP
 # define sleep evil_sleep
+#endif
 
 EVIL_API void evil_sleep(unsigned int seconds);
-
-#endif
 
 /*
  * Sockets and pipe related functions
