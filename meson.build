@@ -210,6 +210,7 @@ if sys_windows
       '-Wno-old-style-cast',
       '-Wno-zero-as-null-pointer-constant',
       '-Wno-c++98-compat-pedantic',
+      '-Wno-c++-compat',
       '-Wno-conditional-uninitialized',
       '-Wno-array-bounds-pointer-arithmetic',
       '-Wno-self-assign',
@@ -475,13 +476,13 @@ subprojects = [
 ['emotion'          ,[]                    ,  true,  true, false, false,  true,  true,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb'           ,[]                    ,  true,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb_client'    ,[]                    , false,  true,  true, false, false,  true,  true, ['eina', 'efl', 'eo', 'ethumb'], []],
-['elementary'       ,[]                    ,  true,  true,  true,  true,  true,  true,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'ethumb-client', 'emotion', 'ecore-imf', 'ecore-con', 'eldbus', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
+['elementary'       ,[]                    ,  true,  true,  true,  true,  true,  true,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'ecore-imf', 'ecore-con', 'eldbus', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
 ['efl_canvas_wl'    ,['wl']                , false,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo', 'evas', 'ecore'], []],
 ['elua'             ,['elua']              , false,  true,  true, false,  true, false, false, ['eina', lua_pc_name], []],
 ['ecore_wayland'    ,['wl-deprecated']     , false,  true, false, false, false, false, false, ['eina'], []],
 ['ecore_drm'        ,['drm-deprecated']    , false,  true, false, false, false, false, false, ['eina'], []],
 ['exactness'        ,[]                    , false,  false,  true, false, false, false, false, ['eina, evas, eet'], []],
-]
+ ]
 
 if sys_windows
   ignored_subprojects = [
@@ -503,26 +504,18 @@ if sys_windows
     #'ecore_imf',
     #'ecore_imf_evas',
     #'ecore_input_evas',
-    'ecore_ipc',
+    #'ecore_ipc',
     'ecore_sdl',
     'ecore_wayland',
     'ecore_wl2',
     'ecore_x',
-    'edje',
-    #'eet',
     'eeze',
-    'efl_canvas_wl',
-    'efreet',
-    'efreet',
-    'eio',
-    'elementary',
+    'efl_canvas_wl', 
     'elua',
-    'embryo',
     'emotion',
     'ephysics',
     'ethumb',
     'ethumb_client',
-    #'evas',
     'exactness',
   ]
 else
@@ -842,14 +835,12 @@ configure_file(
 )
 
 # desabled for windows for now
-if not sys_windows
-  configure_file(
-    input: 'elm_intro.h.in',
-    output: 'elm_intro.h',
-    configuration: config_h,
-    install_dir : join_paths(dir_include,'elementary-'+version_major)
-  )
-endif
+configure_file(
+  input: 'elm_intro.h.in',
+  output: 'elm_intro.h',
+  configuration: config_h,
+  install_dir : join_paths(dir_include,'elementary-'+version_major)
+)
 
 subdir(join_paths('systemd-services'))
 
