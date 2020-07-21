@@ -181,7 +181,7 @@ foreach edc_file : edc_files
     depends : edje_depends,
     input : edc_file,
     output : '@BASENAME@.edj',
-    command : edje_cc_exe + ['-beta',
+    command : edje_cc_exe + ['-beta', '-in-tree',
               '-id', meson.current_source_dir(),
               '-fd', meson.current_source_dir(),
               '-sd', meson.current_source_dir(),
