@@ -19,7 +19,6 @@
 
 
 #ifndef HAVE_GETTIMEOFDAY
-
 # define HAVE_GETTIMEOFDAY
 # define gettimeofday evil_gettimeofday
 
@@ -28,9 +27,9 @@ struct timezone {
     int tz_dsttime;
 };
 
-EVIL_API int evil_gettimeofday(struct timeval * tp, struct timezone * tzp);
-
 #endif
+
+EVIL_API int evil_gettimeofday(struct timeval * tp, struct timezone * tzp);
 
 /**
  * @}
