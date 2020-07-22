@@ -48,9 +48,13 @@ static const Efl_Test_Case etc[] = {
   { "elm_scroller", elm_test_scroller},
   { "elm_frame", elm_test_frame},
   { "elm_datetime", elm_test_datetime},
+#ifdef HAVE_EMOTION
   { "elm_player", elm_test_player},
+#endif
   { "elm_bg", elm_test_bg},
+#ifdef HAVE_EMOTION
   { "elm_video", elm_test_video},
+#endif
   { "elm_segmentcontrol", elm_test_segmentcontrol},
   { "elm_progressbar", elm_test_progressbar},
   { "elm_fileselector", elm_test_fileselector},

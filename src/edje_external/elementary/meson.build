@@ -36,9 +36,12 @@ edje_external_elementary = [
   'elm_spinner.c',
   'elm_thumb.c',
   'elm_toolbar.c',
-  'elm_video.c',
   'elm_web.c'
 ]
+
+if get_option('emotion')
+  edje_external_elementary += files('elm_video.c')
+endif
 
 ecore_systemd_mod = shared_module('elementary',
     edje_external_elementary,

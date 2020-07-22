@@ -73,7 +73,6 @@ pub_eo_files = [
   'efl_ui_datepicker.eo',
   'efl_ui_timepicker.eo',
   'efl_ui_tags.eo',
-  'efl_ui_video.eo',
   'efl_ui_win.eo',
   'efl_ui_win_inlined.eo',
   'efl_ui_win_socket.eo',
@@ -192,6 +191,10 @@ pub_eo_files = [
   'efl_ui_separator.eo',
   'efl_ui_spotlight_animation_manager.eo',
 ]
+
+if get_option('emotion')
+  pub_eo_files += files(['efl_ui_video.eo'])
+endif
 
 foreach eo_file : pub_eo_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
@@ -734,7 +737,6 @@ elementary_src = files([
   'elc_naviframe.c',
   'efl_ui_navigation_bar.c',
   'efl_ui_navigation_layout.c',
-  'elc_player.c',
   'elc_popup.c',
   'elc_scrolled_entry.c',
   'elm_access.c',
@@ -853,7 +855,6 @@ elementary_src = files([
   'elm_toolbar.c',
   'elm_transit.c',
   'elm_util.c',
-  'efl_ui_video.c',
   'elm_view_list.c',
   'elm_view_form.c',
   'elm_web2.c',
@@ -958,7 +959,12 @@ elementary_src = files([
   'efl_ui_spotlight_animation_manager.c',
 ])
 
-elementary_deps = [emile, eo, efl, edje, ethumb, ethumb_client, emotion, ecore_imf, ecore_con, eldbus, efreet, eio, buildsystem]
+if get_option('emotion')
+  elementary_src += files(['elc_player.c',
+    'efl_ui_video.c'])
+endif
+
+elementary_deps = [emile, eo, efl, edje, ethumb, ethumb_client, ecore_imf, ecore_con, eldbus, efreet, eio, buildsystem]
 elementary_pub_deps = [eina, eet, evas, ecore, ecore_evas, ecore_file, ecore_input, ecore_imf, ecore_con,
                        edje, eldbus, efreet, ethumb_client, efl]
 elementary_ext_deps = [atspi, dl, intl, buildsystem_simple]

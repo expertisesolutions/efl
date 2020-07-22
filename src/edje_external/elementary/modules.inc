@@ -33,5 +33,7 @@ DEFINE_TYPE(slideshow)
 DEFINE_TYPE(spinner)
 DEFINE_TYPE(thumb)
 DEFINE_TYPE(toolbar)
+#ifdef HAVE_EMOTION
 DEFINE_TYPE(video)
+#endif
 DEFINE_TYPE(web)

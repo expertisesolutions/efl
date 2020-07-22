@@ -140,7 +140,6 @@ elementary_test_src = [
   'test_ui_popup.c',
   'test_ui_textpath.c',
   'test_canvas_textblock.c',
-  'test_video.c',
   'test_weather.c',
   'test_web.c',
   'test_win_inline.c',
@@ -175,6 +174,10 @@ else
   link_args = []
   link_args_lib = []
 endif
+if get_option('emotion')
+  elementary_test_src += files('test_video.c')
+endif
+
 elementary_test = executable('elementary_test',
         elementary_test_src,
         dependencies: [elementary, intl] + elementary_deps + elementary_pub_deps,

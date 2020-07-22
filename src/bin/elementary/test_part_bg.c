@@ -4,7 +4,11 @@
 #include <Efl_Ui.h>
 #include <Elementary.h>
 
+#ifdef HAVE_EMOTION
 #define MAX_NUM_OF_CONTENT 17
+#else
+#define MAX_NUM_OF_CONTENT 16
+#endif
 
 const Efl_Class *content_class[MAX_NUM_OF_CONTENT];
 
@@ -139,12 +143,20 @@ test_part_background(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void 
    content_class[8] = EFL_UI_TEXTBOX_CLASS;
    content_class[9] = EFL_UI_FLIP_CLASS;
    content_class[10] = EFL_UI_PANES_CLASS;
+#ifdef HAVE_EMOTION
    content_class[11] = EFL_UI_VIDEO_CLASS;
    content_class[12] = EFL_UI_BG_CLASS;
    content_class[13] = EFL_UI_IMAGE_CLASS;
    content_class[14] = EFL_UI_IMAGE_ZOOMABLE_CLASS;
    content_class[15] = EFL_UI_SPIN_CLASS;
    content_class[16] = EFL_UI_SPIN_BUTTON_CLASS;
+#else
+   content_class[11] = EFL_UI_BG_CLASS;
+   content_class[12] = EFL_UI_IMAGE_CLASS;
+   content_class[13] = EFL_UI_IMAGE_ZOOMABLE_CLASS;
+   content_class[14] = EFL_UI_SPIN_CLASS;
+   content_class[15] = EFL_UI_SPIN_BUTTON_CLASS;
+#endif
 
    win = efl_add(EFL_UI_WIN_CLASS, efl_main_loop_get(),
                  efl_text_set(efl_added, "Widget Part Background"),

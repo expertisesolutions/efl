@@ -189,7 +189,9 @@ typedef void (*Context_Item_Clicked_Cb)(void *data, Eo *obj, void *event_info);
 
 # include <efl_ui_vg_animation.eo.h>
 # include <efl_ui_clock.eo.h>
+#ifdef HAVE_EMOTION
 # include <efl_ui_video.eo.h>
+#endif
 
 # include <efl_ui_widget_factory.eo.h>
 # include <efl_ui_image_factory.eo.h>

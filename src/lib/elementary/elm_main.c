@@ -14,8 +14,6 @@
 # include <unistd.h>
 #endif
 
-#include <Emotion.h>
-
 #include <Elementary.h>
 
 #include "eina_internal.h"

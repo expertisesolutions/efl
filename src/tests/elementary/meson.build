@@ -64,9 +64,7 @@ elementary_suite_src = [
   'elm_test_scroller.c',
   'elm_test_frame.c',
   'elm_test_datetime.c',
-  'elm_test_player.c',
   'elm_test_bg.c',
-  'elm_test_video.c',
   'elm_test_segmentcontrol.c',
   'elm_test_progressbar.c',
   'elm_test_fileselector.c',
@@ -106,6 +104,11 @@ elementary_suite_src = [
   'elm_test_widget_focus.c',
   'elm_test_widget_basics.c'
 ]
+
+if get_option('emotion')
+  elementary_suite_src += files(['elm_test_video.c',
+    'elm_test_player.c'])
+endif
 
 elementary_suite = executable('elementary_suite',
   elementary_suite_src,
