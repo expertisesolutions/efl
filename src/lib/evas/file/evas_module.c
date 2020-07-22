@@ -126,7 +126,7 @@ evas_module_paths_init(void)
         if (run_in_tree == 1)
           {
              struct stat st;
-             const char mp[] = PACKAGE_BUILD_DIR"/src/modules/evas";
+             const char mp[] = PACKAGE_BUILD_DIR EINA_PATH_SEP_S "src" EINA_PATH_SEP_S "modules" EINA_PATH_SEP_S "evas";
              if (stat(mp, &st) == 0)
                {
                   evas_module_paths = _evas_module_append(evas_module_paths, strdup(mp));
@@ -139,14 +139,14 @@ evas_module_paths_init(void)
    /* 1. libevas.so/../evas/modules/ */
    libdir = (char *)_evas_module_libdir_get();
    if (!libdir)
-     path = eina_module_symbol_path_get(evas_module_paths_init, "/evas/modules");
+     path = eina_module_symbol_path_get(evas_module_paths_init, EINA_PATH_SEP_S "evas" EINA_PATH_SEP_S "modules");
    else
      {
-        path = malloc(strlen(libdir) + strlen("/evas/modules") + 1);
+        path = malloc(strlen(libdir) + strlen(EINA_PATH_SEP_S "evas" EINA_PATH_SEP_S "modules") + 1);
         if (path)
           {
              strcpy(path, libdir);
-             strcat(path, "/evas/modules");
+             strcat(path, EINA_PATH_SEP_S "evas" EINA_PATH_SEP_S "modules");
           }
      }
    if (eina_list_search_unsorted(evas_module_paths, (Eina_Compare_Cb) strcmp, path))
@@ -155,7 +155,7 @@ evas_module_paths_init(void)
      evas_module_paths = _evas_module_append(evas_module_paths, path);
 
    /* 2. PREFIX/lib/evas/modules/ */
-   path = PACKAGE_LIB_DIR "/evas/modules";
+   path = PACKAGE_LIB_DIR "evas" EINA_PATH_SEP_S "modules";
    if (!eina_list_search_unsorted(evas_module_paths, (Eina_Compare_Cb) strcmp, path))
      {
         path = strdup(path);
@@ -450,7 +450,7 @@ evas_module_engine_list(void)
 
    EINA_LIST_FOREACH(evas_module_paths, l, s)
      {
-        snprintf(buf, sizeof(buf), "%s/engines", s);
+        snprintf(buf, sizeof(buf), "%s" EINA_PATH_SEP_S "engines", s);
         it = eina_file_direct_ls(buf);
         if (it)
           {
@@ -468,7 +468,7 @@ evas_module_engine_list(void)
                     {
                        if (run_in_tree == 1)
                          {
-                            bs_mod_dir_get(buf, sizeof(buf), "evas/engines", fname);
+                            bs_mod_dir_get(buf, sizeof(buf), "evas" EINA_PATH_SEP_S "engines", fname);
                             if (!evas_file_path_exists(buf))
                             buf[0] = '\0';
                          }
@@ -476,7 +476,7 @@ evas_module_engine_list(void)
 
                   if (buf[0] == '\0')
 #endif
-                    snprintf(buf, sizeof(buf), "%s/engines/%s/%s",
+                    snprintf(buf, sizeof(buf), "%s" EINA_PATH_SEP_S "engines" EINA_PATH_SEP_S "%s" EINA_PATH_SEP_S "%s",
                              s, fname, MODULE_ARCH);
 
                   it2 = eina_file_ls(buf);
@@ -601,7 +601,7 @@ evas_module_find_type(Evas_Module_Type type, const char *name)
                {
                   char subsystem[PATH_MAX];
 
-                  snprintf(subsystem, sizeof(subsystem), "evas/%s", type_str);
+                  snprintf(subsystem, sizeof(subsystem), "evas" EINA_PATH_SEP_S "%s", type_str);
                   bs_mod_get(buffer, sizeof(buffer), subsystem, name);
                   if (!evas_file_path_exists(buffer))
                   buffer[0] = '\0';
@@ -610,10 +610,8 @@ evas_module_find_type(Evas_Module_Type type, const char *name)
 #endif
 
         if (buffer[0] == '\0')
-          snprintf(buffer, sizeof(buffer), "%s/%s/%s/%s/%s",
-                   path, type_str, name, MODULE_ARCH, EVAS_MODULE_NAME);
-
-        if (!evas_file_path_is_file(buffer)) continue;
+          snprintf(buffer, sizeof(buffer), "%s" EINA_PATH_SEP_S "%s" EINA_PATH_SEP_S" %s" EINA_PATH_SEP_S "%s" EINA_PATH_SEP_S "%s",
+                   path, type_str, name, !run_in_tree ? MODULE_ARCH : "", EVAS_MODULE_NAME);
 
         en = eina_module_new(buffer);
         if (!en) continue;
