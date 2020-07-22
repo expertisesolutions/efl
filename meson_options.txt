@@ -64,6 +64,12 @@ option('ethumb',
   description : 'Library and service for thumbnail generation and caching'
 )
 
+option('emotion',
+  type : 'boolean',
+  value : true,
+  description : 'Emotion video and audio support in efl'
+)
+
 option('eeze',
   type : 'boolean',
   value : true,

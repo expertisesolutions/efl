@@ -14,7 +14,6 @@
 # include <unistd.h>
 #endif
 
-#include <Emotion.h>
 #include <Efl_Core.h>
 #include <Elementary.h>
 

@@ -885,7 +885,9 @@ add_tests:
    ADD_TEST_EO(NULL, "Images", "EFL.UI.Image Async Load", test_load_ui_image);
    ADD_TEST_EO(NULL, "Images", "EFL.UI.Image Prescale", test_ui_image_prescale);
    ADD_TEST(NULL, "Images", "Slideshow", test_slideshow);
+#ifdef HAVE_EMOTION
    ADD_TEST(NULL, "Images", "Video", test_video);
+#endif
 
    //------------------------------//
    ADD_TEST(NULL, "Containers", "Box Vert", test_box_vert);

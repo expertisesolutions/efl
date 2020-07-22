@@ -1,4 +1,8 @@
-edje_externals = ['emotion', 'elementary']
+edje_externals = ['elementary']
+
+if get_option('emotion')
+  edje_externals += ['emotion']
+endif
 
 foreach edje_external : edje_externals
   #!?%$§#! custom nane for edje externals

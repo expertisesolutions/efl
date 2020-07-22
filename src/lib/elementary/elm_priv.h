@@ -26,7 +26,9 @@
 # include "Evas.h"
 #define EFL_INTERNAL_UNSTABLE
 # include "Evas_Internal.h"
+#if HAVE_EMOTION
 # include "Emotion.h"
+#endif
 
 #include "Elementary.h"
 #include "Efl_Ui.h"
