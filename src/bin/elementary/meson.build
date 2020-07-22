@@ -187,7 +187,11 @@ elementary_test = executable('elementary_test',
         link_args: link_args
 )
 
-library('elementary_test',
+elementary_test_lib_name = 'elementary_test'
+if sys_windows
+elementary_test_lib_name = 'elementary_test_lib'
+endif
+library(elementary_test_lib_name,
         elementary_test_src,
         dependencies: [elementary, intl] + elementary_deps + elementary_pub_deps,
         install: false,
