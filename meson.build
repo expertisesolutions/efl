@@ -52,27 +52,6 @@ sys_bsd = bsd.contains(host_machine.system())
 sys_windows = windows.contains(host_machine.system())
 sys_osx = osx.contains(host_machine.system())
 
-if sys_windows
-  nuget_download = get_option('nuget-download')
-  if cc.has_header_symbol('stdio.h', '_MSC_VER') and nuget_download
-    run_command ('powershell.exe', 'Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $env:MESON_BUILD_ROOT\\nuget.exe')
-
-    r = run_command('build/nuget.exe', 'restore', 'win32-deps/packages.config', '-PackagesDirectory', 'win32-deps')
-    output = r.stdout().strip()
-    if r.returncode() != 0
-      errortxt = r.stderr().strip()
-      message('Nuget download failed.')
-      error(errortxt)
-    endif
-
-    message(output)
-
-    subdir('win32-deps')
-  else
-    message('nuget-download disabled, if you want to use it to get dependencies you need to pass -Dnuget-download=true or set it in native-file-windows.txt')
-  endif
-endif
-
 if sys_windows and cc.get_id() in ['msvc', 'clang-cl']
   pkgconfig = disabler()
 else
