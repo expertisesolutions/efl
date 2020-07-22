@@ -611,9 +611,7 @@ evas_module_find_type(Evas_Module_Type type, const char *name)
 
         if (buffer[0] == '\0')
           snprintf(buffer, sizeof(buffer), "%s/%s/%s/%s/%s",
-                   path, type_str, name, MODULE_ARCH, EVAS_MODULE_NAME);
-
-        if (!evas_file_path_is_file(buffer)) continue;
+                   path, type_str, name, !run_in_tree ? MODULE_ARCH : "", EVAS_MODULE_NAME);
 
         en = eina_module_new(buffer);
         if (!en) continue;
