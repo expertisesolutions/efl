@@ -11,7 +11,9 @@
 
 #include <Ecore.h>
 #include <Ecore_Evas.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 static Eina_Bool
 _stdin_cb(void *data EINA_UNUSED, Ecore_Fd_Handler *handler EINA_UNUSED)

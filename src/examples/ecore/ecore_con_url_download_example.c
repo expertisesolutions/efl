@@ -3,9 +3,14 @@
 
 #include <stdio.h>
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
+#endif
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 #include <Ecore.h>
 #include <Ecore_Con.h>

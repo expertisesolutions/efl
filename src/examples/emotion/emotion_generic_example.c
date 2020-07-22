@@ -10,7 +10,12 @@
 #include <Emotion.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+#ifdef _WIN32
+# include <evil_private.h> // sleep
+#endif
 
 #define WIDTH  (320)
 #define HEIGHT (240)

@@ -2,7 +2,12 @@
 // gcc -o ecore_con_server_http_example ecore_con_server_http_example.c `pkg-config --libs --cflags ecore ecore-con eina`
 
 #include <stdio.h>
-#include <sys/time.h>
+#ifndef _MSC_VER
+# include <sys/time.h>
+#endif
+#ifdef _WIN32
+# include <evil_private.h> // time, time_t
+#endif
 #include <Ecore.h>
 #include <Ecore_Con.h>
 

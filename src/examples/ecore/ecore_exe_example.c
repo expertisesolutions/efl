@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <Ecore.h>
+#ifdef _WIN32
+# include <evil_private.h> // pid_t
+#endif
 
 #define BUFFER_SIZE 1024
 
