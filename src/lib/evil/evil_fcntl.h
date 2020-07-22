@@ -5,6 +5,11 @@
 #include "evil_private.h"
 #include <sys/types.h>
 
+#if _MSC_VER
+# define _CRT_DECLARE_NONSTDC_NAMES 1
+# include <fcntl.h>
+# undef _CRT_DECLARE_NONSTDC_NAMES
+#endif
 
 /**
  * @def O_ACCMODE
