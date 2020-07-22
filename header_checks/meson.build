@@ -226,6 +226,9 @@ check = dependency('check', fallback : ['check', 'check_dep'])
 # freetype2
 freetype2 = dependency('freetype2', fallback : ['freetype2', 'freetype_dep'])
 
+# libjpeg
+jpeg = dependency('libjpeg', fallback : ['libjpeg', 'jpeg_dep'])
+
 if sys_windows
   # pcre
   pcre_project = subproject('pcre')
@@ -258,15 +261,6 @@ config_h.set('VMAJ', version_major)
 config_h.set('VMIN', version_minor)
 config_h.set('VMIC', version_micro)
 config_h.set('VREV', '0')
-
-#jpeg detection ... life is a bit more complex there
-
-jpeg = dependency('libjpeg', required: false)
-if jpeg.found() == false
-  if not sys_windows
-    jpeg = cc.find_library('jpeg')
-  endif
-endif
 
 if sys_bsd == true
   config_h.set('HAVE_NOTIFY_KEVENT', '1')
