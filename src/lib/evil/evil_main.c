@@ -41,6 +41,7 @@ evil_init(void)
 
    if (!QueryPerformanceFrequency(&freq))
        return 0;
+
    _evil_time_freq = freq.QuadPart;
 
    QueryPerformanceCounter(&count);
