@@ -1894,7 +1894,11 @@ typedef enum _Edje_Tween_Mode
    EDJE_TWEEN_MODE_CUBIC_BEZIER      = 11,       /**< Cubic Bezier tween mode value */
    EDJE_TWEEN_MODE_LAST              = 12,       /**< Last tween mode value */
    EDJE_TWEEN_MODE_MASK              = 0xff,     /**< Mask tween mode value */
+#ifdef _MSC_VER
+   EDJE_TWEEN_MODE_OPT_FROM_CURRENT  = INT_MAX /**< Options from current tween mode value */
+#else
    EDJE_TWEEN_MODE_OPT_FROM_CURRENT  = (1 << 31) /**< Options from current tween mode value */
+#endif
 } Edje_Tween_Mode;
 
 /**
