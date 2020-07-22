@@ -273,7 +273,9 @@ _c_init(void)
    LOAD("libcurl.dll"); // try 1
    LOAD("curllib.dll"); // if fail try 2
    if (!_c->mod)
-     ERR("Could not find libcurl-5.dll, libcurl-4.dll, libcurl.dll, curllib.dll");
+   {
+     WRN("Could not find libcurl-5.dll, libcurl-4.dll, libcurl.dll, curllib.dll");
+   }
 #elif defined(__APPLE__) && defined(__MACH__)
    LOAD("libcurl.5.dylib"); // try 1
    LOAD("libcurl.4.dylib"); // try 1
