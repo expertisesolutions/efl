@@ -2,11 +2,16 @@
 // gcc -o ecore_audio_custom ecore_audio_custom.c `pkg-config --libs --cflags ecore ecore-audio`
 
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <termios.h>
-#include <unistd.h>
-#include <fcntl.h>
+#ifndef _MSC_VER
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <termios.h>
+# include <unistd.h>
+# include <fcntl.h>
+#endif
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 #include <Ecore.h>
 #include <Ecore_Audio.h>
 #include <math.h>

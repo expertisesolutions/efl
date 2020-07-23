@@ -3,7 +3,9 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 #include <Ecore.h>
 
 #define BUFFER_SIZE 1024

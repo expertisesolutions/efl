@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <limits.h>
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <sys/stat.h>
+# include <unistd.h>
+#endif
 #include <string.h>
 
 int

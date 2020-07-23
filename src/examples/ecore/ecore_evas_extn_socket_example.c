@@ -18,7 +18,9 @@
 
 #include <Ecore.h>
 #include <Ecore_Evas.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 // protocol version - change this as needed
 #define MSG_DOMAIN_CONTROL_OBJECT 0x1004

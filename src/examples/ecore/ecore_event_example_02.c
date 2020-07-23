@@ -2,7 +2,9 @@
 // gcc -g -Wall -o ecore_event_example_02 ecore_event_example_02.c `pkg-config --cflags --libs ecore`
 
 #include <Ecore.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 struct context   // helper struct to give some context to the callbacks
 {
