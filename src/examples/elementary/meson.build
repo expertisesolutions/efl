@@ -90,7 +90,6 @@ examples = [
   'table_example_02',
   'theme_example_01',
   'theme_example_02',
-  'thumb_example_01',
   'toolbar_example_01',
   'toolbar_example_02',
   'toolbar_example_03',
@@ -122,6 +121,10 @@ examples = [
   'efl_ui_grid_view_example_1',
   'efl_canvas_textblock_obstacles_example'
 ]
+
+if get_option('ethumb')
+  examples += files('thumb_example_01')
+endif
 
 examples_deps = [elementary, ecore, eio, m]
 

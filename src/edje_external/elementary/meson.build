@@ -34,10 +34,13 @@ edje_external_elementary = [
   'elm_slider.c',
   'elm_slideshow.c',
   'elm_spinner.c',
-  'elm_thumb.c',
   'elm_toolbar.c',
   'elm_web.c'
 ]
+
+if get_option('ethumb')
+  edje_external_elementary += files('elm_thumb.c')
+endif
 
 if get_option('emotion')
   edje_external_elementary += files('elm_video.c')

@@ -128,7 +128,6 @@ elementary_test_src = [
   'test_sys_notify.c',
   'test_systray.c',
   'test_table.c',
-  'test_thumb.c',
   'test_toolbar.c',
   'test_tooltip.c',
   'test_transit.c',
@@ -176,6 +175,9 @@ else
 endif
 if get_option('emotion')
   elementary_test_src += files('test_video.c')
+endif
+if get_option('ethumb')
+  elementary_test_src += files('test_thumb.c')
 endif
 
 elementary_test = executable('elementary_test',

@@ -38,7 +38,6 @@ elementary_suite_src = [
   'elm_test_actionslider.c',
   'elm_test_box.c',
   'elm_test_table.c',
-  'elm_test_thumb.c',
   'elm_test_menu.c',
   'elm_test_photocam.c',
   'elm_test_win.c',
@@ -108,6 +107,10 @@ elementary_suite_src = [
 if get_option('emotion')
   elementary_suite_src += files(['elm_test_video.c',
     'elm_test_player.c'])
+endif
+
+if get_option('ethumb')
+  elementary_suite_src += files('elm_test_thumb.c')
 endif
 
 elementary_suite = executable('elementary_suite',

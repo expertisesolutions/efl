@@ -25,6 +25,7 @@ struct _Elm_Icon_Data
    Evas_Object          *obj; // the object itself
    const char           *stdicon;
 
+#ifdef HAVE_ETHUMB
    struct
    {
       struct
@@ -34,14 +35,13 @@ struct _Elm_Icon_Data
       } file, thumb;
 
       Ecore_Event_Handler *eeh;
-
       Ethumb_Thumb_Format  format;
 
       Ethumb_Client_Async *request;
 
       Eina_Bool            retry : 1;
    } thumb;
-
+#endif
    struct
    {
       int       requested_size;
