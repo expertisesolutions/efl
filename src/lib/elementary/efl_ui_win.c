@@ -7428,12 +7428,14 @@ _on_atspi_bus_connected(void *data EINA_UNUSED, const Efl_Event *event EINA_UNUS
 EOLIAN static void
 _efl_ui_win_class_constructor(Efl_Class *klass EINA_UNUSED)
 {
+#ifdef HAVE_ELDBUS
    if (_elm_config->atspi_mode)
      {
         Eo *bridge = _elm_atspi_bridge_get();
         if (bridge)
            efl_event_callback_add(bridge, ELM_ATSPI_BRIDGE_EVENT_CONNECTED, _on_atspi_bus_connected, NULL);
      }
+#endif
 }
 
 EOLIAN static void

@@ -125,8 +125,6 @@ elementary_test_src = [
   'test_slideshow.c',
   'test_spinner.c',
   'test_store.c',
-  'test_sys_notify.c',
-  'test_systray.c',
   'test_table.c',
   'test_toolbar.c',
   'test_tooltip.c',
@@ -175,6 +173,13 @@ endif
 
 if get_option('ethumb')
   elementary_test_src += ['test_thumb.c']
+endif
+
+if get_option('dbus')
+  elementary_test_src += [
+    'test_sys_notify.c',
+    'test_systray.c',
+  ]
 endif
 
 elementary_test = executable('elementary_test',

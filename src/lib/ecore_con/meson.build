@@ -1,6 +1,11 @@
-ecore_con_deps = [buildsystem, eldbus, eet]
+ecore_con_deps = [buildsystem, eet]
 ecore_con_pub_deps = [eina, eo, efl, ecore]
 ecore_con_ext_deps = [buildsystem_simple, dl, http_parser]
+
+if get_option('dbus')
+  ecore_con_deps += eldbus
+endif
+
 if sys_windows == true
   ipv6 = true
 else
