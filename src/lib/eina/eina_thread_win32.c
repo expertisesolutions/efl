@@ -222,14 +222,16 @@ eina_thread_cancel(Eina_Thread t)
     Eina_Bool ret = EINA_FALSE;
     Thread_t *thr = (Thread_t *) t;
 
-    EnterCriticalSection(&thr->cancel_lock);
-    if (thr->cancellable)
+    if (thr)
       {
-          thr->cancel = EINA_TRUE;
-          ret = EINA_TRUE;
+         EnterCriticalSection(&thr->cancel_lock);
+         if (thr->cancellable)
+           {
+              thr->cancel = EINA_TRUE;
+              ret = EINA_TRUE;
+           }
+         LeaveCriticalSection(&thr->cancel_lock);
       }
-    LeaveCriticalSection(&thr->cancel_lock);
-
     return ret;
 }
 
