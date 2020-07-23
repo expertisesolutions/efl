@@ -2,7 +2,9 @@
 // gcc -o ecore_time_functions_example ecore_time_functions_example.c `pkg-config --libs --cflags ecore`
 
 #include <Ecore.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 static Eina_Bool
 _timer_cb(void *data EINA_UNUSED)

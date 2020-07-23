@@ -3,7 +3,9 @@
 
 #include <Ecore.h>
 //#include <Ecore_Eo.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 static double _initial_time = 0;
 

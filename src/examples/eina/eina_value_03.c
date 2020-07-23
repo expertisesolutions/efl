@@ -2,7 +2,12 @@
 //gcc eina_value_03.c -o eina_value_03 `pkg-config --cflags --libs eina`
 
 #include <Eina.h>
-#include <sys/time.h>
+#ifndef _MSC_VER
+# include <sys/time.h>
+#endif
+#ifdef _WIN32
+# include <evil_private.h> // gettimeofday, timezone
+#endif
 
 static Eina_Bool
 _tz_setup(const Eina_Value_Type *type, void *mem)

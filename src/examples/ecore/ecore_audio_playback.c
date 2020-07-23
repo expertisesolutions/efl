@@ -3,12 +3,17 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <libgen.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <termios.h>
-#include <unistd.h>
-#include <fcntl.h>
+#ifndef _MSC_VER
+# include <termios.h>
+# include <libgen.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <fcntl.h>
+#endif
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 #include <Ecore.h>
 #include <Ecore_Audio.h>
 #include <Eina.h>

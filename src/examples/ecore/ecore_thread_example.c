@@ -3,7 +3,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Ecore.h>
 #include <Ecore_Getopt.h>

@@ -11,7 +11,9 @@
 
 #include <Ecore.h>
 #include <Ecore_Evas.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 #include <stdio.h>
 #include <ctype.h>
 

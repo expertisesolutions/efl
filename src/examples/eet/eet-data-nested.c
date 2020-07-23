@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <limits.h>
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <sys/stat.h>
+# include <unistd.h>
+#endif
 
 // The struct that will be loaded and saved.
 // note that only the members described in the eet_data_descriptor

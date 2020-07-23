@@ -7,7 +7,9 @@
 
 #include <Ecore.h>
 #include <Eo.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 struct context   // helper struct to give some context to the callbacks
 {
