@@ -265,16 +265,15 @@ endforeach
 
 eolian_include_directories += ['-I', meson.current_source_dir()]
 
-if sys_windows
-  embed_script = find_program('config_embed.bat')
-else
-  embed_script = find_program('config_embed')
-endif
+embed_config_exe = executable('embed_config_exe', files('../../bin/elementary/embed_config.c'), dependencies: getopt)
+meson.override_find_program('embed_config', embed_config_exe)
 
-embed_config = custom_target('create_embedded_default_config',
+embed_script_run = find_program('embed_config', required: false)
+
+embed_config_target = custom_target('create_embedded_default_config',
   input: join_paths(meson.source_root(), 'data', 'elementary', 'config', 'standard', 'base.src.in'),
   output: 'elm_default_config.x',
-  command: [embed_script, '@INPUT@', '@OUTPUT@']
+  command: [embed_script_run, '-o', '@OUTPUT@', '@INPUT@'],
 )
 
 elementary_headers_unstable = [
@@ -1045,7 +1044,7 @@ c = configure_file(
 elm_package_c_args =  package_c_args
 
 elementary_lib = library('elementary',
-    elementary_src, pub_eo_file_target, priv_eo_file_target, c, embed_config,
+    elementary_src, pub_eo_file_target, priv_eo_file_target, c, embed_config_target,
     dependencies: elementary_pub_deps + elementary_deps + elementary_ext_deps,
     include_directories : config_dir + [include_directories('.')] + [include_directories(join_paths('..', '..', '..'))],
     install: true,
