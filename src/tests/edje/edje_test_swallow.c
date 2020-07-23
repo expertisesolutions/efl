@@ -2,8 +2,11 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
 #include <stdio.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #define EFL_GFX_FILTER_BETA
 #define EFL_CANVAS_LAYOUT_BETA

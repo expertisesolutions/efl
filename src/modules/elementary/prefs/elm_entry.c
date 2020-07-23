@@ -1,7 +1,17 @@
 #include "private.h"
 #include "elm_widget.h"
 #include <sys/types.h>
-#include <regex.h>
+
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
+
+#ifndef _MSC_VER
+# include <regex.h>
+#else
+# include <pcreposix.h>
+#endif
+
 #include "elm_entry_eo.h"
 
 #define BLINK_INTERVAL 0.1

@@ -2,9 +2,12 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Eet.h>
 #include <Ecore.h>

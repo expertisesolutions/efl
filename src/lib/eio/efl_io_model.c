@@ -3,7 +3,10 @@
 #endif
 
 #include <stdint.h>
-#include <libgen.h>
+
+#ifndef _MSC_VER
+# include <libgen.h>
+#endif
 
 #include <Efl.h>
 #include <Eina.h>

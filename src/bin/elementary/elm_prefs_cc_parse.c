@@ -8,10 +8,15 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <math.h>
-#include <regex.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+# include <regex.h>
+#else
+# include <pcreposix.h>
+#endif
 
 #include "elm_prefs_cc.h"
 #include <Ecore.h>

@@ -3,10 +3,13 @@
 #endif
 
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Ecore.h>
 #include <Eio.h>

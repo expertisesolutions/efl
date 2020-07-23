@@ -3,9 +3,12 @@
 #endif
 
 #include <sys/stat.h>
-#include <unistd.h>
-#include <libgen.h>
 #include <errno.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+# include <libgen.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h> /* GetCurrentProcessId */

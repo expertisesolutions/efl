@@ -4,8 +4,11 @@
 
 #include <locale.h>
 #include <Eina.h>
-#include <unistd.h>
 #include <errno.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include "Edje.h"
 #define EDJE_EDIT_IS_UNSTABLE_AND_I_KNOW_ABOUT_IT 1

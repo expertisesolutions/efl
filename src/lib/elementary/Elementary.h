@@ -15,12 +15,9 @@
 /* Standard headers for standard system calls etc. */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/param.h>
 #include <math.h>
 #include <limits.h>
 #include <ctype.h>
@@ -32,6 +29,12 @@
 # include <pwd.h>
 #endif
 #include <errno.h>
+
+#ifndef MSC_VER
+# include <unistd.h>
+# include <sys/time.h>
+# include <sys/param.h>
+#endif
 
 #ifdef ELM_UNIX
 #include <locale.h>

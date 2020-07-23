@@ -3,7 +3,6 @@
 #endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -11,6 +10,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Ecore.h>
 #include <Ecore_File.h>

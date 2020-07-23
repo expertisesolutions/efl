@@ -17,7 +17,10 @@
 #include <fcntl.h>
 #include <locale.h>
 #include <stdio.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #ifndef ENABLE_NLS
 # ifndef libintl_setlocale
