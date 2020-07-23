@@ -274,6 +274,7 @@ _efl_io_model_info_type_get(const Eina_File_Direct_Info *info, const Eina_Stat *
           return EINA_FILE_REG;
         else if (S_ISDIR(st->mode))
           return EINA_FILE_DIR;
+#ifndef _MSC_VER
         else if (S_ISCHR(st->mode))
           return EINA_FILE_CHR;
         else if (S_ISBLK(st->mode))
@@ -283,6 +284,7 @@ _efl_io_model_info_type_get(const Eina_File_Direct_Info *info, const Eina_Stat *
 #ifndef _WIN32
         else if (S_ISLNK(st->mode))
           return EINA_FILE_LNK;
+#endif
 #endif
 #ifdef S_ISSOCK
         else if (S_ISSOCK(st->mode))
