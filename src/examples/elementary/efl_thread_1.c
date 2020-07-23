@@ -1,6 +1,8 @@
 //Compile with:
 //gcc -o efl_thread_1 efl_thread_1.c -g `pkg-config --cflags --libs elementary`
+
 #include <Elementary.h>
+#ifndef _WIN32
 #include <pthread.h>
 
 static Evas_Object *win = NULL;
@@ -77,3 +79,10 @@ elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
    return 0;
 }
 ELM_MAIN()
+#else
+EAPI_MAIN int
+elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
+{
+}
+ELM_MAIN()
+#endif
