@@ -380,17 +380,14 @@ luaold_interpreters = [
 ]
 
 lua_pc_name = ''
+have_elua = get_option('elua')
 
 if get_option('lua-interpreter') == 'lua'
-  if sys_windows and get_option('lua-interpreter') != 'lua'
-    warning('There is no "' + get_option('lua-interpreter')
-            + '" binding option for Windows, backing up to "lua"')
-  endif
   config_h.set('ENABLE_LUA_OLD', '1')
   foreach l : luaold_interpreters
     lua = dependency(l[0], version: l[1], required:false)
     lua_pc_name = l[0]
-    if lua.found() == true
+    if lua.found()
       break
     endif
   endforeach
@@ -400,16 +397,35 @@ if get_option('lua-interpreter') == 'lua'
       error('Lua not found')
     endif
   endif
+  if have_elua
+    luaver_min = cc.compute_int('LUA_VERSION_NUM - 500',
+      prefix: '#include <lua.h>', dependencies: lua
+    )
+    lua_ffi = dependency('cffi-lua-5.@0@'.format(luaver_min), required: false)
+    if not lua_ffi.found()
+      error('Elua with interpreter is experimental, disable it or install cffi-lua...')
+    else
+      message('Using experimental Elua with interpreter support...')
+    endif
+  endif
 else
   lua = dependency(get_option('lua-interpreter'))
   lua_pc_name = 'luajit'
+  if not lua.found()
+    lua = dependency('luajit')
+    if not lua.found()
+      error('Lua not found')
+    endif
+  endif
 endif
 
-if sys_osx == true and get_option('lua-interpreter') == 'luajit'
-# luajit on macro is broken, this means we need to generate our own dependency with our arguments, a library later still needs to link to luajit for the pagesize argument thingy
+if sys_osx and get_option('lua-interpreter') == 'luajit'
+  # luajit on macro is broken, this means we need to generate our own
+  # dependency with our arguments, a library later still needs to link to
+  # luajit for the pagesize argument thingy
   lua = declare_dependency(
     include_directories: include_directories(lua.get_pkgconfig_variable('includedir')),
-    link_args: ['-L'+lua.get_pkgconfig_variable('libdir'), '-l'+lua.get_pkgconfig_variable('libname')]
+    link_args: ['-L' + lua.get_pkgconfig_variable('libdir'), '-l' + lua.get_pkgconfig_variable('libname')]
   )
 endif
 
