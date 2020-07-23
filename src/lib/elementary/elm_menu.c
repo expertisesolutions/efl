@@ -97,8 +97,9 @@ _elm_menu_item_elm_widget_item_disable(Eo *eo_item, Elm_Menu_Item_Data *item)
      }
    else
      elm_layout_signal_emit(VIEW(item), "elm,state,enabled", "elm");
-
+#ifdef HAVE_ELDBUS
    if (item->dbus_menu) _elm_dbus_menu_update(item->dbus_menu);
+#endif
    edje_object_message_signal_process(elm_layout_edje_get(VIEW(item)));
 }
 
@@ -731,8 +732,9 @@ _elm_menu_efl_canvas_group_group_del(Eo *obj, Elm_Menu_Data *sd)
 {
    Elm_Object_Item *eo_item;
 
+#ifdef HAVE_ELDBUS
    _elm_dbus_menu_unregister(obj);
-
+#endif
    if (sd->parent)
      {
         evas_object_event_callback_del_full
@@ -1038,8 +1040,10 @@ _elm_menu_item_efl_object_destructor(Eo *eo_item, Elm_Menu_Item_Data *item)
    else
      sd->items = eina_list_remove(sd->items, eo_item);
 
+#ifdef HAVE_ELDBUS
    if (sd->dbus_menu)
      _elm_dbus_menu_item_delete(sd->dbus_menu, item->dbus_idx);
+#endif
 
    efl_destructor(efl_super(eo_item, ELM_MENU_ITEM_CLASS));
 }
@@ -1089,17 +1093,20 @@ _elm_menu_item_add(Eo *obj, Elm_Menu_Data *sd, Elm_Object_Item *parent, const ch
 
    _elm_menu_item_add_helper(obj, it->parent, it, sd);
 
+#ifdef HAVE_ELDBUS
    if (sd->dbus_menu)
    {
      it->dbus_idx = _elm_dbus_menu_item_add(sd->dbus_menu, eo_item);
      it->dbus_menu = sd->dbus_menu;
    }
+#endif
+#ifdef HAVE_ELDBUS
    if (_elm_config->atspi_mode)
      {
         efl_access_added(eo_item);
         efl_access_children_changed_added_signal_emit(parent ? parent : obj, eo_item);
      }
-
+#endif
    return eo_item;
 }
 
@@ -1162,13 +1169,16 @@ _elm_menu_item_separator_add(Eo *obj, Elm_Menu_Data *sd, Elm_Object_Item *eo_p_i
    subitem->parent = efl_data_scope_get(eo_p_item, ELM_MENU_ITEM_CLASS);
 
    _item_separator_obj_create(subitem);
+#ifdef HAVE_ELDBUS
    _elm_menu_item_add_helper(obj, subitem->parent, subitem, sd);
-
+#endif
    _sizing_eval(obj);
 
+#ifdef HAVE_ELDBUS
    if (sd->dbus_menu)
      subitem->dbus_idx = _elm_dbus_menu_item_add(sd->dbus_menu,
                                                  eo_subitem);
+#endif
    return eo_subitem;
 }
 

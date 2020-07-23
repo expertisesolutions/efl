@@ -742,8 +742,6 @@ elementary_src = files([
   'elm_access.c',
   'efl_ui_vg_animation.c',
   'elm_actionslider.c',
-  'elm_atspi_app_object.c',
-  'elm_atspi_bridge.c',
   'efl_ui_legacy.c',
   'efl_ui_bg.c',
   'elm_box.c',
@@ -772,7 +770,6 @@ elementary_src = files([
   'elm_conform.c',
   'elm_datetime.c',
   'elm_dayselector.c',
-  'elm_dbus_menu.c',
   'elm_diskselector.c',
   'elm_entry.c',
   'efl_ui_flip.c',
@@ -844,11 +841,6 @@ elementary_src = files([
   'elm_slideshow.c',
   'elm_spinner.c',
   'elm_store.c',
-  'elm_systray.c',
-  'elm_systray_watcher.c',
-  'elm_sys_notify_interface.c',
-  'elm_sys_notify.c',
-  'elm_sys_notify_dbus.c',
   'elm_table.c',
   'elm_theme.c',
   'elm_toolbar.c',
@@ -958,6 +950,17 @@ elementary_src = files([
   'efl_ui_spotlight_animation_manager.c',
 ])
 
+if get_option('dbus')
+  elementary_src += files(['elm_dbus_menu.c',
+  'elm_systray.c',
+  'elm_systray_watcher.c',
+  'elm_sys_notify_interface.c',
+  'elm_sys_notify.c',
+  'elm_sys_notify_dbus.c'])
+  elementary_src += files(['elm_atspi_app_object.c',
+  'elm_atspi_bridge.c'])
+endif
+
 if get_option('emotion')
   elementary_src += files(['elc_player.c',
     'efl_ui_video.c'])
@@ -967,13 +970,17 @@ if get_option('ethumb')
   elementary_src += files('elm_thumb.c')
 endif
 
-elementary_deps = [emile, eo, efl, edje, ecore_imf, ecore_con, eldbus, efreet, eio, buildsystem]
+elementary_deps = [emile, eo, efl, edje, ecore_imf, ecore_con, efreet, eio, buildsystem]
 elementary_pub_deps = [eina, eet, evas, ecore, ecore_evas, ecore_file, ecore_input, ecore_imf, ecore_con,
-                       edje, eldbus, efreet, efl]
-elementary_ext_deps = [atspi, dl, intl, buildsystem_simple]
+                       edje, efreet, efl]
+elementary_ext_deps = [dl, intl, buildsystem_simple]
 if get_option('ethumb')
 elementary_pub_deps += ethumb_client
 elementary_deps += [ethumb, ethumb_client]
+endif
+if get_option('dbus')
+elementary_ext_deps += [atspi, eldbus]
+elementary_pub_deps += eldbus
 endif
 elm_options = configuration_data()
 

@@ -437,8 +437,10 @@ elm_init(int argc, char **argv)
 
    ELM_CNP_EVENT_SELECTION_CHANGED = ecore_event_type_new();
 
+#ifdef HAVE_ELDBUS
    if (_elm_config->atspi_mode != ELM_ATSPI_MODE_OFF)
      _elm_atspi_bridge_init();
+#endif
    if (!_elm_config->web_backend)
      _elm_config->web_backend = eina_stringshare_add("none");
    if (!_elm_web_init(_elm_config->web_backend))
@@ -473,7 +475,9 @@ elm_shutdown(void)
    ecore_event_handler_del(system_handlers[1]);
 
    _elm_win_shutdown();
+#ifdef HAVE_ELDBUS
    _elm_atspi_bridge_shutdown();
+#endif
 
    while (_elm_win_deferred_free) ecore_main_loop_iterate();
 
@@ -673,18 +677,22 @@ static Eina_Bool _elm_need_eldbus = EINA_FALSE;
 ELM_API Eina_Bool
 elm_need_eldbus(void)
 {
+#ifdef HAVE_ELDBUS
    if (_elm_need_eldbus) return EINA_TRUE;
    _elm_need_eldbus = EINA_TRUE;
    eldbus_init();
+#endif
    return EINA_TRUE;
 }
 
 static void
 _elm_unneed_eldbus(void)
 {
+#ifdef HAVE_ELDBUS
    if (!_elm_need_eldbus) return;
    _elm_need_eldbus = EINA_FALSE;
    eldbus_shutdown();
+#endif
 }
 
 ELM_API Eina_Bool
@@ -938,12 +946,16 @@ elm_quicklaunch_shutdown(void)
    ELM_SAFE_FREE(_elm_exit_handler, ecore_event_handler_del);
 
    _elm_theme_shutdown();
+#ifdef HAVE_ELDBUS
    _elm_unneed_systray();
    _elm_unneed_sys_notify();
+#endif
    _elm_unneed_efreet();
+#ifdef HAVE_ELDBUS
    _elm_unneed_e_dbus();
    _elm_unneed_eldbus();
    _elm_unneed_ethumb();
+#endif
    _elm_unneed_web();
 
 #ifdef HAVE_ELEMENTARY_EMAP
@@ -1227,8 +1239,10 @@ elm_quicklaunch_fork(int    argc,
 
    if (setsid() < 0) perror("could not setsid");
    if (chdir(cwd) != 0) perror("could not chdir");
+#ifdef HAVE_ELDBUS
    if (_elm_config->atspi_mode != ELM_ATSPI_MODE_OFF)
      _elm_atspi_bridge_init();
+#endif
 
    if (qre_main)
      {

@@ -1049,8 +1049,10 @@ static void _elm_config_atspi_mode_set(Eina_Bool is_enabled)
    if (_elm_config->atspi_mode == is_enabled) return;
    _elm_config->atspi_mode = is_enabled;
 
+#ifdef HAVE_ELDBUS
    if (!is_enabled) _elm_atspi_bridge_shutdown();
    else _elm_atspi_bridge_init();
+#endif
 }
 
 static Eina_Bool _elm_config_selection_unfocused_clear_get(void)
@@ -2844,8 +2846,10 @@ _env_get(void)
    if (s) _elm_config->magnifier_enable = !!atoi(s);
    s = _getenv_once("ELM_MAGNIFIER_SCALE");
    if (s) _elm_config->magnifier_scale = _elm_atof(s);
+#ifdef HAVE_EDLBUS
    s = _getenv_once("ELM_ATSPI_MODE");
    if (s) _elm_config->atspi_mode = ELM_ATSPI_MODE_ON;
+#endif
    s = _getenv_once("ELM_SPINNER_MIN_MAX_FILTER_ENABLE");
    if (s) _elm_config->spinner_min_max_filter_enable = !!atoi(s);
 

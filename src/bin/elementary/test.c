@@ -1274,8 +1274,10 @@ add_tests:
 //   ADD_TEST(NULL, "Helpers", "Factory", test_factory);
 
    //------------------------------//
+#ifdef HAVE_ELDBUS
    ADD_TEST(NULL, "System", "Notification", test_sys_notify);
    ADD_TEST(NULL, "System", "Systray Item", test_systray);
+#endif
 
    //------------------------------//
    ADD_TEST(NULL, "Drag & Drop", "Genlist DnD Dflt Anim", test_dnd_genlist_default_anim);

@@ -14,7 +14,9 @@ static const Efl_Test_Case etc[] = {
   { "elm_check", elm_test_check },
   { "elm_colorselector", elm_test_colorselector },
   { "elm_entry", elm_test_entry},
+#ifdef HAVE_ELDBUS
   { "elm_atspi", elm_test_atspi},
+#endif
   { "elm_button", elm_test_button},
   { "elm_image", elm_test_image},
   { "elm_list", elm_test_list},

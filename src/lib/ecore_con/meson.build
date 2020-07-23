@@ -1,4 +1,4 @@
-ecore_con_deps = [buildsystem, eldbus, eet]
+ecore_con_deps = [buildsystem, eet]
 ecore_con_pub_deps = [eina, eo, efl, ecore]
 ecore_con_ext_deps = [buildsystem_simple, dl, http_parser]
 if sys_windows == true
@@ -12,6 +12,10 @@ endif
 
 if ipv6
    config_h.set('HAVE_IPV6', 1)
+endif
+
+if get_option('dbus')
+  ecore_con_deps += eldbus
 endif
 
 

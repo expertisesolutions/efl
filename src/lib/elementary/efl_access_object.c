@@ -626,9 +626,10 @@ _efl_access_object_relationships_clear(Eo *obj EINA_UNUSED, Efl_Access_Object_Da
 EOLIAN Eo*
 _efl_access_object_access_root_get(void)
 {
+#ifdef HAVE_ELDBUS
    if (!root)
      root = efl_add(ELM_ATSPI_APP_OBJECT_CLASS, efl_main_loop_get());
-
+#endif
    return root;
 }
 
