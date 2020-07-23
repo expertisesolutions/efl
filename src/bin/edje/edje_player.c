@@ -6,9 +6,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <ctype.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Evas.h>
 #include <Ecore.h>

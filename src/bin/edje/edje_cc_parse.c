@@ -8,9 +8,12 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <math.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include "edje_cc.h"
 #include <Ecore.h>

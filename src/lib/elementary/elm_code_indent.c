@@ -2,7 +2,12 @@
 # include "elementary_config.h"
 #endif
 
-#include "regex.h"
+#ifndef _MSC_VER
+# include "regex.h"
+#else
+# include "pcreposix.h"
+#endif
+
 #include "Elementary.h"
 
 #include "elm_code_private.h"

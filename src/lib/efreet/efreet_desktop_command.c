@@ -2,8 +2,11 @@
 # include <config.h>
 #endif
 
-#include <unistd.h>
 #include <ctype.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #ifdef _WIN32
 # include <direct.h> /* getcwd */

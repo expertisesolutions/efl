@@ -2,8 +2,11 @@
 # include "config.h"
 #endif
 
-#include <sys/time.h>
 #include <time.h>
+
+#ifndef _MSC_VER
+# include <sys/time.h>
+#endif
 
 #ifdef _WIN32
 # include <evil_private.h> /* setenv unsetenv */

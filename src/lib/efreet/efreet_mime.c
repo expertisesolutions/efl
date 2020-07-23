@@ -5,7 +5,11 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
+
 #include <Eina.h>
 
 #include <Ecore.h>

@@ -35,6 +35,10 @@
 #include "embryo_cc_sc.h"
 #include "Embryo.h"
 
+#ifdef _WIN32
+#include <evil_private.h>
+#endif
+
 static int          match(char *st, int end);
 static cell         litchar(char **lptr, int rawmode);
 static int          alpha(char c);

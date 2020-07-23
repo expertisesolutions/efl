@@ -5,8 +5,11 @@
 #define EIO_SENTRY_BETA
 
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
+
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Ecore.h>
 #include <Ecore_File.h>
