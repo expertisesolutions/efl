@@ -1034,7 +1034,7 @@ elm_quicklaunch_prepare(int    argc,
                         char **argv,
                         const char *cwd)
 {
-#ifdef HAVE_FORK
+#if defined(HAVE_FORK) && !defined(_MSC_VER)
    char *exe, *exe2, *p;
    char *exename;
 
