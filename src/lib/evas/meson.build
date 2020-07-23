@@ -4,9 +4,7 @@
 # as 'source :', later everything is build as libevas.so.
 #
 
-png = dependency('libpng',
-  fallback: ['libpng', 'png_dep']
-)
+png = dependency('libpng', fallback: ['libpng', 'png_dep'])
 
 tiff = dependency('libtiff-4', required: get_option('evas-loaders-disabler').contains('tiff') == false)
 

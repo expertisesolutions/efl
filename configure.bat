@@ -152,7 +152,7 @@ exit /B 0
             -Dfontconfig=false^
             -Dedje-sound-and-video=false^
             -Dlibmount=false^
-            "-Devas-loaders-disabler=gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,eet,generic,gif,ico,jp2k,pmaps,png,psd,tga,tgv,tiff,wbmp,webp,xpm,json"^
+            "-Devas-loaders-disabler=gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,generic,gif,ico,jp2k,pmaps,psd,tga,tgv,tiff,wbmp,webp,xpm,json"^
             -Dopengl=none^
             "-Demotion-loaders-disabler=gstreamer1,libvlc,xine"^
             -Dbindings=^
