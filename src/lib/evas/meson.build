@@ -4,11 +4,9 @@
 # as 'source :', later everything is build as libevas.so.
 #
 
-if not sys_windows
-  png = dependency('libpng')
-else
-  png = declare_dependency()
-endif
+png = dependency('libpng',
+  fallback: ['libpng', 'png_dep']
+)
 
 tiff = dependency('libtiff-4', required: get_option('evas-loaders-disabler').contains('tiff') == false)
 
