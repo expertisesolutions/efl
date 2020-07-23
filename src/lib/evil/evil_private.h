@@ -48,17 +48,17 @@ extern "C" {
 #include "evil_locale.h"
 #include "evil_main.h"
 #include "evil_mman.h"
-#include "evil_stat.h"
 #include "evil_stdio.h"
 #include "evil_stdlib.h"
 #include "evil_string.h"
 #include "evil_strings.h"
+#include "evil_sys_stat.h"
+#include "evil_sys_time.h"
+#include "evil_sys_types.h"
 #include "evil_time.h"
 #include "evil_unistd.h"
 #include "evil_util.h"
 #include "evil_vasprintf.h"
-#include "evil_sys_types.h"
-#include "evil_sys_time.h"
 
 #define sigsetjmp(Env, Save) setjmp(Env)
 
