@@ -56,6 +56,7 @@ install_headers(efreet_header_src,
   install_dir : dir_package_include,
 )
 
+if not sys_windows
 
 #Deprecated efreet libs
 # everything and everyone should use efreet itself, efreet_mime and efreet_trash are contained in libefreet.so
@@ -90,3 +91,4 @@ pkgconfig.generate(efreet_lib,
         version : version_major + '.' + version_minor + '.' + version_micro,
         libraries : efreet_pub_deps,
 )
+endif
