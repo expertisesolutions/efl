@@ -4,7 +4,7 @@
 #ifdef _WIN32
 #include <evil_private.h>
 #endif
-#include <regex.h>
+#include <pcreposix.h>
 #include "elm_entry_eo.h"
 
 #define BLINK_INTERVAL 0.1
