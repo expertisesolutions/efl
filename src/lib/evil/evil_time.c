@@ -11,11 +11,8 @@
 EVIL_API struct tm *
 evil_localtime_r(const time_t * time, struct tm * result)
 {
-  *result = *localtime(time);
-  if (!errno)
-    return result;
-  else
-    return NULL;
+   *result = *localtime(time);
+   return result;
 }
 
 /*
