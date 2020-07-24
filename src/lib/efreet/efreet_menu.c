@@ -451,6 +451,7 @@ efreet_menu_init(void)
 EFREET_API int
 efreet_menu_kde_legacy_init(void)
 {
+#ifndef _WIN32
     FILE *f;
     char buf[PATH_MAX];
     char *p, *s;
@@ -485,6 +486,7 @@ efreet_menu_kde_legacy_init(void)
                             (void *)eina_stringshare_add(s));
 
     pclose(f);
+#endif
     return 1;
 }
 
