@@ -19,6 +19,12 @@
  * @{
  */
 
+EVIL_API struct tm *evil_localtime_r(const time_t * time, struct tm * result);
+
+#ifndef HAVE_LOCALTIME_R
+# define HAVE_LOCALTIME_R
+# define localtime_r evil_localtime_r
+#endif
 
 /**
  * @brief Convert a string representation of time to a time tm structure .
