@@ -7,6 +7,7 @@
 #include "eo_internal.h"
 #include "../efl_check.h"
 #include "elm_widget.h"
+#include <Efl_Core.h>
 #include "ecore_private.h"
 #include "ecore_evas_private.h"
 #include "suite_helpers.h"

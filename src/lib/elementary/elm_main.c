@@ -15,7 +15,7 @@
 #endif
 
 #include <Emotion.h>
-
+#include <Efl_Core.h>
 #include <Elementary.h>
 
 #include "eina_internal.h"
