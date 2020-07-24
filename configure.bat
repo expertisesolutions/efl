@@ -1,5 +1,15 @@
 @echo off
-setlocal EnableDelayedExpansion
+
+call :has_arg --help %* || call :has_arg -h %*
+if %errorlevel% == 0 (
+    echo Usage: configure [-h] [--verbose] [--builddir BUILDDIR] [any extra arguments for meson]
+    echo:
+    echo Optional arguments:
+    echo   -h, --help                    Shows this message and leaves
+    echo   --verbose                     Verbose compilation (shows compile flags when building targets^)
+    echo   --builddir BUILDDIR           Sets custom build directory
+    exit /B 0
+)
 
 :: Receive extra-flags
 set MESONFLAGS_EXTRA=%*
@@ -8,20 +18,26 @@ set MESONFLAGS_EXTRA=%*
 set BUILDDIR=build
 
 :: (The space before the value is necessary for proper token evaluation)
-set _BUILDDIR=!MESONFLAGS_EXTRA:*--builddir ==!
-if not "!_BUILDDIR!" == "*--builddir ==" (
-    for /f "tokens=1 delims== " %%d in ("!_BUILDDIR!") do (
-        set BUILDDIR=%%d
-        echo - Build directory: "!BUILDDIR!"
-        set pattern=--builddir !BUILDDIR!
-        call set MESONFLAGS_EXTRA=%%MESONFLAGS_EXTRA:!pattern!=%%
+call set _BUILDDIR=%%MESONFLAGS_EXTRA:*--builddir ==%%
+(
+    setlocal EnableDelayedExpansion
+    if not "!_BUILDDIR!" == "*--builddir ==" (
+        for /f "tokens=1 delims== " %%d in ("!_BUILDDIR!") do (
+            set BUILDDIR=%%d
+            echo - Build directory: "!BUILDDIR!"
+            set pattern=--builddir !BUILDDIR!
+            call set MESONFLAGS_EXTRA=%%MESONFLAGS_EXTRA:!pattern!=%%
+        )
+        echo !MESONFLAGS_EXTRA!
+    ) else (
+        echo - Build directory: build (default^)
     )
-    echo !MESONFLAGS_EXTRA!
 )
 set _BUILDDIR=
 
 :: Look for verbosity of this script and additional flags for meson
 (echo %MESONFLAGS_EXTRA% | findstr /i /c:"--verbose" >nul) && set VERBOSE=ON
+
 if defined VERBOSE (
     echo Verbose ON.
     set MESONFLAGS_EXTRA=%MESONFLAGS_EXTRA:--verbose=%
@@ -31,6 +47,43 @@ if defined VERBOSE (
 
 call :main || (echo Build configure failed.)
 exit /B %errorlevel%
+
+:: Removes head from a list of args and stores in a variable.
+:: For example, by running:
+::   `call :remove_head tail first second third`
+:: A variable `tail` will be created with the value `second third`.
+:remove_head
+    set tail_variable=%1
+
+    call set _all=%*
+    if not "%3" == "" (
+        call set tail=%%_all:*%2=%%
+        set "%tail_variable% = %tail%"
+    ) else (
+        call set %tail_variable% =
+    )
+    set tail_variable=
+exit /B 0
+
+:: Checks if a specific argument is in argument-list.
+:: Returns (sets errorlevel) to 0 if it is, 1 otherwise.
+::
+:: has_arg <arg> <arg list>
+:has_arg
+    setlocal
+    set argname="%1"
+    set argname=%argname:"=%
+
+    call :remove_head tail %*
+
+    call set tail=" %%tail%% "
+
+    setlocal EnableDelayedExpansion
+    call set cutted=%%tail: %argname% = %%
+    if x!cutted!x == x!tail!x (
+        exit /B 1
+    )
+exit /B 0
 
 :check_env_vars
     @echo Checking if necessarry environment variables were set...
@@ -118,19 +171,21 @@ exit /B 0
         @echo No Creating new build directory.
     )
 
-    set NLM=^
-
-
-    set NL=^^^%NLM%%NLM%%NLM%%NLM%
-    @echo Here %NL%we go
-    @echo Meson flags: %MESONFLAGS:        =!NL!%
-    @echo ------------------------------
-    @echo Extra flags: !MESONFLAGS_EXTRA!
-    @echo ------------------------------
-    @set MESONFLAGS=%MESONFLAGS:            = %
+    (
+        setlocal EnableDelayedExpansion
+        set NLM=^
+        set NL=^^^%NLM%%NLM%%NLM%%NLM%
+        echo Meson flags: %MESONFLAGS:        =!NL!%
+        echo ------------------------------
+        echo Extra flags: !MESONFLAGS_EXTRA!
+        echo ------------------------------
+        endlocal
+    )
+    set MESONFLAGS=%MESONFLAGS:            = %
 exit /B 0
 
 :generate_build
+    setlocal EnableDelayedExpansion
     @echo ------------------------------
     @echo Generating build...
     call ensure-vcvars64
