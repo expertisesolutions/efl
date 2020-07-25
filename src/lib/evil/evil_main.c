@@ -44,21 +44,8 @@ evil_init(void)
 
    _evil_time_freq = freq.QuadPart;
 
-   /* be sure that second + 1 != 0 */
-   while (second == 59)
-     {
-        GetSystemTime(&st);
-        second = st.wSecond;
-     }
-
-   /* retrieve the tick corresponding to the time we retrieve above */
-   while (1)
-     {
-        GetSystemTime(&st);
-        QueryPerformanceCounter(&count);
-        if (st.wSecond == second + 1)
-          break;
-     }
+   QueryPerformanceCounter(&count);
+   GetSystemTime(&st);
 
    _evil_time_second = _evil_systemtime_to_time(st);
    if (_evil_time_second < 0)
