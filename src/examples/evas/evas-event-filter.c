@@ -221,8 +221,17 @@ _rect_add(Evas *e, Context *ctx, const char *name,
    return obj;
 }
 
+
+#ifndef _MSC_VER
 int
 main(int argc EINA_UNUSED, char *argv[] EINA_UNUSED)
+#else
+int
+WinMain(HINSTANCE hInstance EINA_UNUSED
+       ,HINSTANCE hPrevInstance EINA_UNUSED
+       ,LPSTR     lpCmdLine EINA_UNUSED
+       ,int       nShowCmd EINA_UNUSED)
+#endif
 {
    Context ctx = { 0 };
    Ecore_Evas *ee;
