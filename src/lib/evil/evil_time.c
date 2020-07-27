@@ -11,8 +11,14 @@
 EVIL_API struct tm *
 evil_localtime_r(const time_t * time, struct tm * result)
 {
-   *result = *localtime(time);
-   return result;
+   struct tm* _result = localtime(time);
+
+   if (_result)
+     {
+        *result = *_result;
+        return result;
+     }
+   return NULL;
 }
 
 /*
