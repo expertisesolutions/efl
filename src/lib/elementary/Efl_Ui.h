@@ -74,8 +74,6 @@
 extern "C" {
 #endif
 
-ELM_API extern double _efl_startup_time;
-
 /** Successfully applied the requested style from the current theme. */
 ELM_API extern Eina_Error EFL_UI_THEME_APPLY_ERROR_NONE;
 
