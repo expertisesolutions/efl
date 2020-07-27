@@ -147,8 +147,17 @@ _on_keydown(void        *data EINA_UNUSED,
      }
 }
 
+
+#ifndef _MSC_VER
 int
 main(void)
+#else
+int
+WinMain(HINSTANCE hInstance EINA_UNUSED
+       ,HINSTANCE hPrevInstance EINA_UNUSED
+       ,LPSTR     lpCmdLine EINA_UNUSED
+       ,int       nShowCmd EINA_UNUSED)
+#endif
 {
    Evas_Load_Error err;
 
@@ -193,7 +202,7 @@ main(void)
     * will be deleted automatically by parent.*/
 
    if (efl_file_set(d.img, img_path)) goto panic;
-   
+
    err = efl_file_load(d.img);
 
    if (err != EVAS_LOAD_ERROR_NONE)
