@@ -125,11 +125,6 @@ add_global_arguments(dev_cflags, language: 'c')
 add_global_arguments(dev_cflags, language: 'cpp')
 
 if sys_windows
-  if not get_option('dbus')
-    dbus = declare_dependency()
-    eldbus = declare_dependency()
-  endif
-
   dl = declare_dependency()
   m = declare_dependency()
 
@@ -443,7 +438,7 @@ subprojects = [
 ['emile'            ,[]                    , false,  true, false, false,  true,  true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
 ['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], ['rg_etc']],
 ['ecore'            ,[]                    , false,  true, false, false, false, false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
-['eldbus'           ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
+['eldbus'           ,['dbus']              , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
 ['ecore'            ,[]                    ,  true, false, false, false,  true,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
 ['ecore_audio'      ,['audio']             , false,  true, false, false, false, false,  true, ['eina', 'eo'], []],
 ['ecore_avahi'      ,['avahi']             , false,  true, false, false, false,  true, false, ['eina', 'ecore'], []],
