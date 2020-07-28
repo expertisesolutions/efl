@@ -108,9 +108,9 @@ int main(int argc, char** argv)
         while (i != eof)
           {
             eol = i;
-            while (eol != eof && input_buffer[eol] != '\n')
+            while (eol != eof && (input_buffer[eol] != '\n' && input_buffer[eol] != '\r'))
               ++eol;
-            assert (eol == eof || input_buffer[eol] == '\n');
+            assert (eol == eof || input_buffer[eol] == '\n' || input_buffer[eol] == '\r');
             fputc('"', fout);
 
             while (i != eol)
@@ -126,9 +126,9 @@ int main(int argc, char** argv)
             if (i != eof)
             {
               assert (i == eol);
-              assert (input_buffer[i] == '\n');
-              fputc('\n', fout);
-              ++i;
+              assert (input_buffer[i] == '\n' || input_buffer[i] == '\r');
+              while (input_buffer[i] == '\r' || input_buffer[i] == '\n')
+                fputc(input_buffer[i++], fout);
             }
           }
 
