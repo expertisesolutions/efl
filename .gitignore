@@ -101,4 +101,6 @@ env.bat
 
 # Subprojects
 subprojects/*
+!subprojects/packagefiles
+!subprojects/packagefiles/*
 !subprojects/*.wrap
