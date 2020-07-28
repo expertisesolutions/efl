@@ -8,9 +8,17 @@
 
 #include "evil_private.h"
 
-inline struct tm *localtime_r(const time_t * time, struct tm * result)
+EVIL_API struct tm *
+evil_localtime_r(const time_t * time, struct tm * result)
 {
-    return NULL;
+   struct tm* _result = localtime(time);
+
+   if (_result)
+     {
+        *result = *_result;
+        return result;
+     }
+   return NULL;
 }
 
 /*
