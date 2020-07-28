@@ -8,6 +8,9 @@ if host_machine.system() == 'darwin'
   add_languages('objc')
 endif
 
+extra_cmake_args = get_option('cmake_args')
+extra_cmake_module_path = get_option('cmake_args')
+
 test_env = environment()
 test_env.set('EFL_RUN_IN_TREE', '1')
 
@@ -330,13 +333,15 @@ elif (get_option('crypto') == 'gnutls')
   crypto = [dependency('gnutls'), cc.find_library('gcrypt')]
   config_h.set('HAVE_GNUTLS', '1')
 elif (get_option('crypto') == 'openssl')
-  if (get_option('openssl_dir') != '')
+  if get_option('openssl_dir') != ''
     crypto = declare_dependency(
       link_args: ['-L' + get_option('openssl_dir'), '-L' + get_option('openssl_dir') + '/lib', '-llibssl_static', '-llibcrypto_static'],
       compile_args: ['-I' + get_option('openssl_dir') + '/include'],
     )
   else
-    crypto = dependency('openssl')
+    crypto = dependency('openssl',
+      cmake_args : extra_cmake_args,
+      cmake_module_path : extra_cmake_module_path)
   endif
   config_h.set('HAVE_OPENSSL', '1')
 endif
@@ -760,9 +765,9 @@ if 'edje' not in ignored_subprojects
 endif
 
 if get_option('build-tests')
-  if not sys_windows
-    check = dependency('check')
-  endif
+  check = dependency('check',
+    cmake_args : extra_cmake_args,
+    )
   subdir(join_paths('src', 'tests'))
   foreach test : test_dirs
     package_c_args = [

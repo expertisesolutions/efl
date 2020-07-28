@@ -92,6 +92,7 @@ exit /B 0
     if exist %envfile% (
         @echo - Found %envfile% file.
         call %envfile%
+        echo vcpkg_toolchain_file: %vcpkg_toolchain_file%
     ) else (
         @echo - File %envfile% doesn't exists. Relying on previously set environment variables...
     )
@@ -160,22 +161,18 @@ exit /B 0
             --buildtype=debug^
             --native-file native-file-windows.txt
 
+    echo %vcpkg_toolchain_file%
+    call set MESONFLAGS=%MESONFLAGS% -Dcmake_args="-DCMAKE_TOOLCHAIN_FILE=%vcpkg_toolchain_file%"
+
     if defined openssl_dir (
         set MESONFLAGS=-Dopenssl_dir="%OPENSSL_DIR:"=%" %MESONFLAGS%
     )
 
-    if exist build (
-        @echo "- Build directory ("build") already exists. Old config will be wiped with `--wipe`."
-        set MESONFLAGS=%MESONFLAGS% --wipe
-    ) else (
-        @echo No Creating new build directory.
-    )
-
     (
         setlocal EnableDelayedExpansion
-        set NLM=^
-        set NL=^^^%NLM%%NLM%%NLM%%NLM%
-        echo Meson flags: %MESONFLAGS:        =!NL!%
+        echo ------------------------------
+        echo Meson flags:
+        echo     %MESONFLAGS:           =%
         echo ------------------------------
         echo Extra flags: !MESONFLAGS_EXTRA!
         echo ------------------------------
@@ -226,3 +223,4 @@ exit /B 0
     call :setup_flags
     call :generate_build || (echo Meson failed) && exit /B 1
     call :restore_old_vars
+exit /B 0
