@@ -87,5 +87,8 @@ jobs:
       run: .\configure.bat
       env:
         OPENSSL_DIR: ${{ github.workspace }}\openssl
+        EINA_LOG_LEVEL: 10
     - name: Build
       run: .\build.bat
+      env:
+        EINA_LOG_LEVEL: 10
