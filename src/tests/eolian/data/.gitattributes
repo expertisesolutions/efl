@@ -1,2 +1,2 @@
-*.h eol=lf
-*.c eol=lf
+*.h crlf=input
+*.c crlf=input
