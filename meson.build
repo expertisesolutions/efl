@@ -412,10 +412,7 @@ else
   lua = dependency(get_option('lua-interpreter'))
   lua_pc_name = 'luajit'
   if not lua.found()
-    lua = dependency('luajit')
-    if not lua.found()
-      error('Lua not found')
-    endif
+    error('Lua not found')
   endif
 endif
 
