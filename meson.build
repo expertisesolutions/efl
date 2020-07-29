@@ -645,7 +645,7 @@ foreach package : subprojects
     if (package[6])
        test_dirs += [package_name]
     endif
-    if (package[7] and not sys_windows)
+    if package[7]
        example_dirs += [package_name]
     endif
 
