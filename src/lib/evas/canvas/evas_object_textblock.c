@@ -407,7 +407,11 @@ struct _Evas_Object_Textblock_Format
    Eina_Bool            strikethrough : 1;  /**< EINA_TRUE if text should be stricked off, else EINA_FALSE */
    Eina_Bool            backing : 1;  /**< EINA_TRUE if enable background color, else EINA_FALSE */
    Eina_Bool            password : 1;  /**< EINA_TRUE if the text is password, else EINA_FALSE */
+#ifndef _MSC_VER
    Evas_Textblock_Align_Auto halign_auto : 2;  /**< Auto horizontal align mode */
+#else
+   unsigned int         halign_auto : 2;  /**< Auto horizontal align mode */
+#endif
 };
 
 struct _Efl_Canvas_Textblock_Style
