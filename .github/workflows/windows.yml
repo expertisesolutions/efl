@@ -96,8 +96,6 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
-    - name: Set git line ending config to checkout as-is
-      run: git config --global core.autocrlf input
     - uses: actions/checkout@v2
     - name: Add python scripts to path
       run: |
