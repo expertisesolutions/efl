@@ -26,6 +26,10 @@
 
 #include "Elua.h"
 
+#ifdef _WIN32
+# include <evil_private.h> // popen, pclose
+#endif
+
 struct _Elua_State
 {
    lua_State *luastate;

@@ -18,6 +18,10 @@
 #include "shmfile.h"
 #include "timeout.h"
 
+#ifdef _WIN32
+# include <evil_private.h> // popen, pclose
+#endif
+
 #define DATA32 unsigned int
 typedef char RGB24[3];
 

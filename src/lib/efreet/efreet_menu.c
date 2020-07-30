@@ -19,6 +19,10 @@ static int _efreet_menu_log_dom = -1;
 # include <unistd.h>
 #endif
 
+#ifdef _WIN32
+# include <evil_private.h> // popen, pclose
+#endif
+
 typedef struct Efreet_Menu_Move Efreet_Menu_Move;
 
 struct Efreet_Menu_Move

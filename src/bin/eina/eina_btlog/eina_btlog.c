@@ -21,6 +21,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+# include <evil_private.h> // popen, pclose
+#endif
+
 // right now this is quick and dirty and may have some parsing ... frailty,
 // so don't put malicious data through it... :) but cat in eina bt's through
 // this to get a nicely clean and readable bt with filenames of binaries,

@@ -6,6 +6,10 @@
 #  include <cffi-lua.h>
 #endif
 
+#ifdef _WIN32
+# include <evil_private.h> // popen, pclose
+#endif
+
 static Eina_Prefix *_elua_pfx = NULL;
 
 static int _elua_init_counter = 0;
