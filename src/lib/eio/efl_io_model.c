@@ -280,15 +280,17 @@ _efl_io_model_info_type_get(const Eina_File_Direct_Info *info, const Eina_Stat *
           return EINA_FILE_DIR;
         else if (S_ISCHR(st->mode))
           return EINA_FILE_CHR;
+#if defined(S_ISBLK) && !defined(_WIN32)
         else if (S_ISBLK(st->mode))
           return EINA_FILE_BLK;
+#endif
         else if (S_ISFIFO(st->mode))
           return EINA_FILE_FIFO;
-#ifndef _WIN32
+#if defined(S_ISLNK) && !defined(_WIN32)
         else if (S_ISLNK(st->mode))
           return EINA_FILE_LNK;
 #endif
-#ifdef S_ISSOCK
+#if defined(S_ISSOCK) && !defined(_WIN32)
         else if (S_ISSOCK(st->mode))
           return EINA_FILE_SOCK;
 #endif

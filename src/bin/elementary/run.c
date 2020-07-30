@@ -118,6 +118,7 @@ main(int argc, char **argv)
                }
           }
      }
+#if defined(S_ISLNK) && !defined(_WIN32)
    if (exe)
      {
         if (!lstat(exe, &st))
@@ -140,6 +141,7 @@ main(int argc, char **argv)
                }
           }
      }
+#endif
    if (we_are_elementary_run)
      {
         sargc = argc;

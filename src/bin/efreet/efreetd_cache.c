@@ -518,7 +518,7 @@ desktop_changes_monitor_add(const struct stat *st, const char *path)
    const char *monpath = path;
 
    if (eina_hash_find(desktop_change_monitors, path)) return;
-#ifndef _WIN32
+#if defined(S_ISLNK) && !defined(_WIN32)
    if (S_ISLNK(st->st_mode))
      {
         realp = ecore_file_realpath(path);
