@@ -118,7 +118,7 @@ main(int argc, char **argv)
                }
           }
      }
-#if defined(S_ISLNK) && !defined(_WIN32)
+#ifndef _MSC_VER
    if (exe)
      {
         if (!lstat(exe, &st))

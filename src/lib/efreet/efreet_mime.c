@@ -745,7 +745,7 @@ efreet_mime_special_check(const char *file)
           if (S_ISREG(s.st_mode))
             return NULL;
 
-#if defined(S_ISLNK) && !defined(_WIN32)
+#ifndef _WIN32
           if (S_ISLNK(s.st_mode))
             return _mime_inode_symlink;
 #endif
@@ -755,12 +755,12 @@ efreet_mime_special_check(const char *file)
 
           if (S_ISCHR(s.st_mode))
             return _mime_inode_chardevice;
-#if defined(S_ISBLK) && !defined(_WIN32)
+#ifndef _MSC_VER
           if (S_ISBLK(s.st_mode))
             return _mime_inode_blockdevice;
 #endif
 
-#if defined(S_ISSOCK) && !defined(_WIN32)
+#ifndef _WIN32
           if (S_ISSOCK(s.st_mode))
             return _mime_inode_socket;
 #endif

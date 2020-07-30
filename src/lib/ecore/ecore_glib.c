@@ -139,9 +139,8 @@ _ecore_glib_context_poll_to(GPollFD      *pfds,
              ready--;
              if (!fstat(itr->fd, &st))
                {
-#if defined(S_ISSOCK) && !defined(_WIN32)
+#ifndef _MSC_VER
                   if (S_ISSOCK(st.st_mode))
-#endif
                     {
                        struct sockaddr_in peer;
                        socklen_t length = sizeof(peer);
@@ -151,6 +150,7 @@ _ecore_glib_context_poll_to(GPollFD      *pfds,
                                        &length))
                          itr->revents |= G_IO_ERR;
                     }
+#endif
                }
           }
         if (FD_ISSET(itr->fd, efds) && (itr->events & (G_IO_HUP | G_IO_ERR)))

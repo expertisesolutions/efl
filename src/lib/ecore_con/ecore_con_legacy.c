@@ -1931,7 +1931,7 @@ _ecore_con_server_dialer_set(Ecore_Con_Server *svr, Eo *dialer)
 
 #ifdef EFL_NET_DIALER_UNIX_CLASS
         if ((stat(address, &st) != 0)
-#if defined(S_ISSOCK) && !defined(_WIN32)
+#ifdef S_ISSOCK
             || (!S_ISSOCK(st.st_mode))
 #endif
             )

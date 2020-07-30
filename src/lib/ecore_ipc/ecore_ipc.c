@@ -678,7 +678,7 @@ ecore_ipc_server_connect(Ecore_Ipc_Type type, char *name, int port, const void *
         EINA_SAFETY_ON_NULL_GOTO(address, error_dialer);
 
         if ((stat(address, &st) != 0)
-#if defined(S_ISSOCK) && !defined(_WIN32)
+#ifdef S_ISSOCK
             || (!S_ISSOCK(st.st_mode))
 #endif
             )

@@ -96,7 +96,7 @@ eio_file_is_dir(const Eina_Stat *st)
 static inline Eina_Bool
 eio_file_is_lnk(const Eina_Stat *st)
 {
-#if defined(S_ISLNK) && !defined(_WIN32)
+#ifdef _WIN32
    /* no symbolic links on Windows */
    return EINA_FALSE;
    (void)st;
