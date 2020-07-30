@@ -64,6 +64,11 @@ EVIL_API int evil_mkdir(const char *dirname, mode_t mode);
 
 EVIL_API int asprintf(char **strp, const char *fmt, ...);
 
+#ifdef _MSC_VER
+# define popen _popen
+# define pclose _pclose
+#endif
+
 /**
  * @}
  */
