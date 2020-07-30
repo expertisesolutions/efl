@@ -27,7 +27,7 @@
 #  endif
 # else
 #  define EPHYSICS_API
-  define EPHYSICS_API_WEAK
+#  define EPHYSICS_API_WEAK
 # endif
 #endif
 
