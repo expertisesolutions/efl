@@ -16,8 +16,8 @@
 #include <sys/stat.h>
 
 #ifndef _MSC_VER
- #include <unistd.h>
- #include <libgen.h>
+# include <unistd.h>
+# include <libgen.h>
 #endif
 
 #include <Ecore_Evas.h>
