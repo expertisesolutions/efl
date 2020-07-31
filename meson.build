@@ -385,14 +385,14 @@ have_elua = get_option('elua')
 if get_option('lua-interpreter') == 'lua'
   config_h.set('ENABLE_LUA_OLD', '1')
   foreach l : luaold_interpreters
-    lua = dependency(l[0], version: l[1], required:false)
+    lua = dependency(l[0], version: l[1], required: false)
     lua_pc_name = l[0]
     if lua.found()
       break
     endif
   endforeach
   if not lua.found()
-    lua = dependency('lua', fallback : ['lua', 'lua_dep'])
+    lua = dependency('lua', fallback: ['lua', 'lua_dep'], required: false)
     if not lua.found()
       error('Lua not found')
     endif
@@ -409,8 +409,11 @@ if get_option('lua-interpreter') == 'lua'
     endif
   endif
 else
-  lua = dependency(get_option('lua-interpreter'))
-  lua_pc_name = 'luajit'
+  interpreter = get_option('lua-interpreter')
+  lua = dependency(interpreter,
+    fallback: [interpreter, '@0@_dep'.format(interpreter)],
+    required: false)
+  lua_pc_name = interpreter
   if not lua.found()
     error('Lua not found')
   endif
