@@ -1,0 +1,6 @@
+[wrap-git]
+directory = luajit
+
+url = https://github.com/joaoantoniocardoso/luajit
+revision = master
+
