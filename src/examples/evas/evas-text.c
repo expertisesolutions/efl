@@ -316,7 +316,13 @@ WinMain(HINSTANCE hInstance EINA_UNUSED
     * example */
    struct text_preset_data init_data =
    {
+#if !defined(_MSC_VER) || defined(HAVE_FONTCONFIG)
       .font = {"DejaVu", "Courier", "Utopia"},
+#else
+      .font = {"C:\\Windows\\Fonts\\arial.ttf",
+               "C:\\Windows\\Fonts\\cour.ttf",
+               "C:\\Windows\\Fonts\\times.ttf"},
+#endif
       .text = {BLACK, WHITE, GREY, RED, GREEN, BLUE},
       .shadow = {WHITE, BLUE, GREEN, RED},
       .outline = {WHITE, RED, GREEN, BLUE},

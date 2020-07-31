@@ -603,6 +603,10 @@ evas_font_name_parse(Evas_Font_Description *fdesc, const char *name)
    const char *end;
 
    end = strchr(name, ':');
+#ifdef _MSC_VER
+   if (end - name == 1 && *end != '\0')
+       end = strchr(end+1, ':');
+#endif
    if (!end)
      eina_stringshare_replace(&(fdesc->name), name);
    else
