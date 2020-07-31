@@ -65,17 +65,60 @@ end:
    return result;
 }
 
+/**
+ * Returns 0 on success, -1 on failure.
+ */
+static int
+_create_response_file(const char *rsp_path, const char *eo_filename, const char *type, const char *output_filename)
+{
+   remove(rsp_path);
+   FILE *f = fopen(rsp_path, "w");
+
+   if (!f)
+       return -1;
+
+   fprintf(f
+           , "-S\n"
+             "-I\n" TESTS_SRC_DIR "\n"
+             "-o\n%s:%s\n"
+             "%s"
+           , type, output_filename, eo_filename
+   );
+
+   if (fclose(f))
+       return -1;
+
+   return 0;
+}
+
 static int
 _eolian_gen_execute(const char *eo_filename, const char *type, const char *output_filename)
 {
    char command[PATH_MAX];
+
    if (snprintf(command, PATH_MAX,
                 EOLIAN_GEN" -S -I \""TESTS_SRC_DIR"/data\" -o %s:%s %s",
                 type, output_filename, eo_filename) > PATH_MAX)
      {
-        printf("eolian gen command too long for buffer\n");
-        abort();
+        printf("eolian gen command too long for buffer. Fallbacking to a response file\n");
+
+        char rsp_path[PATH_MAX];
+        snprintf(rsp_path, PATH_MAX, "%s.rsp", output_filename);
+
+        snprintf(command, PATH_MAX,
+                 EOLIAN_GEN" -r \"%s\"",
+                 rsp_path);
+
+        int failed = _create_response_file(rsp_path, eo_filename, type, output_filename);
+
+        if (failed)
+          {
+             fprintf(stderr, "eolian_gen: Failed to create response file %s\n", rsp_path);
+             perror("Reason");
+             return -1;
+          }
      }
+
    return system(command);
 }
 
