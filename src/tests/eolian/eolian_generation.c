@@ -80,19 +80,95 @@ _remove_ref(const char *base, const char *ext)
    remove(ifnbuf);
 }
 
+/**
+ * Returns 0 on success, -1 on failure.
+ */
+static int
+_create_response_file(const char *rsp_path, const char *eo_filename, const char *options, const char *output_filename)
+{
+   remove(rsp_path);
+   FILE *f = fopen(rsp_path, "w");
+
+   if (!f)
+       return -1;
+
+   fprintf(f
+           , "%s\n"
+             "-S\n"
+             "-I\n" TESTS_SRC_DIR "\n"
+             "-o\n%s\n"
+             "%s"
+           , options, output_filename, eo_filename
+   );
+
+   if (fclose(f))
+       return -1;
+
+   return 0;
+}
+
+static int
+_eolian_gen_execute_rsp(const char *eo_filename, const char *options, const char *output_filename)
+{
+    char command[PATH_MAX];
+
+    const char* command_format = EOLIAN_GEN" -r \"%s\"";
+    const size_t rsp_path_length = PATH_MAX - strlen(command_format);
+
+    char rsp_path[rsp_path_length];
+    snprintf(rsp_path, rsp_path_length, "%s.rsp", output_filename);
+
+    snprintf(command, PATH_MAX, command_format, rsp_path);
+
+    int failed = _create_response_file(rsp_path, eo_filename, options, output_filename);
+
+    if (failed)
+      {
+         fprintf(stderr, "eolian_gen: Failed to create response file %s\n", rsp_path);
+         perror("Reason");
+         return -1;
+      }
+
+    return system(command);
+}
+
 static int
 _eolian_gen_execute(const char *eo_filename, const char *options, const char *output_filename)
 {
    char command[PATH_MAX];
+
    if (snprintf(command, PATH_MAX,
                 EOLIAN_GEN" %s -S -I \""TESTS_SRC_DIR"/data\" -o %s %s",
                 options, output_filename, eo_filename) > PATH_MAX)
      {
-        printf("eolian gen command too long for buffer\n");
-        abort();
+        printf("eolian gen command too long for buffer. Fallbacking to a response file\n");
+
+        return _eolian_gen_execute_rsp(eo_filename, options, output_filename);
      }
+
    return system(command);
 }
+
+EFL_START_TEST(eolian_response_file)
+{
+   // NOTE: This test does the exact same thing as eolian_dev_impl_code, but
+   // with _eolian_gen_execute_rsp instead of _eolian_gen_execute.
+   
+   char output_filepath[PATH_MAX + 128] = "";
+   snprintf(output_filepath, PATH_MAX, "%s/eolian_object_impl",
+            eina_environment_tmp_get());
+   _remove_ref(output_filepath, "c");
+   fail_if(0 != _eolian_gen_execute_rsp(TESTS_SRC_DIR"/data/object_impl.eo", "-gi", output_filepath));
+   fail_if(!_files_compare(TESTS_SRC_DIR"/data/object_impl_ref.c", output_filepath, "c"));
+
+   /* Check that nothing is added */
+   fail_if(0 != _eolian_gen_execute_rsp(TESTS_SRC_DIR"/data/object_impl.eo", "-gi", output_filepath));
+   fail_if(!_files_compare(TESTS_SRC_DIR"/data/object_impl_ref.c", output_filepath, "c"));
+   fail_if(0 != _eolian_gen_execute_rsp(TESTS_SRC_DIR"/data/object_impl_add.eo", "-gi", output_filepath));
+   fprintf(stderr, "[%s]\n", output_filepath);
+   fail_if(!_files_compare(TESTS_SRC_DIR"/data/object_impl_add_ref.c", output_filepath, "c"));
+}
+EFL_END_TEST
 
 EFL_START_TEST(eolian_dev_impl_code)
 {
@@ -230,6 +306,7 @@ EFL_END_TEST
 
 void eolian_generation_test(TCase *tc)
 {
+   tcase_add_test(tc, eolian_response_file);
    tcase_add_test(tc, eolian_types_generation);
    tcase_add_test(tc, eolian_default_values_generation);
    tcase_add_test(tc, eolian_override_generation);
