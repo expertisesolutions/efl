@@ -9,7 +9,9 @@
 
 #include "emotion_private.h"
 #include "../../static_libs/buildsystem/buildsystem.h"
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #ifdef EMOTION_STATIC_BUILD_XINE
 Eina_Bool xine_module_init(void);
