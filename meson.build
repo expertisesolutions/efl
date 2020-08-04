@@ -471,7 +471,7 @@ subprojects = [
 ['edje'             ,[]                    , false,  true,  true, false,  true,  true,  true, ['evas', 'eo', 'efl', lua_pc_name], []],
 ['emotion'          ,[]                    ,  true,  true, false, false,  true,  true,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb'           ,['ethumb']            ,  true,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo'], []],
-['ethumb_client'    ,[]                    , false,  true,  true, false, false,  true,  true, ['eina', 'efl', 'eo', 'ethumb'], []],
+['ethumb_client'    ,['ethumb']                    , false,  true,  true, false, false,  true,  true, ['eina', 'efl', 'eo', 'ethumb'], []],
 ['elementary'       ,[]                    ,  true,  true,  true,  true,  true,  true,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'ethumb-client', 'emotion', 'ecore-imf', 'ecore-con', 'eldbus', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
 ['efl_canvas_wl'    ,['wl']                , false,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo', 'evas', 'ecore'], []],
 ['elua'             ,['elua']              , false,  true,  true, false,  true, false, false, ['eina', lua_pc_name], []],
@@ -507,8 +507,6 @@ if sys_windows
     'elua',
     'emotion',
     'ephysics',
-    'ethumb',
-    'ethumb_client',
     'exactness',
   ]
 else
