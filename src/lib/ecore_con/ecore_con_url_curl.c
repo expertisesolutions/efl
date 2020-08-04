@@ -274,19 +274,21 @@ _c_init(void)
    LOAD("libcurl.dll"); // try 1
    LOAD("curllib.dll"); // if fail try 2
    if (!_c->mod)
-     ERR("Could not find libcurl-5.dll, libcurl-4.dll, libcurl.dll, curllib.dll");
+     {
+        WRN("Could not find libcurl-5.dll, libcurl-4.dll, libcurl.dll, curllib.dll");
+     }
 #elif defined(__APPLE__) && defined(__MACH__)
    LOAD("libcurl.5.dylib"); // try 1
    LOAD("libcurl.4.dylib"); // try 1
    LOAD("libcurl.so.5"); // if fail try 2
    LOAD("libcurl.so.4"); // if fail try 2
    if (!_c->mod)
-     ERR("Could not find libcurl.5.dylib, libcurl.4.dylib, libcurl.so.5, libcurl.so.4");
+     WRN("Could not find libcurl.5.dylib, libcurl.4.dylib, libcurl.so.5, libcurl.so.4");
 #else
    LOAD("libcurl.so.5"); // try only
    LOAD("libcurl.so.4"); // try only
    if (!_c->mod)
-     ERR("Could not find libcurl.so.5, libcurl.so.4");
+     WRN("Could not find libcurl.so.5, libcurl.so.4");
 #endif
    if (!_c->mod) goto error;
 
