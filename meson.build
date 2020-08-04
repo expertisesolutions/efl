@@ -505,7 +505,6 @@ if sys_windows
     'eio',
     'elementary',
     'elua',
-    'embryo',
     'emotion',
     'ephysics',
     'ethumb',
