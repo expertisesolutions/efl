@@ -102,10 +102,6 @@ examples = [
   'web_example_02',
   'win_example',
   'track_example_01',
-  'efl_thread_1',
-  'efl_thread_2',
-  'efl_thread_3',
-  'efl_thread_4',
   'efl_thread_5',
   'efl_thread_6',
   'efl_ui_list_example_1',
@@ -122,6 +118,16 @@ examples = [
   'efl_ui_grid_view_example_1',
   'efl_canvas_textblock_obstacles_example'
 ]
+
+# Disabling examples that are directly using pthreads 
+if not sys_windows
+  examples += [
+    'efl_thread_1',
+    'efl_thread_2',
+    'efl_thread_3',
+    'efl_thread_4',
+  ]
+endif
 
 examples_deps = [elementary, ecore, eio, m]
 
