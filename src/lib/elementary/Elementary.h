@@ -30,7 +30,7 @@
 #endif
 #include <errno.h>
 
-#ifndef MSC_VER
+#ifndef _MSC_VER
 # include <unistd.h>
 # include <sys/time.h>
 # include <sys/param.h>

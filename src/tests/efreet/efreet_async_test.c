@@ -9,7 +9,9 @@ For now efreet_menu_async_parse is deprecated.
 #endif
 
 
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include <Eina.h>
 #include <Ecore.h>

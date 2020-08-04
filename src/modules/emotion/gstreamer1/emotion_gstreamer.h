@@ -11,7 +11,9 @@
 #include <gst/tag/tag.h>
 #include <gst/pbutils/pbutils.h>
 
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 #include <fcntl.h>
 
 #include <Eina.h>
