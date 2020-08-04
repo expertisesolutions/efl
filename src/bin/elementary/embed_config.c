@@ -1,9 +1,10 @@
 
+#include <assert.h>
+#include <errno.h>
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <getopt.h>
 #include <string.h>
-#include <assert.h>
 
 #ifdef HAVE_CONFIG1
 #include "elementary_config.h"
