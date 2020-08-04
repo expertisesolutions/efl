@@ -37,7 +37,6 @@ edc_files = [
   'signals-messages.edc',
   'signalsBubble.edc',
   'sigtest.edc',
-  'svg.edc',
   'swallow.edc',
   'table.edc',
   'text.edc',
@@ -46,6 +45,10 @@ edc_files = [
   'multisense.edc',
   'center_zoom.edc',
 ]
+
+if not get_option('evas-loaders-disabler').contains('svg')
+  edc_files += ['svg.edc']
+endif
 
 if (get_option('physics'))
   edc_files += [
@@ -125,8 +128,11 @@ edje_examples = [
   'edje_example',
   'signals2',
   'sigtest',
-  'svg-test'
 ]
+
+if not get_option('evas-loaders-disabler').contains('svg')
+  edje_examples += ['svg-test']
+endif
 
 foreach edje_example : edje_examples
   executable(edje_example,
