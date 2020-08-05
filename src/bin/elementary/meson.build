@@ -128,7 +128,6 @@ elementary_test_src = [
   'test_sys_notify.c',
   'test_systray.c',
   'test_table.c',
-  'test_thumb.c',
   'test_toolbar.c',
   'test_tooltip.c',
   'test_transit.c',
@@ -173,6 +172,11 @@ if sys_windows == false
 else
   link_args = []
 endif
+
+if get_option('ethumb')
+  elementary_test_src += ['test_thumb.c']
+endif
+
 elementary_test = executable('elementary_test',
         elementary_test_src,
         dependencies: [elementary, intl] + elementary_deps + elementary_pub_deps,

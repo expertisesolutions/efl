@@ -90,7 +90,6 @@ examples = [
   'table_example_02',
   'theme_example_01',
   'theme_example_02',
-  'thumb_example_01',
   'toolbar_example_01',
   'toolbar_example_02',
   'toolbar_example_03',
@@ -119,7 +118,11 @@ examples = [
   'efl_canvas_textblock_obstacles_example'
 ]
 
-# Disabling examples that are directly using pthreads 
+if get_option('ethumb')
+  examples += ['thumb_example_01']
+endif
+
+# Disabling examples that are directly using pthreads
 if not sys_windows
   examples += [
     'efl_thread_1',

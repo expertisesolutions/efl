@@ -20,11 +20,16 @@
 static Eina_List *_elm_icon_retry = NULL;
 static int _icon_pending_request = 0;
 
+#ifdef HAVE_ETHUMB
 static const char SIG_THUMB_DONE[] = "thumb,done";
 static const char SIG_THUMB_ERROR[] = "thumb,error";
+#endif
+
 static const Evas_Smart_Cb_Description _smart_callbacks[] = {
+#ifdef HAVE_ETHUMB
    {SIG_THUMB_DONE, ""},
    {SIG_THUMB_ERROR, ""},
+#endif
    {NULL, NULL}
 };
 
@@ -57,6 +62,7 @@ _icon_size_min_get(Evas_Object *icon)
    return MAX(16, MIN(w, h));
 }
 
+#ifdef HAVE_ETHUMB
 static void
 _icon_thumb_stop(Elm_Icon_Data *sd,
                  void *ethumbd)
@@ -259,6 +265,8 @@ _icon_thumb_apply_cb(void *data,
    return ECORE_CALLBACK_RENEW;
 }
 
+#endif
+
 static Eina_Bool
 _icon_freedesktop_set(Evas_Object *obj,
                       const char *theme,
@@ -322,7 +330,7 @@ _elm_icon_efl_file_load(Eo *obj, Elm_Icon_Data *sd)
    if (efl_file_loaded_get(obj)) return 0;
    err = efl_file_load(efl_super(obj, MY_CLASS));
    if (err) return err;
-   
+
    Efl_Ui_Image_Data *id = efl_data_scope_get(obj, EFL_UI_IMAGE_CLASS);
 
    _edje_signals_free(sd);
@@ -477,6 +485,8 @@ _elm_icon_standard_resize_cb(void *data,
    eina_stringshare_del(refup);
 }
 
+#ifdef HAVE_ETHUMB
+
 static void
 _elm_icon_thumb_resize_cb(void *data,
                           Evas *e EINA_UNUSED,
@@ -489,12 +499,16 @@ _elm_icon_thumb_resize_cb(void *data,
      elm_icon_thumb_set(obj, sd->thumb.file.path, sd->thumb.file.key);
 }
 
+#endif
+
 EOLIAN static void
 _elm_icon_efl_canvas_group_group_add(Eo *obj, Elm_Icon_Data *priv)
 {
    efl_canvas_group_add(efl_super(obj, MY_CLASS));
 
+#ifdef HAVE_ETHUMB
    priv->thumb.request = NULL;
+#endif
 }
 
 EOLIAN static void
@@ -502,6 +516,7 @@ _elm_icon_efl_canvas_group_group_del(Eo *obj, Elm_Icon_Data *sd)
 {
    eina_stringshare_del(sd->stdicon);
 
+#ifdef HAVE_ETHUMB
    if (sd->thumb.request)
      {
         Ethumb_Client *ethumbd = elm_thumb_ethumb_client_get();
@@ -513,6 +528,7 @@ _elm_icon_efl_canvas_group_group_del(Eo *obj, Elm_Icon_Data *sd)
    eina_stringshare_del(sd->thumb.thumb.path);
    eina_stringshare_del(sd->thumb.thumb.key);
    ecore_event_handler_del(sd->thumb.eeh);
+#endif
 
    _edje_signals_free(sd);
 
@@ -852,6 +868,8 @@ elm_icon_thumb_set(Evas_Object *obj, const char *file, const char *group)
 
    evas_object_event_callback_del_full
      (obj, EVAS_CALLBACK_RESIZE, _elm_icon_standard_resize_cb, obj);
+
+#ifdef HAVE_ETHUMB
    evas_object_event_callback_del_full
      (obj, EVAS_CALLBACK_RESIZE, _elm_icon_thumb_resize_cb, obj);
 
@@ -872,6 +890,8 @@ elm_icon_thumb_set(Evas_Object *obj, const char *file, const char *group)
         sd->thumb.eeh = ecore_event_handler_add
             (ELM_ECORE_EVENT_ETHUMB_CONNECT, _icon_thumb_apply_cb, obj);
      }
+#endif
+
 }
 
 ELM_API Eina_Bool
