@@ -77,16 +77,22 @@ jobs:
       if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install openssl:x64-windows
     - name: Install freetype (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install freetype:x64-windows
     - name: Install libjpeg (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install libjpeg-turbo:x64-windows
     - name: Install lua (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install lua:x64-windows
     - name: Install zlib (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install zlib:x64-windows
     - name: Install check (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install check:x64-windows
     - name: Install getopt (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install getopt:x64-windows
     - name: Add vcpkg installed package dirs to path
       run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/bin"
