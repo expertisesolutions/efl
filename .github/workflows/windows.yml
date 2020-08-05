@@ -35,12 +35,6 @@ jobs:
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
       run: echo "${VCPKG_INFO}"
-    - name: Has hit cache for vcpkg?
-      if: steps.cache-vcpkg.outputs.cache-hit == 'true'
-      run: echo Hit!
-    - name: Has missed cache for vcpkg?
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: echo Missed!
     - name: Install LLVM
       if: steps.cache-llvm.outputs.cache-hit != 'true'
       run: choco install llvm
@@ -136,12 +130,6 @@ jobs:
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
       run: echo "${VCPKG_INFO}"
-    - name: Has hit cache for vcpkg?
-      if: steps.cache-vcpkg.outputs.cache-hit == 'true'
-      run: echo Hit!
-    - name: Has missed cache for vcpkg?
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: echo Missed!
     - name: Install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: py -3 -m pip install ninja
