@@ -391,4 +391,5 @@ option('efl-one',
 option('cmake_args',
   type: 'string',
   value : '',
-  description : 'Extra arguments for cmake when searching for dependencies.')
+  description : 'Extra arguments for cmake when searching for dependencies.'
+)

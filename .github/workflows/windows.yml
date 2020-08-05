@@ -167,30 +167,12 @@ jobs:
         dir "${{ github.workspace }}\vcpkg\installed\x64-windows\debug\bin"
     - name: Add build libs to path
       run: |
-        echo "::add-path::${{ github.workspace }}\build\src\lib\ecore"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\ecore_con"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\eet"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\efl"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\eina"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\emile"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\eo"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\evil"
         echo "::add-path::${{ github.workspace }}\build\subprojects\getopt"
         echo "::add-path::${{ github.workspace }}\build\subprojects\pcre-8.37"
-        echo "::add-path::${{ github.workspace }}\build\src\lib\ector"
     - name: Check built EFL libs
       run: |
-        dir "${{ github.workspace }}\build\src\lib\ecore"
-        dir "${{ github.workspace }}\build\src\lib\ecore_con"
-        dir "${{ github.workspace }}\build\src\lib\eet"
-        dir "${{ github.workspace }}\build\src\lib\efl"
-        dir "${{ github.workspace }}\build\src\lib\eina"
-        dir "${{ github.workspace }}\build\src\lib\emile"
-        dir "${{ github.workspace }}\build\src\lib\eo"
-        dir "${{ github.workspace }}\build\src\lib\evil"
         dir "${{ github.workspace }}\build\subprojects\getopt"
         dir "${{ github.workspace }}\build\subprojects\pcre-8.37"
-        dir "${{ github.workspace }}\build\src\lib\ector"
     - name: Check path
       run: $env:PATH
     - name: Run tests
