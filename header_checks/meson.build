@@ -238,9 +238,10 @@ foreach libname, alternatives : alternative_lib_names
   endforeach
 
   if not lib.found()
-    error('Dependency "@0@" not found. Tried: @1@.',
-      libname,
-      ','.join(alternatives))
+    error('Dependency "@0@" not found. Tried: @1@.'.format(
+        libname,
+        ','.join(alternatives))
+    )
   endif
 
   set_variable(libname, lib)

@@ -406,7 +406,7 @@ if get_option('lua-interpreter') == 'lua'
       cmake_args : extra_cmake_args,
     )
     if not lua.found()
-      error('Lua not found')
+      error('Lua not found (tried @0@)'.format(', '.join(luaold_interpreters)))
     endif
   endif
   if have_elua
@@ -430,7 +430,7 @@ else
 
   lua_pc_name = interpreter
   if not lua.found()
-    error('Lua not found')
+    error('Lua not found (tried @0@)'.format(interpreter))
   endif
 endif
 
