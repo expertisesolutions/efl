@@ -25,10 +25,16 @@ efl_ui_suite_behavior_src = files([
 
 test_generator = find_program('generator.py')
 
+if get_option('emotion')
+  test_generator_command = [test_generator, '@INPUT@', '@OUTPUT@']
+else
+  test_generator_command = [test_generator, '--no-video', '@INPUT@', '@OUTPUT@']
+endif
+
 generated_test_parts = custom_target('generate_test_suite',
   input: efl_ui_suite_behavior_test_files,
   output: 'efl_ui_spec_suite_gen.x',
-  command: [test_generator, '@INPUT@', '@OUTPUT@'],
+  command: test_generator_command
 )
 
 efl_ui_behavior_suite = executable('efl_ui_spec_suite',
