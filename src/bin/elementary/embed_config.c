@@ -12,8 +12,8 @@
 static void
 _print_usage(const char *progn)
 {
-   fprintf(stdout, "Usage: %s [options] [input]\n", progn);
-   fprintf(stdout, "Options:\n"
+   printf("Usage: %s [options] [input]\n", progn);
+   printf("Options:\n"
                  "  -o output     specify the filename and path for output\n"
                  "  -v            show version number\n"
                  "\n");
