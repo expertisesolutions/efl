@@ -100,11 +100,6 @@ add_global_arguments(dev_cflags, language: 'c')
 add_global_arguments(dev_cflags, language: 'cpp')
 
 if sys_windows
-  if not get_option('dbus')
-    dbus = declare_dependency()
-    eldbus = declare_dependency()
-  endif
-
   dl = declare_dependency()
   m = declare_dependency()
 
@@ -439,7 +434,7 @@ subprojects = [
 ['emile'            ,[]                    , false,  true, false, false,  true,  true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
 ['eet'              ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'emile', 'efl'], ['rg_etc']],
 ['ecore'            ,[]                    , false,  true, false, false,  true, false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
-['eldbus'           ,[]                    , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
+['eldbus'           ,['dbus']              , false,  true,  true, false,  true,  true,  true, ['eina', 'eo', 'efl'], []],
 ['ecore'            ,[]                    ,  true, false, false, false, false,  true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
 ['ecore_audio'      ,['audio']             , false,  true, false, false, false, false,  true, ['eina', 'eo'], []],
 ['ecore_avahi'      ,['avahi']             , false,  true, false, false, false,  true, false, ['eina', 'ecore'], []],
@@ -472,7 +467,7 @@ subprojects = [
 ['emotion'          ,[]                    ,  true,  true, false, false,  true,  true,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb'           ,['ethumb']            ,  true,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo'], []],
 ['ethumb_client'    ,['ethumb']            , false,  true,  true, false, false,  true,  true, ['eina', 'efl', 'eo', 'ethumb'], []],
-['elementary'       ,[]                    ,  true,  true,  true,  true,  true,  true,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'emotion', 'ecore-imf', 'ecore-con', 'eldbus', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
+['elementary'       ,[]                    ,  true,  true,  true,  true,  true,  true,  true, ['eina', 'efl', 'eo', 'eet', 'evas', 'ecore', 'ecore-evas', 'ecore-file', 'ecore-input', 'edje', 'emotion', 'ecore-imf', 'ecore-con', 'efreet', 'efreet-mime', 'efreet-trash', 'eio'], ['atspi']],
 ['efl_canvas_wl'    ,['wl']                , false,  true,  true, false, false, false,  true, ['eina', 'efl', 'eo', 'evas', 'ecore'], []],
 ['elua'             ,['elua']              , false,  true,  true, false,  true, false, false, ['eina', lua_pc_name], []],
 ['ecore_wayland'    ,['wl-deprecated']     , false,  true, false, false, false, false, false, ['eina'], []],
@@ -483,7 +478,6 @@ subprojects = [
 if sys_windows
   ignored_subprojects = [
     # don't make sense in windows
-    'eldbus',
     'elput',
     # temporarily ignored
     'ecore_audio',

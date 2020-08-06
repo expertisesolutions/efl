@@ -26,7 +26,6 @@ elementary_suite_src = [
   'elm_suite.c',
   'elm_suite_build.c',
   'suite_helpers.c',
-  'elm_test_atspi.c',
   'elm_test_check.c',
   'elm_test_colorselector.c',
   'elm_test_entry.c',
@@ -110,6 +109,10 @@ if get_option('ethumb')
   elementary_suite_src += ['elm_test_thumb.c']
 endif
 
+if get_option('dbus')
+  elementary_suite_src += ['elm_test_atspi.c']
+endif
+
 elementary_suite = executable('elementary_suite',
   elementary_suite_src,
   dependencies: [check, eina, elementary, elementary_deps, intl],
@@ -129,7 +132,6 @@ efl_ui_suite_src = [
   'suite_helpers.h',
   'elm_test_init.c',
   'efl_ui_test_win.c',
-  'efl_ui_test_atspi.c',
   'efl_ui_test_callback.c',
   'efl_ui_test_config.c',
   'efl_ui_test_focus_common.c',
@@ -173,6 +175,10 @@ efl_ui_suite_src = [
   'custom_recognizer.c',
   'custom_recognizer2.c',
 ]
+
+if get_option('dbus')
+  efl_ui_suite_src += ['efl_ui_test_atspi.c']
+endif
 
 efl_ui_suite = executable('efl_ui_suite',
   efl_ui_suite_src, priv_eo_file_target,
