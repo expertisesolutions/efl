@@ -21,6 +21,7 @@
 
 #include "edje_cc.h"
 int _edje_cc_log_dom = -1;
+int efl_run_in_tree = 0;
 static void main_help(void);
 
 Eina_Prefix *pfx = NULL;
@@ -124,6 +125,7 @@ main_help(void)
       "-l license               Specify the license of a theme (file with license text)\n"
       "-a authors               Specify AUTHORS (file with list of authors)\n"
       "-v                       Verbose output\n"
+      "-in-tree                 Same as setting EFL_RUN_IN_TREE=1 as environment variable\n"
       "-no-lossy                Do NOT allow images to be lossy\n"
       "-no-comp                 Do NOT allow images to be stored with lossless compression\n"
       "-no-raw                  Do NOT allow images to be stored with zero compression (raw)\n"
@@ -152,6 +154,9 @@ main(int argc, char **argv)
 #endif
 
    setlocale(LC_NUMERIC, "C");
+
+   if (getenv("EFL_RUN_IN_TREE"))
+     efl_run_in_tree = 1;
 
    ecore_app_no_system_modules();
    efreet_cache_disable();
@@ -194,6 +199,11 @@ main(int argc, char **argv)
         else if (!strcmp(argv[i], "-v"))
           {
              eina_log_domain_level_set("edje_cc", EINA_LOG_LEVEL_INFO);
+          }
+        else if (!strcmp(argv[i], "-in-tree"))
+          {
+             putenv("EFL_RUN_IN_TREE=1");
+             efl_run_in_tree = 1;
           }
         else if (!strcmp(argv[i], "-no-lossy"))
           {

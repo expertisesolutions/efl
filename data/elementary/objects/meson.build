@@ -20,7 +20,7 @@ foreach edc_file : edc_files
    elm_themes += custom_target('edje_cc_elm_' + edc_file,
     input : edc_file,
     output : '@BASENAME@.edj',
-    command : edje_cc_exe + [ '-beta', '-fastcomp',
+    command : edje_cc_exe + [ '-beta', '-fastcomp', '-in-tree',
               '-sd', join_paths(meson.current_source_dir()),
               '-id', elm_themes_image_include,
               '-id', join_paths(meson.current_source_dir()),
