@@ -71,7 +71,9 @@
 #include <Ecore_IMF.h>
 #include <Ecore_Con.h>
 #include <Edje.h>
-#include <Eldbus.h>
+#ifdef HAVE_ELDBUS
+# include <Eldbus.h>
+#endif
 #include <Efreet.h>
 #include <Efreet_Mime.h>
 #include <Efreet_Trash.h>
