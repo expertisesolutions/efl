@@ -86,6 +86,7 @@ jobs:
       if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install lua:x64-windows
     - name: Install luajit (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install luajit:x64-windows
     - name: Install zlib (vcpkg)
       if: steps.cache-vcpkg.outputs.cache-hit != 'true'
