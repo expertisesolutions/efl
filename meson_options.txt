@@ -393,3 +393,9 @@ option('efl-one',
   value : false,
   description : 'Build special set of .so´s as a single .so'
 )
+
+option('cmake_args',
+  type: 'string',
+  value : '',
+  description : 'Extra arguments for cmake when searching for dependencies.'
+)

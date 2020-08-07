@@ -10,17 +10,8 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Cache Nasm install
-      uses: actions/cache@v1
-      id: cache-nasm
-      env:
-        cache-name: cache-nasm
-      with:
-        path: "C:\\Program Files\\Nasm"
-        key: cache-nasm-v1
-        restore-keys: cache-nasm-v1
     - name: Cache LLVM install
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: cache-llvm
       env:
         cache-name: cache-llvm
@@ -28,6 +19,22 @@ jobs:
         path: "C:\\Program Files\\LLVM"
         key: cache-llvm-v10.0.0.0-1
         restore-keys: cache-llvm-v10.0.0.0-1
+    - name: Cache vcpkg
+      uses: actions/cache@v2
+      id: cache-vcpkg
+      env:
+        cache-name: cache-vcpkg
+      with:
+        path: ${{ github.workspace }}/vcpkg
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Show vcpkg cache info
+      env:
+        VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
+      run: echo "${VCPKG_INFO}"
     - name: Install LLVM
       if: steps.cache-llvm.outputs.cache-hit != 'true'
       run: choco install llvm
@@ -35,13 +42,6 @@ jobs:
       run: echo "::add-path::C:\Program Files\LLVM\bin"
     - name: Search clang-cl
       run: clang-cl -v
-    - name: install nasm
-      if: steps.cache-nasm.outputs.cache-hit != 'true'
-      run: choco install nasm
-    - name: Add Nasm to PATH
-      run: echo "::add-path::C:\Program Files\Nasm"
-    - name: Test nasm
-      run: nasm -v
     - name: add python scripts to path
       run: |
         $python_version = (py -3 --version).replace("Python ", "")
@@ -55,35 +55,56 @@ jobs:
       run: py -3 -m pip install meson
     - name: test meson
       run: meson -v
-    - name: Cache OpenSSL compilation
-      id: cache-openssl
-      uses: actions/cache@v1
-      env:
-        cache-name: cache-openssl-compilation
-      with:
-        path: openssl
-        key: openssl-1_1_1g
-        restore-keys: openssl-1_1_1g
-    - name: Download openssl source
-      if: steps.cache-openssl.outputs.cache-hit != 'true'
-      run: git clone -b OpenSSL_1_1_1g https://github.com/openssl/openssl
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
     - name: Show from where clang-cl
       run: where clang-cl
-    - name: Configure OpenSSL
-      if: steps.cache-openssl.outputs.cache-hit != 'true'
-      run: perl Configure VC-WIN64A
-      working-directory: .\openssl
-    - name: Compile OpenSSL
-      if: steps.cache-openssl.outputs.cache-hit != 'true'
-      run: nmake
-      working-directory: .\openssl
+    - name: Check if vcpkg is already installed
+      if: steps.cache-vcpkg.outputs.cache-hit == 'true'
+      run: .\vcpkg\vcpkg version
+    - name: Clone vcpkg
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: git clone https://github.com/microsoft/vcpkg
+    - name: Checkout to f4bd6423
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: git checkout f4bd6423
+      working-directory: .\vcpkg
+    - name: Run vcpkg bootstrap
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\bootstrap-vcpkg.bat
+    - name: Install openssl (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install openssl:x64-windows
+    - name: Install freetype (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install freetype:x64-windows
+    - name: Install libjpeg (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install libjpeg-turbo:x64-windows
+    - name: Install lua (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install lua:x64-windows
+    - name: Install luajit (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install luajit:x64-windows
+    - name: Install zlib (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install zlib:x64-windows
+    - name: Install check (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install check:x64-windows
+    - name: Install getopt (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install getopt:x64-windows
+    - name: Add vcpkg installed package dirs to path
+      run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/bin"
+    - name: Add vcpkg installed package dirs to path (debug libs)
+      run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/debug/bin"
     - name: configure
       run: .\configure.bat
       env:
-        OPENSSL_DIR: ${{ github.workspace }}\openssl
+        vcpkg_toolchain_file: ${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
     - name: Build
       run: .\build.bat
     - name: Upload artifact
@@ -102,6 +123,22 @@ jobs:
         $python_version = (py -3 --version).replace("Python ", "")
         $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
         echo "::add-path::$python_scripts_path"
+    - name: Cache vcpkg
+      uses: actions/cache@v2
+      id: cache-vcpkg
+      env:
+        cache-name: cache-vcpkg
+      with:
+        path: ${{ github.workspace }}/vcpkg
+        key: ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Show vcpkg cache info
+      env:
+        VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
+      run: echo "${VCPKG_INFO}"
     - name: Install ninja
       # unexplicably, installation returns error code 1 if a cache location is used
       run: py -3 -m pip install ninja
@@ -117,6 +154,24 @@ jobs:
         name: build
     - name: Check directory tree (for debugging purposes)
       run: tree .
+    - name: Add vcpkg installed package dirs to path
+      run: |
+        echo "::add-path::${{ github.workspace }}\vcpkg\installed\x64-windows\bin"
+        echo "::add-path::${{ github.workspace }}\vcpkg\installed\x64-windows\debug\bin"
+    - name: Check installed vcpkg libs
+      run: |
+        dir "${{ github.workspace }}\vcpkg\installed\x64-windows\bin"
+        dir "${{ github.workspace }}\vcpkg\installed\x64-windows\debug\bin"
+    - name: Add build libs to path
+      run: |
+        echo "::add-path::${{ github.workspace }}\build\subprojects\getopt"
+        echo "::add-path::${{ github.workspace }}\build\subprojects\pcre-8.37"
+    - name: Check built EFL libs
+      run: |
+        dir "${{ github.workspace }}\build\subprojects\getopt"
+        dir "${{ github.workspace }}\build\subprojects\pcre-8.37"
+    - name: Check path
+      run: $env:PATH
     - name: Run tests
       run: meson test --no-rebuild -C build --print-errorlogs
     - name: Show full log
