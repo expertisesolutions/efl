@@ -4,9 +4,24 @@
 # as 'source :', later everything is build as libevas.so.
 #
 
-png = dependency('libpng', fallback: ['libpng', 'png_dep'])
+libpng_names = ['libpng', 'png']
+foreach libname : libpng_names
+  png = dependency(libname,
+    required : false,
+    cmake_args: extra_cmake_args)
 
-tiff = dependency('libtiff-4', required: get_option('evas-loaders-disabler').contains('tiff') == false)
+  if png.found()
+    break
+  endif
+endforeach
+
+if not png.found()
+  error('Dependency libpng not found (tried @0@).'.format(', '.join(libpng_names)))
+endif
+
+tiff = dependency('libtiff-4',
+  required: get_option('evas-loaders-disabler').contains('tiff') == false,
+  cmake_args: extra_cmake_args)
 
 if not sys_windows
   giflib = cc.find_library('gif')

@@ -220,33 +220,57 @@ endif
 
 
 # libraries
+alternative_lib_names = {
+  'freetype2': ['freetype'],
+  'jpeg': ['libjpeg'],
+}
 
-# libcheck
-check = dependency('check', fallback : ['check', 'check_dep'])
+foreach libname, alternatives : alternative_lib_names
+  # Search for dependency with alternative names
+  foreach other_name : [libname, alternatives]
+    lib = dependency(other_name,
+      cmake_args : extra_cmake_args,
+      required : false)
 
-# freetype2
-freetype2 = dependency('freetype2', fallback : ['freetype2', 'freetype_dep'])
+    if lib.found()
+      break
+    endif
+  endforeach
 
-# libjpeg
-jpeg = dependency('libjpeg', fallback : ['libjpeg', 'jpeg_dep'])
+  if not lib.found()
+    error('Dependency "@0@" not found. Tried: @1@.'.format(
+        libname,
+        ','.join(alternatives))
+    )
+  endif
+
+  set_variable(libname, lib)
+endforeach
+
+zlib = dependency('zlib',
+  cmake_args : extra_cmake_args)
+
+pcre = dependency('pcre',
+  cmake_args : extra_cmake_args,
+  required : false)
 
 if sys_windows
-  # pcre
-  pcre_project = subproject('pcre')
+  if not pcre.found()
+    pcre_project = subproject('pcre')
+    pcre = pcre_project.get_variable('pcre8')
+    pcre_posix = pcre_project.get_variable('pcre_posix')
+    original_pcre_dep = pcre_project.get_variable('pcre_dep')
 
-  pcre = pcre_project.get_variable('pcre8')
-  pcre_posix = pcre_project.get_variable('pcre_posix')
-  original_pcre_dep = pcre_project.get_variable('pcre_dep')
+    pcre = declare_dependency(link_with : [pcre, pcre_posix], dependencies : original_pcre_dep)
+  endif
 
-  pcre = declare_dependency(link_with : [pcre, pcre_posix], dependencies : original_pcre_dep)
+  getopt = dependency('getopt',
+    cmake_args : extra_cmake_args,
+    required : sys_windows,
+    fallback : ['getopt', 'getopt_dep'])
+endif
 
-  # zlib
-  zlib = subproject('zlib').get_variable('zlib_dep')
-
-  # getopt
-  getopt = subproject('getopt').get_variable('getopt_dep')
-else
-  zlib = dependency('zlib')
+if not sys_windows
   if not cc.has_header_symbol('regex.h', 'regcomp')
     error('regcomp can not be found')
   endif

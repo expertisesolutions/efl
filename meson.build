@@ -8,6 +8,8 @@ if host_machine.system() == 'darwin'
   add_languages('objc')
 endif
 
+extra_cmake_args = get_option('cmake_args')
+
 test_env = environment()
 test_env.set('EFL_RUN_IN_TREE', '1')
 
@@ -325,13 +327,15 @@ elif (get_option('crypto') == 'gnutls')
   crypto = [dependency('gnutls'), cc.find_library('gcrypt')]
   config_h.set('HAVE_GNUTLS', '1')
 elif (get_option('crypto') == 'openssl')
-  if (get_option('openssl_dir') != '')
+  if get_option('openssl_dir') != ''
     crypto = declare_dependency(
       link_args: ['-L' + get_option('openssl_dir'), '-L' + get_option('openssl_dir') + '/lib', '-llibssl_static', '-llibcrypto_static'],
       compile_args: ['-I' + get_option('openssl_dir') + '/include'],
     )
   else
-    crypto = dependency('openssl')
+    crypto = dependency('openssl',
+      cmake_args : extra_cmake_args,
+    )
   endif
   config_h.set('HAVE_OPENSSL', '1')
 endif
@@ -365,7 +369,7 @@ ecore_evas_wayland_engine_include_dir = []
 evas_static_list = []
 
 luaold_interpreters = [
-  ['lua',     ['>=5.1.0','<5.3.0']],
+  ['lua',     ['>=5.1.0','<5.4.0']],
   ['lua51',   ['>=5.1.0','<5.2.0']],
   ['lua-5.1', ['>=5.1.0','<5.2.0']],
   ['lua5.1',  ['>=5.1.0','<5.2.0']],
@@ -380,16 +384,24 @@ have_elua = get_option('elua')
 if get_option('lua-interpreter') == 'lua'
   config_h.set('ENABLE_LUA_OLD', '1')
   foreach l : luaold_interpreters
-    lua = dependency(l[0], version: l[1], required: false)
+    lua = dependency(l[0],
+      version: l[1],
+      required: false,
+      cmake_args : extra_cmake_args,
+    )
     lua_pc_name = l[0]
     if lua.found()
       break
     endif
   endforeach
   if not lua.found()
-    lua = dependency('lua', fallback: ['lua', 'lua_dep'], required: false)
+    lua = dependency('lua',
+      fallback: ['lua', 'lua_dep'],
+      required: false,
+      cmake_args : extra_cmake_args,
+    )
     if not lua.found()
-      error('Lua not found')
+      error('Lua not found (tried @0@)'.format(', '.join(luaold_interpreters)))
     endif
   endif
   if have_elua
@@ -407,10 +419,13 @@ else
   interpreter = get_option('lua-interpreter')
   lua = dependency(interpreter,
     fallback: [interpreter, '@0@_dep'.format(interpreter)],
-    required: false)
+    required: false,
+    cmake_args : extra_cmake_args,
+  )
+
   lua_pc_name = interpreter
   if not lua.found()
-    error('Lua not found')
+    error('Lua not found (tried @0@)'.format(interpreter))
   endif
 endif
 
@@ -745,9 +760,9 @@ if 'edje' not in ignored_subprojects
 endif
 
 if get_option('build-tests')
-  if not sys_windows
-    check = dependency('check')
-  endif
+  check = dependency('check',
+    cmake_args : extra_cmake_args,
+    )
   subdir(join_paths('src', 'tests'))
   foreach test : test_dirs
     package_c_args = [
