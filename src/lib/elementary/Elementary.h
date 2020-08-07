@@ -233,7 +233,9 @@ ELM_API extern Elm_Version *elm_version;
 #include <elm_toolbar.h>
 #include <elm_transit.h>
 /* this is actually elm_video */
+#ifdef HAVE_EMOTION
 #include <efl_ui_video.h>
+#endif
 #include <elm_view_list.h>
 #include <elm_view_form.h>
 #include <elm_web.h>

@@ -35,12 +35,15 @@ edje_external_elementary = [
   'elm_slideshow.c',
   'elm_spinner.c',
   'elm_toolbar.c',
-  'elm_video.c',
   'elm_web.c'
 ]
 
 if get_option('ethumb')
   edje_external_elementary += ['elm_thumb.c']
+endif
+
+if get_option('emotion')
+  edje_external_elementary += ['elm_video.c']
 endif
 
 ecore_systemd_mod = shared_module('elementary',
