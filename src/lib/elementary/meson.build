@@ -956,7 +956,7 @@ elementary_ext_deps = [dl, intl, buildsystem_simple]
 if get_option('ethumb')
   elementary_src += files('elm_thumb.c')
   elementary_deps += [ethumb, ethumb_client]
-  elementary_pub_deps += ethumb_client
+  elementary_pub_deps += [ethumb_client]
 endif
 
 if get_option('dbus')
