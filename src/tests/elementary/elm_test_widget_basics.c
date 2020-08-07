@@ -15,8 +15,10 @@ typedef struct _Simple_Test_Widget
 static const Simple_Test_Widget simple_widgets[] = {
   {elm_flip_add, "flip"},
   {elm_frame_add, "frame"},
+#ifdef HAVE_EMOTION
   {elm_player_add, "player"},
   {elm_video_add, "video"},
+#endif
   {elm_ctxpopup_add, "ctxpopup"},
   {elm_fileselector_add, "fileselector"},
   {elm_hoversel_add, "hoversel"},

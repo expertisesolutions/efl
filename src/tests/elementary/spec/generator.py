@@ -30,8 +30,14 @@ file_gen_template = """
 import sys
 import json
 
+no_video = False
+
+if sys.argv[1] == "--no-video":
+  input_files = sys.argv[2:-1]
+  no_video = True
+else:
+  input_files = sys.argv[1:-1]
 output_file = sys.argv[-1]
-input_files = sys.argv[1:-1]
 list_of_tcases = "static const Efl_Test_Case etc[] = {\n"
 list_entry = "  {{ \"{}-{}\", {}}},\n"
 generated_api = ""
@@ -67,6 +73,8 @@ for test in tests:
   else:
     custom_mapping = {}
   for widget_class in test["test-widgets"]:
+    if widget_class == "Efl.Ui.Video" and no_video:
+      continue
     if widget_class in custom_mapping:
       widget_test_klass = custom_mapping[widget_class]
     else:

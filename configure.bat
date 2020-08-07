@@ -146,6 +146,7 @@ exit /B 0
             -Dx11=false^
             -Dphysics=false^
             -Dethumb=false^
+            -Demotion=false^
             -Deeze=false^
             -Dpulseaudio=false^
             -Dharfbuzz=false^
