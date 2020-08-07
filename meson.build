@@ -477,30 +477,10 @@ subprojects = [
  ]
 
 if sys_windows
-  ignored_subprojects = [
-    # don't make sense in windows
-    'elput',
-    # temporarily ignored
-    'ecore_audio',
-    'ecore_avahi',
-    'ecore_buffer',
-    'ecore_cocoa',
-    'ecore_drm',
-    'ecore_drm2',
-    'ecore_fb',
-    'ecore_sdl',
-    'ecore_wayland',
-    'ecore_wl2',
-    'ecore_x',
-    'eeze',
-    'efl_canvas_wl',
-    'ephysics',
-    'exactness',
-  ]
+  ignored_subprojects = ['exactness']
 else
   ignored_subprojects = []
 endif
-
 
 _subprojects = []
 foreach package : subprojects
