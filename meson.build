@@ -740,14 +740,9 @@ foreach package : subprojects
 endforeach
 
 #build this later, as the debug services are depending on ecore
-if 'ecore_con' not in ignored_subprojects
-  subdir(join_paths('src', 'bin', 'efl'))
-endif
+subdir(join_paths('src', 'bin', 'efl'))
 
-if 'evas' not in ignored_subprojects
-  subdir(join_paths('src', 'generic', 'evas'))
-endif
-
+subdir(join_paths('src', 'generic', 'evas'))
 subdir('cmakeconfig')
 subdir(join_paths('src', 'bindings'))
 
@@ -792,12 +787,12 @@ if not sys_windows
 
     meson.add_install_script('meson/evas_loader_conf.sh', evas_loader_original, evas_loader_link_types)
   endforeach
+endif
 
-  doxygen = find_program('doxygen', required : false)
+doxygen = find_program('doxygen', required : false)
 
-  if doxygen.found()
-    subdir('doc')
-  endif
+if doxygen.found()
+  subdir('doc')
 endif
 
 #
