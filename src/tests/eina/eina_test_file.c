@@ -829,9 +829,9 @@ EFL_START_TEST(eina_test_file_mktemp)
      fail_if(strcmp(info->path, tmpfile));
 
    eina_iterator_free(it);
-
    fail_if(unlink(tmpfile));
-   fail_if(remove(tmpdir));
+   fail_if(rmdir(tmpdir));
+   eina_tmpstr_del(tmpdir);
 }
 EFL_END_TEST
 
