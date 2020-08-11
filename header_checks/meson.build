@@ -240,7 +240,7 @@ foreach libname, alternatives : alternative_lib_names
   if not lib.found()
     error('Dependency "@0@" not found. Tried: @1@.'.format(
         libname,
-        ','.join(alternatives))
+        ','.join([libname] + alternatives))
     )
   endif
 
