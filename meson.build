@@ -9,6 +9,7 @@ if host_machine.system() == 'darwin'
 endif
 
 extra_cmake_args = get_option('cmake_args')
+message('CMake args: ' + extra_cmake_args)
 
 test_env = environment()
 test_env.set('EFL_RUN_IN_TREE', '1')

@@ -97,7 +97,8 @@ efl_libs.csv
 .uuid
 
 #native windows files
-env.bat
+.env
+.venv
 
 # Subprojects
 subprojects/*
