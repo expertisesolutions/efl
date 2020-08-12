@@ -205,6 +205,47 @@ EFL_START_TEST(evil_stdlib_mkstemp)
 }
 EFL_END_TEST
 
+EFL_START_TEST(evil_stdlib_mkstemp_create_many)
+{
+   char *tempdir = getenv("TEMP");
+   const char tempname[] = "file_XXXXXX";
+
+   size_t tempdir_len = strlen(tempdir) +1;
+   size_t tempname_len = strlen(tempname) +1;
+
+   size_t template_len = tempdir_len + tempname_len; // including path separator
+   char template[template_len];
+
+   // Construct full template name: <tempdir><separator><tempname>
+   const char pathsep[2] = "\\";
+   strncpy_s(template, template_len, tempdir, tempdir_len);
+   strncat_s(template, template_len, pathsep, 2);
+   strncat_s(template, template_len, tempname, tempname_len);
+
+   const unsigned long long files_to_create = 1000;
+   unsigned long long files_created;
+   char templates[files_to_create][template_len];
+   int fds[files_to_create] = { NULL };
+   // Create temporary files
+   for (files_created = 0; files_created < files_to_create; files_created++)
+     {
+        strncpy_s(templates[files_created], template_len, template, template_len);
+
+        fds[files_created] = mkstemp(templates[files_created]);
+        fail_if(fds[files_created] < 0);
+     }
+
+   // Close temporary files
+   for (files_created = 0; files_created < files_to_create; files_created++)
+     fail_if(close(fds[files_created]) == -1);
+
+   // Remove temporary files
+   for (files_created = 0; files_created < files_to_create; files_created++)
+     fail_if(unlink(templates[files_created]) == -1);
+
+}
+EFL_END_TEST
+
 EFL_START_TEST(evil_stdlib_mkstemp_fail)
 {
    char template[] = "file_XXX";
@@ -305,6 +346,7 @@ void evil_test_stdlib(TCase *tc)
    tcase_add_test(tc, evil_stdlib_mkdtemp);
    tcase_add_test(tc, evil_stdlib_mkdtemp_fail);
    tcase_add_test(tc, evil_stdlib_mkstemp);
+   tcase_add_test(tc, evil_stdlib_mkstemp_create_many);
    tcase_add_test(tc, evil_stdlib_mkstemp_fail);
    tcase_add_test(tc, evil_stdlib_mkstemps);
    tcase_add_test(tc, evil_stdlib_mkstemps_fail_1);
