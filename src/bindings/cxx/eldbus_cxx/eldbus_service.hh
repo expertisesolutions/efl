@@ -359,7 +359,7 @@ void _create_methods_specification(Tuple const& tuple
 
   _create_methods_specification_impl(std::get<I>(tuple), methods[I]
                                      , std::is_convertible<typename method_type::function_type
-                                     , function_type>());
+                                                           , function_type>());
 
   return _create_methods_specification(tuple, methods
                                        , std::integral_constant<std::size_t, I+1>()
