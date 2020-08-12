@@ -96,7 +96,7 @@ codegen = custom_target('edje_cc_codegen_edc',
 themes += custom_target('edje_codegen_codegen.edj',
             input : codegen,
             output : ['@BASENAME@_example_generated.c', '@BASENAME@_example_generated.h'],
-            command : edje_codegen_exe + [ '--prefix=codegen_example',  '@INPUT@',
+            command : edje_codegen_exe + ['--in-tree=1', '--prefix=codegen_example',  '@INPUT@',
                        'example_group', '@OUTPUT0@', '@OUTPUT1@'],
             depends : [edje_codegen, themes])
 

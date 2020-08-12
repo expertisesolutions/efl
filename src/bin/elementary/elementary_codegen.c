@@ -275,6 +275,7 @@ const Ecore_Getopt optdesc =
    {
       ECORE_GETOPT_STORE_STR('p', "prefix", "The prefix for the " \
                              "generataed code."),
+      ECORE_GETOPT_STORE_BOOL('t', "in-tree", "Same as setting EFL_RUN_IN_TREE=1 as environment variable"),
       ECORE_GETOPT_LICENSE('L', "license"),
       ECORE_GETOPT_COPYRIGHT('C', "copyright"),
       ECORE_GETOPT_VERSION('V', "version"),
@@ -752,10 +753,12 @@ int
 main(int argc, char *argv[])
 {
    Eina_Bool quit_option = EINA_FALSE;
+   Eina_Bool in_tree_option = EINA_FALSE;
    char *source = NULL, *header = NULL;
    int arg_index, ret = 0;
    Ecore_Getopt_Value values[] = {
      ECORE_GETOPT_VALUE_STR(prefix),
+     ECORE_GETOPT_VALUE_BOOL(in_tree_option),
      ECORE_GETOPT_VALUE_BOOL(quit_option),
      ECORE_GETOPT_VALUE_BOOL(quit_option),
      ECORE_GETOPT_VALUE_BOOL(quit_option),
@@ -803,6 +806,9 @@ main(int argc, char *argv[])
         goto error_getopt;
      }
 
+   if (in_tree_option)
+     putenv ("EFL_RUN_IN_TREE=1");
+   
    file = argv[arg_index++];
 
    // check if the file is accessible
