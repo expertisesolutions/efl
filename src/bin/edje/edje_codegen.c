@@ -1113,8 +1113,6 @@ main(int argc, char *argv[])
 
    eina_init();
    ecore_init();
-   ecore_evas_init();
-   edje_init();
 
    if (argc < 2)
      {
@@ -1153,6 +1151,9 @@ main(int argc, char *argv[])
    if (in_tree_option)
      putenv ("EFL_RUN_IN_TREE=1");
 
+   ecore_evas_init();
+   edje_init();
+   
    file = argv[arg_index++];
 
    // check if the file is accessible
