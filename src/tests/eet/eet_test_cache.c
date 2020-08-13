@@ -60,7 +60,10 @@ EFL_START_TEST(eet_test_cache_concurrency)
    Eina_Bool r;
    int tmpfd;
 
-   file = strdup("/tmp/eet_suite_testXXXXXX");
+   int path_size = strlen(eina_environment_tmp_get()) + strlen("eet_suite_testXXXXXX") + 2;
+   file = malloc(sizeof(char)*path_size);
+   eina_file_path_join(file, path_size
+      , eina_environment_tmp_get(), "eet_suite_testXXXXXX");
 
    eina_threads_init();
 
@@ -94,7 +97,7 @@ EFL_START_TEST(eet_test_cache_concurrency)
    thread_ret = eina_thread_join(thread);
    fail_unless(thread_ret == NULL, (char const *)thread_ret);
 
-   eet_close(ef);
+   eet_clearcache();
 
    fail_if(unlink(file) != 0);
 
