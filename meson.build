@@ -52,9 +52,10 @@ osx = ['darwin']
 sys_linux = linux.contains(host_machine.system())
 sys_bsd = bsd.contains(host_machine.system())
 sys_windows = windows.contains(host_machine.system())
+sys_windows_native = sys_windows and cc.get_id() in ['msvc', 'clang-cl']
 sys_osx = osx.contains(host_machine.system())
 
-if sys_windows and cc.get_id() in ['msvc', 'clang-cl']
+if sys_windows_native
   pkgconfig = disabler()
 else
   pkgconfig = import('pkgconfig')
@@ -101,7 +102,7 @@ endforeach
 add_global_arguments(dev_cflags, language: 'c')
 add_global_arguments(dev_cflags, language: 'cpp')
 
-if sys_windows
+if sys_windows_native
   dl = declare_dependency()
   m = declare_dependency()
 
@@ -491,7 +492,7 @@ subprojects = [
 ['exactness'        ,[]                    , false,  false,  true, false, false, false, false, ['eina, evas, eet'], []],
 ]
 
-if sys_windows
+if sys_windows_native
   ignored_subprojects = [
     # temporarily ignored
     'exactness',
@@ -766,7 +767,7 @@ if get_option('build-examples')
 endif
 
 # disabled for windows for now
-if not sys_windows
+if not sys_windows_native
   subdir(join_paths(local_scripts))
 
   meson.add_install_script('meson/meson_modules.sh', module_files)
@@ -820,7 +821,7 @@ configure_file(
 
 subdir(join_paths('systemd-services'))
 
-if not sys_windows and get_option('dbus')
+if not sys_windows_native and get_option('dbus')
   subdir(join_paths('dbus-services'))
 endif
 
