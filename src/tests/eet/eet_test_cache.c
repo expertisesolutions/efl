@@ -60,10 +60,13 @@ EFL_START_TEST(eet_test_cache_concurrency)
    Eina_Bool r;
    int tmpfd;
 
-   int path_size = strlen(eina_environment_tmp_get()) + strlen("eet_suite_testXXXXXX") + 2;
+   const char * filename = "eet_suite_testXXXXXX";
+   const char * tmpdir = eina_environment_tmp_get();
+   // +2 stands for <path separator> + <end of string>
+   size_t path_size = strlen(tmpdir) + strlen(filename) + 2;
+
    file = malloc(sizeof(char)*path_size);
-   eina_file_path_join(file, path_size
-      , eina_environment_tmp_get(), "eet_suite_testXXXXXX");
+   eina_file_path_join(file, path_size , tmpdir, filename);
 
    eina_threads_init();
 
