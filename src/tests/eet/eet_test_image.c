@@ -88,7 +88,13 @@ EFL_START_TEST(eet_test_image_normal)
    unsigned int h;
    int tmpfd;
 
-   file = strdup("/tmp/eet_suite_testXXXXXX");
+   const char * filename = "eet_suite_testXXXXXX";
+   const char * tmpdir = eina_environment_tmp_get();
+   // +2 stands for <path separator> + <end of string>
+   size_t path_size = strlen(tmpdir) + strlen(filename) + 2;
+
+   file = malloc(sizeof(char)*path_size);
+   eina_file_path_join(file, path_size , tmpdir, filename);
 
    fail_if(-1 == (tmpfd = mkstemp(file)));
    fail_if(!!close(tmpfd));
@@ -428,6 +434,7 @@ EFL_START_TEST(eet_test_image_normal)
    free(data);
 
    eet_close(ef);
+   eet_clearcache();
 
    fail_if(unlink(file) != 0);
 
@@ -449,7 +456,13 @@ EFL_START_TEST(eet_test_image_small)
    int result;
    int tmpfd;
 
-   file = strdup("/tmp/eet_suite_testXXXXXX");
+   const char * filename = "eet_suite_testXXXXXX";
+   const char * tmpdir = eina_environment_tmp_get();
+   // +2 stands for <path separator> + <end of string>
+   size_t path_size = strlen(tmpdir) + strlen(filename) + 2;
+
+   file = malloc(sizeof(char)*path_size);
+   eina_file_path_join(file, path_size , tmpdir, filename);
 
    image[0] = IM0;
    image[1] = IM1;
@@ -481,6 +494,7 @@ EFL_START_TEST(eet_test_image_small)
    fail_if(data == NULL);
 
    eet_close(ef);
+   eet_clearcache();
 
    fail_if(unlink(file) != 0);
 
