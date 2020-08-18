@@ -77,7 +77,7 @@ static const Eet_Test_Image test_alpha = {
 EFL_START_TEST(eet_test_image_normal)
 {
    Eet_File *ef;
-   char *file;
+   Eina_Tmpstr *tmpfile = NULL;
    unsigned int *data;
    int compress;
    int quality;
@@ -88,19 +88,13 @@ EFL_START_TEST(eet_test_image_normal)
    unsigned int h;
    int tmpfd;
 
-   const char * filename = "eet_suite_testXXXXXX";
-   const char * tmpdir = eina_environment_tmp_get();
-   // +2 stands for <path separator> + <end of string>
-   size_t path_size = strlen(tmpdir) + strlen(filename) + 2;
-
-   file = malloc(sizeof(char)*path_size);
-   eina_file_path_join(file, path_size , tmpdir, filename);
-
-   fail_if(-1 == (tmpfd = mkstemp(file)));
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
    /* Save the encoded data in a file. */
-   ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ_WRITE);
    fail_if(!ef);
 
    result = eet_data_image_write(ef,
@@ -230,7 +224,7 @@ EFL_START_TEST(eet_test_image_normal)
    eet_close(ef);
 
    /* Test read of image */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(!ef);
 
    result = eet_data_image_header_read(ef,
@@ -436,14 +430,15 @@ EFL_START_TEST(eet_test_image_normal)
    eet_close(ef);
    eet_clearcache();
 
-   fail_if(unlink(file) != 0);
+   fail_if(unlink(tmpfile) != 0);
+   eina_tmpstr_del(tmpfile);
 
 }
 EFL_END_TEST
 
 EFL_START_TEST(eet_test_image_small)
 {
-   char *file;
+   Eina_Tmpstr *tmpfile = NULL;
    unsigned int image[4];
    unsigned int *data;
    Eet_File *ef;
@@ -456,23 +451,17 @@ EFL_START_TEST(eet_test_image_small)
    int result;
    int tmpfd;
 
-   const char * filename = "eet_suite_testXXXXXX";
-   const char * tmpdir = eina_environment_tmp_get();
-   // +2 stands for <path separator> + <end of string>
-   size_t path_size = strlen(tmpdir) + strlen(filename) + 2;
-
-   file = malloc(sizeof(char)*path_size);
-   eina_file_path_join(file, path_size , tmpdir, filename);
-
    image[0] = IM0;
    image[1] = IM1;
    image[2] = IM2;
    image[3] = IM3;
 
-   fail_if(-1 == (tmpfd = mkstemp(file)));
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
-   ef = eet_open(file, EET_FILE_MODE_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_WRITE);
    fail_if(!ef);
 
    result = eet_data_image_write(ef, "/images/test", image, 2, 2, 1, 9, 100, 0);
@@ -480,7 +469,7 @@ EFL_START_TEST(eet_test_image_small)
 
    eet_close(ef);
 
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(!ef);
 
    data = (unsigned int *)eet_data_image_read(ef,
@@ -496,7 +485,7 @@ EFL_START_TEST(eet_test_image_small)
    eet_close(ef);
    eet_clearcache();
 
-   fail_if(unlink(file) != 0);
+   fail_if(unlink(tmpfile) != 0);
 
    fail_if(data[0] != IM0);
    fail_if(data[1] != IM1);
@@ -504,7 +493,7 @@ EFL_START_TEST(eet_test_image_small)
    fail_if(data[3] != IM3);
 
    free(data);
-
+   eina_tmpstr_del(tmpfile);
 }
 EFL_END_TEST
 
