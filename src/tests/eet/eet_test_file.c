@@ -24,19 +24,19 @@ EFL_START_TEST(eet_test_file_simple_write)
    Eet_Entry *entry;
    Eet_File *ef;
    char *test;
-   char *file;
+   Eina_Tmpstr *tmpfile = NULL;
    void *m;
    int size;
    int tmpfd;
 
-   file = strdup("/tmp/eet_suite_testXXXXXX");
-
-   fail_if(-1 == (tmpfd = mkstemp(file)));
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
    fail_if(eet_mode_get(NULL) != EET_FILE_MODE_INVALID);
 
-   ef = eet_open(file, EET_FILE_MODE_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_write(ef, "keys/tests", buffer, strlen(buffer) + 1, 1));
@@ -51,7 +51,7 @@ EFL_START_TEST(eet_test_file_simple_write)
    eet_close(ef);
 
    /* Test read from buffer */
-   f = eina_file_open(file, EINA_FALSE);
+   f = eina_file_open(tmpfile, EINA_FALSE);
    fail_if(!f);
 
    m = eina_file_map_all(f, EINA_FILE_WILLNEED);
@@ -88,7 +88,7 @@ EFL_START_TEST(eet_test_file_simple_write)
    eina_file_close(f);
 
    /* Test read of simple file */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(!ef);
 
    test = eet_read(ef, "keys/tests", &size);
@@ -110,7 +110,7 @@ EFL_START_TEST(eet_test_file_simple_write)
    eet_close(ef);
 
    /* Test eet cache system */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(!ef);
 
    test = eet_read(ef, "keys/tests", &size);
@@ -120,8 +120,14 @@ EFL_START_TEST(eet_test_file_simple_write)
    fail_if(memcmp(test, buffer, strlen(buffer) + 1) != 0);
 
    eet_close(ef);
+   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
+    * successfully if there is any reference to the file, here `eet_clearcache` is
+    * used to assure that the file is really closed when the unlink happens.
+    */
+   eet_clearcache();
 
-   fail_if(unlink(file) != 0);
+   fail_if(unlink(tmpfile) != 0);
+   eina_tmpstr_del(tmpfile);
 
 }
 EFL_END_TEST
@@ -133,14 +139,12 @@ EFL_START_TEST(eet_test_file_data)
    Eet_Dictionary *ed;
    Eet_File *ef;
    char **list;
-   char *file;
+   Eina_Tmpstr *tmpfile = NULL;
    Eet_Data_Descriptor_Class eddc;
    Eet_Test_Ex_Type etbt;
    int size;
    int test;
    int tmpfd;
-
-   file = strdup("/tmp/eet_suite_testXXXXXX");
 
    eet_test_ex_set(&etbt, 0);
    etbt.list = eina_list_prepend(etbt.list, eet_test_ex_set(NULL, 1));
@@ -170,14 +174,16 @@ EFL_START_TEST(eet_test_file_data)
 
    eet_build_ex_descriptor(edd, EINA_FALSE);
 
-   fail_if(-1 == (tmpfd = mkstemp(file)));
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
    /* Insert an error in etbt. */
    etbt.i = 0;
 
    /* Save the encoded data in a file. */
-   ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_data_write(ef, edd, EET_TEST_FILE_KEY1, &etbt, 0));
@@ -198,7 +204,7 @@ EFL_START_TEST(eet_test_file_data)
    /* Attempt to replace etbt by the correct one. */
    etbt.i = EET_TEST_INT;
 
-   ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_data_write(ef, edd, EET_TEST_FILE_KEY1, &etbt, 0));
@@ -212,7 +218,7 @@ EFL_START_TEST(eet_test_file_data)
    eet_close(ef);
 
    /* Read back the data. */
-   ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_data_write(ef, edd, EET_TEST_FILE_KEY2, &etbt, 0));
@@ -278,7 +284,8 @@ EFL_START_TEST(eet_test_file_data)
 
    eet_close(ef);
 
-   fail_if(unlink(file) != 0);
+   fail_if(unlink(tmpfile) != 0);
+   eina_tmpstr_del(tmpfile);
 
 }
 EFL_END_TEST
@@ -291,11 +298,9 @@ EFL_START_TEST(eet_test_file_data_dump)
    Eet_Test_Ex_Type etbt;
    Eet_File *ef;
    char *string1;
-   char *file;
+   Eina_Tmpstr *tmpfile = NULL;
    int test;
    int tmpfd;
-
-   file = strdup("/tmp/eet_suite_testXXXXXX");
 
    eet_test_ex_set(&etbt, 0);
    etbt.list = eina_list_prepend(etbt.list, eet_test_ex_set(NULL, 1));
@@ -323,11 +328,13 @@ EFL_START_TEST(eet_test_file_data_dump)
 
    eet_build_ex_descriptor(edd, EINA_FALSE);
 
-   fail_if(-1 == (tmpfd = mkstemp(file)));
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
    /* Save the encoded data in a file. */
-   ef = eet_open(file, EET_FILE_MODE_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_data_write(ef, edd, EET_TEST_FILE_KEY1, &etbt, 0));
@@ -335,7 +342,7 @@ EFL_START_TEST(eet_test_file_data_dump)
    eet_close(ef);
 
    /* Use dump/undump in the middle */
-   ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ_WRITE);
    fail_if(!ef);
 
    string1 = NULL;
@@ -346,13 +353,11 @@ EFL_START_TEST(eet_test_file_data_dump)
    eet_close(ef);
 
    /* Test the correctness of the reinsertion. */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(!ef);
 
    result = eet_data_read(ef, edd, EET_TEST_FILE_KEY1);
    fail_if(!result);
-
-   eet_close(ef);
 
    /* Test the resulting data. */
    fail_if(eet_test_ex_check(result, 0, EINA_TRUE) != 0);
@@ -377,14 +382,21 @@ EFL_START_TEST(eet_test_file_data_dump)
 
    fail_if(test != 0);
 
-   fail_if(unlink(file) != 0);
+   eet_close(ef);
+   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
+    * successfully if there is any reference to the file, here `eet_clearcache` is
+    * used to assure that the file is really closed when the unlink happens.
+    */
+   eet_clearcache();
+   fail_if(unlink(tmpfile) != 0);
+   eina_tmpstr_del(tmpfile);
 
 }
 EFL_END_TEST
 
 EFL_START_TEST(eet_test_file_fp)
 {
-   char *file;
+   Eina_Tmpstr *tmpfile = NULL;
    Eet_Data_Descriptor_Class eddc;
    Eet_Data_Descriptor *edd_5FP;
    Eet_Data_Descriptor *edd_5DBL;
@@ -393,8 +405,6 @@ EFL_START_TEST(eet_test_file_fp)
    Eet_5DBL *convert;
    Eet_5FP *build;
    int tmpfd;
-
-   file = strdup("/tmp/eet_suite_testXXXXXX");
 
    EET_EINA_FILE_DATA_DESCRIPTOR_CLASS_SET(&eddc, Eet_5FP);
    edd_5FP = eet_data_descriptor_file_new(&eddc);
@@ -420,10 +430,12 @@ EFL_START_TEST(eet_test_file_fp)
    origin.f1 = eina_f32p32_int_from(1);
    origin.f0 = 0;
 
-   fail_if(-1 == (tmpfd = mkstemp(file)));
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
-   ef = eet_open(file, EET_FILE_MODE_READ_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_data_write(ef, edd_5FP, EET_TEST_FILE_KEY1, &origin, 1));
@@ -448,7 +460,8 @@ EFL_START_TEST(eet_test_file_fp)
 
    eet_close(ef);
 
-   fail_if(unlink(file) != 0);
+   fail_if(unlink(tmpfile) != 0);
+   eina_tmpstr_del(tmpfile);
 
 }
 EFL_END_TEST
