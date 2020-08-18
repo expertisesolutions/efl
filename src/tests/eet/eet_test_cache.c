@@ -94,6 +94,7 @@ EFL_START_TEST(eet_test_cache_concurrency)
    thread_ret = eina_thread_join(thread);
    fail_unless(thread_ret == NULL, (char const *)thread_ret);
 
+   eet_close(ef);
    eet_clearcache();
 
    fail_if(unlink(tmpfile) != 0);
