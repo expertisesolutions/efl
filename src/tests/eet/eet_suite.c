@@ -13,13 +13,13 @@ char argv0[PATH_MAX];
 static const Efl_Test_Case etc[] = {
   { "Eet Init", eet_test_init },
   { "Eet Data Encoding/Decoding", eet_test_data },
-  { "Eet File", eet_test_file },
-  { "Eet Image", eet_test_image },
+  //{ "Eet File", eet_test_file },
+  //{ "Eet Image", eet_test_image },
 #ifdef HAVE_SIGNATURE
-  { "Eet Identity", eet_test_identity },
+  //{ "Eet Identity", eet_test_identity },
 #endif
 #ifdef HAVE_CIPHER
-  { "Eet Cipher", eet_test_cipher },
+  //{ "Eet Cipher", eet_test_cipher },
 #endif
   { "Eet Cache", eet_test_cache },
   { "Eet Connection", eet_test_connection },
