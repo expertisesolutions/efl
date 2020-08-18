@@ -172,6 +172,10 @@ jobs:
         dir "${{ github.workspace }}\build\subprojects\pcre-8.37"
     - name: Check path
       run: $env:PATH
+    - name: Set ck_verbosity
+      env: ck_verbosity=verbose
+    - name: Run only eet-suite test case
+      run: meson test --no-rebuild -C build eet-suite --v
     - name: Run tests
       run: meson test --no-rebuild -C build --print-errorlogs
     - name: Show full log
