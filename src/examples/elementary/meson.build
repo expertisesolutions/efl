@@ -201,7 +201,7 @@ codegen = custom_target('elementary_codegen_examples',
     depends : [themes, elementary_codegen],
     input : themes[0],
     output : ['codegen_example_generated.c', 'codegen_example_generated.h'],
-    command : elementary_codegen_exe + ['-p=codegen_example', '@INPUT@', 'elm/example/mylayout/default', '@OUTPUT0@', '@OUTPUT1@'],
+    command : elementary_codegen_exe + ['--in-tree=true', '-p=codegen_example', '@INPUT@', 'elm/example/mylayout/default', '@OUTPUT0@', '@OUTPUT1@'],
 )
 
 executable('codegen_example',
