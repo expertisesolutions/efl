@@ -65,18 +65,19 @@ EFL_START_TEST(eet_test_identity_simple)
    Eet_Key *k;
    FILE *noread;
    char *test;
-   char *file;
    int size;
-   int fd;
+   Eina_Tmpstr* tmpfile = NULL;
+   int tmpfd;
 
-   file = strdup("/tmp/eet_suite_testXXXXXX");
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_suite_testXXXXXX", &tmpfile);
+   fail_if(-1 == tmpfd);
+   fail_if(!!close(tmpfd));
 
-   fail_if(-1 == (fd = mkstemp(file)));
-   fail_if(!!close(fd));
    fail_if(!(noread = fopen("/dev/null", "wb")));
 
    /* Sign an eet file. */
-   ef = eet_open(file, EET_FILE_MODE_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_WRITE);
    fail_if(!ef);
 
    fail_if(!eet_write(ef, "keys/tests", buffer, strlen(buffer) + 1, 0));
@@ -90,7 +91,7 @@ EFL_START_TEST(eet_test_identity_simple)
    eet_close(ef);
 
    /* Open a signed file. */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(!ef);
 
    /* check that the certificates match */
@@ -114,24 +115,24 @@ EFL_START_TEST(eet_test_identity_simple)
    eet_clearcache();
 
    /* Corrupting the file. */
-   fd = open(file, O_WRONLY | O_BINARY);
-   fail_if(fd < 0);
+   tmpfd = open(tmpfile, O_WRONLY | O_BINARY);
+   fail_if(tmpfd < 0);
 
-   fail_if(lseek(fd, 200, SEEK_SET) != 200);
-   fail_if(write(fd, "42", 2) != 2);
-   fail_if(lseek(fd, 50, SEEK_SET) != 50);
-   fail_if(write(fd, "42", 2) != 2);
-   fail_if(lseek(fd, 88, SEEK_SET) != 88);
-   fail_if(write(fd, "42", 2) != 2);
+   fail_if(lseek(tmpfd, 200, SEEK_SET) != 200);
+   fail_if(write(tmpfd, "42", 2) != 2);
+   fail_if(lseek(tmpfd, 50, SEEK_SET) != 50);
+   fail_if(write(tmpfd, "42", 2) != 2);
+   fail_if(lseek(tmpfd, 88, SEEK_SET) != 88);
+   fail_if(write(tmpfd, "42", 2) != 2);
 
-   close(fd);
+   close(tmpfd);
 
    /* Attempt to open a modified file. */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(ef);
 
    fail_if(eina_file_unlink(file) != EINA_TRUE);
-
+   eina_tmpstr_del(tmpfile);
 }
 EFL_END_TEST
 
