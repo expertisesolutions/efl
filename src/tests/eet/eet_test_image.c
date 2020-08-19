@@ -428,6 +428,10 @@ EFL_START_TEST(eet_test_image_normal)
    free(data);
 
    eet_close(ef);
+   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
+    * successfully if there is any reference to the file, here `eet_clearcache` is
+    * used to assure that the file is really closed when the unlink happens.
+    */
    eet_clearcache();
 
    fail_if(unlink(tmpfile) != 0);
@@ -483,6 +487,10 @@ EFL_START_TEST(eet_test_image_small)
    fail_if(data == NULL);
 
    eet_close(ef);
+   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
+    * successfully if there is any reference to the file, here `eet_clearcache` is
+    * used to assure that the file is really closed when the unlink happens.
+    */
    eet_clearcache();
 
    fail_if(unlink(tmpfile) != 0);
