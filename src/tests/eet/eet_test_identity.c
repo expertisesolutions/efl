@@ -74,7 +74,11 @@ EFL_START_TEST(eet_test_identity_simple)
    fail_if(-1 == tmpfd);
    fail_if(!!close(tmpfd));
 
+#ifdef _MSC_VER
+   fail_if(!(noread = fopen("nul", "wb")));
+#else
    fail_if(!(noread = fopen("/dev/null", "wb")));
+#endif
 
    /* Sign an eet file. */
    ef = eet_open(tmpfile, EET_FILE_MODE_WRITE);
