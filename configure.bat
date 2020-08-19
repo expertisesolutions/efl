@@ -149,6 +149,7 @@ exit /B 0
             -Dethumb=false^
             -Demotion=false^
             -Deeze=false^
+            -Dbuild-examples=false^
             -Dpulseaudio=false^
             -Dharfbuzz=false^
             -Dfribidi=false^
