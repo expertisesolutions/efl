@@ -528,7 +528,7 @@ _read_options_from_response_file(Cmd_Line_Options* options, const char* filename
 
    // Count how many arguments we have
    int argc = 1;
-   for (int i = 0; i < file_length; ++i)
+   for (size_t i = 0; i < file_length; ++i)
      {
         if (contents[i] == '\n' || contents[i] == '\0')
           {
@@ -547,7 +547,7 @@ _read_options_from_response_file(Cmd_Line_Options* options, const char* filename
    argv[1] = &contents[0];
 
    int arg_i = 2; // Ignore program name + contents[0] is already an arg
-   for (int i = 0; i < file_length; ++i)
+   for (size_t i = 0; i < file_length; ++i)
      {
         if (contents[i] == '\0')
           {
