@@ -32,6 +32,7 @@
 #  include <openssl/evp.h>
 #  include <openssl/x509.h>
 #  include <openssl/pem.h>
+#  include <openssl/bio.h>
 # endif /* ifdef HAVE_GNUTLS */
 #endif /* ifdef HAVE_SIGNATURE */
 
@@ -367,29 +368,39 @@ on_error:
 
    if (!emile_cipher_init()) return ;
 
+   BIO* bio_out;
+   bio_out = BIO_new_fp(out, BIO_NOCLOSE);
+   if (bio_out == NULL)
+       goto clear_return;
+
    rsa = EVP_PKEY_get1_RSA(key->private_key);
    if (rsa)
      {
-        fprintf(out, "Private key (RSA):\n");
-        RSA_print_fp(out, rsa, 0);
+        BIO_printf(bio_out, "Private key (RSA):\n");
+        RSA_print(bio_out, rsa, 0);
      }
 
    dsa = EVP_PKEY_get1_DSA(key->private_key);
    if (dsa)
      {
-        fprintf(out, "Private key (DSA):\n");
-        DSA_print_fp(out, dsa, 0);
+        BIO_printf(bio_out, "Private key (DSA):\n");
+        DSA_print(bio_out, dsa, 0);
      }
 
    dh = EVP_PKEY_get1_DH(key->private_key);
    if (dh)
      {
-        fprintf(out, "Private key (DH):\n");
-        DHparams_print_fp(out, dh);
+        BIO_printf(bio_out, "Private key (DH):\n");
+        DHparams_print(bio_out, dh);
      }
 
-   fprintf(out, "Public certificate:\n");
-   X509_print_fp(out, key->certificate);
+   BIO_printf(bio_out, "Public certificate:\n");
+   X509_print(bio_out, key->certificate);
+
+clear_return:
+   BIO_free(bio_out);
+   return;
+
 # endif /* ifdef HAVE_GNUTLS */
 #else /* ifdef HAVE_SIGNATURE */
    key = NULL;
@@ -879,6 +890,11 @@ on_error:
    const unsigned char *tmp;
    X509 *x509;
 
+   BIO *bio_out;
+   bio_out = BIO_new_fp(out, BIO_NOCLOSE);
+   if(bio_out == NULL)
+     goto clear_return;
+
    /* Strange but d2i_X509 seems to put 0 all over the place. */
    tmp = alloca(der_length);
    memcpy((char *)tmp, certificate, der_length);
@@ -886,13 +902,17 @@ on_error:
    if (!x509)
      {
         INF("Not a valid certificate.");
-        return;
+        goto clear_return;
      }
 
    INF("Public certificate :");
-   X509_print_fp(out, x509);
+   X509_print(bio_out, x509);
 
    X509_free(x509);
+
+clear_return:
+   BIO_free(bio_out);
+
 # endif /* ifdef HAVE_GNUTLS */
 #else /* ifdef HAVE_SIGNATURE */
    certificate = NULL;
