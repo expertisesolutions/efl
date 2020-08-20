@@ -8,6 +8,14 @@
 #include "../efl_check.h"
 #include <Eet.h>
 
+#ifdef _MSC_VER
+/* On windows, applink.c needs to be included in the executable; otherwise
+ * all the tests which are using file pointer will fail in runtime, throwing
+ * `No OPENSSL_Applink` messages, i.e: eet_test_identity.
+ * */
+# include <openssl/applink.c>
+#endif
+
 char argv0[PATH_MAX];
 
 static const Efl_Test_Case etc[] = {
