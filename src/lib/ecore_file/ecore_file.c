@@ -311,6 +311,9 @@ ecore_file_unlink(const char *file)
 ECORE_FILE_API Eina_Bool
 ecore_file_remove(const char *file)
 {
+#ifdef _MSC_VER
+   if (ecore_file_is_dir(file)) return ecore_file_rmdir(file);
+#endif
    if (remove(file) < 0) return EINA_FALSE;
    return EINA_TRUE;
 }

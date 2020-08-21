@@ -248,7 +248,9 @@ EFL_START_TEST(ecore_test_ecore_file_operations)
    fail_if(ecore_file_mod_time(dest_file) == 0);
    fail_if(ecore_file_can_read(dest_file) != EINA_TRUE);
    fail_if(ecore_file_can_write(dest_file) != EINA_TRUE);
+#ifndef _MSC_VER
    fail_if(ecore_file_can_exec(dest_file) != EINA_FALSE);
+#endif
    fail_if(ecore_file_remove(dest_file) != EINA_TRUE);
 
    ck_assert_str_eq(ecore_file_app_exe_get(exe_cmd), exe);
@@ -262,8 +264,9 @@ EFL_START_TEST(ecore_test_ecore_file_operations)
    fd = open(src_file, O_RDWR | O_BINARY | O_CREAT, 0700);
    fail_if(fd < 0);
    fail_if(close(fd) != 0);
+#ifndef _MSC_VER
    fail_if(ecore_file_can_exec(src_file) != EINA_TRUE);
-
+#endif
    src_dir = get_tmp_dir();
    fail_if(!src_dir);
    snprintf(dir, sizeof(dir), "%s/%s", src_dir, dirs[0]);
@@ -303,6 +306,7 @@ EFL_START_TEST(ecore_test_ecore_file_operations)
    ck_assert_str_eq(ecore_file_realpath(NULL), "");
    ck_assert_str_eq(ecore_file_realpath(not_exist_file), "");
 
+#ifndef _MSC_VER
    src_file = get_tmp_file();
    fail_if(!src_file);
    fail_if(ecore_file_remove(src_file) != EINA_TRUE);
@@ -319,6 +323,7 @@ EFL_START_TEST(ecore_test_ecore_file_operations)
      }
    fail_if(ecore_file_cp(src_file, src_file) != EINA_FALSE);
    fail_if(ecore_file_remove(src_file) != EINA_TRUE);
+#endif
 
    src_file = get_tmp_file();
    fail_if(!src_file);
@@ -332,7 +337,9 @@ EFL_START_TEST(ecore_test_ecore_file_operations)
      {
         fail_if(ecore_file_can_read(src_file) != EINA_FALSE);
      }
+#ifndef _MSC_VER
    fail_if(ecore_file_can_exec(src_file) != EINA_FALSE);
+#endif
    fail_if(ecore_file_can_write(src_file) != EINA_TRUE);
    fail_if(ecore_file_remove(src_file) != EINA_TRUE);
 
@@ -349,7 +356,9 @@ EFL_START_TEST(ecore_test_ecore_file_operations)
         fail_if(ecore_file_can_read(src_file) != EINA_FALSE);
         fail_if(ecore_file_can_write(src_file) != EINA_FALSE);
      }
+#ifndef _MSC_VER
    fail_if(ecore_file_can_exec(src_file) != EINA_TRUE);
+#endif
    fail_if(ecore_file_remove(src_file) != EINA_TRUE);
 
    fail_if(ecore_file_unlink(not_exist_file) != EINA_FALSE);
