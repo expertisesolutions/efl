@@ -637,7 +637,7 @@ _data_save(const Example_Lists *cache,
 
    if (ret)
      {
-        unlink(filename);
+        eina_file_unlink(filename);
         rename(tmp, filename);
      }
 

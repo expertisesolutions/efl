@@ -64,13 +64,8 @@ EFL_START_TEST(eet_test_cipher_decipher_simple)
      fail_if(memcmp(test, buffer, strlen(buffer) + 1) == 0);
 
    eet_close(ef);
-   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
-    * successfully if there is any reference to the file, here `eet_clearcache`
-    * is used to assure that the file is really closed when the unlink happens.
-    */
-   eet_clearcache();
 
-   fail_if(unlink(tmpfile) != 0);
+   fail_if(eina_file_unlink(tmpfile) != EINA_TRUE);
    eina_tmpstr_del(tmpfile);
 
 }

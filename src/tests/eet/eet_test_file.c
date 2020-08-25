@@ -120,13 +120,8 @@ EFL_START_TEST(eet_test_file_simple_write)
    fail_if(memcmp(test, buffer, strlen(buffer) + 1) != 0);
 
    eet_close(ef);
-   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
-    * successfully if there is any reference to the file, here `eet_clearcache` is
-    * used to assure that the file is really closed when the unlink happens.
-    */
-   eet_clearcache();
 
-   fail_if(unlink(tmpfile) != 0);
+   fail_if(eina_file_unlink(tmpfile) != EINA_TRUE);
    eina_tmpstr_del(tmpfile);
 
 }
@@ -284,7 +279,7 @@ EFL_START_TEST(eet_test_file_data)
 
    eet_close(ef);
 
-   fail_if(unlink(tmpfile) != 0);
+   fail_if(eina_file_unlink(tmpfile) != EINA_TRUE);
    eina_tmpstr_del(tmpfile);
 
 }
@@ -383,12 +378,8 @@ EFL_START_TEST(eet_test_file_data_dump)
    fail_if(test != 0);
 
    eet_close(ef);
-   /* As `eet_close` is a postponed close and windows' `unlink` doesn't execute
-    * successfully if there is any reference to the file, here `eet_clearcache` is
-    * used to assure that the file is really closed when the unlink happens.
-    */
-   eet_clearcache();
-   fail_if(unlink(tmpfile) != 0);
+
+   fail_if(eina_file_unlink(tmpfile) != EINA_TRUE);
    eina_tmpstr_del(tmpfile);
 
 }
@@ -460,7 +451,7 @@ EFL_START_TEST(eet_test_file_fp)
 
    eet_close(ef);
 
-   fail_if(unlink(tmpfile) != 0);
+   fail_if(eina_file_unlink(tmpfile) != EINA_TRUE);
    eina_tmpstr_del(tmpfile);
 
 }
