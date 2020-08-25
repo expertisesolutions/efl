@@ -135,7 +135,7 @@ EFL_START_TEST(eet_test_identity_simple)
    ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    fail_if(ef);
 
-   fail_if(eina_file_unlink(file) != EINA_TRUE);
+   fail_if(eina_file_unlink(tmpfile) != EINA_TRUE);
    eina_tmpstr_del(tmpfile);
 }
 EFL_END_TEST
