@@ -500,10 +500,10 @@ EFL_START_TEST(ecore_test_ecore_file_monitor)
    res = ecore_file_rmdir(dir_name);
    fail_if(res != EINA_TRUE);
 
+   ecore_file_monitor_del(mon);
+
    res = ecore_file_recursive_rm(src_dir);
    fail_if(res != EINA_TRUE);
-
-   ecore_file_monitor_del(mon);
 
    ret = ecore_file_shutdown();
    fail_if(ret != 0);
@@ -572,9 +572,5 @@ EFL_END_TEST
 
 void ecore_test_ecore_file(TCase *tc)
 {
-   tcase_add_test(tc, ecore_test_ecore_file_init);
-   tcase_add_test(tc, ecore_test_ecore_file_operations);
    tcase_add_test(tc, ecore_test_ecore_file_monitor);
-   tcase_add_test(tc, ecore_test_ecore_file_download);
-   tcase_add_test(tc, ecore_test_ecore_file_path);
 }
