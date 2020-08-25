@@ -356,7 +356,7 @@ _my_cache_save(const My_Cache *my_cache,
 
    if (ret)
      {
-        unlink(filename);
+        eina_file_unlink(filename);
         rename(tmp, filename);
      }
 

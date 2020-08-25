@@ -111,7 +111,7 @@ main(void)
    eet_close(ef);
 
 error:
-   if (unlink(file) != 0)
+   if (eina_file_unlink(file) != EINA_TRUE)
      {
         fprintf(
           stderr, "ERROR: could not unlink file (%s).\n", file);
