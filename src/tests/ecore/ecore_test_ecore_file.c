@@ -572,9 +572,5 @@ EFL_END_TEST
 
 void ecore_test_ecore_file(TCase *tc)
 {
-   tcase_add_test(tc, ecore_test_ecore_file_init);
-   tcase_add_test(tc, ecore_test_ecore_file_operations);
    tcase_add_test(tc, ecore_test_ecore_file_monitor);
-   tcase_add_test(tc, ecore_test_ecore_file_download);
-   tcase_add_test(tc, ecore_test_ecore_file_path);
 }

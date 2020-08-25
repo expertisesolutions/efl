@@ -494,6 +494,11 @@ subprojects = [
 if sys_windows
   ignored_subprojects = [
     # temporarily ignored
+    'edje',
+    'efreet',
+    'eio',
+    'elementary',
+    'embryo',
     'exactness',
   ]
 else
