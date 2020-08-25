@@ -165,7 +165,7 @@ _my_conf_save(const My_Conf_Type *my_conf,
 
    if (ret)
      {
-        unlink(filename);
+        eina_file_unlink(filename);
         rename(tmp, filename);
      }
 
