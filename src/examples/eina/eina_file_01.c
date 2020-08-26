@@ -16,12 +16,14 @@ main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
    Eina_Iterator *it;
    const char *f_name;
    const Eina_File_Direct_Info *f_info;
+   const char* homedir = eina_environment_home_get();
+
 
    eina_init();
 
-   eina_file_dir_list("/home/", EINA_FALSE, _print_cb, NULL);
+   eina_file_dir_list(homedir, EINA_FALSE, _print_cb, NULL);
 
-   it = eina_file_ls("/home/");
+   it = eina_file_ls(homedir);
    EINA_ITERATOR_FOREACH(it, f_name)
      {
         printf("%s\n", f_name);
@@ -29,12 +31,12 @@ main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
      }
    eina_iterator_free(it);
 
-   it = eina_file_stat_ls("/home/");
+   it = eina_file_stat_ls(homedir);
    EINA_ITERATOR_FOREACH(it, f_info)
      printf("%s if of type %d\n", f_info->path, f_info->type);
    eina_iterator_free(it);
 
-   it = eina_file_direct_ls("/home/");
+   it = eina_file_direct_ls(homedir);
    EINA_ITERATOR_FOREACH(it, f_info)
      printf("%s if of type %d\n", f_info->path, f_info->type);
    eina_iterator_free(it);
