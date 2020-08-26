@@ -16,7 +16,7 @@ main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
    Eina_Iterator *it;
    const char *f_name;
    const Eina_File_Direct_Info *f_info;
-   const char* homedir = eina_environment_home_get();
+   const char *homedir = eina_environment_home_get();
 
 
    eina_init();
