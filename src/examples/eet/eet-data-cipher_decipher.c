@@ -19,46 +19,48 @@ main(void)
    const char *key = "This is a crypto key";
    const char *key_bad = "This is another crypto key";
 
-   char *file = strdup("/tmp/eet_cipher_example_XXXXXX");
    Eet_File *ef;
    char *test;
    int size;
+   Eina_Tmpstr *tmpfile = NULL;
    int tmpfd;
 
    eet_init();
 
-   if (-1 == (tmpfd = mkstemp(file)) || !!close(tmpfd))
+   /* tmpfile will be created in temporary directory (with eina_environment_tmp) */
+   tmpfd = eina_file_mkstemp("eet_cipher_example_XXXXXX", &tmpfile);
+   if ((-1 == tmpfd) || !!close(tmpfd))
      {
         fprintf(
                 stderr, "ERROR: could not create temporary file (%s) : %s\n",
-                file, strerror(errno));
+                tmpfile, strerror(errno));
         goto panic;
      }
 
    /* Crypt an eet file. */
-   ef = eet_open(file, EET_FILE_MODE_WRITE);
+   ef = eet_open(tmpfile, EET_FILE_MODE_WRITE);
    if (!ef)
      {
         fprintf(
-          stderr, "ERROR: could not access file (%s).\n", file);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
    if (!eet_write_cipher(ef, "keys/tests", buffer, strlen(buffer) + 1, 0, key))
      {
         fprintf(
-          stderr, "ERROR: could not access file (%s).\n", file);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
    eet_close(ef);
 
    /* Decrypt an eet file. */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    if (!ef)
      {
         fprintf(
-          stderr, "ERROR: could not access file (%s).\n", file);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
@@ -67,7 +69,7 @@ main(void)
      {
         fprintf(
           stderr, "ERROR: could decript contents on file %s, with key %s.\n",
-          file, key);
+          tmpfile, key);
         goto error;
      }
 
@@ -88,11 +90,11 @@ main(void)
    eet_close(ef);
 
    /* Decrypt an eet file, now using our BAD key!! */
-   ef = eet_open(file, EET_FILE_MODE_READ);
+   ef = eet_open(tmpfile, EET_FILE_MODE_READ);
    if (!ef)
      {
         fprintf(
-          stderr, "ERROR: could not access file (%s).\n", file);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
@@ -104,20 +106,20 @@ main(void)
           fprintf(
             stderr, "ERROR: something is wrong with the contents of %s, as"
                     " we accessed it with a different key and it decripted our"
-                    " information right.\n", file);
+                    " information right.\n", tmpfile);
           goto error;
        }
 
    eet_close(ef);
 
 error:
-   if (eina_file_unlink(file) != EINA_TRUE)
+   if (eina_file_unlink(tmpfile) != EINA_TRUE)
      {
         fprintf(
-          stderr, "ERROR: could not unlink file (%s).\n", file);
+          stderr, "ERROR: could not unlink file (%s).\n", tmpfile);
      }
 
 panic:
+   eina_tmpstr_del(tmpfile);
    eet_shutdown();
 }
-
