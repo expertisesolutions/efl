@@ -68,7 +68,7 @@ main(void)
    if (!test)
      {
         fprintf(
-          stderr, "ERROR: could decript contents on tmpfile %s, with key %s.\n",
+          stderr, "ERROR: could decript contents on file %s, with key %s.\n",
           tmpfile, key);
         goto error;
      }
@@ -123,4 +123,3 @@ panic:
    eina_tmpstr_del(tmpfile);
    eet_shutdown();
 }
-
