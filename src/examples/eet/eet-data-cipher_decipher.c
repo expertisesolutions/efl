@@ -32,7 +32,7 @@ main(void)
    if ((-1 == tmpfd) || !!close(tmpfd))
      {
         fprintf(
-                stderr, "ERROR: could not create temporary tmpfile (%s) : %s\n",
+                stderr, "ERROR: could not create temporary file (%s) : %s\n",
                 tmpfile, strerror(errno));
         goto panic;
      }
@@ -42,14 +42,14 @@ main(void)
    if (!ef)
      {
         fprintf(
-          stderr, "ERROR: could not access tmpfile (%s).\n", tmpfile);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
    if (!eet_write_cipher(ef, "keys/tests", buffer, strlen(buffer) + 1, 0, key))
      {
         fprintf(
-          stderr, "ERROR: could not access tmpfile (%s).\n", tmpfile);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
@@ -60,7 +60,7 @@ main(void)
    if (!ef)
      {
         fprintf(
-          stderr, "ERROR: could not access tmpfile (%s).\n", tmpfile);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
@@ -94,7 +94,7 @@ main(void)
    if (!ef)
      {
         fprintf(
-          stderr, "ERROR: could not access tmpfile (%s).\n", tmpfile);
+          stderr, "ERROR: could not access file (%s).\n", tmpfile);
         goto error;
      }
 
@@ -116,7 +116,7 @@ error:
    if (eina_file_unlink(tmpfile) != EINA_TRUE)
      {
         fprintf(
-          stderr, "ERROR: could not unlink tmpfile (%s).\n", tmpfile);
+          stderr, "ERROR: could not unlink file (%s).\n", tmpfile);
      }
 
 panic:
