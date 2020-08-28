@@ -14,7 +14,7 @@ import tempfile
 def prep_eina_file_02():
   f = tempfile.NamedTemporaryFile(delete=False)
   f.write(b"Simulation")
-  return [f.name, "/tmp/copy_file"]
+  return [f.name, tempfile.gettempdir() + "/copy_file"]
 
 def prep_eina_xattr_01():
   f = tempfile.NamedTemporaryFile(delete=False)
@@ -62,10 +62,10 @@ def prep_ecore_getopt_example():
 def prep_eio_file_copy():
   f1 = tempfile.NamedTemporaryFile(delete=False)
   f1.write(b"Simulation")
-  return [f1.name, "/tmp/eio_dst_file"]
+  return [f1.name, tempfile.gettempdir() + "/eio_dst_file"]
 
 def prep_eio_file_ls():
-  return ["/tmp/"]
+  return [tempfile.gettempdir() + "/"]
 
 def prep_edje_color_class():
   return ["beta", "red", "green", "blue"]
