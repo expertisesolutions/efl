@@ -223,6 +223,7 @@ endif
 alternative_lib_names = {
   'freetype2': ['freetype'],
   'jpeg': ['libjpeg'],
+  'curl': ['libcurl'],
 }
 
 foreach libname, alternatives : alternative_lib_names
