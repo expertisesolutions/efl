@@ -54,7 +54,12 @@ foreach engine_conf : engines
     var_name = 'engine_'+engine
     set_variable(var_name, engine_dep)
 
-    mod_full_name = engine
+    if sys_native_windows
+      mod_full_name = 'module'
+    else
+      mod_full_name = engine
+    endif
+
     # root meson.build declares the root evas engines project as `evas/engines`,
     # but modules must be installed in evas/modules
     evas_package_modules = join_paths(dir_lib, 'evas', 'modules')

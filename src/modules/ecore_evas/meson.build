@@ -29,7 +29,12 @@ foreach engine_conf : engines
 
     config_h.set('BUILD_ECORE_EVAS_'+engine.to_upper(), '1')
 
-    mod_full_name = engine
+    if sys_native_windows
+      mod_full_name = 'module'
+    else
+      mod_full_name = engine
+    endif
+
     mod_install_dir = join_paths(dir_lib, package_name, 'engines', engine, version_name)
 
     subdir(join_paths('engines', engine))
