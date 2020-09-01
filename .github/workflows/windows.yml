@@ -91,6 +91,9 @@ jobs:
     - name: Install getopt (vcpkg)
       if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\vcpkg install getopt:x64-windows
+    - name: Install curl (vcpkg)
+      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+      run: .\vcpkg\vcpkg install curl:x64-windows
     - name: Add vcpkg installed package dirs to path
       run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/bin"
     - name: Add vcpkg installed package dirs to path (debug libs)
