@@ -52,9 +52,10 @@ osx = ['darwin']
 sys_linux = linux.contains(host_machine.system())
 sys_bsd = bsd.contains(host_machine.system())
 sys_windows = windows.contains(host_machine.system())
+sys_native_windows = sys_windows and cc.get_id() in ['msvc', 'clang-cl']
 sys_osx = osx.contains(host_machine.system())
 
-if sys_windows and cc.get_id() in ['msvc', 'clang-cl']
+if sys_native_windows
   pkgconfig = disabler()
 else
   pkgconfig = import('pkgconfig')
@@ -773,7 +774,7 @@ if get_option('build-examples')
 endif
 
 # disabled for windows for now
-if not sys_windows
+if not sys_native_windows
   subdir(join_paths(local_scripts))
 
   meson.add_install_script('meson/meson_modules.sh', module_files)
