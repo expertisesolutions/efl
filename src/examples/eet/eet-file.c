@@ -34,11 +34,8 @@ create_eet_file(void)
 
    char *tmpdir = getenv("TEMP");
    const char filename[] = "my_file.eet";
-   size_t tmpdir_len = strlen(tmpdir) + 1;
-   size_t filename_len = strlen(filename) + 1;
-   size_t file_len = tmpdir_len + filename_len;
-   char file[file_len];
-   snprintf(file, file_len, "%s" EINA_PATH_SEP_S "%s", tmpdir, filename);
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, filename);
 
    ef = eet_open(file, EET_FILE_MODE_WRITE);
    if (!ef) return 0;
@@ -85,11 +82,8 @@ main(void)
 
    char *tmpdir = getenv("TEMP");
    const char filename[] = "my_file.eet";
-   size_t tmpdir_len = strlen(tmpdir) + 1;
-   size_t filename_len = strlen(filename) + 1;
-   size_t file_len = tmpdir_len + filename_len;
-   char file[file_len];
-   snprintf(file, file_len, "%s" EINA_PATH_SEP_S "%s", tmpdir, filename);
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, filename);
 
    ef = eet_open(file, EET_FILE_MODE_READ);
    if (!ef) return -1;
@@ -140,4 +134,3 @@ main(void)
 
    return 0;
 }
-
