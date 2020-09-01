@@ -22,15 +22,9 @@ jobs:
     - name: Cache vcpkg
       uses: actions/cache@v2
       id: cache-vcpkg
-      env:
-        cache-name: cache-vcpkg
       with:
         path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        key: vcpkg-cache-${{ hashfiles('.github/workflows/windows.yml') }}
     - name: Show vcpkg cache info
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
@@ -126,15 +120,9 @@ jobs:
     - name: Cache vcpkg
       uses: actions/cache@v2
       id: cache-vcpkg
-      env:
-        cache-name: cache-vcpkg
       with:
         path: ${{ github.workspace }}/vcpkg
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        key: vcpkg-cache-${{ hashfiles('.github/workflows/windows.yml') }}
     - name: Show vcpkg cache info
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
