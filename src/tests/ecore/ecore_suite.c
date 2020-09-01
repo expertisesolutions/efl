@@ -7,30 +7,7 @@
 #include <Ecore.h>
 
 static const Efl_Test_Case etc[] = {
-  { "Ecore", ecore_test_ecore },
-  { "idle", ecore_test_ecore_idle },
-  { "poller", ecore_test_ecore_idle },
-#if HAVE_ECORE_X
-  { "Ecore_X", ecore_test_ecore_x },
-#endif
-  { "Ecore_Imf", ecore_test_ecore_imf },
-#if HAVE_ECORE_AUDIO
-  { "Ecore Audio", ecore_test_ecore_audio},
-#endif
-  { "Ecore_Timers", ecore_test_timer },
   { "Ecore_Evas", ecore_test_ecore_evas },
-  { "Ecore_Animators", ecore_test_animator },
-  { "Eina_Thread_Queue", ecore_test_ecore_thread_eina_thread_queue },
-  { "Eina_Thread_Queue", ecore_test_ecore_thread_eina_thread_queue2 },
-#if HAVE_ECORE_FB
-  { "Ecore_Fb", ecore_test_ecore_fb },
-#endif
-  { "Ecore_Input", ecore_test_ecore_input },
-  { "Ecore_File", ecore_test_ecore_file },
-  { "Ecore_Job", ecore_test_ecore_job },
-  { "Ecore_Args", ecore_test_ecore_args },
-  { "Ecore_Pipe", ecore_test_ecore_pipe },
-  { "Ecore_Evas_Selection", ecore_test_ecore_evas_selection },
   { NULL, NULL }
 };
 

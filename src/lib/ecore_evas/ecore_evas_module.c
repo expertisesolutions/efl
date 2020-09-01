@@ -1,6 +1,7 @@
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
+# include <config.h>
 
 #include <Ecore.h>
 #include "ecore_private.h"
@@ -134,9 +135,13 @@ _ecore_evas_engine_load(const char *engine)
 
    EINA_LIST_FOREACH(_engines_paths, l, path)
      {
+#ifndef _MSC_VER
         snprintf(tmp, sizeof(tmp), "%s/%s/%s/%s",
                  path, engine, MODULE_ARCH, ECORE_EVAS_ENGINE_NAME);
-
+#else
+        snprintf(tmp, sizeof(tmp), "%s/%s/%s",
+                 path, engine, ECORE_EVAS_ENGINE_NAME);
+#endif
         em = eina_module_new(tmp);
         if (!em) continue;
 
@@ -169,7 +174,7 @@ _ecore_evas_engine_init(void)
    /* 3. PREFIX/ecore_evas/engines/ */
    paths[1] = strdup(PACKAGE_LIB_DIR "/ecore_evas/engines");
 #else
-   paths[1] = eina_module_symbol_path_get(_ecore_evas_engine_init, "/../lib/ecore_evas/engines");
+   paths[1] = eina_module_symbol_path_get(_ecore_evas_engine_init, "/../../modules/ecore_evas/engines");
 #endif
 
    for (j = 0; j < ((sizeof (paths) / sizeof (char*)) - 1); ++j)
@@ -219,24 +224,52 @@ _ecore_evas_available_engines_get(void)
    buf = eina_strbuf_new();
    EINA_LIST_FOREACH(_engines_paths, l, path)
      {
+
+        it = eina_file_ls(path);
+        const char *f_name;
+        EINA_ITERATOR_FOREACH(it, f_name)
+          {
+             printf("%s\n", f_name);
+             fflush(stdout);
+             eina_stringshare_del(f_name);
+          }
+        eina_iterator_free(it);
+
         it = eina_file_direct_ls(path);
 
         EINA_ITERATOR_FOREACH(it, info)
           {
+#ifndef _MSC_VER
              eina_strbuf_append_printf(buf, "%s/%s/" ECORE_EVAS_ENGINE_NAME,
                                        info->path, MODULE_ARCH);
+#else
+             eina_strbuf_append_printf(buf, "%s/" ECORE_EVAS_ENGINE_NAME,
+                                       info->path);
+#endif /* _MSC_VER */
 
+             printf("path %s\n", eina_strbuf_string_get(buf));
+             fflush(stdout);
              if (_file_exists(eina_strbuf_string_get(buf)))
                {
                   const char *name;
 
 #ifdef _WIN32
                   name = strrchr(info->path, '\\');
+                  printf("name %s\n", name);
+                  fflush(stdout);
                   if (name) name++;
+                  printf("name %s\n", name);
+                  fflush(stdout);
 #endif
+#ifndef _MSC_VER
                   name = strrchr(info->path, '/');
+                  printf("name %s\n", name);
+                  fflush(stdout);
                   if (name) name++;
                   else name = info->path;
+                  printf("name %s\n", name);
+                  fflush(stdout);
+#endif
 #define ADDENG(x) result = eina_list_append(result, eina_stringshare_add(x))
                   if (!strcmp(name, "fb"))
                     {
