@@ -1732,7 +1732,10 @@ _config_system_load(void)
      {
         Eina_Tmpstr* tmp;
         ERR("System loading config failed! Check your setup! Falling back to compile time defaults");
-        EINA_SAFETY_ON_FALSE_RETURN_VAL(eina_file_mkstemp("/tmp/elementary_configXXXXXX", &tmp), NULL);
+        const char *tmpdir = eina_environment_tmp_get();
+        char file[PATH_MAX];
+        eina_file_path_join(file, sizeof(file), tmpdir, "elementary_configXXXXXX");
+        EINA_SAFETY_ON_FALSE_RETURN_VAL(eina_file_mkstemp(file, &tmp), NULL);
         ef = eet_open(tmp, EET_FILE_MODE_WRITE);
         EINA_SAFETY_ON_FALSE_RETURN_VAL(eet_data_undump(ef, "config", embedded_config, strlen(embedded_config)-1, EINA_FALSE), NULL);
         eet_close(ef);
@@ -1740,8 +1743,10 @@ _config_system_load(void)
         if (!ef)
           {
              ERR("Failed to load a fallback config file.");
+             eina_tmpstr_del(tmp);
              return NULL;
           }
+        eina_tmpstr_del(tmp);
         cfg = eet_data_read(ef, _config_edd, "config");
         eet_close(ef);
      }

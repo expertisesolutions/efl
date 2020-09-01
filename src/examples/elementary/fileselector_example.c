@@ -139,8 +139,8 @@ elm_main(int    argc EINA_UNUSED,
    elm_fileselector_is_save_set(fs, EINA_TRUE);
    /* custom list view */
    elm_fileselector_expandable_set(fs, EINA_FALSE);
-   /* start the fileselector in the /tmp/ dir */
-   elm_fileselector_path_set(fs, "/tmp");
+   /* start the fileselector in the TEMP dir */
+   elm_fileselector_path_set(fs, eina_environment_tmp_get());
 
    evas_object_size_hint_weight_set(fs, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(fs, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -211,7 +211,7 @@ elm_main(int    argc EINA_UNUSED,
    elm_fileselector_is_save_set(fs, EINA_TRUE);
    elm_fileselector_mode_set(fs, ELM_FILESELECTOR_GRID);
    elm_fileselector_buttons_ok_cancel_set(fs, EINA_FALSE);
-   elm_fileselector_path_set(fs, "/tmp");
+   elm_fileselector_path_set(fs, eina_environment_tmp_get());
 
    evas_object_size_hint_weight_set(fs, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(fs, EVAS_HINT_FILL, EVAS_HINT_FILL);

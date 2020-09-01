@@ -92,20 +92,35 @@ static void
 _create_dir_struct(void)
 {
    FILE *fp;
-   if (mkdir("/tmp/test_panel", S_IRWXU) < 0)
-     printf("make dir /tmp/test_panel failed!\n");
-   fp = fopen("/tmp/test_panel/a_file.txt", "w");
-   if (fp) fclose(fp);
-   fp = fopen("/tmp/test_panel/k_file.txt", "w");
-   if (fp) fclose(fp);
-   fp = fopen("/tmp/test_panel/m_file.txt", "w");
+   const char *tmpdir = eina_environment_tmp_get();
+   char file[PATH_MAX];
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel");
+   if (mkdir(file, S_IRWXU) < 0)
+     printf("make dir %s failed!\n", file);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel/a_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
 
-   if (mkdir("/tmp/test_panel/a_subdir", S_IRWXU) < 0)
-     printf("make dir /tmp/test_panel/a_subdir failed!\n");
-   fp = fopen("/tmp/test_panel/a_subdir/d_sub_file.txt", "w");
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel/k_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
-   fp = fopen("/tmp/test_panel/a_subdir/j_sub_file.txt", "w");
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel/m_file.txt");
+   fp = fopen(file, "w");
+   if (fp) fclose(fp);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel/a_subdir");
+   if (mkdir(file, S_IRWXU) < 0)
+     printf("make dir %s failed!\n", file);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel/a_subdir/d_sub_file.txt");
+   fp = fopen(file, "w");
+   if (fp) fclose(fp);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_panel/a_subdir/j_sub_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
 }
 
@@ -122,7 +137,11 @@ _fill_list(Evas_Object *obj, Elm_Genlist_Item_Class *itc)
         const char *name;
 
         _create_dir_struct();
-        it = eina_file_ls("/tmp/test_panel");
+
+        const char *tmpdir = eina_environment_tmp_get();
+        char file[PATH_MAX];
+        eina_file_path_join(file, sizeof(file), tmpdir, "test_panel");
+        it = eina_file_ls(file);
         EINA_ITERATOR_FOREACH(it, name)
           {
              if (x >= LIST_ITEM_MAX)

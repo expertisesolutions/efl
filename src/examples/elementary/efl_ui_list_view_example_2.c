@@ -12,7 +12,7 @@
 #include <Eio.h>
 #include <stdio.h>
 
-#define EFL_MODEL_TEST_FILENAME_PATH "/tmp"
+#define EFL_MODEL_TEST_FILENAME_PATH strdup(eina_environment_tmp_get())
 
 EAPI_MAIN int
 elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)

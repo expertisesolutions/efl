@@ -555,7 +555,10 @@ elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
 
    en = elm_entry_add(win);
    elm_entry_autosave_set(en, EINA_FALSE);
-   elm_entry_file_set(en, "/tmp/da_test.txt", ELM_TEXT_FORMAT_MARKUP_UTF8);
+   const char *tmpdir = eina_environment_tmp_get();
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, "da_test.txt");
+   elm_entry_file_set(en, file, ELM_TEXT_FORMAT_MARKUP_UTF8);
    evas_object_size_hint_weight_set(en, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    evas_object_size_hint_align_set(en, EVAS_HINT_FILL, EVAS_HINT_FILL);
    elm_box_pack_end(box, en);

@@ -14,7 +14,7 @@
 #include <Eio.h>
 #include <elm_view_form.h>
 
-#define EFL_MODEL_TEST_FILENAME_PATH "/tmp"
+#define EFL_MODEL_TEST_FILENAME_PATH strdup(eina_environment_tmp_get())
 
 struct _Efl_Model_Test_Filemvc_Data
 {

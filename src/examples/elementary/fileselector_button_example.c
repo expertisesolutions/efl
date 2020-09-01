@@ -93,7 +93,7 @@ elm_main(int argc EINA_UNUSED, char **argv EINA_UNUSED)
 
    /* file selector button */
    fs_bt = elm_fileselector_button_add(win);
-   elm_fileselector_path_set(fs_bt, "/tmp");
+   elm_fileselector_path_set(fs_bt, eina_environment_tmp_get());
    elm_object_text_set(fs_bt, "Select a file");
    elm_object_part_content_set(fs_bt, "icon", ic);
 
