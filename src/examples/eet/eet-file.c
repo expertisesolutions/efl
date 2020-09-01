@@ -32,7 +32,12 @@ create_eet_file(void)
      "\x79\x20\x6c\x6f\x61\x64\x65\x64\x20\x69\x6e\x20\x6d\x65\x6d\x6f"
      "\x72\x79\x2e\x0a\x00";
 
-   ef = eet_open("/tmp/my_file.eet", EET_FILE_MODE_WRITE);
+   const char *tmpdir = eina_environment_tmp_get();
+   const char filename[] = "my_file.eet";
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, filename);
+
+   ef = eet_open(file, EET_FILE_MODE_WRITE);
    if (!ef) return 0;
 
    strcpy(buf, "Here is a string of data to save!");
@@ -75,7 +80,12 @@ main(void)
    if (!create_eet_file())
      return -1;
 
-   ef = eet_open("/tmp/my_file.eet", EET_FILE_MODE_READ);
+   const char *tmpdir = eina_environment_tmp_get();
+   const char filename[] = "my_file.eet";
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, filename);
+
+   ef = eet_open(file, EET_FILE_MODE_READ);
    if (!ef) return -1;
 
    list = eet_list(ef, "*", &num);
@@ -124,4 +134,3 @@ main(void)
 
    return 0;
 }
-
