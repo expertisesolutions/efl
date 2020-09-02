@@ -910,7 +910,7 @@ EFL_START_TEST(evas_object_image_map_unmap)
    efl_gfx_buffer_unmap(o, slice);
 
    // save file, verify its pixels
-   fd = eina_file_mkstemp("/tmp/evas-test.XXXXXX.png", &tmp);
+   fd = eina_file_mkstemp("evas-test.XXXXXX.png", &tmp);
    close(fd);
    if (efl_file_save(o, tmp, NULL, NULL))
      {

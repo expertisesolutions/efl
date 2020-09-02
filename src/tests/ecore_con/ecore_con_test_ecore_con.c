@@ -369,7 +369,10 @@ EFL_END_TEST
 
 EFL_START_TEST(ecore_test_ecore_con_local_system_fullpath)
 {
-   _ecore_con_server_client_tests(ECORE_CON_LOCAL_SYSTEM, "/tmp/test_sock", EINA_FALSE, 12345);
+   char file[PATH_MAX];
+   const char *tmpdir = eina_environment_tmp_get();
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_sock");
+   _ecore_con_server_client_tests(ECORE_CON_LOCAL_SYSTEM, file, EINA_FALSE, 12345);
 }
 EFL_END_TEST
 
@@ -381,7 +384,10 @@ EFL_END_TEST
 
 EFL_START_TEST(ecore_test_ecore_con_local_system_negport_fullpath)
 {
-   _ecore_con_server_client_tests(ECORE_CON_LOCAL_SYSTEM, "/tmp/test_sock", EINA_FALSE, -6);
+   char file[PATH_MAX];
+   const char *tmpdir = eina_environment_tmp_get();
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_sock");
+   _ecore_con_server_client_tests(ECORE_CON_LOCAL_SYSTEM, file, EINA_FALSE, -6);
 }
 EFL_END_TEST
 
