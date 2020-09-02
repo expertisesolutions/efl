@@ -21,6 +21,8 @@
 # include <direct.h> /* getcwd */
 #endif
 
+#include <Eina.h>
+
 #ifdef HAVE_ENVIRON
 extern char **environ;
 #endif
@@ -57,7 +59,7 @@ main(int argc, char **argv)
         if (!domain) domain = "unknown";
      }
    rundir = getenv("XDG_RUNTIME_DIR");
-   if (!rundir) rundir = "/tmp";
+   if (!rundir) rundir = eina_environment_tmp_get();
    snprintf(buf, sizeof(buf), "%s/elm-ql-%i/%s", rundir, getuid(), domain);
    if ((sock = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
      {

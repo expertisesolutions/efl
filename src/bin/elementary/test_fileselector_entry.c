@@ -73,21 +73,35 @@ _create_dir_struct(void)
 {
    FILE *fp;
    int ret = 0;
+   const char *tmpdir = eina_environment_tmp_get();
+   char file[PATH_MAX];
 
-   ret = mkdir("/tmp/test_fs_en", S_IRWXU);
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en");
+   ret = mkdir(file, S_IRWXU);
    if (ret < 0) return;
-   fp = fopen("/tmp/test_fs_en/a_file.txt", "w");
-   if (fp) fclose(fp);
-   fp = fopen("/tmp/test_fs_en/k_file.txt", "w");
-   if (fp) fclose(fp);
-   fp = fopen("/tmp/test_fs_en/m_file.txt", "w");
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en/a_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
 
-   ret = mkdir("/tmp/test_fs_en/a_subdir", S_IRWXU);
-   if (ret < 0) return;
-   fp = fopen("/tmp/test_fs_en/a_subdir/d_sub_file.txt", "w");
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en/k_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
-   fp = fopen("/tmp/test_fs_en/a_subdir/j_sub_file.txt", "w");
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en/m_file.txt");
+   fp = fopen(file, "w");
+   if (fp) fclose(fp);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en/a_subdir");
+   ret = mkdir(file, S_IRWXU);
+   if (ret < 0) return;
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en/a_subdir/d_sub_file.txt");
+   fp = fopen(file, "w");
+   if (fp) fclose(fp);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en/a_subdir/j_sub_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
 }
 
@@ -194,14 +208,17 @@ test_fileselector_entry(void *data       EINA_UNUSED,
 
    elm_box_pack_end(bxx, vbox);
 
-   _create_dir_struct(); /* Create a dir struct in /tmp */
+   _create_dir_struct(); /* Create a dir struct in TEMP */
 
    /* file selector entry */
    ic = elm_icon_add(win);
    elm_icon_standard_set(ic, "file");
    evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
    fs_en = elm_fileselector_entry_add(win);
-   elm_fileselector_path_set(fs_en, "/tmp/test_fs_en");
+   const char *tmpdir = eina_environment_tmp_get();
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_en");
+   elm_fileselector_path_set(fs_en, file);
    elm_object_text_set(fs_en, "Select a file");
    elm_object_part_content_set(fs_en, "button icon", ic);
    evas_object_size_hint_weight_set(fs_en, EVAS_HINT_EXPAND, 0.0);
