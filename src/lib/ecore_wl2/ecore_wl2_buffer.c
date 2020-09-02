@@ -377,7 +377,7 @@ _wl_shm_alloc(Buffer_Manager *self EINA_UNUSED, const char *name EINA_UNUSED, in
 
    if (*fd < 0) return NULL;
 
-   unlink(fullname);
+   eina_file_unlink(fullname);
    eina_tmpstr_del(fullname);
 
    *stride = w * 4;
