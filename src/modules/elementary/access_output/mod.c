@@ -69,7 +69,7 @@ out_read(const char *txt)
         Eina_Tmpstr* tmpfile;
         mode_t cur_umask;
 
-		cur_umask = umask(S_IRWXO | S_IRWXG);
+        cur_umask = umask(S_IRWXO | S_IRWXG);
         tmpfd = eina_file_mkstemp(".elm-speak-XXXXXX", &tmpfile);
         umask(cur_umask);
         if (tmpfd >= 0) tmpf = strdup(tmpfile);
