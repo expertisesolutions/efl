@@ -4,6 +4,7 @@
 
 #ifdef _WIN32
 # include <evil_private.h> /* evil_path_is_absolute */
+# include <shlobj.h>
 #endif
 
 #include <Eet.h>
@@ -722,6 +723,40 @@ evas_font_load(const Eina_List *font_paths, int hinting, Evas_Font_Description *
         font = _evas_load_fontconfig(font, found_fd->set, size, wanted_rend, bitmap_scalable);
         goto on_find;
      }
+#elif defined(_WIN32)
+   {
+     HFONT hfont = NULL, oldfont = NULL;
+     DWORD code;
+     DWORD buffer_size = 0;
+     void* buffer = NULL;
+     HDC dc = CreateCompatibleDC(NULL);
+
+     hfont = CreateFont (0, 1,
+                         0, 0,
+                         FW_DONTCARE,
+                         0,0,
+                         0, DEFAULT_CHARSET,
+                         OUT_TT_ONLY_PRECIS/*OUT_OUTLINE_PRECIS*/, CLIP_DEFAULT_PRECIS,
+                         DEFAULT_QUALITY, DEFAULT_PITCH, fdesc->name);
+     oldfont = SelectObject(dc, hfont);
+
+     code = GetFontData (dc, 0, 0, NULL, 0);
+     if (code != GDI_ERROR)
+       {
+         buffer_size = code;
+         buffer = calloc (buffer_size, 1);
+                 
+         code = GetFontData (dc, 0, 0, buffer, &buffer_size);
+       }
+
+     DeleteObject(hfont);
+     DeleteDC (dc);
+
+     fprintf(stderr, "Loading evas font %s %p\n", fdesc->name, buffer);
+     font = (Evas_Font_Set *)evas_common_font_memory_load(fdesc->name, fdesc->name, size, buffer, buffer_size, wanted_rend, EINA_FALSE);
+     free(buffer);
+     goto on_find;
+   }
 #endif
 
    EINA_LIST_FOREACH_SAFE(fonts_zero, l, l_next, fd)
@@ -1003,7 +1038,7 @@ evas_font_load(const Eina_List *font_paths, int hinting, Evas_Font_Description *
      }
 #endif
 
-#ifdef HAVE_FONTCONFIG
+#if defined(HAVE_FONTCONFIG) || defined(_WIN32)
  on_find:
 #endif
    fd = calloc(1, sizeof(Fndat));
