@@ -4,6 +4,7 @@
 
 #ifdef _WIN32
 # include <evil_private.h> /* evil_path_is_absolute */
+# include <shlobj.h>
 #endif
 
 #include <Eet.h>
@@ -27,6 +28,18 @@ static Eina_Hash *font_dirs = NULL;
 static Eina_List *fonts_cache = NULL;
 static Eina_List *fonts_zero = NULL;
 static Eina_List *global_font_path = NULL;
+#ifdef _WIN32
+typedef struct _Evas_Font_Win32_Cache Evas_Font_Win32_Cache;
+
+struct _Evas_Font_Win32_Cache
+{
+  const char* face_name;
+  void* buffer;
+  int buffer_size;
+};
+
+static Eina_List *win32_fonts = NULL;
+#endif
 
 typedef struct _Fndat Fndat;
 
@@ -45,6 +58,8 @@ struct _Fndat
    FcPattern *p_nm;
 
    Eina_Bool file_font : 1; /* Indicates this is a font that uses a file rather than fontconfig. */
+#else
+   Eina_Bool win32_font : 1;
 #endif
 };
 
@@ -129,6 +144,46 @@ _file_path_list(char *path, const char *match, int match_case)
    return files;
 }
 
+#ifdef _WIN32
+static void
+_evas_font_dir_font_family_enum (LOGFONT const* font_info, TEXTMETRIC const* metrics, DWORD font_type, LPARAM data)
+{
+  HFONT font = NULL, oldfont = NULL;
+  DWORD code;
+  DWORD buffer_size = 0;
+  void* buffer = NULL;
+  HDC dc = CreateCompatibleDC(NULL);
+
+  font = CreateFont (font_info->lfHeight, font_info->lfWidth,
+                     font_info->lfEscapement, font_info->lfOrientation,
+                     font_info->lfWeight /**/,
+                     font_info->lfItalic, font_info->lfUnderline,
+                     font_info->lfStrikeOut, DEFAULT_CHARSET,
+                     font_info->lfOutPrecision, font_info->lfClipPrecision,
+                     font_info->lfQuality, font_info->lfPitchAndFamily, font_info->lfFaceName);
+  oldfont = SelectObject(dc, font);
+
+  code = GetFontData (dc, 0, 0, NULL, NULL);
+  if (code != GDI_ERROR)
+    {
+      buffer_size = code;
+      buffer = calloc (buffer_size, 1);
+      
+      code = GetFontData (dc, 0, 0, buffer, &buffer_size);
+
+      Evas_Font_Win32_Cache* win32_cache = calloc (sizeof(Evas_Font_Win32_Cache), 1);
+      win32_cache->face_name = strdup (font_info->lfFaceName);
+      win32_cache->buffer = buffer;
+      win32_cache->buffer_size = buffer_size;
+      win32_fonts = eina_list_append (win32_fonts, win32_cache);
+    }
+
+  oldfont = SelectObject(dc, font);
+  DeleteObject(font);
+  DeleteDC (dc);
+}
+#endif
+
 static void
 evas_font_init(void)
 {
@@ -143,6 +198,17 @@ evas_font_init(void)
         EINA_LIST_FOREACH(global_font_path, l, path)
            FcConfigAppFontAddDir(fc_config, (const FcChar8 *) path);
      }
+#elif defined(_WIN32)
+   char path[MAX_PATH];
+   SHGetSpecialFolderPath(NULL, path, CSIDL_FONTS, FALSE);
+
+   evas_font_path_global_append (path);
+
+   LOGFONT lfont;
+   lfont.lfCharSet = DEFAULT_CHARSET;
+   lfont.lfFaceName[0] = 0;
+   lfont.lfPitchAndFamily = 0;
+   EnumFontFamiliesExA (GetDC(NULL), &lfont, (FONTENUMPROCA) &_evas_font_dir_font_family_enum, NULL, 0);
 #endif
 }
 
@@ -716,6 +782,21 @@ evas_font_load(const Eina_List *font_paths, int hinting, Evas_Font_Description *
            }
      }
 
+#ifdef _WIN32
+   if (win32_fonts)
+     {
+       Evas_Font_Win32_Cache* f;
+       
+        EINA_LIST_FOREACH(win32_fonts, l, f) /* Load each font in append */
+          {
+            fprintf(stderr, "Checking %s with face name %s\n", source, f->face_name);
+
+            if (strstr (f->face_name, fdesc->name))
+              font = (Evas_Font_Set *)evas_common_font_memory_load(f->face_name, f->face_name, size, f->buffer, f->buffer_size, wanted_rend, bitmap_scalable);
+          }
+     }
+#endif
+   
 #ifdef HAVE_FONTCONFIG
    if (found_fd)
      {
