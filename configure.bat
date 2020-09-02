@@ -191,7 +191,7 @@ exit /B 0
         echo Failed: DevEnvDir still not accessible
         exit /B 0
     )
-    meson !BUILDDIR! !MESONFLAGS! !MESONFLAGS_EXTRA!
+    meson !BUILDDIR! !MESONFLAGS! !MESONFLAGS_EXTRA! --prefix="%cd%\_install"
 exit /B 0
 
 :save_old_vars
