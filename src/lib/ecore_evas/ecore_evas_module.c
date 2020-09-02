@@ -165,7 +165,7 @@ _ecore_evas_engine_init(void)
 
    /* 1. libecore_evas.so/../ecore_evas/engines/ */
    paths[0] = eina_module_symbol_path_get(_ecore_evas_engine_init, "/ecore_evas/engines");
-#ifndef _WIN32
+#if !defined(_WIN32) || defined(_MSC_VER)
    /* 3. PREFIX/ecore_evas/engines/ */
    paths[1] = strdup(PACKAGE_LIB_DIR "/ecore_evas/engines");
 #else
