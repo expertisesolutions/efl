@@ -21,7 +21,7 @@
 # include <direct.h> /* getcwd */
 #endif
 
-#include "Eina.h"
+#include <Eina.h>
 
 #ifdef HAVE_ENVIRON
 extern char **environ;
