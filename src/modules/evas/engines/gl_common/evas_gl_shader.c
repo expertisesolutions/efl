@@ -420,7 +420,7 @@ save:
    if (tmpfd >= 0) close(tmpfd);
    if (ef) eet_close(ef);
    if (evas_gl_common_file_cache_file_exists(tmp_file_path))
-     unlink(tmp_file_path);
+     eina_file_unlink(tmp_file_path);
    eina_tmpstr_del(tmp_file_path);
    eet_shutdown();
    return 0;

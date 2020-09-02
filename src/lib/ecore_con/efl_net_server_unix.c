@@ -94,7 +94,7 @@ _efl_net_server_unix_bind_hang_lock_workaround(const char *address, Eina_Bool lo
    else
      {
         flock(lockfile_fd, LOCK_UN | LOCK_NB);
-        unlink(lockfile);
+        eina_file_unlink(lockfile);
         close(lockfile_fd);
         lockfile_fd = -1;
      }
@@ -113,7 +113,7 @@ _efl_net_server_unix_efl_object_destructor(Eo *o, Efl_Net_Server_Unix_Data *pd E
      {
         if ((address) &&
             (strncmp(address, "abstract:", strlen("abstract:")) != 0))
-          unlink(address);
+          eina_file_unlink(address);
      }
 #ifdef BIND_HANG_WORKAROUND
    if ((address) && (pd->have_lock_fd) && (pd->lock_fd >= 0))
@@ -182,7 +182,7 @@ _efl_net_server_unix_bind(Eo *o, Efl_Net_Server_Unix_Data *pd)
         if ((pd->unlink_before_bind) && (addr.sun_path[0] != '\0'))
           {
              DBG("unlinking AF_UNIX path '%s'", addr.sun_path);
-             unlink(addr.sun_path);
+             eina_file_unlink(addr.sun_path);
           }
 
 #ifdef BIND_HANG_WORKAROUND
@@ -196,7 +196,7 @@ _efl_net_server_unix_bind(Eo *o, Efl_Net_Server_Unix_Data *pd)
                   goto error;
                }
              pd->have_lock_fd = EINA_TRUE;
-             unlink(addr.sun_path);
+             eina_file_unlink(addr.sun_path);
           }
 #endif
         r = bind(fd, (struct sockaddr *)&addr, addrlen);
@@ -215,7 +215,7 @@ _efl_net_server_unix_bind(Eo *o, Efl_Net_Server_Unix_Data *pd)
                {
                   DBG("bind(" SOCKET_FMT ", %s): failed with EADDRINUSE but connect also failed, so unlink socket file and try again", fd, address);
                   closesocket(fd);
-                  unlink(addr.sun_path);
+                  eina_file_unlink(addr.sun_path);
                   fd = INVALID_SOCKET;
                   err = 0;
                   continue;

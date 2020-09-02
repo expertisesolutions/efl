@@ -195,6 +195,8 @@ ecore_win32_monitor_update(int d)
           ewm->delete_me = EINA_TRUE;
      }
 
+   if (d == 0) d++; // TESTING !!!
+
    EnumDisplayMonitors(NULL, NULL, _ecore_win32_monitor_update_cb, d);
 
    if (d == 2)

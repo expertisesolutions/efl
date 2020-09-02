@@ -872,7 +872,7 @@ _ecore_fps_debug_init(void)
    _ecore_fps_debug_fd = open(buf, O_CREAT | O_BINARY | O_TRUNC | O_RDWR, 0644);
    if (_ecore_fps_debug_fd < 0)
      {
-        unlink(buf);
+        eina_file_unlink(buf);
         _ecore_fps_debug_fd = open(buf, O_CREAT | O_BINARY | O_TRUNC | O_RDWR, 0644);
      }
    if (_ecore_fps_debug_fd >= 0)
@@ -922,7 +922,7 @@ _ecore_fps_debug_shutdown(void)
         pid = (int)getpid();
         snprintf(buf, sizeof(buf), "%s/.ecore_fps_debug-%i",
                  eina_environment_tmp_get(), pid);
-        unlink(buf);
+        eina_file_unlink(buf);
         if (_ecore_fps_runtime_mmap)
           {
              munmap(_ecore_fps_runtime_mmap, sizeof(unsigned int));
