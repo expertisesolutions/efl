@@ -72,20 +72,35 @@ static void
 _create_dir_struct(void)
 {
    FILE *fp;
-   if (mkdir("/tmp/test_fs_bt", S_IRWXU) < 0)
-     printf("make dir /tmp/test_fs_bt failed!\n");
-   fp = fopen("/tmp/test_fs_bt/a_file.txt", "w");
-   if (fp) fclose(fp);
-   fp = fopen("/tmp/test_fs_bt/k_file.txt", "w");
-   if (fp) fclose(fp);
-   fp = fopen("/tmp/test_fs_bt/m_file.txt", "w");
+   const char *tmpdir = eina_environment_tmp_get();
+   char file[PATH_MAX];
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt");
+   if (mkdir(file, S_IRWXU) < 0)
+     printf("make dir %s failed!\n", file);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt/a_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
 
-   if (mkdir("/tmp/test_fs_bt/a_subdir", S_IRWXU) < 0)
-     printf("make dir /tmp/test_fs_bt/a_subdir failed!\n");
-   fp = fopen("/tmp/test_fs_bt/a_subdir/d_sub_file.txt", "w");
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt/k_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
-   fp = fopen("/tmp/test_fs_bt/a_subdir/j_sub_file.txt", "w");
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt/m_file.txt");
+   fp = fopen(file, "w");
+   if (fp) fclose(fp);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt/a_subdir");
+   if (mkdir(file, S_IRWXU) < 0)
+     printf("make dir %s failed!\n", file);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt/a_subdir/d_sub_file.txt");
+   fp = fopen(file, "w");
+   if (fp) fclose(fp);
+
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt/a_subdir/j_sub_file.txt");
+   fp = fopen(file, "w");
    if (fp) fclose(fp);
 }
 
@@ -186,7 +201,7 @@ test_fileselector_button(void *data       EINA_UNUSED,
 
    elm_box_pack_end(bxx, vbox);
 
-   _create_dir_struct(); /* Create a dir struct in /tmp */
+   _create_dir_struct(); /* Create a dir struct in TEMP dir */
    /* file selector button */
    ic = elm_icon_add(win);
    elm_icon_standard_set(ic, "file");
@@ -194,7 +209,10 @@ test_fileselector_button(void *data       EINA_UNUSED,
    fs_bt = elm_fileselector_button_add(win);
    elm_object_text_set(fs_bt, "Select a file");
    elm_object_part_content_set(fs_bt, "icon", ic);
-   elm_fileselector_path_set(fs_bt, "/tmp/test_fs_bt");
+   const char *tmpdir = eina_environment_tmp_get();
+   char file[PATH_MAX];
+   eina_file_path_join(file, sizeof(file), tmpdir, "test_fs_bt");
+   elm_fileselector_path_set(fs_bt, file);
 
    elm_box_pack_end(vbox, fs_bt);
    evas_object_show(fs_bt);

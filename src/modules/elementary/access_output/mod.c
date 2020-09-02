@@ -66,15 +66,19 @@ out_read(const char *txt)
 {
    if (!tmpf)
      {
-        char buf[PATH_MAX];
+        Eina_Tmpstr* tmpfile;
         mode_t cur_umask;
 
-        snprintf(buf, sizeof(buf), "/tmp/.elm-speak-XXXXXX");
         cur_umask = umask(S_IRWXO | S_IRWXG);
-        tmpfd = mkstemp(buf);
+        tmpfd = eina_file_mkstemp(".elm-speak-XXXXXX", &tmpfile);
         umask(cur_umask);
-        if (tmpfd >= 0) tmpf = strdup(buf);
-        else return;
+        if (tmpfd >= 0) tmpf = strdup(tmpfile);
+        else
+          {
+             eina_tmpstr_del(tmpfile);
+             return;
+          }
+        eina_tmpstr_del(tmpfile);
      }
    if (write(tmpfd, txt, strlen(txt)) < 0) perror("write to tmpfile (espeak)");
 }

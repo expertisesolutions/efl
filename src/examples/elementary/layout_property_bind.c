@@ -12,7 +12,7 @@
 #include <Eio.h>
 #include <stdio.h>
 
-#define EFL_MODEL_TEST_FILENAME_PATH "/tmp"
+#define EFL_MODEL_TEST_FILENAME_PATH strdup(eina_environment_tmp_get())
 
 struct _Layout_Model_Data
 {

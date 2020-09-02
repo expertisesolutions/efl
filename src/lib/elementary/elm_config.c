@@ -1740,8 +1740,10 @@ _config_system_load(void)
         if (!ef)
           {
              ERR("Failed to load a fallback config file.");
+             eina_tmpstr_del(tmp);
              return NULL;
           }
+        eina_tmpstr_del(tmp);
         cfg = eet_data_read(ef, _config_edd, "config");
         eet_close(ef);
      }
