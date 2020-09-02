@@ -1732,10 +1732,7 @@ _config_system_load(void)
      {
         Eina_Tmpstr* tmp;
         ERR("System loading config failed! Check your setup! Falling back to compile time defaults");
-        const char *tmpdir = eina_environment_tmp_get();
-        char file[PATH_MAX];
-        eina_file_path_join(file, sizeof(file), tmpdir, "elementary_configXXXXXX");
-        EINA_SAFETY_ON_FALSE_RETURN_VAL(eina_file_mkstemp(file, &tmp), NULL);
+        EINA_SAFETY_ON_FALSE_RETURN_VAL(eina_file_mkstemp("elementary_configXXXXXX", &tmp), NULL);
         ef = eet_open(tmp, EET_FILE_MODE_WRITE);
         EINA_SAFETY_ON_FALSE_RETURN_VAL(eet_data_undump(ef, "config", embedded_config, strlen(embedded_config)-1, EINA_FALSE), NULL);
         eet_close(ef);
