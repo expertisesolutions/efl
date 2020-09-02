@@ -34,7 +34,7 @@ _ecore_buffer_shm_buffer_free(Ecore_Buffer_Module_Data bmdata EINA_UNUSED, Ecore
    Ecore_Buffer_Shm_Data* b = bdata;
 
    if (b->am_owner)
-     if (b->file) unlink(b->file);
+     if (b->file) eina_file_unlink(b->file);
 
    if (b->addr != MAP_FAILED) munmap(b->addr, b->size);
    eina_stringshare_del(b->file);

@@ -894,8 +894,8 @@ error_log:
 
    if (ret > 4)
      {
-        unlink(header);
-        unlink(source);
+        eina_file_unlink(header);
+        eina_file_unlink(source);
      }
 
    return ret;

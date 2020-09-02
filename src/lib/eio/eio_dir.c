@@ -607,7 +607,7 @@ _eio_dir_move_heavy(void *data, Ecore_Thread *thread)
                }
 
              /* and unlink the original */
-             if (unlink(file) != 0)
+             if (eina_file_unlink(file) != EINA_TRUE)
                {
                   eio_file_thread_error(&move->progress.common, thread);
                   goto on_error;
@@ -678,7 +678,7 @@ _eio_dir_rmrf_heavy(void *data, Ecore_Thread *thread)
 
    EINA_LIST_FREE(rmrf->files, file)
      {
-        if (unlink(file) != 0)
+        if (eina_file_unlink(file) != EINA_TRUE)
           {
              eio_file_thread_error(&rmrf->progress.common, thread);
              goto on_error;

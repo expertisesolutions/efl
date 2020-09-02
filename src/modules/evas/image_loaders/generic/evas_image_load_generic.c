@@ -361,7 +361,7 @@ getdata:
                   if (tmpfname)
                     {
                        close(fd);
-                       unlink(tmpfname);
+                       eina_file_unlink(tmpfname);
                     }
 #ifdef HAVE_SHM_OPEN
                   else if (shmfname)
