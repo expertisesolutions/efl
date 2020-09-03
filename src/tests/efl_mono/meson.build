@@ -144,7 +144,10 @@ env_mono.set('MONO_PATH', efl_mono_test_suite_path )
 env_mono.set('EFL_RUN_IN_TREE', '1')
 
 
-config_libs = ['eina', 'ecore', 'eo', 'efl', 'evas', 'eldbus', 'elementary', 'efl_mono']
+config_libs = ['eina', 'ecore', 'eo', 'efl', 'evas', 'elementary', 'efl_mono']
+if not sys_windows
+  config_libs += 'eldbus'
+endif
 load_lib = efl_mono_test_suite_path + ':'
 
 foreach config : config_libs

@@ -14,9 +14,12 @@ mono_sublibs = [
   ['Efl',         true, ], #
   ['Evas',       false, ], #
   ['Edje',       false, ], #
-  ['Eldbus',      true, ], #
   ['Elementary', false, ]  #
 ]
+
+if not sys_windows
+  mono_sublibs += [['Eldbus',      true, ]] #
+endif
 
 blacklisted_files = [
   'efl_class.eo',
@@ -120,7 +123,9 @@ efl_mono_conf_data.set('EFL', efl_lib.full_path())
 efl_mono_conf_data.set('ECORE', ecore_lib.full_path())
 efl_mono_conf_data.set('EO', eo_lib.full_path())
 efl_mono_conf_data.set('EVAS', evas_lib.full_path())
-efl_mono_conf_data.set('ELDBUS', eldbus_lib.full_path())
+if not sys_windows
+  efl_mono_conf_data.set('ELDBUS', eldbus_lib.full_path())
+endif
 efl_mono_conf_data.set('ELEMENTARY', elementary_lib.full_path())
 efl_mono_conf_data.set('EFLCUSTOMEXPORTSMONO', efl_mono_lib.full_path())
 
