@@ -50,7 +50,8 @@ _print_usage(const char *progn, FILE *outf)
                  "  -o type:name  specify a particular output filename\n"
                  "  -h            print this message and exit\n"
                  "  -v            print version and exit\n"
-                 "  -e api symbol string to be used for import/export symbol"
+                 "  -e api symbol string to be used for import/export symbol\n"
+                 "  -r file       response file when command is too long\n"
                  "\n"
                  "Available types:\n"
                  "  h: C header file (.eo.h/.eot.h)\n"
@@ -492,17 +493,192 @@ result:
    return ret;
 }
 
+typedef struct _Cmd_Line_Options {
+   Eina_Bool scan_system;
+   Eina_List *includes;
+   int pret;
+   int gen_what;
+   char *basen;
+   char *outs[sizeof(_dexts) / sizeof(void *)];
+   const char *input;
+} Cmd_Line_Options;
+
+static int
+_process_options(int argc, char **argv, Cmd_Line_Options *options);
+
+static void
+_read_options_from_response_file(Cmd_Line_Options* options, const char* filename)
+{
+   // Reads the whole content into memory
+   FILE *f = fopen(filename, "r");
+
+   fseek(f, 0, SEEK_END);
+   size_t file_length = ftell(f);
+   fseek(f, 0, SEEK_SET);
+
+   char *contents = malloc(file_length + 1);
+
+   file_length = fread(contents, 1, file_length, f);
+   contents[file_length] = '\0';
+
+   // No need for the file anymore
+   fclose(f);
+
+   // Now we finally parse arguments
+
+   // Count how many arguments we have
+   int argc = 1;
+   for (size_t i = 0; i < file_length; ++i)
+     {
+        if (contents[i] == '\n' || contents[i] == '\0')
+          {
+             ++argc;
+             contents[i] = '\0';
+          }
+     }
+   // Include program name for proper getopt handling
+   ++argc;
+
+   // Set argument pointers
+   char **argv = malloc(sizeof(char*) * argc);
+
+   // Arbitrary program name
+   argv[0] = "eolian_gen_executable_response_file";
+   argv[1] = &contents[0];
+
+   int arg_i = 2; // Ignore program name + contents[0] is already an arg
+   for (size_t i = 0; i < file_length; ++i)
+     {
+        if (contents[i] == '\0')
+          {
+             // Just pass through all those empty strings
+             while (i < file_length && contents[i] == '\0')
+               {
+                  ++i;
+               }
+
+             if (i >= file_length)
+               {
+                  break;
+               }
+
+             argv[arg_i] = &contents[i];
+             ++arg_i;
+          }
+     }
+
+   int old_optind = optind;
+   optind = 0;
+   _process_options(argc, argv, options);
+   optind = old_optind;
+}
+
+static int
+_process_options(int argc, char **argv, Cmd_Line_Options *options)
+{
+   for (int opt; (opt = getopt(argc, argv, "SI:g:o:hve:r:")) != -1;)
+   {
+     switch (opt)
+       {
+        case 0:
+          break;
+        case 'S':
+          options->scan_system = EINA_FALSE;
+          break;
+        case 'I':
+          /* just a pointer to argv contents, so it persists */
+          options->includes = eina_list_append(options->includes, optarg);
+          break;
+        case 'e':
+          free(_eolian_api_symbol);
+          _eolian_api_symbol = strdup(optarg);
+          break;
+        case 'g':
+          for (const char *wstr = optarg; *wstr; ++wstr)
+            switch (*wstr)
+              {
+               case 'h':
+                 options->gen_what |= GEN_H;
+                 break;
+               case 's':
+                 options->gen_what |= GEN_H_STUB;
+                 break;
+               case 'c':
+                 options->gen_what |= GEN_C;
+                 break;
+               case 'i':
+                 options->gen_what |= GEN_C_IMPL;
+                 break;
+               case 'd':
+                 options->gen_what |= GEN_D;
+                 break;
+               case 'D':
+                 options->gen_what |= GEN_D_FULL;
+                 break;
+               default:
+                 fprintf(stderr, "unknown type: '%c'\n", *wstr);
+                 goto end;
+              }
+          break;
+        case 'o':
+          if (strchr(optarg, ':'))
+            {
+               const char *abeg = optarg;
+               const char *cpos = strchr(abeg, ':');
+               if (((cpos - abeg) != 1) ||
+                   !_try_set_out(*abeg, options->outs, cpos + 1, &options->gen_what))
+                 {
+                    char *oa = strdup(abeg);
+                    oa[cpos - abeg] = '\0';
+                    fprintf(stderr, "unknown type: '%s'\n", oa);
+                    free(oa);
+                    goto end;
+                 }
+            }
+          else
+            {
+               if (options->basen)
+                 free(options->basen);
+               options->basen = strdup(optarg);
+            }
+          break;
+        case 'r':
+          _read_options_from_response_file(options, optarg);
+          if (!options->pret)
+            {
+               goto end;
+            }
+          break;
+        case 'h':
+          _print_usage(argv[0], stdout);
+          options->pret = 0;
+          goto end;
+        case 'v':
+          _print_version(stdout);
+          options->pret = 0;
+          goto end;
+        default:
+          _print_usage(argv[0], stderr);
+          goto end;
+       }
+   }
+
+end:
+   if (!options->input)
+     {
+        options->input = argv[optind];
+     }
+   return options->pret;
+}
+
 int
 main(int argc, char **argv)
 {
-   int pret = 1;
+   Cmd_Line_Options options = {0};
+   options.scan_system = EINA_TRUE;
+   options.pret = 1;
 
-   char *outs[sizeof(_dexts) / sizeof(void *)] = {
-     NULL, NULL, NULL, NULL, NULL, NULL
-   };
-   char *basen = NULL;
    _eolian_api_symbol = NULL;
-   Eina_List *includes = NULL;
 
    eina_init();
    eolian_init();
@@ -519,102 +695,24 @@ main(int argc, char **argv)
 
    eina_log_timing(_eolian_gen_log_dom, EINA_LOG_STATE_STOP, EINA_LOG_STATE_INIT);
 
-   int gen_what = 0;
-   Eina_Bool scan_system = EINA_TRUE;
+   if (!_process_options(argc, argv, &options)) {
+       goto end;
+   }
 
-   for (int opt; (opt = getopt(argc, argv, "SI:g:o:hve:")) != -1;)
-     switch (opt)
-       {
-        case 0:
-          break;
-        case 'S':
-          scan_system = EINA_FALSE;
-          break;
-        case 'I':
-          /* just a pointer to argv contents, so it persists */
-          includes = eina_list_append(includes, optarg);
-          break;
-        case 'e':
-          free(_eolian_api_symbol);
-          _eolian_api_symbol = strdup(optarg);
-          break;
-        case 'g':
-          for (const char *wstr = optarg; *wstr; ++wstr)
-            switch (*wstr)
-              {
-               case 'h':
-                 gen_what |= GEN_H;
-                 break;
-               case 's':
-                 gen_what |= GEN_H_STUB;
-                 break;
-               case 'c':
-                 gen_what |= GEN_C;
-                 break;
-               case 'i':
-                 gen_what |= GEN_C_IMPL;
-                 break;
-               case 'd':
-                 gen_what |= GEN_D;
-                 break;
-               case 'D':
-                 gen_what |= GEN_D_FULL;
-                 break;
-               default:
-                 fprintf(stderr, "unknown type: '%c'\n", *wstr);
-                 goto end;
-              }
-          break;
-        case 'o':
-          if (strchr(optarg, ':'))
-            {
-               const char *abeg = optarg;
-               const char *cpos = strchr(abeg, ':');
-               if (((cpos - abeg) != 1) ||
-                   !_try_set_out(*abeg, outs, cpos + 1, &gen_what))
-                 {
-                    char *oa = strdup(abeg);
-                    oa[cpos - abeg] = '\0';
-                    fprintf(stderr, "unknown type: '%s'\n", oa);
-                    free(oa);
-                    goto end;
-                 }
-            }
-          else
-            {
-               if (basen)
-                 free(basen);
-               basen = strdup(optarg);
-            }
-          break;
-        case 'h':
-          _print_usage(argv[0], stdout);
-          pret = 0;
-          goto end;
-        case 'v':
-          _print_version(stdout);
-          pret = 0;
-          goto end;
-        default:
-          _print_usage(argv[0], stderr);
-          goto end;
-       }
-
-   const char *input = argv[optind];
-   if (!input)
+   if (!options.input)
      {
         fprintf(stderr, "eolian: no input file\n");
         goto end;
      }
 
-   const char *ext = strrchr(input, '.');
+   const char *ext = strrchr(options.input, '.');
    if (!ext || (strcmp(ext, ".eo") && strcmp(ext, ".eot")))
      {
-        fprintf(stderr, "eolian: invalid input file '%s'\n", input);
+        fprintf(stderr, "eolian: invalid input file '%s'\n", options.input);
         goto end;
      }
 
-   if (scan_system)
+   if (options.scan_system)
      {
         if (!eolian_state_system_directory_add(eos))
           {
@@ -624,7 +722,7 @@ main(int argc, char **argv)
      }
 
    const char *inc;
-   EINA_LIST_FREE(includes, inc)
+   EINA_LIST_FREE(options.includes, inc)
      {
         if (!eolian_state_directory_add(eos, inc))
           {
@@ -633,38 +731,38 @@ main(int argc, char **argv)
           }
      }
 
-   if (!eolian_state_file_path_parse(eos, input))
+   if (!eolian_state_file_path_parse(eos, options.input))
      {
-        fprintf(stderr, "eolian: could not parse file '%s'\n", input);
+        fprintf(stderr, "eolian: could not parse file '%s'\n", options.input);
         goto end;
      }
 
-   _fill_all_outs(outs, input, basen);
+   _fill_all_outs(options.outs, options.input, options.basen);
 
-   const char *eobn = _get_filename(input);
+   const char *eobn = _get_filename(options.input);
 
-   if (!gen_what)
-     gen_what = GEN_H | GEN_C;
+   if (!options.gen_what)
+     options.gen_what = GEN_H | GEN_C;
 
    Eina_Bool succ = EINA_TRUE;
-   if (gen_what & GEN_H)
-     succ = _write_header(eos, eos, outs[_get_bit_pos(GEN_H)], eobn);
-   if (succ && (gen_what & GEN_H_STUB))
-     succ = _write_stub_header(eos, eos, outs[_get_bit_pos(GEN_H_STUB)], eobn);
-   if (succ && (gen_what & GEN_C))
-     succ = _write_source(eos, outs[_get_bit_pos(GEN_C)], eobn, !strcmp(ext, ".eot"));
-   if (succ && (gen_what & GEN_C_IMPL))
-     succ = _write_impl(eos, outs[_get_bit_pos(GEN_C_IMPL)], eobn);
+   if (options.gen_what & GEN_H)
+     succ = _write_header(eos, eos, options.outs[_get_bit_pos(GEN_H)], eobn);
+   if (succ && (options.gen_what & GEN_H_STUB))
+     succ = _write_stub_header(eos, eos, options.outs[_get_bit_pos(GEN_H_STUB)], eobn);
+   if (succ && (options.gen_what & GEN_C))
+     succ = _write_source(eos, options.outs[_get_bit_pos(GEN_C)], eobn, !strcmp(ext, ".eot"));
+   if (succ && (options.gen_what & GEN_C_IMPL))
+     succ = _write_impl(eos, options.outs[_get_bit_pos(GEN_C_IMPL)], eobn);
 
-   if (succ && (gen_what & GEN_D_FULL))
-     succ = _write_deps(eos, outs[_get_bit_pos(GEN_D_FULL)], eobn, outs, gen_what);
-   else if (succ && (gen_what & GEN_D))
-     succ = _write_deps(eos, outs[_get_bit_pos(GEN_D)], eobn, outs, gen_what);
+   if (succ && (options.gen_what & GEN_D_FULL))
+     succ = _write_deps(eos, options.outs[_get_bit_pos(GEN_D_FULL)], eobn, options.outs, options.gen_what);
+   else if (succ && (options.gen_what & GEN_D))
+     succ = _write_deps(eos, options.outs[_get_bit_pos(GEN_D)], eobn, options.outs, options.gen_what);
 
    if (!succ)
      goto end;
 
-   pret = 0;
+   options.pret = 0;
 end:
    if (_eolian_gen_log_dom >= 0)
      {
@@ -672,14 +770,14 @@ end:
         eina_log_domain_unregister(_eolian_gen_log_dom);
      }
 
-   eina_list_free(includes);
+   eina_list_free(options.includes);
    for (size_t i = 0; i < (sizeof(_dexts) / sizeof(char *)); ++i)
-     free(outs[i]);
-   free(basen);
+     free(options.outs[i]);
+   free(options.basen);
 
    eolian_state_free(eos);
    eolian_shutdown();
    eina_shutdown();
 
-   return pret;
+   return options.pret;
 }
