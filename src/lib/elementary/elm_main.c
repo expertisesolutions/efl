@@ -186,11 +186,12 @@ _prefix_check(void)
    dirs[2] = app_compile_data_dir;
    dirs[3] = app_compile_locale_dir;
 
-   if (!dirs[0]) dirs[0] = "/usr/local/bin";
-   if (!dirs[1]) dirs[1] = "/usr/local/lib";
+   if (!dirs[0]) dirs[0] = PACKAGE_BIN_DIR;
+   if (!dirs[1]) dirs[1] = PACKAGE_LIB_DIR;
    if (!dirs[2])
      {
-        snprintf(buf, sizeof(buf), "/usr/local/share/%s", app_domain);
+        // LOCALE_DIR is set to <prefix>/share/local but we want <prefix>/share
+        snprintf(buf, sizeof(buf), "%s/../%s", LOCALE_DIR, app_domain);
         dirs[2] = buf;
      }
    if (!dirs[3]) dirs[3] = dirs[2];
