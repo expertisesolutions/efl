@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 #include "eio_suite.h"
-#define EFL_MODEL_TEST_FILENAME_PATH "/tmp"
+#define EFL_MODEL_TEST_FILENAME_PATH strdup(eina_environment_tmp_get())
 #define EFL_MODEL_MAX_TEST_CHILDS 16
 
 struct reqs_t {

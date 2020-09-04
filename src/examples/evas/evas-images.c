@@ -27,7 +27,7 @@
 
 static const char *border_img_path = PACKAGE_EXAMPLES_DIR EVAS_IMAGE_FOLDER "/red.png";
 static const char *valid_path = PACKAGE_EXAMPLES_DIR EVAS_IMAGE_FOLDER "/enlightenment.png";
-static const char *bogus_path = "/tmp/non-existent-220986.png";
+static const char *bogus_filename = "non-existent-220986.png";
 static const char *commands = \
   "commands are:\n"
   "\tx - change image's x fill coordinate\n"
@@ -323,6 +323,10 @@ WinMain(HINSTANCE hInstance EINA_UNUSED
    evas_object_move(d.border, 0, 0);
    evas_object_resize(d.border, (WIDTH / 2) + 6, (HEIGHT / 2) + 6);
    evas_object_show(d.border);
+
+   char bogus_path[PATH_MAX];
+   const char *tmpdir = eina_environment_tmp_get();
+   eina_file_path_join(bogus_path, sizeof(bogus_path), tmpdir, bogus_filename);
 
    /* image loading will fail for this one -- unless one cheats and
     * puts a valid image on that path */
