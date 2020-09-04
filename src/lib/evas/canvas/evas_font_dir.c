@@ -36,6 +36,7 @@ struct _Evas_Font_Win32_Cache
   const char* face_name;
   void* buffer;
   int buffer_size;
+  LOGFONT font_info;
 };
 
 static Eina_List *win32_fonts = NULL;
@@ -148,39 +149,12 @@ _file_path_list(char *path, const char *match, int match_case)
 static void
 _evas_font_dir_font_family_enum (LOGFONT const* font_info, TEXTMETRIC const* metrics, DWORD font_type, LPARAM data)
 {
-  HFONT font = NULL, oldfont = NULL;
-  DWORD code;
-  DWORD buffer_size = 0;
-  void* buffer = NULL;
-  HDC dc = CreateCompatibleDC(NULL);
-
-  font = CreateFont (font_info->lfHeight, font_info->lfWidth,
-                     font_info->lfEscapement, font_info->lfOrientation,
-                     font_info->lfWeight /**/,
-                     font_info->lfItalic, font_info->lfUnderline,
-                     font_info->lfStrikeOut, DEFAULT_CHARSET,
-                     font_info->lfOutPrecision, font_info->lfClipPrecision,
-                     font_info->lfQuality, font_info->lfPitchAndFamily, font_info->lfFaceName);
-  oldfont = SelectObject(dc, font);
-
-  code = GetFontData (dc, 0, 0, NULL, NULL);
-  if (code != GDI_ERROR)
-    {
-      buffer_size = code;
-      buffer = calloc (buffer_size, 1);
-      
-      code = GetFontData (dc, 0, 0, buffer, &buffer_size);
-
-      Evas_Font_Win32_Cache* win32_cache = calloc (sizeof(Evas_Font_Win32_Cache), 1);
-      win32_cache->face_name = strdup (font_info->lfFaceName);
-      win32_cache->buffer = buffer;
-      win32_cache->buffer_size = buffer_size;
-      win32_fonts = eina_list_append (win32_fonts, win32_cache);
-    }
-
-  oldfont = SelectObject(dc, font);
-  DeleteObject(font);
-  DeleteDC (dc);
+  Evas_Font_Win32_Cache* win32_cache = calloc (sizeof(Evas_Font_Win32_Cache), 1);
+  win32_cache->face_name = strdup (font_info->lfFaceName);
+  win32_cache->buffer = NULL;
+  win32_cache->buffer_size = 0;
+  win32_cache->font_info = *font_info;
+  win32_fonts = eina_list_append (win32_fonts, win32_cache);
 }
 #endif
 
@@ -789,10 +763,55 @@ evas_font_load(const Eina_List *font_paths, int hinting, Evas_Font_Description *
        
         EINA_LIST_FOREACH(win32_fonts, l, f) /* Load each font in append */
           {
-            fprintf(stderr, "Checking %s with face name %s\n", source, f->face_name);
+            // fprintf(stderr, "Checking %s with face name %s\n", fdesc->name, f->face_name);
 
             if (strstr (f->face_name, fdesc->name))
-              font = (Evas_Font_Set *)evas_common_font_memory_load(f->face_name, f->face_name, size, f->buffer, f->buffer_size, wanted_rend, bitmap_scalable);
+              {
+                fprintf(stderr, "Match %s with face name %s\n", fdesc->name, f->face_name);
+
+                if(!f->buffer)
+                {
+                  fprintf(stderr, "Loading font %s\n", f->face_name);
+                  
+                  HFONT font = NULL, oldfont = NULL;
+                  DWORD code;
+                  DWORD buffer_size = 0;
+                  void* buffer = NULL;
+                  HDC dc = CreateCompatibleDC(NULL);
+
+                  font = CreateFont (f->font_info.lfHeight, f->font_info.lfWidth,
+                                     f->font_info.lfEscapement, f->font_info.lfOrientation,
+                                     f->font_info.lfWeight /**/,
+                                     f->font_info.lfItalic, f->font_info.lfUnderline,
+                                     f->font_info.lfStrikeOut, DEFAULT_CHARSET,
+                                     f->font_info.lfOutPrecision, f->font_info.lfClipPrecision,
+                                     f->font_info.lfQuality, f->font_info.lfPitchAndFamily, f->font_info.lfFaceName);
+                  oldfont = SelectObject(dc, font);
+
+                  code = GetFontData (dc, 0, 0, NULL, 0);
+                  if (code != GDI_ERROR)
+                    {
+                      buffer_size = code;
+                      buffer = calloc (buffer_size, 1);
+                 
+                      code = GetFontData (dc, 0, 0, buffer, &buffer_size);
+
+                      f->buffer = buffer;
+                      f->buffer_size = buffer_size;
+                    }
+
+                  oldfont = SelectObject(dc, font);
+                  DeleteObject(font);
+                  DeleteDC (dc);
+                }
+
+                if(f->buffer)
+                  {
+                    fprintf(stderr, "Loading evas font %s\n", f->face_name);
+                    font = (Evas_Font_Set *)evas_common_font_memory_load(fdesc->name, f->face_name, size, f->buffer, f->buffer_size, wanted_rend, bitmap_scalable);
+                    goto on_find;
+                  }
+              }
           }
      }
 #endif
@@ -1084,7 +1103,7 @@ evas_font_load(const Eina_List *font_paths, int hinting, Evas_Font_Description *
      }
 #endif
 
-#ifdef HAVE_FONTCONFIG
+#if defined(HAVE_FONTCONFIG) || defined(_WIN32)
  on_find:
 #endif
    fd = calloc(1, sizeof(Fndat));
