@@ -30,12 +30,12 @@ static const char *commands = \
   "commands are:\n"
   "\tp - change proxy image's source\n"
   "\ts - print noise image's stride value\n"
-  "\ta - save noise image to disk (/tmp dir)\n"
+  "\ta - save noise image to disk (TEMP dir)\n"
   "\tv - change source visibility\n"
   "\te - enable/disable source events\n"
   "\th - print help\n";
 
-const char *file_path = "/tmp/evas-images2-example.png";
+const char *filename = "evas-images2-example.png";
 const char *quality_str = "quality=100";
 
 struct test_data
@@ -193,6 +193,9 @@ _on_keydown(void        *data EINA_UNUSED,
 
    if (strcmp(ev->key, "a") == 0) /* save noise image to disk */
      {
+        char file_path[PATH_MAX];
+        const char *tmpdir = eina_environment_tmp_get();
+        eina_file_path_join(file_path, sizeof(file_path), tmpdir, filename);
         if (!evas_object_image_save(d.noise_img, file_path, NULL, quality_str))
           fprintf(stderr, "Cannot save image to '%s' (flags '%s')\n",
                   file_path, quality_str);

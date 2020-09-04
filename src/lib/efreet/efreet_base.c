@@ -288,7 +288,7 @@ efreet_dirs_init(void)
     /* efreet_home_dir */
     efreet_home_dir = eina_environment_home_get();
     if (!efreet_home_dir || efreet_home_dir[0] == '\0')
-      efreet_home_dir = "/tmp";
+      efreet_home_dir = eina_environment_tmp_get();
     efreet_home_dir = eina_stringshare_add(efreet_home_dir);
 
     /* xdg_<dir>_home */

@@ -30,10 +30,10 @@ static const char *commands = \
   "commands are:\n"
   "\tw - write new pixel data to image\n"
   "\ti - print image info\n"
-  "\ta - save noise image to disk (/tmp dir)\n"
+  "\ta - save noise image to disk (TEMP dir)\n"
   "\th - print help\n";
 
-const char *file_path = "/tmp/evas-images2-example.png";
+const char *filename = "evas-images2-example.png";
 const char *quality_str = "quality=100";
 
 struct test_data

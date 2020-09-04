@@ -146,7 +146,10 @@ WinMain(HINSTANCE hInstance EINA_UNUSED
     * supports a range of graphics file formats, but PPM is particularly
     * trivial to write, so our save_scene routine will output as PPM.
     */
-   save_scene(canvas, "/tmp/evas-buffer-simple-render.ppm");
+   char file[PATH_MAX];
+   const char *tmpdir = eina_environment_tmp_get();
+   eina_file_path_join(file, sizeof(file), tmpdir, "evas-buffer-simple-render.ppm");
+   save_scene(canvas, file);
 
    destroy_canvas(canvas);
 

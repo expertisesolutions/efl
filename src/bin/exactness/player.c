@@ -990,7 +990,7 @@ _setup_font_settings(const char *fonts_dir)
           }
         if (chosen_fonts)
           {
-             int tmp_fd = eina_file_mkstemp("/tmp/fonts_XXXXXX.conf", &fonts_conf_name);
+             int tmp_fd = eina_file_mkstemp("fonts_XXXXXX.conf", &fonts_conf_name);
              if (tmp_fd < 0) return EINA_FALSE;
              FILE *tmp_f = fdopen(tmp_fd, "wb");
              fprintf(tmp_f,
