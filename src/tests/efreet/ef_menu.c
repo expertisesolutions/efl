@@ -83,7 +83,7 @@ ef_cb_menu_save(void)
         printf("efreet_menu_get() returned NULL\n");
         return 0;
      }
-   unlink("/tmp/test.menu");
+   eina_file_unlink("/tmp/test.menu");
    ret = efreet_menu_save(menu, "/tmp/test.menu");
    efreet_menu_free(menu);
    return ret;

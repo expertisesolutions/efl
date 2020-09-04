@@ -217,7 +217,7 @@ main(int argc, char **argv)
           }
      }
    eina_vpath_resolve_snprintf(buf, sizeof(buf), "(:usr.run:)/elm-ql-%i/%s", getuid(), domain);
-   unlink(buf);
+   eina_file_unlink(buf);
    sock = socket(AF_UNIX, SOCK_STREAM, 0);
    if (sock < 0)
      {

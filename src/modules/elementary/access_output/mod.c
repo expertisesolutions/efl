@@ -27,7 +27,7 @@ _exe_del(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
      {
         if (tmpf)
           {
-             unlink(tmpf);
+             eina_file_unlink(tmpf);
              free(tmpf);
              tmpf = NULL;
              close(tmpfd);
@@ -116,7 +116,7 @@ out_cancel(void)
      }
    if (tmpf)
      {
-        unlink(tmpf);
+        eina_file_unlink(tmpf);
         free(tmpf);
         tmpf = NULL;
         close(tmpfd);

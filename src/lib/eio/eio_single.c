@@ -75,7 +75,7 @@ _eio_file_unlink(void *data, Ecore_Thread *thread)
 {
    Eio_File_Unlink *l = data;
 
-   if (unlink(l->path) != 0)
+   if (eina_file_unlink(l->path) != EINA_TRUE)
      eio_file_thread_error(&l->common, thread);
 }
 
