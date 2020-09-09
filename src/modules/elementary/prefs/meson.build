@@ -16,7 +16,7 @@ src = files([
   'elm_horizontal_frame.c'
 ])
 
-shared_module(mod,
+shared_module(mod_name,
     src,
     c_args : package_c_args,
     dependencies: [elementary],
