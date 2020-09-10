@@ -17,24 +17,6 @@ set MESONFLAGS_EXTRA=%*
 :: Check if a custom build dir is being passed in args
 set BUILDDIR=build
 
-:: (The space before the value is necessary for proper token evaluation)
-call set _BUILDDIR=%%MESONFLAGS_EXTRA:*--builddir ==%%
-(
-    setlocal EnableDelayedExpansion
-    if not "!_BUILDDIR!" == "*--builddir ==" (
-        for /f "tokens=1 delims== " %%d in ("!_BUILDDIR!") do (
-            set BUILDDIR=%%d
-            echo - Build directory: "!BUILDDIR!"
-            set pattern=--builddir !BUILDDIR!
-            call set MESONFLAGS_EXTRA=%%MESONFLAGS_EXTRA:!pattern!=%%
-        )
-        echo !MESONFLAGS_EXTRA!
-    ) else (
-        echo - Build directory: build (default^)
-    )
-)
-set _BUILDDIR=
-
 :: Look for verbosity of this script and additional flags for meson
 (echo %MESONFLAGS_EXTRA% | findstr /i /c:"--verbose" >nul) && set VERBOSE=ON
 
