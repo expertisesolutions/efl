@@ -40,6 +40,12 @@ option('buffer',
   description : 'Generic graphics buffer API support in efl'
 )
 
+option('ector',
+  type : 'boolean',
+  value : false,
+  description : 'Scenegraph library',
+)
+
 option('drm',
   type : 'boolean',
   value : false,
