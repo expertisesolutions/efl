@@ -174,7 +174,13 @@ evas_ext_none_static_deps += freetype2
 
 if (get_option('fontconfig'))
    config_h.set('HAVE_FONTCONFIG', '1')
-   evas_ext_none_static_deps += dependency('fontconfig')
+   fcfg = dependency('fontconfig', required: false, cmake_args : extra_cmake_args)
+   if fcfg.found()
+       evas_ext_none_static_deps += fcfg
+   else
+       evas_ext_none_static_deps += dependency('unofficial-fontconfig', required: true, cmake_args : extra_cmake_args,
+         modules: ['unofficial::fontconfig::fontconfig'])
+   endif
 endif
 
 if (get_option('fribidi'))
