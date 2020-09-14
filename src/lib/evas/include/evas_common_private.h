@@ -34,7 +34,10 @@
 
 #include <Eina.h>
 #include <Eo.h>
+
+#ifdef HAVE_ECTOR
 #include <Ector.h>
+#endif
 
 #ifdef BUILD_LOADER_EET
 # include <Eet.h>

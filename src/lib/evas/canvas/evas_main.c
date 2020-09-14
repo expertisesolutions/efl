@@ -616,9 +616,11 @@ _evas_canvas_efl_object_destructor(Eo *eo_e, Evas_Public_Data *e)
         free(pseat);
      }
 
+#ifdef HAVE_ECTOR
    /* Ector surface may require an existing output to finish its job */
    if (e->engine.func)
      e->engine.func->ector_destroy(_evas_engine_context(e), e->ector);
+#endif
    /* cleanup engine backend */
    EINA_LIST_FREE(e->outputs, evo) efl_canvas_output_del(evo);
    if (e->engine.func)
@@ -1052,6 +1054,7 @@ _evas_canvas_efl_loop_consumer_loop_get(const Eo *eo_e EINA_UNUSED, Evas_Public_
    return efl_main_loop_get();
 }
 
+#ifdef HAVE_ECTOR
 Ector_Surface *
 evas_ector_get(Evas_Public_Data *e)
 {
@@ -1059,6 +1062,7 @@ evas_ector_get(Evas_Public_Data *e)
      e->ector = e->engine.func->ector_create(_evas_engine_context(e));
    return e->ector;
 }
+#endif
 
 EAPI Evas_BiDi_Direction
 evas_language_direction_get(void)

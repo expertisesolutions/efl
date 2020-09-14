@@ -503,7 +503,9 @@ struct _Evas_Public_Data
    Eina_Array    *cur_device;
 
    void          *backend;
+#ifdef HAVE_ECTOR
    Ector_Surface *ector;
+#endif
    Eina_List     *outputs;
 
    Evas_Device   *default_seat;
@@ -1086,6 +1088,7 @@ struct _Evas_Func
 
    void (*context_flush)                 (void *engine);
 
+#ifdef HAVE_ECTOR
    Ector_Surface *(*ector_create)        (void *engine);
    void  (*ector_destroy)                (void *engine, Ector_Surface *surface);
    Ector_Buffer *(*ector_buffer_wrap)    (void *engine, Evas *e, void *engine_image);
@@ -1099,6 +1102,7 @@ struct _Evas_Func
    void  (*ector_surface_cache_set)      (void *engine, void *key, void *surface);
    void *(*ector_surface_cache_get)      (void *engine, void *key);
    void  (*ector_surface_cache_drop)     (void *engine, void *key);
+#endif
 
    Evas_Filter_Support (*gfx_filter_supports) (void *engine, Evas_Filter_Command *cmd);
    Eina_Bool (*gfx_filter_process)       (void *engine, Evas_Filter_Command *cmd);
@@ -1317,8 +1321,10 @@ void _efl_gfx_mapping_init(void);
 void _efl_gfx_mapping_shutdown(void);
 void _efl_gfx_mapping_update(Eo *eo_obj);
 
+#ifdef HAVE_ECTOR
 /* Ector */
 Ector_Surface *evas_ector_get(Evas_Public_Data *evas);
+#endif
 
 /* Filter functions */
 Eina_Bool evas_filter_object_render(Eo *eo_obj, Evas_Object_Protected_Data *obj, void *engine, void *output, void *context, void *surface, int x, int y, Eina_Bool do_async, Eina_Bool alpha);

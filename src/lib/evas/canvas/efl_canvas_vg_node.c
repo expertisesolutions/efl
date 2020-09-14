@@ -261,11 +261,13 @@ _efl_canvas_vg_node_efl_object_constructor(Eo *obj,
 static void
 _efl_canvas_vg_node_efl_object_invalidate(Eo *obj, Efl_Canvas_Vg_Node_Data *pd)
 {
+#ifdef HAVE_ECTOR
    if (pd->renderer)
      {
         efl_unref(pd->renderer);
         pd->renderer = NULL;
      }
+#endif
 
    efl_invalidate(efl_super(obj, MY_CLASS));
 }
@@ -584,8 +586,10 @@ _efl_canvas_vg_node_efl_gfx_path_interpolate(Eo *obj,
    tod = efl_data_scope_get(to, MY_CLASS);
    from_map = 1.0 - pos_map;
 
+#ifdef HAVE_ECTOR
    efl_unref(pd->renderer);
    pd->renderer = NULL;
+#endif
 
    //Interpolates Node Transform Matrix
    if (fromd->m || tod->m)

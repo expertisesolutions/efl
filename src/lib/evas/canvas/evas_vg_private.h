@@ -1,7 +1,9 @@
 #ifndef EVAS_VG_PRIVATE_H_
 # define EVAS_VG_PRIVATE_H_
 
+#ifdef HAVE_ECTOR
 #include <Ector.h>
+#endif
 
 typedef struct _Efl_Canvas_Vg_Node_Data             Efl_Canvas_Vg_Node_Data;
 typedef struct _Efl_Canvas_Vg_Container_Data        Efl_Canvas_Vg_Container_Data;
@@ -62,15 +64,24 @@ struct _Efl_Canvas_Vg_Node_Data
    Eina_Matrix3 *m;
    Efl_Canvas_Vg_Interpolation *intp;
 
+#ifdef HAVE_ECTOR
    Ector_Renderer *renderer;
+#endif
 
    Efl_VG *vg_obj;
    Efl_Canvas_Vg_Object_Data *vd;
 
    void (*render_pre)(Evas_Object_Protected_Data *vg_pd, Efl_VG *node,
          Efl_Canvas_Vg_Node_Data *nd,
-         void *engine, void *output, void *contenxt, Ector_Surface *surface,
-         Eina_Matrix3 *ptransform, int opacity, Ector_Buffer *comp, Efl_Gfx_Vg_Composite_Method comp_method, void *data);
+         void *engine, void *output, void *contenxt,
+#ifdef HAVE_ECTOR
+         Ector_Surface *surface,
+#endif
+         Eina_Matrix3 *ptransform, int opacity,
+#ifdef HAVE_ECTOR
+         Ector_Buffer *comp,
+#endif
+         Efl_Gfx_Vg_Composite_Method comp_method, void *data);
    void *data;
 
    double x, y;
@@ -84,7 +95,9 @@ struct _Efl_Canvas_Vg_Node_Data
 typedef struct _Vg_Composite
 {
    Evas_Object_Protected_Data *vg_pd;      //Vector Object (for accessing backend engine)
+#ifdef HAVE_ECTOR
    Ector_Buffer *buffer;                   //Composite Ector Buffer
+#endif
    void *pixels;                           //Composite pixel buffer (actual data)
    unsigned int length;                    //pixel buffer data size
    unsigned int stride;                    //pixel buffer stride
@@ -105,7 +118,9 @@ struct _Efl_Canvas_Vg_Container_Data
    /* Layer transparency feature.
       This buffer is only valid when the layer has transparency. */
    struct {
+#ifdef HAVE_ECTOR
         Ector_Buffer *buffer;
+#endif
         void *pixels;
         unsigned int length;                //blend buffer data size
         unsigned int stride;                //blend buffer stride
@@ -162,16 +177,28 @@ efl_canvas_vg_object_change(Efl_Canvas_Vg_Object_Data *vd)
 static inline Efl_Canvas_Vg_Node_Data *
 _evas_vg_render_pre(Evas_Object_Protected_Data *vg_pd, Efl_VG *child,
                     void *engine, void *output, void *context,
+#ifdef HAVE_ECTOR
                     Ector_Surface *surface,
+#endif
                     Eina_Matrix3 *transform,
                     int opacity,
-                    Ector_Buffer *comp, Efl_Gfx_Vg_Composite_Method comp_method)
+#ifdef HAVE_ECTOR
+                    Ector_Buffer *comp,
+#endif
+                    Efl_Gfx_Vg_Composite_Method comp_method)
 {
    if (!child) return NULL;
    Efl_Canvas_Vg_Node_Data *nd = efl_data_scope_get(child, EFL_CANVAS_VG_NODE_CLASS);
    if (nd) nd->render_pre(vg_pd, child, nd,
-                          engine, output, context, surface,
-                          transform, opacity, comp, comp_method, nd->data);
+                          engine, output, context,
+#ifdef HAVE_ECTOR
+                          surface,
+#endif
+                          transform, opacity,
+#ifdef HAVE_ECTOR
+                          comp,
+#endif
+                          comp_method, nd->data);
    return nd;
 }
 

@@ -144,8 +144,10 @@ _efl_canvas_vg_object_root_node_set(Eo *eo_obj, Efl_Canvas_Vg_Object_Data *pd, E
    // detach/free the old root_node
    if (pd->user_entry && pd->user_entry->root)
      {
+#ifdef HAVE_ECTOR
         // drop any surface cache attached to it.
         ENFN->ector_surface_cache_drop(_evas_engine_context(obj->layer->evas), pd->user_entry->root);
+#endif
         efl_canvas_vg_node_vg_obj_set(pd->user_entry->root, NULL, NULL);
         efl_replace(&pd->user_entry->root, NULL);
      }
@@ -545,12 +547,14 @@ _render_to_buffer(Evas_Object_Protected_Data *obj, Efl_Canvas_Vg_Object_Data *pd
      }
 
    //draw on buffer
+#ifdef HAVE_ECTOR
    _evas_vg_render(obj, pd,
                    engine, buffer,
                    context, root,
                    NULL,
                    w, h, ector,
                    do_async);
+#endif
 
    ENFN->image_dirty_region(engine, buffer, 0, 0, w, h);
    ENFN->ector_end(engine, buffer, context, ector, do_async);
