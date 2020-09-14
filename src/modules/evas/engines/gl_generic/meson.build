@@ -1,3 +1,7 @@
+if not get_option('ector')
+  subdir_done()
+endif
+
 engine_src = files([
   'evas_engine.c',
   'Evas_Engine_GL_Generic.h',
@@ -5,16 +9,22 @@ engine_src = files([
   'evas_ector_gl.h',
   'evas_ector_gl_buffer.c',
   'evas_ector_gl_image_buffer.c',
-  join_paths('filters','gl_engine_filter.h'),
-  join_paths('filters','gl_filter_blend.c'),
-  join_paths('filters','gl_filter_blur.c'),
-  join_paths('filters','gl_filter_curve.c'),
-  join_paths('filters','gl_filter_displace.c'),
-  join_paths('filters','gl_filter_fill.c'),
-  join_paths('filters','gl_filter_mask.c'),
-  join_paths('filters','gl_filter_grayscale.c'),
-  join_paths('filters','gl_filter_inverse_color.c'),
 ])
+
+if get_option('ector')
+  engine_src += files([
+    join_paths('filters','gl_engine_filter.h'),
+    join_paths('filters','gl_filter_blend.c'),
+    join_paths('filters','gl_filter_blur.c'),
+    join_paths('filters','gl_filter_curve.c'),
+    join_paths('filters','gl_filter_displace.c'),
+    join_paths('filters','gl_filter_fill.c'),
+    join_paths('filters','gl_filter_mask.c'),
+    join_paths('filters','gl_filter_grayscale.c'),
+    join_paths('filters','gl_filter_inverse_color.c'),
+  ])
+endif
+
 common_engine_src = [
   'evas_gl_private.h',
   'evas_gl_common.h',
