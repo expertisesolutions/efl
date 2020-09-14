@@ -1,4 +1,6 @@
 #include "evas_engine_filter.h"
+#define E_READ 0
+#define E_WRITE 0
 
 static Eina_Bool
 _evas_filter_grayscale(Evas_Filter_Command *cmd)
@@ -9,16 +11,24 @@ _evas_filter_grayscale(Evas_Filter_Command *cmd)
    DATA32 *ts, *td, *src = NULL, *dst = NULL;
    DATA8 r, g, b, gry;
 
+#ifdef HAVE_ECTOR
    ector_buffer_size_get(cmd->input->buffer, &sw, &sh);
+#endif
    EINA_SAFETY_ON_FALSE_RETURN_VAL((sw > 0) && (sh > 0), ret);
 
+#ifdef HAVE_ECTOR
    ector_buffer_size_get(cmd->output->buffer, &dw, &dh);
+#endif
    EINA_SAFETY_ON_FALSE_RETURN_VAL((dw > 0) && (dh > 0), ret);
 
+#ifdef HAVE_ECTOR
    src = _buffer_map_all(cmd->input->buffer, &src_len, E_READ, E_ARGB, &src_stride);
+#endif
    EINA_SAFETY_ON_FALSE_GOTO(src, end);
 
+#ifdef HAVE_ECTOR
    dst = _buffer_map_all(cmd->output->buffer, &dst_len, E_WRITE, E_ARGB, &dst_stride);
+#endif
    EINA_SAFETY_ON_FALSE_GOTO(dst, end);
 
    slen = src_stride / sizeof(*src);
@@ -46,8 +56,10 @@ _evas_filter_grayscale(Evas_Filter_Command *cmd)
    ret = EINA_TRUE;
 
 end:
+#ifdef HAVE_ECTOR
    if (src) ector_buffer_unmap(cmd->input->buffer, src, src_len);
    if (dst) ector_buffer_unmap(cmd->output->buffer, dst, dst_len);
+#endif
    return ret;
 }
 

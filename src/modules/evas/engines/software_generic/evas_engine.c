@@ -4,10 +4,12 @@
 
 #include "region.h"
 
+#ifdef HAVE_ECTOR
 #include <software/Ector_Software.h>
 #include "evas_ector_software.h"
-#include "draw.h"
 #include "evas_filter_private.h"
+#endif
+#include "draw.h"
 
 #if defined HAVE_DLSYM && ! defined _WIN32
 # include <dlfcn.h>      /* dlopen,dlclose,etc */
@@ -305,8 +307,10 @@ typedef struct _Evas_Thread_Command_Image Evas_Thread_Command_Image;
 typedef struct _Evas_Thread_Command_Font Evas_Thread_Command_Font;
 typedef struct _Evas_Thread_Command_Map Evas_Thread_Command_Map;
 typedef struct _Evas_Thread_Command_Multi_Font Evas_Thread_Command_Multi_Font;
+#ifdef HAVE_ECTOR
 typedef struct _Evas_Thread_Command_Ector Evas_Thread_Command_Ector;
 typedef struct _Evas_Thread_Command_Ector_Surface Evas_Thread_Command_Ector_Surface;
+#endif
 
 struct _Evas_Thread_Command_Rect
 {
@@ -398,6 +402,7 @@ struct _Evas_Thread_Command_Multi_Font
    Evas_Font_Array *texts;
 };
 
+#ifdef HAVE_ECTOR
 struct _Evas_Thread_Command_Ector
 {
    Ector_Renderer *r;
@@ -415,6 +420,7 @@ struct _Evas_Thread_Command_Ector_Surface
    void *pixels;
    int x, y;
 };
+#endif
 
 // declare here as it is re-used
 static void *eng_image_map_surface_new(void *data, int w, int h, int alpha);
@@ -426,8 +432,10 @@ Eina_Mempool *_mp_command_image = NULL;
 Eina_Mempool *_mp_command_font = NULL;
 Eina_Mempool *_mp_command_map = NULL;
 Eina_Mempool *_mp_command_multi_font = NULL;
+#ifdef HAVE_ECTOR
 Eina_Mempool *_mp_command_ector = NULL;
 Eina_Mempool *_mp_command_ector_surface = NULL;
+#endif
 /*
  *****
  **
@@ -4301,6 +4309,7 @@ eng_output_idle_flush(void *engine EINA_UNUSED, void *data)
    if (re->outbuf_idle_flush) re->outbuf_idle_flush(re->ob);
 }
 
+#ifdef HAVE_ECTOR
 // Ector functions
 
 static Ector_Surface *
@@ -4626,6 +4635,7 @@ eng_ector_end(void *engine EINA_UNUSED,
         evas_common_cpu_end_opt();
      }
 }
+#endif
 
 //------------------------------------------------//
 
@@ -4858,6 +4868,7 @@ static Evas_Func func =
      eng_multi_font_draw,
      eng_pixel_alpha_get,
      NULL, // eng_context_flush - software doesn't use it
+#ifdef HAVE_ECTOR
      eng_ector_create,
      eng_ector_destroy,
      eng_ector_buffer_wrap,
@@ -4870,6 +4881,7 @@ static Evas_Func func =
      eng_ector_surface_cache_set,
      eng_ector_surface_cache_get,
      eng_ector_surface_cache_drop,
+#endif
      eng_gfx_filter_supports,
      eng_gfx_filter_process,
    /* FUTURE software generic calls go here */
@@ -5991,6 +6003,7 @@ module_open(Evas_Module *em)
    _mp_command_multi_font =
      eina_mempool_add("chained_mempool", "Evas_Thread_Command_Multi_Font",
                       NULL, sizeof(Evas_Thread_Command_Multi_Font), 128);
+#ifdef HAVE_ECTOR
    _mp_command_ector =
      eina_mempool_add("chained_mempool", "Evas_Thread_Command_Ector",
                       NULL, sizeof(Evas_Thread_Command_Ector), 128);
@@ -6002,6 +6015,7 @@ module_open(Evas_Module *em)
 // do on demand when first evas_gl_api_get is called...
 //   init_gl();
    ector_glsym_set(dlsym, RTLD_DEFAULT);
+#endif
    evas_common_pipe_init();
 
    em->functions = (void *)(&func);
@@ -6012,14 +6026,18 @@ module_open(Evas_Module *em)
 static void
 module_close(Evas_Module *em EINA_UNUSED)
 {
+#ifdef HAVE_ECTOR
    ector_shutdown();
+#endif
    eina_mempool_del(_mp_command_rect);
    eina_mempool_del(_mp_command_line);
    eina_mempool_del(_mp_command_polygon);
    eina_mempool_del(_mp_command_image);
    eina_mempool_del(_mp_command_font);
    eina_mempool_del(_mp_command_map);
+#ifdef HAVE_ECTOR
    eina_mempool_del(_mp_command_ector);
+#endif
    if (_evas_soft_gen_log_dom >= 0)
      {
         eina_log_domain_unregister(_evas_soft_gen_log_dom);
@@ -6043,11 +6061,13 @@ Eina_Bool evas_engine_software_generic_init(void)
    return evas_module_register(&evas_modapi, EVAS_MODULE_TYPE_ENGINE);
 }
 
+#ifdef HAVE_ECTOR
 // Time to destroy the ector context
 void evas_engine_software_generic_shutdown(void)
 {
    evas_module_unregister(&evas_modapi, EVAS_MODULE_TYPE_ENGINE);
 }
+#endif
 
 #ifndef EVAS_STATIC_BUILD_SOFTWARE_GENERIC
 EVAS_EINA_MODULE_DEFINE(engine, software_generic);

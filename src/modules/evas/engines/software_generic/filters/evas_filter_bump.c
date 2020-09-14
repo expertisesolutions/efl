@@ -103,9 +103,13 @@ _bump_map_cpu_alpha_alpha(Evas_Filter_Command *cmd)
    h = cmd->input->h;
    EINA_SAFETY_ON_FALSE_RETURN_VAL(w > 2 && h > 2, EINA_FALSE);
 
+#define E_READ 0
+#define E_WRITE 0
+#ifdef HAVE_ECTOR
    src_map = src = _buffer_map_all(cmd->input->buffer, &slen, E_READ, E_ALPHA, &ss);
    map_map = map = _buffer_map_all(cmd->mask->buffer, &mlen, E_READ, E_ALPHA, &ms);
    dst_map = dst = _buffer_map_all(cmd->output->buffer, &dlen, E_WRITE, E_ALPHA, &ds);
+#endif
    EINA_SAFETY_ON_FALSE_GOTO(src && dst && map, end);
 
    xyangle = cmd->bump.xyangle;
@@ -222,9 +226,11 @@ _bump_map_cpu_alpha_alpha(Evas_Filter_Command *cmd)
    ret = EINA_TRUE;
 
 end:
+#ifdef HAVE_ECTOR
    ector_buffer_unmap(cmd->input->buffer, src_map, slen);
    ector_buffer_unmap(cmd->mask->buffer, map_map, mlen);
    ector_buffer_unmap(cmd->output->buffer, dst_map, dlen);
+#endif
    free(phong);
    return ret;
 }
@@ -245,9 +251,11 @@ _bump_map_cpu_alpha_rgba(Evas_Filter_Command *cmd)
    h = cmd->input->h;
    EINA_SAFETY_ON_FALSE_RETURN_VAL(w > 2 && h > 2, EINA_FALSE);
 
+#ifdef HAVE_ECTOR
    src_map = src = _buffer_map_all(cmd->input->buffer, &slen, E_READ, E_ALPHA, &ss);
    map_map = map = _buffer_map_all(cmd->mask->buffer, &mlen, E_READ, E_ALPHA, &ms);
    dst_map = dst = (uint32_t *) _buffer_map_all(cmd->output->buffer, &dlen, E_WRITE, E_ARGB, &ds);
+#endif
    EINA_SAFETY_ON_FALSE_GOTO(src && dst && map, end);
 
    xyangle = cmd->bump.xyangle;
@@ -402,8 +410,10 @@ _bump_map_cpu_alpha_rgba(Evas_Filter_Command *cmd)
    ret = EINA_TRUE;
 
 end:
+#ifdef HAVE_ECTOR
    ector_buffer_unmap(cmd->input->buffer, src_map, slen);
    ector_buffer_unmap(cmd->mask->buffer, map_map, mlen);
    ector_buffer_unmap(cmd->output->buffer, dst_map, dlen);
+#endif
    return ret;
 }
