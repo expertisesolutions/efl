@@ -200,11 +200,15 @@ _filter_blend_cpu_generic_do(Evas_Filter_Command *cmd, draw_func image_draw)
 
    sx = 0;
    sy = 0;
+#ifdef HAVE_ECTOR
    ector_buffer_size_get(cmd->input->buffer, &sw, &sh);
+#endif
 
    dx = cmd->draw.ox;
    dy = cmd->draw.oy;
+#ifdef HAVE_ECTOR
    ector_buffer_size_get(cmd->output->buffer, &dw, &dh);
+#endif
 
    if ((dw <= 0) || (dh <= 0) || (sw <= 0) || (sh <= 0))
      return EINA_TRUE;
@@ -234,8 +238,10 @@ _filter_blend_cpu_generic_do(Evas_Filter_Command *cmd, draw_func image_draw)
      }
    else src_fb = cmd->input;
 
+#ifdef HAVE_ECTOR
    src = _buffer_map_all(src_fb->buffer, &src_len, E_READ, src_fb->alpha_only ? E_ALPHA : E_ARGB, &src_stride);
    dst = _buffer_map_all(cmd->output->buffer, &dst_len, E_WRITE, cmd->output->alpha_only ? E_ALPHA : E_ARGB, &dst_stride);
+#endif
    EINA_SAFETY_ON_FALSE_GOTO(src && dst, end);
 
    dc.rop = cmd->draw.rop;
@@ -246,8 +252,10 @@ _filter_blend_cpu_generic_do(Evas_Filter_Command *cmd, draw_func image_draw)
                        sx, sy, sw, sh, dx, dy, dw, dh, image_draw);
 
 end:
+#ifdef HAVE_ECTOR
    if (src) ector_buffer_unmap(src_fb->buffer, src, src_len);
    if (dst) ector_buffer_unmap(cmd->output->buffer, dst, dst_len);
+#endif
    return ret;
 }
 
