@@ -4,16 +4,25 @@ raw_evas_src = [
   'Evas_Engine_Software_Shared.h',
   'evas_native_tbm.c',
   'evas_native_dmabuf.c',
-  'evas_ector_software_buffer.c',
   'evas_native_common.h',
-  'evas_ector_software.h',
-]
+  ]
+
+if get_option('ector')
+  raw_evas_src = [
+    'evas_ector_software_buffer.c',
+    'evas_ector_software.h',
+  ]
+endif
 
 gen_src = []
 
-raw_pub_eo_files = [
-  'evas_ector_software_buffer.eo'
-]
+raw_pub_eo_files = []
+
+if get_option('ector')
+  raw_pub_eo_files += [
+    'evas_ector_software_buffer.eo'
+  ]
+endif
 
 foreach eo_file : raw_pub_eo_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file.underscorify(),
@@ -35,4 +44,6 @@ endforeach
 
 evas_include_directories += include_directories('.')
 
-subdir('filters')
+if get_option('ector')
+  subdir('filters')
+endif
