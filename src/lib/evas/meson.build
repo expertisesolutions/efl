@@ -52,7 +52,7 @@ evas_vg_loaders_file = [
 evas_vg_savers_file = ['eet', 'svg']
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
-evas_deps = [eo, eet, eina, efl, emile, ector, ecore, draw, buildsystem]
+evas_deps = [eo, eet, eina, efl, emile, ector, ecore, buildsystem]
 evas_ext_deps = [vg_common, draw_simple]
 evas_ext_none_static_deps = [buildsystem_simple, intl, m, valgrind, libunibreak, lua]
 
@@ -134,8 +134,13 @@ evas_include_directories += [
   include_directories('.'),
   include_directories('common'),
   include_directories('include'),
-  include_directories('filters'),
 ]
+
+if get_option('ector')
+  evas_include_directories += [
+    include_directories('filters'),
+  ]
+endif
 
 evas_src += files([
    'main.c'
@@ -143,7 +148,11 @@ evas_src += files([
 
 evas_src_opt = [ ]
 
-evas_ext_none_static_deps += dependency('freetype2')
+if get_variable('freetype', false) == false
+  freetype = dependency('freetype2')
+endif
+
+evas_ext_none_static_deps += freetype
 
 if (get_option('fontconfig'))
    config_h.set('HAVE_FONTCONFIG', '1')
@@ -177,7 +186,10 @@ subdir('include')
 subdir('common')
 subdir('canvas')
 subdir('gesture')
-subdir('filters')
+
+if get_option('ector')
+  subdir('filters')
+endif
 subdir('cache')
 subdir('file')
 subdir('vg')
