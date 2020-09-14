@@ -81,7 +81,9 @@
 #include "wordbreak.h"
 #include "graphemebreak.h"
 
-#include "evas_filter.h"
+#ifdef HAVE_ECTOR
+# include "evas_filter.h"
+#endif
 #include "efl_canvas_filter_internal.eo.h"
 
 /* private magic number for textblock objects */
@@ -905,6 +907,7 @@ _item_free(Efl_Canvas_Textblock_Data *o,
         Evas_Object_Textblock_Text_Item *ti = _ITEM_TEXT(it);
 
         evas_common_text_props_content_unref(&ti->text_props);
+#ifdef HAVE_ECTOR
         if (EINA_UNLIKELY(ti->gfx_filter != NULL))
           {
              if (ti->gfx_filter->output)
@@ -929,6 +932,7 @@ _item_free(Efl_Canvas_Textblock_Data *o,
                   ti->gfx_filter->ti = NULL;
                }
           }
+#endif
      }
    else
      {
@@ -5187,6 +5191,7 @@ _text_item_update_sizes(Ctxt *c, Evas_Object_Textblock_Text_Item *ti)
                                         &ti->text_props);
      }
 
+#ifdef HAVE_ECTOR
    if (EINA_UNLIKELY(ti->parent.format->gfx_filter != NULL))
      {
         Evas_Filter_Padding pad = { 0, 0, 0, 0 };
@@ -5204,6 +5209,7 @@ _text_item_update_sizes(Ctxt *c, Evas_Object_Textblock_Text_Item *ti)
              return;
           }
      }
+#endif
 
    /* These adjustments are calculated and thus heavily linked to those in
     * textblock_render!!! Don't change one without the other. */
@@ -5584,6 +5590,7 @@ _filter_program_find(Efl_Canvas_Textblock_Data *o, const char *name)
    return NULL;
 }
 
+#ifdef HAVE_ECTOR
 static Evas_Filter_Program *
 _format_filter_program_get(Efl_Canvas_Textblock_Data *o, Evas_Object_Textblock_Format *fmt)
 {
@@ -5620,6 +5627,7 @@ _format_filter_program_get(Efl_Canvas_Textblock_Data *o, Evas_Object_Textblock_F
 
    return pgm;
 }
+#endif
 
 /**
  * @internal
@@ -5817,6 +5825,7 @@ _layout_do_format(const Evas_Object *obj, Ctxt *c,
         _format_finalize(c->obj, fmt);
      }
 
+#ifdef HAVE_ECTOR
      {
         Evas_Filter_Padding pad = { 0, 0, 0, 0 };
         Evas_Filter_Program *pgm = NULL;
@@ -5834,6 +5843,7 @@ _layout_do_format(const Evas_Object *obj, Ctxt *c,
         if (pad.t > *style_pad_t) *style_pad_t = pad.t;
         if (pad.b > *style_pad_b) *style_pad_b = pad.b;
      }
+#endif
 
    if (fmt->underline2)
      c->have_underline2 = 1;
@@ -14592,6 +14602,7 @@ evas_object_textblock_free(Evas_Object *eo_obj)
         free(use);
      }
 
+#ifdef HAVE_ECTOR
    EINA_INLIST_FREE(o->gfx_filter.programs, prg)
      {
         EINA_INLIST_REMOVE(o->gfx_filter.programs, prg);
@@ -14608,6 +14619,7 @@ evas_object_textblock_free(Evas_Object *eo_obj)
         free(db);
      }
    eina_hash_free(o->gfx_filter.sources);
+#endif
 
    while (evas_object_textblock_style_user_peek(eo_obj))
      {
@@ -14653,6 +14665,7 @@ evas_object_textblock_free(Evas_Object *eo_obj)
   free(o->utf8);
 }
 
+#ifdef HAVE_ECTOR
 static inline Evas_Filter_Context *
 _filter_context_get(Evas_Object_Textblock_Text_Item *ti)
 {
@@ -14794,6 +14807,7 @@ _filter_target_position_calc(Evas_Object_Protected_Data *obj,
    pt.y = obj->cur->geometry.y + ln->par->y + ln->y + y - filter->pad.t - ti->parent.h + ln->h;
    return pt;
 }
+#endif
 
 static void
 evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
@@ -14945,11 +14959,15 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         cr = nr; cg = ng; cb = nb; ca = na;                             \
      }
 
+#ifdef HAVE_ECTOR
 #define DRAW_TEXT_FILTER(gf, ox, oy) do {                               \
       evas_filter_input_render(eo_obj, ti->gfx_filter->ctx, engine, output, gf->dc, ti, \
                             gf->pad.l, gf->pad.r, gf->pad.t, gf->pad.b, \
                             (ox), (oy), do_async);                      \
    } while (0)
+#else
+#define DRAW_TEXT_FILTER(gf, ox, oy) do { } while (0)
+#endif
 
 #define DRAW_TEXT_NOFILTER(ox, oy) do {                                 \
    ENFN->context_cutout_target(engine, context,                         \
@@ -15105,6 +15123,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
    /* There are size adjustments that depend on the styles drawn here back
     * in "_text_item_update_sizes" should not modify one without the other. */
 
+#ifdef HAVE_ECTOR
    /* gfx filters preparation */
    EINA_LIST_FREE(gfx_filters, itr)
      {
@@ -15198,6 +15217,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
 
         ENFN->context_multiplier_unset(engine, context);
      }
+#endif
 
    /* shadows */
    EINA_LIST_FREE(shadows, itr)
@@ -15212,8 +15232,10 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         yoff = itr->yoff;
         ln = itr->ln;
 
+#ifdef HAVE_ECTOR
         if (EINA_UNLIKELY(_filter_context_get(ti) != NULL))
           context = ti->parent.format->gfx_filter->dc;
+#endif
 
         shad_dst = shad_sz = dx = dy = haveshad = 0;
         switch (ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC)
@@ -15327,8 +15349,10 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         yoff = itr->yoff;
         ln = itr->ln;
 
+#ifdef HAVE_ECTOR
         if (EINA_UNLIKELY(_filter_context_get(ti) != NULL))
           context = ti->parent.format->gfx_filter->dc;
+#endif
 
         if ((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_GLOW)
           {
@@ -15365,8 +15389,10 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         yoff = itr->yoff;
         ln = itr->ln;
 
+#ifdef HAVE_ECTOR
         if (EINA_UNLIKELY(_filter_context_get(ti) != NULL))
           context = ti->parent.format->gfx_filter->dc;
+#endif
 
         if (((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_OUTLINE) ||
             ((ti->parent.format->style & EVAS_TEXT_STYLE_MASK_BASIC) == EVAS_TEXT_STYLE_OUTLINE_SHADOW) ||
@@ -15450,8 +15476,10 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
           {
              void *fi = _ITEM_TEXT(itr)->text_props.font_instance;
 
+#ifdef HAVE_ECTOR
              if (EINA_UNLIKELY(_filter_context_get(ti) != NULL))
                context = ti->parent.format->gfx_filter->dc;
+#endif
 
              COLOR_SET(normal);
              DRAW_TEXT(0, 0);
@@ -15460,6 +15488,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
 
              context = context_save;
 
+#ifdef HAVE_ECTOR
              if (EINA_UNLIKELY(ti->parent.format->gfx_filter != NULL))
                {
                   Evas_Filter_Context *ctx = _filter_context_get(ti);
@@ -15484,6 +15513,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
                     }
                }
           }
+#endif
 
         /* STRIKETHROUGH */
         DRAW_FORMAT(strikethrough, (ln->h / 2), strikethrough_thickness);
@@ -15506,6 +15536,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
    ENFN->context_multiplier_unset(engine, context);
 }
 
+#ifdef HAVE_ECTOR
 EOLIAN static void
 _efl_canvas_textblock_efl_canvas_filter_internal_filter_state_prepare(
       Eo *eo_obj, Efl_Canvas_Textblock_Data *pd EINA_UNUSED, Efl_Canvas_Filter_State *state, void *data)
@@ -15729,6 +15760,7 @@ _efl_canvas_textblock_efl_gfx_filter_filter_source_get(const Eo *obj EINA_UNUSED
 {
    return eina_hash_find(pd->gfx_filter.sources, name);
 }
+#endif
 
 
 static void

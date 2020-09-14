@@ -259,7 +259,9 @@ struct _Evas_Filter_Buffer
 
    Evas_Object *source;
    Eina_Stringshare *source_name;
+#ifdef HAVE_ECTOR
    Ector_Buffer *buffer;
+#endif
    int w, h;
 
    Eina_Bool used : 1;        // This buffer is in use (useful for reuse of context)
@@ -302,11 +304,14 @@ int evas_filter_smallest_pow2_larger_than(int val);
 void _evas_filter_context_program_reuse(void *engine, void *output, Evas_Filter_Context *ctx);
 void evas_filter_parser_shutdown(void);
 
+#ifdef HAVE_ECTOR
 #define E_READ  ECTOR_BUFFER_ACCESS_FLAG_READ
 #define E_WRITE ECTOR_BUFFER_ACCESS_FLAG_WRITE
+#endif
 #define E_ALPHA EFL_GFX_COLORSPACE_GRY8
 #define E_ARGB  EFL_GFX_COLORSPACE_ARGB8888
 
+#ifdef HAVE_ECTOR
 static inline void *
 _buffer_map_all(Ector_Buffer *buf, unsigned int *len, Ector_Buffer_Access_Flag mode, Efl_Gfx_Colorspace cspace, unsigned int *stride)
 {
@@ -317,5 +322,6 @@ _buffer_map_all(Ector_Buffer *buf, unsigned int *len, Ector_Buffer_Access_Flag m
    ret = ector_buffer_map(buf, len, mode, 0, 0, w, h, cspace, stride);
    return ret;
 }
+#endif // HAVE_ECTOR
 
 #endif // EVAS_FILTER_PRIVATE_H
