@@ -28,15 +28,6 @@ pub_eo_files = [
   'efl_canvas_textblock_factory.eo',
   'efl_canvas_rectangle.eo',
   'efl_canvas_object.eo',
-  'efl_gfx_vg_value_provider.eo',
-  'efl_canvas_vg_object.eo',
-  'efl_canvas_vg_node.eo',
-  'efl_canvas_vg_container.eo',
-  'efl_canvas_vg_shape.eo',
-  'efl_canvas_vg_image.eo',
-  'efl_canvas_vg_gradient.eo',
-  'efl_canvas_vg_gradient_radial.eo',
-  'efl_canvas_vg_gradient_linear.eo',
   'efl_canvas_group.eo',
   'efl_gfx_mapping.eo',
   'efl_canvas_event_grabber.eo',
@@ -45,6 +36,20 @@ pub_eo_files = [
   'efl_text_formatter.eo',
   'efl_canvas_object_animation.eo',
 ]
+
+if get_option('ector')
+  pub_eo_files += [
+    'efl_gfx_vg_value_provider.eo',
+    'efl_canvas_vg_object.eo',
+    'efl_canvas_vg_node.eo',
+    'efl_canvas_vg_container.eo',
+    'efl_canvas_vg_shape.eo',
+    'efl_canvas_vg_image.eo',
+    'efl_canvas_vg_gradient.eo',
+    'efl_canvas_vg_gradient_radial.eo',
+    'efl_canvas_vg_gradient_linear.eo',
+  ]
+endif
 
 priv_eo_files = [
   'efl_canvas_surface.eo',
@@ -111,11 +116,6 @@ evas_legacy_h = files([
   'efl_canvas_group_eo.legacy.h',
   'efl_canvas_object_eo.legacy.h',
   'efl_canvas_textblock_eo.legacy.h',
-  'efl_canvas_vg_container_eo.legacy.h',
-  'efl_canvas_vg_node_eo.legacy.h',
-  'efl_canvas_vg_object_eo.legacy.h',
-  'efl_canvas_vg_shape_eo.legacy.h',
-  'efl_canvas_vg_gradient_eo.legacy.h',
   'evas_box_eo.legacy.h',
   'evas_canvas_eo.legacy.h',
   'evas_grid_eo.legacy.h',
@@ -125,6 +125,16 @@ evas_legacy_h = files([
   'evas_text_eo.legacy.h',
   'evas_textgrid_eo.legacy.h',
 ])
+
+if get_option('ector')
+  evas_legacy_h += files([
+    'efl_canvas_vg_container_eo.legacy.h',
+    'efl_canvas_vg_node_eo.legacy.h',
+    'efl_canvas_vg_object_eo.legacy.h',
+    'efl_canvas_vg_shape_eo.legacy.h',
+    'efl_canvas_vg_gradient_eo.legacy.h',
+  ])
+endif
 
 evas_src += files([
   'evas_callbacks.c',
@@ -190,21 +200,26 @@ evas_src += files([
   'efl_canvas_group_animation.c',
   'efl_canvas_parallel_group_animation.c',
   'efl_canvas_sequential_group_animation.c',
-  'efl_gfx_vg_value_provider.c',
-  'efl_canvas_vg_object.c',
-  'efl_canvas_vg_node.c',
-  'efl_canvas_vg_container.c',
-  'efl_canvas_vg_gradient.c',
-  'efl_canvas_vg_gradient_linear.c',
-  'efl_canvas_vg_gradient_radial.c',
-  'efl_canvas_vg_utils.c',
-  'efl_canvas_vg_shape.c',
-  'efl_canvas_vg_image.c',
   'evas_filter_mixin.c',
   'efl_canvas_object_animation.c',
   'efl_text_cursor_object.c',
   'efl_text_formatter.c'
   ])
+
+if get_option('ector')
+  evas_src += files([
+    'efl_gfx_vg_value_provider.c',
+    'efl_canvas_vg_object.c',
+    'efl_canvas_vg_node.c',
+    'efl_canvas_vg_container.c',
+    'efl_canvas_vg_gradient.c',
+    'efl_canvas_vg_gradient_linear.c',
+    'efl_canvas_vg_gradient_radial.c',
+    'efl_canvas_vg_utils.c',
+    'efl_canvas_vg_shape.c',
+    'efl_canvas_vg_image.c',
+  ])
+endif
 
 evas_include_directories += include_directories('.')
 
