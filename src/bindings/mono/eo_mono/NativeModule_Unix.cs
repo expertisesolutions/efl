@@ -73,6 +73,16 @@ internal partial class NativeModule
                 if (r == IntPtr.Zero)
                 {
                     r = dlopen("lib" + filename + ".so", RTLD_NOW | RTLD_GLOBAL);
+                    if (r == IntPtr.Zero)
+                    {
+                        r = dlopen(filename + ".dylib", RTLD_NOW | RTLD_GLOBAL);
+                        if (r == IntPtr.Zero)
+                        {
+                            r = dlopen("lib" + filename + ".dylib", RTLD_NOW | RTLD_GLOBAL);
+                        }
+                    }
+
+
                 }
             }
         }
