@@ -68,9 +68,12 @@
 #include <Ecore_Con.h>
 #include <Edje.h>
 #include <Eldbus.h>
-#include <Efreet.h>
-#include <Efreet_Mime.h>
-#include <Efreet_Trash.h>
+
+#ifdef HAVE_EFREET
+# include <Efreet.h>
+# include <Efreet_Mime.h>
+# include <Efreet_Trash.h>
+#endif
 #include <Ethumb_Client.h>
 
 #ifdef ELM_EMAP
