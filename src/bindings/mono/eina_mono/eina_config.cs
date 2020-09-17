@@ -28,7 +28,11 @@ namespace Eina
 /// </summary>
 public static class Config
 {
-    [DllImport(efl.Libs.Eina)] private static extern int eina_init();
+
+    private delegate int eina_init_delegate();
+    private static readonly Efl.Eo.FunctionWrapper<eina_init_delegate> eina_init_ptr = new Efl.Eo.FunctionWrapper<eina_init_delegate>(efl.Libs.Eina, "eina_init");
+    private static int eina_init() => eina_init_ptr.Value.Delegate();
+
     [DllImport(efl.Libs.Eina)] private static extern int eina_shutdown();
 
     /// <summary>
@@ -101,7 +105,7 @@ public class DisposableIntPtr : IDisposable
         Disposed = true;
     }
 
-    
+
     /// <summary>Release the native resources held by this instance.
     /// <para>Since EFL 1.23.</para>
     /// </summary>
