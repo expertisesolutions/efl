@@ -37,9 +37,11 @@ public static class Log
             int line,
             [MarshalAs(UnmanagedType.LPStr)] String message);
 
-    [DllImport(efl.Libs.Eina)] private static extern int eina_log_domain_register(
+    private delegate int eina_log_domain_register_delegate(
             [MarshalAs(UnmanagedType.LPStr)] String name,
             [MarshalAs(UnmanagedType.LPStr)] String color);
+    private static readonly Efl.Eo.FunctionWrapper<eina_log_domain_register_delegate> eina_log_domain_register_ptr = new Efl.Eo.FunctionWrapper<eina_log_domain_register_delegate>(efl.Libs.Eina, "eina_log_domain_register");
+    private static int eina_log_domain_register(String name, String color) => eina_log_domain_register_ptr.Value.Delegate(name, color);
 
     [DllImport(efl.Libs.Eina)] private static extern void eina_log_level_set(Level level);
 
