@@ -9,7 +9,11 @@ mono_files += files(
 
 bash = find_program('bash')
 
-map = run_command('map_generate.sh').stdout()
+if not sys_windows
+  map = run_command('map_generate.sh').stdout()
+else
+  map = ''
+endif
 
 
 efl_libs = configuration_data()
