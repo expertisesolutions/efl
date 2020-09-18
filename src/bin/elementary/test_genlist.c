@@ -5587,7 +5587,7 @@ test_genlist_show_tree(void *data,
    else max = 2000;
    for (i = 0; i <= max; i++)
      {
-       if (i % (max / 20) == 0)
+       if (i % ((max / 20) ? 0 : 1) == 0)
           gli = elm_genlist_item_append(gl, api->itc1, (void*)(uintptr_t)i, gli, ELM_GENLIST_ITEM_TREE, NULL, NULL);
        else
           elm_genlist_item_append(gl, api->itc1, (void*)(uintptr_t)i, gli, ELM_GENLIST_ITEM_NONE, NULL, NULL);
