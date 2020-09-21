@@ -7,7 +7,14 @@ draw_src = [
   'draw_alpha_main.c'
 ]
 
-draw_opt_lib = [ ]
+draw_opt_lib = []
+draw_deps = []
+draw_without_deps_deps = []
+
+if get_option('emile')
+  draw_deps += rg_etc
+  draw_without_deps_deps += rg_etc_simple
+endif
 
 if cpu_sse3 == true
   draw_opt = static_library('draw_opt',
@@ -23,14 +30,14 @@ endif
 
 draw = declare_dependency(
   include_directories: [include_directories('.'), include_directories(join_paths('..', '..', 'lib'))],
-  dependencies: [eina, efl, rg_etc],
+  dependencies: [eina, efl] + draw_deps,
   sources : draw_src,
   link_with : draw_opt_lib
 )
 
 draw_without_deps = declare_dependency(
   include_directories: [include_directories('.'), include_directories(join_paths('..', '..', 'lib'))],
-  dependencies: [rg_etc_simple],
+  dependencies: draw_without_deps_deps,
   sources : draw_src,
   link_with : draw_opt_lib
 )
