@@ -100,6 +100,12 @@ option('build-tests',
   description : 'Compile tests'
 )
 
+option('emile',
+  type : 'boolean',
+  value : true,
+  description : 'Enable Emile'
+)
+
 option('crypto',
   type : 'combo',
   choices : ['gnutls', 'openssl'],

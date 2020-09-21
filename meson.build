@@ -311,8 +311,8 @@ subprojects = [
   ['eolian'           ,[]                    , false,  true,  true,  false,   true,     false, false, ['eina'], []],
   ['eo'               ,[]                    , false,  true, false,   true,   true,     false,  true, ['eina'], []],
   ['efl'              ,[]                    , false,  true, false,  false,   true,     false,  true, ['eo'], []],
-  ['emile'            ,[]                    , false,  true, false,  false,   true,      true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
-  ['eet'              ,[]                    , false,  true,  true,  false,   true,      true,  true, ['eina', 'emile', 'efl'], []],
+  ['emile'            ,['emile']             , false,  true, false,  false,   true,      true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
+  ['eet'              ,[]                    , false,  true,  true,  false,   true,      true,  true, ['eina', 'efl'], []],
   ['ecore'            ,[]                    , false,  true, false,  false,  false,     false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
   ['eldbus'           ,[]                    , false,  true,  true,  false,   true,      true,  true, ['eina', 'eo', 'efl'], []],
   ['ecore'            ,[]                    ,  true, false, false,  false,   true,      true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
