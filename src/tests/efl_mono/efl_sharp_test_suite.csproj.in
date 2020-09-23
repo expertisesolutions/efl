@@ -24,7 +24,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="@BINDING_TEST_SRC@/*.cs" />
+    <Compile Include="@BINDING_TEST_SRC@/*.cs"/>
+    <Compile Remove="@BINDING_TEST_SRC@/Eldbus.cs" Condition=" '$(OS)' != 'UNIX' "/>
+
     <!-- Somehow dotnet build -o DIR seems to miss the genenerated files despite
     them being in the same folder as the csproj file. The line below makes
     sure we include them.

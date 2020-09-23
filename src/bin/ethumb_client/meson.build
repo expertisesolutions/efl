@@ -1,7 +1,12 @@
+ethumbd_deps = [ecore, ethumb, ethumb_client, ecore]
+if not sys_windows
+  ethumbd_deps += eldbus
+endif
+
 ethumbd = executable('ethumbd',
         'ethumbd.c',
         install: true,
-        dependencies : [ecore, ethumb, ethumb_client, ecore, eldbus],
+        dependencies : ethumbd_deps,
         include_directories : config_dir,
         c_args : package_c_args,
 )

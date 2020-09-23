@@ -65,7 +65,6 @@ efl_mono_src = [
       'StructHelpers.cs',
       'BasicDirection.cs',
       'Eina.cs',
-      'Eldbus.cs',
       'Eo.cs',
       'EoPromises.cs',
       'EoConstruction.cs',
@@ -86,6 +85,10 @@ efl_mono_src = [
       'List.cs',
       'Array.cs',
 ]
+
+if not sys_windows
+  efl_mono_src += 'Eldbus.cs'
+endif
 
 if get_option('dotnet')
 

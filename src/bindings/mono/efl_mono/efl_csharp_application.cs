@@ -97,7 +97,9 @@ public abstract class Application
             ecore_init();
             ecore_init_ex(0, IntPtr.Zero);
             evas_init();
+#if ELDBUS_ENABLED
             eldbus.Config.Init();
+#endif
         }
 
         if ((initComponents & Components.Ui) == Components.Ui)
@@ -136,7 +138,9 @@ public abstract class Application
 
         if ((initComponents & Components.Basic) == Components.Basic)
         {
+#if ELDBUS_ENABLED
             eldbus.Config.Shutdown();
+#endif
             evas_shutdown();
             ecore_shutdown();
             Efl.Eo.Config.Shutdown();

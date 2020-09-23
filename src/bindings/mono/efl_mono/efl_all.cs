@@ -94,7 +94,9 @@ public static class All
             ecore_init();
             ecore_init_ex(0, IntPtr.Zero);
             evas_init();
+#if ELDBUS_ENABLED
             eldbus.Config.Init();
+#endif
         }
 
         if ((initComponents & Efl.Csharp.Components.Ui)
@@ -140,8 +142,10 @@ public static class All
         if ((initComponents & Efl.Csharp.Components.Basic)
             == Efl.Csharp.Components.Basic)
         {
+#if ELDBUS_ENABLED
             Eina.Log.Debug("Shutting down Eldbus");
             eldbus.Config.Shutdown();
+#endif
             Eina.Log.Debug("Shutting down Evas");
             evas_shutdown();
             Eina.Log.Debug("Shutting down Ecore");
