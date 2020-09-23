@@ -11,31 +11,34 @@ osx_image: xcode11.3
 
 addons:
   homebrew:
+    casks:
+      - dotnet-sdk
     packages:
-      - gettext
-      - check
       - bullet
+      - ccache
+      - check
       - dbus
       - fontconfig
       - freetype
       - fribidi
+      - gettext
+      - glib
       - gst-plugins-good
       - gstreamer
-      - luajit
-      - openssl
-      - webp
-      - libsndfile
-      - glib
-      - libspectre
+      - libffi
+      - libraw
       - libraw
       - librsvg
-      - poppler
+      - libsndfile
+      - libspectre
+      - luajit
       - lz4
-      - pulseaudio
-      - ccache
       - ninja
+      - openssl
+      - poppler
+      - pulseaudio
       - python3
-      - libffi
+      - webp
     update: true
 
 env:
