@@ -101,13 +101,17 @@ efl_mono_lib = library('eflcustomexportsmono',
 
 foreach eo_file : mono_eo_files
   if not blacklisted_files.contains(eo_file)
+    examples_param = []
+    if get_option('mono-examples-dir') != ''
+       examples_param = ['-e', get_option('mono-examples-dir')]
+    endif
     mono_generator_target += custom_target('eolian_mono_gen_'+eo_file.underscorify()+'',
       input : join_paths('..', '..', '..', 'lib', 'efl_mono', eo_file),
       output : [eo_file + '.cs'],
       command : [eolian_mono_gen, beta_option, '-I', meson.current_source_dir(), eolian_include_directories,
                                  '--dllimport', 'eflcustomexportsmono',
                                  '-o', join_paths(meson.current_build_dir(), eo_file + '.cs'),
-                                 '-e', get_option('mono-examples-dir'),
+                                 examples_param,
                                  '@INPUT@'])
 
   endif
