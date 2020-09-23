@@ -24,6 +24,11 @@ else
   efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono')
 endif
 efl_libs.set('EVIL_DL_MONO', 'dl')
+if sys_osx
+  efl_libs.set('LIBDL_DL_MONO', 'dl.dylib')
+else
+  efl_libs.set('LIBDL_DL_MONO', 'libdl.so')
+endif
 
 foreach mono_libs : mono_sublibs
   key = mono_libs[0].to_upper()+'_DL_MONO'
