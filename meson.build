@@ -261,7 +261,12 @@ ecore_evas_wayland_engine_include_dir = []
 
 evas_static_list = []
 
-if get_option('lua-interpreter') != 'none'
+have_elua = get_option('elua')
+if get_option('lua-interpreter') == 'none'
+  lua_pc_name = []
+  lua = declare_dependency()
+else
+  config_h.set('HAVE_LUA', 1)
   luaold_interpreters = [
     ['lua',     ['>=5.1.0', '<5.3.0']],
     ['lua51',   ['>=5.1.0', '<5.2.0']],
@@ -273,7 +278,6 @@ if get_option('lua-interpreter') != 'none'
   ]
 
   lua_pc_name = ''
-  have_elua = get_option('elua')
 
   if get_option('lua-interpreter') == 'lua'
     config_h.set('ENABLE_LUA_OLD', '1')
@@ -304,8 +308,6 @@ if get_option('lua-interpreter') != 'none'
       link_args: ['-L' + lua.get_pkgconfig_variable('libdir'), '-l' + lua.get_pkgconfig_variable('libname')]
     )
   endif
-else
-  lua_pc_name = []
 endif
 
 subprojects = [
