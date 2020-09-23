@@ -59,11 +59,25 @@ public struct Error : IComparable<Error>, IEquatable<Error>
     /// <para>Since EFL 1.23.</para>
     /// </summary>
     public static readonly Error ENOENT = new Error(2);
+
+    /// <summary>
+    /// Return architecture independent ECANCELED error code.
+    /// Returns 125 for Linux and 89 for OSX.
+    /// <para>Since EFL 1.25.</para>
+    /// </summary>
+    private static int IndependentECANCELED()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return new Error(89);
+        else
+            return new Error(125);
+    }
+
     /// <summary>
     /// Cancelled error identifier.
     /// <para>Since EFL 1.23.</para>
     /// </summary>
-    public static readonly Error ECANCELED = new Error(125);
+    public static readonly Error ECANCELED = IndependentECANCELED();
 
     /// <summary>
     /// Constructor.
