@@ -33,6 +33,12 @@ if [ "$DISTRO" != "" ] ; then
     if [ $tries != ${NUM_TRIES} ] ; then echo "tests failed, trying again!" ; fi
       false
   done
+elif [ "$TRAVIS_OS_NAME" = "osx" ]; then
+    export EINA_LOG_BACKTRACE="0"
+    export EIO_MONITOR_POLL="1"
+    ln -sfv $(brew --prefix dbus)/*.plist ~/Library/LaunchAgents
+    launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
+    meson test -t 120 -C build && break
 fi
 ret=$?
 travis_time_finish "ninja-test"
