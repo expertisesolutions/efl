@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 namespace Efl.Eo
 {
 
-internal class partial NativeModule
+internal partial class NativeModule
 {
    [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
    internal static extern IntPtr LoadLibrary(string libFilename);
