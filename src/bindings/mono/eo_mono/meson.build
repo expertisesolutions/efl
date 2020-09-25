@@ -7,8 +7,8 @@ mono_files += files(
   'WrapperSupervisor.cs'
 )
 
-if host_machine.system() == 'windows'
-   mono_files += files('FunctionWrapper_Windows.cs', 'NativeModule_Windows.cs')
+if sys_windows
+  mono_files += files('FunctionWrapper_Windows.cs', 'NativeModule_Windows.cs')
 else
-   mono_files += files('FunctionWrapper_Unix.cs', 'NativeModule_Unix.cs')
+  mono_files += files('FunctionWrapper_Unix.cs', 'NativeModule_Unix.cs')
 endif
