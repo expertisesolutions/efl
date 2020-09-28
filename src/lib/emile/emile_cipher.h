@@ -46,14 +46,18 @@ typedef enum _Emile_Cipher_Algorithm
  *
  * @since 1.14
  */
+#ifndef EMILE_HEADER_ONLY
 EAPI Eina_Bool emile_cipher_init(void);
+#endif
 /**
  * Get the name of the current used backend.
  *
  * @return the name of the current cipher backend.
  * @since 1.14
  */
+#ifndef EMILE_HEADER_ONLY
 EAPI Emile_Cipher_Backend emile_cipher_module_get(void);
+#endif
 
 /**
  * Cipher a buffer with a defined algorithm and key.
@@ -66,7 +70,9 @@ EAPI Emile_Cipher_Backend emile_cipher_module_get(void);
  *
  * @since 1.14
  */
+#ifndef EMILE_HEADER_ONLY
 EAPI Eina_Binbuf *emile_binbuf_cipher(Emile_Cipher_Algorithm algo, const Eina_Binbuf * in, const char *key, unsigned int length);
+#endif
 
 /**
  * Decipher a buffer with a defined algorithm and key.
@@ -83,7 +89,9 @@ EAPI Eina_Binbuf *emile_binbuf_cipher(Emile_Cipher_Algorithm algo, const Eina_Bi
  *
  * @since 1.14
  */
+#ifndef EMILE_HEADER_ONLY
 EAPI Eina_Binbuf *emile_binbuf_decipher(Emile_Cipher_Algorithm algo, const Eina_Binbuf * in, const char *key, unsigned int length);
+#endif
 
 #ifdef EFL_BETA_API_SUPPORT
 
@@ -102,6 +110,7 @@ typedef enum
   EMILE_WANT_WRITE = 3
 } Emile_Want_Type;
 
+#ifndef EMILE_HEADER_ONLY
 EAPI Eina_Bool emile_binbuf_hmac_sha1(const char *key, unsigned int key_len, const Eina_Binbuf * data, unsigned char digest[20]);
 
 EAPI Eina_Bool emile_binbuf_sha1(const Eina_Binbuf * data, unsigned char digest[20]);
@@ -125,6 +134,7 @@ EAPI void emile_cipher_verify_set(Emile_SSL * emile, Eina_Bool verify);
 EAPI void emile_cipher_verify_basic_set(Emile_SSL * emile, Eina_Bool verify_basic);
 EAPI Eina_Bool emile_cipher_verify_get(const Emile_SSL * emile);
 EAPI Eina_Bool emile_cipher_verify_basic_get(const Emile_SSL * emile);
+#endif
 
 #endif
 

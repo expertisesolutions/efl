@@ -312,7 +312,7 @@ subprojects = [
   ['eo'               ,[]                    , false,  true, false,   true,   true,     false,  true, ['eina'], []],
   ['efl'              ,[]                    , false,  true, false,  false,   true,     false,  true, ['eo'], []],
   ['emile'            ,['emile']             , false,  true, false,  false,   true,      true,  true, ['eina', 'efl'], ['lz4', 'rg_etc']],
-  ['eet'              ,[]                    , false,  true,  true,  false,   true,      true,  true, ['eina', 'efl'], []],
+  ['eet'              ,[]                    , false,  true,  true,  false,   true,      true,  true, ['eina', 'efl'], ['rg_etc']],
   ['ecore'            ,[]                    , false,  true, false,  false,  false,     false,  true, ['eina', 'eo', 'efl'], ['buildsystem']],
   ['eldbus'           ,[]                    , false,  true,  true,  false,   true,      true,  true, ['eina', 'eo', 'efl'], []],
   ['ecore'            ,[]                    ,  true, false, false,  false,   true,      true,  true, ['eina', 'eo', 'efl'], []], #ecores modules depend on eldbus
@@ -354,6 +354,10 @@ subprojects = [
   ['ecore_drm'        ,['drm-deprecated']    , false,  true, false,  false,  false,     false, false, ['eina'], []],
   ['exactness'        ,[]                    , false,  false,  true, false,  false,     false, false, ['eina, evas, eet'], []],
 ]
+
+if not get_option('emile')
+  config_h.set('EMILE_HEADER_ONLY', 1)
+endif
 
 # We generate Efl_Config.h and config.h later, they will be available here
 config_dir += include_directories('.')
