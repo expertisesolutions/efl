@@ -12,9 +12,9 @@ webpdemux = dependency('libwebpdemux', version: ['>=0.5.0'], required: get_optio
 libopenjp2 = dependency('libopenjp2', required: get_option('evas-loaders-disabler').contains('jp2k') == false)
 libavif = dependency('libavif', required: get_option('evas-loaders-disabler').contains('avif') == false)
 
-tgv_deps = []
+tgv_deps = [rg_etc]
 if get_option('emile')
-  tgv_deps = [rg_etc, lz4]
+  tgv_deps = [lz4]
 endif
 
 evas_image_loaders_file = [
@@ -61,9 +61,7 @@ evas_deps = [eo, eet, eina, efl, ector, ecore, draw, buildsystem]
 evas_ext_deps = [vg_common, draw_simple]
 evas_ext_none_static_deps = [buildsystem_simple, intl, m, valgrind, libunibreak, lua]
 
-if get_option('emile')
-  evas_deps += emile
-endif
+evas_deps += emile
 
 pub_eo_file_target = []
 priv_eo_files = []
@@ -215,14 +213,10 @@ endif
 
 evas_link = [ ]
 evas_pub_deps = [eina, ecore, ector]
-if get_option('emile')
-  evas_pub_deps += emile
-endif
+evas_pub_deps += emile
 
 evas_opt_deps = []
-if get_option('emile')
-  evas_opt_deps += emile
-endif
+evas_opt_deps += emile
 
 if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
   evas_opt = static_library('evas_opt',

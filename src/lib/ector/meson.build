@@ -2,9 +2,7 @@ ector_deps = [eina, eet, eo, efl, draw]
 ector_pub_deps = [eina, efl]
 ector_ext_deps = [triangulator, freetype, draw_without_deps, m]
 
-if get_option('emile')
-  ector_deps += emile
-endif
+ector_deps += emile
 
 pub_eo_file_target = []
 ector_opt_lib = [ ]

@@ -11,10 +11,8 @@ draw_opt_lib = []
 draw_deps = []
 draw_without_deps_deps = []
 
-if get_option('emile')
-  draw_deps += rg_etc
-  draw_without_deps_deps += rg_etc_simple
-endif
+draw_deps += rg_etc
+draw_without_deps_deps += rg_etc_simple
 
 if cpu_sse3 == true
   draw_opt = static_library('draw_opt',

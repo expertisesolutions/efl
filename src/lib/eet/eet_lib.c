@@ -566,11 +566,13 @@ eet_init(void)
         goto shutdown_mempool;
      }
 
+#ifndef EMILE_HEADER_ONLY
    if (!emile_init())
      {
         EINA_LOG_ERR("Emile: failed to initialize");
         goto shutdown_emile;
      }
+#endif
 
    eina_log_timing(_eet_log_dom_global,
                    EINA_LOG_STATE_STOP,
@@ -578,8 +580,10 @@ eet_init(void)
 
    return eet_init_count;
 
+#ifndef EMILE_HEADER_ONLY
 shutdown_emile:
    eet_node_shutdown();
+#endif
 shutdown_mempool:
    eet_mempool_shutdown();
 unregister_log_domain:
@@ -638,7 +642,9 @@ eet_shutdown(void)
 
    eina_lock_free(&eet_cache_lock);
 
+#ifndef EMILE_HEADER_ONLY
    emile_shutdown();
+#endif
 
    eina_log_domain_unregister(_eet_log_dom_global);
    _eet_log_dom_global = -1;
@@ -1945,6 +1951,7 @@ eet_read_cipher(Eet_File   *ef,
    if (!in) goto on_error;
 
    /* First uncipher data */
+#ifndef EMILE_HEADER_ONLY
    if (efn->ciphered && cipher_key)
      {
         Eina_Binbuf *out;
@@ -1957,7 +1964,9 @@ eet_read_cipher(Eet_File   *ef,
 
         in = out;
      }
+#endif
 
+#ifndef EMILE_HEADER_ONLY
    if (efn->compression)
      {
         Eina_Binbuf *out;
@@ -1971,6 +1980,7 @@ eet_read_cipher(Eet_File   *ef,
 
         in = out;
      }
+#endif
 
    UNLOCK_FILE(ef);
 
@@ -2053,6 +2063,7 @@ eet_read_direct(Eet_File   *ef,
    /* handle alias case */
    if (efn->alias)
      {
+#ifndef EMILE_HEADER_ONLY
         if (efn->compression)
           {
              Eina_Binbuf *in;
@@ -2083,6 +2094,7 @@ eet_read_direct(Eet_File   *ef,
              eina_binbuf_free(out);
              return retptr;
           }
+#endif
 
         data = efn->data ? efn->data : ef->data + efn->offset;
         if (!data) goto on_error;
@@ -2155,6 +2167,7 @@ eet_alias_get(Eet_File   *ef,
    data = efn->data ? efn->data : ef->data + efn->offset;
 
    /* handle alias case */
+#ifndef EMILE_HEADER_ONLY
    if (efn->compression)
      {
         Eina_Binbuf *in;
@@ -2185,6 +2198,7 @@ eet_alias_get(Eet_File   *ef,
         eina_binbuf_free(out);
         return retptr;
      }
+#endif
 
    if (!data)
      goto on_error;
@@ -2279,6 +2293,7 @@ eet_alias(Eet_File   *ef,
    if (!in) goto on_error;
 
    /* if we want to compress */
+#ifndef EMILE_HEADER_ONLY
    if (comp)
      {
         Eina_Binbuf *out;
@@ -2291,6 +2306,7 @@ eet_alias(Eet_File   *ef,
 
         in = out;
      }
+#endif
 
    /* Does this node already exist? */
    for (efn = ef->header->directory->nodes[hash]; efn; efn = efn->next)
@@ -2401,6 +2417,7 @@ eet_write_cipher(Eet_File   *ef,
    UNLOCK_FILE(ef);
 
    in = eina_binbuf_manage_new(data, size, EINA_TRUE);
+#ifndef EMILE_HEADER_ONLY
    if (comp)
      {
         Eina_Binbuf *out;
@@ -2426,7 +2443,9 @@ eet_write_cipher(Eet_File   *ef,
              comp = 0;
           }
      }
+#endif
 
+#ifndef EMILE_HEADER_ONLY
    if (cipher_key)
      {
         Eina_Binbuf *out;
@@ -2440,6 +2459,7 @@ eet_write_cipher(Eet_File   *ef,
              in = out;
           }
      }
+#endif
 
    LOCK_FILE(ef);
    /* Does this node already exist? */
