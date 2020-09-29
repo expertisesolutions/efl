@@ -126,7 +126,7 @@ foreach eo_file : mono_eo_files
       input : join_paths('..', '..', '..', 'lib', 'efl_mono', eo_file),
       output : [eo_file + '.cs'],
       command : [eolian_mono_gen, beta_option, '-I', meson.current_source_dir(), eolian_include_directories,
-                                 '--dllimport', 'eflcustomexportsmono',
+                                 '--dllimport', eflcustomexportsmono_name,
                                  '-o', join_paths(meson.current_build_dir(), eo_file + '.cs'),
                                  examples_param,
                                  '@INPUT@'])
