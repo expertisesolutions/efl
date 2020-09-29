@@ -18,14 +18,18 @@ endif
 
 efl_libs = configuration_data()
 efl_libs.set('EFL_MONO_LIBRARY_MAP', map)
+
 if sys_windows
-  efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono-1')
+  eflcustomexportsmono_name = 'eflcustomexportsmono-1'
 else
-  efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono')
+  eflcustomexportsmono_name = 'eflcustomexportsmono'
 endif
+efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', eflcustomexportsmono_name)
 efl_libs.set('EVIL_DL_MONO', 'dl')
 if sys_osx
   efl_libs.set('LIBDL_DL_MONO', 'dl.dylib')
+elif sys_windows
+  efl_libs.set('KERNEL32_DL_MONO', 'kernel32.dll')
 else
   efl_libs.set('LIBDL_DL_MONO', 'libdl.so')
 endif

@@ -22,6 +22,9 @@
   <PropertyGroup Condition=" '$(OS)' == 'UNIX' ">
     <DefineConstants>ELDBUS_ENABLED;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <DefineConstants>sys_windows;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="@BINDING_SRC@/efl_mono/*.cs" />
