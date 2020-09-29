@@ -18,12 +18,20 @@ endif
 
 efl_libs = configuration_data()
 efl_libs.set('EFL_MONO_LIBRARY_MAP', map)
-efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono')
+if sys_windows
+  efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono-1')
+else
+  efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono')
+endif
 efl_libs.set('EVIL_DL_MONO', 'dl')
 
 foreach mono_libs : mono_sublibs
   key = mono_libs[0].to_upper()+'_DL_MONO'
-  efl_libs.set(key, mono_libs[0].to_lower())
+  if sys_windows
+    efl_libs.set(key, mono_libs[0].to_lower() + '-1')
+  else
+    efl_libs.set(key, mono_libs[0].to_lower())
+  endif
 endforeach
 
 configure_file(
