@@ -38,7 +38,7 @@ internal static partial class FunctionInterop
     {
         IntPtr module = NativeModule.LoadLibrary(moduleName);
         Eina.Log.Debug($"searching {module} for {functionName}");
-        var s = FunctionInterop.dlsym(module, functionName);
+        var s = FunctionInterop.LoadFunctionPointer(module, functionName);
         Eina.Log.Debug($"searching {module} for{functionName}, result {s}");
         return s;
     }
@@ -51,7 +51,7 @@ internal static partial class FunctionInterop
     internal static IntPtr LoadFunctionPointer(string functionName)
     {
         Eina.Log.Debug($"searching {null} for {functionName}");
-        var s = FunctionInterop.dlsym(IntPtr.Zero, functionName);
+        var s = FunctionInterop.LoadFunctionPointer(IntPtr.Zero, functionName);
         Eina.Log.Debug($"searching {null} for {functionName}, result {s}");
         return s;
     }
