@@ -95,6 +95,11 @@ internal partial class NativeModule
 
         return r;
     }
+
+    internal static string GetError()
+    {
+        return Eina.StringConversion.NativeUtf8ToManagedString(Efl.Eo.Globals.dlerror());
+    }
 }
 
 }

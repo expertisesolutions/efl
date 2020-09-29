@@ -34,6 +34,11 @@ internal partial class NativeModule
        FreeLibrary(handle);
    }
 
+   internal static string GetError()
+   {
+       return new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error()).Message;
+   }
+
 }
 
 }
