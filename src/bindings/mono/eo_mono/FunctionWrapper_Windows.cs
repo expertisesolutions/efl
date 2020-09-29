@@ -19,12 +19,12 @@ using System.Runtime.InteropServices;
 namespace Efl.Eo
 {
 
-static partial class FunctionInterop
+internal static partial class FunctionInterop
 {
-    [DllImport(efl.Libs.Libdl)]
-    internal static extern IntPtr GetProcAddress(IntPtr handle, string symbol);
+    [DllImport(efl.Libs.Kernel32)]
+    private static extern IntPtr GetProcAddress(IntPtr handle, string symbol);
 
-    private static IntPtr LoadFunctionPointer(IntPtr nativeLibraryHandle, string functionName)
+    internal static IntPtr LoadFunctionPointer(IntPtr nativeLibraryHandle, string functionName)
         => FunctionInterop.GetProcAddress(nativeLibraryHandle, functionName);
 }
 
