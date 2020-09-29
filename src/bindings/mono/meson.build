@@ -130,7 +130,7 @@ efl_mono_conf_data = configuration_data()
 efl_mono_conf_data.set('EINA', eina_lib.full_path())
 efl_mono_conf_data.set('EFL', efl_lib.full_path())
 efl_mono_conf_data.set('ECORE', ecore_lib.full_path())
-efl_mono_conf_data.set('EO', eo_lib.full_path())
+efl_mono_conf_data.set('EO', eo_lib.full_path()+'-1')
 efl_mono_conf_data.set('EVAS', evas_lib.full_path())
 if not sys_windows
   efl_mono_conf_data.set('ELDBUS', eldbus_lib.full_path())
