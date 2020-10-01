@@ -34,7 +34,7 @@ static Evas *evas = NULL;
 Evas *
 _setup_evas(void)
 {
-   Evas_Engine_Info *einfo;
+   PEI Evas_Engine_Info *einfo;
 
    evas = evas_new();
 
