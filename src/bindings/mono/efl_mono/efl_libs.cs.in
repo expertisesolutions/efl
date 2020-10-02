@@ -33,8 +33,11 @@ internal class Libs {
 
     internal const string CustomExports = "@CUSTOM_EXPORTS_MONO_DL_MONO@";
 
-    internal const string Libdl = "libdl.so";
-    internal const string Kernel32 = "kernel32.dll";
+#if sys_windows
+    internal const string Kernel32 = "@KERNEL32_DL_MONO@";
+#else
+    internal const string Libdl = "@LIBDL_DL_MONO@";
+#endif
 
     internal static readonly Efl.Eo.NativeModule EflModule = new Efl.Eo.NativeModule(Efl);
     internal static readonly Efl.Eo.NativeModule CoreModule = new Efl.Eo.NativeModule(Ecore);
@@ -46,8 +49,11 @@ internal class Libs {
     internal static readonly Efl.Eo.NativeModule ElementaryModule = new Efl.Eo.NativeModule(Elementary);
     internal static readonly Efl.Eo.NativeModule EldbusModule = new Efl.Eo.NativeModule(Eldbus);
     internal static readonly Efl.Eo.NativeModule CustomExportsModule = new Efl.Eo.NativeModule(CustomExports);
-    internal static readonly Efl.Eo.NativeModule LibdlModule = new Efl.Eo.NativeModule(Libdl);
+#if sys_windows
     internal static readonly Efl.Eo.NativeModule Kernel32Module = new Efl.Eo.NativeModule(Kernel32);
+#else
+    internal static readonly Efl.Eo.NativeModule LibdlModule = new Efl.Eo.NativeModule(Libdl);
+#endif
 }
 
 }

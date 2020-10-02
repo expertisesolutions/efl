@@ -19,13 +19,24 @@ using System.Runtime.InteropServices;
 namespace Efl.Eo
 {
 
-static partial class FunctionInterop
+internal static partial class FunctionInterop
 {
-    [DllImport(efl.Libs.Libdl)]
-    internal static extern IntPtr GetProcAddress(IntPtr handle, string symbol);
+    [DllImport(efl.Libs.Kernel32)]
+    private static extern IntPtr GetProcAddress(IntPtr handle, string symbol);
 
-    private static IntPtr LoadFunctionPointer(IntPtr nativeLibraryHandle, string functionName)
-        => FunctionInterop.GetProcAddress(nativeLibraryHandle, functionName);
+    /// <summary>Loads a function pointer from the given module.
+    /// <para>Since EFL 1.23.</para>
+    /// </summary>
+    /// <param name="nativeLibraryHandle">The module containing the function.</param>
+    /// <param name="functionName">The name of the function to search for.</param>
+    /// <returns>A function pointer that can be used with delegates.</returns>
+    internal static IntPtr LoadFunctionPointer(IntPtr nativeLibraryHandle, string functionName)
+    {
+        Eina.Log.Debug($"searching {nativeLibraryHandle} for {functionName}");
+        var s = FunctionInterop.GetProcAddress(nativeLibraryHandle, functionName);
+        Eina.Log.Debug($"searching {nativeLibraryHandle} for {functionName}, result {s}");
+        return s;
+    }
 }
 
 }

@@ -1262,8 +1262,7 @@ struct part_def
    }
    friend inline bool operator<(part_def const& lhs, part_def const& rhs)
    {
-      return lhs.name < rhs.name ||
-            lhs.klass < rhs.klass;
+     return std::make_tuple(lhs.name, lhs.klass) < std::make_tuple(rhs.name, rhs.klass);
    }
 
    part_def(Eolian_Part const* part, Eolian_Unit const*)
@@ -1511,7 +1510,7 @@ struct klass_def
      for(efl::eina::iterator<Eolian_Part const> parts_itr ( ::eolian_class_parts_get(klass))
        , parts_last; parts_itr != parts_last; ++parts_itr)
        {
-          parts.insert({&*parts_itr, unit});
+          parts.insert(part_def(&*parts_itr, unit));
        }
 
      switch(eolian_class_type_get(klass))

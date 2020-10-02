@@ -18,9 +18,13 @@
 #include <fstream>
 
 #include <stdlib.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+# include <libgen.h>
+#else
+# include <evil_private.h>
+#endif
 #include <getopt.h>
-#include <libgen.h>
 
 #include <string>
 #include <algorithm>

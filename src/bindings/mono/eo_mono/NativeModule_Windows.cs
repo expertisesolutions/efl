@@ -19,10 +19,26 @@ using System.Runtime.InteropServices;
 namespace Efl.Eo
 {
 
-internal class partial NativeModule
+internal partial class NativeModule
 {
    [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
    internal static extern IntPtr LoadLibrary(string libFilename);
+
+   [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
+   private static extern void FreeLibrary(IntPtr handle);
+
+   ///<summary>Closes the library handle.</summary>
+   ///<param name="handle">The handle to the library.</param>
+   internal static void UnloadLibrary(IntPtr handle)
+   {
+       FreeLibrary(handle);
+   }
+
+   internal static string GetError()
+   {
+       return new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error()).Message;
+   }
+
 }
 
 }

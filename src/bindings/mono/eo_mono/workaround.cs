@@ -153,8 +153,7 @@ internal struct EventDescription
 
             if (data == IntPtr.Zero)
             {
-                string error = Eina.StringConversion.NativeUtf8ToManagedString(Efl.Eo.Globals.dlerror());
-                throw new Exception(error);
+                throw new Exception(Efl.Eo.NativeModule.GetError());
             }
 
             descriptions.Add(name, data);

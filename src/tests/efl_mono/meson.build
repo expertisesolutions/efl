@@ -65,7 +65,6 @@ efl_mono_src = [
       'StructHelpers.cs',
       'BasicDirection.cs',
       'Eina.cs',
-      'Eldbus.cs',
       'Eo.cs',
       'EoPromises.cs',
       'EoConstruction.cs',
@@ -86,6 +85,10 @@ efl_mono_src = [
       'List.cs',
       'Array.cs',
 ]
+
+if not sys_windows
+  efl_mono_src += 'Eldbus.cs'
+endif
 
 if get_option('dotnet')
 
@@ -144,27 +147,40 @@ env_mono.set('MONO_PATH', efl_mono_test_suite_path )
 env_mono.set('EFL_RUN_IN_TREE', '1')
 
 
-config_libs = ['eina', 'ecore', 'eo', 'efl', 'evas', 'eldbus', 'elementary', 'efl_mono']
-load_lib = efl_mono_test_suite_path + ':'
+config_libs = ['eina', 'ecore', 'eo', 'efl', 'evas', 'elementary', 'efl_mono']
+if not sys_windows
+  config_libs += 'eldbus'
+endif
+
+if sys_windows
+  env_separator = ';'
+  path_separator = '\\'
+  ld_library_env = 'PATH'
+else
+  env_separator = ':'
+  path_separator = '/'
+  ld_library_env = 'LD_LIBRARY_PATH'
+endif
+
+load_lib = efl_mono_test_suite_path + env_separator
 
 foreach config : config_libs
   lib = get_variable(config+'_lib')
-  path = lib.full_path().split('/')
+  path = lib.full_path().split(path_separator)
+
   repaired_path = ''
   prev = ''
-
   foreach p : path
     repaired_path += prev
-    prev = p+'/'
+    prev = p + path_separator
   endforeach
 
-  load_lib += repaired_path+':'
+  load_lib += repaired_path + env_separator
 endforeach
 
-load_lib += ':' + meson.current_build_dir()
-
-env_mono.set('LD_LIBRARY_PATH', load_lib)
-
+load_lib += env_separator + meson.current_build_dir()
+message('load_lib = ' + load_lib)
+env_mono.append(ld_library_env, load_lib)
 
 if get_option('dotnet')
   test('efl-mono-suite',

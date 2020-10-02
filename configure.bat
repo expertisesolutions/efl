@@ -122,6 +122,7 @@ exit /B 0
             -Dsystemd=false^
             -Dgstreamer=false^
             -Ddbus=false^
+            -Ddotnet=true^
             -Daudio=false^
             -Davahi=false^
             -Dv4l2=false^
@@ -140,7 +141,8 @@ exit /B 0
             "-Devas-loaders-disabler=gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,generic,gif,ico,jp2k,pmaps,psd,tga,tgv,tiff,wbmp,webp,xpm,json"^
             -Dopengl=none^
             "-Demotion-loaders-disabler=gstreamer1,libvlc,xine"^
-            -Dbindings=^
+            --prefix=%cd%\_install^
+            -Dbindings=mono^
             --buildtype=debug^
             --native-file native-file-windows.txt
 

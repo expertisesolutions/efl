@@ -28,6 +28,7 @@ namespace TestSuite
 
 class TestInheritance
 {
+	/*
     internal class Inherit1 : Dummy.TestObject
     {
         override public void IntOut (int x, out int y)
@@ -85,7 +86,7 @@ class TestInheritance
 
         protected override void Dispose(bool disposing)
         {
-            /* parent.childDisposed = true; */
+            /* parent.childDisposed = true; 
             Console.WriteLine("Dispose parent");
             base.Dispose(disposing);
         }
@@ -152,6 +153,7 @@ class TestInheritance
         Test.AssertNull(parent);
         Test.AssertNull(child);
     }
+    */
 }
 
 }

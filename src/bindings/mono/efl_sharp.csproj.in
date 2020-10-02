@@ -19,13 +19,22 @@
     <DefineConstants>@EFL_BETA@</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(OS)' == 'UNIX' ">
+    <DefineConstants>ELDBUS_ENABLED;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <DefineConstants>sys_windows;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="@BINDING_SRC@/efl_mono/*.cs" />
     <!-- FIXME Windows support -->
-    <Compile Include="@BINDING_SRC@/eo_mono/*.cs" Exclude="@BINDING_SRC@/eo_mono/*Windows.cs" />
+    <Compile Include="@BINDING_SRC@/eo_mono/*.cs" />
+    <Compile Remove="@BINDING_SRC@/eo_mono/*Windows.cs" Condition=" '$(OS)' != 'Windows_NT' "/>
+    <Compile Remove="@BINDING_SRC@/eo_mono/*Unix.cs" Condition=" '$(OS)' != 'UNIX' "/>
     <Compile Include="@BINDING_SRC@/eina_mono/*.cs" />
     <Compile Include="@BINDING_SRC@/eolian_mono/*.cs" />
-    <Compile Include="@BINDING_SRC@/eldbus_mono/*.cs" />
+    <Compile Include="@BINDING_SRC@/eldbus_mono/*.cs" Condition=" '$(OS)' == 'UNIX' "/>
   </ItemGroup>
 
   <!-- Calling `dotnet build` from a different folder seems to mess up the automatic source file discovery.

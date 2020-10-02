@@ -24,6 +24,7 @@ namespace TestSuite
 
 class TestEo
 {
+	/*
     public static void return_null_object()
     {
         var testing = new Dummy.TestObject();
@@ -110,16 +111,20 @@ class TestEo
        Test.Assert(delEventCalled, "DEL event not called");
     }
     */
+	
 }
 
 
 class MyObject : Efl.Object
 {
+	/*
     public MyObject() : base(null) { }
+    */
 }
 
 class TestEoInherit
 {
+	/*
     public static void instantiate_inherited()
     {
         Efl.Object loop = new MyObject();
@@ -140,10 +145,12 @@ class TestEoInherit
 
         Test.AssertNull(wref.Target);
     }
+    */
 }
 
 class TestEoNames
 {
+	/*
     public static void name_getset()
     {
         var obj = new Dummy.TestObject();
@@ -153,10 +160,12 @@ class TestEoNames
         Test.AssertEquals(name, obj.Name);
         obj.Dispose();
     }
+    */
 }
 
 class TestEoParent
 {
+	/*
     public static void basic_parent()
     {
         var parent = new Dummy.TestObject(null);
@@ -202,10 +211,12 @@ class TestEoParent
         child.Dispose();
         parent.Dispose();
     }
+    */
 }
 
 class TestKlassMethods
 {
+	/*
     public static void basic_class_method()
     {
         int reference = 0xbeef;
@@ -219,10 +230,12 @@ class TestKlassMethods
         Dummy.Child.KlassProp = reference;
         Test.AssertEquals(reference, Dummy.Child.KlassProp);
     }
+    */
 }
 
 class TestTypedefs
 {
+	/*
     public static void basic_typedef_test()
     {
         var obj = new Dummy.TestObject();
@@ -235,10 +248,12 @@ class TestTypedefs
         Test.AssertEquals(receiver, input);
         obj.Dispose();
     }
+    */
 }
 
 class TestVariables
 {
+	/*
     public static void test_constant_variables()
     {
         Test.AssertEquals(Dummy.Constants.ConstvarBool, true);
@@ -253,10 +268,12 @@ class TestVariables
         Test.AssertEquals(Dummy.Constants.ConstvarChar, '!');
         Test.AssertEquals(Dummy.Constants.ConstvarString, "test_str");
     }
+    */
 }
 
 class TestEoAccessors
 {
+	/*
     private static void do_eo_accessors(IEnumerable<int> accessor, bool shouldMove=false)
     {
         var obj = new Dummy.TestObject();
@@ -322,10 +339,12 @@ class TestEoAccessors
 
         do_eo_accessors(lst, shouldMove : true);
     }
+    */
 }
 
 class TestEoFinalize
 {
+	/*
     public sealed class Inherit : Efl.Object
     {
         public bool finalizeCalled = false;
@@ -343,10 +362,12 @@ class TestEoFinalize
         Test.Assert(inherit.finalizeCalled);
         inherit.Dispose();
     }
+    */
 }
 
 class TestEoMultipleChildClasses
 {
+	/*
 
     public sealed class FirstChild : Efl.Object
     {
@@ -381,10 +402,12 @@ class TestEoMultipleChildClasses
         obj2.Dispose();
         obj.Dispose();
     }
+    */
 }
 
 class TestCsharpProperties
 {
+	/*
 
     private class MyObject : Dummy.TestObject
     {
@@ -489,10 +512,12 @@ class TestCsharpProperties
         obj.ReturnTypeProp = 5;
         var i = obj.ReturnTypeProp;
     }
+    */
 }
 
 class TestEoGrandChildrenFinalize
 {
+	/*
     public sealed class Child : Dummy.TestObject
     {
         public int receivedValue = 0;
@@ -533,10 +558,12 @@ class TestEoGrandChildrenFinalize
         Test.AssertEquals(-42, obj.receivedValue);
         obj.Dispose();
     }
+    */
 }
 
 class TestConstructors
 {
+	/*
     public static void test_simple_constructor()
     {
         int iface_prop = 42;
@@ -583,10 +610,12 @@ class TestConstructors
         Test.Assert(!obj.IfaceWasSet);
         obj.Dispose();
     }
+    */
 }
 
 class TestInterfaceConcrete
 {
+	/*
     // For T7619
     public static void test_iface_concrete_methods()
     {
@@ -597,10 +626,12 @@ class TestInterfaceConcrete
         Test.AssertEquals(iface.IfaceProp, 1970);
         obj.Dispose();
     }
+    */
 }
 
 class TestProvider
 {
+	/*
     public static void test_find_provider()
     {
         // Tests only the direction C# -> C
@@ -655,10 +686,12 @@ class TestProvider
         Test.AssertEquals(provider.Name, ProviderHolder.ProviderName, "Provider name does not match expected");
         obj.Dispose();
     }
+    */
 }
 
 class TestObjectDeletion
 {
+	/*
     public static void test_object_deletion()
     {
         var obj = new Dummy.PartHolder();
@@ -671,10 +704,12 @@ class TestObjectDeletion
         Test.AssertNull(obj.OnePart);
         obj.Dispose();
     }
+    */
 }
 
 class TestProtectedInterfaceMembers
 {
+	/*
 
     private class MyObject : Dummy.TestObject
     {
@@ -747,10 +782,12 @@ class TestProtectedInterfaceMembers
         Test.Assert(prop.GetMethod.IsPublic);
         Test.Assert(prop.SetMethod.IsFamily);
     }
+*/
 }
 
 class TestStaticInterfaceMembers
 {
+	/*
     public static void test_interface_static_member()
     {
         var iface = typeof(Dummy.ITestIface);
@@ -761,10 +798,12 @@ class TestStaticInterfaceMembers
         properties = implementation.GetProperties(BindingFlags.Public | BindingFlags.Static);
         Test.AssertNotNull(properties.SingleOrDefault(p => p.Name == "StaticProp"));
     }
+    */
 }
 
 class TestHiddenClasses
 {
+	/*
     public static void test_hidden_class()
     {
         var obj = new Dummy.TestObject();
@@ -773,10 +812,12 @@ class TestHiddenClasses
         Test.AssertEquals(hidden.Name, "hidden_object");
         obj.Dispose();
     }
+    */
 }
 
 class TestAliasEquality
 {
+	/*
     static Dummy.MyInt a = 4;
     static Dummy.MyInt b = 4;
     static Dummy.MyInt c = 5;
@@ -809,6 +850,7 @@ class TestAliasEquality
         Test.AssertEquals(a.GetHashCode(), b.GetHashCode());
         Test.AssertNotEquals(a.GetHashCode(), c.GetHashCode());
     }
+    */
 }
 
 }

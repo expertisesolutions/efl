@@ -14,9 +14,12 @@ mono_sublibs = [
   ['Efl',         true, ], #
   ['Evas',       false, ], #
   ['Edje',       false, ], #
-  ['Eldbus',      true, ], #
   ['Elementary', false, ]  #
 ]
+
+if not sys_windows
+  mono_sublibs += [['Eldbus',      true, ]] #
+endif
 
 blacklisted_files = [
   'efl_class.eo',
@@ -97,13 +100,22 @@ foreach lib : mono_sublibs
           if manual_inheritance_files.contains(mono_gen_file)
             partial = '-p'
           endif
+          examples_param = []
+          if get_option('mono-examples-dir') != ''
+             examples_param = ['-e', get_option('mono-examples-dir')]
+          endif
+	  if sys_windows
+	    package_name_fix = package_name + '-1'
+	  else
+	    package_name_fix = package_name
+	  endif
           mono_generator_target += custom_target('eolian_mono_gen_'+mono_gen_file.underscorify()+'',
             input : join_paths(subdir_file_location, mono_gen_file),
             output : [mono_gen_file + '.cs'],
             command : [eolian_mono_gen, beta_option, '-I', meson.current_source_dir(), eolian_include_directories,
-                                       '--dllimport', package_name,
+                                       '--dllimport', package_name_fix,
                                        '-o', join_paths(meson.current_build_dir(), mono_gen_file + '.cs'),
-                                       '-e', get_option('mono-examples-dir'), partial,
+                                       examples_param, partial,
                                        '@INPUT@'])
         endif
       endforeach
@@ -118,9 +130,11 @@ efl_mono_conf_data = configuration_data()
 efl_mono_conf_data.set('EINA', eina_lib.full_path())
 efl_mono_conf_data.set('EFL', efl_lib.full_path())
 efl_mono_conf_data.set('ECORE', ecore_lib.full_path())
-efl_mono_conf_data.set('EO', eo_lib.full_path())
+efl_mono_conf_data.set('EO', eo_lib.full_path()+'-1')
 efl_mono_conf_data.set('EVAS', evas_lib.full_path())
-efl_mono_conf_data.set('ELDBUS', eldbus_lib.full_path())
+if not sys_windows
+  efl_mono_conf_data.set('ELDBUS', eldbus_lib.full_path())
+endif
 efl_mono_conf_data.set('ELEMENTARY', elementary_lib.full_path())
 efl_mono_conf_data.set('EFLCUSTOMEXPORTSMONO', efl_mono_lib.full_path())
 

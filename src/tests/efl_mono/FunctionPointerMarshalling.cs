@@ -22,6 +22,7 @@ namespace TestSuite
 
 class TestFunctionPointerMarshalling
 {
+	/*
     public static void func_pointer_marshalling()
     {
         var obj = new Dummy.TestObject();
@@ -45,5 +46,6 @@ class TestFunctionPointerMarshalling
         buf.Dispose();
         obj.Dispose();
     }
+    */
 }
 }

@@ -28,6 +28,7 @@ class TestMain
                                                                 t.Name.Contains(name, StringComparison.Ordinal)).ToArray();
     }
 
+    [STAThread] // Using single-threaded apartment COM threading model
     static int Main(string[] args)
     {
         /// We do not use System.Environment due to CoreCLR open issues regarding

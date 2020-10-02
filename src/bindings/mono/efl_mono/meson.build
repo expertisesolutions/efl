@@ -9,17 +9,38 @@ mono_files += files(
 
 bash = find_program('bash')
 
-map = run_command('map_generate.sh').stdout()
+if not sys_windows
+  map = run_command('map_generate.sh').stdout()
+else
+  map = ''
+endif
 
 
 efl_libs = configuration_data()
 efl_libs.set('EFL_MONO_LIBRARY_MAP', map)
-efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', 'eflcustomexportsmono')
+
+if sys_windows
+  eflcustomexportsmono_name = 'eflcustomexportsmono-1'
+else
+  eflcustomexportsmono_name = 'eflcustomexportsmono'
+endif
+efl_libs.set('CUSTOM_EXPORTS_MONO_DL_MONO', eflcustomexportsmono_name)
 efl_libs.set('EVIL_DL_MONO', 'dl')
+if sys_osx
+  efl_libs.set('LIBDL_DL_MONO', 'dl.dylib')
+elif sys_windows
+  efl_libs.set('KERNEL32_DL_MONO', 'kernel32.dll')
+else
+  efl_libs.set('LIBDL_DL_MONO', 'libdl.so')
+endif
 
 foreach mono_libs : mono_sublibs
   key = mono_libs[0].to_upper()+'_DL_MONO'
-  efl_libs.set(key, mono_libs[0].to_lower())
+  if sys_windows
+    efl_libs.set(key, mono_libs[0].to_lower() + '-1')
+  else
+    efl_libs.set(key, mono_libs[0].to_lower())
+  endif
 endforeach
 
 configure_file(
@@ -97,13 +118,17 @@ efl_mono_lib = library('eflcustomexportsmono',
 
 foreach eo_file : mono_eo_files
   if not blacklisted_files.contains(eo_file)
+    examples_param = []
+    if get_option('mono-examples-dir') != ''
+       examples_param = ['-e', get_option('mono-examples-dir')]
+    endif
     mono_generator_target += custom_target('eolian_mono_gen_'+eo_file.underscorify()+'',
       input : join_paths('..', '..', '..', 'lib', 'efl_mono', eo_file),
       output : [eo_file + '.cs'],
       command : [eolian_mono_gen, beta_option, '-I', meson.current_source_dir(), eolian_include_directories,
-                                 '--dllimport', 'eflcustomexportsmono',
+                                 '--dllimport', eflcustomexportsmono_name,
                                  '-o', join_paths(meson.current_build_dir(), eo_file + '.cs'),
-                                 '-e', get_option('mono-examples-dir'),
+                                 examples_param,
                                  '@INPUT@'])
 
   endif

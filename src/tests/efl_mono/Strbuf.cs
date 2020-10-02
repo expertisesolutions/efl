@@ -19,6 +19,7 @@ namespace TestSuite {
 
 class TestStrBuf
 {
+	/*
     public static void test_steal()
     {
         Eina.Strbuf buf = new Eina.Strbuf();
@@ -86,5 +87,6 @@ class TestStrBuf
         buf.Dispose();
         obj.Dispose();
     }
+    */
 }
 } // namespace TestSuite
