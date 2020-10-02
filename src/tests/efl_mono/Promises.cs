@@ -21,6 +21,7 @@ namespace TestSuite
 
 class TestPromises
 {
+	/*
     public static void test_simple_cancel()
     {
         bool cleanCalled = false;
@@ -314,6 +315,7 @@ class TestPromises
         Test.AssertRaises<ObjectDisposedException>(() => { promise.Resolve(null); });
         Test.AssertRaises<ObjectDisposedException>(future.Cancel);
     }
+    */
 }
 
 }

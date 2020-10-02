@@ -30,6 +30,7 @@ namespace TestSuite
 
 class TestEinaBinbuf
 {
+	/*
     private static readonly byte[] test_string = System.Text.Encoding.UTF8.GetBytes("0123456789ABCDEF");
 
     private static readonly byte[] base_seq = BaseSequence.Values();
@@ -355,12 +356,14 @@ class TestEinaBinbuf
         Test.Assert(t.binbuf_return_own_no_longer_own());
         t.Dispose();
     }
+    */
 }
 
 #endif
 
 class TestEinaSlice
 {
+	/*
     private static readonly byte[] base_seq = BaseSequence.Values();
     private static readonly GCHandle pinnedData = GCHandle.Alloc(base_seq, GCHandleType.Pinned);
     private static readonly IntPtr pinnedPtr = pinnedData.AddrOfPinnedObject();
@@ -466,6 +469,7 @@ class TestEinaSlice
     {
     }
     */
+    /*
 
     public static void test_inherit_eina_slice_in()
     {
@@ -517,10 +521,22 @@ class TestEinaSlice
         Test.Assert(slc.GetBytes().SequenceEqual(base_seq));
         t.Dispose();
     }
+    */
 }
 
 class TestEinaArray
 {
+/*
+    public static void TestAdd()
+    {
+        IList<int> array = new Eina.Array<int>();
+        Test.AssertEquals(array.Count, 0);
+        array.Add(1);
+        Test.AssertEquals(array.Count, 1);
+        array.Add(2);
+        Test.AssertEquals(array.Count, 2);
+    }
+
     public static void SetUp()
     {
         Dummy.TestObject.CreateCmpArrayObjects();
@@ -1213,10 +1229,12 @@ class TestEinaArray
     // //
     // Inherit
     //
+    */
 }
 
 class TestEinaInarray
 {
+	/*
     public static void eina_inarray_default()
     {
         var a = new Eina.Inarray<int>();
@@ -1516,10 +1534,12 @@ class TestEinaInarray
         arr.Dispose();
     }
 
+    */
 }
 
 class TestEinaList
 {
+	/*
     public static void SetUp()
     {
         Dummy.TestObject.CreateCmpArrayObjects();
@@ -2331,10 +2351,12 @@ class TestEinaList
         t.Dispose();
     }
 #endif
+    */
 }
 
 class TestEinaInlist
 {
+	/*
     public static void data_set_int()
     {
         var lst = new Eina.Inlist<int>();
@@ -2610,12 +2632,14 @@ class TestEinaInlist
         lst.Dispose();
     }
 
+    */
 } // < TestEinaInlist
 
 #if EFL_BETA
 
 class TestEinaHash
 {
+	/*
     public static void data_set_int()
     {
         var hsh = new Eina.Hash<int, int>();
@@ -2870,6 +2894,7 @@ class TestEinaHash
         t.Dispose();
     }
     */
+    /*
 
     public static void test_eina_hash_int_out()
     {
@@ -2902,6 +2927,7 @@ class TestEinaHash
         t.Dispose();
     }
     */
+    /*
 
     public static void test_eina_hash_int_return()
     {
@@ -2934,6 +2960,7 @@ class TestEinaHash
     */
 
     // String //
+    /*
 
     public static void test_eina_hash_str_in()
     {
@@ -3108,7 +3135,7 @@ class TestEinaHash
     }*/
 
     // Object //
-
+/*
     public static void test_eina_hash_obj_in()
     {
         var t = new Dummy.TestObject();
@@ -3255,6 +3282,7 @@ class TestEinaHash
         Test.Assert(t.CheckEinaHashObjReturnOwn());
         t.Dispose();
     }
+    */
 }
 
 #endif // EFL_BETA
@@ -3262,6 +3290,7 @@ class TestEinaHash
 
 class TestEinaIterator
 {
+	/*
     public static void SetUp()
     {
         Dummy.TestObject.CreateCmpArrayObjects();
@@ -3859,7 +3888,7 @@ class TestEinaIterator
         hsh.Dispose();
     }
 */
-
+/*
     public static void eina_hash_keys_obj_empty_iterator()
     {
         var hsh = new Eina.Hash<Dummy.Numberwrapper, Dummy.Numberwrapper>();
@@ -4459,11 +4488,13 @@ class TestEinaIterator
 
         t.Dispose();
     }
+    */
 } // < TestEinaIterator
 
 
 class TestEinaAccessor
 {
+	/*
     public static void basic_accessor_list()
     {
         var lst = new Eina.List<int>();
@@ -4538,14 +4569,17 @@ class TestEinaAccessor
         }
         arr.Dispose();
     }
+*/
 }
 
 class TestEinaLog
 {
+	/*
     public static void basic_log_usage()
     {
         Eina.Log.Error("This should work");
     }
+    */
 }
 
 }

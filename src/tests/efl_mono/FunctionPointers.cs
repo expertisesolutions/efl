@@ -21,6 +21,7 @@ namespace TestSuite
 
 class TestFunctionPointers
 {
+	/*
 
     static bool called = false;
 
@@ -209,6 +210,7 @@ class TestFunctionPointers
         Test.AssertEquals(42 * 2, x);
         obj.Dispose();
     }
+     */
 }
 
 }

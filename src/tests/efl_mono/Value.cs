@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
 #define CODE_ANALYSIS
 
 #pragma warning disable 1591
@@ -27,6 +28,7 @@ namespace TestSuite {
 
 [SuppressMessage("Gendarme.Rules.Portability", "DoNotHardcodePathsRule")]
 public static class TestEinaValue {
+    /*
 
     public static void TestByteSimple()
     {
@@ -592,10 +594,10 @@ public static class TestEinaValue {
         }
     }
 
-    /* public static void TestValueCompareHash() */
-    /* { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueCompareHash() 
+    /* { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
 
     public static void TestValueToString()
     {
@@ -1542,36 +1544,39 @@ public static class TestEinaValue {
         Test.AssertEquals(raw_val, rec_val);
         v2.Dispose();
     }
+    
 
     // FIXME Add remaining list tests
 
-    /* public static void TestValueHash() { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueHash() { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
 
-    /* public static void TestValueTimeVal() { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueTimeVal() { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
 
-    /* public static void TestValueBlob() { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueBlob() { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
 
-    /* public static void TestValueStruct() { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueStruct() { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
 
-    /* public static void TestValueArrayOfStructs() { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueArrayOfStructs() { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
 
-    /* public static void TestValueOptionalStructMembers() { */
-    /*     Test.Assert(false, "Implement me."); */
-    /* } */
+    /* public static void TestValueOptionalStructMembers() { 
+    /*     Test.Assert(false, "Implement me."); 
+    /* } 
+     */
 }
 
 public static class TestValueFromObject
 {
+	/*
 
     private class Holder
     {
@@ -1723,6 +1728,7 @@ public static class TestValueFromObject
         tmp1.Dispose();
         v.Dispose();
     }
+    */
 }
 #pragma warning restore 1591
 }

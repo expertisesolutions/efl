@@ -38,6 +38,7 @@ namespace TestSuite
 
 class TestEldbusConnection
 {
+	/*
     public static void eldbus_connection_new_session()
     {
         var conn = new eldbus.Connection(eldbus.Connection.Type.Session);
@@ -68,10 +69,12 @@ class TestEldbusConnection
         Console.WriteLine(conn.GetUniqueName());
         conn.Dispose();
     }
+    */
 }
 
 class TestEldbusObject
 {
+	/*
     public static void utc_eldbus_object_send_info_get_p()
     {
         var app = Efl.App.AppMain;
@@ -204,10 +207,12 @@ class TestEldbusObject
         obj.Dispose();
         conn.Dispose();
     }
+    */
 }
 
 class TestEldbusMessage
 {
+	/*
     private static bool isSuccess = false;
 
 
@@ -409,6 +414,7 @@ class TestEldbusMessage
         };
         ActivatableList(activatableListResponseCb);
     }
+    */
 }
 
 }

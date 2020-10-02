@@ -20,6 +20,7 @@ namespace TestSuite
 
 class TestEinaError
 {
+	/*
     public static void basic_efl_error_available()
     {
         Test.AssertEquals(Eina.Error.UNHANDLED_EXCEPTION.Message, "Unhandled C# exception occurred.");
@@ -31,10 +32,12 @@ class TestEinaError
         Eina.Error err = Eina.Error.Get();
         Test.AssertEquals(err, Eina.Error.ENOENT);
     }
+    */
 }
 
 class TestEolianError
 {
+	/*
 
     public class CustomException : Exception {
         public CustomException() {}
@@ -125,5 +128,6 @@ class TestEolianError
         { obj.EmitEventWithInt(2); });
         obj.Dispose();
     }
+    */
 }
 }

@@ -26,6 +26,7 @@ namespace TestSuite
 
 internal class StructHelpers
 {
+	/*
     // Auxiliary function //
 
     internal static Dummy.StructSimple structSimpleWithValues()
@@ -237,6 +238,7 @@ internal class StructHelpers
 
 #endif
 
+    */
 }
 
 }

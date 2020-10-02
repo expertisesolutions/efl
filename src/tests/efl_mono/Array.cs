@@ -9,14 +9,16 @@ class TestArray
 {
     public static void TestAdd()
     {
+/*
         IList<int> array = new Eina.Array<int>();
         Test.AssertEquals(array.Count, 0);
         array.Add(1);
         Test.AssertEquals(array.Count, 1);
         array.Add(2);
         Test.AssertEquals(array.Count, 2);
+*/
     }
-
+    /*
     public static void TestRemoveAt()
     {
         IList<int> array = new Eina.Array<int>();
@@ -185,5 +187,6 @@ class TestArray
         Test.AssertRaises<NotSupportedException>(() => array.DataSet(2, 4));
         Test.Assert(array.ToArray().SequenceEqual(tmp));
     }
+    */
 }
 }

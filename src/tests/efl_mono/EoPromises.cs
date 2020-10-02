@@ -22,6 +22,7 @@ namespace TestSuite
 
 class TestEoPromises
 {
+	/*
     public static void test_simple_task_run()
     {
         Efl.Loop loop = Efl.App.AppMain;
@@ -101,20 +102,24 @@ class TestEoPromises
         obj.Dispose();
     }
 
+*/
 }
 
 class LoopConsumer
 {
+	/*
     public static async Task Consume(Efl.Loop loop)
     {
         Task<Eina.Value> task = loop.IdleAsync();
         Eina.Value v = await task.ConfigureAwait(false);
         loop.Quit(v);
     }
+    */
 }
 
 class TestLoopEoAsyncMethods
 {
+	/*
     public static void test_simple_async()
     {
         Efl.Loop loop = Efl.App.AppMain;
@@ -123,10 +128,12 @@ class TestLoopEoAsyncMethods
         loop.Begin();
         Test.Assert(t.Wait(1000), "Task should have been completed in time.");
     }
+    */
 }
 
 class TestEoAsyncMethods
 {
+	/*
 
     public static void test_async_fulfill()
     {
@@ -212,5 +219,6 @@ class TestEoAsyncMethods
         Test.Assert(raised, "AggregateException must have been raised.");
         obj.Dispose();
     }
+*/
 }
 }

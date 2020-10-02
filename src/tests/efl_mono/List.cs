@@ -6,6 +6,7 @@ namespace TestSuite {
 
 class TestList
 {
+    /*
     public static void TestAdd()
     {
         IList<int> list = new Eina.List<int>();
@@ -189,5 +190,6 @@ class TestList
         Test.AssertRaises<NotSupportedException>(() => list.Sort());
         Test.Assert(list.ToArray().SequenceEqual(array));
     }
+    */
 }
 };

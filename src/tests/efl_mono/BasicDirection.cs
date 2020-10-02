@@ -22,6 +22,7 @@ namespace TestSuite
 
 class TestIntDirections
 {
+    /*
     public static void simple_out()
     {
         int original = 1984;
@@ -33,6 +34,7 @@ class TestIntDirections
         Test.AssertEquals(-original, received);
         t.Dispose();
     }
+    */
 
     /*
     public static void simple_ptr_out()
