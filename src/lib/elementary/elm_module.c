@@ -135,7 +135,13 @@ _elm_module_load(Elm_Module *m)
 #ifdef NEED_RUN_IN_TREE
    if (getenv("EFL_RUN_IN_TREE"))
      {
+#ifndef _MSC_VER
         bs_mod_get(buf, sizeof(buf), "elementary", m->name);
+#else
+        snprintf(buf, sizeof(buf), PACKAGE_BUILD_DIR
+			"src/modules/elementary/%s/module"EFL_SHARED_EXTENSION,
+			m->name);
+#endif
      }
    else
 #endif
