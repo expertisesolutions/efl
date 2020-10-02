@@ -73,8 +73,13 @@ ecore_win32_dnd_init()
    res = OleInitialize(NULL);
    if ((res != S_OK) && (res != S_FALSE))
      {
-        EINA_LOG_ERR("OleInitialize(NULL) returned %ld.", (long) res);
-        return 0;
+	if (res == RPC_E_CHANGED_MODE)
+          EINA_LOG_ERR("OleInitialize(NULL) returned RPC_E_CHANGED_MODE");
+	else
+	  {
+	     EINA_LOG_ERR("OleInitialize(NULL) returned %ld", (long) res);
+             return 0;
+	  }
      }
 
    _ecore_win32_dnd_init_count++;
