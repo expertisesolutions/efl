@@ -68,8 +68,9 @@ struct constant_definition_generator
 
         // Cleanup suffix. Roslyn does not accept ULL/LL as it has only longs.
         if (utils::ends_with(literal, "LL") || utils::ends_with(literal, "ll"))
-          literal = literal.substr(0, literal.size() -1);
-
+          literal.pop_back(); // becomes a long
+        else if (utils::ends_with(literal, "L") || utils::ends_with(literal, "l"))
+          literal.pop_back(); // becomes an int
       }
 
     // declare variable
