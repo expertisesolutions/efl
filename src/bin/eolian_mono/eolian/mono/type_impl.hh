@@ -125,8 +125,8 @@ struct visitor_generate
            , {"bool", nullptr, [&] { return replace_base_type(regular, "bool?"); }}
            , {"short", nullptr, [&] { return replace_base_opt_integer<short>(regular); }}
            , {"int", nullptr, [&] { return replace_base_opt_integer<int>(regular); }}
-#ifdef _MSC_VER
-           //, {"long", nullptr, [&] { return replace_base_type(regular, "long?"); }}
+#ifdef _WIN32
+           , {"long", nullptr, [&] { return replace_base_type(regular, "int?"); }}
 #else
            , {"long", nullptr, [&] { return replace_base_opt_integer<long>(regular); }}
 #endif
@@ -140,8 +140,8 @@ struct visitor_generate
            , {"ubyte", nullptr, [&] { return replace_base_type(regular, "byte?"); }}
            , {"ushort", nullptr, [&] { return replace_base_opt_integer<unsigned short>(regular); }}
            , {"uint", nullptr, [&] { return replace_base_opt_integer<unsigned int>(regular); }}
-#ifdef _MSC_VER
-           //, {"ulong", nullptr, [&] { return replace_base_type(regular, "ulong?"); }}
+#ifdef _WIN32
+           , {"ulong", nullptr, [&] { return replace_base_type(regular, "uint?"); }}
 #else
            , {"ulong", nullptr, [&] { return replace_base_opt_integer<unsigned long>(regular); }}
 #endif
@@ -164,8 +164,8 @@ struct visitor_generate
              {"byte", nullptr, [&] { return replace_base_type(regular, "sbyte"); }}
            , {"short", nullptr, [&] { return replace_base_integer<short>(regular); }}
            , {"int", nullptr, [&] { return replace_base_integer<int>(regular); }}
-#ifdef _MSC_VER
-           //, {"long", nullptr, [&] { return replace_base_type(regular, "long"); }}
+#ifdef _WIN32
+           , {"long", nullptr, [&] { return replace_base_type(regular, "int"); }}
 #else
            , {"long", nullptr, [&] { return replace_base_integer<long>(regular); }}
 #endif
@@ -179,8 +179,8 @@ struct visitor_generate
            , {"ubyte", nullptr, [&] { return replace_base_type(regular, "byte"); }}
            , {"ushort", nullptr, [&] { return replace_base_integer<unsigned short>(regular); }}
            , {"uint", nullptr, [&] { return replace_base_integer<unsigned int>(regular); }}
-#ifdef _MSC_VER
-           //, {"ulong", nullptr, [&] { return replace_base_type(regular, "ulong"); }}
+#ifdef _WIN32
+           , {"ulong", nullptr, [&] { return replace_base_type(regular, "uint"); }}
 #else
            , {"ulong", nullptr, [&] { return replace_base_integer<unsigned long>(regular); }}
 #endif
