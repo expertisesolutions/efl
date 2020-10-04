@@ -516,7 +516,9 @@ public abstract class EoWrapper : IWrapper, IDisposable
     internal abstract class NativeMethods : Efl.Eo.NativeClass
     {
         private static EflConstructorDelegate csharpEflConstructorStaticDelegate = new EflConstructorDelegate(Constructor);
-        private static Efl.Eo.NativeModule EoModule = new Efl.Eo.NativeModule("eo");
+#if WIN32 == false
+        private static Efl.Eo.NativeModule EoModule = efl.Libs.EoModule;
+#endif
 
         private delegate IntPtr EflConstructorDelegate(IntPtr obj, IntPtr pd);
 
@@ -528,9 +530,15 @@ public abstract class EoWrapper : IWrapper, IDisposable
         {
             var descs = new System.Collections.Generic.List<EflOpDescription>();
 
+#if WIN32
+            var api_func = Marshal.StringToHGlobalAnsi("efl_constructor");
+#else
+            var api_func = Efl.Eo.FunctionInterop.LoadFunctionPointer(EoModule.Module, "efl_constructor"),
+#endif
+
             descs.Add(new EflOpDescription()
             {
-                api_func = Efl.Eo.FunctionInterop.LoadFunctionPointer(EoModule.Module, "efl_constructor"),
+                api_func = api_func,
                 func = Marshal.GetFunctionPointerForDelegate(csharpEflConstructorStaticDelegate)
             });
 
