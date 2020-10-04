@@ -615,7 +615,9 @@ internal abstract class PrimitiveElementTraits<T>
 
     public IntPtr ManagedToNativeAlloc(T man)
     {
-        return PrimitiveConversion.ManagedToPointerAlloc(man);
+        IntPtr p = MemoryNative.Alloc(Marshal.SizeOf<T>());
+        Marshal.StructureToPtr(man, p, false);
+        return p;
     }
 
     public IntPtr ManagedToNativeAllocInlistNode(T man)

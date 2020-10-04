@@ -44,7 +44,7 @@ internal static partial class NativeCustomExportFunctions
     [DllImport(efl.Libs.CustomExports)] public static extern IntPtr
         efl_mono_native_alloc_copy(IntPtr val, uint size);
     [DllImport(efl.Libs.CustomExports)] public static extern IntPtr
-        efl_mono_native_strdup(string str);
+        efl_mono_native_strdup(IntPtr str);
 
     [DllImport(efl.Libs.CustomExports)] public static extern IntPtr
         efl_mono_native_ptr_compare_addr_get();
@@ -94,7 +94,8 @@ public static class MemoryNative
 
     public static IntPtr StrDup(string str)
     {
-        return NativeCustomExportFunctions.efl_mono_native_strdup(str);
+        IntPtr nativeStr = StringConversion.ManagedStringToNativeUtf8Alloc(str);
+        return NativeCustomExportFunctions.efl_mono_native_strdup(nativeStr);
     }
 
     public static IntPtr SlstrCopyNew(string str)
