@@ -67,11 +67,11 @@ _number_to_str(const Eolian_Value *v, Eina_Strbuf *buf)
       case EOLIAN_EXPR_ULONG:
         eina_strbuf_append_printf(buf, "%luUL", v->value.ul); break;
       case EOLIAN_EXPR_LLONG:
-        eina_strbuf_append_printf(buf, "%ldLL", (long)v->value.ll); break;
+        eina_strbuf_append_printf(buf, "%lldLL", v->value.ll); break;
       case EOLIAN_EXPR_ULLONG:
-        eina_strbuf_append_printf(buf, "%luULL", (unsigned long)v->value.ull);
+        eina_strbuf_append_printf(buf, "%lluULL", v->value.ull);
         break;
-      case EOLIAN_EXPR_FLOAT:
+     case EOLIAN_EXPR_FLOAT:
         eina_strbuf_append_printf(buf, "%ff", v->value.f); break;
       case EOLIAN_EXPR_DOUBLE:
         eina_strbuf_append_printf(buf, "%f", v->value.d); break;
