@@ -124,7 +124,7 @@ struct _Efl_Canvas_Object_Animation_Event
 #include "canvas/efl_canvas_snapshot.eo.h"
 #include "canvas/efl_canvas_proxy.eo.h"
 #include "canvas/efl_gfx_mapping.eo.h"
-
+#ifdef HAVE_ECTOR
 #include "canvas/efl_gfx_vg_value_provider.eo.h"
 /**
  * @ingroup Evas_Object_VG
@@ -143,3 +143,4 @@ struct _Efl_Canvas_Object_Animation_Event
 #include "canvas/efl_canvas_vg_gradient.eo.h"
 #include "canvas/efl_canvas_vg_gradient_linear.eo.h"
 #include "canvas/efl_canvas_vg_gradient_radial.eo.h"
+#endif

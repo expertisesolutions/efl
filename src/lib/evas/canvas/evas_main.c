@@ -6,7 +6,10 @@
 
 #include "evas_image_private.h"
 #include "evas_polygon_private.h"
+
+#ifdef HAVE_ECTOR
 #include "evas_vg_private.h"
+#endif
 
 #include "eo_internal.h"
 

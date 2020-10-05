@@ -43,17 +43,24 @@ evas_image_savers_file = [
 ]
 json = dependency('rlottie', required: get_option('evas-loaders-disabler').contains('json') == false)
 
+if get_option('ector')
 evas_vg_loaders_file = [
   ['eet', [eet]],
   ['json', [json]],
   ['svg', []],
 ]
+endif
 
+if get_option('ector')
 evas_vg_savers_file = ['eet', 'svg']
+endif
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
 evas_deps = [eo, eet, eina, efl, emile, ector, ecore, buildsystem]
-evas_ext_deps = [vg_common, draw_simple]
+evas_ext_deps = [draw_simple]
+if get_option('ector')
+  evas_ext_deps += vg_common
+endif
 evas_ext_none_static_deps = [buildsystem_simple, intl, m, valgrind, libunibreak, lua]
 
 pub_eo_file_target = []
@@ -192,8 +199,9 @@ if get_option('ector')
 endif
 subdir('cache')
 subdir('file')
+if get_option('ector')
 subdir('vg')
-
+endif
 gl_deps = []
 
 if get_option('harfbuzz')
@@ -270,6 +278,7 @@ foreach loader_inst : evas_image_savers_file
   endif
 endforeach
 
+if get_option('ector')
 foreach loader_inst : evas_vg_loaders_file
   loader = loader_inst[0]
   loader_deps = loader_inst[1]
@@ -283,7 +292,9 @@ foreach loader_inst : evas_vg_loaders_file
     config_h.set('EVAS_STATIC_BUILD_VG_'+loader.to_upper(), '1')
   endif
 endforeach
+endif
 
+if get_option('ector')
 foreach loader : evas_vg_savers_file
   if (get_option('evas-loaders-disabler').contains(loader) == false)
     file = join_paths(meson.source_root(), 'src', 'modules', 'evas', 'vg_savers', loader, 'evas_vg_save_'+loader+'.c')
@@ -294,6 +305,7 @@ foreach loader : evas_vg_savers_file
     config_h.set('EVAS_STATIC_BUILD_VG_'+loader.to_upper(), '1')
   endif
 endforeach
+endif
 
 evas_ext_deps += evas_static_list
 

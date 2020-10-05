@@ -15513,8 +15513,8 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
                        evas_filter_context_run(engine, output, ctx);
                     }
                }
-          }
 #endif
+          }
 
         /* STRIKETHROUGH */
         DRAW_FORMAT(strikethrough, (ln->h / 2), strikethrough_thickness);

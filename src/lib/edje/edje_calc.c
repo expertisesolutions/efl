@@ -3323,7 +3323,8 @@ _edje_vector_recalc_apply(Edje *ed, Edje_Real_Part *ep, Edje_Calc_Params *p3 EIN
         efl_ref(src_root);
 
         // Note: Assume that the viewboxes of two interpolation objects are the same.
-        viewbox = efl_canvas_vg_object_viewbox_get(ep->object);
+        //viewbox = efl_canvas_vg_object_viewbox_get(ep->object);
+        abort();
 
         efl_file_simple_load(ep->object, ed->file->path, dest_key);
         dest_root = efl_canvas_vg_object_root_node_get(ep->object);

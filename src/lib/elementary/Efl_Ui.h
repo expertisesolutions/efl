@@ -218,8 +218,9 @@ typedef void (*Context_Item_Clicked_Cb)(void *data, Eo *obj, void *event_info);
 # include <efl_text_interactive.eo.h>
 # include <efl_ui_textbox.eo.h>
 # include <efl_ui_textbox_async.eo.h>
-
+#ifdef HAVE_ECTOR
 # include <efl_ui_vg_animation.eo.h>
+#endif
 # include <efl_ui_clock.eo.h>
 # include <efl_ui_video.eo.h>
 
