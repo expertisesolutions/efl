@@ -87,6 +87,7 @@ extern "C" {
 #include <canvas/efl_text_formatter.eo.h>
 #include <canvas/efl_canvas_textblock.eo.h>
 #include <canvas/efl_canvas_textblock_factory.eo.h>
+#ifdef HAVE_ECTOR
 #include <canvas/efl_canvas_vg_node.eo.h>
 #include <canvas/efl_canvas_vg_container.eo.h>
 #include <canvas/efl_canvas_vg_gradient.eo.h>
@@ -96,6 +97,7 @@ extern "C" {
 #include <canvas/efl_canvas_vg_object.eo.h>
 #include <canvas/efl_canvas_vg_shape.eo.h>
 #include <canvas/efl_gfx_vg_value_provider.eo.h>
+#endif
 #include <canvas/efl_gfx_mapping.eo.h>
 
 #include <canvas/efl_input_clickable.eo.h>
