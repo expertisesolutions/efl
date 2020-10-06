@@ -23,7 +23,7 @@ edjs = custom_target('player_entry',
   input : 'player_entry.edc',
   output : 'player_entry.edj',
   install : true,
-  install_dir : 'share/exactness',
+  install_dir : join_paths('share', 'exactness'),
   command : edje_cc_exe + [
     '-id', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'img'),
     '-sd', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'snd'),
