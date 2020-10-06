@@ -145,7 +145,7 @@ _path_join_multiple(char *buf, int bufsize, ...)
           }
 
         if (used > 0)
-          buf[used] = EINA_PATH_SEP_C;
+          buf[used] = '/';
 
         memcpy(buf + used + seplen, comp, complen);
         used += complen + seplen;
@@ -161,8 +161,8 @@ _path_sep_fix(char *buf)
 #ifdef _WIN32
    for (; *buf != '\0'; buf++)
      {
-        if (*buf == '/')
-          *buf = EINA_PATH_SEP_C;
+        if (*buf == '\\')
+          *buf = '/';
      }
 #else
    (void)buf;
@@ -175,7 +175,7 @@ _path_absolute_check(const char *path)
 #ifdef _WIN32
    return evil_path_is_absolute(path);
 #else
-   return (path[0] == EINA_PATH_SEP_C);
+   return (path[0] == '/');
 #endif
 }
 
@@ -187,7 +187,7 @@ _fallback(Eina_Prefix *pfx, const char *pkg_bin, const char *pkg_lib,
 
    STRDUP_REP(pfx->prefix_path, pkg_bin);
    if (!pfx->prefix_path) return 0;
-   p = strrchr(pfx->prefix_path, EINA_PATH_SEP_C);
+   p = strrchr(pfx->prefix_path, '/');
    if (p) *p = 0;
    STRDUP_REP(pfx->prefix_path_bin, pkg_bin);
    STRDUP_REP(pfx->prefix_path_lib, pkg_lib);
@@ -300,7 +300,7 @@ _try_argv(Eina_Prefix *pfx, const char *argv0)
      }
 
    /* 2. relative path */
-   if (strchr(argv0, EINA_PATH_SEP_C))
+   if (strchr(argv0, '/'))
      {
         if (getcwd(buf2, sizeof(buf2)))
           {
@@ -348,7 +348,7 @@ _try_argv(Eina_Prefix *pfx, const char *argv0)
           }
 
         strncpy(buf2, cp, len);
-        buf2[len] = EINA_PATH_SEP_C;
+        buf2[len] = '/';
         strcpy(buf2 + len + 1, argv0);
         if (realpath(buf2, buf))
           {
@@ -621,7 +621,6 @@ eina_prefix_new(const char *argv0, void *symbol, const char *envprefix,
 
         from_bin = EINA_TRUE;
      }
-
    if (!pfx->exe_path)
      {
         WRN("Fallback - no variables, symbol or argv0 could be used.");
@@ -643,13 +642,13 @@ eina_prefix_new(const char *argv0, void *symbol, const char *envprefix,
     * exe        = /blah/whatever/lib/arch/libexe.so
     */
    DBG("From exe %s figure out the rest", pfx->exe_path);
-   p = strrchr(pfx->exe_path, EINA_PATH_SEP_C);
+   p = strrchr(pfx->exe_path, '/');
    if (p)
      {
         p--;
         while (p >= pfx->exe_path)
           {
-             if (*p == EINA_PATH_SEP_C)
+             if (*p == '/')
                {
                   if (pfx->prefix_path) free(pfx->prefix_path);
                   pfx->prefix_path = malloc(p - pfx->exe_path + 1);
@@ -716,7 +715,7 @@ eina_prefix_new(const char *argv0, void *symbol, const char *envprefix,
                          {
                             for (;p > pfx->exe_path; p--)
                               {
-                                 if (*p == EINA_PATH_SEP_C)
+                                 if (*p == '/')
                                    {
                                       p--;
                                       break;
@@ -724,7 +723,7 @@ eina_prefix_new(const char *argv0, void *symbol, const char *envprefix,
                               }
                             if (p > pfx->exe_path)
                               {
-                                 int newlen = p - pfx->exe_path;
+                                 int newlen = p - pfx->exe_path +1;
                                  DBG("Go back one directory (%.*s)", newlen, pfx->exe_path);
                                  continue;
                               }
