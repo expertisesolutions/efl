@@ -495,7 +495,6 @@ subprojects = [
 if sys_windows
   ignored_subprojects = [
     # temporarily ignored
-    'exactness',
   ]
 else
   ignored_subprojects = []
