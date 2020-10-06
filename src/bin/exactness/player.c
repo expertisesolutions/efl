@@ -35,6 +35,7 @@
 #include <Elementary.h>
 
 #include "common.h"
+#include "exactness_api.h"
 
 #define CMD_LINE_MAX 256
 #define IMAGE_FILENAME_EXT ".png"
@@ -1045,7 +1046,7 @@ _write_unit_file(void)
 #define ORIGINAL_CALL(name, ...) \
    ORIGINAL_CALL_T(int, name, __VA_ARGS__)
 
-int
+EXACTNESS_API int
 eina_init(void)
 {
    int original_return;
@@ -1088,7 +1089,7 @@ eina_init(void)
    return original_return;
 }
 
-int
+EXACTNESS_API int
 ecore_evas_init(void)
 {
    int original_return;
@@ -1104,7 +1105,7 @@ ecore_evas_init(void)
 }
 
 //hook, to hook in our theme
-int
+EXACTNESS_API int
 elm_init(int argc, char **argv)
 {
    int original_return;
@@ -1116,7 +1117,7 @@ elm_init(int argc, char **argv)
    return original_return;
 }
 
-void
+EXACTNESS_API void
 ecore_main_loop_begin(void)
 {
    int original_return;
@@ -1126,7 +1127,7 @@ ecore_main_loop_begin(void)
    (void)original_return;
 }
 
-Eina_Value*
+EXACTNESS_API Eina_Value*
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
@@ -1136,7 +1137,7 @@ efl_loop_begin(Eo *obj)
    return original_return;
 }
 
-int
+EXACTNESS_API int
 eina_shutdown(void)
 {
    int original_return;
