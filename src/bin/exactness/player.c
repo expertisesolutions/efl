@@ -1030,7 +1030,8 @@ _write_unit_file(void)
         exactness_unit_file_write(_dest_unit, _dest);
      }
 }
-#ifdef HAVE_DLSYM
+
+#if !defined(_MSC_VER) && defined(HAVE_DLSYM)
 # define ORIGINAL_CALL_T(t, name, ...) \
    t (*_original_init_cb)(); \
    _original_init_cb = dlsym(RTLD_NEXT, name); \

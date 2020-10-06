@@ -296,7 +296,7 @@ _setup_ee_creation(void)
    _last_timestamp = ecore_time_get() * 1000;
 }
 
-#ifdef HAVE_DLSYM
+#if !defined(_MSC_VER) && defined(HAVE_DLSYM)
 # define ORIGINAL_CALL_T(t, name, ...) \
    t (*_original_init_cb)(); \
    _original_init_cb = dlsym(RTLD_NEXT, name); \
