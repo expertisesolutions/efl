@@ -27,6 +27,7 @@ edjs = custom_target('player_entry',
   command : edje_cc_exe + [
     '-id', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'img'),
     '-sd', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'snd'),
+    '-in-tree',
     '@INPUT@', '@OUTPUT@'],
   depends : edje_depends)
 
