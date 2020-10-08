@@ -140,6 +140,7 @@ exit /B 0
             "-Devas-loaders-disabler=gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,generic,gif,ico,jp2k,pmaps,psd,tga,tgv,tiff,wbmp,webp,xpm,json"^
             -Dopengl=none^
             "-Demotion-loaders-disabler=gstreamer1,libvlc,xine"^
+            --prefix=%cd%\_install^
             -Dbindings=^
             --buildtype=debug^
             --native-file native-file-windows.txt
