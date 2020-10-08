@@ -50,8 +50,8 @@ exactness_record_bin = library('exactness_record',
 )
 
 exactness_env = configuration_data()
-exactness_env.set_quoted('EXACTNESS_PLAY_PRELOAD_PATH', exactness_play_bin.full_path())
-exactness_env.set_quoted('EXACTNESS_RECORD_PRELOAD_PATH', exactness_record_bin.full_path())
+exactness_env.set_quoted('EXACTNESS_PLAY_PRELOAD_PATH', exactness_play_bin.full_path() / '')
+exactness_env.set_quoted('EXACTNESS_RECORD_PRELOAD_PATH', exactness_record_bin.full_path() / '')
 exactness_env.set_quoted('VERSION', meson.project_version())
 
 configure_file(
