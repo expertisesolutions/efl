@@ -1,23 +1,21 @@
-c_args = ['-DEXACTNESS_BUILD', '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"']
-
 exactness_bin = executable('exactness',
   [ 'exactness.c', 'common.c', 'common.h' ],
   dependencies: [ ecore, ecore_evas, ecore_file, elementary],
-  c_args: c_args,
+  c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   )
 
 exactness_inject_bin = executable('exactness_inject',
   [ 'injector.c', 'common.c', 'common.h' ],
   dependencies: [ elementary ],
-  c_args: c_args,
+  c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   )
 
 exactness_inspect_bin = executable('exactness_inspect',
   [ 'inspect.c', 'common.c', 'common.h' ],
   dependencies: [ elementary ],
-  c_args: c_args,
+  c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   )
 
@@ -29,14 +27,13 @@ edjs = custom_target('player_entry',
   command : edje_cc_exe + [
     '-id', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'img'),
     '-sd', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'snd'),
-    '-v', # verbose
     '@INPUT@', '@OUTPUT@'],
   depends : edje_depends)
 
 exactness_play_bin = library('exactness_play',
   [ 'player.c', 'common.c', 'common.h', edjs ],
   dependencies: [ elementary, dl],
-  c_args: c_args,
+  c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   version : meson.project_version()
 )
@@ -44,7 +41,7 @@ exactness_play_bin = library('exactness_play',
 exactness_record_bin = library('exactness_record',
   [ 'recorder.c', 'common.c', 'common.h' ],
   dependencies: [ elementary, dl],
-  c_args: c_args,
+  c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   version : meson.project_version()
 )
