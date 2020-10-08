@@ -56,14 +56,14 @@ exactness_env.set_quoted('VERSION', meson.project_version())
 
 configure_file(
   input: 'exactness_record.in',
-  output: 'exactness_record',
+  output: 'exactness_record.py',
   configuration: exactness_env,
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x')
 
 configure_file(
   input: 'exactness_play.in',
-  output: 'exactness_play',
+  output: 'exactness_play.py',
   configuration: exactness_env,
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x')
