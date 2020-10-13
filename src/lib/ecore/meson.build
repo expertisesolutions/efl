@@ -197,6 +197,10 @@ if get_option('g-mainloop') == true
   endif
 endif
 
+if sys_windows and get_option('exactness-win32')
+  config_h.set('EFL_EXACTNESS_WIN32', '1')
+endif
+
 ecore_lib = library('ecore',
     ecore_src, pub_eo_file_target,
     dependencies: ecore_pub_deps + [ecore_deps, ecore_ext_deps],
