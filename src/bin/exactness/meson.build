@@ -31,7 +31,7 @@ edjs = custom_target('player_entry',
     '@INPUT@', '@OUTPUT@'],
   depends : edje_depends)
 
-exactness_play_bin = library('exactness_play',
+exactness_play_lib = library('exactness_play',
   [ 'player.c', 'common.c', 'common.h', edjs ],
   dependencies: [ elementary, dl],
   c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
@@ -39,7 +39,7 @@ exactness_play_bin = library('exactness_play',
   version : meson.project_version()
 )
 
-exactness_record_bin = library('exactness_record',
+exactness_record_lib = library('exactness_record',
   [ 'recorder.c', 'common.c', 'common.h' ],
   dependencies: [ elementary, dl],
   c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
@@ -47,9 +47,16 @@ exactness_record_bin = library('exactness_record',
   version : meson.project_version()
 )
 
+if sys_windows
+  exactness_play_lib_name = exactness_play_lib.name() + '-1.dll'
+  exactness_record_lib_name = exactness_record_lib.name() + '-1.dll'
+else
+  exactness_play_lib_name = exactness_play_lib.name() + '.so.' + meson.project_version()
+  exactness_record_lib_name = exactness_record_lib.name() + '.so.' + meson.project_version()
+endif
 exactness_env = configuration_data()
-exactness_env.set_quoted('EXACTNESS_PLAY_PRELOAD_PATH', exactness_play_bin.full_path() / '')
-exactness_env.set_quoted('EXACTNESS_RECORD_PRELOAD_PATH', exactness_record_bin.full_path() / '')
+exactness_env.set_quoted('EXACTNESS_PLAY_PRELOAD_PATH', join_paths(get_option('prefix'), get_option('bindir'), exactness_play_lib_name))
+exactness_env.set_quoted('EXACTNESS_RECORD_PRELOAD_PATH', join_paths(get_option('prefix'), get_option('bindir'), exactness_record_lib_name))
 exactness_env.set_quoted('VERSION', meson.project_version())
 
 configure_file(
