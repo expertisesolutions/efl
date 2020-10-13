@@ -1299,8 +1299,27 @@ ecore_main_loop_iterate_may_block(int may_block)
    return efl_loop_iterate_may_block(ML_OBJ, may_block);
 }
 
+#ifdef EFL_EXACTNESS_WIN32
+typedef void(*ecore_main_loop_begin_t)(void);
+ECORE_API ecore_main_loop_begin_t ecore_main_loop_begin_redirect = NULL;
+
 ECORE_API void
 ecore_main_loop_begin(void)
+{
+   fprintf(stderr, "\n\n >>>>>>> ECORE: EFL_EXACTNESS_WIN32 ENABLED! <<<<<<<< \n\n");
+   ERR("\n\n >>>>>>> ECORE: EFL_EXACTNESS_WIN32 ENABLED! <<<<<<<< \n\n");
+   if (ecore_main_loop_begin_redirect)
+     ecore_main_loop_begin_redirect();
+   else
+     ecore_main_loop_begin_original();
+}
+
+ECORE_API void
+ecore_main_loop_begin_original(void)
+#else
+ECORE_API void
+ecore_main_loop_begin(void)
+#endif
 {
    DBG("ecore_main_loop_begin");
    EINA_MAIN_LOOP_CHECK_RETURN;
