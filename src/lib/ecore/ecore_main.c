@@ -1309,9 +1309,9 @@ ecore_main_loop_begin(void)
    fprintf(stderr, "\n\n >>>>>>> ECORE: EFL_EXACTNESS_WIN32 ENABLED! <<<<<<<< \n\n");
    ERR("\n\n >>>>>>> ECORE: EFL_EXACTNESS_WIN32 ENABLED! <<<<<<<< \n\n");
    if (ecore_main_loop_begin_redirect)
-     return ecore_main_loop_begin_redirect();
+     ecore_main_loop_begin_redirect();
    else
-     return ecore_main_loop_begin_original();
+     ecore_main_loop_begin_original();
 }
 
 ECORE_API void
@@ -1319,6 +1319,7 @@ ecore_main_loop_begin_original(void)
 #else
 ECORE_API void
 ecore_main_loop_begin(void)
+#endif
 {
    DBG("ecore_main_loop_begin");
    EINA_MAIN_LOOP_CHECK_RETURN;
@@ -1326,7 +1327,6 @@ ecore_main_loop_begin(void)
    efl_loop_begin(ML_OBJ);
    eina_evlog("-mainloop", NULL, 0.0, NULL);
 }
-#endif
 
 ECORE_API void
 ecore_main_loop_quit(void)
