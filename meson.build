@@ -496,6 +496,9 @@ if sys_windows
   ignored_subprojects = [
     # temporarily ignored
   ]
+  if get_option('exactness-win32') == false
+    ignored_subprojects += ['exactness']
+  endif
 else
   ignored_subprojects = []
 endif
