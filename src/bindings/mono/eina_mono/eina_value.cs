@@ -107,6 +107,7 @@ static internal class UnsafeNativeMethods
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_set_wrapper_uint(IntPtr handle, uint value);
 
+#if WIN32 == false
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_set_wrapper_long(IntPtr handle, long value);
@@ -114,7 +115,23 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_set_wrapper_ulong(IntPtr handle, ulong value);
+#else
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_set_wrapper_long(IntPtr handle, int value);
 
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_set_wrapper_ulong(IntPtr handle, uint value);
+#endif    
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_set_wrapper_int64(IntPtr handle, long value);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_set_wrapper_uint64(IntPtr handle, ulong value);
+    
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_set_wrapper_float(IntPtr handle, float value);
@@ -238,6 +255,7 @@ static internal class UnsafeNativeMethods
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_append_wrapper_uint(IntPtr handle, uint data);
 
+#if WIN32 == false
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_append_wrapper_long(IntPtr handle, long data);
@@ -245,6 +263,22 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_append_wrapper_ulong(IntPtr handle, ulong data);
+#else
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_append_wrapper_long(IntPtr handle, int data);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_append_wrapper_ulong(IntPtr handle, uint data);
+#endif    
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_append_wrapper_int64(IntPtr handle, long data);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_append_wrapper_uint64(IntPtr handle, ulong data);
 
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
@@ -289,7 +323,7 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_insert_wrapper_uint(IntPtr handle, uint p, uint data);
-
+#if WIN32 == false
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_insert_wrapper_long(IntPtr handle, uint p, long data);
@@ -297,6 +331,22 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_insert_wrapper_ulong(IntPtr handle, uint p, ulong data);
+#else
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_insert_wrapper_long(IntPtr handle, uint p, int data);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_insert_wrapper_ulong(IntPtr handle, uint p, uint data);
+#endif
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_insert_wrapper_int64(IntPtr handle, uint p, long data);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_insert_wrapper_uint64(IntPtr handle, uint p, ulong data);
 
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
@@ -389,7 +439,7 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_set_wrapper_uint(IntPtr handle, int index, uint value);
-
+#if WIN32 == false
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_set_wrapper_long(IntPtr handle, int index, long value);
@@ -397,6 +447,22 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
     internal static extern bool eina_value_container_set_wrapper_ulong(IntPtr handle, int index, ulong value);
+#else
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_set_wrapper_long(IntPtr handle, int index, int value);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_set_wrapper_ulong(IntPtr handle, int index, uint value);
+#endif    
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_set_wrapper_int64(IntPtr handle, int index, long value);
+
+    [DllImport(efl.Libs.CustomExports)]
+    [return: MarshalAsAttribute(UnmanagedType.U1)]
+    internal static extern bool eina_value_container_set_wrapper_uint64(IntPtr handle, int index, ulong value);
 
     [DllImport(efl.Libs.CustomExports)]
     [return: MarshalAsAttribute(UnmanagedType.U1)]
@@ -565,7 +631,7 @@ static internal class UnsafeNativeMethods
     [DllImport(efl.Libs.CustomExports)]
     internal static extern IntPtr type_uint32();
 
-    // 64 bit longs
+    // 64 or 32 bit longs
     [DllImport(efl.Libs.CustomExports)]
     internal static extern IntPtr type_long();
     [DllImport(efl.Libs.CustomExports)]
@@ -1119,11 +1185,11 @@ internal static class ValueTypeBridge
 
         ManagedToNative.Add(ValueType.Long, type_long());
         NativeToManaged.Add(type_long(), ValueType.Long);
-        ManagedToStandard.Add(ValueType.Long, typeof(long));
+        ManagedToStandard.Add(ValueType.Long, typeof(int));
 
         ManagedToNative.Add(ValueType.ULong, type_ulong());
         NativeToManaged.Add(type_ulong(), ValueType.ULong);
-        ManagedToStandard.Add(ValueType.ULong, typeof(ulong));
+        ManagedToStandard.Add(ValueType.ULong, typeof(uint));
 
         ManagedToNative.Add(ValueType.Int64, type_int64());
         NativeToManaged.Add(type_int64(), ValueType.Int64);
@@ -1608,7 +1674,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
     /// <para>Since EFL 1.23.</para>
     /// </summary>
     /// <param name="x">The value to be wrapped.</param>
-    public Value(long x) : this(ValueType.Long)
+    public Value(long x) : this(ValueType.Int64)
     {
         if (!Set(x))
         {
@@ -1620,7 +1686,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
     /// <para>Since EFL 1.23.</para>
     /// </summary>
     /// <param name="x">The value to be wrapped.</param>
-    public Value(ulong x) : this(ValueType.ULong)
+    public Value(ulong x) : this(ValueType.UInt64)
     {
         if (!Set(x))
         {
@@ -1920,7 +1986,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
     /// <param name="x">The <see cref="long" /> to be converted.</param>
     public static Value FromInt64(long x)
     {
-        var v = new Eina.Value(ValueType.Long);
+        var v = new Eina.Value(ValueType.Int64);
         v.Set(x);
 
         return v;
@@ -1957,7 +2023,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
     /// <param name="x">The <see cref="ulong" /> to be converted.</param>
     public static Value FromUInt64(ulong x)
     {
-        var v = new Eina.Value(ValueType.ULong);
+        var v = new Eina.Value(ValueType.UInt64);
         v.Set(x);
 
         return v;
@@ -2638,7 +2704,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
         if (this.Optional)
         {
             return eina_value_optional_pset(this.Handle,
-                                            ValueTypeBridge.GetNative(ValueType.ULong),
+                                            ValueTypeBridge.GetNative(ValueType.UInt64),
                                             ref value);
         }
 
@@ -2648,7 +2714,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
                         "Trying to set numeric value on a non-numeric Eina.Value"));
         }
 
-        return eina_value_set_wrapper_ulong(this.Handle, value);
+        return eina_value_set_wrapper_uint64(this.Handle, value);
     }
 
     /// <summary>Sets the contained value.
@@ -2664,7 +2730,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
         if (this.Optional)
         {
             return eina_value_optional_pset(this.Handle,
-                                            ValueTypeBridge.GetNative(ValueType.Long),
+                                            ValueTypeBridge.GetNative(ValueType.Int64),
                                             ref value);
         }
 
@@ -2674,7 +2740,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
                         "Trying to set numeric value on a non-numeric Eina.Value"));
         }
 
-        return eina_value_set_wrapper_long(this.Handle, value);
+        return eina_value_set_wrapper_int64(this.Handle, value);
     }
 
     /// <summary>Sets the contained value.
@@ -3440,14 +3506,14 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
             case ValueType.Int64:
                 {
                     long x = Convert.ToInt64(o, CultureInfo.CurrentCulture);
-                    return eina_value_container_append_wrapper_long(this.Handle, x);
+                    return eina_value_container_append_wrapper_int64(this.Handle, x);
                 }
 
             case ValueType.ULong:
             case ValueType.UInt64:
                 {
                     ulong x = Convert.ToUInt64(o, CultureInfo.CurrentCulture);
-                    return eina_value_container_append_wrapper_ulong(this.Handle, x);
+                    return eina_value_container_append_wrapper_uint64(this.Handle, x);
                 }
 
             case ValueType.Float:
@@ -3531,14 +3597,14 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
             case ValueType.Int64:
                 {
                     long x = Convert.ToInt64(o, CultureInfo.CurrentCulture);
-                    return eina_value_container_insert_wrapper_long(this.Handle, p, x);
+                    return eina_value_container_insert_wrapper_int64(this.Handle, p, x);
                 }
 
             case ValueType.ULong:
             case ValueType.UInt64:
                 {
                     ulong x = Convert.ToUInt64(o, CultureInfo.CurrentCulture);
-                    return eina_value_container_insert_wrapper_ulong(this.Handle, p, x);
+                    return eina_value_container_insert_wrapper_uint64(this.Handle, p, x);
                 }
 
             case ValueType.Float:
@@ -3733,7 +3799,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
                     {
                         long x = Convert.ToInt64(value,
                                                  CultureInfo.CurrentCulture);
-                        eina_value_container_set_wrapper_long(this.Handle, i, x);
+                        eina_value_container_set_wrapper_int64(this.Handle, i, x);
                         break;
                     }
 
@@ -3742,7 +3808,7 @@ public class Value : IDisposable, IComparable<Value>, IEquatable<Value>
                     {
                         ulong x = Convert.ToUInt64(value,
                                                    CultureInfo.CurrentCulture);
-                        eina_value_container_set_wrapper_ulong(this.Handle, i, x);
+                        eina_value_container_set_wrapper_uint64(this.Handle, i, x);
                         break;
                     }
 
