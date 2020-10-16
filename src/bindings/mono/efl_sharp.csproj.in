@@ -23,12 +23,11 @@
     <DefineConstants>ELDBUS_ENABLED;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-    <DefineConstants>sys_windows;$(DefineConstants)</DefineConstants>
+    <DefineConstants>WIN32;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="@BINDING_SRC@/efl_mono/*.cs" />
-    <!-- FIXME Windows support -->
     <Compile Include="@BINDING_SRC@/eo_mono/*.cs" />
     <Compile Remove="@BINDING_SRC@/eo_mono/*Windows.cs" Condition=" '$(OS)' != 'Windows_NT' "/>
     <Compile Remove="@BINDING_SRC@/eo_mono/*Unix.cs" Condition=" '$(OS)' != 'UNIX' "/>
