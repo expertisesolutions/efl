@@ -535,6 +535,7 @@ efl_one_eo_deps = []
 efl_one_include_dirs = []
 efl_one_sub_dirs = []
 tmp_empty = declare_dependency()
+efl_mono_deps = []
 
 foreach package : subprojects
   package_name = package[0]
@@ -585,6 +586,7 @@ foreach package : subprojects
       '-DEFL_BUILD=1',
     ]
     if (package[3])
+      efl_mono_deps += package_name
       subdir(join_paths(local_lib, package_name))
       set_variable(package_name + '_eo_files', pub_eo_files)
       set_variable(package_name + '_eot_files', pub_eo_types_files)
