@@ -22,7 +22,6 @@ namespace TestSuite
 
 class TestEoEvents
 {
-	/*
     public bool called = false;
     public bool correct_sender = false;
     public Efl.Loop loop { get; set; }
@@ -249,12 +248,10 @@ class TestEoEvents
         sent.Dispose();
         obj.Dispose();
     }
-    */
 }
 
 class TestEventAddRemove
 {
-	/*
     public static void test_add_remove_event()
     {
         var obj = new Dummy.TestObject();
@@ -274,12 +271,10 @@ class TestEventAddRemove
         Test.Assert(!called);
         obj.Dispose();
     }
-    */
 }
 
 class TestInterfaceEvents
 {
-	/*
     public static void test_nonconflicting_events()
     {
         var obj = new Dummy.TestObject();
@@ -294,12 +289,10 @@ class TestInterfaceEvents
         Test.Assert(called);
         obj.Dispose();
     }
-    */
 }
 
 class TestEventNaming
 {
-	/*
     // For events named line focus_geometry,changed
     public static void test_event_naming()
     {
@@ -317,12 +310,10 @@ class TestEventNaming
         Test.Assert(test_called);
         obj.Dispose();
     }
-    */
 }
 
 class TestEventWithDeadWrappers
 {
-	/*
 
     private static WeakReference AttachToManager(Dummy.EventManager manager,
                                           EventHandler<Dummy.TestObjectEvtWithIntEventArgs> cb)
@@ -371,7 +362,7 @@ class TestEventWithDeadWrappers
         Test.AssertNull(wref.Target);
         manager.Dispose();
     }
-*/
+
 }
 
 }

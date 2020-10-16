@@ -150,32 +150,44 @@ env_mono.set('EFL_RUN_IN_TREE', '1')
 config_libs = ['eina', 'ecore', 'eo', 'efl', 'evas', 'elementary', 'efl_mono']
 if not sys_windows
   config_libs += 'eldbus'
+else
+  efl_mono_deps = get_variable('efl_mono_deps')
+  foreach dep : efl_mono_deps
+    config_libs += dep
+  endforeach
 endif
 
 if sys_windows
   env_separator = ';'
   path_separator = '\\'
+  other_path_separator = '/'
   ld_library_env = 'PATH'
 else
   env_separator = ':'
   path_separator = '/'
+  other_path_separator = '\\'
   ld_library_env = 'LD_LIBRARY_PATH'
 endif
 
-load_lib = efl_mono_test_suite_path + env_separator
+load_lib = efl_mono_test_suite_path
 
 foreach config : config_libs
   lib = get_variable(config+'_lib')
-  path = lib.full_path().split(path_separator)
+  repath = path_separator.join(lib.full_path().split(other_path_separator))
+  path = repath.split(path_separator)
 
   repaired_path = ''
   prev = ''
   foreach p : path
-    repaired_path += prev
-    prev = p + path_separator
+    if repaired_path == ''
+      repaired_path += prev
+    else
+      repaired_path += path_separator + prev
+    endif
+    prev = p 
   endforeach
 
-  load_lib += repaired_path + env_separator
+  load_lib += env_separator + repaired_path
 endforeach
 
 load_lib += env_separator + meson.current_build_dir()

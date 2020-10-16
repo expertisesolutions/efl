@@ -25,8 +25,33 @@
 #include <Ecore.h>
 #include <Eo.h>
 
-#define EFL_MONO_TEST_API
-#define EFL_MONO_TEST_API_WEAK
+#ifdef _WIN32
+# define EFL_MONO_TEST_API __declspec(dllexport)
+# define EFL_MONO_TEST_API_WEAK
+#else
+# ifdef __GNUC__
+#  if __GNUC__ >= 4
+#   define EFL_MONO_TEST_API __attribute__ ((visibility("default")))
+#   define EFL_MONO_TEST_API_WEAK __attribute__ ((weak))
+#  else
+#   define EFL_MONO_TEST_API
+#   define EFL_MONO_TEST_API_WEAK
+#  endif
+# else
+/**
+ * @def EFL_MONO_TEST_API
+ * @brief Used to export functions (by changing visibility).
+ */
+#  define EFL_MONO_TEST_API
+/**
+ * @def EFL_MONO_TEST_API_WEAK
+ * @brief Weak symbol, primarily useful in defining library functions which
+ * can be overridden in user code.
+ * Note: Not supported on all platforms.
+ */
+#  define EFL_MONO_TEST_API_WEAK
+#  endif
+#endif
 
 #include "dummy_test_iface.eo.h"
 #include "dummy_inherit_iface.eo.h"
@@ -41,7 +66,7 @@
 
 #include <interfaces/efl_part.eo.h>
 
-#define EQUAL(a, b) ((a) == (b) ? 1 : (fprintf(stderr, "NOT EQUAL! %s:%i (%s)", __FILE__, __LINE__, __func__), fflush(stderr), 0))
-#define STR_EQUAL(a, b) (strcmp((a), (b)) == 0 ? 1 : (fprintf(stderr, "NOT EQUAL! %s:%i (%s) '%s' != '%s'", __FILE__, __LINE__, __func__, (a), (b)), fflush(stderr), 0))
+#define EQUAL(a, b) ((a) == (b) ? 1 : (fprintf(stderr, "NOT EQUAL! %s:%i (%s)", __FILE__, __LINE__, __func__), fprintf(stdout, "NOT EQUAL! %s:%i (%s)", __FILE__, __LINE__, __func__), fflush(stderr), fflush(stdout), 0))
+#define STR_EQUAL(a, b) (strcmp((a), (b)) == 0 ? 1 : (fprintf(stderr, "NOT EQUAL! %s:%i (%s) '%s' != '%s'", __FILE__, __LINE__, __func__, (a), (b)), fprintf(stdout, "NOT EQUAL! %s:%i (%s) '%s' != '%s'", __FILE__, __LINE__, __func__, (a), (b)), fflush(stderr), fflush(stdout), 0))
 
 #endif

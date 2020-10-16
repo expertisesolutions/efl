@@ -16,6 +16,10 @@
     <DefineConstants>@EFL_BETA@</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <DefineConstants>WIN32;$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="../../bindings/mono/efl_sharp.csproj" />
   </ItemGroup>

@@ -11,7 +11,6 @@ namespace TestSuite {
 
 [SuppressMessage("Gendarme.Rules.Portability", "DoNotHardcodePathsRule")]
 public static class TestModel {
-	/*
 
     private class VeggieViewModel
     {
@@ -85,7 +84,6 @@ public static class TestModel {
         factory.Dispose();
         parent.Dispose();
     }
-*/
 }
 
 }

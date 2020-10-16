@@ -21,7 +21,6 @@ namespace TestSuite
 
 class TestFunctionPointers
 {
-	/*
 
     static bool called = false;
 
@@ -128,6 +127,7 @@ class TestFunctionPointers
 
         }
         public override void SetCallback(Dummy.SimpleCb cb) {
+            Console.WriteLine("setCallback called");
             set_called = true;
             this.cb = cb;
         }
@@ -159,16 +159,17 @@ class TestFunctionPointers
         obj.Dispose();
     }
 
-    // These are needed due to issues calling methods on obj from the GC thread (where the
+    // These are needed to test possible issues when calling methods on obj from the GC thread (where the
     // free function is actually called)
-    [System.Runtime.InteropServices.DllImport("efl_mono_native_test")] static extern bool free_called_get();
-    [System.Runtime.InteropServices.DllImport("efl_mono_native_test")] static extern bool free_called_set(bool val);
+    [System.Runtime.InteropServices.DllImport("efl_mono_native_test")] [return: MarshalAs(UnmanagedType.U1)] static extern bool free_called_get();
+    [System.Runtime.InteropServices.DllImport("efl_mono_native_test")] [return: MarshalAs(UnmanagedType.U1)] static extern bool free_called_set(bool val);
 
      public static void set_callback_inherited_called_from_c()
      {
         setup();
         WithOverride obj = new WithOverride();
         free_called_set(false);
+        Test.Assert(!free_called_get(), "free boolean should be initialized to false");
         obj.CallSetCallback();
 
         Test.Assert(obj.set_called, "set_callback override must have been called");
@@ -210,7 +211,6 @@ class TestFunctionPointers
         Test.AssertEquals(42 * 2, x);
         obj.Dispose();
     }
-     */
 }
 
 }

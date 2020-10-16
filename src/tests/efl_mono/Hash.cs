@@ -3,7 +3,7 @@ using System;
 namespace TestSuite {
 
 class TestHash
-{ /*
+{
 
     public static void test_del_value()
     {
@@ -54,6 +54,5 @@ class TestHash
         Test.AssertEquals(hash.Count, 2);
         hash.Dispose();
     }
-    */
 }
 } // namespace TestSuite

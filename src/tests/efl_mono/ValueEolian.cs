@@ -24,7 +24,6 @@ namespace TestSuite {
 
 
 public static class TestEinaValueEolian {
-	/*
     public static void TestEolianEinaValueInReturn()
     {
         var obj = new Dummy.TestObject();
@@ -210,7 +209,6 @@ public static class TestEinaValueEolian {
         obj.Dispose();
     }
 #endif
-    */
 }
 #pragma warning restore 1591
 }

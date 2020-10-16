@@ -28,7 +28,6 @@ namespace TestSuite {
 [SuppressMessage("Gendarme.Rules.Portability", "DoNotHardcodePathsRule")]
 public static class TestParts
 {
-	/*
     public static void basic_part_test()
     {
         var t = new Dummy.PartHolder();
@@ -56,12 +55,10 @@ public static class TestParts
         Test.Assert(p2 is Dummy.TestObject);
         Test.AssertEquals("part_two", p2.Name);
     }
-    */
 }
 
 public static class TestMVVMParts
 {
-	/*
     public static void mvvm_dynamic_parts()
     {
         var parent = new Efl.Ui.Win(null);
@@ -90,12 +87,10 @@ public static class TestMVVMParts
         factory.Dispose();
         parent.Dispose();
     }
-    */
 }
 
 public static class TestNamedParts
 {
-	/*
     public static void named_parts()
     {
         var obj = new Dummy.PartHolder();
@@ -107,7 +102,6 @@ public static class TestNamedParts
         Test.AssertEquals("part_two", p2.Name);
         obj.Dispose();
     }
-    */
 }
 
 #endif

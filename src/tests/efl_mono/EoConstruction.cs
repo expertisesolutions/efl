@@ -17,7 +17,6 @@ using System;
 
 class InheritedConstructibleObject : Dummy.ConstructibleObject
 {
-	/*
     public InheritedConstructibleObject() : base()
     {
         if (this.NativeConstructionCount != 1)
@@ -53,7 +52,6 @@ class InheritedConstructibleObject : Dummy.ConstructibleObject
     {
         return 3 * v;
     }
-    */
 }
 
 namespace TestSuite
@@ -61,7 +59,6 @@ namespace TestSuite
 
 class TestEoConstruction
 {
-	/*
     public static void TestGeneratedEoDirectConstruction()
     {
         var obj = new Dummy.ConstructibleObject();
@@ -110,7 +107,6 @@ class TestEoConstruction
         obj.Dispose();
         obj2.Dispose();
     }
-    */
 }
 
 }
