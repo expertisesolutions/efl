@@ -21,17 +21,41 @@ namespace Efl.Eo
 
 internal partial class NativeModule
 {
-   [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
-   internal static extern IntPtr LoadLibrary(string libFilename);
+   internal class NativeModuleNatives
+   {
+        [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
+        internal static extern IntPtr LoadLibrary(string libFilename);
+        
+        [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
+        internal static extern void FreeLibrary(IntPtr handle);
 
-   [DllImport(efl.Libs.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
-   private static extern void FreeLibrary(IntPtr handle);
+   }
+
+   ///<summary>Closes the library handle.</summary>
+   ///<param name="handle">The handle to the library.</param>
+   internal static IntPtr LoadLibrary(string libFilename)
+   {
+       System.Console.WriteLine("trying to load " + libFilename);
+       IntPtr p = NativeModuleNatives.LoadLibrary(libFilename);
+       if (p == IntPtr.Zero)
+       {
+          System.Console.WriteLine("trying to load " + libFilename + ".dll");
+          p = NativeModuleNatives.LoadLibrary(libFilename + ".dll");
+          if (p == IntPtr.Zero)
+          {
+            System.Console.WriteLine("not found " + libFilename + ".dll");
+            System.Console.WriteLine("PATH " + System.Environment.GetEnvironmentVariable("PATH"));
+          }
+       }
+       return p;
+   }
+
 
    ///<summary>Closes the library handle.</summary>
    ///<param name="handle">The handle to the library.</param>
    internal static void UnloadLibrary(IntPtr handle)
    {
-       FreeLibrary(handle);
+       NativeModuleNatives.FreeLibrary(handle);
    }
 
    internal static string GetError()
