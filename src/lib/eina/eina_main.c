@@ -281,14 +281,58 @@ _eina_threads_do_shutdown(void)
 EINA_API Eina_Version *eina_version = &_version;
 
 #ifdef EFL_EXACTNESS_WIN32
-typedef int(*eina_init_t)(void);
 EINA_API eina_init_t eina_init_redirect = NULL;
-EINA_API int eina_init_original(void);
+
+static Eina_Bool _exactness_preload(void);
+
+static Eina_Bool
+_exactness_preload(void)
+{
+   char *env = getenv("EXACTNESS_PRELOAD_WIN32");
+   if (env)
+     {
+        fprintf(stderr, "\n >>> %s:%s: redirected? %s <<< \n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NO"));
+        if (!eina_init_redirect)
+          {
+             static HINSTANCE dll = NULL;
+	     if (!dll)
+	       {
+	          if (!strcmp(env, "PLAY"))
+	            {
+                       fprintf(stderr, "\n >>> %s:%s: Loadging library exactness_play-1.dll... <<< \n", __FILE__, __func__);
+	               dll = LoadLibraryA("C:/Users/joaoantoniocardoso/efl/build/src/bin/exactness/exactness_play-1.dll");
+                       if (!dll)
+                         {
+                            fprintf(stderr, "\n >>> Failed loading exactness_play-1.dll <<< \n");
+                            return EINA_FALSE;
+                         }
+                       fprintf(stderr, "\n >>> exactness_play-1.dll Loaded! <<< \n");
+                       return EINA_TRUE;
+		    }
+	          else if (!strcmp(env, "RECORD"))
+		    {
+                       fprintf(stderr, "\n >>> %s:%s: Loadging library exactness_record-1.dll... <<< \n", __FILE__, __func__);
+	               dll = LoadLibraryA("C:/Users/joaoantoniocardoso/efl/build/src/bin/exactness/exactness_record-1.dll");
+                       if (!dll)
+                         {
+                            fprintf(stderr, "\n >>> Failed loading exactness_record-1.dll <<< \n");
+                            return EINA_FALSE;
+                         }
+                       fprintf(stderr, "\n >>> exactness_record-1.dll Loaded! <<< \n");
+                       return EINA_TRUE;
+		    }
+	       }
+          }
+     }
+   return EINA_FALSE;
+}
 
 EINA_API int 
 eina_init(void)
 {
+   _exactness_preload();
    fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NULL"));
+
    if (eina_init_redirect)
      return eina_init_redirect();
    else
@@ -302,7 +346,7 @@ EINA_API int
 eina_init(void)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+   fprintf(stderr, "\n >>> %s:%s <<< (original) \n", __FILE__, __func__);
    const struct eina_desc_setup *itr, *itr_end;
 
    if (EINA_LIKELY(_eina_main_count > 0))
