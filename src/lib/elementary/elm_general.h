@@ -525,21 +525,13 @@ typedef Eina_Bool             (*Elm_Event_Cb)(void *data, Evas_Object *obj, Evas
 ELM_API extern double _elm_startup_time;
 
 #ifndef ELM_LIB_QUICKLAUNCH
-#ifdef EFL_EXACTNESS_WIN32
-# define ELM_MAIN() int main(int argc, char **argv) { exactness_preload(); int ret__; _elm_startup_time = ecore_time_unix_get(); elm_init(argc, argv); ret__ = elm_main(argc, argv); elm_shutdown(); return ret__; } /**< macro to be used after the elm_main() function */
-#else
-# define ELM_MAIN() int main(int argc, char **argv) { int ret__; _elm_startup_time = ecore_time_unix_get(); elm_init(argc, argv); ret__ = elm_main(argc, argv); elm_shutdown(); return ret__; } /**< macro to be used after the elm_main() function */
-#endif
+#define ELM_MAIN() int main(int argc, char **argv) { int ret__; _elm_startup_time = ecore_time_unix_get(); elm_init(argc, argv); ret__ = elm_main(argc, argv); elm_shutdown(); return ret__; } /**< macro to be used after the elm_main() function */
 #else
 /** @deprecated macro to be used after the elm_main() function.
  * Do not define ELM_LIB_QUICKLAUNCH
  * Compile your programs with -fpie and -pie -rdynamic instead, to generate a single binary (linkable executable).
  */
-#ifdef EFL_EXACTNESS_WIN32
-# define ELM_MAIN() int main(int argc, char **argv) { exactness_preload(); int ret__; _elm_startup_time = ecore_time_unix_get(); ret__ = elm_quicklaunch_fallback(argc, argv); elm_shutdown(); return ret__; }
-#else
-#endif
-# define ELM_MAIN() int main(int argc, char **argv) { int ret__; _elm_startup_time = ecore_time_unix_get(); ret__ = elm_quicklaunch_fallback(argc, argv); elm_shutdown(); return ret__; }
+#define ELM_MAIN() int main(int argc, char **argv) { int ret__; _elm_startup_time = ecore_time_unix_get(); ret__ = elm_quicklaunch_fallback(argc, argv); elm_shutdown(); return ret__; }
 #endif
 
 #define __EFL_UI_IS_REQUIRED
@@ -584,7 +576,6 @@ ELM_API extern double _elm_startup_time;
 #ifdef EFL_EXACTNESS_WIN32
 typedef int(*elm_init_t)(int argc, char **argv);
 extern ELM_API elm_init_t elm_init_redirect;
-ELM_API Eina_Bool exactness_preload(void);
 
 ELM_API int elm_init_original(int argc, char **argv);
 #endif

@@ -177,7 +177,7 @@ EINA_API extern Eina_Error EINA_ERROR_NOT_IMPLEMENTED;
  */
 #ifdef EFL_EXACTNESS_WIN32
 typedef int(*eina_init_t)(void);
-EINA_API eina_init_t eina_init_redirect;
+extern EINA_API eina_init_t eina_init_redirect;
 EINA_API int eina_init_original(void);
 #endif
 EINA_API int eina_init(void);

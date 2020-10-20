@@ -422,28 +422,6 @@ static const char *bcargv[] = { "exe" };
 #ifdef EFL_EXACTNESS_WIN32
 ELM_API elm_init_t elm_init_redirect = NULL;
 
-ELM_API Eina_Bool
-exactness_preload(void)
-{
-   //if (getenv("EXACTNESS_PRELOAD_WIN32"))
-     {
-        fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (elm_init_redirect ? "YES" : "NULL"));
-        if (!eina_init_redirect)
-          {
-             HINSTANCE dll = LoadLibraryA("C:/Users/joaoantoniocardoso/efl/build/src/bin/exactness/exactness_play-1.dll");
-             if (!dll)
-               {
-                  fprintf(stderr, "\n >>> Failed loading exactness_play-1.dll <<< \n");
-                  return EINA_FALSE;
-               }
-
-             fprintf(stderr, "\n >>> exactness_play-1.dll Loaded! <<< \n");
-             return EINA_TRUE;
-          }
-     }
-     return EINA_FALSE;
-}
-
 ELM_API int
 elm_init(int argc, char **argv)
 {
