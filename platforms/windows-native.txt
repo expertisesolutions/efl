@@ -1,0 +1,35 @@
+[constants]
+common_flags = ['-D_WIN32_WINNT=0x0601', '-march=x86-64', '-fansi-escape-codes']
+
+[binaries]
+c = 'clang-cl'
+cpp = 'clang-cl'
+
+[project options]
+nls = 'false'
+systemd = 'false'
+gstreamer = 'false'
+dbus = 'false'
+audio = 'false'
+avahi = 'false'
+v4l2 = 'false'
+elua = 'false'
+x11 = 'false'
+physics = 'false'
+ethumb = 'false'
+emotion = 'false'
+eeze = 'false'
+pulseaudio = 'false'
+harfbuzz = 'false'
+fribidi = 'false'
+fontconfig = 'false'
+edje-sound-and-video = 'false'
+libmount = 'false'
+evas-loaders-disabler = 'gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,generic,gif,ico,jp2k,pmaps,psd,tga,tgv,tiff,wbmp,webp,xpm,json'
+opengl = 'none'
+emotion-loaders-disabler = 'gstreamer1,libvlc,xine'
+bindings=
+
+[properties]
+c_args = common_flags
+cpp_args = common_flags
