@@ -48,7 +48,11 @@ if G.version:
   exit(0)
 
 spawn_env = os.environ.copy()
-spawn_env["LD_PRELOAD"] = @EXACTNESS_PLAY_PRELOAD_PATH@
+if os.name == 'nt':
+  # Windows
+  spawn_env["EXACTNESS_PRELOAD_WIN32"] = "PLAY"
+else:
+  spawn_env["LD_PRELOAD"] = @EXACTNESS_PLAY_PRELOAD_PATH@
 
 if G.tests == None and G.external_injection == True:
   print("no test file specified")
