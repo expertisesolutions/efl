@@ -159,6 +159,11 @@ ECORE_EVAS_API int         ecore_evas_engine_type_supported_get(Ecore_Evas_Engin
  *
  * @see ecore_evas_shutdown()
  */
+#ifdef EFL_EXACTNESS_WIN32
+typedef int(*ecore_evas_init_t)(void);
+extern ECORE_EVAS_API ecore_evas_init_t ecore_evas_init_redirect;
+ECORE_EVAS_API int ecore_evas_init_original(void);
+#endif
 ECORE_EVAS_API int         ecore_evas_init(void);
 
 /**
