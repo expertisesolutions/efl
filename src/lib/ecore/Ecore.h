@@ -306,6 +306,14 @@ extern "C" {
 
 ECORE_API double _ecore_main_loop_wakeup_time_get(void);
 
+#ifdef EFL_EXACTNESS_WIN32
+# include "efl_loop_data.h"
+typedef Eina_Value *(*efl_loop_begin_t)(Eo *obj, Efl_Loop_Data *pd);
+
+extern ECORE_API efl_loop_begin_t efl_loop_begin_redirect;
+ECORE_API Eina_Value *efl_loop_begin_original(Eo *obj, Efl_Loop_Data *pd);
+#endif
+
 #ifdef __cplusplus
 }
 #endif
