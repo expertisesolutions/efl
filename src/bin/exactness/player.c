@@ -1153,3 +1153,50 @@ eina_shutdown(void)
 
    return original_return;
 }
+
+void exactness_init(void)
+{
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+
+   eina_init_redirect = eina_init;
+   eina_shutdown_redirect = eina_shutdown;
+   efl_loop_begin_redirect = efl_loop_begin;
+   elm_init_redirect = elm_init;
+   ecore_evas_init_redirect = ecore_evas_init;
+}
+
+void exactness_shutdown(void)
+{
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+
+   eina_init_redirect = NULL;
+   eina_shutdown_redirect = NULL;
+   efl_loop_begin_redirect = NULL;
+   elm_init_redirect = NULL;
+   ecore_evas_init_redirect = NULL;
+}
+
+BOOL WINAPI
+DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
+{
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+   switch (reason)
+     {
+      case DLL_PROCESS_ATTACH:
+        fprintf(stderr, "\n >>> DLL_PROCESS_ATTACH <<< \n");
+	exactness_init();
+        break;
+      case DLL_PROCESS_DETACH:
+        fprintf(stderr, "\n >>> DLL_PROCESS_DETACH <<< \n");
+	exactness_shutdown();
+        break;
+      case DLL_THREAD_ATTACH:
+        fprintf(stderr, "\n >>> DLL_THREAD_ATTACH <<< \n");
+	break;
+      case DLL_THREAD_DETACH:
+        fprintf(stderr, "\n >>> DLL_THREAD_DETACH <<< \n");
+        break;
+     }
+
+   return TRUE;
+}
