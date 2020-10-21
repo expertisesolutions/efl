@@ -7,10 +7,11 @@
 #include <getopt.h>
 #ifndef _MSC_VER
 # include <unistd.h>
-#endif
-
-#ifdef HAVE_DLSYM
-# include <dlfcn.h>
+# ifdef HAVE_DLSYM
+#  include <dlfcn.h>
+# endif
+#else
+# include <evil_windows.h>
 #endif
 
 #ifdef HAVE_FORK
