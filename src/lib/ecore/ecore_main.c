@@ -1301,7 +1301,6 @@ ecore_main_loop_iterate_may_block(int may_block)
 
 #ifdef EFL_EXACTNESS_WIN32
 ECORE_API ecore_main_loop_begin_t ecore_main_loop_begin_redirect = NULL;
-ECORE_API void ecore_main_loop_begin_original(void);
 
 ECORE_API void
 ecore_main_loop_begin(void)

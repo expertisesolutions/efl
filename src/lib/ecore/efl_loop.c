@@ -19,6 +19,7 @@
 
 #include "Ecore.h"
 #include "ecore_private.h"
+#include "efl_loop_data.h"
 
 #include "ecore_main_common.h"
 
@@ -60,16 +61,21 @@ _efl_loop_iterate_may_block(Eo *obj, Efl_Loop_Data *pd, int may_block)
 ECORE_API efl_loop_begin_t efl_loop_begin_redirect = NULL;
 
 EOLIAN static Eina_Value *
+_efl_loop_begin_original(Eo *obj, Efl_Loop_Data *pd);
+
+ECORE_API ECORE_API_WEAK EFL_FUNC_BODY(efl_loop_begin_original, Eina_Value *, NULL);
+
+EOLIAN static Eina_Value *
 _efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
 {
    if (efl_loop_begin_redirect)
-     return efl_loop_begin_redirect(obj, pd);
+     return efl_loop_begin_redirect(obj);
    else
-     return efl_loop_begin_original(obj, pd);
+     return efl_loop_begin_original(obj);
 }
 
 EOLIAN static Eina_Value *
-efl_loop_begin_original(Eo *obj, Efl_Loop_Data *pd)
+_efl_loop_begin_original(Eo *obj, Efl_Loop_Data *pd)
 #else
 EOLIAN static Eina_Value *
 _efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
@@ -713,6 +719,7 @@ efl_loop_future_scheduler_get(const Eo *obj)
 }
 
 #define EFL_LOOP_EXTRA_OPS                                              \
+  EFL_OBJECT_OP_FUNC(efl_loop_begin_original, _efl_loop_begin_original), \
   EFL_OBJECT_OP_FUNC(efl_loop_message_process, _efl_loop_message_process), \
   EFL_OBJECT_OP_FUNC(efl_loop_register, _efl_loop_register),          \
   EFL_OBJECT_OP_FUNC(efl_loop_unregister, _efl_loop_unregister)
