@@ -605,8 +605,25 @@ ecore_evas_engine_type_supported_get(Ecore_Evas_Engine_Type engine)
      };
 }
 
+
+#ifdef EFL_EXACTNESS_WIN32
+ECORE_EVAS_API ecore_evas_init_t ecore_evas_init_redirect = NULL;
+
 ECORE_EVAS_API int
 ecore_evas_init(void)
+{
+   if (ecore_evas_init_redirect)
+     return ecore_evas_init_redirect();
+   else
+     return ecore_evas_init_original();
+}
+
+ECORE_EVAS_API int
+ecore_evas_init_original(void)
+#else
+ECORE_EVAS_API int
+ecore_evas_init(void)
+#endif
 {
    Ecore_Evas_Object_Animator_Interface iface;
 
