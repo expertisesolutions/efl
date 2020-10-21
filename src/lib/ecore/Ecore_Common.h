@@ -311,6 +311,11 @@ ECORE_API void ecore_main_loop_glib_always_integrate_disable(void);
  * timeout for the timers can be changed using
  * ecore_main_loop_select_func_set().
  */
+#ifdef EFL_EXACTNESS_WIN32
+typedef void(*ecore_main_loop_begin_t)(void);
+extern ECORE_API ecore_main_loop_begin_t ecore_main_loop_begin_redirect;
+ECORE_API void ecore_main_loop_begin_original(void);
+#endif
 ECORE_API void ecore_main_loop_begin(void);
 
 /**

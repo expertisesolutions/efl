@@ -56,8 +56,24 @@ _efl_loop_iterate_may_block(Eo *obj, Efl_Loop_Data *pd, int may_block)
    return _ecore_main_loop_iterate_may_block(obj, pd, may_block);
 }
 
+#ifdef EFL_EXACTNESS_WIN32
+ECORE_API efl_loop_begin_t efl_loop_begin_redirect = NULL;
+
 EOLIAN static Eina_Value *
 _efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
+{
+   if (efl_loop_begin_redirect)
+     return efl_loop_begin_redirect(obj, pd);
+   else
+     return efl_loop_begin_original(obj, pd);
+}
+
+EOLIAN static Eina_Value *
+efl_loop_begin_original(Eo *obj, Efl_Loop_Data *pd)
+#else
+EOLIAN static Eina_Value *
+_efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
+#endif
 {
    _ecore_main_loop_begin(obj, pd);
    if (pd->thread_children)
