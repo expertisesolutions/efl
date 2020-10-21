@@ -1213,11 +1213,7 @@ DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
         fprintf(stderr, "\n >>> DLL_PROCESS_DETACH <<< \n");
 	exactness_shutdown();
         break;
-      case DLL_THREAD_ATTACH:
-        fprintf(stderr, "\n >>> DLL_THREAD_ATTACH <<< \n");
-	break;
-      case DLL_THREAD_DETACH:
-        fprintf(stderr, "\n >>> DLL_THREAD_DETACH <<< \n");
+      default:
         break;
      }
 
