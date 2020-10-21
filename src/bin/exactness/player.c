@@ -1031,27 +1031,36 @@ _write_unit_file(void)
         exactness_unit_file_write(_dest_unit, _dest);
      }
 }
-#ifdef HAVE_DLSYM
-# define ORIGINAL_CALL_T(t, name, ...) \
-   t (*_original_init_cb)(); \
-   _original_init_cb = dlsym(RTLD_NEXT, name); \
-   original_return = _original_init_cb(__VA_ARGS__);
+
+#ifndef _WIN32
+# ifdef HAVE_DLSYM
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    t (*_original_init_cb)(); \
+    _original_init_cb = dlsym(RTLD_NEXT, #name); \
+    original_return = _original_init_cb(__VA_ARGS__);
+# else
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    printf("THIS IS NOT SUPPORTED WITHOUT DLSYM\n"); \
+    abort();
+# endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   printf("THIS IS NOT SUPPORTED ON WINDOWS\n"); \
-   abort();
+   fprintf(stderr, "\n >>>> calling " #name "_original() <<<< \n"); \
+   t (*_original_init_cb)(); \
+   _original_init_cb = & name ## _original; \
+   original_return = _original_init_cb(__VA_ARGS__);
 #endif
 
 #define ORIGINAL_CALL(name, ...) \
-   ORIGINAL_CALL_T(int, name, __VA_ARGS__)
+   ORIGINAL_CALL_T(int , name, __VA_ARGS__)
 
 int
 eina_init(void)
 {
    int original_return;
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
 
-   ORIGINAL_CALL("eina_init");
-
+   ORIGINAL_CALL(eina_init);
    ex_set_original_envvar();
 
    if (original_return == 1)
@@ -1092,9 +1101,10 @@ int
 ecore_evas_init(void)
 {
    int original_return;
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
 
-   ORIGINAL_CALL("ecore_evas_init")
-
+   ORIGINAL_CALL(ecore_evas_init);
+   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      {
         _setup_ee_creation();
@@ -1108,8 +1118,10 @@ int
 elm_init(int argc, char **argv)
 {
    int original_return;
-   ORIGINAL_CALL("elm_init", argc, argv)
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
 
+   ORIGINAL_CALL(elm_init, argc, argv);
+   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
 
@@ -1120,17 +1132,23 @@ void
 ecore_main_loop_begin(void)
 {
    int original_return;
-   ORIGINAL_CALL("ecore_main_loop_begin")
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+
+   ORIGINAL_CALL(ecore_main_loop_begin);
+   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app())
      _write_unit_file();
    (void)original_return;
 }
 
-Eina_Value*
+Eina_Value *
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
-   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
+   //fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+
+   ORIGINAL_CALL_T(Eina_Value*, efl_loop_begin, obj);
+   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app())
      _write_unit_file();
    return original_return;
@@ -1141,7 +1159,10 @@ eina_shutdown(void)
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
-   ORIGINAL_CALL("eina_shutdown")
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
+
+   ORIGINAL_CALL(eina_shutdown);
+   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() &&original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
@@ -1203,3 +1224,4 @@ DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
 
    return TRUE;
 }
+

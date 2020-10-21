@@ -297,15 +297,23 @@ _setup_ee_creation(void)
    _last_timestamp = ecore_time_get() * 1000;
 }
 
-#ifdef HAVE_DLSYM
-# define ORIGINAL_CALL_T(t, name, ...) \
-   t (*_original_init_cb)(); \
-   _original_init_cb = dlsym(RTLD_NEXT, name); \
-   original_return = _original_init_cb(__VA_ARGS__);
+#ifndef _WIN32
+# ifdef HAVE_DLSYM
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    t (*_original_init_cb)(); \
+    _original_init_cb = dlsym(RTLD_NEXT, #name); \
+    original_return = _original_init_cb(__VA_ARGS__);
+# else
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    printf("THIS IS NOT SUPPORTED WITHOUT DLSYM\n"); \
+    abort();
+# endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   printf("THIS IS NOT SUPPORTED ON WINDOWS\n"); \
-   abort();
+   fprintf(stderr, " >>> calling " #name "_original() \n"); \
+   t (*_original_init_cb)(); \
+   _original_init_cb = & name ## _original; \
+   original_return = _original_init_cb(__VA_ARGS__);
 #endif
 
 #define ORIGINAL_CALL(name, ...) \
@@ -316,7 +324,7 @@ eina_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL("eina_init");
+   ORIGINAL_CALL(eina_init);
 
    ex_set_original_envvar();
 
@@ -340,7 +348,7 @@ ecore_evas_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL("ecore_evas_init")
+   ORIGINAL_CALL(ecore_evas_init);
 
    if (ex_is_original_app() && original_return == 1)
      {
@@ -356,7 +364,7 @@ int
 elm_init(int argc, char **argv)
 {
    int original_return;
-   ORIGINAL_CALL("elm_init", argc, argv)
+   ORIGINAL_CALL(elm_init, argc, argv);
 
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
@@ -368,7 +376,7 @@ void
 ecore_main_loop_begin(void)
 {
    int original_return;
-   ORIGINAL_CALL("ecore_main_loop_begin")
+   ORIGINAL_CALL(ecore_main_loop_begin);
    if (ex_is_original_app())
      _output_write();
    (void)original_return;
@@ -378,7 +386,7 @@ Eina_Value*
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
-   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
+   ORIGINAL_CALL_T(Eina_Value *, efl_loop_begin, obj);
    if (ex_is_original_app())
      _output_write();
    return original_return;
@@ -389,7 +397,7 @@ eina_shutdown(void)
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
-   ORIGINAL_CALL("eina_shutdown")
+   ORIGINAL_CALL(eina_shutdown);
    if (ex_is_original_app() && original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
