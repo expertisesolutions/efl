@@ -280,9 +280,29 @@ _eina_threads_do_shutdown(void)
  */
 EINA_API Eina_Version *eina_version = &_version;
 
-EINA_API int
+#ifdef EFL_EXACTNESS_WIN32
+typedef int(*eina_init_t)(void);
+EINA_API eina_init_t eina_init_redirect = NULL;
+EINA_API int eina_init_original(void);
+
+EINA_API int 
 eina_init(void)
 {
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NULL"));
+   if (eina_init_redirect)
+     return eina_init_redirect();
+   else
+     return eina_init_original();
+}
+
+EINA_API int 
+eina_init_original(void)
+#else
+EINA_API int
+eina_init(void)
+#endif
+{
+   fprintf(stderr, "\n >>> %s:%s <<< \n", __FILE__, __func__);
    const struct eina_desc_setup *itr, *itr_end;
 
    if (EINA_LIKELY(_eina_main_count > 0))
@@ -351,9 +371,27 @@ eina_init(void)
    return 1;
 }
 
-EINA_API int
+#ifdef EFL_EXACTNESS_WIN32
+EINA_API eina_shutdown_t eina_shutdown_redirect = NULL;
+
+EINA_API int 
 eina_shutdown(void)
 {
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (eina_shutdown_redirect ? "YES" : "NULL"));
+   if (eina_shutdown_redirect)
+     return eina_shutdown_redirect();
+   else
+     return eina_shutdown_original();
+}
+
+EINA_API int
+eina_shutdown_original(void)
+#else
+EINA_API int
+eina_shutdown(void)
+#endif
+{
+   fprintf(stderr, "\n >>> %s:%s (original) <<< \n", __FILE__, __func__);
    if (_eina_main_count <= 0)
      {
         ERR("Init count not greater than 0 in shutdown.");
