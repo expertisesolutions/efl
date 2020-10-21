@@ -310,12 +310,21 @@ _setup_ee_creation(void)
 #define ORIGINAL_CALL(name, ...) \
    ORIGINAL_CALL_T(int, name, __VA_ARGS__)
 
+#ifdef EFL_EXACTNESS_WIN32
+int
+eina_init_redirect(void)
+#else
 int
 eina_init(void)
+#endif
 {
    int original_return;
 
+#ifdef EFL_EXACTNESS_WIN32
+   ORIGINAL_CALL("eina_init_original");
+#else
    ORIGINAL_CALL("eina_init");
+#endif
 
    ex_set_original_envvar();
 
@@ -334,12 +343,21 @@ eina_init(void)
    return original_return;
 }
 
+#ifdef EFL_EXACTNESS_WIN32
+int
+ecore_evas_init_redirect(void)
+#else
 int
 ecore_evas_init(void)
+#endif
 {
    int original_return;
 
+#ifdef EFL_EXACTNESS_WIN32
+   ORIGINAL_CALL("ecore_evas_init_original")
+#else
    ORIGINAL_CALL("ecore_evas_init")
+#endif
 
    if (ex_is_original_app() && original_return == 1)
      {
@@ -351,11 +369,20 @@ ecore_evas_init(void)
 }
 
 //hook, to hook in our theme
+#ifdef EFL_EXACTNESS_WIN32
+int
+elm_init_redirect(int argc, char **argv)
+#else
 int
 elm_init(int argc, char **argv)
+#endif
 {
    int original_return;
+#ifdef EFL_EXACTNESS_WIN32
+   ORIGINAL_CALL("elm_init_original", argc, argv)
+#else
    ORIGINAL_CALL("elm_init", argc, argv)
+#endif
 
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
@@ -363,32 +390,59 @@ elm_init(int argc, char **argv)
    return original_return;
 }
 
+#ifdef EFL_EXACTNESS_WIN32
+void
+ecore_main_loop_begin_redirect(void)
+#else
 void
 ecore_main_loop_begin(void)
+#endif
 {
    int original_return;
+#ifdef EFL_EXACTNESS_WIN32
+   ORIGINAL_CALL("ecore_main_loop_begin_original")
+#else
    ORIGINAL_CALL("ecore_main_loop_begin")
+#endif
    if (ex_is_original_app())
      _output_write();
    (void)original_return;
 }
 
+#ifdef EFL_EXACTNESS_WIN32
+Eina_Value*
+efl_loop_begin_redirect(Eo *obj)
+#else
 Eina_Value*
 efl_loop_begin(Eo *obj)
+#endif
 {
    Eina_Value *original_return;
+#ifdef EFL_EXACTNESS_WIN32
+   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin_original", obj);
+#else
    ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
+#endif
    if (ex_is_original_app())
      _output_write();
    return original_return;
 }
 
+#ifdef EFL_EXACTNESS_WIN32
+int
+eina_shutdown_redirect(void)
+#else
 int
 eina_shutdown(void)
+#endif
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
+#ifdef EFL_EXACTNESS_WIN32
+   ORIGINAL_CALL("eina_shutdown_original")
+#else
    ORIGINAL_CALL("eina_shutdown")
+#endif
    if (ex_is_original_app() && original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
