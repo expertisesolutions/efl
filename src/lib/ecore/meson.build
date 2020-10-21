@@ -101,6 +101,7 @@ ecore_header_src = [
   'ecore_api.h',
   'ecore_exe_eo.legacy.h',
   'efl_loop_timer_eo.legacy.h',
+  'efl_loop_data.h',
 ]
 
 ecore_src = files([
