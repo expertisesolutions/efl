@@ -283,10 +283,8 @@ EINA_API Eina_Version *eina_version = &_version;
 #ifdef EFL_EXACTNESS_WIN32
 EINA_API eina_init_t eina_init_redirect = NULL;
 
-static Eina_Bool _exactness_preload(void);
-
-static Eina_Bool
-_exactness_preload(void)
+EINA_API Eina_Bool
+exactness_preload(void)
 {
    char *env = getenv("EXACTNESS_PRELOAD_WIN32");
    if (env)
