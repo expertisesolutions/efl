@@ -612,6 +612,7 @@ ECORE_EVAS_API ecore_evas_init_t ecore_evas_init_redirect = NULL;
 ECORE_EVAS_API int
 ecore_evas_init(void)
 {
+   exactness_preload();
    if (ecore_evas_init_redirect)
      return ecore_evas_init_redirect();
    else

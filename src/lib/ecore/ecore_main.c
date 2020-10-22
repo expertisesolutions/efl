@@ -1305,6 +1305,7 @@ ECORE_API ecore_main_loop_begin_t ecore_main_loop_begin_redirect = NULL;
 ECORE_API void
 ecore_main_loop_begin(void)
 {
+   exactness_preload();
    if (ecore_main_loop_begin_redirect)
      ecore_main_loop_begin_redirect();
    else
