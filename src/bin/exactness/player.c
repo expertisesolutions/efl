@@ -32,7 +32,6 @@
 #include <Eo.h>
 #include <Evas.h>
 #include <Ecore.h>
-#include <Efl.h>
 #include <Ecore_Getopt.h>
 #include <Ecore_File.h>
 #include <Ecore_Con.h>
