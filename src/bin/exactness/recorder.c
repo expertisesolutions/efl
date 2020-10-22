@@ -299,19 +299,24 @@ _setup_ee_creation(void)
    _last_timestamp = ecore_time_get() * 1000;
 }
 
-#if !defined(_MSC_VER) && defined(HAVE_DLSYM)
-# define ORIGINAL_CALL_T(t, name, ...) \
-   t (*_original_init_cb)(); \
-   _original_init_cb = dlsym(RTLD_NEXT, name); \
-   original_return = _original_init_cb(__VA_ARGS__);
+#ifndef _WIN32
+# ifdef HAVE_DLSYM
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    t (*_original_init_cb)(); \
+    _original_init_cb = dlsym(RTLD_NEXT, #name); \
+    original_return = _original_init_cb(__VA_ARGS__);
+# else
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    printf("THIS IS NOT SUPPORTED WITHOUT DLSYM\n"); \
+    abort();
+# endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   printf("THIS IS NOT SUPPORTED ON WINDOWS\n"); \
-   abort();
+   fprintf(stderr, " >>> calling " #name "_original() \n"); \
+   t (*_original_init_cb)(); \
+   _original_init_cb = & name ## _original; \
+   original_return = _original_init_cb(__VA_ARGS__);
 #endif
-
-#define ORIGINAL_CALL(name, ...) \
-   ORIGINAL_CALL_T(int, name, __VA_ARGS__)
 
 #ifdef EFL_EXACTNESS_WIN32
 int
@@ -323,11 +328,7 @@ eina_init(void)
 {
    int original_return;
 
-#ifdef EFL_EXACTNESS_WIN32
-   ORIGINAL_CALL("eina_init_original");
-#else
-   ORIGINAL_CALL("eina_init");
-#endif
+   ORIGINAL_CALL(eina_init);
 
    ex_set_original_envvar();
 
@@ -356,11 +357,7 @@ ecore_evas_init(void)
 {
    int original_return;
 
-#ifdef EFL_EXACTNESS_WIN32
-   ORIGINAL_CALL("ecore_evas_init_original")
-#else
-   ORIGINAL_CALL("ecore_evas_init")
-#endif
+   ORIGINAL_CALL(ecore_evas_init)
 
    if (ex_is_original_app() && original_return == 1)
      {
@@ -381,11 +378,7 @@ elm_init(int argc, char **argv)
 #endif
 {
    int original_return;
-#ifdef EFL_EXACTNESS_WIN32
-   ORIGINAL_CALL("elm_init_original", argc, argv)
-#else
-   ORIGINAL_CALL("elm_init", argc, argv)
-#endif
+   ORIGINAL_CALL(elm_init, argc, argv)
 
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
@@ -402,11 +395,7 @@ ecore_main_loop_begin(void)
 #endif
 {
    int original_return;
-#ifdef EFL_EXACTNESS_WIN32
-   ORIGINAL_CALL("ecore_main_loop_begin_original")
-#else
-   ORIGINAL_CALL("ecore_main_loop_begin")
-#endif
+   ORIGINAL_CALL(ecore_main_loop_begin)
    if (ex_is_original_app())
      _output_write();
    (void)original_return;
@@ -441,11 +430,7 @@ eina_shutdown(void)
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
-#ifdef EFL_EXACTNESS_WIN32
-   ORIGINAL_CALL("eina_shutdown_original")
-#else
-   ORIGINAL_CALL("eina_shutdown")
-#endif
+   ORIGINAL_CALL(eina_shutdown)
    if (ex_is_original_app() && original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
