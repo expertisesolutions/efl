@@ -1157,6 +1157,8 @@ eina_shutdown(void)
    return original_return;
 }
 
+#ifdef _WIN32
+
 void exactness_init(void)
 {
    eina_init_redirect = eina_init;
@@ -1200,4 +1202,6 @@ DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
 
    return TRUE;
 }
+
+#endif /* _WIN32 */
 
