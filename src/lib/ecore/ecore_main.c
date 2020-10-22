@@ -1318,6 +1318,7 @@ ECORE_API void
 ecore_main_loop_begin(void)
 #endif
 {
+   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    DBG("ecore_main_loop_begin");
    EINA_MAIN_LOOP_CHECK_RETURN;
    eina_evlog("+mainloop", NULL, 0.0, NULL);

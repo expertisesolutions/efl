@@ -439,7 +439,7 @@ ELM_API int
 elm_init(int argc, char **argv)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s (original) <<< \n", __FILE__, __func__);
+   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    _elm_init_count++;
    if (_elm_init_count > 1) return _elm_init_count;
    EINA_SAFETY_ON_FALSE_RETURN_VAL(elm_quicklaunch_init(argc, argv ? argv : (char**) bcargv), --_elm_init_count);

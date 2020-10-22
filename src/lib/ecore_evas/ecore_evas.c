@@ -612,6 +612,8 @@ ECORE_EVAS_API ecore_evas_init_t ecore_evas_init_redirect = NULL;
 ECORE_EVAS_API int
 ecore_evas_init(void)
 {
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (ecore_evas_init_redirect ? "YES" : "NULL"));
+
    if (ecore_evas_init_redirect)
      return ecore_evas_init_redirect();
    else
@@ -625,6 +627,7 @@ ECORE_EVAS_API int
 ecore_evas_init(void)
 #endif
 {
+   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    Ecore_Evas_Object_Animator_Interface iface;
 
    if (++_ecore_evas_init_count != 1)

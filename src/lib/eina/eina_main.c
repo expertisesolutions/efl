@@ -331,7 +331,7 @@ EINA_API int
 eina_init(void)
 {
    _exactness_preload();
-   fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NULL"));
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NULL"));
 
    if (eina_init_redirect)
      return eina_init_redirect();
@@ -346,7 +346,7 @@ EINA_API int
 eina_init(void)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s <<< (original) \n", __FILE__, __func__);
+   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    const struct eina_desc_setup *itr, *itr_end;
 
    if (EINA_LIKELY(_eina_main_count > 0))
@@ -421,7 +421,7 @@ EINA_API eina_shutdown_t eina_shutdown_redirect = NULL;
 EINA_API int 
 eina_shutdown(void)
 {
-   fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (eina_shutdown_redirect ? "YES" : "NULL"));
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s \n", __FILE__, __func__, (eina_shutdown_redirect ? "YES" : "NULL"));
    if (eina_shutdown_redirect)
      return eina_shutdown_redirect();
    else
@@ -435,7 +435,7 @@ EINA_API int
 eina_shutdown(void)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s (original) <<< \n", __FILE__, __func__);
+   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    if (_eina_main_count <= 0)
      {
         ERR("Init count not greater than 0 in shutdown.");
