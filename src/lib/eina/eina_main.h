@@ -260,6 +260,10 @@ EINA_API Eina_Bool eina_main_loop_is(void);
  */
 EINA_API void eina_main_loop_define(void);
 
+#ifdef EFL_EXACTNESS_WIN32
+EINA_API Eina_Bool exactness_preload(void);
+#endif
+
 /**
  * @}
  */
