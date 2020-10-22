@@ -283,10 +283,8 @@ EINA_API Eina_Version *eina_version = &_version;
 #ifdef EFL_EXACTNESS_WIN32
 EINA_API eina_init_t eina_init_redirect = NULL;
 
-static Eina_Bool _exactness_preload(void);
-
-static Eina_Bool
-_exactness_preload(void)
+EINA_API Eina_Bool
+exactness_preload(void)
 {
    char *env = getenv("EXACTNESS_PRELOAD_WIN32");
    if (env)
@@ -330,7 +328,7 @@ _exactness_preload(void)
 EINA_API int 
 eina_init(void)
 {
-   _exactness_preload();
+   exactness_preload();
    fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NULL"));
 
    if (eina_init_redirect)
@@ -421,7 +419,9 @@ EINA_API eina_shutdown_t eina_shutdown_redirect = NULL;
 EINA_API int 
 eina_shutdown(void)
 {
+   exactness_preload();
    fprintf(stderr, "\n >>> %s:%s: redirect? %s \n", __FILE__, __func__, (eina_shutdown_redirect ? "YES" : "NULL"));
+
    if (eina_shutdown_redirect)
      return eina_shutdown_redirect();
    else

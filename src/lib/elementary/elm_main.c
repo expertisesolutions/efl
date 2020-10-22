@@ -425,7 +425,8 @@ ELM_API elm_init_t elm_init_redirect = NULL;
 ELM_API int
 elm_init(int argc, char **argv)
 {
-   fprintf(stderr, "\n >>> %s:%s: redirect? %s <<< \n", __FILE__, __func__, (elm_init_redirect ? "YES" : "NULL"));
+   exactness_preload();
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (elm_init_redirect ? "YES" : "NULL"));
    if (elm_init_redirect)
      return elm_init_redirect(argc, argv);
    else

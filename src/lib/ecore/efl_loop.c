@@ -68,6 +68,8 @@ ECORE_API ECORE_API_WEAK EFL_FUNC_BODY(efl_loop_begin_original, Eina_Value *, NU
 EOLIAN static Eina_Value *
 _efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
 {
+   exactness_preload();
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (efl_loop_begin_redirect ? "YES" : "NULL"));
    if (efl_loop_begin_redirect)
      return efl_loop_begin_redirect(obj);
    else

@@ -612,6 +612,7 @@ ECORE_EVAS_API ecore_evas_init_t ecore_evas_init_redirect = NULL;
 ECORE_EVAS_API int
 ecore_evas_init(void)
 {
+   exactness_preload();
    fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (ecore_evas_init_redirect ? "YES" : "NULL"));
 
    if (ecore_evas_init_redirect)

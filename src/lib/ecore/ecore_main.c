@@ -1305,6 +1305,8 @@ ECORE_API ecore_main_loop_begin_t ecore_main_loop_begin_redirect = NULL;
 ECORE_API void
 ecore_main_loop_begin(void)
 {
+   exactness_preload();
+   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (ecore_main_loop_begin_redirect ? "YES" : "NULL"));
    if (ecore_main_loop_begin_redirect)
      ecore_main_loop_begin_redirect();
    else
