@@ -388,7 +388,7 @@ Eina_Value*
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
-   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
+   ORIGINAL_CALL_T(Eina_Value *, efl_loop_begin, obj);
    if (ex_is_original_app())
      _output_write();
    return original_return;
