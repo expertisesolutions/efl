@@ -321,13 +321,8 @@ _setup_ee_creation(void)
 #define ORIGINAL_CALL(name, ...) \
    ORIGINAL_CALL_T(int , name, __VA_ARGS__)
 
-#ifdef EFL_EXACTNESS_WIN32
-int
-eina_init_redirect(void)
-#else
 int
 eina_init(void)
-#endif
 {
    int original_return;
 
@@ -350,13 +345,8 @@ eina_init(void)
    return original_return;
 }
 
-#ifdef EFL_EXACTNESS_WIN32
-int
-ecore_evas_init_redirect(void)
-#else
 int
 ecore_evas_init(void)
-#endif
 {
    int original_return;
 
@@ -372,13 +362,8 @@ ecore_evas_init(void)
 }
 
 //hook, to hook in our theme
-#ifdef EFL_EXACTNESS_WIN32
-int
-elm_init_redirect(int argc, char **argv)
-#else
 int
 elm_init(int argc, char **argv)
-#endif
 {
    int original_return;
    ORIGINAL_CALL(elm_init, argc, argv);
@@ -389,13 +374,8 @@ elm_init(int argc, char **argv)
    return original_return;
 }
 
-#ifdef EFL_EXACTNESS_WIN32
-void
-ecore_main_loop_begin_redirect(void)
-#else
 void
 ecore_main_loop_begin(void)
-#endif
 {
    int original_return;
    ORIGINAL_CALL(ecore_main_loop_begin);
@@ -404,13 +384,8 @@ ecore_main_loop_begin(void)
    (void)original_return;
 }
 
-#ifdef EFL_EXACTNESS_WIN32
-Eina_Value*
-efl_loop_begin_redirect(Eo *obj)
-#else
 Eina_Value*
 efl_loop_begin(Eo *obj)
-#endif
 {
    Eina_Value *original_return;
    ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
@@ -419,13 +394,8 @@ efl_loop_begin(Eo *obj)
    return original_return;
 }
 
-#ifdef EFL_EXACTNESS_WIN32
-int
-eina_shutdown_redirect(void)
-#else
 int
 eina_shutdown(void)
-#endif
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
