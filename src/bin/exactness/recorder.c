@@ -318,6 +318,9 @@ _setup_ee_creation(void)
    original_return = _original_init_cb(__VA_ARGS__);
 #endif
 
+#define ORIGINAL_CALL(name, ...) \
+   ORIGINAL_CALL_T(int , name, __VA_ARGS__)
+
 #ifdef EFL_EXACTNESS_WIN32
 int
 eina_init_redirect(void)
@@ -357,7 +360,7 @@ ecore_evas_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL(ecore_evas_init)
+   ORIGINAL_CALL(ecore_evas_init);
 
    if (ex_is_original_app() && original_return == 1)
      {
@@ -378,7 +381,7 @@ elm_init(int argc, char **argv)
 #endif
 {
    int original_return;
-   ORIGINAL_CALL(elm_init, argc, argv)
+   ORIGINAL_CALL(elm_init, argc, argv);
 
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
@@ -395,7 +398,7 @@ ecore_main_loop_begin(void)
 #endif
 {
    int original_return;
-   ORIGINAL_CALL(ecore_main_loop_begin)
+   ORIGINAL_CALL(ecore_main_loop_begin);
    if (ex_is_original_app())
      _output_write();
    (void)original_return;
@@ -410,11 +413,7 @@ efl_loop_begin(Eo *obj)
 #endif
 {
    Eina_Value *original_return;
-#ifdef EFL_EXACTNESS_WIN32
-   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin_original", obj);
-#else
    ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
-#endif
    if (ex_is_original_app())
      _output_write();
    return original_return;
@@ -430,7 +429,7 @@ eina_shutdown(void)
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
-   ORIGINAL_CALL(eina_shutdown)
+   ORIGINAL_CALL(eina_shutdown);
    if (ex_is_original_app() && original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
