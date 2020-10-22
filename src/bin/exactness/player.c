@@ -1063,8 +1063,7 @@ eina_init(void)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   //ORIGINAL_CALL(eina_init);
-   original_return = eina_init_original();
+   ORIGINAL_CALL(eina_init);
    ex_set_original_envvar();
 
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
@@ -1109,8 +1108,7 @@ ecore_evas_init(void)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   //ORIGINAL_CALL(ecore_evas_init)
-   original_return = ecore_evas_init_original();
+   ORIGINAL_CALL(ecore_evas_init)
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      {
@@ -1127,9 +1125,8 @@ elm_init(int argc, char **argv)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   //ORIGINAL_CALL(elm_init, argc, argv)
+   ORIGINAL_CALL(elm_init, argc, argv)
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
-   original_return = elm_init_original(argc, argv);
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
 
@@ -1142,9 +1139,7 @@ ecore_main_loop_begin(void)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   //ORIGINAL_CALL(ecore_main_loop_begin)
-   ecore_main_loop_begin_original();
-   //lala();
+   ORIGINAL_CALL(ecore_main_loop_begin)
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app())
    (void)original_return;
@@ -1156,9 +1151,8 @@ efl_loop_begin(Eo *obj)
    Eina_Value *original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   //ORIGINAL_CALL_T(Eina_Value*, efl_loop_begin, obj);
+   ORIGINAL_CALL_T(Eina_Value*, efl_loop_begin, obj);
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
-   original_return = efl_loop_begin_original(obj);
    if (ex_is_original_app())
    return original_return;
 }
@@ -1170,9 +1164,8 @@ eina_shutdown(void)
    static Eina_Bool output_written = EINA_FALSE;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   //ORIGINAL_CALL(eina_shutdown)
+   ORIGINAL_CALL(eina_shutdown)
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
-   original_return = eina_shutdown_original();
    if (ex_is_original_app() &&original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
