@@ -76,5 +76,4 @@ for argument in G.app:
   if passed_all_the_env_vars:
     app.append(argument)
 
-recorder = subprocess.Popen(app, env=spawn_env)
-recorder.wait()
+recorder = subprocess.run(app, env=spawn_env, stderr=subprocess.STDOUT, check=True)
