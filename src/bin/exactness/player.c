@@ -1107,7 +1107,7 @@ ecore_evas_init(void)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   ORIGINAL_CALL(ecore_evas_init)
+   ORIGINAL_CALL(ecore_evas_init);
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      {
@@ -1124,7 +1124,7 @@ elm_init(int argc, char **argv)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   ORIGINAL_CALL(elm_init, argc, argv)
+   ORIGINAL_CALL(elm_init, argc, argv);
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
@@ -1138,7 +1138,7 @@ ecore_main_loop_begin(void)
    int original_return;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   ORIGINAL_CALL(ecore_main_loop_begin)
+   ORIGINAL_CALL(ecore_main_loop_begin);
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app())
    (void)original_return;
@@ -1163,7 +1163,7 @@ eina_shutdown(void)
    static Eina_Bool output_written = EINA_FALSE;
    fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
-   ORIGINAL_CALL(eina_shutdown)
+   ORIGINAL_CALL(eina_shutdown);
    fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() &&original_return == 1 && !output_written)
      {
