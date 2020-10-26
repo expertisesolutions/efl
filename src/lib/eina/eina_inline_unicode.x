@@ -19,7 +19,7 @@
 #ifndef EINA_INLINE_UNICODE_
 # define EINA_INLINE_UNICODE_
 
-EINA_API Eina_Unicode _eina_unicode_utf8_next_get(int ind,
+EAPI Eina_Unicode _eina_unicode_utf8_next_get(int ind,
                                               unsigned char d,
                                               const char *buf,
                                               int *iindex);

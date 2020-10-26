@@ -38,7 +38,7 @@ static const char *style_buf =
    Evas_Object *tb; \
    Evas_Textblock_Style *st; \
    Evas_Textblock_Cursor *cur; \
-   Efl_Text_Cursor       *cur_obj; \
+   Efl_Text_Cursor_Object       *cur_obj; \
    evas = EVAS_TEST_INIT_EVAS(); \
    evas_font_hinting_set(evas, EVAS_FONT_HINTING_AUTO); \
    tb = evas_object_textblock_add(evas); \
@@ -3772,8 +3772,24 @@ EFL_START_TEST(evas_textblock_style)
 }
 EFL_END_TEST
 
+/* Textblock functionality without style. */
+EFL_START_TEST(evas_textblock_style_empty)
+{
+   Evas *evas;
+   Evas_Object *txt;
+   Evas_Coord w, h;
+   evas = EVAS_TEST_INIT_EVAS();
+   txt = evas_object_textblock_add(evas);
+   evas_object_textblock_text_markup_set(txt, "<b></b>");
+   evas_object_textblock_size_formatted_get(txt, &w, &h);
+   ck_assert_int_eq(w, 0);
+   ck_assert_int_eq(h, 0);
+   evas_free(evas);
+}
+EFL_END_TEST
+
 /* Basic test for style user push/peek/pop. */
-START_TEST(evas_textblock_style_user)
+EFL_START_TEST(evas_textblock_style_user)
 {
    Evas_Textblock_Style *user_st;
 
@@ -3794,7 +3810,7 @@ START_TEST(evas_textblock_style_user)
 
    END_TB_TEST();
 }
-END_TEST
+EFL_END_TEST
 
 /* Various setters and getters */
 EFL_START_TEST(evas_textblock_set_get)
@@ -3810,15 +3826,15 @@ EFL_START_TEST(evas_textblock_set_get)
    fail_if(strcmp(evas_object_textblock_replace_char_get(tb), "ש"));
 
    evas_object_textblock_valign_set(tb, -1.0);
-   fail_if(evas_object_textblock_valign_get(tb) != 0.0);
+   fail_if(EINA_DBL_NONZERO(evas_object_textblock_valign_get(tb)));
    evas_object_textblock_valign_set(tb, 0.0);
-   fail_if(evas_object_textblock_valign_get(tb) != 0.0);
+   fail_if(EINA_DBL_NONZERO(evas_object_textblock_valign_get(tb)));
    evas_object_textblock_valign_set(tb, 0.432);
-   fail_if(evas_object_textblock_valign_get(tb) != 0.432);
+   fail_if(!EINA_DBL_EQ(evas_object_textblock_valign_get(tb), 0.432));
    evas_object_textblock_valign_set(tb, 1.0);
-   fail_if(evas_object_textblock_valign_get(tb) != 1.0);
+   fail_if(!EINA_DBL_EQ(evas_object_textblock_valign_get(tb), 1.0));
    evas_object_textblock_valign_set(tb, 1.5);
-   fail_if(evas_object_textblock_valign_get(tb) != 1.0);
+   fail_if(!EINA_DBL_EQ(evas_object_textblock_valign_get(tb), 1.0));
 
    evas_object_textblock_bidi_delimiters_set(tb, ",.|");
    fail_if(strcmp(evas_object_textblock_bidi_delimiters_get(tb), ",.|"));
@@ -4168,6 +4184,27 @@ EFL_START_TEST(evas_textblock_fit)
 }
 EFL_END_TEST;
 
+EFL_START_TEST(evas_textblock_textrun_font)
+{
+   START_TB_TEST();
+   int w1, h1, w2, h2;
+
+   evas_object_resize(tb, 300, 300);
+   evas_object_textblock_text_markup_set(tb, "가123A321");
+   evas_object_textblock_size_native_get(tb, &w1, &h1);
+   evas_object_textblock_text_markup_set(tb, "A321가123");
+   evas_object_textblock_size_native_get(tb, &w2, &h2);
+   ck_assert(w1==w2 && h1==h2);
+   evas_object_textblock_text_markup_set(tb, "123가A321");
+   evas_object_textblock_size_native_get(tb, &w2, &h2);
+   ck_assert(w1==w2 && h1==h2);
+   evas_object_textblock_text_markup_set(tb, "A가123321");
+   evas_object_textblock_size_native_get(tb, &w2, &h2);
+   ck_assert(w1==w2 && h1==h2);
+   END_TB_TEST();
+}
+EFL_END_TEST;
+
 #ifdef HAVE_HYPHEN
 static void
 _hyphenation_width_stress(Evas_Object *tb, Evas_Textblock_Cursor *cur)
@@ -4351,7 +4388,7 @@ EFL_END_TEST;
 EFL_START_TEST(evas_textblock_annotation)
 {
    START_TB_TEST();
-   Efl_Text_Cursor *start, *end;
+   Efl_Text_Cursor_Object *start, *end;
 
    start = efl_canvas_textblock_cursor_create(tb);
    end   = efl_canvas_textblock_cursor_create(tb);
@@ -4367,18 +4404,18 @@ EFL_START_TEST(evas_textblock_annotation)
 
    /* Check some trivial cases */
 
-   efl_text_cursor_position_set(start, 0);
-   efl_text_cursor_position_set(end, 3);
+   efl_text_cursor_object_position_set(start, 0);
+   efl_text_cursor_object_position_set(end, 3);
    efl_text_formatter_attribute_insert(start, end, "font_size=80");
-   efl_text_cursor_position_set(start, 1);
-   efl_text_cursor_position_set(end, 2);
+   efl_text_cursor_object_position_set(start, 1);
+   efl_text_cursor_object_position_set(end, 2);
    efl_text_formatter_attribute_insert(start, end, "font=arial");
-   efl_text_cursor_position_set(start, 2);
-   efl_text_cursor_position_set(end, 3);
+   efl_text_cursor_object_position_set(start, 2);
+   efl_text_cursor_object_position_set(end, 3);
    efl_text_formatter_attribute_insert(start, end, "color=#fff");
 
-   efl_text_cursor_position_set(start, 0);
-   efl_text_cursor_position_set(end, 3);
+   efl_text_cursor_object_position_set(start, 0);
+   efl_text_cursor_object_position_set(end, 3);
    unsigned int count = efl_text_formatter_attribute_clear(start, end);
    fail_if(count != 3);
 }
@@ -4391,7 +4428,7 @@ static const char *efl_style_buf =
    Evas *evas; \
    Eo *txt; \
    Efl_Text_Cursor_Handle *cur; \
-   Efl_Text_Cursor *cur_obj; \
+   Efl_Text_Cursor_Object *cur_obj; \
    evas = EVAS_TEST_INIT_EVAS(); \
    evas_font_hinting_set(evas, EVAS_FONT_HINTING_AUTO); \
    txt = efl_add(EFL_CANVAS_TEXTBLOCK_CLASS, evas); \
@@ -4497,30 +4534,30 @@ EFL_START_TEST(efl_canvas_textblock_cursor)
    efl_text_set(txt, buf);
    ck_assert_int_eq(strcmp(efl_text_get(txt), buf), 0);
 
-   pos = efl_text_cursor_position_get(cur_obj);
+   pos = efl_text_cursor_object_position_get(cur_obj);
    ck_assert_int_eq(pos, 0);
-   ck_assert(!efl_text_cursor_line_jump_by(cur_obj, -1));
-   pos = efl_text_cursor_position_get(cur_obj);
+   ck_assert(!efl_text_cursor_object_line_jump_by(cur_obj, -1));
+   pos = efl_text_cursor_object_position_get(cur_obj);
    ck_assert_int_eq(pos, 0);
-   ck_assert(efl_text_cursor_line_jump_by(cur_obj, 1));
-   pos = efl_text_cursor_position_get(cur_obj);
+   ck_assert(efl_text_cursor_object_line_jump_by(cur_obj, 1));
+   pos = efl_text_cursor_object_position_get(cur_obj);
    ck_assert_int_eq(pos, 10);
 
    efl_text_markup_set(txt, "Hello World<ps/>This is EFL<br/>Enlightenment");
-   efl_text_cursor_position_set(cur_obj, 0);
-   ck_assert_int_eq(efl_text_cursor_line_number_get(cur_obj), 0);
-   ck_assert(efl_text_cursor_line_jump_by(cur_obj, 2));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 24);
-   ck_assert_int_eq(efl_text_cursor_line_number_get(cur_obj), 2);
-   ck_assert(efl_text_cursor_line_jump_by(cur_obj, -2));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
-   ck_assert_int_eq(efl_text_cursor_line_number_get(cur_obj), 0);
+   efl_text_cursor_object_position_set(cur_obj, 0);
+   ck_assert_int_eq(efl_text_cursor_object_line_number_get(cur_obj), 0);
+   ck_assert(efl_text_cursor_object_line_jump_by(cur_obj, 2));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 24);
+   ck_assert_int_eq(efl_text_cursor_object_line_number_get(cur_obj), 2);
+   ck_assert(efl_text_cursor_object_line_jump_by(cur_obj, -2));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
+   ck_assert_int_eq(efl_text_cursor_object_line_number_get(cur_obj), 0);
 
-   ck_assert(efl_text_cursor_line_jump_by(cur_obj, 2));
-   efl_text_cursor_line_number_set(cur_obj, 2);
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 24);
-   efl_text_cursor_line_number_set(cur_obj, 0);
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
+   ck_assert(efl_text_cursor_object_line_jump_by(cur_obj, 2));
+   efl_text_cursor_object_line_number_set(cur_obj, 2);
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 24);
+   efl_text_cursor_object_line_number_set(cur_obj, 0);
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
 
    Eo * cursor_temp = efl_duplicate(cur_obj);
    ck_assert_ptr_ne(cursor_temp, NULL);
@@ -4528,172 +4565,172 @@ EFL_START_TEST(efl_canvas_textblock_cursor)
    cursor_temp = NULL;
 
    Eo * cursor1 = efl_canvas_textblock_cursor_create(txt);
-   efl_text_cursor_position_set(cursor1, 1);
-   pos = efl_text_cursor_position_get(cursor1);
+   efl_text_cursor_object_position_set(cursor1, 1);
+   pos = efl_text_cursor_object_position_get(cursor1);
    ck_assert_int_eq(pos, 1);
 
    efl_text_set(txt, "");
    efl_text_set(txt, "");
-   efl_text_cursor_text_insert(cursor1, "aa");
+   efl_text_cursor_object_text_insert(cursor1, "aa");
    ck_assert_int_eq(changed_emit, 4);
 
    efl_text_markup_set(txt, "Hello<br/>Word");
    efl_text_markup_set(txt, "Hello<br/>Word");
-   efl_text_cursor_markup_insert(cursor1, "aa");
+   efl_text_cursor_object_markup_insert(cursor1, "aa");
    ck_assert_int_eq(changed_emit, 6);
 
    efl_text_set(txt, "");
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_PREVIOUS));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_START));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_END));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_START));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_PREVIOUS));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_FIRST));
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LAST));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_PREVIOUS));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_START));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_END));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_START));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_PREVIOUS));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_FIRST));
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LAST));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
 
    ck_assert_int_eq(changed_emit, 7);
 
    efl_text_markup_set(txt, "Hello World<ps/>This is EFL<br/>Enlightenment");
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 1);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 1);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_PREVIOUS));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 1);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 1);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_PREVIOUS));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
 
-   efl_text_cursor_position_set(cur_obj, 0);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 4);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 4);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_START));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_START));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
+   efl_text_cursor_object_position_set(cur_obj, 0);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 4);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 4);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_START));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_START));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
 
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 5);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 10);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
-   ck_assert_int_ne(efl_text_cursor_position_get(cur_obj), 10);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 5);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 10);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_WORD_END));
+   ck_assert_int_ne(efl_text_cursor_object_position_get(cur_obj), 10);
 
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 23);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 23);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 12);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 12);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 23);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 23);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 12);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 12);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LINE_START));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
 
 #if defined(HAVE_FRIBIDI) && defined(HAVE_HARFBUZZ)
    efl_text_markup_set(txt, "الْبَرْمَجةُ<ps/>مَرْحبَاً");
-   efl_text_cursor_cluster_coord_set(cur_obj, EINA_POSITION2D(0, 0));
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 1);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 3);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 5);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 4);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 5);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 6);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 7);
+   efl_text_cursor_object_cluster_coord_set(cur_obj, EINA_POSITION2D(0, 0));
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 1);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 3);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 5);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_PREVIOUS));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 4);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 5);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CHARACTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 6);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_CLUSTER_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 7);
 
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 13);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 13);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 22);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 22);
-   ck_assert(!efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LAST));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 22);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_START));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 13);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 22);
-   ck_assert(efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_FIRST));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 13);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 13);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 22);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 22);
+   ck_assert(!efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LAST));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 22);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_START));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 13);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_END));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 22);
+   ck_assert(efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_FIRST));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
 #endif
 
    Eo *nCur = efl_canvas_textblock_cursor_create(txt);
    Eo *nCur2 = efl_canvas_textblock_cursor_create(txt);
    Eo *nCur3 = efl_canvas_textblock_cursor_create(txt);
    efl_text_markup_set(txt, "Hello World<ps/>This is EFL<br/>Enlightenment");
-   efl_text_cursor_position_set(cur_obj, 0);
+   efl_text_cursor_object_position_set(cur_obj, 0);
    ck_assert_ptr_ne(nCur, NULL);
    ck_assert_ptr_ne(nCur2, NULL);
    ck_assert_ptr_ne(nCur3, NULL);
 
-   ck_assert(efl_text_cursor_equal(cur_obj, nCur));
-   ck_assert(efl_text_cursor_equal(cur_obj, nCur2));
-   ck_assert(efl_text_cursor_equal(cur_obj, nCur3));
-   ck_assert(efl_text_cursor_equal(nCur2, nCur3));
+   ck_assert(efl_text_cursor_object_equal(cur_obj, nCur));
+   ck_assert(efl_text_cursor_object_equal(cur_obj, nCur2));
+   ck_assert(efl_text_cursor_object_equal(cur_obj, nCur3));
+   ck_assert(efl_text_cursor_object_equal(nCur2, nCur3));
 
-   ck_assert_int_eq(efl_text_cursor_compare(cur_obj, nCur3), 0);
-   ck_assert_int_eq(efl_text_cursor_compare(nCur2, nCur3), 0);
-   ck_assert_int_eq(efl_text_cursor_compare(cur_obj, nCur), 0);
+   ck_assert_int_eq(efl_text_cursor_object_compare(cur_obj, nCur3), 0);
+   ck_assert_int_eq(efl_text_cursor_object_compare(nCur2, nCur3), 0);
+   ck_assert_int_eq(efl_text_cursor_object_compare(cur_obj, nCur), 0);
 
-   ck_assert(efl_text_cursor_move(nCur, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
-   ck_assert_int_lt(efl_text_cursor_compare(cur_obj, nCur), 0);
-   ck_assert_int_gt(efl_text_cursor_compare(nCur, cur_obj), 0);
-   efl_text_cursor_position_set(nCur2, efl_text_cursor_position_get(nCur));
-   ck_assert_int_lt(efl_text_cursor_compare(cur_obj, nCur2), 0);
-   ck_assert_int_gt(efl_text_cursor_compare(nCur2, cur_obj), 0);
-   ck_assert(!efl_text_cursor_equal(nCur2, nCur3));
+   ck_assert(efl_text_cursor_object_move(nCur, EFL_TEXT_CURSOR_MOVE_TYPE_PARAGRAPH_NEXT));
+   ck_assert_int_lt(efl_text_cursor_object_compare(cur_obj, nCur), 0);
+   ck_assert_int_gt(efl_text_cursor_object_compare(nCur, cur_obj), 0);
+   efl_text_cursor_object_position_set(nCur2, efl_text_cursor_object_position_get(nCur));
+   ck_assert_int_lt(efl_text_cursor_object_compare(cur_obj, nCur2), 0);
+   ck_assert_int_gt(efl_text_cursor_object_compare(nCur2, cur_obj), 0);
+   ck_assert(!efl_text_cursor_object_equal(nCur2, nCur3));
 
    efl_text_set(txt, "");
-   efl_text_cursor_text_insert(cur_obj, "Hello World");
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 11);
-   efl_text_cursor_text_insert(cur_obj, "Hello World");
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 22);
+   efl_text_cursor_object_text_insert(cur_obj, "Hello World");
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 11);
+   efl_text_cursor_object_text_insert(cur_obj, "Hello World");
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 22);
    ck_assert_str_eq(efl_text_get(txt), "Hello WorldHello World");
 
    efl_text_set(txt, "");
-   efl_text_cursor_markup_insert(cur_obj, "Hello World<ps/>Hello World");
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 23);
+   efl_text_cursor_object_markup_insert(cur_obj, "Hello World<ps/>Hello World");
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 23);
 
-   efl_text_cursor_char_coord_set(cur_obj, EINA_POSITION2D(0, 0));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
-   efl_text_cursor_char_coord_set(cur_obj, EINA_POSITION2D(500, 500));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 23);
-   efl_text_cursor_cluster_coord_set(cur_obj, EINA_POSITION2D(0, 0));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
-   efl_text_cursor_cluster_coord_set(cur_obj, EINA_POSITION2D(500, 500));
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 23);
+   efl_text_cursor_object_char_coord_set(cur_obj, EINA_POSITION2D(0, 0));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
+   efl_text_cursor_object_char_coord_set(cur_obj, EINA_POSITION2D(500, 500));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 23);
+   efl_text_cursor_object_cluster_coord_set(cur_obj, EINA_POSITION2D(0, 0));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
+   efl_text_cursor_object_cluster_coord_set(cur_obj, EINA_POSITION2D(500, 500));
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 23);
 
-   efl_text_cursor_position_set(nCur, 0);
-   efl_text_cursor_position_set(cur_obj, 5);
+   efl_text_cursor_object_position_set(nCur, 0);
+   efl_text_cursor_object_position_set(cur_obj, 5);
 
-   ck_assert_str_eq(efl_text_cursor_range_text_get(cur_obj, nCur), "Hello");
-   ck_assert_str_eq(efl_text_cursor_range_text_get(nCur, cur_obj), "Hello");
+   ck_assert_str_eq(efl_text_cursor_object_range_text_get(cur_obj, nCur), "Hello");
+   ck_assert_str_eq(efl_text_cursor_object_range_text_get(nCur, cur_obj), "Hello");
 
-   efl_text_cursor_position_set(nCur, 0);
-   efl_text_cursor_position_set(cur_obj, 17);
+   efl_text_cursor_object_position_set(nCur, 0);
+   efl_text_cursor_object_position_set(cur_obj, 17);
    
-   Eina_Iterator *iter = efl_text_cursor_range_geometry_get(cur_obj, nCur);
+   Eina_Iterator *iter = efl_text_cursor_object_range_geometry_get(cur_obj, nCur);
    Eina_Rect *geoRect;
    int x = 0;
 
@@ -4706,7 +4743,7 @@ EFL_START_TEST(efl_canvas_textblock_cursor)
 
    ck_assert_int_eq(x, 3);
 
-   iter = efl_text_cursor_range_precise_geometry_get(cur_obj, nCur);
+   iter = efl_text_cursor_object_range_precise_geometry_get(cur_obj, nCur);
    x = 0;
 
    EINA_ITERATOR_FOREACH(iter, geoRect)
@@ -4718,46 +4755,46 @@ EFL_START_TEST(efl_canvas_textblock_cursor)
 
    ck_assert_int_eq(x, 2);
 
-   ck_assert_str_eq(efl_text_cursor_range_markup_get(cur_obj, nCur), "Hello World<ps/>Hello");
-   ck_assert_str_eq(efl_text_cursor_range_markup_get(nCur, cur_obj), "Hello World<ps/>Hello");
+   ck_assert_str_eq(efl_text_cursor_object_range_markup_get(cur_obj, nCur), "Hello World<ps/>Hello");
+   ck_assert_str_eq(efl_text_cursor_object_range_markup_get(nCur, cur_obj), "Hello World<ps/>Hello");
 
-   efl_text_cursor_position_set(nCur, 0);
-   efl_text_cursor_position_set(cur_obj, 5);
+   efl_text_cursor_object_position_set(nCur, 0);
+   efl_text_cursor_object_position_set(cur_obj, 5);
 
-   efl_text_cursor_range_delete(nCur, cur_obj);
+   efl_text_cursor_object_range_delete(nCur, cur_obj);
 
    ck_assert_str_eq(efl_text_markup_get(txt), " World<ps/>Hello World");
-   ck_assert_int_eq(efl_text_cursor_position_get(cur_obj), 0);
-   ck_assert_int_eq(efl_text_cursor_position_get(nCur), 0);
+   ck_assert_int_eq(efl_text_cursor_object_position_get(cur_obj), 0);
+   ck_assert_int_eq(efl_text_cursor_object_position_get(nCur), 0);
 
    efl_text_markup_set(txt, "Hello World<ps/>Hello World");
-   efl_text_cursor_position_set(cur_obj, 6);
+   efl_text_cursor_object_position_set(cur_obj, 6);
    Eina_Unicode str[2] = {0};
-   str[0] = efl_text_cursor_content_get(cur_obj);
+   str[0] = efl_text_cursor_object_content_get(cur_obj);
    ck_assert_str_eq(eina_unicode_unicode_to_utf8(str, NULL), "W");
 
-   efl_text_cursor_char_delete(cur_obj);
+   efl_text_cursor_object_char_delete(cur_obj);
 
-   str[0] = efl_text_cursor_content_get(cur_obj);
+   str[0] = efl_text_cursor_object_content_get(cur_obj);
    ck_assert_str_eq(eina_unicode_unicode_to_utf8(str, NULL), "o");
 
-   Eo *cur_txt = efl_text_cursor_text_object_get(cur_obj);
-   Eo *cur_txt2 = efl_text_cursor_text_object_get(nCur);
+   Eo *cur_txt = efl_text_cursor_object_text_object_get(cur_obj);
+   Eo *cur_txt2 = efl_text_cursor_object_text_object_get(nCur);
    ck_assert_ptr_eq(cur_txt, txt);
    ck_assert_ptr_eq(cur_txt2, txt);
 
-   efl_text_cursor_position_set(cur_obj, 1);
-   Eina_Rect rect = efl_text_cursor_content_geometry_get(cur_obj);
+   efl_text_cursor_object_position_set(cur_obj, 1);
+   Eina_Rect rect = efl_text_cursor_object_content_geometry_get(cur_obj);
    ck_assert_int_ne(rect.w, 0);
    ck_assert_int_ne(rect.h, 0);
    ck_assert_int_ne(rect.x, 0);
 
-   rect = efl_text_cursor_geometry_get(cur_obj, EFL_TEXT_CURSOR_TYPE_BEFORE);
+   rect = efl_text_cursor_object_cursor_geometry_get(cur_obj, EFL_TEXT_CURSOR_TYPE_BEFORE);
    ck_assert_int_eq(rect.w, 0);
    ck_assert_int_ne(rect.h, 0);
    ck_assert_int_ne(rect.x, 0);
 
-   Eina_Rect rect2 = efl_text_cursor_geometry_get(cur_obj, EFL_TEXT_CURSOR_TYPE_UNDER);
+   Eina_Rect rect2 = efl_text_cursor_object_cursor_geometry_get(cur_obj, EFL_TEXT_CURSOR_TYPE_UNDER);
    ck_assert_int_ne(rect2.w, 0);
    ck_assert_int_ne(rect2.h, 0);
    ck_assert_int_ne(rect2.x, 0);
@@ -4768,12 +4805,12 @@ EFL_START_TEST(efl_canvas_textblock_cursor)
    ck_assert_int_eq(rect2.y, rect.y);
 
    efl_text_markup_set(txt, "Hello World");
-   efl_text_cursor_position_set(cur_obj, 11);
-   ck_assert(!efl_text_cursor_lower_cursor_geometry_get(cur_obj, &rect2));
+   efl_text_cursor_object_position_set(cur_obj, 11);
+   ck_assert(!efl_text_cursor_object_lower_cursor_geometry_get(cur_obj, &rect2));
 #ifdef HAVE_FRIBIDI
-   efl_text_cursor_text_insert(cur_obj, "مرحباً");
-   rect = efl_text_cursor_geometry_get(cur_obj, EFL_TEXT_CURSOR_TYPE_BEFORE);
-   ck_assert(efl_text_cursor_lower_cursor_geometry_get(cur_obj, &rect2));
+   efl_text_cursor_object_text_insert(cur_obj, "مرحباً");
+   rect = efl_text_cursor_object_cursor_geometry_get(cur_obj, EFL_TEXT_CURSOR_TYPE_BEFORE);
+   ck_assert(efl_text_cursor_object_lower_cursor_geometry_get(cur_obj, &rect2));
    ck_assert_int_eq(rect2.w, 0);
    ck_assert_int_ne(rect2.h, 0);
    ck_assert_int_ne(rect2.x, 0);
@@ -4786,9 +4823,9 @@ EFL_START_TEST(efl_canvas_textblock_cursor)
 
    //Efl able to deal with br tab without closing tag "/"
    efl_text_markup_set(txt, "a<br>a<tab>a");
-   efl_text_cursor_move(nCur, EFL_TEXT_CURSOR_MOVE_TYPE_FIRST);
-   efl_text_cursor_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LAST);
-   efl_text_cursor_range_delete(nCur, cur_obj);
+   efl_text_cursor_object_move(nCur, EFL_TEXT_CURSOR_MOVE_TYPE_FIRST);
+   efl_text_cursor_object_move(cur_obj, EFL_TEXT_CURSOR_MOVE_TYPE_LAST);
+   efl_text_cursor_object_range_delete(nCur, cur_obj);
    ck_assert_str_eq(efl_text_markup_get(txt), "");
 
    END_EFL_CANVAS_TEXTBLOCK_TEST();
@@ -4799,7 +4836,7 @@ EFL_END_TEST
 EFL_START_TEST(efl_canvas_textblock_markup)
 {
    START_EFL_CANVAS_TEXTBLOCK_TEST();
-   Efl_Text_Cursor *start, *end;
+   Efl_Text_Cursor_Object *start, *end;
    char *res;
 
    start = efl_canvas_textblock_cursor_create(txt);
@@ -4807,16 +4844,16 @@ EFL_START_TEST(efl_canvas_textblock_markup)
 
    efl_text_set(txt, "\n\n\n");
 
-   efl_text_cursor_position_set(start, 1);
-   efl_text_cursor_position_set(end, 2);
-   res = efl_text_cursor_range_markup_get(start, end);
+   efl_text_cursor_object_position_set(start, 1);
+   efl_text_cursor_object_position_set(end, 2);
+   res = efl_text_cursor_object_range_markup_get(start, end);
    ck_assert_str_eq(res, "<br>");
    free(res);
 
    efl_text_set(txt, "a\u2029bc\ndef\n\u2029");
-   efl_text_cursor_position_set(start, 2);
-   efl_text_cursor_position_set(end, 5);
-   res = efl_text_cursor_range_markup_get(start, end);
+   efl_text_cursor_object_position_set(start, 2);
+   efl_text_cursor_object_position_set(end, 5);
+   res = efl_text_cursor_object_range_markup_get(start, end);
    ck_assert_str_eq(res, "bc<br>");
    free(res);
 
@@ -4888,6 +4925,7 @@ EFL_START_TEST(efl_canvas_textblock_style)
    START_EFL_CANVAS_TEXTBLOCK_TEST();
    unsigned char r, g, b, a;
    const char *style;
+   Eina_Size2D size1, size2;
 
    efl_text_password_set(txt, EINA_FALSE);
    efl_text_underline_type_set(txt, EFL_TEXT_STYLE_UNDERLINE_TYPE_DOUBLE);
@@ -4958,6 +4996,15 @@ EFL_START_TEST(efl_canvas_textblock_style)
    ck_assert_int_eq(b, 0x6C);
    ck_assert_int_eq(a, 0xFF);
 
+   // Style Apply taking 
+   efl_text_set(txt,"A");
+   efl_canvas_textblock_style_apply(txt,"font_size=2");
+   size1 = efl_canvas_textblock_size_native_get(txt);
+   efl_canvas_textblock_style_apply(txt,"font_size=20");
+   size2 = efl_canvas_textblock_size_native_get(txt);
+   ck_assert(size1.w < size2.w);
+   ck_assert(size1.h < size2.h);
+
    END_EFL_CANVAS_TEXTBLOCK_TEST();
 }
 EFL_END_TEST
@@ -5024,6 +5071,7 @@ void evas_test_textblock(TCase *tc)
    tcase_add_test(tc, evas_textblock_size);
    tcase_add_test(tc, evas_textblock_editing);
    tcase_add_test(tc, evas_textblock_style);
+   tcase_add_test(tc, evas_textblock_style_empty);
    tcase_add_test(tc, evas_textblock_style_user);
    tcase_add_test(tc, evas_textblock_evas);
    tcase_add_test(tc, evas_textblock_text_getters);
@@ -5038,6 +5086,7 @@ void evas_test_textblock(TCase *tc)
    tcase_add_test(tc, evas_textblock_delete);
    tcase_add_test(tc, evas_textblock_obstacle);
    tcase_add_test(tc, evas_textblock_fit);
+   tcase_add_test(tc, evas_textblock_textrun_font);
 #ifdef HAVE_HYPHEN
    tcase_add_test(tc, evas_textblock_hyphenation);
 #endif

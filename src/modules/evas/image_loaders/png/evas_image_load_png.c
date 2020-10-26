@@ -116,19 +116,21 @@ static Eina_Bool
 _evas_image_load_file_internal_head_png(Evas_Loader_Internal *loader,
                                         Evas_Image_Property *prop,
                                         Evas_PNG_Info *epi,
-                                        int *error, Eina_Bool is_for_data)
+                                        int *error, Eina_Bool is_for_head)
 {
    Evas_Image_Load_Opts *opts = loader->opts;
    Eina_File *f = loader->f;
    volatile Eina_Bool r = EINA_FALSE;
+   const char *filename;
+   unsigned int filename_len = 0;
 
    *error = EVAS_LOAD_ERROR_NONE;
 
    epi->hasa = 0;
-   if (!is_for_data)
-     epi->map = eina_file_map_all(f, EINA_FILE_RANDOM);
-   else
+   if (!is_for_head)
      epi->map = eina_file_map_all(f, EINA_FILE_SEQUENTIAL);
+   else
+     epi->map = eina_file_map_all(f, EINA_FILE_RANDOM);
    if (!epi->map)
      {
         *error = EVAS_LOAD_ERROR_CORRUPT_FILE;
@@ -219,7 +221,7 @@ _evas_image_load_file_internal_head_png(Evas_Loader_Internal *loader,
    if (png_get_valid(epi->png_ptr, epi->info_ptr, PNG_INFO_tRNS))
      {
         /* expand transparency entry -> alpha channel if present */
-        if (!is_for_data) png_set_tRNS_to_alpha(epi->png_ptr);
+        if (!is_for_head) png_set_tRNS_to_alpha(epi->png_ptr);
         epi->hasa = 1;
      }
 
@@ -238,7 +240,10 @@ _evas_image_load_file_internal_head_png(Evas_Loader_Internal *loader,
      }
    if (epi->hasa) prop->info.alpha = 1;
 
-   prop->need_data = eina_str_has_extension(eina_file_filename_get(f), ".9.png");
+   filename = eina_file_filename_get(f);
+   if (filename) filename_len = strlen(filename);
+   prop->need_data = (filename_len > 6 && filename[filename_len - 7] != '/') &&
+                     (eina_str_has_extension(filename, ".9.png"));
    if (prop->need_data)
      {
         // Adjust size to take into account the 9 patch pixels information
@@ -248,7 +253,7 @@ _evas_image_load_file_internal_head_png(Evas_Loader_Internal *loader,
 
    r = EINA_TRUE;
 
-   if (!is_for_data) return r;
+   if (!is_for_head) return r;
 
  close_file:
    if (epi->png_ptr) png_destroy_read_struct(&epi->png_ptr,
@@ -315,6 +320,12 @@ evas_image_load_file_head_with_data_png(void *loader_data,
 
    if (!_evas_image_load_file_internal_head_png(loader, prop, &epi, error, EINA_FALSE))
      return EINA_FALSE;
+
+   if (setjmp(png_jmpbuf(epi.png_ptr)))
+     {
+        *error = EVAS_LOAD_ERROR_CORRUPT_FILE;
+        goto close_file;
+     }
 
    image_w = epi.w32;
    image_h = epi.h32;
@@ -612,6 +623,12 @@ evas_image_load_file_data_png(void *loader_data,
 
    if (!_evas_image_load_file_internal_head_png(loader, prop, &epi, error, EINA_FALSE))
      return EINA_FALSE;
+
+   if (setjmp(png_jmpbuf(epi.png_ptr)))
+     {
+        *error = EVAS_LOAD_ERROR_CORRUPT_FILE;
+        goto close_file;
+     }
 
    image_w = epi.w32;
    image_h = epi.h32;

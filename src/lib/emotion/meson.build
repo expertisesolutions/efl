@@ -28,32 +28,34 @@ emotion_header_src = [
   'efl_canvas_video_eo.legacy.h',
 ]
 
-emotion_src = [
+emotion_src = files([
   'emotion_modules.h',
   'emotion_private.h',
   'emotion_smart.c',
   'emotion_webcam.c',
   'emotion_modules.c',
   'emotion_main.c'
-]
+])
 
-emotion_deps = [ecore, eet, evas, eio, emile]
+emotion_deps = [ecore, eet, evas, eio, emile, buildsystem]
 emotion_pub_deps = [eina, eo, efl]
+emotion_ext_deps = [buildsystem_simple]
 
 if get_option('eeze') == true
   emotion_deps += [eeze]
 endif
 
+# Save in extra variable here to pass to edje_externa
+emotion_package_c_args =  package_c_args
+
 emotion_lib = library('emotion',
     emotion_src, pub_eo_file_target, priv_eo_file_target,
-    dependencies: emotion_deps + emotion_pub_deps,
+    dependencies: emotion_deps + emotion_pub_deps + emotion_ext_deps,
     include_directories : config_dir + [include_directories('.')],
     install: true,
-    c_args : package_c_args,
+    c_args : emotion_package_c_args,
     version : meson.project_version()
 )
-
-emotion_package_c_args = package_c_args
 
 emotion = declare_dependency(
   include_directories: [include_directories('.')],

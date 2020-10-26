@@ -40,6 +40,8 @@
 
 #define FRAME_OBJ_THEME_MIN_VERSION 119
 
+extern void ecore_evas_dnd_mark_motion_used(Ecore_Evas *ee, unsigned int seat);
+
 Ecore_Evas *_wayland_shm_new(const char *disp_name, Ecore_Window parent, int x, int y, int w, int h, Eina_Bool frame);
 Ecore_Evas *_wayland_egl_new(const char *disp_name, Ecore_Window parent, int x, int y, int w, int h, Eina_Bool frame, const int *opt);
 
@@ -1008,13 +1010,13 @@ _elm_win_obj_intercept_lower(void *data, Evas_Object *obj EINA_UNUSED)
 static void
 _elm_win_obj_intercept_stack_above(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, Evas_Object *above EINA_UNUSED)
 {
-   INF("TODO: %s", __FUNCTION__);
+   INF("TODO: %s", __func__);
 }
 
 static void
 _elm_win_obj_intercept_stack_below(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, Evas_Object *below EINA_UNUSED)
 {
-   INF("TODO: %s", __FUNCTION__);
+   INF("TODO: %s", __func__);
 }
 
 static void
@@ -3743,12 +3745,12 @@ _elm_win_resize_objects_eval(Evas_Object *obj, Eina_Bool force_resize)
    maxh = sd->max_h;
 
    // Compatibility hack (for E)
-   if (sd->single_edje_content && !wx && !wy)
+   if (sd->single_edje_content && EINA_DBL_EQ(wx, 0) && EINA_DBL_EQ(wy, 0))
      wx = wy = 1;
 
-   if (!wx) maxw = minw;
+   if (EINA_DBL_EQ(wx, 0)) maxw = minw;
    if (maxw < 1) maxw = 32767;
-   if (!wy) maxh = minh;
+   if (EINA_DBL_EQ(wy, 0)) maxh = minh;
    if (maxh < 1) maxh = 32767;
    if (maxw < minw) maxw = minw;
    if (maxh < minh) maxh = minh;
@@ -9158,45 +9160,45 @@ elm_win_available_profiles_set(Elm_Win *obj, const char **profiles, unsigned int
 EAPI void
 elm_win_fake_canvas_set(Evas_Object *obj EINA_UNUSED, Ecore_Evas *oee EINA_UNUSED)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
 }
 
 EAPI void
 elm_win_name_set(Evas_Object *obj, const char *name)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
    efl_ui_win_name_set(obj, name);
 }
 
 EAPI void
 elm_win_type_set(Evas_Object *obj, Elm_Win_Type type)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
    efl_ui_win_type_set(obj, _elm_win_type_to_efl_ui_win_type(type));
 }
 
 EAPI void
 elm_win_teamwork_uri_preload(Efl_Ui_Win *obj EINA_UNUSED, const char *uri EINA_UNUSED)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
 }
 
 EAPI void
 elm_win_teamwork_uri_show(Efl_Ui_Win *obj EINA_UNUSED, const char *uri EINA_UNUSED)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
 }
 
 EAPI void
 elm_win_teamwork_uri_hide(Efl_Ui_Win *obj EINA_UNUSED)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
 }
 
 EAPI void
 elm_win_teamwork_uri_open(Efl_Ui_Win *obj EINA_UNUSED, const char *uri EINA_UNUSED)
 {
-   ERR("Calling deprecrated function '%s'", __FUNCTION__);
+   ERR("Calling deprecrated function '%s'", __func__);
 }
 
 /* What here follows is code that implements the glue between ecore evas and efl_ui* side */
@@ -9268,15 +9270,18 @@ _motion_cb(Ecore_Evas *ee, unsigned int seat, Eina_Position2D p)
           {
              target->currently_inside = EINA_FALSE;
              efl_event_callback_call(target->obj, EFL_UI_DND_EVENT_DROP_LEFT, &ev);
+             ecore_evas_dnd_mark_motion_used(ee, seat);
           }
         else if (!target->currently_inside && inside)
           {
              target->currently_inside = EINA_TRUE;
              efl_event_callback_call(target->obj, EFL_UI_DND_EVENT_DROP_ENTERED, &ev);
+             ecore_evas_dnd_mark_motion_used(ee, seat);
           }
         else if (target->currently_inside && inside)
           {
              efl_event_callback_call(target->obj, EFL_UI_DND_EVENT_DROP_POSITION_CHANGED, &ev);
+             ecore_evas_dnd_mark_motion_used(ee, seat);
           }
         eina_accessor_free(ev.available_types);
      }
@@ -9398,12 +9403,37 @@ _remove(void *data, void *gdata)
    return EINA_TRUE;
 }
 
+Efl_Ui_Win*
+efl_ui_win_get(Evas_Object *obj)
+{
+   Efl_Ui_Win *win = efl_provider_find(obj, MY_CLASS);
+   if (!win)
+     {
+        Evas *e = evas_object_evas_get(obj);
+        Ecore_Evas *ee = ecore_evas_ecore_evas_get(e);
+
+        win = ecore_evas_data_get(ee, "elm_win");
+     }
+   EINA_SAFETY_ON_NULL_RETURN_VAL(win, NULL);
+   return win;
+}
+
+static Efl_Ui_Win_Data*
+_fetch_win_data_from_arbitary_obj(Efl_Canvas_Object *obj)
+{
+   Efl_Ui_Win *win = efl_ui_win_get(obj);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(win, NULL);
+   Efl_Ui_Win_Data *pd = efl_data_scope_safe_get(win, MY_CLASS);
+   EINA_SAFETY_ON_NULL_RETURN_VAL(pd, NULL);
+   return pd;
+}
+
 void
 _drop_event_register(Eo *obj)
 {
    Ui_Dnd_Target target = {obj, EINA_FALSE};
-   Efl_Ui_Win_Data *pd = efl_data_scope_safe_get(efl_provider_find(obj, MY_CLASS), MY_CLASS);
-   EINA_SAFETY_ON_NULL_RETURN(pd);
+   Efl_Ui_Win_Data *pd = _fetch_win_data_from_arbitary_obj(obj);
+   if (!pd) return;
 
    eina_inarray_push(pd->drop_target, &target);
 }
@@ -9412,9 +9442,8 @@ void
 _drop_event_unregister(Eo *obj)
 {
    int idx = -1;
-   Efl_Ui_Win_Data *pd;
 
-   pd = efl_data_scope_safe_get(efl_provider_find(obj, MY_CLASS), MY_CLASS);
+   Efl_Ui_Win_Data *pd = _fetch_win_data_from_arbitary_obj(obj);
    if (!pd) return;
 
    for (unsigned int i = 0; i < eina_inarray_count(pd->drop_target); ++i)
@@ -9434,9 +9463,7 @@ _drop_event_unregister(Eo *obj)
 void
 _selection_changed_event_register(Eo *obj)
 {
-   Efl_Ui_Win_Data *pd;
-
-   pd = efl_data_scope_safe_get(efl_provider_find(obj, MY_CLASS), MY_CLASS);
+   Efl_Ui_Win_Data *pd = _fetch_win_data_from_arbitary_obj(obj);
    if (!pd) return;
 
    eina_array_push(pd->selection_changed, obj);
@@ -9444,9 +9471,7 @@ _selection_changed_event_register(Eo *obj)
 void
 _selection_changed_event_unregister(Eo *obj)
 {
-   Efl_Ui_Win_Data *pd;
-
-   pd = efl_data_scope_safe_get(efl_provider_find(obj, MY_CLASS), MY_CLASS);
+   Efl_Ui_Win_Data *pd = _fetch_win_data_from_arbitary_obj(obj);
    if (!pd) return;
 
    eina_array_remove(pd->selection_changed, _remove, obj);

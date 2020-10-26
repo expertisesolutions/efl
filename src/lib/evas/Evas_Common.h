@@ -953,7 +953,7 @@ EAPI Evas_Device *evas_device_add_full(Evas *e, const char *name,
                                        Evas_Device *parent_dev,
                                        Evas_Device *emulation_dev,
                                        Evas_Device_Class clas,
-                                       Evas_Device_Subclass sub_clas);
+                                       Evas_Device_Subclass sub_class);
 
 /**
  * Delete a new device type
@@ -1055,7 +1055,7 @@ EAPI Evas_Device *evas_device_get(Evas *e, const char *name);
 /**
  * Get a device by its seat id
  *
- * @param e The canvas to find the device on
+ * @param eo_e The canvas to find the device on
  * @param id The seat id of the device.
  *
  * Gets the device with id @p id on Evas @p e list of devices.
@@ -1261,9 +1261,10 @@ EAPI const Evas_Device *evas_device_emulation_source_get(const Evas_Device *dev)
  */
 
 /**
- * @defgroup Evas_Image_Group Image Functions
+ * @defgroup Evas_Image Image Functions
  *
- * Functions that deal with images at canvas level.
+ * Functions that deal with images at canvas level. Compare with
+ * @ref Evas_Object_Image functions which deal with images at the object level.
  *
  * @ingroup Evas_Canvas
  */
@@ -3311,7 +3312,7 @@ EAPI void                    evas_language_reinit(void);
  */
 
 /**
- * @ingroup Evas_Font_Group
+ * @addtogroup Evas_Font_Group
  *
  * @{
  */
@@ -3321,13 +3322,12 @@ EAPI void                    evas_language_reinit(void);
  *
  * Functions that edit the paths being used to load fonts.
  *
- * @ingroup Evas_Font_Group
+ * @{
  */
 
 /**
  * Removes all font paths loaded into memory by evas_font_path_app_* APIs
  * for the application.
- * @ingroup Evas_Font_Path_Group
  * @since 1.9
  */
 EAPI void                    evas_font_path_global_clear(void);
@@ -3335,7 +3335,6 @@ EAPI void                    evas_font_path_global_clear(void);
 /**
  * Appends a font path to the list of font paths used by the application.
  * @param   path The new font path.
- * @ingroup Evas_Font_Path_Group
  * @since 1.9
  */
 EAPI void                    evas_font_path_global_append(const char *path) EINA_ARG_NONNULL(1);
@@ -3343,7 +3342,6 @@ EAPI void                    evas_font_path_global_append(const char *path) EINA
 /**
  * Prepends a font path to the list of font paths used by the application.
  * @param   path The new font path.
- * @ingroup Evas_Font_Path_Group
  * @since 1.9
  */
 EAPI void                    evas_font_path_global_prepend(const char *path) EINA_ARG_NONNULL(1);
@@ -3351,19 +3349,25 @@ EAPI void                    evas_font_path_global_prepend(const char *path) EIN
 /**
  * Retrieves the list of font paths used by the application.
  * @return  The list of font paths used.
- * @ingroup Evas_Font_Path_Group
  * @since 1.9
  */
 EAPI const Eina_List        *evas_font_path_global_list(void) EINA_WARN_UNUSED_RESULT;
 
 /**
+ * @}
+ */
+
+/**
  * Reinitialize FontConfig. If FontConfig has to be reinitialized
  * according to changes of system environments (e.g. Changing font config files), it will be useful.
  *
- * @ingroup Evas_Font_Path_Group
  * @since 1.14
  */
 EAPI void                    evas_font_reinit(void);
+
+/**
+ * @}
+ */
 
 // The below type are necessary for legacy API and need to be manually kept in sync with .eo file.
 #ifndef _EFL_INPUT_DEVICE_EO_CLASS_TYPE
@@ -3397,7 +3401,3 @@ typedef Eo Efl_Gfx_Entity;
 
 #endif
 #endif
-
-/**
- * @}
- */

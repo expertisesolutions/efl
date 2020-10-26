@@ -5,7 +5,7 @@
 #include <Eo.h>
 
 /**
- * @ingroup Ecore_Timer_Group
+ * @addtogroup Ecore_Timer_Group
  *
  * @{
  */
@@ -21,7 +21,7 @@
 #include "efl_loop_message_future_handler.eo.h"
 
 /**
- * @ingroup Ecore_MainLoop_Group
+ * @addtogroup Ecore_MainLoop_Group
  *
  * @{
  */
@@ -68,7 +68,7 @@ EAPI int efl_loop_exit_code_process(Eina_Value *value);
 /**
  * @brief Get the future scheduler for the current loop.
  *
- * @param[in] An object which is either a loop or a loop consumer
+ * @param[in] obj An object which is either a loop or a loop consumer
  * @return The current loop's future scheduler.
  */
 EAPI Eina_Future_Scheduler *efl_loop_future_scheduler_get(const Eo *obj);
@@ -93,7 +93,7 @@ EAPI Eo *efl_main_loop_get(void);
  */
 
 /**
- * @ingroup Ecore_Fd_Io_Group
+ * @addtogroup Ecore_Fd_Io_Group
  *
  * @{
  */
@@ -115,7 +115,7 @@ EAPI Eo *efl_main_loop_get(void);
  */
 
 /**
- * @ingroup Ecore_Model_Group
+ * @addtogroup Ecore_Model_Group
  *
  * @{
  */

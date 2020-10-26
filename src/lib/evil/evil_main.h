@@ -102,7 +102,7 @@
  * When Evil is not used anymore, call evil_shutdown() to shut down
  * the Evil library.
  */
-EVIL_API int evil_init(void);
+EAPI int evil_init(void);
 
 /**
  * @brief Shut down the Evil library.
@@ -118,7 +118,7 @@ EVIL_API int evil_init(void);
  * documentation anymore . You must call evil_init() again to use these
  * functions again.
  */
-EVIL_API int evil_shutdown(void);
+EAPI int evil_shutdown(void);
 
 
 /**

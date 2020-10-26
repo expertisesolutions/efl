@@ -123,17 +123,29 @@ _efl_gfx_image_load_error_to_evas_load_error(Eina_Error err)
 static Eina_Content*
 _markup_to_utf8(Eina_Content *from, const char *to_type)
 {
+   Eina_Content *ret = NULL;
    Eina_Slice slice = eina_content_data_get(from);
    char *utf8 = evas_textblock_text_markup_to_utf8(NULL, slice.mem);
-   return eina_content_new((Eina_Slice)EINA_SLICE_STR_FULL(utf8), to_type);
+   if (utf8)
+     {
+        ret = eina_content_new((Eina_Slice)EINA_SLICE_STR_FULL(utf8), to_type);
+        free(utf8);
+     }
+   return ret;
 }
 
 static Eina_Content*
 _utf8_to_markup(Eina_Content *from, const char *to_type)
 {
+   Eina_Content *ret = NULL;
    Eina_Slice slice = eina_content_data_get(from);
    char *markup = evas_textblock_text_utf8_to_markup(NULL, slice.mem);
-   return eina_content_new((Eina_Slice)EINA_SLICE_STR_FULL(markup), to_type);
+   if (markup)
+     {
+        ret = eina_content_new((Eina_Slice)EINA_SLICE_STR_FULL(markup), to_type);
+        free(markup);
+     }
+   return ret;
 }
 
 EAPI int
@@ -350,6 +362,9 @@ _evas_canvas_efl_object_constructor(Eo *eo_obj, Evas_Public_Data *e)
    EVAS_ARRAY_SET(e, image_unref_queue);
    EVAS_ARRAY_SET(e, glyph_unref_queue);
    EVAS_ARRAY_SET(e, texts_unref_queue);
+
+   eina_array_step_set(&e->render_post_change_objects, sizeof(e->render_post_change_objects), 10);
+   eina_array_step_set(&e->map_clip_objects, sizeof(e->map_clip_objects), 64);
 
    e->active_objects.version = EINA_ARRAY_VERSION;
    eina_inarray_step_set(&e->active_objects,
@@ -632,7 +647,9 @@ _evas_canvas_efl_object_destructor(Eo *eo_e, Evas_Public_Data *e)
    eina_array_flush(&e->image_unref_queue);
    eina_array_flush(&e->glyph_unref_queue);
    eina_array_flush(&e->texts_unref_queue);
+   eina_array_flush(&e->map_clip_objects);
    eina_hash_free(e->focused_objects);
+   eina_array_flush(&e->render_post_change_objects);
 
    SLKL(e->post_render.lock);
    EINA_INLIST_FREE(e->post_render.jobs, job)

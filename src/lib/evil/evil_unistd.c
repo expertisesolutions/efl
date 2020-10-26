@@ -6,7 +6,18 @@
 
 #include <errno.h>
 #include <direct.h>
-#include <sys/time.h>
+
+#ifndef _MSC_VER
+# include <sys/time.h>
+#endif
+
+#ifdef _WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <winsock2.h>
+# undef WIN32_LEAN_AND_MEAN
+#endif
 
 LONGLONG _evil_time_freq;
 LONGLONG _evil_time_count;

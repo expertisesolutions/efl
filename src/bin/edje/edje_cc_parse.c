@@ -31,6 +31,7 @@
 #define EDJE_1_22_SUPPORTED " -DEFL_VERSION_1_22=1 "
 #define EDJE_1_23_SUPPORTED " -DEFL_VERSION_1_23=1 "
 #define EDJE_1_24_SUPPORTED " -DEFL_VERSION_1_24=1 "
+#define EDJE_1_25_SUPPORTED " -DEFL_VERSION_1_25=1 "
 
 #define EDJE_CC_EFL_VERSION_SUPPORTED \
   EDJE_1_18_SUPPORTED                 \
@@ -39,7 +40,8 @@
   EDJE_1_21_SUPPORTED                 \
   EDJE_1_22_SUPPORTED                 \
   EDJE_1_23_SUPPORTED                 \
-  EDJE_1_24_SUPPORTED
+  EDJE_1_24_SUPPORTED                 \
+  EDJE_1_25_SUPPORTED
 
 static void        new_object(void);
 static void        new_statement(void);
@@ -1946,7 +1948,7 @@ _calcf(char op, double a, double b)
         return a;
 
       case '/':
-        if (b != 0) a /= b;
+        if (EINA_DBL_NONZERO(b)) a /= b;
         else
           ERR("%s:%i divide by zero", file_in, line - 1);
         return a;
@@ -1956,7 +1958,7 @@ _calcf(char op, double a, double b)
         return a;
 
       case '%':
-        if (0 != b) a = (double)((int)a % (int)b);
+        if (EINA_DBL_NONZERO(b)) a = (double)((int)a % (int)b);
         else
           ERR("%s:%i modula by zero", file_in, line - 1);
         return a;

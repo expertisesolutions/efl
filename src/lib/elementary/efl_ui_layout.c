@@ -1000,13 +1000,6 @@ _efl_ui_layout_base_efl_canvas_group_group_del(Eo *obj, Efl_Ui_Layout_Data *sd)
    efl_canvas_group_del(efl_super(obj, MY_CLASS));
 }
 
-EOLIAN static void
-_efl_ui_layout_efl_canvas_group_group_calculate(Eo *obj, void *_pd EINA_UNUSED)
-{
-   efl_canvas_group_need_recalculate_set(obj, EINA_FALSE);
-   _sizing_eval(obj, efl_data_scope_get(obj, MY_CLASS), NULL);
-}
-
 /* rewrite or extend this one on your derived class as to suit your
  * needs */
 EOLIAN static void
@@ -1926,6 +1919,16 @@ _efl_ui_layout_base_efl_layout_group_part_exist_get(const Eo *obj, Efl_Ui_Layout
 }
 
 EOLIAN static void
+_efl_ui_layout_base_efl_canvas_group_group_change(Eo *obj, Efl_Ui_Layout_Data *sd)
+{
+   if (sd->frozen)
+     /* cleared in thaw */
+     sd->frozen_changed = EINA_TRUE;
+   else
+     efl_canvas_group_change(efl_super(obj, MY_CLASS));
+}
+
+EOLIAN static void
 _elm_layout_efl_canvas_group_change(Eo *obj, Elm_Layout_Data *ld)
 {
    Efl_Ui_Layout_Data *sd;
@@ -1991,7 +1994,9 @@ _efl_ui_layout_base_efl_layout_calc_calc_thaw(Eo *obj, Efl_Ui_Layout_Data *sd)
    if (!ret)
      {
         sd->frozen = EINA_FALSE;
-        efl_canvas_group_change(obj);
+        if (sd->frozen_changed)
+          efl_canvas_group_change(obj);
+        sd->frozen_changed = EINA_FALSE;
      }
 
    return ret;
@@ -2026,10 +2031,13 @@ _efl_ui_layout_base_efl_layout_calc_calc_parts_extends(Eo *obj EINA_UNUSED, Efl_
 }
 
 EOLIAN void
-_efl_ui_layout_base_efl_layout_calc_calc_force(Eo *obj EINA_UNUSED, Efl_Ui_Layout_Data *sd EINA_UNUSED)
+_efl_ui_layout_base_efl_layout_calc_calc_force(Eo *obj EINA_UNUSED, Efl_Ui_Layout_Data *sd)
 {
+   Eina_Bool prev_frozen = sd->frozen;
    ELM_WIDGET_DATA_GET_OR_RETURN(obj, wd);
+   sd->frozen = EINA_FALSE;
    efl_layout_calc_force(wd->resize_obj);
+   sd->frozen = prev_frozen;
 }
 
 static Eina_Bool
@@ -3280,6 +3288,26 @@ _elm_layout_signal_callback_add_legacy(Eo *obj, Eo *edje, Eina_List **p_edje_sig
 
    edje_object_signal_callback_add(edje, emission, source,
                                          _edje_signal_callback, esd);
+}
+
+/* replicated from elm_layout just because legacy widget's icon spot
+ * is elm.swallow.content, not elm.swallow.icon.
+ */
+void
+_elm_layout_legacy_icon_signal_emit(Evas_Object *obj)
+{
+   char buf[63];
+   Eo *edje;
+
+   edje = elm_layout_edje_get(obj);
+   if (!edje) return;
+   if (!edje_object_part_exists(obj, "elm.swallow.content")) return;
+   snprintf(buf, sizeof(buf), "elm,state,icon,%s",
+            elm_layout_content_get(obj, "icon") ? "visible" : "hidden");
+
+   elm_layout_signal_emit(obj, buf, "elm");
+   edje_object_message_signal_process(edje);
+   efl_canvas_group_change(obj);
 }
 
 EAPI void

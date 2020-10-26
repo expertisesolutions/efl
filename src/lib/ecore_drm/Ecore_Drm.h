@@ -221,7 +221,6 @@ EAPI extern int ECORE_DRM_EVENT_SEAT_ADD; /**< @since 1.14 */
  * @li @ref Ecore_Drm_Tty_Group
  * @li @ref Ecore_Drm_Output_Group
  * @li @ref Ecore_Drm_Input_Group
- * @li @ref Ecore_Drm_Sprite_Group
  * @li @ref Ecore_Drm_Fb_Group
  * 
  */
@@ -621,12 +620,17 @@ EAPI unsigned int ecore_drm_output_crtc_buffer_get(Ecore_Drm_Output *output);
  */
 EAPI unsigned int ecore_drm_output_connector_id_get(Ecore_Drm_Output *output);
 
-/* TODO: Doxy */
+/** @defgroup Ecore_Drm_Input_Group Drm input handling
+ *  @{
+ */
 EAPI Eina_Bool ecore_drm_inputs_create(Ecore_Drm_Device *dev);
 EAPI void ecore_drm_inputs_destroy(Ecore_Drm_Device *dev);
 EAPI Eina_Bool ecore_drm_inputs_enable(Ecore_Drm_Input *input);
 EAPI void ecore_drm_inputs_disable(Ecore_Drm_Input *input);
 EAPI void ecore_drm_inputs_device_axis_size_set(Ecore_Drm_Evdev *dev, int w, int h);
+/**
+ * @}
+ */
 
 EAPI Eina_Bool ecore_drm_sprites_create(Ecore_Drm_Device *dev);
 EAPI void ecore_drm_sprites_destroy(Ecore_Drm_Device *dev);
@@ -998,8 +1002,8 @@ EAPI Eina_Bool ecore_drm_output_possible_crtc_get(Ecore_Drm_Output *output, unsi
  *
  * @param output The Ecore_Drm_Output to set the mode on
  * @param mode A valid Ecore_Drm_Output_Mode to set or NULL to disable the output
- * @param X The X position to set this output to
- * @param Y The Y position to set this output to
+ * @param x The X position to set this output to
+ * @param y The Y position to set this output to
  *
  * @return @c EINA_TRUE on success, @c EINA_FALSE on failure
  *

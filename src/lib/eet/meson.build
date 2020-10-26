@@ -1,15 +1,12 @@
-eet_deps = [crypto, jpeg, rg_etc]
-if not sys_windows
-  eet_deps += m
-endif
-
+eet_deps = [rg_etc]
 eet_pub_deps = [eina, emile, efl]
+eet_ext_deps = [crypto, jpeg, m, rg_etc_simple]
 
 eet_header_src = [
   'Eet.h'
 ]
 
-eet_src = [
+eet_src = files([
   'Eet_private.h',
   'eet_alloc.c',
   'eet_cipher.c',
@@ -20,11 +17,12 @@ eet_src = [
   'eet_lib.c',
   'eet_node.c',
   'eet_utils.c',
-]
+])
 
 eet_lib = library('eet',
     eet_src, pub_eo_file_target,
-    dependencies: eet_deps + eet_pub_deps,
+    c_args : package_c_args,
+    dependencies: eet_deps + eet_pub_deps + eet_ext_deps,
     include_directories : config_dir,
     install: true,
     version : meson.project_version()
