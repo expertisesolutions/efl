@@ -30,16 +30,38 @@ efreet_src = files([
   'efreet_trash.c'
 ])
 
-efreet_deps = [eet, ecore, ecore_con, ecore_file, eo, efl, eina, emile, ecore_ipc, buildsystem]
+efreet_deps = [eet, ecore, ecore_con, ecore_file, eo, efl, eina, emile, buildsystem]
 efreet_pub_deps = [eina, eo, efl]
 efreet_ext_deps = [buildsystem_simple, intl, m]
+efreet_include_directories = config_dir + [include_directories('.')]
+
+if get_option('efreetd')
+  efreet_deps += [ecore_ipc]
+else
+  efreet_src += files([
+    'efreet_cache_local.c',
+  ])
+
+  efreet_src += files([
+    '../../bin/efreet/efreetd.c',
+    '../../bin/efreet/efreetd_cache.c',
+    '../../bin/efreet/efreetd_cache_local.c',
+  ])
+
+  efreet_header_src += files([
+    '../../bin/efreet/efreetd.h',
+    '../../bin/efreet/efreetd_cache.h',
+  ])
+
+  efreet_include_directories += [include_directories('../../bin/efreet')]
+endif
 
 package_c_args += ['-DDATA_DIR="'+dir_data+'"']
 
 efreet_lib = library('efreet',
     efreet_src,
     dependencies: efreet_pub_deps + efreet_ext_deps + efreet_deps,
-    include_directories : config_dir + [include_directories('.')],
+    include_directories : efreet_include_directories,
     install: true,
     c_args : package_c_args,
     version : meson.project_version()

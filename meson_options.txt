@@ -370,3 +370,9 @@ option('efl-one',
   value : false,
   description : 'Build special set of .so´s as a single .so'
 )
+
+option('efreetd',
+  type : 'boolean',
+  value : true,
+  description : 'Enable efreet deamon',
+)
