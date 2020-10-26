@@ -50,6 +50,12 @@ _evil_systemtime_to_time(SYSTEMTIME st)
   return (long)t;
 }
 
+EVIL_API int
+execvp(const char *file, char *const argv[])
+{
+   return _execvp(file, (const char *const *)argv);
+}
+
 /*
  * Time related functions
  *
