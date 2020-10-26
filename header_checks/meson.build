@@ -217,7 +217,10 @@ if sys_windows
   pcre_project = subproject('pcre')
 
   pcre = pcre_project.get_variable('pcre8')
-  pcre_dep = pcre_project.get_variable('pcre_dep')
+  pcre_posix = pcre_project.get_variable('pcre_posix')
+  original_pcre_dep = pcre_project.get_variable('pcre_dep')
+
+  pcre_dep = declare_dependency(link_with : [pcre, pcre_posix], dependencies : original_pcre_dep)
 
   # zlib
   zlib_project = subproject('zlib')

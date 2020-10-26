@@ -1,6 +1,4 @@
 if target_machine.system() == 'windows'
-  #subdir('unposix')
-
   evil_src = [
     'evil_dlfcn.c',
     'evil_fcntl.c',
@@ -40,6 +38,7 @@ if target_machine.system() == 'windows'
     include_directories: [include_directories('.', 'unposix')],
     dependencies : evil_pub_deps,
     link_with: evil_lib,
+    compile_args : ['-DPCRE_STATIC'],
   )
 else
   evil = declare_dependency()
