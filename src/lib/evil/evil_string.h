@@ -3,6 +3,7 @@
 
 #include <evil_api.h>
 
+#include "evil_private.h"
 /**
  * @file evil_string.h
  * @brief The file that provides functions ported from Unix in string.h.

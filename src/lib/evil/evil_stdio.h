@@ -1,7 +1,7 @@
 #ifndef __EVIL_STDIO_H__
 #define __EVIL_STDIO_H__
 
-#include <evil_api.h>
+#include "evil_private.h"
 #include <sys/types.h>
 
 #ifndef HAVE_CYGWIN

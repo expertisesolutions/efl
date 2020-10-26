@@ -1,7 +1,7 @@
 #ifndef __EVIL_LOCALE_H__
 #define __EVIL_LOCALE_H__
 
-#include <evil_api.h>
+#include "evil_private.h"
 
 /**
  * @file evil_locale.h

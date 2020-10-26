@@ -1,7 +1,7 @@
 #ifndef EVIL_STRINGS_H__
 #define EVIL_STRINGS_H__
 
-#include <evil_private.h>
+#include "evil_private.h"
 
 #define strncasecmp _strnicmp
 #define strcasecmp _stricmp

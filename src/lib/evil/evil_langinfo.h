@@ -2,7 +2,7 @@
 #define __EVIL_LANGINFO_H__
 
 
-#include <evil_api.h>
+#include "evil_private.h"
 #include <locale.h>
 
 

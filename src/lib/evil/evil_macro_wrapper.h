@@ -1,7 +1,7 @@
 #ifndef __EVIL_MACRO_WRAPPER_H__
 #define __EVIL_MACRO_WRAPPER_H__
 
-#include <evil_api.h>
+#include "evil_private.h"
 #include <direct.h>
 
 /*
