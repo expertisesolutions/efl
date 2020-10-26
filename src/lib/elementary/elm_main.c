@@ -2,17 +2,16 @@
 # include "elementary_config.h"
 #endif
 
-#ifndef _WIN32
-# include <dlfcn.h> /* dlopen,dlclose,etc */
-#endif
-
 #ifdef HAVE_CRT_EXTERNS_H
 # include <crt_externs.h>
 #endif
 
 #ifdef _WIN32
-# include <direct.h> /* getcwd */
 # include <evil_private.h> /* dlopen,dlclose,etc */
+# include <direct.h> /* getcwd */
+#else
+# include <dlfcn.h> /* dlopen,dlclose,etc */
+# include <unistd.h>
 #endif
 
 #include <Emotion.h>

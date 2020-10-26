@@ -4,7 +4,6 @@
 
 #include "evil_private.h"
 
-#include <evil_windows.h>
 #include <errno.h>
 #include <direct.h>
 #include <sys/time.h>
