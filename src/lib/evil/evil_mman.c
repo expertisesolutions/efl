@@ -2,8 +2,6 @@
 # include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#if 0
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -156,4 +154,4 @@ mprotect(void *addr, size_t len, int prot)
    return VirtualProtect(addr, len, _evil_mmap_protection_get(prot), &old) ? 0 : -1;
 }
 
-#endif
+
