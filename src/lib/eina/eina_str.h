@@ -7,6 +7,10 @@
 
 #include "eina_types.h"
 
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
+
 /**
  * @page tutorial_eina_string Eina String example
  * @dontinclude eina_str_01.c

@@ -10,7 +10,9 @@
 #include "Eina.h"
 #include "eina_private.h"
 
-#include <evil_vasprintf.h>
+#ifdef _WIN32
+# include <evil_private.h>
+#endif
 
 // ========================================================================= //
 

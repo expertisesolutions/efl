@@ -33,6 +33,7 @@
 
 #ifdef _WIN32
 # include <windows.h>
+# include <evil_private.h>
 #endif
 
 #ifdef HAVE_EXECINFO_H
@@ -57,7 +58,6 @@
 
 #include "eina_inline_private.h"
 
-#include <evil_vasprintf.h>
 
 /* TODO
  * + printing logs to stdout or stderr can be implemented
