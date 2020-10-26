@@ -28,7 +28,9 @@
 #include <limits.h>
 #include <ctype.h>
 
-#include <strings.h>
+#ifndef _WIN32
+# include <strings.h>
+#endif
 
 #ifdef HAVE_BSD_STRING_H
 # include <bsd/string.h>

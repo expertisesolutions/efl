@@ -23,12 +23,15 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <assert.h>
 #include <errno.h>
 
 #ifdef _WIN32
 # include <evil_private.h>
+#endif
+
+#ifndef _MSC_VER
+# include <unistd.h>
 #endif
 
 #ifdef HAVE_EXECINFO_H

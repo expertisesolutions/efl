@@ -24,7 +24,6 @@
 #endif
 
 #include "eina_thread.h"
-#include "unimplemented.h"
 #include <errno.h>
 
 #ifndef WIN32_LEAN_AND_MEAN
