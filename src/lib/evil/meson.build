@@ -12,9 +12,12 @@ if target_machine.system() == 'windows'
     'evil_time.c',
     'evil_unistd.c',
     'evil_util.c',
-    'evil_private.h',
     'evil_basename.c',
     'pcre/regex.h',
+  ]
+
+  evil_header_src = [
+    #  'evil_private.h',
   ]
 
   psapi = cc.find_library('psapi')
@@ -39,6 +42,10 @@ if target_machine.system() == 'windows'
     dependencies : evil_pub_deps,
     link_with: evil_lib,
     compile_args : ['-DPCRE_STATIC'],
+  )
+
+  install_headers(evil_header_src,
+    install_dir : dir_package_include,
   )
 else
   evil = declare_dependency()
