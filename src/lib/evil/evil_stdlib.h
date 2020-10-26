@@ -73,7 +73,7 @@ EVIL_API int unsetenv(const char *name);
  *
  * @since 1.8.0
  */
-EAPI char *mkdtemp(char *__template);
+EVIL_API char *mkdtemp(char *__template);
 
 /**
  * @brief Create a unique temporary file name with a suffix.
@@ -84,7 +84,7 @@ EAPI char *mkdtemp(char *__template);
  *
  * @since 1.10.0
  */
-EAPI int mkstemps(char *__template, int suffixlen);
+EVIL_API int mkstemps(char *__template, int suffixlen);
 
 /**
  * @brief Return an absolute or full path name for a specified relative path name.

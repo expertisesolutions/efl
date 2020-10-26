@@ -1,6 +1,7 @@
 #ifndef __EVIL_STDIO_H__
 #define __EVIL_STDIO_H__
 
+#include <sys/types.h>
 
 /**
  * @file evil_stdio.h

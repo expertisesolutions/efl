@@ -2,17 +2,15 @@
 # include "config.h"
 #endif
 
+#include "evil_private.h" /* LC_MESSAGES */
+
 #include <string.h>
 #include <locale.h>
 #include <errno.h>
 
-#ifndef WIN32_LEAN_AND_MEAN
-# define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#undef WIN32_LEAN_AND_MEAN
 
 #include "evil_locale.h" /* LC_MESSAGES */
+#include <evil_windows.h>
 
 /*
  * LOCALE_SISO639LANGNAME and LOCALE_SISO3166CTRYNAME need at least a buffer
