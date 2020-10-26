@@ -1,6 +1,7 @@
 #ifndef __EVIL_TIME_H__
 #define __EVIL_TIME_H__
 
+#include <evil_api.h>
 
 #include <time.h>
 

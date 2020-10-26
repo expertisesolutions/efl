@@ -1,6 +1,8 @@
 #ifndef __EVIL_MAIN_H__
 #define __EVIL_MAIN_H__
 
+#include <evil_api.h>
+
 /**
  * @page evil_main Evil
  * @author Vincent Torri

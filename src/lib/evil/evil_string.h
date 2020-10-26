@@ -1,6 +1,7 @@
 #ifndef __EVIL_STRING_H__
 #define __EVIL_STRING_H__
 
+#include <evil_api.h>
 
 /**
  * @file evil_string.h

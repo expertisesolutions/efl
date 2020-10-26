@@ -9,6 +9,8 @@
 # define WIN32_LEAN_AND_MEAN
 #endif
 
+#include <evil_api.h>
+
 #include <windows.h>
 #include <winsock2.h>
 

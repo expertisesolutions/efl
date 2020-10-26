@@ -34,6 +34,10 @@
 # include <evil_private.h>
 #endif
 
+#ifndef _MSC_VER
+#include <libgen.h>
+#endif
+
 #include "eina_config.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
@@ -43,12 +47,6 @@
 /* undefs EINA_ARG_NONULL() so NULL checks are not compiled out! */
 #include "eina_safety_checks.h"
 #include "eina_module.h"
-
-#ifndef _MSC_VER
-#include <libgen.h>
-#else
-#include <evil_private.h>
-#endif
 
 /*============================================================================*
 *                                  Local                                     *
