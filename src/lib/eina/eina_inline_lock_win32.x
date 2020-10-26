@@ -70,7 +70,7 @@ typedef LPDWORD Eina_TLS;
 typedef HANDLE Eina_Semaphore;
 
 #ifdef EINA_HAVE_WIN32_SPINLOCK
-typedef PCRITICAL_SECTION Eina_Spinlock;
+typedef CRITICAL_SECTION Eina_Spinlock;
 #else
 typedef Eina_Lock Eina_Spinlock;
 #endif
@@ -701,7 +701,7 @@ _eina_semaphore_new(Eina_Semaphore *sem, int count_init)
 {
    if (sem && (count_init >= 0))
      {
-        sem = CreateSemaphoreA(NULL, count_init, count_init, NULL);
+        *sem = CreateSemaphoreA(NULL, count_init, count_init, NULL);
         DWORD ok = GetLastError();
         if (ok == ERROR_SUCCESS) return EINA_TRUE;
      }
@@ -713,7 +713,7 @@ _eina_semaphore_free(Eina_Semaphore *sem)
 {
    if (sem)
      {
-        CloseHandle(sem);
+        CloseHandle(*sem);
         DWORD ok = GetLastError();
         if (ok == ERROR_SUCCESS) return EINA_TRUE;
      }
@@ -727,7 +727,7 @@ _eina_semaphore_lock(Eina_Semaphore *sem)
      {
         for (;;)
           {
-             WaitForSingleObject(sem, INFINITE);
+             WaitForSingleObject(*sem, INFINITE);
              DWORD ok = GetLastError();
              if (ok == ERROR_SUCCESS)
                 return EINA_TRUE;
@@ -735,7 +735,7 @@ _eina_semaphore_lock(Eina_Semaphore *sem)
                 continue;
              else if (errno == ERROR_POSSIBLE_DEADLOCK)
               {
-                 EINA_LOCK_DEADLOCK_DEBUG(sem_wait, sem);
+                 EINA_LOCK_DEADLOCK_DEBUG(sem_wait, *sem);
                  return EINA_FALSE;
               }
           }
@@ -747,7 +747,7 @@ static inline Eina_Bool
 _eina_semaphore_release(Eina_Semaphore *sem, int count_release EINA_UNUSED)
 {
    if (sem)
-     return (ReleaseSemaphore(sem, 1, NULL) != 0) ? EINA_TRUE : EINA_FALSE;
+     return (ReleaseSemaphore(*sem, 1, NULL) != 0) ? EINA_TRUE : EINA_FALSE;
    return EINA_FALSE;
 }
 

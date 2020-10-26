@@ -15,27 +15,7 @@
 # include <sys/timerfd.h>
 #endif
 
-#ifdef _WIN32
-
-# include <winsock2.h>
-# include <evil_private.h> /* pipe */
-
-# define pipe_write(fd, buffer, size) send((fd), (char *)(buffer), size, 0)
-# define pipe_read(fd, buffer, size)  recv((fd), (char *)(buffer), size, 0)
-# define pipe_close(fd)               closesocket(fd)
-# define PIPE_FD_ERROR   SOCKET_ERROR
-
-#else
-
-# include <sys/select.h>
-# include <fcntl.h>
-
-# define pipe_write(fd, buffer, size) write((fd), buffer, size)
-# define pipe_read(fd, buffer, size)  read((fd), buffer, size)
-# define pipe_close(fd)               close(fd)
-# define PIPE_FD_ERROR   -1
-
-#endif /* ! _WIN32 */
+#include <evil_unistd.h>
 
 #ifdef HAVE_PRCTL
 # include <sys/prctl.h>

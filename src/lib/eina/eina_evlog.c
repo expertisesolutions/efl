@@ -306,6 +306,7 @@ eina_evlog_init(void)
 Eina_Bool
 eina_evlog_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    // yes - we don't free tyhe evlog buffers. they may be in used by debug th
    eina_spinlock_free(&_evlog_lock);
    return EINA_TRUE;

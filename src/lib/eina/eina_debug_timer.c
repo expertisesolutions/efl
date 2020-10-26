@@ -77,7 +77,7 @@ end:
    t->rel_time = t->timeout - prev_time;
    if (!t2) _timers = eina_list_append(_timers, t);
    else _timers = eina_list_prepend_relative(_timers, t, t2);
-   if (write(pipeToThread[1], &c, 1) != 1)
+   if (pipe_write(pipeToThread[1], &c, 1) != 1)
      e_debug("EINA DEBUG ERROR: Can't wake up thread for debug timer");
 }
 
@@ -119,7 +119,7 @@ _monitor(void *_data EINA_UNUSED)
         if (ret)
           {
              char c;
-             if (read(pipeToThread[0], &c, 1) != 1) break;
+             if (pipe_read(pipeToThread[0], &c, 1) != 1) break;
           }
         else
           {
@@ -141,8 +141,8 @@ _monitor(void *_data EINA_UNUSED)
      }
 #endif
    _thread_runs = EINA_FALSE;
-   close(pipeToThread[0]);
-   close(pipeToThread[1]);
+   pipe_close(pipeToThread[0]);
+   pipe_close(pipeToThread[1]);
    return NULL;
 }
 
@@ -194,40 +194,56 @@ eina_debug_timer_add(unsigned int timeout_ms, Eina_Debug_Timer_Cb cb, void *data
 EINA_API void
 eina_debug_timer_del(Eina_Debug_Timer *t)
 {
+  abort();
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_take(&_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_List *itr = eina_list_data_find_list(_timers, t);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (itr)
      {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         _timers = eina_list_remove_list(_timers, itr);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
         free(t);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
      }
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_release(&_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 }
 
 Eina_Bool
 _eina_debug_timer_init(void)
 {
    eina_spinlock_new(&_lock);
-#ifndef _WIN32
    if (pipe(pipeToThread) == -1) return EINA_FALSE;
-#endif
    return EINA_TRUE;
 }
 
 Eina_Bool
 _eina_debug_timer_shutdown(void)
 {
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    Eina_Debug_Timer *t;
 
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_take(&_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    EINA_LIST_FREE(_timers, t)
    free(t);
-   close(pipeToThread[0]);
-   close(pipeToThread[1]);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
+   pipe_close(pipeToThread[0]);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
+   pipe_close(pipeToThread[1]);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    if (_thread_runs) eina_thread_cancel(_thread);
    _thread_runs = 0;
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_release(&_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
    eina_spinlock_free(&_lock);
+   fprintf(stderr, "== " __FILE__ ":%d %s\n", __LINE__, __func__); fflush(stderr);
 
    return EINA_TRUE;
 }
