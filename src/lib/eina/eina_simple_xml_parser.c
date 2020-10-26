@@ -26,6 +26,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#ifdef _WIN32
+# include "evil_private.h"
+#endif
+
 #include "eina_config.h"
 #include "eina_private.h"
 #include "eina_alloca.h"
