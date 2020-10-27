@@ -1185,6 +1185,7 @@ void exactness_init(void)
    efl_loop_begin_redirect = efl_loop_begin;
    elm_init_redirect = elm_init;
    ecore_evas_init_redirect = ecore_evas_init;
+   ecore_main_loop_begin_redirect = ecore_main_loop_begin;
 }
 
 void exactness_shutdown(void)
@@ -1196,6 +1197,7 @@ void exactness_shutdown(void)
    efl_loop_begin_redirect = NULL;
    elm_init_redirect = NULL;
    ecore_evas_init_redirect = NULL;
+   ecore_main_loop_begin_redirect = NULL;
 }
 
 BOOL WINAPI
@@ -1212,6 +1214,14 @@ DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
         fprintf(stderr, " >>> DLL_PROCESS_DETACH \n");
 	exactness_shutdown();
         break;
+      case DLL_THREAD_ATTACH:
+        fprintf(stderr, "\n >>> DLL_THREAD_ATTACH <<< \n");
+	exactness_init();
+       break;
+      case DLL_THREAD_DETACH:
+        fprintf(stderr, "\n >>> DLL_THREAD_DETACH <<< \n");
+	exactness_shutdown();
+	break;
       default:
         break;
      }
