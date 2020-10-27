@@ -73,7 +73,7 @@ if G.tests != None:
 if G.fontsdir != None:
   spawn_env["EXACTNESS_FONTS_DIR"] = G.fontsdir
 if G.speed != 1.0:
-  spawn_env["EXACTNESS_SPEED"] = G.speed
+  spawn_env["EXACTNESS_SPEED"] = str(G.speed)
 if G.scan_objects:
   spawn_env["EXACTNESS_SCAN_OBJECTS"] = "Yes"
 if G.disable_screenshots:
