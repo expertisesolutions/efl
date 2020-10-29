@@ -1,16 +1,22 @@
 efreetd_src = files([
   'efreetd.c',
   'efreetd_cache.c',
-  'efreetd_ipc.c',
 ])
 
 efreetd_header_src = files([
   'efreetd.h',
   'efreetd_cache.h',
-  'efreetd_ipc.h',
 ])
 
 if get_option('efreetd')
+  efreetd_src += files([
+    'efreetd_cache_ipc.c',
+  ])
+
+  efreetd_header_src += files([
+    'efreetd_cache_ipc.h',
+  ])
+
   config_h.set('HAVE_EFREETD', '1')
 
   # disable strict as this causes efreet to be less functional for people
@@ -22,6 +28,16 @@ if get_option('efreetd')
           install: true,
           c_args : package_c_args,
   )
+else
+  efreetd_src += files([
+    'efreetd_cache_local.c',
+  ])
+
+  efreetd_header_src += files([
+    'efreetd_cache_local.h',
+  ])
+
+
 endif
 
 efreet_bin_deps = [efreet, ecore, eet, ecore_file, intl]

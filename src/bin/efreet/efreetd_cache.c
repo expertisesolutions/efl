@@ -8,7 +8,10 @@
 #include <Eio.h>
 #include <Eet.h>
 #include "efreetd.h"
-#include "efreetd_ipc.h"
+
+#ifdef HAVE_EFRFEETD
+#include "efreetd_cache_ipc.h"
+#endif /* HAVE_EFRFEETD */
 
 #include "Efreet.h"
 #define EFREET_MODULE_LOG_DOM efreetd_log_dom
@@ -285,7 +288,7 @@ subdir_cache_get(const struct stat *st, const char *path)
    // go through content finding directories
    it = eina_file_stat_ls(path);
    if (!it) return cd;
-   
+
    EINA_ITERATOR_FOREACH(it, info)
      {
         // if ., .. or other "hidden" dot files - ignore
@@ -300,7 +303,7 @@ subdir_cache_get(const struct stat *st, const char *path)
           }
      }
    eina_iterator_free(it);
-   
+
    // now convert our temporary list into an array of stringshare strings
    cd->dirs_count = eina_list_count(files);
    if (cd->dirs_count > 0)
@@ -814,9 +817,9 @@ cache_exe_data_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
         fflush(efreetd_log_file);
         if ((ev->lines) && (*ev->lines->line == 'c')) update = EINA_TRUE;
         if (!desktop_exists)
-          send_signal_desktop_cache_build();
+          _desktop_cache_build_signal_send();
         desktop_exists = EINA_TRUE;
-        send_signal_desktop_cache_update(update);
+        _desktop_cache_update_signal_send(update);
      }
    else if (ev->exe == icon_cache_exe)
      {
@@ -825,7 +828,7 @@ cache_exe_data_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
         fprintf(efreetd_log_file, "[%09.3f] Data icon_cache_create\n", ecore_time_get());
         fflush(efreetd_log_file);
         if ((ev->lines) && (*ev->lines->line == 'c')) update = EINA_TRUE;
-        send_signal_icon_cache_update(update);
+        _icon_cache_update_signal_send(update);
      }
    else if (ev->exe == mime_cache_exe)
      {
@@ -860,7 +863,7 @@ cache_exe_del_cb(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
         fprintf(efreetd_log_file, "[%09.3f] Exit mime_cache_create\n", ecore_time_get());
         fflush(efreetd_log_file);
         mime_cache_exe = NULL;
-        send_signal_mime_cache_build();
+        _mime_cache_build_signal_send();
      }
    return ECORE_CALLBACK_RENEW;
 }

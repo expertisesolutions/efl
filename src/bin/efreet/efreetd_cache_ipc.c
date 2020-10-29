@@ -212,25 +212,25 @@ _cb_client_data(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
 ///////////////////////////////////////////////////////////////////////////
 
 void
-send_signal_icon_cache_update(Eina_Bool update)
-{
-   _broadcast(ipc, 2 /* icon cache update */, update, NULL, 0);
-}
-
-void
-send_signal_desktop_cache_update(Eina_Bool update)
-{
-   _broadcast(ipc, 3 /* desktop cache update */, update, NULL, 0);
-}
-
-void
-send_signal_desktop_cache_build(void)
+_desktop_cache_build_signal_send(void)
 {
    _broadcast(ipc, 1 /* desktop cache build */, 1, NULL, 0);
 }
 
 void
-send_signal_mime_cache_build(void)
+_icon_cache_update_signal_send(Eina_Bool update)
+{
+   _broadcast(ipc, 2 /* icon cache update */, update, NULL, 0);
+}
+
+void
+_desktop_cache_update_signal_send(Eina_Bool update)
+{
+   _broadcast(ipc, 3 /* desktop cache update */, update, NULL, 0);
+}
+
+void
+_mime_cache_build_signal_send(void)
 {
    _broadcast(ipc, 4 /* mime cache build */, 1, NULL, 0);
 }

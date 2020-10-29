@@ -17,7 +17,10 @@
 
 #include "efreetd.h"
 #include "efreetd_cache.h"
-#include "efreetd_ipc.h"
+
+#ifdef HAVE_EFREETD
+# include "efreetd_cache_ipc.h"
+#endif /* HAVE_EFREETD */
 
 int efreetd_log_dom = -1;
 Eina_Mempool *efreetd_mp_stat = NULL;
@@ -54,7 +57,9 @@ main(int argc, char *argv[])
    if (!ecore_init()) goto ecore_error;
    ecore_app_args_set(argc, (const char **)argv);
    if (!ecore_file_init()) goto ecore_file_error;
+#ifdef HAVE_EFREETD
    if (!ipc_init()) goto ipc_error;
+#endif /* HAVE_EFREETD */
    if (!cache_init()) goto cache_error;
 
    log_file_dir = eina_environment_tmp_get();
@@ -86,7 +91,9 @@ main(int argc, char *argv[])
    eina_mempool_del(efreetd_mp_stat);
 
    cache_shutdown();
+#ifdef HAVE_EFREETD
    ipc_shutdown();
+#endif /* HAVE_EFREETD */
    ecore_file_shutdown();
    ecore_shutdown();
    eina_log_domain_unregister(efreetd_log_dom);
@@ -97,8 +104,10 @@ main(int argc, char *argv[])
 tmp_error:
    cache_shutdown();
 cache_error:
+#ifdef HAVE_EFREETD
    ipc_shutdown();
 ipc_error:
+#endif /* HAVE_EFREETD */
    ecore_file_shutdown();
 ecore_file_error:
    ecore_shutdown();
