@@ -40,7 +40,9 @@ edje_cache_emp_alloc(Edje_Part_Collection_Directory_Entry *ce)
   INIT_EMP_BOTH(EXTERNAL, Edje_Part_Description_External, ce);
   INIT_EMP_BOTH(SPACER, Edje_Part_Description_Common, ce);
   INIT_EMP_BOTH(SNAPSHOT, Edje_Part_Description_Snapshot, ce);
+#ifdef HAVE_ECTOR
   INIT_EMP_BOTH(VECTOR, Edje_Part_Description_Vector, ce);
+#endif
   INIT_EMP(part, Edje_Part, ce);
 }
 
@@ -63,7 +65,9 @@ edje_cache_emp_free(Edje_Part_Collection_Directory_Entry *ce)
    eina_mempool_del(ce->mp->mp.EXTERNAL);
    eina_mempool_del(ce->mp->mp.SPACER);
    eina_mempool_del(ce->mp->mp.SNAPSHOT);
+#ifdef HAVE_ECTOR
    eina_mempool_del(ce->mp->mp.VECTOR);
+#endif
    eina_mempool_del(ce->mp->mp.part);
    memset(&ce->mp->mp, 0, sizeof(ce->mp->mp));
 
@@ -79,7 +83,9 @@ edje_cache_emp_free(Edje_Part_Collection_Directory_Entry *ce)
    eina_mempool_del(ce->mp->mp_rtl.EXTERNAL);
    eina_mempool_del(ce->mp->mp_rtl.SPACER);
    eina_mempool_del(ce->mp->mp_rtl.SNAPSHOT);
+#ifdef HAVE_ECTOR
    eina_mempool_del(ce->mp->mp_rtl.VECTOR);
+#endif
    memset(&ce->mp->mp_rtl, 0, sizeof(ce->mp->mp_rtl));
 
    free(ce->mp);

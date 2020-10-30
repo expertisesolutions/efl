@@ -119,7 +119,9 @@ EMP(TABLE, table)
 EMP(EXTERNAL, external)
 EMP(SPACER, spacer)
 EMP(SNAPSHOT, snapshot)
+#ifdef HAVE_ECTOR
 EMP(VECTOR, vector)
+#endif
 #undef EMP
 
 EAPI Eina_Mempool *_emp_part = NULL;
@@ -167,7 +169,9 @@ struct
    { EDJE_PART_TYPE_PROXY, "proxy" },
    { EDJE_PART_TYPE_SPACER, "spacer" },
    { EDJE_PART_TYPE_SNAPSHOT, "snapshot" },
+#ifdef HAVE_ECTOR
    { EDJE_PART_TYPE_VECTOR, "vector" }
+#endif
 };
 
 static const char *
@@ -912,6 +916,7 @@ _edje_edd_init(void)
    EDJE_DATA_DESCRIPTOR_DESCRIPTION_COMMON(_edje_edd_edje_part_description_rectangle, Edje_Part_Description_Common);
 
    // SVG, since 1.18
+#ifdef HAVE_ECTOR
    EET_EINA_FILE_DATA_DESCRIPTOR_CLASS_SET(&eddc, Edje_Part_Description_Vector);
    eddc.func.mem_free = mem_free_vector;
    eddc.func.mem_alloc = mem_alloc_vector;
@@ -922,6 +927,7 @@ _edje_edd_init(void)
    EET_DATA_DESCRIPTOR_ADD_BASIC(_edje_edd_edje_part_description_vector, Edje_Part_Description_Vector, "vg.set", vg.set, EET_T_UCHAR);
    EET_DATA_DESCRIPTOR_ADD_BASIC(_edje_edd_edje_part_description_vector, Edje_Part_Description_Vector, "vg.type", vg.type, EET_T_INT);
    EET_DATA_DESCRIPTOR_ADD_BASIC(_edje_edd_edje_part_description_vector, Edje_Part_Description_Vector, "vg.frame", vg.frame, EET_T_DOUBLE);
+#endif
 
 
    EET_EINA_FILE_DATA_DESCRIPTOR_CLASS_SET(&eddc, Edje_Part_Description_Common);

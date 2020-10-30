@@ -486,8 +486,10 @@ static void       st_collections_group_parts_part_description_params_bool(void);
 static void       st_collections_group_parts_part_description_params_choice(void);
 static void       st_collections_group_parts_part_description_params_smart(void);
 
+#ifdef HAVE_ECTOR
 /* vector part parameter */
 static void       st_collections_group_parts_part_description_vector_frame(void);
+#endif
 
 static void       ob_collections_group_programs_program(void);
 static void       st_collections_group_programs_program_name(void);
@@ -927,7 +929,9 @@ New_Statement_Handler statement_handlers[] =
    {"collections.group.parts.part.description.params.bool", st_collections_group_parts_part_description_params_bool},
    {"collections.group.parts.part.description.params.choice", st_collections_group_parts_part_description_params_choice},
    {"collections.group.parts.part.description.params.*", st_collections_group_parts_part_description_params_smart},
+#ifdef  HAVE_ECTOR
    {"collections.group.parts.part.description.vector.frame", st_collections_group_parts_part_description_vector_frame},
+#endif
    IMAGE_STATEMENTS("collections.group.parts.part.description.")
    {
       "collections.group.parts.part.description.font", st_fonts_font
@@ -1764,6 +1768,7 @@ _edje_part_description_alloc(unsigned char type, const char *collection, const c
          break;
       }
 
+#ifdef HAVE_ECTOR
       case EDJE_PART_TYPE_VECTOR:
       {
          Edje_Part_Description_Vector *ed;
@@ -1773,6 +1778,7 @@ _edje_part_description_alloc(unsigned char type, const char *collection, const c
          result = &ed->common;
          break;
       }
+#endif
      }
 
    if (!result)
@@ -4320,9 +4326,11 @@ _parts_count_update(unsigned int type, int inc)
         current_de->count.SNAPSHOT += inc;
         break;
 
+#ifdef HAVE_ECTOR
       case EDJE_PART_TYPE_VECTOR:
         current_de->count.VECTOR += inc;
         break;
+#endif
      }
    current_de->count.part += inc;
 }
@@ -6099,7 +6107,9 @@ _part_desc_free(Edje_Part_Collection *pc,
       case EDJE_PART_TYPE_TABLE:
       case EDJE_PART_TYPE_IMAGE:
       case EDJE_PART_TYPE_SNAPSHOT:
+#ifdef HAVE_ECTOR
       case EDJE_PART_TYPE_VECTOR:
+#endif
         /* Nothing todo here */
         break;
 
@@ -6222,7 +6232,9 @@ ob_collections_group_parts_part_short(void)
                      "proxy", EDJE_PART_TYPE_PROXY,
                      "spacer", EDJE_PART_TYPE_SPACER,
                      "snapshot", EDJE_PART_TYPE_SNAPSHOT,
+#ifdef HAVE_ECTOR
                      "vector", EDJE_PART_TYPE_VECTOR,
+#endif
                      NULL);
 
    stack_replace_quick("part");
@@ -6511,7 +6523,9 @@ st_collections_group_parts_part_type(void)
                      "PROXY", EDJE_PART_TYPE_PROXY,
                      "SPACER", EDJE_PART_TYPE_SPACER,
                      "SNAPSHOT", EDJE_PART_TYPE_SNAPSHOT,
+#ifdef HAVE_ECTOR
                      "VECTOR", EDJE_PART_TYPE_VECTOR,
+#endif
                      NULL);
 
    _part_type_set(type);
@@ -8512,6 +8526,7 @@ st_collections_group_parts_part_description_inherit(void)
          break;
       }
 
+#ifdef HAVE_ECTOR
       case EDJE_PART_TYPE_VECTOR:
       {
          Edje_Part_Description_Vector *ied = (Edje_Part_Description_Vector *)ed;
@@ -8522,6 +8537,7 @@ st_collections_group_parts_part_description_inherit(void)
          ied->vg.frame = iparent->vg.frame;
          break;
       }
+#endif
      }
 }
 
@@ -10191,10 +10207,12 @@ st_collections_group_parts_part_description_image_normal(void)
 
    check_arg_count(1);
 
+#ifdef HAVE_ECTOR
    if (current_part->type == EDJE_PART_TYPE_VECTOR)
      {
         return _handle_vector_image();
      }
+#endif
 
    if (current_part->type != EDJE_PART_TYPE_IMAGE)
      {
@@ -13492,6 +13510,7 @@ st_collections_group_parts_part_description_params_choice(void)
    _st_collections_group_parts_part_description_params(EDJE_EXTERNAL_PARAM_TYPE_CHOICE);
 }
 
+#ifdef HAVE_ECTOR
 static void
 st_collections_group_parts_part_description_vector_frame(void)
 {
@@ -13510,6 +13529,7 @@ st_collections_group_parts_part_description_vector_frame(void)
 
    ed->vg.frame = parse_float_range(0, 0.0, 1.0);
 }
+#endif
 
 /** @edcsubsection{collections_group_parts_description_links,
  *                 Group.Parts.Part.Description.Links} */

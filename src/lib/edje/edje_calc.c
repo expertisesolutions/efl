@@ -308,7 +308,9 @@ case EDJE_PART_TYPE_##Short:                                          \
         POPULATE_MEMSIZE_RTL(BOX, Box);
         POPULATE_MEMSIZE_RTL(TABLE, Table);
         POPULATE_MEMSIZE_RTL(EXTERNAL, External);
+#ifdef HAVE_ECTOR
         POPULATE_MEMSIZE_RTL(VECTOR, Vector);
+#endif
      }
 #undef POPULATE_MEMSIZE_RTL
 
@@ -408,7 +410,9 @@ case EDJE_PART_TYPE_##Short:                                          \
         EDIT_ALLOC_POOL_RTL(BOX, Box, box);
         EDIT_ALLOC_POOL_RTL(TABLE, Table, table);
         EDIT_ALLOC_POOL_RTL(EXTERNAL, External, external_params);
+#ifdef HAVE_ECTOR
         EDIT_ALLOC_POOL_RTL(VECTOR, Vector, vector);
+#endif
      }
 
    if (desc_rtl)
@@ -3002,7 +3006,9 @@ _edje_part_recalc_single(Edje *ed,
       case EDJE_PART_TYPE_RECTANGLE:
       case EDJE_PART_TYPE_SWALLOW:
       case EDJE_PART_TYPE_GROUP:
+#ifdef HAVE_ECTOR
       case EDJE_PART_TYPE_VECTOR:
+#endif
       case EDJE_PART_TYPE_GRADIENT: // FIXME: THIS ONE SHOULD NEVER BE TRIGGERED
       default:
         break;
@@ -3079,9 +3085,11 @@ _edje_proxy_recalc_apply(Edje *ed, Edje_Real_Part *ep, Edje_Calc_Params *p3, Edj
            case EDJE_PART_TYPE_TABLE:
            case EDJE_PART_TYPE_PROXY:
            case EDJE_PART_TYPE_SNAPSHOT:
+#ifdef HAVE_ECTOR
            case EDJE_PART_TYPE_VECTOR:
              evas_object_image_source_set(ep->object, pp->object);
              break;
+#endif
 
            case EDJE_PART_TYPE_GRADIENT:
              /* FIXME: THIS ONE SHOULD NEVER BE TRIGGERED. */
@@ -3263,7 +3271,6 @@ _edje_vector_load_lottie(Edje *ed, Edje_Real_Part *ep, const char *key)
         efl_gfx_frame_controller_frame_set(ep->object, (int)(frame_count * desc->vg.frame));
      }
 }
-#endif
 
 static void
 _edje_vector_recalc_apply(Edje *ed, Edje_Real_Part *ep, Edje_Calc_Params *p3 EINA_UNUSED, Edje_Part_Description_Vector *chosen_desc, FLOAT_T pos)
@@ -3381,6 +3388,7 @@ _edje_part_vector_anim_play(Edje *ed EINA_UNUSED, Edje_Real_Part *rp, Eina_Bool 
    rp->typedata.vector->is_playing = EINA_TRUE;
    efl_canvas_object_animation_start(rp->object, rp->typedata.vector->anim, 1.0, 0.0);
 }
+#endif
 #endif
 #endif
 
@@ -4790,6 +4798,7 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
              EINA_FALLTHROUGH;
            case EDJE_PART_TYPE_SNAPSHOT:
              EINA_FALLTHROUGH;
+#ifdef HAVE_ECTOR
            case EDJE_PART_TYPE_VECTOR:
              evas_object_color_set(ep->object,
                                    (pf->color.r * pf->color.a) / 255,
@@ -4830,6 +4839,7 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
                efl_canvas_object_no_render_set(ep->object, pf->no_render);
 #endif
              EINA_FALLTHROUGH;
+#endif
 
            /* move and resize are needed for all previous object => no break here. */
            case EDJE_PART_TYPE_SWALLOW:
@@ -4913,11 +4923,11 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
              _edje_table_recalc_apply(ed, ep, pf, (Edje_Part_Description_Table *)chosen_desc);
              break;
 
-           case EDJE_PART_TYPE_VECTOR:
 #ifdef HAVE_ECTOR
+           case EDJE_PART_TYPE_VECTOR:
              _edje_vector_recalc_apply(ed, ep, pf, (Edje_Part_Description_Vector *)chosen_desc, pos);
-#endif
              break;
+#endif
 
            case EDJE_PART_TYPE_TEXTBLOCK:
            case EDJE_PART_TYPE_EXTERNAL:

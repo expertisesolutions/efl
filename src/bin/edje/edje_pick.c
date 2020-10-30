@@ -1483,6 +1483,7 @@ _edje_pick_resources_process(Edje_Part_Collection *edc, Edje_File *edf, Edje_Fil
              for (k = 0; k < part->other.desc_count; k++)
                _edje_pick_images_desc_update((Edje_Part_Description_Image *)part->other.desc[k], edf, o);
           }
+#ifdef HAVE_ECTOR
         else if (part->type == EDJE_PART_TYPE_VECTOR)
           {
              /* Update IDs of all vectors in ALL descs of this part */
@@ -1491,6 +1492,7 @@ _edje_pick_resources_process(Edje_Part_Collection *edc, Edje_File *edf, Edje_Fil
              for (k = 0; k < part->other.desc_count; k++)
                _edje_pick_vectors_desc_update((Edje_Part_Description_Vector *)part->other.desc[k], edf, o);
           }
+#endif
         else if (part->type == EDJE_PART_TYPE_TEXT || part->type == EDJE_PART_TYPE_TEXTBLOCK)
           {
              /* Update all styles in ALL descs of this part */

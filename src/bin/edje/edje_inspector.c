@@ -222,8 +222,10 @@ part_type_name_get(Edje_Part_Type t)
       case EDJE_PART_TYPE_SPACER:
         return "SPACER";
 
+#ifdef HAVE_ECTOR
       case EDJE_PART_TYPE_VECTOR:
         return "VECTOR";
+#endif
 
       case EDJE_PART_TYPE_NONE:
       case EDJE_PART_TYPE_LAST:

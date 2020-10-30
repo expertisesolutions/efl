@@ -937,6 +937,7 @@ _edje_object_file_set_internal(Evas_Object *obj, const Eina_File *file, const ch
                        if (!rp->typedata.container) memerr = EINA_TRUE;
                        break;
 
+#ifdef HAVE_ECTOR
                      case EDJE_PART_TYPE_VECTOR:
                        rp->type = EDJE_RP_TYPE_VECTOR;
                        rp->typedata.vector = calloc(1, sizeof(Edje_Real_Part_Vector));
@@ -945,6 +946,7 @@ _edje_object_file_set_internal(Evas_Object *obj, const Eina_File *file, const ch
                        else
                          rp->typedata.vector->current_id = -1;
                        break;
+#endif
 
                      default:
                        break;
@@ -976,11 +978,11 @@ _edje_object_file_set_internal(Evas_Object *obj, const Eina_File *file, const ch
                        rp->object = evas_object_rectangle_add(ed->base.evas);
                        break;
 
-                     case EDJE_PART_TYPE_VECTOR:
 #ifdef HAVE_ECTOR
+                     case EDJE_PART_TYPE_VECTOR:
                        rp->object = evas_object_vg_add(ed->base.evas);
-#endif
                        break;
+#endif
 
                      case EDJE_PART_TYPE_PROXY:
                      case EDJE_PART_TYPE_IMAGE:

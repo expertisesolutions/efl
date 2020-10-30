@@ -142,8 +142,12 @@ edje_src = files([
   'edje_part_table.c',
   'edje_part_box.c',
   'edje_part_text.c',
-  'edje_part_invalid.c'
+  'edje_part_invalid.c',
 ])
+
+if get_option('ector')
+  edje_src += files('edje_edit_vg.c')
+endif
 
 edje_lib = library('edje',
     edje_src, pub_eo_file_target, priv_eo_file_target,

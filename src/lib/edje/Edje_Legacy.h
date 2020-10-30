@@ -3260,7 +3260,9 @@ typedef enum _Edje_Part_Type
    EDJE_PART_TYPE_LIGHT     = 14,
    EDJE_PART_TYPE_CAMERA    = 15,
    EDJE_PART_TYPE_SNAPSHOT  = 16, /**< Snapshot @since 1.16 */
+#ifdef HAVE_ECTOR
    EDJE_PART_TYPE_VECTOR    = 17, /**< Vector @since 1.18 */
+#endif
    EDJE_PART_TYPE_LAST      = 18  /**< Last type value */
 } Edje_Part_Type;
 /**

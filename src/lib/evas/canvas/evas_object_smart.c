@@ -1374,10 +1374,27 @@ _efl_canvas_group_group_change(Eo *eo_obj, Evas_Smart_Data *o EINA_UNUSED)
 }
 
 Eina_Bool
+_mapped_object_changed(Evas_Object_Protected_Data *obj)
+{
+   if ((obj->need_surface_clear && obj->changed && !obj->is_smart))
+     return EINA_TRUE;
+
+   if ((obj->changed_pchange) && (obj->changed_map))
+     return EINA_TRUE;
+
+#ifdef HAVE_ECTOR
+   /* A condition for a rare case which has obj->changed is FALSE,
+      but Efl_Canvas_Vg_Object_Data.changed is TRUE. */
+   if (obj->is_vg_object && evas_object_vg_changed_get(obj))
+     return EINA_TRUE;
+#endif
+
+   return EINA_FALSE;
+}
+
+Eina_Bool
 evas_object_smart_changed_get(Evas_Object_Protected_Data *obj)
 {
-   Eina_Bool has_map = EINA_FALSE;
-
    /* If object is invisible, it's meaningless to figure out changed state
       for rendering. */
 
@@ -1396,18 +1413,11 @@ evas_object_smart_changed_get(Evas_Object_Protected_Data *obj)
 
    if (!obj->clip.clipees)
      {
-        has_map = _evas_render_has_map(obj) && !_evas_render_can_map(obj);
+        Eina_Bool has_map = _evas_render_has_map(obj) && !_evas_render_can_map(obj);
         if (obj->changed && !obj->is_smart && !has_map) return EINA_TRUE;
 
-        if (has_map)
-          {
-             if ((obj->need_surface_clear && obj->changed && !obj->is_smart) ||
-                 ((obj->changed_pchange) && (obj->changed_map)) ||
-                 /* A condition for a rare case which has obj->changed is FALSE,
-                    but Efl_Canvas_Vg_Object_Data.changed is TRUE. */
-                 (obj->is_vg_object && evas_object_vg_changed_get(obj)))
-               return EINA_TRUE;
-          }
+        if (has_map && _mapped_object_changed(obj))
+          return EINA_TRUE;
      }
 
    if (obj->is_smart)
