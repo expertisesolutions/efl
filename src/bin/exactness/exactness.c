@@ -229,8 +229,9 @@ ok:
    sbuf = eina_strbuf_new();
    printf("STATUS %s: START\n", ent->name);
    eina_strbuf_append_printf(sbuf,
-         "%s exactness_play %s %s%s %s%.*s %s%s%s-t '%s' ",
+         "%s python %s/exactness_play.py %s %s%s %s%.*s %s%s%s-t '%s' ",
          _wrap_command ? _wrap_command : "",
+	 PACKAGE_BIN_DIR,
          _mode == RUN_SIMULATION ? "-s" : "",
          _fonts_dir ? "-f " : "", _fonts_dir ? _fonts_dir : "",
          _verbose ? "-" : "", _verbose, "vvvvvvvvvv",
