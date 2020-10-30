@@ -12,8 +12,6 @@
 # endif
 #else
 # include <evil_private.h>
-# include <evil_windows.h>
-# include <resapi.h>
 #endif
 
 #ifdef HAVE_FORK

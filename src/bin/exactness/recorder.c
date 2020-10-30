@@ -12,7 +12,6 @@
 # endif
 #else
 # include <evil_private.h>
-# include <resapi.h>
 #endif
 #ifdef _WIN32
 # include <timeapi.h> // timeGetTime()
