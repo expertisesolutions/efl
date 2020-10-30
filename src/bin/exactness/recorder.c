@@ -12,8 +12,10 @@
 # endif
 #else
 # include <evil_private.h>
-# include <evil_windows.h>
 # include <resapi.h>
+#endif
+#ifdef _WIN32
+# include <timeapi.h> // timeGetTime()
 #endif
 
 #include <sys/types.h>
@@ -296,7 +298,11 @@ static void
 _setup_ee_creation(void)
 {
    ecore_evas_callback_new_set(_my_evas_new);
+#ifdef _WIN32
+   _last_timestamp = timeGetTime();
+#else
    _last_timestamp = ecore_time_get() * 1000;
+#endif
 }
 
 #ifndef _WIN32

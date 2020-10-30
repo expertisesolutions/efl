@@ -39,9 +39,15 @@ exactness_play_lib = library('exactness_play',
   version : meson.project_version()
 )
 
+exactness_record_deps = [ elementary, dl]
+if sys_windows
+  winmm = cc.find_library('winmm')
+  exactness_record_deps += winmm
+endif
+
 exactness_record_lib = library('exactness_record',
   [ 'recorder.c', 'common.c', 'common.h' ],
-  dependencies: [ elementary, dl],
+  dependencies: exactness_record_deps,
   c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   version : meson.project_version()
