@@ -10,7 +10,9 @@
 #include "efreetd.h"
 
 #ifdef HAVE_EFRFEETD
-#include "efreetd_cache_ipc.h"
+# include "efreetd_cache_ipc.h"
+#else
+# include "efreetd_cache_local.h"
 #endif /* HAVE_EFRFEETD */
 
 #include "Efreet.h"

@@ -1,4 +1,3 @@
-
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -16,18 +15,22 @@
 #include <Eet.h>
 #include <Ecore.h>
 #include <Ecore_File.h>
-#include <Ecore_Ipc.h>
 #include <Ecore_Con.h>
+#ifdef HAVE_EFREETD
+# include <Ecore_Ipc.h>
+#endif /* HAVE_EFREETD */
 
 /* define macros and variable for using the eina logging system  */
 #define EFREET_MODULE_LOG_DOM _efreet_cache_log_dom
-static int _efreet_cache_log_dom = -1;
 
 #include "Efreet.h"
-#include "efreet_private.h"
 #include "efreet_cache_private.h"
+#include "efreet_private.h"
 #include "../../static_libs/buildsystem/buildsystem.h"
 #define NON_EXISTING (void *)-1
+
+/* define macros and variable for using the eina logging system  */
+int _efreet_cache_log_dom = -1;
 
 typedef struct _Efreet_Old_Cache Efreet_Old_Cache;
 
@@ -37,10 +40,6 @@ struct _Efreet_Old_Cache
     Eet_File *ef;
 };
 
-static Ecore_Ipc_Server    *ipc = NULL;
-static Ecore_Event_Handler *hnd_add = NULL;
-static Ecore_Event_Handler *hnd_del = NULL;
-static Ecore_Event_Handler *hnd_data = NULL;
 
 static Eina_Lock _lock;
 
@@ -99,139 +98,26 @@ static void *efreet_cache_close(Eet_File *ef);
 static void icon_cache_update_free(void *data, void *ev);
 
 static void *hash_array_string_add(void *hash, const char *key, void *data);
-
-static Eina_Bool disable_cache;
-static Eina_Bool run_in_tree;
-static int relaunch_try = 0;
+Eina_Bool run_in_tree;
+Eina_Bool disable_cache;
 
 EAPI int EFREET_EVENT_ICON_CACHE_UPDATE = 0;
 EAPI int EFREET_EVENT_DESKTOP_CACHE_UPDATE = 0;
 EAPI int EFREET_EVENT_DESKTOP_CACHE_BUILD = 0;
 
-#define IPC_HEAD(_type) \
-   Ecore_Ipc_Event_Server_##_type *e = event; \
-   if (e->server != ipc) \
-     return ECORE_CALLBACK_PASS_ON
-
-static void
-_ipc_launch(void)
-{
-   char buf[PATH_MAX];
-   int num;
-   int try_gap = 10000; // 10ms
-   int tries = 1000; // 1000 * 10ms == 10sec
-   const char *s;
-
-   if (relaunch_try == 0)
-     {
-        ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
-        if (ipc)
-          {
-             relaunch_try++;
-             return;
-          }
-     }
-   relaunch_try--;
-   s = getenv("EFREETD_CONNECT_TRIES");
-   if (s)
-     {
-        num = atoi(s);
-        if (num >= 0) tries = num;
-     }
-   s = getenv("EFREETD_CONNECT_TRY_GAP");
-   if (s)
-     {
-        num = atoi(s);
-        if (num >= 0) try_gap = num;
-     }
-   if (run_in_tree)
-     bs_binary_get(buf, sizeof(buf), "efreet", "efreetd");
-   else
-     snprintf(buf, sizeof(buf), PACKAGE_BIN_DIR "/efreetd");
-   ecore_exe_run(buf, NULL);
-   num = 0;
-   while ((!ipc) && (num < tries))
-     {
-        num++;
-        usleep(try_gap);
-        ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
-     }
-   if (!ipc) ERR("Timeout in trying to start and then connect to efreetd");
-}
-
-static Eina_Bool
-_cb_server_add(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
-{
-   IPC_HEAD(Add);
-   relaunch_try--;
-   return ECORE_CALLBACK_DONE;
-}
-
-static Ecore_Timer *reconnect_timer = NULL;
-static unsigned int reconnect_count = 0;
-
-static Eina_Bool
-_cb_server_reconnect(void *data EINA_UNUSED)
-{
-   if (reconnect_timer) ecore_timer_del(reconnect_timer);
-   reconnect_timer = NULL;
-   reconnect_count++;
-   _ipc_launch();
-   if (ipc)
-     {
-        const char *s;
-        int len = 0;
-
-        s = efreet_language_get();
-        if (s) len = strlen(s);
-        ecore_ipc_server_send(ipc, 1, 0, 0, 0, 0, s, len);
-        efreet_icon_extensions_refresh();
-     }
-   return EINA_FALSE;
-}
-
-static Eina_Bool
-_cb_server_del(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
-{
-   double t;
-   IPC_HEAD(Del);
-   ipc = NULL;
-
-   if (disable_cache) return ECORE_CALLBACK_RENEW;
-   if (reconnect_count > 10)
-     {
-        char *address = ecore_con_local_path_new(EINA_FALSE, "efreetd", 0);
-        reconnect_timer = NULL;
-        ERR("efreetd connection failed 10 times! check for stale socket file at %s", address);
-        free(address);
-        return EINA_FALSE;
-     }
-   // random 0.5 -> 1.0 sec from now
-   t = (((double)((rand() + (int)getpid()) & 0xff) / 255.0) * 0.5) + 0.5;
-   if (reconnect_timer) ecore_timer_del(reconnect_timer);
-   reconnect_timer = ecore_timer_add(t, _cb_server_reconnect, NULL);
-   return ECORE_CALLBACK_DONE;
-}
-
 static void
 _efreet_cache_reset()
 {
-   const char *s;
+   const char *s = efreet_language_get();
    int len = 0;
 
-   if (ipc) ecore_ipc_server_del(ipc);
-   ipc = NULL;
-   if (!disable_cache)
-     ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
-   if (!ipc) return;
-
-   s = efreet_language_get();
    if (s) len = strlen(s);
-   ecore_ipc_server_send(ipc, 1, 0, 0, 0, 0, s, len);
-   efreet_icon_extensions_refresh();
+
+   if(_efreet_cache_reset_language(s, len) == EINA_TRUE)
+     efreet_icon_extensions_refresh();
 }
 
-static void
+void
 _icon_desktop_cache_update_event_add(int event_type)
 {
    Efreet_Event_Cache_Update *ev;
@@ -283,35 +169,6 @@ _icon_desktop_cache_update_event_add(int event_type)
    ecore_event_add(event_type, ev, icon_cache_update_free, l);
 }
 
-EAPI void (*_efreet_mime_update_func) (void) = NULL;
-
-static Eina_Bool
-_cb_server_data(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
-{
-   IPC_HEAD(Data);
-   if (e->major == 1) // registration
-     {
-        if (e->minor == 1)
-          ecore_event_add(EFREET_EVENT_DESKTOP_CACHE_BUILD, NULL, NULL, NULL);
-     }
-   else if (e->major == 2) // icon cache update
-     {
-        if (e->minor == 1)
-          _icon_desktop_cache_update_event_add(EFREET_EVENT_ICON_CACHE_UPDATE);
-        else
-          ecore_event_add(EFREET_EVENT_ICON_CACHE_UPDATE, NULL, NULL, NULL);
-     }
-   else if (e->major == 3) // desktop cache update
-     {
-        _icon_desktop_cache_update_event_add(EFREET_EVENT_DESKTOP_CACHE_UPDATE);
-     }
-   else if (e->major == 4) // mime cache update
-     {
-        if (_efreet_mime_update_func) _efreet_mime_update_func();
-     }
-   return ECORE_CALLBACK_DONE;
-}
-
 int
 efreet_cache_init(void)
 {
@@ -344,47 +201,15 @@ efreet_cache_init(void)
     fallbacks = eina_hash_string_superfast_new(EINA_FREE_CB(efreet_cache_icon_fallback_free));
     desktops = eina_hash_string_superfast_new(NULL);
 
+#ifdef HAVE_EFREETD
     ecore_ipc_init();
    // XXX: connect to efreetd
+#endif /* HAVE_EFREETD */
 
     if (efreet_cache_update)
-    {
-       if (disable_cache)
-         ipc = NULL;
-       else
-         {
-            ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
-            if (!ipc) _ipc_launch();
-         }
-       if (ipc)
-         {
-            const char *s;
-            int len = 0;
-
-            hnd_add = ecore_event_handler_add(ECORE_IPC_EVENT_SERVER_ADD,
-                                              _cb_server_add, NULL);
-            hnd_del = ecore_event_handler_add(ECORE_IPC_EVENT_SERVER_DEL,
-                                              _cb_server_del, NULL);
-            hnd_data = ecore_event_handler_add(ECORE_IPC_EVENT_SERVER_DATA,
-                                               _cb_server_data, NULL);
-            s = efreet_language_get();
-            if (s) len = strlen(s);
-            ecore_ipc_server_send(ipc, 1, 0, 0, 0, 0, s, len);
-         }
-       else
-         {
-            Efreet_Event_Cache_Update *ev;
-
-            if (!disable_cache)
-              WRN("Can't contact efreetd daemon for desktop/icon etc. changes");
-            ev = NEW(Efreet_Event_Cache_Update, 1);
-            if (ev)
-              {
-                 ev->error = 1;
-                 ecore_event_add(EFREET_EVENT_DESKTOP_CACHE_BUILD, ev, NULL, NULL);
-              }
-         }
-    }
+      {
+         _server_config_signal_send();
+      }
     ecore_fork_reset_callback_add(_efreet_cache_reset, NULL);
 
     return 1;
@@ -405,69 +230,62 @@ error:
 void
 efreet_cache_shutdown(void)
 {
-    Efreet_Old_Cache *d;
+   Efreet_Old_Cache *d;
 
-    ecore_event_type_flush(EFREET_EVENT_ICON_CACHE_UPDATE,
-                           EFREET_EVENT_DESKTOP_CACHE_UPDATE,
-                           EFREET_EVENT_DESKTOP_CACHE_BUILD);
-    ecore_fork_reset_callback_del(_efreet_cache_reset, NULL);
-    IF_RELEASE(theme_name);
+   ecore_event_type_flush(EFREET_EVENT_ICON_CACHE_UPDATE,
+                          EFREET_EVENT_DESKTOP_CACHE_UPDATE,
+                          EFREET_EVENT_DESKTOP_CACHE_BUILD);
+   ecore_fork_reset_callback_del(_efreet_cache_reset, NULL);
+   IF_RELEASE(theme_name);
 
-    icon_cache = efreet_cache_close(icon_cache);
-    icon_theme_cache = efreet_cache_close(icon_theme_cache);
-    fallback_cache = efreet_cache_close(fallback_cache);
+   icon_cache = efreet_cache_close(icon_cache);
+   icon_theme_cache = efreet_cache_close(icon_theme_cache);
+   fallback_cache = efreet_cache_close(fallback_cache);
 
-    IF_FREE_HASH(themes);
-    IF_FREE_HASH(icons);
-    IF_FREE_HASH(fallbacks);
+   IF_FREE_HASH(themes);
+   IF_FREE_HASH(icons);
+   IF_FREE_HASH(fallbacks);
 
-    IF_FREE_HASH_CB(desktops, EINA_FREE_CB(efreet_cache_desktop_free));
-    desktop_cache = efreet_cache_close(desktop_cache);
-    IF_RELEASE(desktop_cache_file);
+   IF_FREE_HASH_CB(desktops, EINA_FREE_CB(efreet_cache_desktop_free));
+   desktop_cache = efreet_cache_close(desktop_cache);
+   IF_RELEASE(desktop_cache_file);
 
-    efreet_cache_edd_shutdown();
-    IF_RELEASE(icon_theme_cache_file);
+   efreet_cache_edd_shutdown();
+   IF_RELEASE(icon_theme_cache_file);
 
-    if (old_desktop_caches)
-        ERR("This application has not properly closed all its desktop references!");
-    EINA_LIST_FREE(old_desktop_caches, d)
-    {
+   if (old_desktop_caches)
+       ERR("This application has not properly closed all its desktop references!");
+   EINA_LIST_FREE(old_desktop_caches, d)
+     {
         eina_hash_free(d->hash);
         eet_close(d->ef);
         free(d);
-    }
+     }
 
-    IF_RELEASE(util_cache_names_key);
-    efreet_cache_array_string_free(util_cache_names);
-    util_cache_names = NULL;
+   IF_RELEASE(util_cache_names_key);
+   efreet_cache_array_string_free(util_cache_names);
+   util_cache_names = NULL;
 
-    IF_RELEASE(util_cache_hash_key);
-    if (util_cache_hash)
-    {
+   IF_RELEASE(util_cache_hash_key);
+   if (util_cache_hash)
+     {
         eina_hash_free(util_cache_hash->hash);
         free(util_cache_hash);
         util_cache_hash = NULL;
-    }
+     }
 
-    util_cache = efreet_cache_close(util_cache);
-    IF_RELEASE(util_cache_file);
+   util_cache = efreet_cache_close(util_cache);
+   IF_RELEASE(util_cache_file);
 
-   if (ipc) ecore_ipc_server_del(ipc);
-   if (hnd_add) ecore_event_handler_del(hnd_add);
-   if (hnd_del) ecore_event_handler_del(hnd_del);
-   if (hnd_data) ecore_event_handler_del(hnd_data);
-
+#ifdef HAVE_EFREETD
+   _ipc_data_clean();
    ecore_ipc_shutdown();
+#endif /* HAVE_EFREETD */
 
-   ipc = NULL;
-   hnd_add = NULL;
-   hnd_del = NULL;
-   hnd_data = NULL;
+   eina_lock_free(&_lock);
 
-    eina_lock_free(&_lock);
-
-    eina_log_domain_unregister(_efreet_cache_log_dom);
-    _efreet_cache_log_dom = -1;
+   eina_log_domain_unregister(_efreet_cache_log_dom);
+   _efreet_cache_log_dom = -1;
 }
 
 /*
@@ -1317,7 +1135,7 @@ efreet_cache_desktop_add(Efreet_Desktop *desktop)
 {
    char *path;
 
-   if ((!efreet_cache_update) || (!ipc)) return;
+   if (!efreet_cache_update) return;
    if (!eina_main_loop_is()) return;
     /*
      * TODO: Call in thread with:
@@ -1326,7 +1144,7 @@ efreet_cache_desktop_add(Efreet_Desktop *desktop)
     */
    path = ecore_file_dir_get(desktop->orig_path);
    if (!path) return;
-   ecore_ipc_server_send(ipc, 2, 0, 0, 0, 0, path, strlen(path));
+   _desktop_add_signal_send(path, strlen(path));
    free(path);
 }
 
@@ -1339,7 +1157,7 @@ efreet_cache_icon_exts_add(Eina_List *exts)
    int num = 0;
    unsigned char nil[1] = { 0 };
 
-   if ((!efreet_cache_update) || (!ipc)) return;
+   if (!efreet_cache_update) return;
    buf = eina_binbuf_new();
    if (!buf) return;
    EINA_LIST_FOREACH(exts, l, s)
@@ -1348,9 +1166,8 @@ efreet_cache_icon_exts_add(Eina_List *exts)
         eina_binbuf_append_length(buf, (unsigned char *)s, strlen(s));
         num++;
      }
-   ecore_ipc_server_send(ipc, 5 /* add icon exts */, 0, 0, 0, 0,
-                         eina_binbuf_string_get(buf),
-                         eina_binbuf_length_get(buf));
+   _icon_exts_add_signal_send(eina_binbuf_string_get(buf)
+                            , eina_binbuf_length_get(buf));
    eina_binbuf_free(buf);
 }
 
@@ -1363,7 +1180,7 @@ efreet_cache_icon_dirs_add(Eina_List *dirs)
    int num = 0;
    unsigned char nil[1] = { 0 };
 
-   if ((!efreet_cache_update) || (!ipc)) return;
+   if (!efreet_cache_update) return;
    buf = eina_binbuf_new();
    if (!buf) return;
    EINA_LIST_FOREACH(dirs, l, s)
@@ -1372,9 +1189,8 @@ efreet_cache_icon_dirs_add(Eina_List *dirs)
         eina_binbuf_append_length(buf, (unsigned char *)s, strlen(s));
         num++;
      }
-   ecore_ipc_server_send(ipc, 4 /* add icon dirs */, 0, 0, 0, 0,
-                         eina_binbuf_string_get(buf),
-                         eina_binbuf_length_get(buf));
+   _icon_dirs_add_signal_send(eina_binbuf_string_get(buf)
+                            , eina_binbuf_length_get(buf));
    eina_binbuf_free(buf);
 }
 
@@ -1420,10 +1236,11 @@ efreet_cache_desktop_build(void)
 {
    const char *s;
    int len = 0;
-   if ((!efreet_cache_update) || (!ipc)) return;
+   if (!efreet_cache_update)  return;
+
    s = efreet_language_get();
    if (s) len = strlen(s);
-   ecore_ipc_server_send(ipc, 3 /* build desktop cache */, 0, 0, 0, 0, s, len);
+   _desktop_build_signal_send(s, len);
 }
 
 static Eina_Bool
@@ -1543,32 +1360,4 @@ hash_array_string_add(void *hash, const char *key, void *data)
         return NULL;
     eina_hash_add(hash, key, data);
     return hash;
-}
-
-EAPI void
-efreet_cache_disable(void)
-{
-   Eina_Bool prev = disable_cache;
-
-   disable_cache = EINA_TRUE;
-
-   if (_efreet_cache_log_dom < 0) return; // not yet initialized
-   if (prev == disable_cache) return; // same value
-   if (ipc)
-     {
-        ecore_ipc_server_del(ipc);
-        ipc = NULL;
-     }
-}
-
-EAPI void
-efreet_cache_enable(void)
-{
-   Eina_Bool prev = disable_cache;
-
-   disable_cache = EINA_FALSE;
-
-   if (_efreet_cache_log_dom < 0) return; // not yet initialized
-   if (prev == disable_cache) return; // same value
-   if (!ipc) _ipc_launch();
 }

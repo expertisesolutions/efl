@@ -38,6 +38,10 @@
 # endif
 #endif
 
+extern int _efreet_cache_log_dom;
+extern Eina_Bool disable_cache;
+extern Eina_Bool run_in_tree;
+
 typedef struct _Efreet_Cache_Check Efreet_Cache_Check;
 
 typedef struct _Efreet_Cache_Icon_Theme Efreet_Cache_Icon_Theme;
@@ -100,6 +104,22 @@ struct _Efreet_Cache_Desktop
     Efreet_Cache_Check check; /**< relevant stat info from last check */
     double check_time; /**< Last time we check for disk modification */
 };
+
+// private efreet_cache functions declarations
+void _icon_desktop_cache_update_event_add(int event_type);
+
+// private efreet_cache{local/ipc} functions declarations
+Eina_Bool _efreet_cache_reset_language(const char *s, int len);
+void _desktop_build_signal_send();
+void _desktop_add_signal_send(char * path, int path_len);
+void _icon_exts_add_signal_send(const unsigned char *buf, int length);
+void _icon_dirs_add_signal_send(const unsigned char *buf, int length);
+void _server_config_signal_send();
+
+#ifdef HAVE_EFREETD
+void _ipc_data_clean();
+#endif /* HAVE_EFREETD */
+
 
 #undef EAPI
 #define EAPI

@@ -23,9 +23,6 @@ efreet_src = files([
   'efreet_utils.c',
   'efreet_uri.c',
   'efreet_cache.c',
-  'efreet_private.h',
-  'efreet_xml.h',
-  'efreet_cache_private.h',
   'efreet_mime.c',
   'efreet_trash.c'
 ])
@@ -36,6 +33,9 @@ efreet_ext_deps = [buildsystem_simple, intl, m]
 efreet_include_directories = config_dir + [include_directories('.')]
 
 if get_option('efreetd')
+  efreet_src += files([
+    'efreet_cache_ipc.c',
+  ])
   efreet_deps += [ecore_ipc]
 else
   efreet_src += files([
