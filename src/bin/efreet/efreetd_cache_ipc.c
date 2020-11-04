@@ -12,8 +12,6 @@
 #include "efreetd.h"
 #include "efreetd_cache.h"
 
-extern FILE *efreetd_log_file;
-
 static int init = 0;
 static Ecore_Ipc_Server *ipc = NULL;
 static Ecore_Event_Handler *hnd_add = NULL;
@@ -53,52 +51,6 @@ _broadcast(Ecore_Ipc_Server *svr, int major, int minor, void *data, int size)
         fflush(efreetd_log_file);
         ecore_ipc_client_send(cl, major, minor, 0, 0, 0, data, size);
      }
-}
-
-static char *
-_parse_str(void *data, int size)
-{
-   char *str = malloc(size + 1);
-   if (!str) return NULL;
-   memcpy(str, data, size);
-   str[size] = 0;
-   return str;
-}
-
-static Eina_List *
-_parse_strs(void *data, int size)
-{
-   Eina_List *list = NULL;
-   char *p, *p0 = NULL, *p1 = NULL, *e = (char *)data + size;
-
-   for (p = data; p < e; p++)
-     {
-        if (!p0)
-          {
-             if (*p)
-               {
-                  p0 = p;
-                  p1 = e;
-               }
-          }
-        if ((!*p) && (p0))
-          {
-             p1 = strdup(p0);
-             if (p1) list = eina_list_append(list, p1);
-             p0 = NULL;
-          }
-     }
-   if (p0)
-     {
-        p = malloc(p1 - p0 + 1);
-        if (p)
-          {
-             memcpy(p, p0, p1 - p0);
-             p[p1 - p0] = 0;
-             list = eina_list_append(list, p);
-          }
-     }
-   return list;
 }
 
 #define IPC_HEAD(_type) \
@@ -163,48 +115,20 @@ _cb_client_data(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
                               cache_desktop_exists(), 0, 0, 0, NULL, 0);
      }
    else if (e->major == 2) // add desktop dirs
-     { // input: array of str -> dirs
-        fprintf(efreetd_log_file, "[%09.3f] Client add desktop dirs\n", ecore_time_get());
-        fflush(efreetd_log_file);
-        strs = _parse_strs(e->data, e->size);
-        EINA_LIST_FREE(strs, s)
-          {
-             cache_desktop_dir_add(s);
-             free(s);
-          }
+     {
+        _desktop_add(e->data, e->size);
      }
    else if (e->major == 3) // build desktop cache
-     { // input: str -> lang
-        fprintf(efreetd_log_file, "[%09.3f] Client update desktop cache\n", ecore_time_get());
-        fflush(efreetd_log_file);
-        if ((s = _parse_str(e->data, e->size)))
-          {
-             setenv("LANG", s, 1);
-             free(s);
-          }
-        cache_desktop_update();
+     {
+        _desktop_build(e->data, e->size);
      }
    else if (e->major == 4) // add icon dirs
-     { // input: array of str -> dirs
-        fprintf(efreetd_log_file, "[%09.3f] Client add icon dirs\n", ecore_time_get());
-        fflush(efreetd_log_file);
-        strs = _parse_strs(e->data, e->size);
-        EINA_LIST_FREE(strs, s)
-          {
-             cache_icon_dir_add(s);
-             free(s);
-          }
+     {
+        _icon_dirs_add(e->data, e->size);
      }
    else if (e->major == 5) // add icon exts
-     { // input: array of str -> exts
-        fprintf(efreetd_log_file, "[%09.3f] Client add icon exts\n", ecore_time_get());
-        fflush(efreetd_log_file);
-        strs = _parse_strs(e->data, e->size);
-        EINA_LIST_FREE(strs, s)
-          {
-             cache_icon_ext_add(s);
-             free(s);
-          }
+     {
+        _icon_exts_add(e->data, e->size);
      }
    return ECORE_CALLBACK_DONE;
 }

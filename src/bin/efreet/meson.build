@@ -32,12 +32,6 @@ else
   efreetd_src += files([
     'efreetd_cache_local.c',
   ])
-
-  efreetd_header_src += files([
-    'efreetd_cache_local.h',
-  ])
-
-
 endif
 
 efreet_bin_deps = [efreet, ecore, eet, ecore_file, intl]

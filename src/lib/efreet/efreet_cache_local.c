@@ -1,27 +1,100 @@
-#include "efreet_cache_private.h"
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <Eina.h>
+#include <Eet.h>
+#include <Ecore.h>
+#include <Ecore_File.h>
 
-static Eina_Bool
-_efreet_cache_reset_language(const char *s, int len)
+/* define macros and variable for using the eina logging system  */
+#define EFREET_MODULE_LOG_DOM _efreet_cache_log_dom
+
+#include "Efreet.h"
+#include "efreet_cache_private.h"
+#include "efreet_private.h"
+#include "../../static_libs/buildsystem/buildsystem.h"
+
+#include "efreetd.h"
+#include "efreetd_cache.h"
+
+Eina_Bool
+_efreet_cache_reset_language(const char *data, int size)
 {
-/*
-   if (ipc) ecore_ipc_server_del(ipc);
-   ipc = NULL;
-   if (!disable_cache)
-     ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
-   if (!ipc) return EINA_FALSE;
-   return EINA_TRUE
-*/
+   // input: str -> lang
+   if (disable_cache) return EINA_FALSE;
+
+   char *s;
+   fprintf(efreetd_log_file, "[%09.3f] Client register lang\n", ecore_time_get());
+   fflush(efreetd_log_file);
+   if ((s = _parse_str(data, size)))
+     {
+        setenv("LANG", s, 1);
+        free(s);
+     }
+   // return if desktop cache exists (bool as minor)
+   if (cache_desktop_exists() == 1)
+     {
+        ecore_event_add(EFREET_EVENT_DESKTOP_CACHE_BUILD, NULL, NULL, NULL);
+     }
+   return EINA_TRUE;
 }
 
-static void
-_desktop_build_signal_send()
+void
+_server_config_signal_send()
 {
-/*
-   if (!ipc) return;
-   ecore_ipc_server_send(ipc, 3 /* build desktop cache *\/, 0, 0, 0, 0, s, len);
-*/
+   if (disable_cache)
+     {
+        Efreet_Event_Cache_Update *ev;
+
+        ev = NEW(Efreet_Event_Cache_Update, 1);
+        if (ev)
+          {
+             ev->error = 1;
+             ecore_event_add(EFREET_EVENT_DESKTOP_CACHE_BUILD, ev, NULL, NULL);
+          }
+        return;
+     }
+
+   const char *s = efreet_language_get();
+   int len = 0;
+
+   if (s) len = strlen(s);
+   _efreet_cache_reset_language(s, len);
+}
+
+void
+_desktop_add_signal_send(char *data, int size)
+{
+   // input: array of str -> dirs
+   if (disable_cache) return;
+
+    _desktop_add(data, size);
+}
+
+void
+_desktop_build_signal_send(const char *data, int size)
+{
+   // input: str -> lang
+   if (disable_cache) return;
+
+   _desktop_build(data, size);
+}
+
+void
+_icon_dirs_add_signal_send(const unsigned char* data, int size)
+{
+   if (disable_cache) return;
+
+   _icon_dirs_add(data, size);
+}
+
+void
+_icon_exts_add_signal_send(const unsigned char *data, int size)
+{
+   if (disable_cache) return;
+
+   _icon_exts_add(data, size);
 }
 
 EAPI void
@@ -46,75 +119,4 @@ efreet_cache_enable(void)
    if (_efreet_cache_log_dom < 0) return; // not yet initialized
    if (prev == disable_cache) return; // same value
    /* TODO _ipc_launch(); */
-}
-
-static void
-_server_config_signal_send()
-{
-/*
-   if (disable_cache)
-     ipc = NULL;
-   else
-     {
-        ipc = ecore_ipc_server_connect(ECORE_IPC_LOCAL_USER, "efreetd", 0, NULL);
-        if (!ipc) _ipc_launch();
-     }
-   if (ipc)
-     {
-        const char *s;
-        int len = 0;
-
-        hnd_add = ecore_event_handler_add(ECORE_IPC_EVENT_SERVER_ADD,
-                                          _cb_server_add, NULL);
-        hnd_del = ecore_event_handler_add(ECORE_IPC_EVENT_SERVER_DEL,
-                                          _cb_server_del, NULL);
-        hnd_data = ecore_event_handler_add(ECORE_IPC_EVENT_SERVER_DATA,
-                                           _cb_server_data, NULL);
-        s = efreet_language_get();
-        if (s) len = strlen(s);
-        ecore_ipc_server_send(ipc, 1, 0, 0, 0, 0, s, len);
-     }
-   else
-     {
-        Efreet_Event_Cache_Update *ev;
-
-        if (!disable_cache)
-          WRN("Can't contact efreetd daemon for desktop/icon etc. changes");
-        ev = NEW(Efreet_Event_Cache_Update, 1);
-        if (ev)
-          {
-             ev->error = 1;
-             ecore_event_add(EFREET_EVENT_DESKTOP_CACHE_BUILD, ev, NULL, NULL);
-          }
-     }
- */
-}
-
-static void
-_desktop_add_signal_send(cahr * path, int path_len)
-{
-    /*
-   if (!ipc) return;
-   ecore_ipc_server_send(ipc, 2, 0, 0, 0, 0, path, path_len);
-   */
-}
-
-static void
-_icon_exts_add_signal_send(char* buf, int length)
-{
-/*
-   if (!ipc) return;
-   ecore_ipc_server_send(ipc, 5 /* add icon exts , 0, 0, 0, 0, buf, lenght;
-*/
-}
-
-static void
-_icon_dirs_add_signal_send(char *buf, int length)
-{
-/*
-   if (!ipc)) return;
-   ecore_ipc_server_send(ipc, 4 /* add icon dirs , 0, 0, 0, 0,
-                         eina_binbuf_string_get(buf),
-                     eina_binbuf_length_get(buf));
-*/
 }

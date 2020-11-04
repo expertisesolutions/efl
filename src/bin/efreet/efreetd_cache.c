@@ -11,8 +11,6 @@
 
 #ifdef HAVE_EFRFEETD
 # include "efreetd_cache_ipc.h"
-#else
-# include "efreetd_cache_local.h"
 #endif /* HAVE_EFRFEETD */
 
 #include "Efreet.h"
@@ -23,8 +21,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-extern FILE *efreetd_log_file;
 
 static Eina_Hash *icon_change_monitors = NULL;
 static Eina_Hash *icon_change_monitors_mon = NULL;
@@ -91,6 +87,52 @@ static Ecore_Exe *mime_cache_exe = NULL;
 static void mime_cache_init(void);
 static void mime_cache_shutdown(void);
 static Eina_Bool mime_update_cache_cb(void *data EINA_UNUSED);
+
+char *
+_parse_str(void *data, int size)
+{
+   char *str = malloc(size + 1);
+   if (!str) return NULL;
+   memcpy(str, data, size);
+   str[size] = 0;
+   return str;
+}
+
+Eina_List *
+_parse_strs(void *data, int size)
+{
+   Eina_List *list = NULL;
+   char *p, *p0 = NULL, *p1 = NULL, *e = (char *)data + size;
+
+   for (p = data; p < e; p++)
+     {
+        if (!p0)
+          {
+             if (*p)
+               {
+                  p0 = p;
+                  p1 = e;
+               }
+          }
+        if ((!*p) && (p0))
+          {
+             p1 = strdup(p0);
+             if (p1) list = eina_list_append(list, p1);
+             p0 = NULL;
+          }
+     }
+   if (p0)
+     {
+        p = malloc(p1 - p0 + 1);
+        if (p)
+          {
+             memcpy(p, p0, p1 - p0);
+             p[p1 - p0] = 0;
+             list = eina_list_append(list, p);
+          }
+     }
+   return list;
+}
 
 static void
 subdir_cache_dir_free(Subdir_Cache_Dir *cd)
@@ -1147,4 +1189,76 @@ cache_shutdown(void)
       ecore_event_handler_del(handler);
    eio_shutdown();
    return EINA_TRUE;
+}
+
+void
+_desktop_add(char *data, int size)
+{
+   // input: array of str -> dirs
+   fprintf(efreetd_log_file, "[%09.3f] Client add desktop dirs\n", ecore_time_get());
+   fflush(efreetd_log_file);
+
+   Eina_List *strs;
+   char *s;
+
+   strs = _parse_strs(data, size);
+   EINA_LIST_FREE(strs, s)
+     {
+        cache_desktop_dir_add(s);
+        free(s);
+     }
+}
+
+void
+_desktop_build(const char *data, int size)
+{
+   // input: str -> lang
+   fprintf(efreetd_log_file, "[%09.3f] Client update desktop cache\n", ecore_time_get());
+   fflush(efreetd_log_file);
+
+   Eina_List *strs;
+   char *s;
+
+   if ((s = _parse_str(data, size)))
+     {
+        setenv("LANG", s, 1);
+        free(s);
+     }
+   cache_desktop_update();
+}
+
+void
+_icon_dirs_add(const unsigned char *data, int size)
+{
+   // input: array of str -> dirs
+   fprintf(efreetd_log_file, "[%09.3f] Client add icon dirs\n", ecore_time_get());
+   fflush(efreetd_log_file);
+
+   Eina_List *strs;
+   char *s;
+
+   strs = _parse_strs(data, size);
+   EINA_LIST_FREE(strs, s)
+     {
+        cache_icon_dir_add(s);
+        free(s);
+     }
+}
+
+void
+_icon_exts_add(const unsigned char* data, int size)
+{
+   // input: array of str -> exts
+   fprintf(efreetd_log_file, "[%09.3f] Client add icon exts\n", ecore_time_get());
+   fflush(efreetd_log_file);
+
+   Eina_List *strs;
+   char *s;
+
+   strs = _parse_strs(data, size);
+   EINA_LIST_FREE(strs, s)
+     {
+        cache_icon_ext_add(s);
+        free(s);
+     }
 }
