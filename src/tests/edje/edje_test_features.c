@@ -58,6 +58,7 @@ EFL_START_TEST(edje_test_masking)
 }
 EFL_END_TEST
 
+#ifdef HAVE_ECTOR
 EFL_START_TEST(edje_test_filters)
 {
    Evas *evas = _setup_evas();
@@ -105,6 +106,7 @@ EFL_START_TEST(edje_test_filters)
 
 }
 EFL_END_TEST
+#endif
 
 EFL_START_TEST(edje_test_snapshot)
 {
@@ -219,7 +221,9 @@ EFL_END_TEST
 void edje_test_features(TCase *tc)
 {
    tcase_add_test(tc, edje_test_masking);
+#ifdef HAVE_ECTOR
    tcase_add_test(tc, edje_test_filters);
+#endif
    tcase_add_test(tc, edje_test_snapshot);
    tcase_add_test(tc, edje_test_size_class);
    tcase_add_test(tc, edje_test_color_class);
