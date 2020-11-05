@@ -233,7 +233,7 @@ ok:
        eina_strbuf_append_printf(sbuf, "%s", _wrap_command);
 
    eina_strbuf_append_printf(sbuf,
-         "python %s/exactness_play.py %s %s%s %s%.*s %s%s%s-t '%s' ",
+         "python %s/exactness_play.py %s %s%s %s%.*s %s%s%s-t \"%s\" ",
 	     PACKAGE_BIN_DIR,
          _mode == RUN_SIMULATION ? "-s" : "",
          _fonts_dir ? "-f " : "", _fonts_dir ? _fonts_dir : "",
@@ -245,9 +245,9 @@ ok:
          );
 
    if (_mode == RUN_PLAY)
-      eina_strbuf_append_printf(sbuf, "-o '%s/%s/%s.exu' ", _dest_dir, CURRENT_SUBDIR, ent->name);
+      eina_strbuf_append_printf(sbuf, "-o \"%s/%s/%s.exu\" ", _dest_dir, CURRENT_SUBDIR, ent->name);
    if (_mode == RUN_INIT)
-      eina_strbuf_append_printf(sbuf, "-o '%s' ", scn_path);
+      eina_strbuf_append_printf(sbuf, "-o \"%s\" ", scn_path);
 
    if (ent->command)
      {
