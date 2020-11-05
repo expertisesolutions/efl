@@ -637,7 +637,9 @@ EFL_START_TEST(elm_entry_keycode)
 
    win = win_add(NULL, "entry", ELM_WIN_BASIC);
    entry = elm_entry_add(win);
+#ifdef HAVE_ECTOR
    evas_object_show(entry);
+#endif
 
    elm_entry_entry_set(entry, "Hello World");
    Evas *e = evas_object_evas_get(entry);
