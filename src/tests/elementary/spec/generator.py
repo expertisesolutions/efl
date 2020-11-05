@@ -29,6 +29,8 @@ file_gen_template = """
 
 import sys
 import json
+from collections import defaultdict
+from typing import Callable, Dict
 
 output_file = sys.argv[-1]
 input_files = sys.argv[1:-1]
@@ -57,6 +59,19 @@ for input_file in input_files:
     if "test-interface" in tmp and "test-widgets" in tmp:
       tests.append(tmp)
 
+
+def defaultdict_from(d: Dict, f: Callable) -> defaultdict:
+  defaulted_d = defaultdict(f)
+  for k, v in d.items():
+    defaulted_d[k] = v
+  return defaulted_d
+
+
+conditional_widget_classes = defaultdict_from({
+    'Efl.Ui.Vg_Animation': 'HAVE_ECTOR',
+  }, str)
+
+
 widgets = []
 widget_hitmap = []
 
@@ -73,14 +88,34 @@ for test in tests:
       widget_test_klass = "WIDGET_CLASS"
     combo_name = "_{}_{}".format(to_func_name(interface_test), to_func_name(widget_class));
     combo_klass_test_name = "{}_{}".format(to_func_name(widget_class), to_func_name(widget_test_klass))
-    list_of_tcases += list_entry.format(interface_test, to_func_name(widget_class), combo_name)
-    generated_api += tcase_gen_template.format(combo_name, combo_klass_test_name, interface_to_api(interface_test))
+
+    tcase_entry = list_entry.format(interface_test, to_func_name(widget_class), combo_name)
+    api = tcase_gen_template.format(combo_name, combo_klass_test_name, interface_to_api(interface_test))
+
+    condition = conditional_widget_classes[widget_class]
+    if condition:
+      tcase_entry = f'#ifdef {condition}\n{tcase_entry}#endif\n'
+      api = f'#ifdef {condition}\n{api}#endif\n'
+
+    list_of_tcases += tcase_entry
+    generated_api += api
+
     if combo_klass_test_name not in widget_hitmap:
       widgets += [{ "widget" : widget_class, "test-class" : widget_test_klass, "combo-name" : combo_klass_test_name}]
       widget_hitmap += [combo_klass_test_name]
 
 for widget in widgets:
-  generated_api = fixture_gen_template.format(widget["combo-name"], to_class_getter(widget["widget"]), widget["test-class"]) + generated_api
+  fixture = fixture_gen_template.format(
+    widget["combo-name"],
+    to_class_getter(widget["widget"]),
+    widget["test-class"]
+  ) 
+
+  condition = conditional_widget_classes[widget["widget"]]
+  if condition:
+    fixture = f'#ifdef {condition}\n{fixture}#endif\n'
+
+  generated_api = fixture + generated_api
 
 list_of_tcases += "  { NULL, NULL }\n};"
 
