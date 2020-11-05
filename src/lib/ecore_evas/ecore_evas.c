@@ -1026,7 +1026,7 @@ _ecore_evas_constructor_ews(int x, int y, int w, int h, const char *extra_option
 
 /* note: keep sorted by priority, highest first */
 static const struct ecore_evas_engine _engines[] = {
-  /* unix */
+#ifndef _WIN32
   {"software_x11", _ecore_evas_constructor_software_x11},
   {"opengl_x11", _ecore_evas_constructor_opengl_x11},
   {"fb", _ecore_evas_constructor_fb},
@@ -1046,6 +1046,10 @@ static const struct ecore_evas_engine _engines[] = {
 #ifdef BUILD_ECORE_EVAS_EWS
   {"ews", _ecore_evas_constructor_ews},
 #endif
+#endif
+  {"software_gdi", _ecore_evas_constructor_software_gdi},
+  {"software_ddraw", _ecore_evas_constructor_software_ddraw},
+  {"buffer", _ecore_evas_constructor_buffer},
   {NULL, NULL}
 };
 
