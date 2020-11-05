@@ -228,10 +228,13 @@ _run_command_prepare(const List_Entry *ent, char *buf)
 ok:
    sbuf = eina_strbuf_new();
    printf("STATUS %s: START\n", ent->name);
+
+   if (_wrap_command)
+       eina_strbuf_append_printf(sbuf, "%s", _wrap_command);
+
    eina_strbuf_append_printf(sbuf,
-         "%s python %s/exactness_play.py %s %s%s %s%.*s %s%s%s-t '%s' ",
-         _wrap_command ? _wrap_command : "",
-	 PACKAGE_BIN_DIR,
+         "python %s/exactness_play.py %s %s%s %s%.*s %s%s%s-t '%s' ",
+	     PACKAGE_BIN_DIR,
          _mode == RUN_SIMULATION ? "-s" : "",
          _fonts_dir ? "-f " : "", _fonts_dir ? _fonts_dir : "",
          _verbose ? "-" : "", _verbose, "vvvvvvvvvv",
