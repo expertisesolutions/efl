@@ -10,7 +10,10 @@
 #include "common.h"
 
 #ifdef _WIN32
-# include <evil_private.h> /* mkdir */
+# include <evil_private.h> /* mkdir, dirname */
+# include <direct.h> /* getcwd */
+#else
+# include <libgen.h>
 #endif
 
 #define SCHEDULER_CMD_SIZE 1024
@@ -184,10 +187,18 @@ _run_test_compare(const List_Entry *ent)
                        return;
                     }
                }
+	     printf("------------->\n");
+	     printf("unpacking : path: %s\n", path);
+	     printf("unpacking : origdir: %s\n", origdir);
+	     printf("unpacking : ent->name: %s\n", ent->name);
              _exu_imgs_unpack(path, origdir, ent->name);
+	     printf("------------->\n");
+
              sprintf(path, "%s/%s/%s.exu", _dest_dir, CURRENT_SUBDIR, ent->name);
+	     
              currentdir = alloca(strlen(_dest_dir) + 20);
              sprintf(currentdir, "%s/%s", _dest_dir, CURRENT_SUBDIR);
+
              _exu_imgs_unpack(path, currentdir, ent->name);
              goto found;
           }
@@ -349,6 +360,9 @@ _list_file_load(const char *filename)
         return NULL;
      }
 
+   //char *working_dir = strdup(filename);
+   //working_dir = dirname(working_dir);
+
    while (fgets(buf, BUF_SIZE, file))
      {
         /* Skip comment/empty lines. */
@@ -364,6 +378,8 @@ _list_file_load(const char *filename)
         if (tmp)
           {
              *tmp = '\0';
+             //char command[MAX_PATH];
+             //snprintf(command, MAX_PATH, "%s/%s", working_dir, );
              cur->command = tmp + 1;
           }
         else
@@ -505,7 +521,7 @@ main(int argc, char *argv[])
       return EXIT_FAILURE;
 
    _log_domain = eina_log_domain_register("exactness", "red");
-   _dest_dir = "./";
+   _dest_dir = realpath(".", _dest_dir);
    _scan_objs = scan_objs;
 
    eina_log_abort_on_critical_set(EINA_TRUE);
@@ -553,6 +569,14 @@ main(int argc, char *argv[])
         goto end;
      }
 
+   /* Get absolute path for all parameters */
+   EINA_LIST_FOREACH(_base_dirs, itr, base_dir)
+     {
+        char resolved_base_dir[PATH_MAX];
+        realpath(base_dir, resolved_base_dir);
+        eina_list_data_set(itr, resolved_base_dir);
+     }
+
    /* Pre-run summary */
    fprintf(stderr, "Running with settings:\n");
    fprintf(stderr, "\tConcurrent jobs: %d\n", _max_jobs);
@@ -581,6 +605,7 @@ main(int argc, char *argv[])
                   goto end;
                }
           }
+	printf(">>> mode_play > path : %s\n", tmp);
      }
    else if (mode_init)
      {
@@ -601,10 +626,12 @@ main(int argc, char *argv[])
                   goto end;
                }
           }
+	printf(">>> mode_init > path : %s\n", tmp);
      }
    else if (mode_simulation)
      {
         _mode = RUN_SIMULATION;
+	printf(">>> mode_simulation\n");
      }
    _scheduler_run();
 

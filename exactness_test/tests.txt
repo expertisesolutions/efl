@@ -1,0 +1,1 @@
+evas-text-win ../build/src/examples/evas/evas-text.exe
