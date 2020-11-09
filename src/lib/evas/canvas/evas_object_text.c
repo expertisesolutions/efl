@@ -681,10 +681,12 @@ _evas_object_text_pad_get(const Eo *eo_obj, Evas_Text_Data *o, int *l, int *r, i
    if (r) *r = 0;
    if (t) *t = 0;
    if (b) *b = 0;
-   if (!o->has_filter)
-     evas_text_style_pad_get(o->cur.style, l, r, t, b);
-   else
+#ifdef HAVE_ECTOR
+   if (o->has_filter)
      efl_gfx_filter_padding_get(eo_obj, l, r, t, b);
+   else
+#endif
+     evas_text_style_pad_get(o->cur.style, l, r, t, b);
 }
 
 /**
