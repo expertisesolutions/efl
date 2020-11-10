@@ -113,17 +113,17 @@ _file_compare(const char *orig_dir, const char *ent_name)
    Eina_Bool result = EINA_FALSE;
    Exactness_Image *img1, *img2, *imgO = NULL;
    char *filename1 = alloca(strlen(orig_dir) + strlen(ent_name) + 20);
-   char *filename2 = alloca(strlen(_dest_dir) + strlen(ent_name) + 20);
+   char *filename2 = alloca(strlen(dest_dir) + strlen(ent_name) + 20);
    sprintf(filename1, "%s/%s", orig_dir, ent_name);
-   sprintf(filename2, "%s/%s/%s", _dest_dir, CURRENT_SUBDIR, ent_name);
+   sprintf(filename2, "%s/%s/%s", dest_dir, CURRENT_SUBDIR, ent_name);
 
    img1 = _image_load(filename1);
    img2 = _image_load(filename2);
 
    if (exactness_image_compare(img1, img2, &imgO))
      {
-        char *buf = alloca(strlen(_dest_dir) + strlen(ent_name));
-        sprintf(buf, "%s/%s/comp_%s", _dest_dir, CURRENT_SUBDIR, ent_name);
+        char *buf = alloca(strlen(dest_dir) + strlen(ent_name));
+        sprintf(buf, "%s/%s/comp_%s", dest_dir, CURRENT_SUBDIR, ent_name);
         if (!_image_save(imgO, buf))
           goto cleanup;
         _compare_errors = eina_list_append(_compare_errors, strdup(ent_name));
@@ -167,7 +167,7 @@ static void
 _run_test_compare(const List_Entry *ent)
 {
    char *path = alloca(PATH_MAX);
-   char *origdir = alloca(strlen(_dest_dir) + 20);
+   char *origdir = alloca(strlen(dest_dir) + 20);
    const char *base_dir;
    Eina_List *itr;
    int n = 1, nb_fails = 0;
@@ -178,7 +178,7 @@ _run_test_compare(const List_Entry *ent)
         if (ecore_file_exists(path))
           {
              char *currentdir;
-             sprintf(origdir, "%s/%s/%s", _dest_dir, CURRENT_SUBDIR, ORIG_SUBDIR);
+             sprintf(origdir, "%s/%s/%s", dest_dir, CURRENT_SUBDIR, ORIG_SUBDIR);
              if (!ecore_file_exists(origdir))
                {
                   if (mkdir(origdir, 0744) < 0)
@@ -188,9 +188,10 @@ _run_test_compare(const List_Entry *ent)
                     }
                }
              _exu_imgs_unpack(path, origdir, ent->name);
-             sprintf(path, "%s/%s/%s.exu", _dest_dir, CURRENT_SUBDIR, ent->name);
-             currentdir = alloca(strlen(_dest_dir) + 20);
-             sprintf(currentdir, "%s/%s", _dest_dir, CURRENT_SUBDIR);
+             sprintf(path, "%s/%s/%s.exu", dest_dir, CURRENT_SUBDIR, ent->name);
+             currentdir = alloca(strlen(dest_dir) + 20);
+             sprintf(currentdir, "%s/%s", dest_dir, CURRENT_SUBDIR);
+
              _exu_imgs_unpack(path, currentdir, ent->name);
              goto found;
           }
@@ -248,12 +249,13 @@ ok:
          );
 
    if (_mode == RUN_PLAY)
-      eina_strbuf_append_printf(sbuf, "-o \"%s/%s/%s.exu\" ", _dest_dir, CURRENT_SUBDIR, ent->name);
+      eina_strbuf_append_printf(sbuf, "-o \"%s/%s/%s.exu\" ", dest_dir, CURRENT_SUBDIR, ent->name);
    if (_mode == RUN_INIT)
       eina_strbuf_append_printf(sbuf, "-o \"%s\" ", scn_path);
 
    if (ent->command)
      {
+
         eina_strbuf_append(sbuf, "-- ");
         eina_strbuf_append(sbuf, CONFIG);
         eina_strbuf_append(sbuf, ent->command);
@@ -515,7 +517,7 @@ main(int argc, char *argv[])
       return EXIT_FAILURE;
 
    _log_domain = eina_log_domain_register("exactness", "red");
-   _dest_dir = realpath(".", _dest_dir);
+   _dest_dir = ".";
    _scan_objs = scan_objs;
 
    eina_log_abort_on_critical_set(EINA_TRUE);
@@ -570,6 +572,7 @@ main(int argc, char *argv[])
         realpath(base_dir, resolved_base_dir);
         eina_list_data_set(itr, resolved_base_dir);
      }
+   realpath(_dest_dir, dest_dir);
 
    /* Pre-run summary */
    fprintf(stderr, "Running with settings:\n");
@@ -578,12 +581,12 @@ main(int argc, char *argv[])
    fprintf(stderr, "\tBase dirs:\n");
    EINA_LIST_FOREACH(_base_dirs, itr, base_dir)
       fprintf(stderr, "\t\t%s\n", base_dir);
-   fprintf(stderr, "\tDest dir: %s\n", _dest_dir);
+   fprintf(stderr, "\tDest dir: %s\n", dest_dir);
 
    if (mode_play)
      {
         _mode = RUN_PLAY;
-        if (snprintf(tmp, PATH_MAX, "%s/%s", _dest_dir, CURRENT_SUBDIR)
+        if (snprintf(tmp, PATH_MAX, "%s/%s", dest_dir, CURRENT_SUBDIR)
             >= PATH_MAX)
           {
              fprintf(stderr, "Path too long: %s", tmp);
@@ -603,7 +606,7 @@ main(int argc, char *argv[])
    else if (mode_init)
      {
         _mode = RUN_INIT;
-        if (snprintf(tmp, PATH_MAX, "%s/%s", _dest_dir, ORIG_SUBDIR)
+        if (snprintf(tmp, PATH_MAX, "%s/%s", dest_dir, ORIG_SUBDIR)
             >= PATH_MAX)
           {
              fprintf(stderr, "Path too long: %s", tmp);
@@ -659,7 +662,7 @@ main(int argc, char *argv[])
         /* Generate the filename. */
         snprintf(report_filename, PATH_MAX,
               "%s/%s/errors.html",
-              _dest_dir, mode_init ? ORIG_SUBDIR : CURRENT_SUBDIR);
+              dest_dir, mode_init ? ORIG_SUBDIR : CURRENT_SUBDIR);
         report_file = fopen(report_filename, "w+");
         if (report_file)
           {
@@ -693,7 +696,7 @@ main(int argc, char *argv[])
                        Eina_Bool is_from_exu;
                        char origpath[PATH_MAX];
                        snprintf(origpath, PATH_MAX, "%s/%s/orig/%s",
-                             _dest_dir, CURRENT_SUBDIR, test_name);
+                             dest_dir, CURRENT_SUBDIR, test_name);
                        is_from_exu = ecore_file_exists(origpath);
                        printf("\t* %s\n", test_name);
 
