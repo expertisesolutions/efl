@@ -360,8 +360,8 @@ _list_file_load(const char *filename)
         return NULL;
      }
 
-   //char *working_dir = strdup(filename);
-   //working_dir = dirname(working_dir);
+   char *_test_file_dir = realpath(filename, NULL);
+   _test_file_dir = dirname(_test_file_dir);
 
    while (fgets(buf, BUF_SIZE, file))
      {
@@ -378,9 +378,9 @@ _list_file_load(const char *filename)
         if (tmp)
           {
              *tmp = '\0';
-             //char command[MAX_PATH];
-             //snprintf(command, MAX_PATH, "%s/%s", working_dir, );
-             cur->command = tmp + 1;
+	     char *command;
+	     asprintf(&command, "%s/%s", _test_file_dir, tmp + 1);
+             cur->command = command;
           }
         else
           {
@@ -399,6 +399,8 @@ _list_file_load(const char *filename)
               eina_inlist_append(EINA_INLIST_GET(ret), EINA_INLIST_GET(cur)),
               List_Entry);
      }
+
+   free(_test_file_dir);
 
    fclose(file);
    return ret;
