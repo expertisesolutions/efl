@@ -576,9 +576,9 @@ main(int argc, char *argv[])
    /* Get absolute path for all parameters */
    EINA_LIST_FOREACH(_base_dirs, itr, base_dir)
      {
-        char resolved_base_dir[PATH_MAX];
-        realpath(base_dir, resolved_base_dir);
-        eina_list_data_set(itr, resolved_base_dir);
+        char _resolved_base_dir[PATH_MAX];
+        realpath(base_dir, _resolved_base_dir);
+        eina_list_data_set(itr, _resolved_base_dir);
      }
    realpath(_dest_dir, dest_dir);
 
