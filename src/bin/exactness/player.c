@@ -85,6 +85,7 @@ static Eina_Bool _exit_required = EINA_FALSE;
 static Eina_Bool _pause_request = EINA_FALSE;
 static Eina_Bool _playing_status = EINA_FALSE;
 static Eina_Bool _ready_to_write = EINA_FALSE;
+static Eina_Bool _output_written = EINA_FALSE;
 
 static Exactness_Image *
 _snapshot_shot_get(Evas *e)
@@ -1015,21 +1016,22 @@ _setup_ee_creation(void)
       ecore_idler_add(_src_feed, NULL);
 }
 
-static void
+static Eina_Bool
 _write_unit_file(void)
 {
    if (_dest && _dest_unit && _ready_to_write)
      {
         Exactness_Unit *tmp = NULL;
 
-        EINA_SAFETY_ON_NULL_RETURN(_src_unit);
+	if (!_src_unit) return EINA_FALSE;
         if (_src_type == FTYPE_EXU)
           {
              tmp = exactness_unit_file_read(_src_filename);
              _dest_unit->actions = tmp->actions;
           }
-        exactness_unit_file_write(_dest_unit, _dest);
+        return exactness_unit_file_write(_dest_unit, _dest);
      }
+   return EINA_FALSE;
 }
 
 #ifndef _WIN32
@@ -1147,13 +1149,11 @@ int
 eina_shutdown(void)
 {
    int original_return;
-   static Eina_Bool output_written = EINA_FALSE;
 
    ORIGINAL_CALL(eina_shutdown);
-   if (ex_is_original_app() &&original_return == 1 && !output_written)
+   if (ex_is_original_app() &&original_return == 1 && !_output_written)
      {
-        output_written = EINA_TRUE;
-        _write_unit_file();
+        _output_written = _write_unit_file();
      }
 
    return original_return;
@@ -1179,6 +1179,11 @@ void exactness_shutdown(void)
    elm_init_redirect = NULL;
    ecore_evas_init_redirect = NULL;
    ecore_main_loop_begin_redirect = NULL;
+
+   if (!_output_written)
+     {
+        _output_written = _write_unit_file();
+     }
 }
 
 BOOL WINAPI
