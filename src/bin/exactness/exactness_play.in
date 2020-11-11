@@ -101,5 +101,6 @@ for argument in G.app:
   if passed_all_the_env_vars:
     app.append(argument)
 
-recorder = subprocess.Popen(app, env=spawn_env)
-recorder.wait()
+with subprocess.Popen(app, env=spawn_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as p:
+    for line in p.stdout:
+        print(line, end='')
