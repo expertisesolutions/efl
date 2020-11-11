@@ -69,7 +69,6 @@ EOLIAN static Eina_Value *
 _efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
 {
    exactness_preload();
-   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (efl_loop_begin_redirect ? "YES" : "NULL"));
    if (efl_loop_begin_redirect)
      return efl_loop_begin_redirect(obj);
    else
@@ -83,7 +82,6 @@ EOLIAN static Eina_Value *
 _efl_loop_begin(Eo *obj, Efl_Loop_Data *pd)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    _ecore_main_loop_begin(obj, pd);
    if (pd->thread_children)
      {

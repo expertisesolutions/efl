@@ -1043,7 +1043,6 @@ _write_unit_file(void)
 # endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   fprintf(stderr, " >>> calling " #name "_original() \n"); \
    t (*_original_init_cb)(); \
    _original_init_cb = & name ## _original; \
    original_return = _original_init_cb(__VA_ARGS__);
@@ -1056,13 +1055,9 @@ int
 eina_init(void)
 {
    int original_return;
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
    ORIGINAL_CALL(eina_init);
    ex_set_original_envvar();
-
-   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
-
    if (original_return == 1)
      {
         const char *dest = getenv("EXACTNESS_DEST");
@@ -1101,10 +1096,8 @@ int
 ecore_evas_init(void)
 {
    int original_return;
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
    ORIGINAL_CALL(ecore_evas_init);
-   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      {
         _setup_ee_creation();
@@ -1118,10 +1111,8 @@ int
 elm_init(int argc, char **argv)
 {
    int original_return;
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
    ORIGINAL_CALL(elm_init, argc, argv);
-   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
 
@@ -1132,10 +1123,8 @@ void
 ecore_main_loop_begin(void)
 {
    int original_return;
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
    ORIGINAL_CALL(ecore_main_loop_begin);
-   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app())
    (void)original_return;
 }
@@ -1144,10 +1133,8 @@ Eina_Value *
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
    ORIGINAL_CALL_T(Eina_Value*, efl_loop_begin, obj);
-   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app())
    return original_return;
 }
@@ -1157,10 +1144,8 @@ eina_shutdown(void)
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
 
    ORIGINAL_CALL(eina_shutdown);
-   fprintf(stderr, " >>> %s:%s: original_return: %d \n", __FILE__, __func__, original_return);
    if (ex_is_original_app() &&original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
@@ -1174,8 +1159,6 @@ eina_shutdown(void)
 
 void exactness_init(void)
 {
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
-
    eina_init_redirect = eina_init;
    eina_shutdown_redirect = eina_shutdown;
    efl_loop_begin_redirect = efl_loop_begin;
@@ -1186,8 +1169,6 @@ void exactness_init(void)
 
 void exactness_shutdown(void)
 {
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
-
    eina_init_redirect = NULL;
    eina_shutdown_redirect = NULL;
    efl_loop_begin_redirect = NULL;
@@ -1199,23 +1180,18 @@ void exactness_shutdown(void)
 BOOL WINAPI
 DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
 {
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
    switch (reason)
      {
       case DLL_PROCESS_ATTACH:
-        fprintf(stderr, " >>> DLL_PROCESS_ATTACH \n");
 	exactness_init();
         break;
       case DLL_PROCESS_DETACH:
-        fprintf(stderr, " >>> DLL_PROCESS_DETACH \n");
 	exactness_shutdown();
         break;
       case DLL_THREAD_ATTACH:
-        fprintf(stderr, "\n >>> DLL_THREAD_ATTACH <<< \n");
 	exactness_init();
        break;
       case DLL_THREAD_DETACH:
-        fprintf(stderr, "\n >>> DLL_THREAD_DETACH <<< \n");
 	exactness_shutdown();
 	break;
       default:

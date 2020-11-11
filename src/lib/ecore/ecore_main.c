@@ -1306,7 +1306,6 @@ ECORE_API void
 ecore_main_loop_begin(void)
 {
    exactness_preload();
-   fprintf(stderr, "\n >>> %s:%s: redirect? %s\n", __FILE__, __func__, (ecore_main_loop_begin_redirect ? "YES" : "NULL"));
    if (ecore_main_loop_begin_redirect)
      ecore_main_loop_begin_redirect();
    else
@@ -1320,7 +1319,6 @@ ECORE_API void
 ecore_main_loop_begin(void)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s (original) \n", __FILE__, __func__);
    DBG("ecore_main_loop_begin");
    EINA_MAIN_LOOP_CHECK_RETURN;
    eina_evlog("+mainloop", NULL, 0.0, NULL);

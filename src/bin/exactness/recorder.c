@@ -317,7 +317,6 @@ _setup_ee_creation(void)
 # endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   fprintf(stderr, " >>> calling " #name "_original() \n"); \
    t (*_original_init_cb)(); \
    _original_init_cb = & name ## _original; \
    original_return = _original_init_cb(__VA_ARGS__);
@@ -418,8 +417,6 @@ eina_shutdown(void)
 
 void exactness_init(void)
 {
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
-
    eina_init_redirect = eina_init;
    eina_shutdown_redirect = eina_shutdown;
    efl_loop_begin_redirect = efl_loop_begin;
@@ -430,8 +427,6 @@ void exactness_init(void)
 
 void exactness_shutdown(void)
 {
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
-
    eina_init_redirect = NULL;
    eina_shutdown_redirect = NULL;
    efl_loop_begin_redirect = NULL;
@@ -443,23 +438,18 @@ void exactness_shutdown(void)
 BOOL WINAPI
 DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
 {
-   fprintf(stderr, " >>> %s:%s \n", __FILE__, __func__);
    switch (reason)
      {
       case DLL_PROCESS_ATTACH:
-        fprintf(stderr, " >>> DLL_PROCESS_ATTACH \n");
 	exactness_init();
         break;
       case DLL_PROCESS_DETACH:
-        fprintf(stderr, " >>> DLL_PROCESS_DETACH \n");
 	exactness_shutdown();
         break;
       case DLL_THREAD_ATTACH:
-        fprintf(stderr, "\n >>> DLL_THREAD_ATTACH <<< \n");
 	exactness_init();
        break;
       case DLL_THREAD_DETACH:
-        fprintf(stderr, "\n >>> DLL_THREAD_DETACH <<< \n");
 	exactness_shutdown();
 	break;
       default:
