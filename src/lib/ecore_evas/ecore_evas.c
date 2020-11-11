@@ -1046,13 +1046,13 @@ static const struct ecore_evas_engine _engines[] = {
   {"opengl_sdl", _ecore_evas_constructor_opengl_sdl},
   {"sdl", _ecore_evas_constructor_sdl},
   {"buffer", _ecore_evas_constructor_buffer},
-#else
-  {"software_gdi", _ecore_evas_constructor_software_gdi},
-  {"software_ddraw", _ecore_evas_constructor_software_ddraw},
-#endif
 #ifdef BUILD_ECORE_EVAS_EWS
   {"ews", _ecore_evas_constructor_ews},
 #endif
+#endif
+  //{"software_gdi", _ecore_evas_constructor_software_gdi}, // failing to get DPI
+  //{"software_ddraw", _ecore_evas_constructor_software_ddraw}, // failing to get DPI
+  {"buffer", _ecore_evas_constructor_buffer},
   {NULL, NULL}
 };
 
