@@ -10,7 +10,9 @@
 #include "common.h"
 
 #ifdef _WIN32
-# include <evil_private.h> /* mkdir */
+# include <evil_private.h> /* mkdir, dirname */
+#else
+# include <libgen.h>
 #endif
 
 #define SCHEDULER_CMD_SIZE 1024
@@ -551,6 +553,14 @@ main(int argc, char *argv[])
         fprintf(stderr, "No matching tests found in list file '%s'\n", list_file);
         ret = 1;
         goto end;
+     }
+
+   /* Get absolute path for all parameters */
+   EINA_LIST_FOREACH(_base_dirs, itr, base_dir)
+     {
+        char resolved_base_dir[PATH_MAX];
+        realpath(base_dir, resolved_base_dir);
+        eina_list_data_set(itr, resolved_base_dir);
      }
 
    /* Pre-run summary */
