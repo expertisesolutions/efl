@@ -46,6 +46,7 @@ typedef enum
 static unsigned short _running_jobs = 0, _max_jobs = 1;
 static Eina_List *_base_dirs = NULL;
 static char *_dest_dir;
+static char dest_dir[PATH_MAX];
 static char *_wrap_command = NULL, *_fonts_dir = NULL;
 static int _verbose = 0;
 static Eina_Bool _scan_objs = EINA_FALSE, _disable_screenshots = EINA_FALSE, _stabilize_shots = EINA_FALSE;
@@ -507,7 +508,7 @@ main(int argc, char *argv[])
       return EXIT_FAILURE;
 
    _log_domain = eina_log_domain_register("exactness", "red");
-   _dest_dir = "./";
+   _dest_dir = realpath(".", _dest_dir);
    _scan_objs = scan_objs;
 
    eina_log_abort_on_critical_set(EINA_TRUE);
