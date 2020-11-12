@@ -521,6 +521,10 @@ main(int argc, char *argv[])
      ECORE_GETOPT_VALUE_NONE
    };
 
+   // Force to use the buffer engine
+   setenv("ELM_DISPLAY", "buffer", 1);
+   setenv("ECORE_EVAS_ENGINE", "buffer", 1);
+
    if (!ecore_evas_init())
       return EXIT_FAILURE;
 
