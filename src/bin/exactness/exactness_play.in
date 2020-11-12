@@ -84,6 +84,7 @@ if G.verbose:
   spawn_env["EXACTNESS_VERBOSE"] = "Yes"
 if G.show_on_screen == False:
   spawn_env["ELM_DISPLAY"] = "buffer"
+  spawn_env["ECORE_EVAS_ENGINE"] = "buffer"
 
 passed_all_the_env_vars = False
 app = []
