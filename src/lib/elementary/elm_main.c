@@ -419,8 +419,25 @@ _efl_ui_theme_apply_error_init(void)
 // This is necessary to keep backward compatibility
 static const char *bcargv[] = { "exe" };
 
+#ifdef EFL_EXACTNESS_WIN32
+ELM_API elm_init_t elm_init_redirect = NULL;
+
 ELM_API int
 elm_init(int argc, char **argv)
+{
+   exactness_preload();
+   if (elm_init_redirect)
+     return elm_init_redirect(argc, argv);
+   else
+     return elm_init_original(argc, argv);
+}
+
+ELM_API int
+elm_init_original(int argc, char **argv)
+#else
+ELM_API int
+elm_init(int argc, char **argv)
+#endif
 {
    _elm_init_count++;
    if (_elm_init_count > 1) return _elm_init_count;

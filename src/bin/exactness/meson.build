@@ -23,14 +23,15 @@ edjs = custom_target('player_entry',
   input : 'player_entry.edc',
   output : 'player_entry.edj',
   install : true,
-  install_dir : 'share/exactness',
+  install_dir : join_paths('share', 'exactness'),
   command : edje_cc_exe + [
     '-id', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'img'),
     '-sd', join_paths(meson.source_root(), 'data', 'elementary', 'themes', 'snd'),
+    '-in-tree',
     '@INPUT@', '@OUTPUT@'],
   depends : edje_depends)
 
-exactness_play_bin = library('exactness_play',
+exactness_play_lib = library('exactness_play',
   [ 'player.c', 'common.c', 'common.h', edjs ],
   dependencies: [ elementary, dl],
   c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
@@ -38,29 +39,42 @@ exactness_play_bin = library('exactness_play',
   version : meson.project_version()
 )
 
-exactness_record_bin = library('exactness_record',
+exactness_record_deps = [ elementary, dl]
+if sys_windows
+  winmm = cc.find_library('winmm')
+  exactness_record_deps += winmm
+endif
+
+exactness_record_lib = library('exactness_record',
   [ 'recorder.c', 'common.c', 'common.h' ],
-  dependencies: [ elementary, dl],
+  dependencies: exactness_record_deps,
   c_args: '-DDATA_DIR="'+join_paths(dir_data, 'exactness')+'"',
   install: true,
   version : meson.project_version()
 )
 
+exactness_play_lib_path = join_paths(
+  get_option('prefix'), get_option('libdir'),
+  'lib' + exactness_play_lib.name() + '.so.' + meson.project_version() )
+exactness_record_lib_path = join_paths(
+  get_option('prefix'), get_option('libdir'),
+  'lib' + exactness_record_lib.name() + '.so.' + meson.project_version() )
+
 exactness_env = configuration_data()
-exactness_env.set_quoted('EXACTNESS_PLAY_PRELOAD_PATH', exactness_play_bin.full_path())
-exactness_env.set_quoted('EXACTNESS_RECORD_PRELOAD_PATH', exactness_record_bin.full_path())
+exactness_env.set_quoted('EXACTNESS_PLAY_PRELOAD_PATH', exactness_play_lib_path)
+exactness_env.set_quoted('EXACTNESS_RECORD_PRELOAD_PATH', exactness_record_lib_path)
 exactness_env.set_quoted('VERSION', meson.project_version())
 
 configure_file(
   input: 'exactness_record.in',
-  output: 'exactness_record',
+  output: 'exactness_record.py',
   configuration: exactness_env,
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x')
 
 configure_file(
   input: 'exactness_play.in',
-  output: 'exactness_play',
+  output: 'exactness_play.py',
   configuration: exactness_env,
   install_dir: get_option('bindir'),
   install_mode: 'rwxr-xr-x')

@@ -7,10 +7,11 @@
 #include <getopt.h>
 #ifndef _MSC_VER
 # include <unistd.h>
-#endif
-
-#ifdef HAVE_DLSYM
-# include <dlfcn.h>
+# ifdef HAVE_DLSYM
+#  include <dlfcn.h>
+# endif
+#else
+# include <evil_windows.h>
 #endif
 
 #ifdef HAVE_FORK
@@ -84,6 +85,7 @@ static Eina_Bool _exit_required = EINA_FALSE;
 static Eina_Bool _pause_request = EINA_FALSE;
 static Eina_Bool _playing_status = EINA_FALSE;
 static Eina_Bool _ready_to_write = EINA_FALSE;
+static Eina_Bool _output_written = EINA_FALSE;
 
 static Exactness_Image *
 _snapshot_shot_get(Evas *e)
@@ -1014,45 +1016,52 @@ _setup_ee_creation(void)
       ecore_idler_add(_src_feed, NULL);
 }
 
-static void
+static Eina_Bool
 _write_unit_file(void)
 {
    if (_dest && _dest_unit && _ready_to_write)
      {
         Exactness_Unit *tmp = NULL;
 
-        EINA_SAFETY_ON_NULL_RETURN(_src_unit);
+	if (!_src_unit) return EINA_FALSE;
         if (_src_type == FTYPE_EXU)
           {
              tmp = exactness_unit_file_read(_src_filename);
              _dest_unit->actions = tmp->actions;
           }
-        exactness_unit_file_write(_dest_unit, _dest);
+        return exactness_unit_file_write(_dest_unit, _dest);
      }
+   return EINA_FALSE;
 }
-#ifdef HAVE_DLSYM
-# define ORIGINAL_CALL_T(t, name, ...) \
-   t (*_original_init_cb)(); \
-   _original_init_cb = dlsym(RTLD_NEXT, name); \
-   original_return = _original_init_cb(__VA_ARGS__);
+
+#ifndef _WIN32
+# ifdef HAVE_DLSYM
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    t (*_original_init_cb)(); \
+    _original_init_cb = dlsym(RTLD_NEXT, #name); \
+    original_return = _original_init_cb(__VA_ARGS__);
+# else
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    printf("THIS IS NOT SUPPORTED WITHOUT DLSYM\n"); \
+    abort();
+# endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   printf("THIS IS NOT SUPPORTED ON WINDOWS\n"); \
-   abort();
+   t (*_original_init_cb)(); \
+   _original_init_cb = & name ## _original; \
+   original_return = _original_init_cb(__VA_ARGS__);
 #endif
 
 #define ORIGINAL_CALL(name, ...) \
-   ORIGINAL_CALL_T(int, name, __VA_ARGS__)
+   ORIGINAL_CALL_T(int , name, __VA_ARGS__)
 
 int
 eina_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL("eina_init");
-
+   ORIGINAL_CALL(eina_init);
    ex_set_original_envvar();
-
    if (original_return == 1)
      {
         const char *dest = getenv("EXACTNESS_DEST");
@@ -1092,8 +1101,7 @@ ecore_evas_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL("ecore_evas_init")
-
+   ORIGINAL_CALL(ecore_evas_init);
    if (ex_is_original_app() && original_return == 1)
      {
         _setup_ee_creation();
@@ -1107,8 +1115,8 @@ int
 elm_init(int argc, char **argv)
 {
    int original_return;
-   ORIGINAL_CALL("elm_init", argc, argv)
 
+   ORIGINAL_CALL(elm_init, argc, argv);
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
 
@@ -1119,17 +1127,19 @@ void
 ecore_main_loop_begin(void)
 {
    int original_return;
-   ORIGINAL_CALL("ecore_main_loop_begin")
+
+   ORIGINAL_CALL(ecore_main_loop_begin);
    if (ex_is_original_app())
      _write_unit_file();
    (void)original_return;
 }
 
-Eina_Value*
+Eina_Value *
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
-   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
+
+   ORIGINAL_CALL_T(Eina_Value*, efl_loop_begin, obj);
    if (ex_is_original_app())
      _write_unit_file();
    return original_return;
@@ -1139,13 +1149,65 @@ int
 eina_shutdown(void)
 {
    int original_return;
-   static Eina_Bool output_written = EINA_FALSE;
-   ORIGINAL_CALL("eina_shutdown")
-   if (ex_is_original_app() &&original_return == 1 && !output_written)
+
+   ORIGINAL_CALL(eina_shutdown);
+   if (ex_is_original_app() &&original_return == 1 && !_output_written)
      {
-        output_written = EINA_TRUE;
-        _write_unit_file();
+        _output_written = _write_unit_file();
      }
 
    return original_return;
 }
+
+#ifdef _WIN32
+
+void exactness_init(void)
+{
+   eina_init_redirect = eina_init;
+   eina_shutdown_redirect = eina_shutdown;
+   efl_loop_begin_redirect = efl_loop_begin;
+   elm_init_redirect = elm_init;
+   ecore_evas_init_redirect = ecore_evas_init;
+   ecore_main_loop_begin_redirect = ecore_main_loop_begin;
+}
+
+void exactness_shutdown(void)
+{
+   eina_init_redirect = NULL;
+   eina_shutdown_redirect = NULL;
+   efl_loop_begin_redirect = NULL;
+   elm_init_redirect = NULL;
+   ecore_evas_init_redirect = NULL;
+   ecore_main_loop_begin_redirect = NULL;
+
+   if (!_output_written)
+     {
+        _output_written = _write_unit_file();
+     }
+}
+
+BOOL WINAPI
+DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
+{
+   switch (reason)
+     {
+      case DLL_PROCESS_ATTACH:
+	exactness_init();
+        break;
+      case DLL_PROCESS_DETACH:
+	exactness_shutdown();
+        break;
+      case DLL_THREAD_ATTACH:
+	exactness_init();
+       break;
+      case DLL_THREAD_DETACH:
+	exactness_shutdown();
+	break;
+      default:
+        break;
+     }
+
+   return TRUE;
+}
+
+#endif /* _WIN32 */

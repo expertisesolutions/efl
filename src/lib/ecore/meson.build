@@ -101,6 +101,7 @@ ecore_header_src = [
   'ecore_api.h',
   'ecore_exe_eo.legacy.h',
   'efl_loop_timer_eo.legacy.h',
+  'efl_loop_data.h',
 ]
 
 ecore_src = files([
@@ -195,6 +196,10 @@ if get_option('g-mainloop') == true
   else
     config_h.set('USE_G_MAIN_LOOP', '1')
   endif
+endif
+
+if sys_windows and get_option('exactness-win32')
+  config_h.set('EFL_EXACTNESS_WIN32', '1')
 endif
 
 ecore_lib = library('ecore',

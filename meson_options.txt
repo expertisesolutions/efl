@@ -344,6 +344,12 @@ option('dotnet',
   description: 'Enable building C# bindings with dotnet instead of mono'
 )
 
+option('exactness-win32',
+  type: 'boolean',
+  value: false,
+  description: 'Enable building Exactness on Windows'
+)
+
 option('lua-interpreter',
   type: 'combo',
   choices: ['luajit', 'lua'],

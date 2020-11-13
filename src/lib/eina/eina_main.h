@@ -175,6 +175,11 @@ EINA_API extern Eina_Error EINA_ERROR_NOT_IMPLEMENTED;
  *      threads, but requires Eina to be compiled with such feature.
  *
  */
+#ifdef EFL_EXACTNESS_WIN32
+typedef int(*eina_init_t)(void);
+extern EINA_API eina_init_t eina_init_redirect;
+EINA_API int eina_init_original(void);
+#endif
 EINA_API int eina_init(void);
 
 /**
@@ -191,6 +196,11 @@ EINA_API int eina_init(void);
  * not call any of the Eina functions anymore. You must call
  * eina_init() again to use the Eina functions again.
  */
+#ifdef EFL_EXACTNESS_WIN32
+typedef int(*eina_shutdown_t)(void);
+extern EINA_API eina_shutdown_t eina_shutdown_redirect;
+EINA_API int eina_shutdown_original(void);
+#endif
 EINA_API int eina_shutdown(void);
 
 /**
@@ -249,6 +259,10 @@ EINA_API Eina_Bool eina_main_loop_is(void);
  * this call and you should just not use it.
  */
 EINA_API void eina_main_loop_define(void);
+
+#ifdef EFL_EXACTNESS_WIN32
+EINA_API Eina_Bool exactness_preload(void);
+#endif
 
 /**
  * @}

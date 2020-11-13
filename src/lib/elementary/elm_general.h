@@ -573,6 +573,12 @@ ELM_API extern double _elm_startup_time;
  * @see elm_shutdown().
  * @ingroup Elm_General
  */
+#ifdef EFL_EXACTNESS_WIN32
+typedef int(*elm_init_t)(int argc, char **argv);
+extern ELM_API elm_init_t elm_init_redirect;
+
+ELM_API int elm_init_original(int argc, char **argv);
+#endif
 ELM_API int       elm_init(int argc, char **argv);
 
 /**

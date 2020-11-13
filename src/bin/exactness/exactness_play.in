@@ -48,7 +48,11 @@ if G.version:
   exit(0)
 
 spawn_env = os.environ.copy()
-spawn_env["LD_PRELOAD"] = @EXACTNESS_PLAY_PRELOAD_PATH@
+if os.name == 'nt':
+  # Windows
+  spawn_env["EXACTNESS_PRELOAD_WIN32"] = "PLAY"
+else:
+  spawn_env["LD_PRELOAD"] = @EXACTNESS_PLAY_PRELOAD_PATH@
 
 if G.tests == None and G.external_injection == True:
   print("no test file specified")
@@ -69,7 +73,7 @@ if G.tests != None:
 if G.fontsdir != None:
   spawn_env["EXACTNESS_FONTS_DIR"] = G.fontsdir
 if G.speed != 1.0:
-  spawn_env["EXACTNESS_SPEED"] = G.speed
+  spawn_env["EXACTNESS_SPEED"] = str(G.speed)
 if G.scan_objects:
   spawn_env["EXACTNESS_SCAN_OBJECTS"] = "Yes"
 if G.disable_screenshots:
@@ -80,6 +84,7 @@ if G.verbose:
   spawn_env["EXACTNESS_VERBOSE"] = "Yes"
 if G.show_on_screen == False:
   spawn_env["ELM_DISPLAY"] = "buffer"
+  spawn_env["ECORE_EVAS_ENGINE"] = "buffer"
 
 passed_all_the_env_vars = False
 app = []
@@ -97,5 +102,6 @@ for argument in G.app:
   if passed_all_the_env_vars:
     app.append(argument)
 
-recorder = subprocess.Popen(app, env=spawn_env)
-recorder.wait()
+with subprocess.Popen(app, env=spawn_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as p:
+    for line in p.stdout:
+        print(line, end='')

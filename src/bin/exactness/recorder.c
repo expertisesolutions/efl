@@ -7,10 +7,14 @@
 #include <getopt.h>
 #ifndef _MSC_VER
 # include <unistd.h>
+# ifdef HAVE_DLSYM
+#  include <dlfcn.h>
+# endif
+#else
+# include <evil_private.h>
 #endif
-
-#ifdef HAVE_DLSYM
-# include <dlfcn.h>
+#ifdef _WIN32
+# include <timeapi.h> // timeGetTime()
 #endif
 
 #include <sys/types.h>
@@ -139,7 +143,7 @@ _event_pointer_cb(void *data, const Efl_Event *event)
              Eina_Position2D pos = efl_input_pointer_position_get(evp);
              Efl_Pointer_Flags flags = efl_input_pointer_button_flags_get(evp);
              Exactness_Action_Multi_Event t = { tool, b, pos.x, pos.y, rad, radx, rady, pres, ang,
-                  fx, fy, flags };
+                  fx, fy, (Evas_Button_Flags)flags };
              if (n_evas >= 0) _add_to_list(evt, n_evas, timestamp, &t, sizeof(t));
              break;
           }
@@ -293,18 +297,29 @@ static void
 _setup_ee_creation(void)
 {
    ecore_evas_callback_new_set(_my_evas_new);
+#ifdef _WIN32
+   _last_timestamp = timeGetTime();
+#else
    _last_timestamp = ecore_time_get() * 1000;
+#endif
 }
 
-#ifdef HAVE_DLSYM
-# define ORIGINAL_CALL_T(t, name, ...) \
-   t (*_original_init_cb)(); \
-   _original_init_cb = dlsym(RTLD_NEXT, name); \
-   original_return = _original_init_cb(__VA_ARGS__);
+#ifndef _WIN32
+# ifdef HAVE_DLSYM
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    t (*_original_init_cb)(); \
+    _original_init_cb = dlsym(RTLD_NEXT, #name); \
+    original_return = _original_init_cb(__VA_ARGS__);
+# else
+#  define ORIGINAL_CALL_T(t, name, ...) \
+    printf("THIS IS NOT SUPPORTED WITHOUT DLSYM\n"); \
+    abort();
+# endif
 #else
 # define ORIGINAL_CALL_T(t, name, ...) \
-   printf("THIS IS NOT SUPPORTED ON WINDOWS\n"); \
-   abort();
+   t (*_original_init_cb)(); \
+   _original_init_cb = & name ## _original; \
+   original_return = _original_init_cb(__VA_ARGS__);
 #endif
 
 #define ORIGINAL_CALL(name, ...) \
@@ -315,7 +330,7 @@ eina_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL("eina_init");
+   ORIGINAL_CALL(eina_init);
 
    ex_set_original_envvar();
 
@@ -339,7 +354,7 @@ ecore_evas_init(void)
 {
    int original_return;
 
-   ORIGINAL_CALL("ecore_evas_init")
+   ORIGINAL_CALL(ecore_evas_init);
 
    if (ex_is_original_app() && original_return == 1)
      {
@@ -355,7 +370,7 @@ int
 elm_init(int argc, char **argv)
 {
    int original_return;
-   ORIGINAL_CALL("elm_init", argc, argv)
+   ORIGINAL_CALL(elm_init, argc, argv);
 
    if (ex_is_original_app() && original_return == 1)
      ex_prepare_elm_overlay();
@@ -367,7 +382,7 @@ void
 ecore_main_loop_begin(void)
 {
    int original_return;
-   ORIGINAL_CALL("ecore_main_loop_begin")
+   ORIGINAL_CALL(ecore_main_loop_begin);
    if (ex_is_original_app())
      _output_write();
    (void)original_return;
@@ -377,7 +392,7 @@ Eina_Value*
 efl_loop_begin(Eo *obj)
 {
    Eina_Value *original_return;
-   ORIGINAL_CALL_T(Eina_Value*, "efl_loop_begin", obj);
+   ORIGINAL_CALL_T(Eina_Value *, efl_loop_begin, obj);
    if (ex_is_original_app())
      _output_write();
    return original_return;
@@ -388,7 +403,7 @@ eina_shutdown(void)
 {
    int original_return;
    static Eina_Bool output_written = EINA_FALSE;
-   ORIGINAL_CALL("eina_shutdown")
+   ORIGINAL_CALL(eina_shutdown);
    if (ex_is_original_app() && original_return == 1 && !output_written)
      {
         output_written = EINA_TRUE;
@@ -397,3 +412,51 @@ eina_shutdown(void)
 
    return original_return;
 }
+
+#ifdef _WIN32
+
+void exactness_init(void)
+{
+   eina_init_redirect = eina_init;
+   eina_shutdown_redirect = eina_shutdown;
+   efl_loop_begin_redirect = efl_loop_begin;
+   elm_init_redirect = elm_init;
+   ecore_evas_init_redirect = ecore_evas_init;
+   ecore_main_loop_begin_redirect = ecore_main_loop_begin;
+}
+
+void exactness_shutdown(void)
+{
+   eina_init_redirect = NULL;
+   eina_shutdown_redirect = NULL;
+   efl_loop_begin_redirect = NULL;
+   elm_init_redirect = NULL;
+   ecore_evas_init_redirect = NULL;
+   ecore_main_loop_begin_redirect = NULL;
+}
+
+BOOL WINAPI
+DllMain(HINSTANCE inst, DWORD reason, LPVOID reserved)
+{
+   switch (reason)
+     {
+      case DLL_PROCESS_ATTACH:
+	exactness_init();
+        break;
+      case DLL_PROCESS_DETACH:
+	exactness_shutdown();
+        break;
+      case DLL_THREAD_ATTACH:
+	exactness_init();
+       break;
+      case DLL_THREAD_DETACH:
+	exactness_shutdown();
+	break;
+      default:
+        break;
+     }
+
+   return TRUE;
+}
+
+#endif /* _WIN32 */

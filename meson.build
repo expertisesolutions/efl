@@ -225,6 +225,9 @@ foreach lang : ['c', 'objc', 'cpp']
       error('Version of targetted Windows incorrect')
     endif
     add_global_arguments('-D__USE_MINGW_ANSI_STDIO', language: lang)
+    if get_option('exactness-win32')
+      add_global_arguments('-DEFL_EXACTNESS_WIN32', language: lang)
+    endif
   endif
 endforeach
 
@@ -495,12 +498,13 @@ subprojects = [
 if sys_windows
   ignored_subprojects = [
     # temporarily ignored
-    'exactness',
   ]
+  if get_option('exactness-win32') == false
+    ignored_subprojects += ['exactness']
+  endif
 else
   ignored_subprojects = []
 endif
-
 
 _subprojects = []
 foreach package : subprojects
