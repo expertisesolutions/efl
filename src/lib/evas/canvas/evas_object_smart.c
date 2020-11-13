@@ -23,7 +23,9 @@ struct _Evas_Smart_Data
       Eina_Rectangle bounding_box;
    } cur, prev;
    Evas_Object      *object;
+#ifdef HAVE_ECTOR
    Evas_Object      *filter_img;
+#endif
    void             *engine_data;
    void             *data;
    Eina_Inlist      *callbacks;
@@ -911,8 +913,10 @@ _efl_canvas_group_efl_gfx_entity_visible_set(Eo *eo_obj, Evas_Smart_Data *o, Ein
         efl_gfx_entity_visible_set(clipper, vis);
      }
 
+#ifdef HAVE_ECTOR
    if (o->filter_img)
       efl_gfx_entity_visible_set(o->filter_img, vis);
+#endif
 }
 
 EOLIAN static void
@@ -931,7 +935,9 @@ _efl_canvas_group_efl_gfx_entity_position_set(Eo *eo_obj, Evas_Smart_Data *o, Ei
    if (o->clipped && !is_overridden)
      _evas_object_smart_clipped_smart_move_internal(eo_obj, pos.x, pos.y);
    efl_gfx_entity_position_set(efl_super(eo_obj, MY_CLASS), pos);
+#ifdef HAVE_ECTOR
    if (o->filter_img) efl_gfx_entity_position_set(o->filter_img, pos);
+#endif
 }
 
 EOLIAN static void
@@ -941,9 +947,12 @@ _efl_canvas_group_efl_gfx_entity_size_set(Eo *obj, Evas_Smart_Data *o, Eina_Size
      return;
 
    efl_gfx_entity_size_set(efl_super(obj, MY_CLASS), size);
+#ifdef HAVE_ECTOR
    if (o->filter_img) efl_gfx_entity_size_set(o->filter_img, size);
+#endif
 }
 
+#ifdef HAVE_ECTOR
 EOLIAN static void
 _efl_canvas_group_efl_gfx_filter_filter_program_set(Eo *eo_obj, Evas_Smart_Data *o,
                                                     const char *code, const char *name)

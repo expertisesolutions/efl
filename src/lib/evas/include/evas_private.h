@@ -9,6 +9,12 @@
 # define EFL_CANVAS_OBJECT_PROTECTED
 #endif
 
+#ifdef HAVE_ECTOR
+# define FILTER_PARAM
+#else
+# define FILTER_PARAM EINA_UNUSED
+#endif
+
 #include "Evas.h"
 #include "Eet.h"
 
@@ -66,8 +72,10 @@ typedef struct _Evas_Size_Hints             Evas_Size_Hints;
 typedef struct _Evas_Data_Node              Evas_Data_Node;
 typedef struct _Evas_Func                   Evas_Func;
 typedef struct _Evas_Image_Save_Func        Evas_Image_Save_Func;
+#ifdef HAVE_ECTOR
 typedef struct _Evas_Vg_Load_Func           Evas_Vg_Load_Func;
 typedef struct _Evas_Vg_Save_Func           Evas_Vg_Save_Func;
+#endif
 typedef struct _Evas_Object_Func            Evas_Object_Func;
 typedef struct _Evas_Intercept_Func         Evas_Intercept_Func;
 typedef struct _Evas_Key_Grab               Evas_Key_Grab;
@@ -92,18 +100,20 @@ typedef struct _Efl_Object_Event_Grabber_Data  Efl_Object_Event_Grabber_Data;
 typedef struct _Evas_Object_Protected_State Evas_Object_Protected_State;
 typedef struct _Evas_Object_Protected_Data  Evas_Object_Protected_Data;
 
+#ifdef HAVE_ECTOR
 /* gfx filters typedef only */
 typedef struct _Evas_Filter_Program         Evas_Filter_Program;
 typedef struct _Evas_Filter_Context         Evas_Filter_Context;
 typedef struct _Evas_Object_Filter_Data     Evas_Object_Filter_Data;
 typedef struct _Evas_Filter_Data_Binding    Evas_Filter_Data_Binding;
-typedef struct _Evas_Pointer_Data           Evas_Pointer_Data;
 typedef struct _Evas_Filter_Command         Evas_Filter_Command;
 typedef enum _Evas_Filter_Support           Evas_Filter_Support;
 
 typedef struct _Vg_File_Data                   Vg_File_Data;
 typedef struct _Vg_File_Anim_Data              Vg_File_Anim_Data;
 typedef struct _Vg_File_Anim_Data_Marker       Vg_File_Anim_Data_Marker;
+#endif
+typedef struct _Evas_Pointer_Data           Evas_Pointer_Data;
 
 /* General types - used for script type chceking */
 #define OPAQUE_TYPE(type) struct __##type { int a; }; \
@@ -1103,10 +1113,10 @@ struct _Evas_Func
    void  (*ector_surface_cache_set)      (void *engine, void *key, void *surface);
    void *(*ector_surface_cache_get)      (void *engine, void *key);
    void  (*ector_surface_cache_drop)     (void *engine, void *key);
-#endif
 
    Evas_Filter_Support (*gfx_filter_supports) (void *engine, Evas_Filter_Command *cmd);
    Eina_Bool (*gfx_filter_process)       (void *engine, Evas_Filter_Command *cmd);
+#endif
 
    void (*font_glyphs_gc_collect)   (void *engine, float ratio, int *texture_size, int *atlas_size, Eina_Bool only_when_requested);
 
@@ -1118,6 +1128,7 @@ struct _Evas_Image_Save_Func
   int (*image_save) (RGBA_Image *im, const char *file, const char *key, int quality, int compress, const char *encoding);
 };
 
+#ifdef HAVE_ECTOR
 struct _Vg_File_Anim_Data_Marker
 {
    Eina_Stringshare *name;
@@ -1162,6 +1173,7 @@ struct _Evas_Vg_Save_Func
 {
    Evas_Load_Error (*file_save) (Vg_File_Data *vfd, const char *file, const char *key, int compress);
 };
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -1314,9 +1326,11 @@ Eina_Bool _efl_canvas_object_efl_gfx_entity_size_set_block(Eo *eo_obj, Evas_Obje
 
 void _evas_focus_device_invalidate_cb(void *data, const Efl_Event *ev);
 
+#ifdef HAVE_ECTOR
 /* Filters */
 void evas_filter_init(void);
 void evas_filter_shutdown(void);
+#endif
 
 /* Efl.Gfx.Mapping */
 void _efl_gfx_mapping_init(void);
@@ -1326,10 +1340,10 @@ void _efl_gfx_mapping_update(Eo *eo_obj);
 #ifdef HAVE_ECTOR
 /* Ector */
 Ector_Surface *evas_ector_get(Evas_Public_Data *evas);
-#endif
 
 /* Filter functions */
 Eina_Bool evas_filter_object_render(Eo *eo_obj, Evas_Object_Protected_Data *obj, void *engine, void *output, void *context, void *surface, int x, int y, Eina_Bool do_async, Eina_Bool alpha);
+#endif
 
 extern int _evas_alloc_error;
 extern int _evas_event_counter;
@@ -1435,11 +1449,15 @@ void *efl_input_pointer_legacy_info_fill(Evas *eo_evas, Efl_Input_Key *eo_ev, Ev
 void *efl_input_key_legacy_info_fill(Efl_Input_Key *evt, Evas_Event_Flags **pflags);
 void *efl_input_hold_legacy_info_fill(Efl_Input_Hold *evt, Evas_Event_Flags **pflags);
 
+#ifdef HAVE_ECTOR
 Eina_Bool evas_vg_loader_svg(Evas_Object *vg, const Eina_File *f, const char *key EINA_UNUSED);
+#endif
 
 void *_evas_object_image_surface_get(Evas_Object_Protected_Data *obj, Eina_Bool create);
+#ifdef HAVE_ECTOR
 void _evas_filter_radius_get(Evas_Object_Protected_Data *obj, int *l, int *r, int *t, int *b);
 Eina_Bool _evas_filter_obscured_regions_set(Evas_Object_Protected_Data *obj, const Eina_Tiler *tiler);
+#endif
 Eina_Bool _evas_image_proxy_source_clip_get(const Eo *eo_obj);
 
 void _evas_focus_dispatch_event(Evas_Object_Protected_Data *obj,

@@ -567,6 +567,7 @@ evas_module_find_type(Evas_Module_Type type, const char *name)
    Evas_Module *em;
    Eina_Module *en;
    Eina_List *l;
+
 #ifdef NEED_RUN_IN_TREE
    static signed char run_in_tree = -1;
 

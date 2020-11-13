@@ -2920,7 +2920,9 @@ _snapshot_redraw_update(Evas_Public_Data *evas, Evas_Object_Protected_Data *snap
      }
 
 skip_obscures:
+#ifdef HAVE_ECTOR
    need_redraw |= _evas_filter_obscured_regions_set(snap, tiler);
+#endif
    if (memcmp(&snap->cur->geometry, &snap->prev->geometry, sizeof(snap->cur->geometry)))
      need_redraw = EINA_TRUE;
    snap->snapshot_needs_redraw |= need_redraw;
@@ -3580,8 +3582,10 @@ evas_render_updates_internal(Evas *eo_e,
 
                             pseudo_canvas = _evas_object_image_surface_get(snap, EINA_TRUE);
 
+#ifdef HAVE_ECTOR
                             // Get required margin for filters (eg. blur radius)
                             _evas_filter_radius_get(snap, &cm.l, &cm.r, &cm.t, &cm.b);
+#endif
 
                             if (snap->map->cur.usemap || snap->proxy->proxies ||
                                 snap->snapshot_no_obscure ||

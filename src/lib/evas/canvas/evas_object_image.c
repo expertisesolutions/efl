@@ -2265,12 +2265,14 @@ evas_object_image_render(Evas_Object *eo_obj, Evas_Object_Protected_Data *obj, v
    if (ENFN->gl_image_direct_set)
      ENFN->gl_image_direct_set(engine, o->engine_data, EINA_FALSE);
 
+#ifdef HAVE_ECTOR
    /* Render filter */
    if (o->has_filter)
      {
         if (evas_filter_object_render(eo_obj, obj, engine, output, context, surface, x, y, do_async, EINA_FALSE))
           return;
      }
+#endif
 
    _evas_image_render(eo_obj, obj, engine, output, context, surface, x, y, 0, 0, 0, 0, EINA_FALSE, do_async);
 }
@@ -2280,7 +2282,7 @@ _evas_image_pixels_get(Eo *eo_obj, Evas_Object_Protected_Data *obj,
                        void *engine, void *output, void *context, void *surface,
                        int x, int y,
                        int *imagew, int *imageh, int *uvw, int *uvh,
-                       Eina_Bool filtered, Eina_Bool needs_post_render)
+                       Eina_Bool filtered FILTER_PARAM, Eina_Bool needs_post_render)
 {
    Evas_Image_Data *o = obj->private_data, *oi = NULL;
    Evas_Object_Protected_Data *source = NULL;
@@ -2288,10 +2290,14 @@ _evas_image_pixels_get(Eo *eo_obj, Evas_Object_Protected_Data *obj,
 
    EVAS_OBJECT_DATA_ALIVE_CHECK(obj, NULL);
 
+#ifdef HAVE_ECTOR
    if (filtered && o->has_filter)
      pixels = evas_filter_output_buffer_get(eo_obj);
    else
      needs_post_render = EINA_FALSE;
+#else
+   needs_post_render = EINA_FALSE;
+#endif
 
    if (!pixels && o->cur->source)
      {
@@ -2338,8 +2344,10 @@ _evas_image_pixels_get(Eo *eo_obj, Evas_Object_Protected_Data *obj,
    else if (oi && oi->engine_data &&
             (!o->cur->source || o->load_opts->region.w == 0 || o->load_opts->region.h == 0))
      {
+#ifdef HAVE_ECTOR
         if (oi->has_filter)
           pixels = evas_filter_output_buffer_get(source->object);
+#endif
         if (!pixels)
           pixels = oi->engine_data;
         *imagew = oi->cur->image.w;
@@ -2460,8 +2468,10 @@ _evas_image_render_hband(Evas_Object_Protected_Data *obj, Evas_Image_Data *o,
 
 static void
 _evas_image_render(Eo *eo_obj, Evas_Object_Protected_Data *obj,
-                   void *engine, void *output, void *context, void *surface, int x, int y,
-                   int l, int t, int r, int b, Eina_Bool skip_map, Eina_Bool do_async)
+                   void *engine, void *output, void *context, void *surface,
+                   int x, int y, int l FILTER_PARAM, int t FILTER_PARAM, 
+                   int r FILTER_PARAM, int b FILTER_PARAM, Eina_Bool skip_map,
+                   Eina_Bool do_async)
 {
    Evas_Image_Data *o = obj->private_data;
    int imagew, imageh, uvw, uvh, cw, ch;
@@ -2516,12 +2526,14 @@ _evas_image_render(Eo *eo_obj, Evas_Object_Protected_Data *obj,
         else
           iw = idx + idw - ix;
 
+#ifdef HAVE_ECTOR
         // Filter stuff
         if (o->filled)
           {
              iw -= l + r;
              if (iw <= 0) break;
           }
+#endif
 
         while (idy < obj->cur->geometry.h)
           {
@@ -2537,12 +2549,14 @@ _evas_image_render(Eo *eo_obj, Evas_Object_Protected_Data *obj,
              else
                ih = idy + idh - iy;
 
+#ifdef HAVE_ECTOR
              // Filter stuff
              if (o->filled)
                {
                   ih -= t + b;
                   if (ih <= 0) break;
                }
+#endif
 
              if (o->cur->stretch.horizontal.region &&
                  o->cur->stretch.vertical.region)
@@ -2894,11 +2908,13 @@ evas_object_image_render_pre(Evas_Object *eo_obj,
      }
    if (o->changed)
      {
+#ifdef HAVE_ECTOR
         if (o->changed_filter)
           {
              evas_object_render_pre_prev_cur_add(&e->clip_changes, eo_obj, obj);
              goto done;
           }
+#endif
         if (((o->cur->f) && (!o->prev->f)) ||
             ((!o->cur->f) && (o->prev->f)) ||
             ((o->cur->key) && (!o->prev->key)) ||
@@ -3224,7 +3240,9 @@ done:
           }
      }
    o->changed = EINA_FALSE;
+#ifdef HAVE_ECTOR
    o->changed_filter = EINA_FALSE;
+#endif
 }
 
 static void
@@ -3307,8 +3325,10 @@ evas_object_image_is_opaque(Evas_Object *eo_obj EINA_UNUSED,
           return o->cur->opaque;
         if (!o->engine_data)
           return o->cur->opaque;
+#ifdef HAVE_ECTOR
         if (o->has_filter)
           return o->cur->opaque;
+#endif
 
         // FIXME: use proxy
         if (o->cur->source)
@@ -3418,8 +3438,10 @@ evas_object_image_was_opaque(Evas_Object *eo_obj EINA_UNUSED,
           return o->prev->opaque;  /* FIXME: Should go poke at the object */
         if (o->prev->has_alpha)
           return o->prev->opaque;
+#ifdef HAVE_ECTOR
         if (o->has_filter)
           return o->cur->opaque;
+#endif
 
         EINA_COW_WRITE_BEGIN(evas_object_image_state_cow, o->prev, Evas_Object_Image_State, state_write)
         {

@@ -315,7 +315,9 @@ struct _Evas_Object_Textblock_Text_Item
 {
    Evas_Object_Textblock_Item       parent;  /**< Textblock item. */
    Evas_Text_Props                  text_props;  /**< Props for this item. */
+#ifdef HAVE_ECTOR
    Text_Item_Filter                *gfx_filter;
+#endif
 };
 
 struct _Evas_Object_Textblock_Format_Item
@@ -329,6 +331,7 @@ struct _Evas_Object_Textblock_Format_Item
    Eina_Bool                            formatme : 1;  /**< EINA_TRUE if format required, else EINA_FALSE */
 };
 
+#ifdef HAVE_ECTOR
 struct _Text_Item_Filter
 {
    EINA_INLIST; /**< list on the tb object */
@@ -365,6 +368,7 @@ struct _Efl_Canvas_Textblock_Filter_Program
    Evas_Filter_Program *pgm;
    Eina_Bool            changed;
 };
+#endif
 
 struct _Evas_Object_Textblock_Format
 {
@@ -387,7 +391,9 @@ struct _Evas_Object_Textblock_Format
    struct {
       int               l, r;
    } margin;  /**< Left and right margin width. */
+#ifdef HAVE_ECTOR
    Efl_Canvas_Textblock_Filter *gfx_filter; /**< Gfx Filter to apply to the children text items */
+#endif
    int                  ref;  /**< Value of the ref. */
    int                  tabstops;  /**< Value of the size of the tab character. */
    int                  linesize;  /**< Value of the size of the line of the text. */
@@ -490,7 +496,9 @@ struct _Evas_Object_Textblock
          Eina_Stringshare               *font_source;
          Eina_Stringshare               *font_fallbacks;
          Eina_Stringshare               *font_lang;
+#ifdef HAVE_ECTOR
          Eina_Stringshare               *gfx_filter_name;
+#endif
          unsigned int                    font_weight;
          unsigned int                    font_slant;
          unsigned int                    font_width;
@@ -513,12 +521,14 @@ struct _Evas_Object_Textblock
       int                              w, h, oneline_h;
       Eina_Bool                        valid : 1;
    } formatted, native;
+#ifdef HAVE_ECTOR
    struct {
       Efl_Canvas_Textblock_Filter_Program  *programs;
       Evas_Filter_Data_Binding        *data_bindings;
       Eina_Hash                       *sources;
       Text_Item_Filter                *text_items; // inlist
    } gfx_filter;
+#endif
    TEXT_FIT_CONTENT_CONFIG             fit_content_config;
    Eina_Bool                           redraw : 1;
    Eina_Bool                           changed : 1;
@@ -904,7 +914,7 @@ _image_safe_unref(Evas_Public_Data *e, void *image, Eina_Bool async)
  * @param it the layout item to be freed
  */
 static void
-_item_free(Efl_Canvas_Textblock_Data *o,
+_item_free(Efl_Canvas_Textblock_Data *o FILTER_PARAM,
       Evas_Object_Protected_Data *evas_o,
       Evas_Object_Textblock_Line *ln, Evas_Object_Textblock_Item *it)
 {
@@ -5703,10 +5713,16 @@ _format_filter_program_get(Efl_Canvas_Textblock_Data *o, Evas_Object_Textblock_F
  * @return fi if created.
  */
 static Evas_Object_Textblock_Format_Item *
-_layout_do_format(const Evas_Object *obj, Ctxt *c,
-      Evas_Object_Textblock_Format **_fmt, Evas_Object_Textblock_Node_Format *n,
-      int *style_pad_l, int *style_pad_r, int *style_pad_t, int *style_pad_b,
-      Eina_Bool create_item)
+_layout_do_format(
+    const Evas_Object *obj FILTER_PARAM
+    , Ctxt *c
+    , Evas_Object_Textblock_Format **_fmt
+    , Evas_Object_Textblock_Node_Format *n
+    , int *style_pad_l FILTER_PARAM
+    , int *style_pad_r FILTER_PARAM
+    , int *style_pad_t FILTER_PARAM
+    , int *style_pad_b FILTER_PARAM
+    , Eina_Bool create_item)
 {
    Evas_Object_Textblock_Format_Item *fi = NULL;
    Evas_Object_Textblock_Format *fmt = *_fmt;
@@ -14987,15 +15003,11 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         cr = nr; cg = ng; cb = nb; ca = na;                             \
      }
 
-#ifdef HAVE_ECTOR
 #define DRAW_TEXT_FILTER(gf, ox, oy) do {                               \
       evas_filter_input_render(eo_obj, ti->gfx_filter->ctx, engine, output, gf->dc, ti, \
                             gf->pad.l, gf->pad.r, gf->pad.t, gf->pad.b, \
                             (ox), (oy), do_async);                      \
    } while (0)
-#else
-#define DRAW_TEXT_FILTER(gf, ox, oy) do { } while (0)
-#endif
 
 #define DRAW_TEXT_NOFILTER(ox, oy) do {                                 \
    ENFN->context_cutout_target(engine, context,                         \
@@ -15010,6 +15022,7 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
      &ti->text_props, do_async);                                        \
    } while (0)
 
+#ifdef HAVE_ECTOR
 #define DRAW_TEXT(ox, oy) do {                                          \
    if (ti->parent.format->font.font)                                    \
      {                                                                  \
@@ -15018,6 +15031,9 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
         else if (ti->gfx_filter->ctx != NULL)                           \
           DRAW_TEXT_FILTER(ti->parent.format->gfx_filter, ox, oy);      \
      } } while(0)
+#else
+#define DRAW_TEXT DRAW_TEXT_NOFILTER
+#endif
 
    /* backing */
 #define DRAW_RECT(ox, oy, ow, oh, or, og, ob, oa)                       \
@@ -15137,10 +15153,12 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
              {
                 outlines = eina_list_append(outlines, itr);
              }
+#ifdef HAVE_ECTOR
            if (ti->parent.format->gfx_filter)
              {
                 gfx_filters = eina_list_append(gfx_filters, itr);
              }
+#endif
         }
 
         /* Draw background */
@@ -16046,7 +16064,9 @@ evas_object_textblock_render_post(Evas_Object *eo_obj EINA_UNUSED,
    evas_object_cur_prev(obj);
 /*   o->prev = o->cur; */
    EINA_SAFETY_ON_NULL_RETURN(o);
+#ifdef HAVE_ECTOR
    _filter_output_cache_prune(obj, o);
+#endif
 }
 
 static void *evas_object_textblock_engine_data_get(Evas_Object *eo_obj)

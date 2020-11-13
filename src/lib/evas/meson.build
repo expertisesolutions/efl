@@ -56,7 +56,7 @@ evas_vg_savers_file = ['eet', 'svg']
 endif
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
-evas_deps = [eo, eet, eina, efl, emile, ector, ecore, buildsystem]
+evas_deps = [eo, eet, eina, efl, emile, ector, ecore, draw, buildsystem]
 evas_ext_deps = [draw_simple]
 if get_option('ector')
   evas_ext_deps += vg_common

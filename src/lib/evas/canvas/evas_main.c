@@ -193,8 +193,10 @@ evas_init(void)
    evas_module_init();
    EINA_SAFETY_ON_FALSE_GOTO(evas_async_events_init(), shutdown_module);
    _evas_preload_thread_init();
+#ifdef HAVE_ECTOR
    evas_filter_init();
    evas_cache_vg_init();
+#endif
 
    EINA_SAFETY_ON_FALSE_GOTO(evas_thread_init(), shutdown_filter);
 
@@ -215,7 +217,9 @@ evas_init(void)
    return _evas_init_count;
 
  shutdown_filter:
+#ifdef HAVE_ECTOR
    evas_filter_shutdown();
+#endif
    _evas_preload_thread_shutdown();
 shutdown_module:
    evas_module_shutdown();
@@ -257,7 +261,9 @@ evas_shutdown(void)
 
    evas_fonts_zero_free();
 
+#ifdef HAVE_ECTOR
    evas_cache_vg_shutdown();
+#endif
 
    evas_font_path_global_clear();
 
@@ -268,7 +274,9 @@ evas_shutdown(void)
    ecore_shutdown();
    evas_common_shutdown();
 
+#ifdef HAVE_ECTOR
    evas_filter_shutdown();
+#endif
    evas_module_shutdown();
 
    _efl_gfx_mapping_shutdown();

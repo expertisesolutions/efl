@@ -1089,8 +1089,10 @@ _efl_canvas_object_efl_object_invalidate(Eo *eo_obj, Evas_Object_Protected_Data 
           {
              if (efl_isa(proxy, EFL_CANVAS_IMAGE_INTERNAL_CLASS))
                evas_object_image_source_unset(proxy);
+#ifdef HAVE_ECTOR
              if (efl_isa(proxy, EFL_GFX_FILTER_INTERFACE))
                efl_gfx_filter_source_set(proxy, NULL, eo_obj);
+#endif
           }
      }
 

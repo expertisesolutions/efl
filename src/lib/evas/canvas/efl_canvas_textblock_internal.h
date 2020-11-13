@@ -87,6 +87,7 @@ typedef struct _Evas_Textblock_Selection_Iterator Evas_Textblock_Selection_Itera
  * A textblock annotation iterator.
  */
 typedef struct _Efl_Text_Attribute_Handle_Iterator Efl_Text_Attribute_Handle_Iterator;
+#ifdef HAVE_ECTOR
 /**
  * @internal
  * @typedef Efl_Canvas_Textblock_Filter
@@ -111,6 +112,7 @@ typedef struct _Efl_Canvas_Textblock_Filter_Program Efl_Canvas_Textblock_Filter_
  * Text item filter properties (run context, output buffer, ...)
  */
 typedef struct _Text_Item_Filter Text_Item_Filter;
+#endif
 
 
 struct _Evas_Object_Style_Tag_Base

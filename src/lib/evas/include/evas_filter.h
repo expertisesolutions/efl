@@ -1,6 +1,8 @@
 #ifndef _EVAS_FILTER_H
 #define _EVAS_FILTER_H
 
+#ifdef HAVE_ECTOR
+
 #include "evas_common_private.h"
 #include "evas_private.h"
 
@@ -349,5 +351,7 @@ struct _Evas_Filter_Data_Binding
 
 #undef EAPI
 #define EAPI
+
+#endif
 
 #endif

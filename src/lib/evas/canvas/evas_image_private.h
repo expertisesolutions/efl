@@ -5,7 +5,9 @@
  * new efl_canvas classes (image, snapshot, proxy, ...)
  */
 
-#define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
+#ifdef HAVE_ECTOR
+# define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
+#endif
 #define EFL_CANVAS_OBJECT_PROTECTED
 
 #include "evas_common_private.h"
@@ -143,8 +145,10 @@ struct _Evas_Image_Data
    Eina_Bool         proxy_src_clip : 1;
    Eina_Bool         written : 1;
    Eina_Bool         direct_render : 1;
+#ifdef HAVE_ECTOR
    Eina_Bool         has_filter : 1;
    Eina_Bool         changed_filter : 1;
+#endif
    Eina_Bool         buffer_data_set : 1;
    struct
    {
