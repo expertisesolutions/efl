@@ -6,10 +6,12 @@
 #include "efl_ui_spec_suite.h"
 #include "suite_helpers.h"
 
+#ifdef HAVE_ECTOR
+#else
 /* spec-meta-start
-      {"test-interface":"Efl.Gfx.View",
-       "test-widgets": ["Efl.Ui.Vg_Animation"]}
+      {"test-interface":"Efl.Gfx.View"}
    spec-meta-end */
+#endif
 
 EFL_START_TEST(view_size)
 {
