@@ -72,7 +72,9 @@ struct _Evas_Text_Data
    Eina_Bool                   inherit_paragraph_direction : 1;
    Eina_Bool                   changed_paragraph_direction : 1;
    Eina_Bool                   changed : 1;
+#ifdef HAVE_ECTOR
    Eina_Bool                   has_filter : 1;
+#endif
 };
 
 struct _Evas_Object_Text_Item
@@ -442,8 +444,10 @@ _evas_text_font_reload(Eo *eo_obj, Evas_Text_Data *o)
    _evas_object_text_items_clear(o);
    _evas_object_text_recalc(eo_obj, o->cur.text);
    o->changed = 1;
+#ifdef HAVE_ECTOR
    if (o->has_filter)
      evas_filter_changed_set(eo_obj, EINA_TRUE);
+#endif
    evas_object_change(eo_obj, obj);
    evas_object_clip_dirty(eo_obj, obj);
    evas_object_coords_recalc(eo_obj, obj);
@@ -1039,8 +1043,10 @@ _evas_text_ellipsis_set(Eo *eo_obj, Evas_Text_Data *o, double ellipsis)
    o->prev.ellipsis = o->cur.ellipsis;
    o->cur.ellipsis = ellipsis;
    o->changed = 1;
+#ifdef HAVE_ECTOR
    if (o->has_filter)
      evas_filter_changed_set(eo_obj, EINA_TRUE);
+#endif
    evas_object_change(eo_obj, obj);
    evas_object_clip_dirty(eo_obj, obj);
 }
@@ -1098,8 +1104,10 @@ _evas_text_efl_text_text_set(Eo *eo_obj, Evas_Text_Data *o, const char *_text)
    if (o->cur.text != text) free(text);
 
    o->changed = 1;
+#ifdef HAVE_ECTOR
    if (o->has_filter)
      evas_filter_changed_set(eo_obj, EINA_TRUE);
+#endif
    evas_object_change(eo_obj, obj);
    evas_object_clip_dirty(eo_obj, obj);
    evas_object_coords_recalc(eo_obj, obj);
@@ -1869,6 +1877,7 @@ evas_object_text_render(Evas_Object *eo_obj,
                                  do_async);                             \
    }
 
+#ifdef HAVE_ECTOR
    if (o->has_filter)
      {
         if (evas_filter_object_render(eo_obj, obj,
@@ -1876,6 +1885,7 @@ evas_object_text_render(Evas_Object *eo_obj,
                                       x, y, do_async, EINA_TRUE))
           return;
      }
+#endif
 
    /* shadows */
    switch (o->cur.style & EVAS_TEXT_STYLE_MASK_BASIC)
@@ -2227,8 +2237,10 @@ _evas_object_text_rehint(Evas_Object *eo_obj)
    /* DO II */
    _evas_object_text_recalc(eo_obj, o->cur.text);
    o->changed = 1;
+#ifdef HAVE_ECTOR
    if (o->has_filter)
      evas_filter_changed_set(eo_obj, EINA_TRUE);
+#endif
    evas_object_change(eo_obj, obj);
    evas_object_clip_dirty(eo_obj, obj);
    evas_object_coords_recalc(eo_obj, obj);
