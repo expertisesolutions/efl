@@ -279,16 +279,16 @@ interface Efl.Text_Style {
          }
       }
 
-      @property text_gfx_filter
-      {
-         [[Program that applies a special filter
+      // @property text_gfx_filter
+      // {
+      //    [[Program that applies a special filter
 
-           See @Efl.Gfx.Filter.
-         ]]
-         values
-         {
-            code: string; [[Filter code.]]
-         }
-      }
+      //      See @Efl.Gfx.Filter.
+      //    ]]
+      //    values
+      //    {
+      //       code: string; [[Filter code.]]
+      //    }
+      // }
    }
 }
