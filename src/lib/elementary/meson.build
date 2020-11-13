@@ -42,7 +42,6 @@ endforeach
 pub_eo_files = [
   'efl_ui_widget.eo',
   'efl_ui_widget_scrollable_content.eo',
-  'efl_ui_vg_animation.eo',
   'efl_ui_bg.eo',
   'efl_ui_button.eo',
   'efl_ui_calendar.eo',
@@ -192,6 +191,12 @@ pub_eo_files = [
   'efl_ui_spotlight_animation_manager.eo',
 ]
 
+if get_option('ector')
+  pub_eo_files += [
+    'efl_ui_vg_animation.eo',
+  ]
+endif
+
 foreach eo_file : pub_eo_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
     input : eo_file,
@@ -299,7 +304,6 @@ elementary_headers_unstable = [
   'efl_ui_widget_flip.h',
   'elm_widget_flipselector.h',
   'efl_ui_widget_frame.h',
-  'efl_ui_vg_animation_private.h',
   'elm_widget_gengrid.h',
   'elm_widget_genlist.h',
   'elm_widget_glview.h',
@@ -376,6 +380,12 @@ elementary_headers_unstable = [
   'efl_ui_relative_container_private.h'
 ]
 
+if get_option('ector')
+  elementary_headers_unstable += [
+    'efl_ui_vg_animation_private.h',
+  ]
+endif
+
 elementary_pub_headers = [
   'elc_ctxpopup.h',
   'elc_ctxpopup_legacy.h',
@@ -399,8 +409,6 @@ elementary_pub_headers = [
   'elc_naviframe_common.h',
   'elc_popup.h',
   'elc_popup_legacy.h',
-  'efl_ui_vg_animation.h',
-  'efl_ui_vg_animation_legacy.h',
   'elm_access.h',
   'elm_actionslider.h',
   'elm_actionslider_legacy.h',
@@ -590,7 +598,6 @@ elementary_pub_headers = [
   'elm_win_legacy.h',
   'elm_helper.h',
   'elm_part_helper.h',
-  'efl_ui_vg_animation_eo.legacy.h',
   'efl_ui_bg_eo.legacy.h',
   'efl_ui_bg_legacy_eo.legacy.h',
   'efl_ui_button_eo.legacy.h',
@@ -707,6 +714,14 @@ elementary_pub_headers = [
   'elm_widget_item_static_focus_eo.legacy.h',
 ]
 
+if get_option('ector')
+  elementary_pub_headers += [
+    'efl_ui_vg_animation.h',
+    'efl_ui_vg_animation_legacy.h',
+    'efl_ui_vg_animation_eo.legacy.h',
+  ]
+endif
+
 elementary_header_src = [
   'Elementary.h',
   'Elementary_Cursor.h'
@@ -729,7 +744,6 @@ elementary_src = files([
   'elc_popup.c',
   'elc_scrolled_entry.c',
   'elm_access.c',
-  'efl_ui_vg_animation.c',
   'elm_actionslider.c',
   'elm_atspi_app_object.c',
   'elm_atspi_bridge.c',
@@ -948,6 +962,10 @@ elementary_src = files([
   'efl_ui_separator.c',
   'efl_ui_spotlight_animation_manager.c',
 ])
+
+if get_option('ector')
+  elementary_src += files('efl_ui_vg_animation.c')
+endif
 
 elementary_deps = [emile, eo, efl, edje, ethumb, ethumb_client, emotion, ecore_imf, ecore_con, eldbus, efreet, eio, buildsystem]
 elementary_pub_deps = [eina, eet, evas, ecore, ecore_evas, ecore_file, ecore_input, ecore_imf, ecore_con,
