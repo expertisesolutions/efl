@@ -66,7 +66,6 @@ elementary_test_src = [
   'test_gesture_layer.c',
   'test_gesture_layer2.c',
   'test_gesture_layer3.c',
-  'test_gfx_filters.c',
   'test_glview_simple.c',
   'test_glview.c',
   'test_glview_manygears.c',
@@ -162,10 +161,16 @@ elementary_test_src = [
   'test_ui_items.c',
   'test_ui_frame.c',
   'test_ui_separator.c',
-  'test_efl_ui_vg_animation.c',
-  'test_efl_gfx_vg_value_provider.c',
   'test.h'
 ]
+
+if get_option('ector')
+  elementary_test_src += [
+    'test_gfx_filters.c',
+    'test_efl_ui_vg_animation.c',
+    'test_efl_gfx_vg_value_provider.c',
+  ]
+endif
 
 link_args = []
 if sys_windows == false

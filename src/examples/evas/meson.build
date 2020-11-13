@@ -28,12 +28,17 @@ examples = [
   'evas-textblock-obstacles',
   'evas-text',
   'evas-transparent',
-  'evas-vg-batman',
-  'evas-vg-simple',
-  'evas-vg-json',
   'efl-canvas-animation',
-  'efl-canvas-vg-simple',
 ]
+
+if get_option('ector')
+  examples += [
+    'evas-vg-batman',
+    'evas-vg-simple',
+    'evas-vg-json',
+    'efl-canvas-vg-simple',
+  ]
+endif
 
 foreach example : examples
   executable(example, example + '.c',

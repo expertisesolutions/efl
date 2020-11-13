@@ -370,7 +370,9 @@ void test_efl_ui_text(void *data, Evas_Object *obj, void *event_info);
 void test_efl_ui_text_inputfield(void *data, Evas_Object *obj, void *event_info);
 void test_efl_ui_text_label(void *data, Evas_Object *obj, void *event_info);
 void test_evas_mask(void *data, Edje_Object *obj, void *event_info);
+#ifdef HAVE_ECTOR
 void test_gfx_filters(void *data, Evas_Object *obj, void *event_info);
+#endif
 void test_evas_snapshot(void *data, Evas_Object *obj, void *event_info);
 void test_evas_map(void *data, Edje_Object *obj, void *event_info);
 void test_efl_gfx_mapping(void *data, Edje_Object *obj, void *event_info);
@@ -408,8 +410,10 @@ void test_efl_ui_collection_view(void *data, Evas_Object *obj, void *event_info)
 void test_efl_ui_item(void *data, Evas_Object *obj, void *event_info);
 void test_ui_frame(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event_info EINA_UNUSED);
 
+#ifdef HAVE_ECTOR
 void test_efl_ui_vg_animation(void *data, Evas_Object *obj, void *event_info);
 void test_efl_gfx_vg_value_provider(void *data, Evas_Object *obj, void *event_info);
+#endif
 void test_ui_separator(void *data EINA_UNUSED, Eo *obj EINA_UNUSED, void *event_info EINA_UNUSED);
 
 static void _list_udpate(void);
@@ -1304,7 +1308,9 @@ add_tests:
 
    //------------------------------//
    ADD_TEST(NULL, "Evas", "Masking", test_evas_mask);
+#ifdef HAVE_ECTOR
    ADD_TEST(NULL, "Evas", "Gfx Filters", test_gfx_filters);
+#endif
    ADD_TEST(NULL, "Evas", "Snapshot", test_evas_snapshot);
    ADD_TEST(NULL, "Evas", "Map", test_evas_map);
    ADD_TEST_EO(NULL, "Evas", "Efl.Gfx.Mapping", test_efl_gfx_mapping);
@@ -1318,8 +1324,10 @@ add_tests:
    ADD_TEST_EO(NULL, "Widgets Part", "Part Shadow", test_part_shadow);
 
    //------------------------------//
+#ifdef HAVE_ECTOR
    ADD_TEST_EO(NULL, "Vector Animation", "Vector Graphics Animation", test_efl_ui_vg_animation);
    ADD_TEST_EO(NULL, "Vector Animation", "Value Provider", test_efl_gfx_vg_value_provider);
+#endif
 
 #undef ADD_TEST
 

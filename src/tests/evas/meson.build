@@ -9,7 +9,6 @@ evas_suite_src = [
   'evas_test_text.c',
   'evas_test_callbacks.c',
   'evas_test_render_engines.c',
-  'evas_test_filters.c',
   'evas_test_image.c',
   'evas_test_mask.c',
   'evas_test_evasgl.c',
@@ -22,6 +21,12 @@ evas_suite_src = [
   'efl_test_canvas3.c',
   'efl_canvas_animation.c',
 ]
+
+if get_option('ector')
+  evas_suite_src += [
+    'evas_test_filters.c',
+  ]
+endif
 
 evas_suite = executable('evas_suite',
   evas_suite_src,
