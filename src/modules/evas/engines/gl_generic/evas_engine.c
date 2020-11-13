@@ -1,10 +1,12 @@
 #include "evas_common_private.h"
 #include "evas_gl_core_private.h"
 
+#ifdef HAVE_ECTOR
 #include "software/Ector_Software.h"
 #include "gl/Ector_GL.h"
 #include "evas_ector_gl.h"
 #include "filters/gl_engine_filter.h"
+#endif
 
 #if defined HAVE_DLSYM && ! defined _WIN32
 # include <dlfcn.h>      /* dlopen,dlclose,etc */
@@ -2394,6 +2396,7 @@ eng_context_dup(void *engine EINA_UNUSED, void *context)
 
 static Eina_Bool use_gl = EINA_FALSE;
 
+#ifdef HAVE_ECTOR
 static Ector_Surface *
 eng_ector_create(void *engine EINA_UNUSED)
 {
@@ -2632,6 +2635,7 @@ eng_ector_end(void *engine,
 
      }
 }
+#endif
 
 static Eina_Bool
 eng_image_data_map(void *engine, void **image, Eina_Rw_Slice *slice,
@@ -2976,7 +2980,7 @@ eng_image_surface_noscale_new(void *engine, int w, int h, int alpha)
 }
 
 //------------------------------------------------//
-
+#ifdef HAVE_ECTOR
 static GL_Filter_Apply_Func
 _gfx_filter_func_get(Render_Engine_GL_Generic *re, Evas_Filter_Command *cmd)
 {
@@ -3023,6 +3027,7 @@ eng_gfx_filter_process(void *engine, Evas_Filter_Command *cmd)
    else
      return pfunc.gfx_filter_process(&re->software, cmd);
 }
+#endif
 
 static void
 eng_font_glyphs_gc_collect(void *data EINA_UNUSED, float ratio EINA_UNUSED, int *texture_size EINA_UNUSED, int *atlas_size EINA_UNUSED, Eina_Bool only_when_requested EINA_UNUSED)
@@ -3077,8 +3082,10 @@ module_open(Evas_Module *em)
         return 0;
      }
 
+#ifdef HAVE_ECTOR
    ector_init();
    ector_glsym_set(dlsym, RTLD_DEFAULT);
+#endif
 
    /* store it for later use */
    func = pfunc;
@@ -3201,6 +3208,7 @@ module_open(Evas_Module *em)
 
    ORD(context_flush);
 
+#ifdef HAVE_ECTOR
    ORD(ector_create);
    ORD(ector_destroy);
    ORD(ector_buffer_wrap);
@@ -3215,6 +3223,7 @@ module_open(Evas_Module *em)
    ORD(ector_surface_cache_drop);
    ORD(gfx_filter_supports);
    ORD(gfx_filter_process);
+#endif
    ORD(font_glyphs_gc_collect);
 
    /* now advertise out own api */
@@ -3225,7 +3234,9 @@ module_open(Evas_Module *em)
 static void
 module_close(Evas_Module *em EINA_UNUSED)
 {
+#ifdef HAVE_ECTOR
    ector_shutdown();
+#endif
    if (_evas_engine_GL_log_dom >= 0)
      {
         eina_log_domain_unregister(_evas_engine_GL_log_dom);

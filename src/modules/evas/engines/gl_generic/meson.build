@@ -1,18 +1,14 @@
-if not get_option('ector')
-  subdir_done()
-endif
-
 engine_src = files([
   'evas_engine.c',
   'Evas_Engine_GL_Generic.h',
   'Evas_Engine_GL_Shared.h',
-  'evas_ector_gl.h',
-  'evas_ector_gl_buffer.c',
-  'evas_ector_gl_image_buffer.c',
 ])
 
 if get_option('ector')
   engine_src += files([
+    'evas_ector_gl.h',
+    'evas_ector_gl_buffer.c',
+    'evas_ector_gl_image_buffer.c',
     join_paths('filters','gl_engine_filter.h'),
     join_paths('filters','gl_filter_blend.c'),
     join_paths('filters','gl_filter_blur.c'),
@@ -55,10 +51,12 @@ foreach src : common_engine_src
   engine_src += files(join_paths('..','gl_common', src))
 endforeach
 
-pub_eo_files = [
-  'evas_ector_gl_buffer.eo',
-  'evas_ector_gl_image_buffer.eo'
-]
+if get_option('ector')
+  pub_eo_files = [
+    'evas_ector_gl_buffer.eo',
+    'evas_ector_gl_image_buffer.eo'
+  ]
+endif
 
 foreach eo_file : pub_eo_files
   engine_src += custom_target('eolian_gen_' + eo_file,

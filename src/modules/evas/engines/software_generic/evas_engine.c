@@ -30,7 +30,9 @@
 
 #include "Evas_Engine_Software_Generic.h"
 #include "evas_native_common.h"
-#include "filters/evas_engine_filter.h"
+#ifdef HAVE_ECTOR
+# include "filters/evas_engine_filter.h"
+#endif
 
 #ifdef EVAS_GL
 //----------------------------------//
@@ -4639,6 +4641,7 @@ eng_ector_end(void *engine EINA_UNUSED,
 
 //------------------------------------------------//
 
+#ifdef HAVE_ECTOR
 static Software_Filter_Func
 _gfx_filter_func_get(Evas_Filter_Command *cmd)
 {
@@ -4670,6 +4673,7 @@ eng_gfx_filter_supports(void *data EINA_UNUSED, Evas_Filter_Command *cmd)
 
    return EVAS_FILTER_SUPPORT_CPU;
 }
+#endif
 
 static void
 eng_font_glyphs_gc_collect(void *data EINA_UNUSED, float ratio EINA_UNUSED, int *texture_size EINA_UNUSED, int *atlas_size EINA_UNUSED, Eina_Bool only_when_requested EINA_UNUSED)
@@ -4677,6 +4681,7 @@ eng_font_glyphs_gc_collect(void *data EINA_UNUSED, float ratio EINA_UNUSED, int 
    return;
 }
 
+#ifdef HAVE_ECTOR
 static Eina_Bool
 eng_gfx_filter_process(void *data EINA_UNUSED, Evas_Filter_Command *cmd)
 {
@@ -4687,6 +4692,7 @@ eng_gfx_filter_process(void *data EINA_UNUSED, Evas_Filter_Command *cmd)
 
    return func(cmd);
 }
+#endif
 
 //------------------------------------------------//
 
@@ -4881,9 +4887,9 @@ static Evas_Func func =
      eng_ector_surface_cache_set,
      eng_ector_surface_cache_get,
      eng_ector_surface_cache_drop,
-#endif
      eng_gfx_filter_supports,
      eng_gfx_filter_process,
+#endif
    /* FUTURE software generic calls go here */
      eng_font_glyphs_gc_collect,
      0 // sizeof (Info)
@@ -6061,13 +6067,11 @@ Eina_Bool evas_engine_software_generic_init(void)
    return evas_module_register(&evas_modapi, EVAS_MODULE_TYPE_ENGINE);
 }
 
-#ifdef HAVE_ECTOR
 // Time to destroy the ector context
 void evas_engine_software_generic_shutdown(void)
 {
    evas_module_unregister(&evas_modapi, EVAS_MODULE_TYPE_ENGINE);
 }
-#endif
 
 #ifndef EVAS_STATIC_BUILD_SOFTWARE_GENERIC
 EVAS_EINA_MODULE_DEFINE(engine, software_generic);
