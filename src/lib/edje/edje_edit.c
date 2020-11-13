@@ -3218,7 +3218,9 @@ _edje_edit_real_part_add(Evas_Object *obj, const char *name, Edje_Part_Type type
    else if (ep->type == EDJE_PART_TYPE_VECTOR)
      {
         rp->type = EDJE_PART_TYPE_VECTOR;
+#ifdef HAVE_ECTOR
         rp->object = evas_object_vg_add(ed->base.evas);
+#endif
      }
    else if (ep->type == EDJE_PART_TYPE_IMAGE || ep->type == EDJE_PART_TYPE_PROXY)
      rp->object = evas_object_image_add(ed->base.evas);

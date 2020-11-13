@@ -977,7 +977,9 @@ _edje_object_file_set_internal(Evas_Object *obj, const Eina_File *file, const ch
                        break;
 
                      case EDJE_PART_TYPE_VECTOR:
+#ifdef HAVE_ECTOR
                        rp->object = evas_object_vg_add(ed->base.evas);
+#endif
                        break;
 
                      case EDJE_PART_TYPE_PROXY:

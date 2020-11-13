@@ -3173,6 +3173,7 @@ _edje_image_recalc_apply(Edje *ed, Edje_Real_Part *ep, Edje_Calc_Params *p3, Edj
      evas_object_image_border_center_fill_set(ep->object, EVAS_BORDER_FILL_SOLID);
 }
 
+#ifdef HAVE_ECTOR
 #ifdef BUILD_VG_LOADER_JSON
 static void
 _edje_vector_animation_running_cb(void *data, const Efl_Event *event)
@@ -3380,6 +3381,7 @@ _edje_part_vector_anim_play(Edje *ed EINA_UNUSED, Edje_Real_Part *rp, Eina_Bool 
    rp->typedata.vector->is_playing = EINA_TRUE;
    efl_canvas_object_animation_start(rp->object, rp->typedata.vector->anim, 1.0, 0.0);
 }
+#endif
 #endif
 
 static Edje_Real_Part *
@@ -4912,7 +4914,9 @@ _edje_part_recalc(Edje *ed, Edje_Real_Part *ep, int flags, Edje_Calc_Params *sta
              break;
 
            case EDJE_PART_TYPE_VECTOR:
+#ifdef HAVE_ECTOR
              _edje_vector_recalc_apply(ed, ep, pf, (Edje_Part_Description_Vector *)chosen_desc, pos);
+#endif
              break;
 
            case EDJE_PART_TYPE_TEXTBLOCK:
