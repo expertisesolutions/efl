@@ -187,6 +187,7 @@ void _evas_text_efl_text_font_font_bitmap_scalable_set(Eo *obj, Evas_Text_Data *
 Efl_Text_Font_Bitmap_Scalable _evas_text_efl_text_font_font_bitmap_scalable_get(const Eo *obj, Evas_Text_Data *pd);
 
 
+#ifdef HAVE_ECTOR
 void _evas_text_efl_gfx_filter_filter_program_set(Eo *obj, Evas_Text_Data *pd, const char *code, const char *name);
 
 
@@ -200,6 +201,7 @@ Eina_Bool _evas_text_efl_canvas_filter_internal_filter_input_render(Eo *obj, Eva
 
 
 void _evas_text_efl_canvas_filter_internal_filter_state_prepare(Eo *obj, Evas_Text_Data *pd, Efl_Canvas_Filter_State *state, void *data);
+#endif
 
 
 void _evas_text_efl_canvas_object_paragraph_direction_set(Eo *obj, Evas_Text_Data *pd, Efl_Text_Bidirectional_Type dir);
@@ -260,11 +262,13 @@ _evas_text_class_initializer(Efl_Class *klass)
       EFL_OBJECT_OP_FUNC(efl_text_font_source_get, _evas_text_efl_text_font_font_source_get),
       EFL_OBJECT_OP_FUNC(efl_text_font_bitmap_scalable_set, _evas_text_efl_text_font_font_bitmap_scalable_set),
       EFL_OBJECT_OP_FUNC(efl_text_font_bitmap_scalable_get, _evas_text_efl_text_font_font_bitmap_scalable_get),
+#ifdef HAVE_ECTOR
       EFL_OBJECT_OP_FUNC(efl_gfx_filter_program_set, _evas_text_efl_gfx_filter_filter_program_set),
       EFL_OBJECT_OP_FUNC(evas_filter_dirty, _evas_text_efl_canvas_filter_internal_filter_dirty),
       EFL_OBJECT_OP_FUNC(evas_filter_input_alpha, _evas_text_efl_canvas_filter_internal_filter_input_alpha),
       EFL_OBJECT_OP_FUNC(evas_filter_input_render, _evas_text_efl_canvas_filter_internal_filter_input_render),
       EFL_OBJECT_OP_FUNC(evas_filter_state_prepare, _evas_text_efl_canvas_filter_internal_filter_state_prepare),
+#endif
       EFL_OBJECT_OP_FUNC(efl_canvas_object_paragraph_direction_set, _evas_text_efl_canvas_object_paragraph_direction_set),
       EFL_OBJECT_OP_FUNC(efl_canvas_object_paragraph_direction_get, _evas_text_efl_canvas_object_paragraph_direction_get),
       EVAS_TEXT_EXTRA_OPS
@@ -293,6 +297,14 @@ static const Efl_Class_Description _evas_text_class_desc = {
    NULL
 };
 
-EFL_DEFINE_CLASS(evas_text_class_get, &_evas_text_class_desc, EFL_CANVAS_OBJECT_CLASS, EFL_TEXT_INTERFACE, EFL_TEXT_FONT_PROPERTIES_INTERFACE, EFL_CANVAS_FILTER_INTERNAL_MIXIN, NULL);
+EFL_DEFINE_CLASS(evas_text_class_get
+        , &_evas_text_class_desc
+        , EFL_CANVAS_OBJECT_CLASS
+        , EFL_TEXT_INTERFACE
+        , EFL_TEXT_FONT_PROPERTIES_INTERFACE
+#ifdef HAVE_ECTOR
+        , EFL_CANVAS_FILTER_INTERNAL_MIXIN
+#endif
+        , NULL);
 
 #include "evas_text_eo.legacy.c"

@@ -20,8 +20,10 @@
 #include "../common/evas_convert_yuv.h"
 
 #include "canvas/evas_image_eo.h"
-#include "canvas/efl_canvas_filter_internal.eo.h"
-#include "evas_filter.h"
+#ifdef HAVE_ECTOR
+# include "canvas/efl_canvas_filter_internal.eo.h"
+# include "evas_filter.h"
+#endif
 
 /* private struct for rectangle object internal data */
 typedef struct _Evas_Image_Data Evas_Image_Data;

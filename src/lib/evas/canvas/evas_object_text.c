@@ -3,9 +3,11 @@
 #include "evas_common_private.h" /* Includes evas_bidi_utils stuff. */
 #include "evas_private.h"
 
+#ifdef HAVE_ECTOR
 #include "../efl/interfaces/efl_gfx_filter.eo.h"
 #include "efl_canvas_filter_internal.eo.h"
 #include "evas_filter.h"
+#endif
 
 #define MY_CLASS EVAS_TEXT_CLASS
 
@@ -1699,6 +1701,7 @@ evas_font_draw_async_check(Evas_Object_Protected_Data *obj,
 
 /* ugly binding between evas_fitler_mixin.c and this object */
 
+#ifdef HAVE_ECTOR
 EOLIAN static void
 _evas_text_efl_canvas_filter_internal_filter_dirty(Eo *eo_obj, Evas_Text_Data *o)
 {
@@ -1759,6 +1762,7 @@ _evas_text_efl_canvas_filter_internal_filter_input_render(Eo *eo_obj EINA_UNUSED
 
    return EINA_TRUE;
 }
+#endif
 
 static void
 evas_object_text_render(Evas_Object *eo_obj,
@@ -2364,6 +2368,7 @@ evas_object_text_text_get(const Eo *obj)
    return efl_text_get((Eo *) obj);
 }
 
+#ifdef HAVE_ECTOR
 EOLIAN static void
 _evas_text_efl_gfx_filter_filter_program_set(Eo *obj, Evas_Text_Data *pd EINA_UNUSED, const char *code, const char *name)
 {
@@ -2384,6 +2389,7 @@ evas_object_text_filter_source_set(Evas_Object *obj, const char *name, Evas_Obje
 {
    efl_gfx_filter_source_set(obj, name, source);
 }
+#endif
 
 EOLIAN static void
 _evas_text_efl_canvas_object_paragraph_direction_set(Eo *eo_obj, Evas_Text_Data *o,

@@ -1947,6 +1947,7 @@ evas_process_dirty_pixels(Evas_Object *eo_obj, Evas_Object_Protected_Data *obj, 
    return pixels;
 }
 
+#ifdef HAVE_ECTOR
 EOLIAN static void
 _efl_canvas_image_internal_efl_canvas_filter_internal_filter_dirty(Eo *eo_obj, Evas_Image_Data *o)
 {
@@ -1987,6 +1988,7 @@ _efl_canvas_image_internal_efl_canvas_filter_internal_filter_state_prepare(
    state->h = obj->cur->geometry.h;
    state->scale = obj->cur->scale;
 }
+#endif
 
 static inline Eina_Bool
 _image_has_border(Evas_Object_Protected_Data *obj EINA_UNUSED, Evas_Image_Data *o)
@@ -2011,6 +2013,7 @@ _image_is_scaled(Evas_Object_Protected_Data *obj, Evas_Image_Data *o)
           (obj->cur->geometry.h != o->cur->image.h);
 }
 
+#ifdef HAVE_ECTOR
 EOLIAN static Eina_Bool
 _efl_canvas_image_internal_efl_canvas_filter_internal_filter_input_render(
   Eo *eo_obj, Evas_Image_Data *o,
@@ -2073,6 +2076,7 @@ _efl_canvas_image_internal_efl_canvas_filter_internal_filter_input_render(
 
    return EINA_TRUE;
 }
+#endif
 
 void
 _evas_object_image_plane_release(Evas_Object *eo_obj EINA_UNUSED,

@@ -981,6 +981,7 @@ _efl_canvas_group_efl_gfx_filter_filter_program_set(Eo *eo_obj, Evas_Smart_Data 
    if (!fobj) return;
    fobj->is_filter_object = EINA_TRUE;
 }
+#endif
 
 EOLIAN static void
 _efl_canvas_group_efl_canvas_object_clipper_set(Eo *eo_obj, Evas_Smart_Data *o, Evas_Object *clip)

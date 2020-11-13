@@ -5,7 +5,6 @@ pub_eo_files = [
   'efl_canvas_image.eo',
   'efl_canvas_snapshot.eo',
   'efl_canvas_proxy.eo',
-  'efl_canvas_filter_internal.eo',
   'efl_input_state.eo',
   'efl_input_interface.eo',
   'efl_input_event.eo',
@@ -39,6 +38,7 @@ pub_eo_files = [
 
 if get_option('ector')
   pub_eo_files += [
+    'efl_canvas_filter_internal.eo',
     'efl_gfx_vg_value_provider.eo',
     'efl_canvas_vg_object.eo',
     'efl_canvas_vg_node.eo',
@@ -200,7 +200,6 @@ evas_src += files([
   'efl_canvas_group_animation.c',
   'efl_canvas_parallel_group_animation.c',
   'efl_canvas_sequential_group_animation.c',
-  'evas_filter_mixin.c',
   'efl_canvas_object_animation.c',
   'efl_text_cursor_object.c',
   'efl_text_formatter.c'
@@ -208,6 +207,7 @@ evas_src += files([
 
 if get_option('ector')
   evas_src += files([
+    'evas_filter_mixin.c',
     'efl_gfx_vg_value_provider.c',
     'efl_canvas_vg_object.c',
     'efl_canvas_vg_node.c',

@@ -1,5 +1,5 @@
 class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
-                       Efl.Canvas.Filter.Internal, Efl.Text_Font_Properties,
+                       Efl.Text_Font_Properties,
                        Efl.Text_Style, Efl.Text_Format,
                        Efl.Text_Markup, Efl.Ui.I18n
 {
@@ -316,7 +316,7 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
              Default value is $[1].
              See @Efl.Text_Style.text_underline_height.
 
-           - $gfx_filter: Experimental filter name. See @Efl.Gfx.Filter for more information.
+           - gfx_filter: Experimental filter name. See Efl.Gfx.Filter for more information.
 
            Color codes: Colors can be specified using any of the following formats:
            $[#RRGGBB], $[#RRGGBBAA], $[#RGB], $[#RGBA], $[rgb(r,g,b)], $[rgba(r,g,b,a)].
@@ -449,12 +449,12 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
       Efl.Object.destructor;
       Efl.Canvas.Object.paragraph_direction { get; set; }
       Efl.Text.text { get; set; }
-      Efl.Gfx.Filter.filter_program { get; set; }
-      Efl.Gfx.Filter.filter_data { get; set; }
-      Efl.Gfx.Filter.filter_source { get; set; }
-      Efl.Canvas.Filter.Internal.filter_dirty;
-      Efl.Canvas.Filter.Internal.filter_input_render;
-      Efl.Canvas.Filter.Internal.filter_state_prepare;
+      // Efl.Gfx.Filter.filter_program { get; set; }
+      // Efl.Gfx.Filter.filter_data { get; set; }
+      // Efl.Gfx.Filter.filter_source { get; set; }
+      // Efl.Canvas.Filter.Internal.filter_dirty;
+      // Efl.Canvas.Filter.Internal.filter_input_render;
+      // Efl.Canvas.Filter.Internal.filter_state_prepare;
       Efl.Text_Font_Properties.font_family { get; set; }
       Efl.Text_Font_Properties.font_size { get; set; }
       Efl.Text_Font_Properties.font_source { get; set; }
@@ -482,7 +482,7 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
       Efl.Text_Style.text_shadow_color { get; set; }
       Efl.Text_Style.text_glow_color { get; set; }
       Efl.Text_Style.text_secondary_glow_color { get; set; }
-      Efl.Text_Style.text_gfx_filter { get; set; }
+      // Efl.Text_Style.text_gfx_filter { get; set; }
       Efl.Text_Format.ellipsis { get; set; }
       Efl.Text_Format.wrap { get; set; }
       Efl.Text_Format.multiline { get; set; }

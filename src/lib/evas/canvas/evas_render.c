@@ -9,8 +9,10 @@
 #endif
 
 // FIXME: Ugly!
+#ifdef HAVE_ECTOR
 #define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
 #include "efl_canvas_filter_internal.eo.h"
+#endif
 
 /* Enable this for extra verbose rendering debug logs */
 //#define REND_DBG 1
@@ -2173,7 +2175,9 @@ evas_render_mapped(Evas_Public_Data *evas, Evas_Object *eo_obj,
                              a smart object to set a filter program. the proxy
                              object should be a member of smart object to sync
                              stacking changes. */
+#ifdef HAVE_ECTOR
                           if (obj2->is_filter_object) continue;
+#endif
 
                           clean_them |= evas_render_mapped(evas, obj2->object,
                                                            obj2, ctx,

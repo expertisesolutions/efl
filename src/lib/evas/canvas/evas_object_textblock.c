@@ -62,7 +62,9 @@
  * @todo write @ref textblock_layout
  */
 
-#define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
+#ifdef HAVE_ECTOR
+# define EFL_CANVAS_FILTER_INTERNAL_PROTECTED
+#endif
 
 #include "evas_common_private.h"
 #include "evas_private.h"
@@ -83,8 +85,8 @@
 
 #ifdef HAVE_ECTOR
 # include "evas_filter.h"
+# include "efl_canvas_filter_internal.eo.h"
 #endif
-#include "efl_canvas_filter_internal.eo.h"
 
 /* private magic number for textblock objects */
 static const char o_type[] = "textblock";
@@ -627,7 +629,9 @@ static void _evas_textblock_cursors_set_node(Efl_Canvas_Textblock_Data *o, const
 
 static Eina_Bool _evas_textblock_cursor_format_is_visible_get(const Efl_Text_Cursor_Handle *cur);
 static void _evas_textblock_cursor_at_format_set(Efl_Text_Cursor_Handle *cur, const Evas_Object_Textblock_Node_Format *fmt);
+#ifdef HAVE_ECTOR
 static Evas_Filter_Program *_format_filter_program_get(Efl_Canvas_Textblock_Data *o, Evas_Object_Textblock_Format *fmt);
+#endif
 static const char *_textblock_format_node_from_style_tag(Efl_Canvas_Textblock_Data *o, Evas_Object_Textblock_Node_Format *fnode, const char *format, size_t format_len);
 #ifdef HAVE_HYPHEN
 /* Hyphenation */
@@ -867,6 +871,7 @@ _format_unref_free(Evas_Object_Protected_Data *evas_o, Evas_Object_Textblock_For
    if (fmt->ref > 0) return;
    if (fmt->font.fdesc) evas_font_desc_unref(fmt->font.fdesc);
    if (fmt->font.source) eina_stringshare_del(fmt->font.source);
+#ifdef HAVE_ECTOR
    if (fmt->gfx_filter)
      {
         eina_stringshare_del(fmt->gfx_filter->name);
@@ -875,6 +880,7 @@ _format_unref_free(Evas_Object_Protected_Data *evas_o, Evas_Object_Textblock_For
         free(fmt->gfx_filter);
         fmt->gfx_filter = NULL;
      }
+#endif
    if ((obj->layer) && (obj->layer->evas))
      evas_font_free(fmt->font.font);
    free(fmt);
@@ -1455,7 +1461,9 @@ static const char *underline_dashed_widthstr = NULL;
 static const char *underline_dash_gapstr = NULL;
 static const char *underline_dashed_gapstr = NULL;
 static const char *underline_heightstr = NULL;
+#ifdef HAVE_ECTOR
 static const char *gfx_filterstr = NULL;
+#endif
 
 /**
  * @page evas_textblock_style_page Evas Textblock Style Options
@@ -1674,7 +1682,9 @@ _format_command_init(void)
         underline_dash_gapstr = eina_stringshare_add("underline_dash_gap");
         underline_dashed_gapstr = eina_stringshare_add("underline_dashed_gap");
         underline_heightstr = eina_stringshare_add("underline_height");
+#ifdef HAVE_ECTOR
         gfx_filterstr = eina_stringshare_add("gfx_filter"); // FIXME: bg, fg filters
+#endif
      }
    format_refcount++;
 }
@@ -1746,7 +1756,9 @@ _format_command_shutdown(void)
    eina_stringshare_del(underline_dash_gapstr);
    eina_stringshare_del(underline_dashed_gapstr);
    eina_stringshare_del(underline_heightstr);
+#ifdef HAVE_ECTOR
    eina_stringshare_del(gfx_filterstr);
+#endif
 }
 
 /**
@@ -2990,6 +3002,7 @@ _format_command(Evas_Object *eo_obj, Evas_Object_Textblock_Format *fmt, const ch
         fmt->underline_height = atof(param);
         if (fmt->underline_height <= 0.0) fmt->underline_height = 1.0;
      }
+#ifdef HAVE_ECTOR
    else if (cmd == gfx_filterstr)
      {
         /**
@@ -3006,6 +3019,7 @@ _format_command(Evas_Object *eo_obj, Evas_Object_Textblock_Format *fmt, const ch
           fmt->gfx_filter = calloc(1, sizeof(Efl_Canvas_Textblock_Filter));
         eina_stringshare_replace(&fmt->gfx_filter->name, param);
      }
+#endif
    else
      {
         if (is_legacy)
@@ -3144,6 +3158,7 @@ _default_format_command(Evas_Object *eo_obj, Evas_Object_Textblock_Format *fmt, 
         changed = eina_stringshare_replace(&(_FMT_INFO(font_lang)),
                                            param);
      }
+#ifdef HAVE_ECTOR
    else if (cmd == gfx_filterstr)
      {
         if (!fmt->gfx_filter)
@@ -3151,6 +3166,7 @@ _default_format_command(Evas_Object *eo_obj, Evas_Object_Textblock_Format *fmt, 
         eina_stringshare_replace(&fmt->gfx_filter->name, param);
         eina_stringshare_replace(&(_FMT_INFO(gfx_filter_name)), param);
      }
+#endif
    else if (cmd == wrapstr)
      {
         Efl_Text_Format_Wrap wrap = _FMT_INFO(wrap);
@@ -3559,8 +3575,10 @@ _format_string_get(const Eo *eo_obj, Evas_Object_Textblock_Format *fmt)
    if (_FMT_INFO(font_lang))
      PRINTF_APPEND_STR(langstr, _FMT_INFO(font_lang));
 
+#ifdef HAVE_ECTOR
    if (_FMT_INFO(gfx_filter_name))
      PRINTF_APPEND_STR(gfx_filterstr, _FMT_INFO(gfx_filter_name));
+#endif
 
    char *wrap_value_str;
    Efl_Text_Format_Wrap wrap = _FMT_INFO(wrap);
@@ -3806,6 +3824,7 @@ _format_dup(Evas_Object *eo_obj, const Evas_Object_Textblock_Format *fmt)
                                     (int)(((double) fmt2->font.size) * obj->cur->scale),
                                     fmt2->font.bitmap_scalable);
 
+#ifdef HAVE_ECTOR
    if (fmt->gfx_filter)
      {
         fmt2->gfx_filter = malloc(sizeof(*fmt2->gfx_filter));
@@ -3814,6 +3833,7 @@ _format_dup(Evas_Object *eo_obj, const Evas_Object_Textblock_Format *fmt)
         if (fmt->gfx_filter->dc)
           fmt2->gfx_filter->dc = ENFN->context_dup(ENC, fmt->gfx_filter->dc);
      }
+#endif
 
    return fmt2;
 }
@@ -4376,6 +4396,7 @@ _layout_format_push(Ctxt *c, Evas_Object_Textblock_Format *fmt,
                                              (int)(((double) _FMT_INFO(size)) * evas_obj->cur->scale),
                                              fmt->font.bitmap_scalable);
           }
+#ifdef HAVE_ECTOR
         if (_FMT_INFO(gfx_filter_name))
           {
              if (!fmt->gfx_filter)
@@ -4385,6 +4406,7 @@ _layout_format_push(Ctxt *c, Evas_Object_Textblock_Format *fmt,
                         _FMT_INFO(gfx_filter_name));
                }
           }
+#endif
      }
 
    return fmt;
@@ -5575,6 +5597,7 @@ _format_finalize(Evas_Object *eo_obj, Evas_Object_Textblock_Format *fmt)
    evas_font_free(of);
 }
 
+#ifdef HAVE_ECTOR
 static Efl_Canvas_Textblock_Filter_Program *
 _filter_program_find(Efl_Canvas_Textblock_Data *o, const char *name)
 {
@@ -5589,6 +5612,7 @@ _filter_program_find(Efl_Canvas_Textblock_Data *o, const char *name)
 
    return NULL;
 }
+#endif
 
 #ifdef HAVE_ECTOR
 static Evas_Filter_Program *
@@ -14583,8 +14607,10 @@ evas_object_textblock_free(Evas_Object *eo_obj)
 {
    Efl_Canvas_Textblock_Data *o = efl_data_scope_get(eo_obj, MY_CLASS);
    Evas_Object_Protected_Data *obj = efl_data_scope_get(eo_obj, EFL_CANVAS_OBJECT_CLASS);
+#ifdef HAVE_ECTOR
    Efl_Canvas_Textblock_Filter_Program *prg;
    Evas_Filter_Data_Binding *db;
+#endif
    User_Style_Entry *use;
 
    _evas_object_textblock_clear(eo_obj);
@@ -14825,7 +14851,9 @@ evas_object_textblock_render(Evas_Object *eo_obj EINA_UNUSED,
    Eina_List *shadows = NULL;
    Eina_List *glows = NULL;
    Eina_List *outlines = NULL;
+#ifdef HAVE_ECTOR
    Eina_List *gfx_filters = NULL;
+#endif
    void *context_save = context;
    int strikethrough_thickness, underline_thickness, underline_position;
    int i, j;
@@ -17004,6 +17032,7 @@ _efl_canvas_textblock_efl_text_style_text_secondary_glow_color_get(const Eo *obj
    _FMT_COLOR_RET(glow2);
 }
 
+#ifdef HAVE_ECTOR
 static void
 _efl_canvas_textblock_efl_text_style_text_gfx_filter_set(Eo *obj EINA_UNUSED, Efl_Canvas_Textblock_Data *o EINA_UNUSED,
       const char *gfx_filter_name)
@@ -17027,12 +17056,15 @@ _efl_canvas_textblock_efl_text_style_text_gfx_filter_set(Eo *obj EINA_UNUSED, Ef
           }
      }
 }
+#endif
 
+#ifdef HAVE_ECTOR
 static const char *
 _efl_canvas_textblock_efl_text_style_text_gfx_filter_get(const Eo *obj EINA_UNUSED, Efl_Canvas_Textblock_Data *o EINA_UNUSED)
 {
    return _FMT_INFO(gfx_filter_name)?_FMT_INFO(gfx_filter_name):NULL;
 }
+#endif
 
 static void
 _efl_canvas_textblock_efl_text_format_ellipsis_set(Eo *obj EINA_UNUSED, Efl_Canvas_Textblock_Data *o EINA_UNUSED, double value EINA_UNUSED)
