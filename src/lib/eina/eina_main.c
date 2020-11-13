@@ -291,7 +291,6 @@ _exactness_preload(void)
    char *env = getenv("EXACTNESS_PRELOAD_WIN32");
    if (env)
      {
-        fprintf(stderr, "\n >>> %s:%s: redirected? %s <<< \n", __FILE__, __func__, (eina_init_redirect ? "YES" : "NO"));
         if (!eina_init_redirect)
           {
              static HINSTANCE dll = NULL;
@@ -299,26 +298,22 @@ _exactness_preload(void)
 	       {
 	          if (!strcmp(env, "PLAY"))
 	            {
-                       fprintf(stderr, "\n >>> %s:%s: Loadging library exactness_play-1.dll... <<< \n", __FILE__, __func__);
 	               dll = LoadLibraryA("C:/Users/joaoantoniocardoso/efl/build/src/bin/exactness/exactness_play-1.dll");
                        if (!dll)
                          {
-                            fprintf(stderr, "\n >>> Failed loading exactness_play-1.dll <<< \n");
+                            fprintf(stderr, "Failed loading exactness_play-1.dll\n");
                             return EINA_FALSE;
                          }
-                       fprintf(stderr, "\n >>> exactness_play-1.dll Loaded! <<< \n");
                        return EINA_TRUE;
 		    }
 	          else if (!strcmp(env, "RECORD"))
 		    {
-                       fprintf(stderr, "\n >>> %s:%s: Loadging library exactness_record-1.dll... <<< \n", __FILE__, __func__);
 	               dll = LoadLibraryA("C:/Users/joaoantoniocardoso/efl/build/src/bin/exactness/exactness_record-1.dll");
                        if (!dll)
                          {
-                            fprintf(stderr, "\n >>> Failed loading exactness_record-1.dll <<< \n");
+                            fprintf(stderr, "Failed loading exactness_record-1.dll\n");
                             return EINA_FALSE;
                          }
-                       fprintf(stderr, "\n >>> exactness_record-1.dll Loaded! <<< \n");
                        return EINA_TRUE;
 		    }
 	       }
@@ -344,7 +339,6 @@ EINA_API int
 eina_init(void)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s <<< (original) \n", __FILE__, __func__);
    const struct eina_desc_setup *itr, *itr_end;
 
    if (EINA_LIKELY(_eina_main_count > 0))
@@ -433,7 +427,6 @@ EINA_API int
 eina_shutdown(void)
 #endif
 {
-   fprintf(stderr, "\n >>> %s:%s (original) <<< \n", __FILE__, __func__);
    if (_eina_main_count <= 0)
      {
         ERR("Init count not greater than 0 in shutdown.");
