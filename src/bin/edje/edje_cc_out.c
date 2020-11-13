@@ -1369,6 +1369,7 @@ on_error:
    return EINA_FALSE;
 }
 
+#ifdef HAVE_ECTOR
 static void
 data_write_vectors(Eet_File *ef, int *vector_num)
 {
@@ -1451,6 +1452,7 @@ data_write_vectors(Eet_File *ef, int *vector_num)
      }
    eina_strbuf_free(buf);
 }
+#endif
 
 static void
 data_image_sets_init(void)
@@ -2860,8 +2862,10 @@ data_write(void)
         data_thread_fontmap_end(ef, NULL);
      }
    INF("fontmap: %3.5f", ecore_time_get() - t); t = ecore_time_get();
+#ifdef HAVE_ECTOR
    data_write_vectors(ef, &vector_num);
    INF("vectors: %3.5f", ecore_time_get() - t); t = ecore_time_get();
+#endif
    data_write_fonts(ef, &font_num);
    INF("fonts: %3.5f", ecore_time_get() - t); t = ecore_time_get();
    data_write_sounds(ef, &sound_num);
