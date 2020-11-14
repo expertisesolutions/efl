@@ -51,8 +51,9 @@ foreach src : common_engine_src
   engine_src += files(join_paths('..','gl_common', src))
 endforeach
 
+pub_eo_files = []
 if get_option('ector')
-  pub_eo_files = [
+  pub_eo_files += [
     'evas_ector_gl_buffer.eo',
     'evas_ector_gl_image_buffer.eo'
   ]

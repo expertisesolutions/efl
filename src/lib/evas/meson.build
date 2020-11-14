@@ -155,11 +155,7 @@ evas_src += files([
 
 evas_src_opt = [ ]
 
-if get_variable('freetype', false) == false
-  freetype = dependency('freetype2')
-endif
-
-evas_ext_none_static_deps += freetype
+evas_ext_none_static_deps += dependency('freetype2')
 
 if (get_option('fontconfig'))
    config_h.set('HAVE_FONTCONFIG', '1')

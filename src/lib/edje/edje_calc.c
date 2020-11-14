@@ -3271,6 +3271,7 @@ _edje_vector_load_lottie(Edje *ed, Edje_Real_Part *ep, const char *key)
         efl_gfx_frame_controller_frame_set(ep->object, (int)(frame_count * desc->vg.frame));
      }
 }
+#endif
 
 static void
 _edje_vector_recalc_apply(Edje *ed, Edje_Real_Part *ep, Edje_Calc_Params *p3 EINA_UNUSED, Edje_Part_Description_Vector *chosen_desc, FLOAT_T pos)
@@ -3388,7 +3389,6 @@ _edje_part_vector_anim_play(Edje *ed EINA_UNUSED, Edje_Real_Part *rp, Eina_Bool 
    rp->typedata.vector->is_playing = EINA_TRUE;
    efl_canvas_object_animation_start(rp->object, rp->typedata.vector->anim, 1.0, 0.0);
 }
-#endif
 #endif
 #endif
 
