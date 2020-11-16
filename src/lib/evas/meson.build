@@ -56,12 +56,14 @@ evas_vg_savers_file = ['eet', 'svg']
 endif
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
-evas_deps = [eo, eet, eina, efl, emile, ector, ecore, draw, buildsystem]
+evas_deps = [eo, eet, eina, efl, emile, ecore, draw, buildsystem]
 evas_ext_deps = [draw_simple]
+evas_ext_none_static_deps = [buildsystem_simple, intl, m, valgrind, libunibreak, lua]
+
 if get_option('ector')
+  evas_deps += ector
   evas_ext_deps += vg_common
 endif
-evas_ext_none_static_deps = [buildsystem_simple, intl, m, valgrind, libunibreak, lua]
 
 pub_eo_file_target = []
 priv_eo_files = []
@@ -196,7 +198,7 @@ endif
 subdir('cache')
 subdir('file')
 if get_option('ector')
-subdir('vg')
+  subdir('vg')
 endif
 gl_deps = []
 
@@ -221,7 +223,11 @@ if get_option('opengl') != 'none'
 endif
 
 evas_link = [ ]
-evas_pub_deps = [eina, ecore, ector, emile]
+evas_pub_deps = [eina, ecore, emile]
+
+if get_option('ector')
+  evas_pub_deps += ector
+endif
 
 if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
   evas_opt = static_library('evas_opt',
@@ -231,7 +237,7 @@ if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
       evas_include_directories +
       [vg_common_inc_dir],
     c_args: native_arch_opt_c_args,
-    dependencies: [eina, eo, ector, emile, evas_deps, evas_ext_none_static_deps],
+    dependencies: [eina, eo, emile, evas_deps, evas_ext_none_static_deps],
   )
   evas_link += [ evas_opt ]
 endif
@@ -275,32 +281,32 @@ foreach loader_inst : evas_image_savers_file
 endforeach
 
 if get_option('ector')
-foreach loader_inst : evas_vg_loaders_file
-  loader = loader_inst[0]
-  loader_deps = loader_inst[1]
-
-  if (get_option('evas-loaders-disabler').contains(loader) == false)
-    file = join_paths(meson.source_root(), 'src', 'modules', 'evas', 'vg_loaders', loader, 'evas_vg_load_'+loader+'.c')
-    evas_static_list += [declare_dependency(
-      sources: file,
-      dependencies: loader_deps,
-    )]
-    config_h.set('EVAS_STATIC_BUILD_VG_'+loader.to_upper(), '1')
-  endif
-endforeach
+  foreach loader_inst : evas_vg_loaders_file
+    loader = loader_inst[0]
+    loader_deps = loader_inst[1]
+  
+    if (get_option('evas-loaders-disabler').contains(loader) == false)
+      file = join_paths(meson.source_root(), 'src', 'modules', 'evas', 'vg_loaders', loader, 'evas_vg_load_'+loader+'.c')
+      evas_static_list += [declare_dependency(
+        sources: file,
+        dependencies: loader_deps,
+      )]
+      config_h.set('EVAS_STATIC_BUILD_VG_'+loader.to_upper(), '1')
+    endif
+  endforeach
 endif
 
 if get_option('ector')
-foreach loader : evas_vg_savers_file
-  if (get_option('evas-loaders-disabler').contains(loader) == false)
-    file = join_paths(meson.source_root(), 'src', 'modules', 'evas', 'vg_savers', loader, 'evas_vg_save_'+loader+'.c')
-    evas_static_list += [declare_dependency(
-      sources: file,
-      dependencies: [eo, ector, emile, freetype, eet],
-    )]
-    config_h.set('EVAS_STATIC_BUILD_VG_'+loader.to_upper(), '1')
-  endif
-endforeach
+  foreach loader : evas_vg_savers_file
+    if (get_option('evas-loaders-disabler').contains(loader) == false)
+      file = join_paths(meson.source_root(), 'src', 'modules', 'evas', 'vg_savers', loader, 'evas_vg_save_'+loader+'.c')
+      evas_static_list += [declare_dependency(
+        sources: file,
+        dependencies: [eo, ector, emile, freetype, eet],
+      )]
+      config_h.set('EVAS_STATIC_BUILD_VG_'+loader.to_upper(), '1')
+    endif
+  endforeach
 endif
 
 evas_ext_deps += evas_static_list
@@ -328,9 +334,14 @@ evas = declare_dependency(
    include_directories: evas_include_directories + [vg_common_inc_dir] + [include_directories(join_paths('..', '..', 'modules', 'evas', 'engines', 'buffer'))],
 )
 
+evas_bin_deps = [eina, ecore, emile]
+if get_option('ector')
+  evas_bin_deps += ector
+endif
+
 evas_bin = declare_dependency(
    link_with : [evas_lib],
-   dependencies : [eina, ecore, ector, emile],
+   dependencies : evas_bin_deps,
    include_directories : evas_include_directories
 )
 

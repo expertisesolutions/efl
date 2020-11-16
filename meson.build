@@ -498,7 +498,6 @@ foreach package : subprojects
       endif
     endif
   else
-    set_variable(package_name, declare_dependency())
     message(package_name+' disabled!')
   endif
 endforeach
