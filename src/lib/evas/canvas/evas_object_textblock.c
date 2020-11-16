@@ -5883,6 +5883,8 @@ _layout_do_format(
         if (pad.t > *style_pad_t) *style_pad_t = pad.t;
         if (pad.b > *style_pad_b) *style_pad_b = pad.b;
      }
+#else
+   evas_text_style_pad_get(fmt->style, style_pad_l, style_pad_r, style_pad_t, style_pad_b);
 #endif
 
    if (fmt->underline2)
