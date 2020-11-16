@@ -336,7 +336,7 @@ subprojects = [
   ['evas'             ,[]                    ,  true,  true, false,  false,   true,      true,  true, ['eina', 'efl', 'eo'], ['vg_common', 'libunibreak', 'draw', 'triangulator', 'freetype']],
   ['efreet'           ,[]                    , false,  true, false,  false,   true,     false,  true, ['eina', 'efl', 'eo'], []],
   ['ecore_input_evas' ,[]                    , false,  true, false,  false,  false,     false,  true, ['eina', 'evas'], []],
-  ['ecore_evas'       ,[]                    ,  true,  true,  true,  false,  false,     false,  true, ['evas', 'ector'], []],
+  ['ecore_evas'       ,[]                    ,  true,  true,  true,  false,  false,     false,  true, ['evas'], []],
   ['ecore_imf'        ,[]                    ,  true,  true, false,  false,  false,     false,  true, ['eina'], []],
   ['embryo'           ,[]                    , false,  true,  true,  false,  false,     false,  true, ['eina', 'efl', 'eo'], []],
   ['eio'              ,[]                    , false,  true, false,  false,   true,      true,  true, ['eina', 'eet'], []],
