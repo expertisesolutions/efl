@@ -2294,9 +2294,8 @@ _evas_image_pixels_get(Eo *eo_obj, Evas_Object_Protected_Data *obj,
    if (filtered && o->has_filter)
      pixels = evas_filter_output_buffer_get(eo_obj);
    else
-     needs_post_render = EINA_FALSE;
 #else
-   needs_post_render = EINA_FALSE;
+     needs_post_render = EINA_FALSE;
 #endif
 
    if (!pixels && o->cur->source)
@@ -2469,7 +2468,7 @@ _evas_image_render_hband(Evas_Object_Protected_Data *obj, Evas_Image_Data *o,
 static void
 _evas_image_render(Eo *eo_obj, Evas_Object_Protected_Data *obj,
                    void *engine, void *output, void *context, void *surface,
-                   int x, int y, int l FILTER_PARAM, int t FILTER_PARAM, 
+                   int x, int y, int l FILTER_PARAM, int t FILTER_PARAM,
                    int r FILTER_PARAM, int b FILTER_PARAM, Eina_Bool skip_map,
                    Eina_Bool do_async)
 {
