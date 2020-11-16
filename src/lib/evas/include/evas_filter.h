@@ -1,11 +1,10 @@
 #ifndef _EVAS_FILTER_H
 #define _EVAS_FILTER_H
 
-#ifdef HAVE_ECTOR
-
 #include "evas_common_private.h"
 #include "evas_private.h"
 
+#ifdef HAVE_ECTOR
 
 #ifdef EAPI
 # undef EAPI
