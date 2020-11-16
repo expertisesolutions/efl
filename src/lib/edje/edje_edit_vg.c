@@ -1,5 +1,34 @@
 #include "edje_private.h"
 
+static const char *
+_edje_vector_name_find(Edje_Edit *eed, int vector_id)
+{
+   if (!eed->base->file) return NULL;
+   if (!eed->base->file->image_dir) return NULL;
+
+   if ((unsigned int)vector_id >= eed->base->file->image_dir->vectors_count)
+     return NULL;
+   return eed->base->file->image_dir->vectors[vector_id].entry;
+}
+
+static int
+_edje_vector_id_find(Edje_Edit *eed, const char *vector_name)
+{
+   unsigned int i;
+
+   if (!eed->base->file) return -1;
+   if (!eed->base->file->image_dir) return -1;
+
+   //printf("SEARCH IMAGE %s\n", vector_name);
+
+   for (i = 0; i < eed->base->file->image_dir->vectors_count; ++i)
+     if (eed->base->file->image_dir->vectors[i].entry
+         && !strcmp(vector_name, eed->base->file->image_dir->vectors[i].entry))
+       return i;
+
+   return -1;
+}
+
 /****************/
 /*  VECTOR API  */
 /****************/
