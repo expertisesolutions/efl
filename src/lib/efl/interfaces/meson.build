@@ -28,6 +28,14 @@ foreach eo_file : pub_legacy_eo_files
                            '-gchd', '@INPUT@'])
 endforeach
 
+if get_option('ector')
+    eolian_include_directories += ['-I', meson.current_source_dir() / 'vg']
+    subdir('vg')
+else
+    eolian_include_directories += ['-I', meson.current_source_dir() / 'non-vg']
+    subdir('non-vg')
+endif
+
 pub_eo_files = [
   'efl_playable.eo',
   'efl_config.eo',
@@ -41,7 +49,7 @@ pub_eo_files = [
   'efl_audio_control.eo',
   'efl_text.eo',
   'efl_text_font_properties.eo',
-  'efl_text_style.eo',
+  'efl_text_style_base.eo',
   'efl_text_format.eo',
   'efl_text_markup.eo',
   'efl_text_markup_util.eo',

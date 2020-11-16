@@ -1,0 +1,21 @@
+interface Efl.Text_Style extends Efl.Text_Style_Base {
+   [[Decorations to add to the text.
+
+     Decorations include text color, glow, outline, underline, strike-through and shadows.
+     @since 1.24
+   ]]
+   c_prefix: efl_text;
+   methods {
+      @property text_gfx_filter
+      {
+         [[Program that applies a special filter
+
+           See @Efl.Gfx.Filter.
+         ]]
+         values
+         {
+            code: string; [[Filter code.]]
+         }
+      }
+   }
+}

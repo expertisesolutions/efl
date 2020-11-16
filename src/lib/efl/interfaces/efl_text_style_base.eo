@@ -6,7 +6,7 @@ enum Efl.Text_Style_Background_Type
    ]]
    none = 0,    [[Do not use background.]]
    solid_color, [[Use a solid-color rectangle as background.
-                  Requires @Efl.Text_Style.text_background_color.]]
+                  Requires @Efl.Text_Style_Base.text_background_color.]]
 }
 
 enum Efl.Text_Style_Strikethrough_Type
@@ -16,7 +16,7 @@ enum Efl.Text_Style_Strikethrough_Type
    ]]
    none = 0, [[Do not use strike-through.]]
    single,   [[Strike-through with a single line.
-               Requires @Efl.Text_Style.text_strikethrough_color.]]
+               Requires @Efl.Text_Style_Base.text_strikethrough_color.]]
 }
 
 enum Efl.Text_Style_Effect_Type
@@ -26,25 +26,25 @@ enum Efl.Text_Style_Effect_Type
    ]]
    none = 0,            [[No effect.]]
    shadow,              [[Shadow effect.
-                          Uses @Efl.Text_Style.text_shadow_color and @Efl.Text_Style.text_shadow_direction.]]
+                          Uses @Efl.Text_Style_Base.text_shadow_color and @Efl.Text_Style_Base.text_shadow_direction.]]
    far_shadow,          [[Far shadow effect.
-                          Uses @Efl.Text_Style.text_shadow_color and @Efl.Text_Style.text_shadow_direction.]]
+                          Uses @Efl.Text_Style_Base.text_shadow_color and @Efl.Text_Style_Base.text_shadow_direction.]]
    soft_shadow,         [[Soft shadow effect.
-                          Uses @Efl.Text_Style.text_shadow_color and @Efl.Text_Style.text_shadow_direction.]]
+                          Uses @Efl.Text_Style_Base.text_shadow_color and @Efl.Text_Style_Base.text_shadow_direction.]]
    far_soft_shadow,     [[Far and soft shadow effect.
-                          Uses @Efl.Text_Style.text_shadow_color and @Efl.Text_Style.text_shadow_direction.]]
+                          Uses @Efl.Text_Style_Base.text_shadow_color and @Efl.Text_Style_Base.text_shadow_direction.]]
    glow,                [[Glow effect.
-                          Uses @Efl.Text_Style.text_glow_color and @Efl.Text_Style.text_secondary_glow_color.]]
+                          Uses @Efl.Text_Style_Base.text_glow_color and @Efl.Text_Style_Base.text_secondary_glow_color.]]
    outline,             [[Outline effect.
-                          Uses @Efl.Text_Style.text_outline_color.]]
+                          Uses @Efl.Text_Style_Base.text_outline_color.]]
    soft_outline,        [[Soft outline effect.
-                          Uses @Efl.Text_Style.text_outline_color.]]
+                          Uses @Efl.Text_Style_Base.text_outline_color.]]
    outline_shadow,      [[Outline + shadow effect.
-                          Uses @Efl.Text_Style.text_shadow_color, @Efl.Text_Style.text_shadow_direction and
-                          @Efl.Text_Style.text_outline_color.]]
+                          Uses @Efl.Text_Style_Base.text_shadow_color, @Efl.Text_Style_Base.text_shadow_direction and
+                          @Efl.Text_Style_Base.text_outline_color.]]
    outline_soft_shadow, [[Outline + soft shadow effect.
-                          Uses @Efl.Text_Style.text_shadow_color, @Efl.Text_Style.text_shadow_direction and
-                          @Efl.Text_Style.text_outline_color.]]
+                          Uses @Efl.Text_Style_Base.text_shadow_color, @Efl.Text_Style_Base.text_shadow_direction and
+                          @Efl.Text_Style_Base.text_outline_color.]]
 }
 
 enum Efl.Text_Style_Shadow_Direction
@@ -69,15 +69,15 @@ enum Efl.Text_Style_Underline_Type
    ]]
    none = 0, [[Text without underline.]]
    single,   [[Underlined with a single line.
-               Requires @Efl.Text_Style.text_underline_color.]]
+               Requires @Efl.Text_Style_Base.text_underline_color.]]
    double,   [[Underlined with a double line.
-               Requires @Efl.Text_Style.text_underline_color and @Efl.Text_Style.text_secondary_underline_color.]]
+               Requires @Efl.Text_Style_Base.text_underline_color and @Efl.Text_Style_Base.text_secondary_underline_color.]]
    dashed,   [[Underlined with a dashed line.
-               Requires @Efl.Text_Style.text_underline_dashed_color, @Efl.Text_Style.text_underline_dashed_width and
-               @Efl.Text_Style.text_underline_dashed_gap.]]
+               Requires @Efl.Text_Style_Base.text_underline_dashed_color, @Efl.Text_Style_Base.text_underline_dashed_width and
+               @Efl.Text_Style_Base.text_underline_dashed_gap.]]
 }
 
-interface Efl.Text_Style {
+interface Efl.Text_Style_Base {
    [[Decorations to add to the text.
 
      Decorations include text color, glow, outline, underline, strike-through and shadows.
@@ -278,17 +278,5 @@ interface Efl.Text_Style {
             a: ubyte; [[Alpha component.]]
          }
       }
-
-      // @property text_gfx_filter
-      // {
-      //    [[Program that applies a special filter
-
-      //      See @Efl.Gfx.Filter.
-      //    ]]
-      //    values
-      //    {
-      //       code: string; [[Filter code.]]
-      //    }
-      // }
    }
 }
