@@ -32,13 +32,13 @@ if get_option('ector')
   configure_file(
     input : 'efl_text_style_vg.eo',
     output : 'efl_text_style.eo',
-    configuration : configuration_data()
+    copy : true,
   )
 else
   configure_file(
     input : 'efl_text_style_non_vg.eo',
     output : 'efl_text_style.eo',
-    configuration : configuration_data()
+    copy : true,
   )
 endif
 
