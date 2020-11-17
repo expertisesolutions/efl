@@ -74,7 +74,6 @@ exit /B 0
     if exist %envfile% (
         @echo - Found %envfile% file.
         call %envfile%
-        echo vcpkg_toolchain_file: %vcpkg_toolchain_file%
     ) else (
         @echo - File %envfile% doesn't exists. Relying on previously set environment variables...
     )
@@ -144,8 +143,7 @@ exit /B 0
             --buildtype=debug^
             --native-file native-file-windows.txt
 
-    echo %vcpkg_toolchain_file%
-    call set MESONFLAGS=%MESONFLAGS% -Dcmake_args="-DCMAKE_TOOLCHAIN_FILE=%vcpkg_toolchain_file%"
+    call set MESONFLAGS=%MESONFLAGS%
 
     if defined openssl_dir (
         set MESONFLAGS=-Dopenssl_dir="%OPENSSL_DIR:"=%" %MESONFLAGS%
