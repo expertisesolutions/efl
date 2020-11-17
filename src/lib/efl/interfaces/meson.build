@@ -29,11 +29,9 @@ foreach eo_file : pub_legacy_eo_files
 endforeach
 
 if get_option('ector')
-    eolian_include_directories += ['-I', meson.current_source_dir() / 'vg']
-    subdir('vg')
+  run_command('cp', ['efl_text_style_vg.eo', 'efl_text_style.eo'])
 else
-    eolian_include_directories += ['-I', meson.current_source_dir() / 'non-vg']
-    subdir('non-vg')
+  run_command('cp', ['efl_text_style_non_vg.eo', 'efl_text_style.eo'])
 endif
 
 pub_eo_files = [
@@ -50,6 +48,7 @@ pub_eo_files = [
   'efl_text.eo',
   'efl_text_font_properties.eo',
   'efl_text_style_base.eo',
+  'efl_text_style.eo',
   'efl_text_format.eo',
   'efl_text_markup.eo',
   'efl_text_markup_util.eo',
