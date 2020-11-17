@@ -29,10 +29,35 @@ foreach eo_file : pub_legacy_eo_files
 endforeach
 
 if get_option('ector')
-  run_command('cp', ['efl_text_style_vg.eo', 'efl_text_style.eo'])
+  configure_file(
+    input : 'efl_text_style_vg.eo',
+    output : 'efl_text_style.eo',
+    configuration : configuration_data()
+  )
 else
-  run_command('cp', ['efl_text_style_non_vg.eo', 'efl_text_style.eo'])
+  configure_file(
+    input : 'efl_text_style_non_vg.eo',
+    output : 'efl_text_style.eo',
+    configuration : configuration_data()
+  )
 endif
+
+eo_file = 'efl_text_style.eo'
+pub_eo_file_text_style = [meson.current_build_dir() / eo_file]
+pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
+  input : meson.current_build_dir() / eo_file,
+  output : [eo_file + '.h'],
+  depfile : eo_file + '.d',
+  install : true,
+  install_dir : join_paths(dir_package_include, 'interfaces'),
+  command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
+                         '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
+                         '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
+                         '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                         '-gchd', '@INPUT@'])
+
+
+eolian_include_directories += ['-I', meson.current_build_dir()]
 
 pub_eo_files = [
   'efl_playable.eo',
@@ -48,7 +73,6 @@ pub_eo_files = [
   'efl_text.eo',
   'efl_text_font_properties.eo',
   'efl_text_style_base.eo',
-  'efl_text_style.eo',
   'efl_text_format.eo',
   'efl_text_markup.eo',
   'efl_text_markup_util.eo',
@@ -140,7 +164,8 @@ foreach eo_file : pub_eo_types_files
 endforeach
 
 if get_option('install-eo-files')
-  install_data(pub_eo_files + pub_legacy_eo_files + pub_eo_types_files,
+  install_data(pub_eo_files + pub_legacy_eo_files + pub_eo_types_files +
+    pub_eo_file_text_style,
     install_dir: join_paths(eolian_include_dir, package_version_name)
   )
 endif

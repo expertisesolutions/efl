@@ -211,6 +211,7 @@ typedef Efl_Gfx_Path_Command_Type Efl_Gfx_Path_Command;
 
 /* Text interfaces */
 #include "interfaces/efl_text_font_properties.eo.h"
+#include "interfaces/efl_text_style_base.eo.h"
 #include "interfaces/efl_text_style.eo.h"
 #include "interfaces/efl_text_format.eo.h"
 #include "interfaces/efl_text_markup.eo.h"
