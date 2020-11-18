@@ -914,7 +914,7 @@ _image_safe_unref(Evas_Public_Data *e, void *image, Eina_Bool async)
  * @param it the layout item to be freed
  */
 static void
-_item_free(Efl_Canvas_Textblock_Data *o FILTER_PARAM,
+_item_free(Efl_Canvas_Textblock_Data *o FILTER_PARAM, // Used only to get o->gfx_filter.text_items
       Evas_Object_Protected_Data *evas_o,
       Evas_Object_Textblock_Line *ln, Evas_Object_Textblock_Item *it)
 {
