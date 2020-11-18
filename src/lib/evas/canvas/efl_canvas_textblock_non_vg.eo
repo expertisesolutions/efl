@@ -1,0 +1,12 @@
+class Efl.Canvas.Textblock extends Efl.Canvas.Textblock_Base {
+   [[This is the Canvas-level text class. This class only takes care of rendering text,
+     if you need user interaction consider the classes in $[Efl.Ui].
+
+     Note: No text will be rendered until a font, a font size and a font color are specified.
+     This can be accomplished using @Efl.Text_Font_Properties.font_family, @Efl.Text_Font_Properties.font_size and
+     @Efl.Text_Style.text_color.
+     Alternatively, @.style_apply can be used providing the attributes $font, $font_size and $color.
+
+     @since 1.24
+   ]]
+}

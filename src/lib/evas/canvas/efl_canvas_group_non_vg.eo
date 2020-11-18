@@ -1,0 +1,14 @@
+class Efl.Canvas.Group extends Efl.Canvas.Group_Base
+{
+   [[A group object is a container for other canvas objects. Its children
+     move along their parent and are often clipped with a common clipper.
+     This is part of the legacy smart object concept.
+
+     A group is not necessarily a container (see @Efl.Container) in the
+     sense that a standard widget may not have any empty slots for content.
+     However it's still a group of low-level canvas objects (clipper, raw objects,
+     etc.).
+
+     @since 1.22
+   ]]
+}

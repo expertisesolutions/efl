@@ -1,4 +1,4 @@
-class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
+class Efl.Canvas.Textblock_Base extends Efl.Canvas.Object implements Efl.Text,
                        Efl.Text_Font_Properties,
                        Efl.Text_Style, Efl.Text_Format,
                        Efl.Text_Markup, Efl.Ui.I18n
@@ -242,7 +242,7 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
              $far_shadow, $soft_shadow and $far_soft_shadow.
              Default value is $none.
              Requires either $shadow_color, $glow_color or $outline_color.
-             See @Efl.Text_Style.text_effect_type 
+             See @Efl.Text_Style.text_effect_type
 
            - $shadow_direction: Indicate the shadow direction. Valid positions are $bottom_right, $bottom, $bottom_left, $left, $top_left, $top, $top_right
              and $right.

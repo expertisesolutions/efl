@@ -1,5 +1,8 @@
 eolian_include_directories += ['-I', join_paths(meson.source_root(), 'src', 'lib')]
 
+# for evas/cavas
+eolian_include_directories += ['-I', meson.build_root() / 'src' / 'lib']
+
 pub_legacy_eo_files = [
   'efl_gfx_fill.eo',
   'efl_gfx_entity.eo',
