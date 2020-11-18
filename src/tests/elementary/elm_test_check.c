@@ -88,7 +88,6 @@ EFL_START_TEST(elm_test_check_callbacks)
    int called = 0;
    int i;
 
-#ifdef HAVE_ECTOR
    win = win_add(NULL, "check", ELM_WIN_BASIC);
    evas_object_resize(win, 500, 500);
 
@@ -114,7 +113,6 @@ EFL_START_TEST(elm_test_check_callbacks)
         ck_assert_int_eq(elm_check_state_get(check), !(i % 2));
         ck_assert_int_eq(called, 1);
      }
-#endif
 }
 EFL_END_TEST
 
@@ -198,12 +196,10 @@ EFL_START_TEST(elm_test_check_api_call)
 
    get_me_to_those_events(check1);
 
-#ifdef HAVE_ECTOR
    data.value = 0;
    click_object(data.check1);
    ecore_main_loop_iterate();
-   ck_assert_int_eq(data.value, 1); // FIXME No more ifdef have_ector
-#endif
+   ck_assert_int_eq(data.value, 1);
 
    data.value = 0;
    click_object(data.check2);
