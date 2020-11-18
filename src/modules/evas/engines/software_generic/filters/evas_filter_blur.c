@@ -240,10 +240,8 @@ _box_blur_apply(Evas_Filter_Command *cmd, Eina_Bool vert, Eina_Bool rgba)
    void *src, *dst;
 
    radius = abs(vert ? (int) cmd->blur.dy : (int) cmd->blur.dx);
-#ifdef HAVE_ECTOR
    src = _buffer_map_all(cmd->input->buffer, &src_len, E_READ, rgba ? E_ARGB : E_ALPHA, &src_stride);
    dst = _buffer_map_all(cmd->output->buffer, &dst_len, E_WRITE, rgba ? E_ARGB : E_ALPHA, &dst_stride);
-#endif
    if (!src || !dst) goto unmap;
 
    if (cmd->blur.auto_count)
@@ -301,10 +299,8 @@ _box_blur_apply(Evas_Filter_Command *cmd, Eina_Bool vert, Eina_Bool rgba)
    ret = EINA_TRUE;
 
 unmap:
-#ifdef HAVE_ECTOR
    ector_buffer_unmap(cmd->input->buffer, src, src_len);
    ector_buffer_unmap(cmd->output->buffer, dst, dst_len);
-#endif
 
    return ret;
 }
@@ -399,10 +395,8 @@ _gaussian_blur_apply(Evas_Filter_Command *cmd, Eina_Bool vert, Eina_Bool rgba)
    int *weights;
 
    radius = abs(vert ? (int) cmd->blur.dy : (int) cmd->blur.dx);
-#ifdef HAVE_ECTOR
    src = _buffer_map_all(cmd->input->buffer, &src_len, E_READ, rgba ? E_ARGB : E_ALPHA, &src_stride);
    dst = _buffer_map_all(cmd->output->buffer, &dst_len, E_WRITE, rgba ? E_ARGB : E_ALPHA, &dst_stride);
-#endif
    w = cmd->input->w;
    h = cmd->input->h;
 
@@ -430,10 +424,8 @@ _gaussian_blur_apply(Evas_Filter_Command *cmd, Eina_Bool vert, Eina_Bool rgba)
      }
    else ret = EINA_FALSE;
 
-#ifdef HAVE_ECTOR
    ector_buffer_unmap(cmd->input->buffer, src, src_len);
    ector_buffer_unmap(cmd->output->buffer, dst, dst_len);
-#endif
 
    return ret;
 }

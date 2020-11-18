@@ -1,7 +1,3 @@
-if not get_option('ector')
-  subdir_done()
-endif
-
 evas_include_directories += include_directories(join_paths('..', rel_evas_modules, 'filters'))
 
 raw_evas_src = [
