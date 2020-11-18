@@ -75,7 +75,6 @@ pub_eo_files = [
   'efl_audio_control.eo',
   'efl_text.eo',
   'efl_text_font_properties.eo',
-  'efl_text_style_base.eo',
   'efl_text_format.eo',
   'efl_text_markup.eo',
   'efl_text_markup_util.eo',

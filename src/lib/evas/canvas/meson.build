@@ -38,7 +38,6 @@ eolian_include_directories += ['-I', meson.current_build_dir()]
 
 pub_eo_files = [
   'efl_canvas_polygon.eo',
-  'efl_canvas_image_internal_base.eo',
   'efl_canvas_image.eo',
   'efl_canvas_snapshot.eo',
   'efl_canvas_proxy.eo',
@@ -64,11 +63,9 @@ pub_eo_files = [
   'efl_canvas_textblock_factory.eo',
   'efl_canvas_rectangle.eo',
   'efl_canvas_object.eo',
-  'efl_canvas_group_base.eo',
   'efl_gfx_mapping.eo',
   'efl_canvas_event_grabber.eo',
   'efl_text_cursor_object.eo',
-  'efl_canvas_textblock_base.eo',
   'efl_text_formatter.eo',
   'efl_canvas_object_animation.eo',
 ]

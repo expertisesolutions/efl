@@ -1,4 +1,7 @@
-class Efl.Canvas.Textblock extends Efl.Canvas.Textblock_Base implements Efl.Canvas.Filter.Internal
+class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
+                       Efl.Canvas.Filter.Internal, Efl.Text_Font_Properties,
+                       Efl.Text_Style, Efl.Text_Format,
+                       Efl.Text_Markup, Efl.Ui.I18n
 {
    [[This is the Canvas-level text class. This class only takes care of rendering text,
      if you need user interaction consider the classes in $[Efl.Ui].
@@ -11,6 +14,71 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Textblock_Base implements Efl.Canv
      @since 1.24
    ]]
    methods {
+      @property is_empty {
+         [[Whether the object is empty (no text) or not.
+         ]]
+         get {
+         }
+         values {
+            is_empty: bool; [[$true if empty.]]
+         }
+      }
+      cursor_create {
+         [[Creates a new cursor and adds it to the text object.
+           This cursor can be used to manipulate and iterate the content of the text object.
+         ]]
+         return: Efl.Text_Cursor.Object @move; [[The created text cursor.]]
+      }
+      visible_range_get {
+         [[Returns the currently visible range.
+
+           The given $start and $end cursors are output variables:
+           they are set to the positions of the start and the end of the
+           visible range in the text, respectively.
+         ]]
+         return: bool; [[$true on success.]]
+         params {
+            @in start: Efl.Text_Cursor.Object; [[Range start position.]]
+            @in end: Efl.Text_Cursor.Object; [[Range end position.]]
+         }
+      }
+      @property style_insets {
+         [[Gets the left, right, top and bottom insets of the text.
+
+           The inset is any applied padding on the text (which is calculated
+           internally by styling applied to Textblock).
+         ]]
+         get {}
+         values {
+            l: int; [[Left padding.]]
+            r: int; [[Right padding.]]
+            t: int; [[Top padding.]]
+            b: int; [[Bottom padding.]]
+         }
+      }
+      @property bidi_delimiters {
+         [[BiDi delimiters are used for in-paragraph separation of bidirectional
+           segments. This is useful, for example, in the recipient fields of
+           e-mail clients where bidi oddities can occur when mixing RTL (right-to-left)
+           and LTR (left-to-right) text.
+         ]]
+         set {}
+         get {}
+         values {
+            delim: string; [[A null terminated string of delimiters, e.g ",|" or $null if empty.]]
+         }
+      }
+      @property newline_as_paragraph_separator {
+         [[When $true, the newline character will behave as a paragraph separator.
+           Paragraph separator equal U+2029, and new line equal U+000A.
+           This will effect a lot of text behaviour like @Efl.Text_Cursor.Object.move method.
+         ]]
+         set {}
+         get {}
+         values {
+            mode: bool; [[$true to treat new line as paragraph separator, $false otherwise.]]
+         }
+      }
       style_apply {
          [[Applies several style attributes at once using a formatting string.
            Given style attributes override previous values, leaving other attributes unaffected.
@@ -261,14 +329,177 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Textblock_Base implements Efl.Canv
                                  $[font=sans font_size=30 color=white].]]
          }
       }
+      @property all_styles {
+         [[A string representing the complete set of attributes applied to this text object.
+           This includes the default attributes plus any additional style applied with @.style_apply
+           or individual style properties like @Efl.Text_Font_Properties.font_slant or @Efl.Text_Format.wrap.
+
+           See @.style_apply for the description of all attributes.
+         ]]
+         get {}
+         values {
+            style: string; [[A whitespace-separated list of $[attribute=value] pairs, for example,
+                             $[font=sans font_size=30 color=white].]]
+         }
+      }
+      @property size_formatted {
+         [[The formatted width and height of this text block.
+
+           This calculates the actual size after restricting the
+           text block to the current size of the object.
+
+           The main difference between this and @.size_native
+           is that the "native" function does not take wrapping into account:
+           it just calculates the real width of the object as if it was
+           placed on an infinite canvas, while @.size_formatted gives the
+           size after wrapping text according to the size restrictions of the
+           object.
+
+           The formatted width and height do not include padding size.
+           To get the total size of text with style, you need to query padding size
+           from @.style_insets.
+
+           For example a text block containing the text:
+           "You shall not pass!" with no margins or padding and assuming
+           a monospace font and a size of 7x10 char widths (for simplicity)
+           has a native size of 19x1 and a formatted size of 5x4.
+         ]]
+         get {}
+         values {
+            size: Eina.Size2D; [[The formatted size of the object (after wrapping).]]
+         }
+      }
+      @property size_native {
+         [[The native width and height of this text block.
+
+           This calculates the actual size without taking account the
+           current size of the object.
+
+           The main difference between this and @.size_formatted
+           is that the "native" function does not take wrapping into account:
+           it just calculates the real width of the object as if it was
+           placed on an infinite canvas, while @.size_formatted gives the
+           size after wrapping text according to the size restrictions of the
+           object.
+
+           The native width and height do not include padding size.
+           To get the total size of text with style, you need to query padding size
+           from @.style_insets.
+
+           For example a text block containing the text:
+           "You shall not pass!" with no margins or padding and assuming
+           a monospace font and a size of 7x10 char widths (for simplicity)
+           has a native size of 19x1 and a formatted size of 5x4.
+         ]]
+         get {}
+         values {
+            size: Eina.Size2D; [[The native size of the object (without wrapping).]]
+         }
+      }
+      // Obstacles
+      obstacle_add @beta {
+         [[Add obstacle object $eo_obs to be avoided during layout
+           of text.
+
+           The textblock does the layout of the text according to the
+           position of the obstacle.
+         ]]
+         params {
+            @in eo_obs: Efl.Canvas.Object; [[Obstacle object.]]
+         }
+         return: bool; [[$true on success.]]
+      }
+      obstacle_del @beta {
+         [[Removes $eo_obs from observation during text layout.
+         ]]
+         params {
+            @in eo_obs: Efl.Canvas.Object; [[Obstacle object.]]
+         }
+         return: bool; [[$true on success.]]
+      }
+      obstacles_update @beta {
+         [[Triggers for relayout due to obstacles' state change.
+
+           The obstacles alone don't affect the layout, until this is
+           called. Use this after doing changes (moving, positioning etc.)
+           in the obstacles that you  would like to be considered in the
+           layout.
+
+           For example: if you have just repositioned the obstacles to
+           different coordinates relative to the text block, you need to
+           call this so it will consider this new state and will relayout
+           the text.
+         ]]
+      }
+      async_layout {
+         [[Requests to layout the text off the mainloop.
+
+           Once layout is complete, the result is returned as @Eina.Rect,
+           with the $w and $h fields set.
+
+           This can be used to layout Textblock before it is required
+           to layout internally in back thread, which can enhance application
+           performance.
+         ]]
+         return: future<Eina.Rect>; [[Future for layout result.]]
+      }
    }
    implements {
+      Efl.Object.constructor;
+      Efl.Object.destructor;
+      Efl.Canvas.Object.paragraph_direction { get; set; }
+      Efl.Text.text { get; set; }
       Efl.Gfx.Filter.filter_program { get; set; }
       Efl.Gfx.Filter.filter_data { get; set; }
       Efl.Gfx.Filter.filter_source { get; set; }
       Efl.Canvas.Filter.Internal.filter_dirty;
       Efl.Canvas.Filter.Internal.filter_input_render;
       Efl.Canvas.Filter.Internal.filter_state_prepare;
+      Efl.Text_Font_Properties.font_family { get; set; }
+      Efl.Text_Font_Properties.font_size { get; set; }
+      Efl.Text_Font_Properties.font_source { get; set; }
+      Efl.Text_Font_Properties.font_fallbacks { get; set; }
+      Efl.Text_Font_Properties.font_lang { get; set; }
+      Efl.Text_Font_Properties.font_weight { get; set; }
+      Efl.Text_Font_Properties.font_slant { get; set; }
+      Efl.Text_Font_Properties.font_width { get; set; }
+      Efl.Text_Font_Properties.font_bitmap_scalable { get; set; }
+      Efl.Text_Style.text_color { get; set; }
+      Efl.Text_Style.text_background_type { get; set; }
+      Efl.Text_Style.text_background_color { get; set; }
+      Efl.Text_Style.text_underline_type { get; set; }
+      Efl.Text_Style.text_underline_color { get; set; }
+      Efl.Text_Style.text_underline_height { get; set; }
+      Efl.Text_Style.text_underline_dashed_color { get; set; }
+      Efl.Text_Style.text_underline_dashed_width { get; set; }
+      Efl.Text_Style.text_underline_dashed_gap { get; set; }
+      Efl.Text_Style.text_secondary_underline_color { get; set; }
+      Efl.Text_Style.text_strikethrough_type { get; set; }
+      Efl.Text_Style.text_strikethrough_color { get; set; }
+      Efl.Text_Style.text_effect_type { get; set; }
+      Efl.Text_Style.text_outline_color { get; set; }
+      Efl.Text_Style.text_shadow_direction { get; set; }
+      Efl.Text_Style.text_shadow_color { get; set; }
+      Efl.Text_Style.text_glow_color { get; set; }
+      Efl.Text_Style.text_secondary_glow_color { get; set; }
       Efl.Text_Style.text_gfx_filter { get; set; }
+      Efl.Text_Format.ellipsis { get; set; }
+      Efl.Text_Format.wrap { get; set; }
+      Efl.Text_Format.multiline { get; set; }
+      Efl.Text_Format.text_horizontal_align { get; set; }
+      Efl.Text_Format.text_horizontal_align_auto_type { get; set; }
+      Efl.Text_Format.text_vertical_align { get; set; }
+      Efl.Text_Format.line_gap { get; set; }
+      Efl.Text_Format.line_rel_gap { get; set; }
+      Efl.Text_Format.tab_stops { get; set; }
+      Efl.Text_Format.password { get; set; }
+      Efl.Text_Format.replacement_char { get; set; }
+      Efl.Text_Markup.markup { set; get; }
+      Efl.Gfx.Entity.scale { set; }
+   }
+   events {
+      changed: void; [[Called when canvas text changed ]]
+      layout,finished: void; [[Called when the object has been layed out]]
+      style_insets,changed: void; [[Called when the property @.style_insets changed.]]
    }
 }
