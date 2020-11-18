@@ -3571,7 +3571,7 @@ evas_render_updates_internal(Evas *eo_e,
                        if (snap->snapshot_needs_redraw &&
                            eina_rectangle_intersection(&ur, &output))
                          {
-                            Cutout_Margin cm = {};
+                            Cutout_Margin cm = {0};
                             unsigned int restore_offset = offset;
                             Eina_Bool skip_cutouts = EINA_FALSE;
                             void *pseudo_canvas;
