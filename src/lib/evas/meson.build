@@ -44,15 +44,13 @@ evas_image_savers_file = [
 json = dependency('rlottie', required: get_option('evas-loaders-disabler').contains('json') == false)
 
 if get_option('ector')
-evas_vg_loaders_file = [
-  ['eet', [eet]],
-  ['json', [json]],
-  ['svg', []],
-]
-endif
+  evas_vg_loaders_file = [
+    ['eet', [eet]],
+    ['json', [json]],
+    ['svg', []],
+  ]
 
-if get_option('ector')
-evas_vg_savers_file = ['eet', 'svg']
+  evas_vg_savers_file = ['eet', 'svg']
 endif
 
 rel_evas_modules = join_paths('..', '..', '..', 'modules', 'evas', 'engines', 'software_generic')
@@ -230,12 +228,14 @@ if get_option('ector')
 endif
 
 if cpu_sse3 == true or cpu_neon == true and cpu_neon_intrinsics == false
+  evas_opt_include_directories = [include_directories('../../..')]
+  if get_option('ector')
+    evas_opt_include_directories += vg_common_inc_dir
+  endif
+
   evas_opt = static_library('evas_opt',
     sources: [evas_src_opt, pub_eo_file_target, priv_eo_file_target],
-    include_directories:
-      [ include_directories('../../..') ] +
-      evas_include_directories +
-      [vg_common_inc_dir],
+    include_directories: [evas_include_directories, evas_opt_include_directories],
     c_args: native_arch_opt_c_args,
     dependencies: [eina, eo, emile, evas_deps, evas_ext_none_static_deps],
   )
@@ -316,9 +316,13 @@ evas_ext_deps += declare_dependency(
 )
 
 evas_ext_deps += evas_ext_none_static_deps
+evas_ext_include_directories = []
+if get_option('ector')
+  evas_ext_include_directories += vg_common_inc_dir
+endif
 
 evas_lib = library('evas',
-    include_directories: evas_include_directories + [vg_common_inc_dir],
+    include_directories: [evas_include_directories, evas_ext_include_directories],
     sources : [evas_src, pub_eo_file_target, priv_eo_file_target],
     dependencies: [evas_deps, evas_ext_deps],
     link_with: evas_link,
@@ -331,7 +335,11 @@ evas = declare_dependency(
    link_with : [evas_lib],
    sources: pub_eo_file_target,
    dependencies : evas_pub_deps,
-   include_directories: evas_include_directories + [vg_common_inc_dir] + [include_directories(join_paths('..', '..', 'modules', 'evas', 'engines', 'buffer'))],
+   include_directories: [
+     evas_include_directories,
+     evas_ext_include_directories,
+     include_directories(join_paths('..', '..', 'modules', 'evas', 'engines', 'buffer'))
+   ],
 )
 
 evas_bin_deps = [eina, ecore, emile]

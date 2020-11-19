@@ -1,5 +1,10 @@
 #vg common is not really a static lib, is required by evas and requires evas ... so only collecting src here and compile them into evas ... ...
 
+if not get_option('ector')
+  warning('Ignoring vg_common because Ector is disabled!')
+  subdir_done()
+endif
+
 vg_common_src = files([
   'vg_common_svg.c',
   'vg_common.h',
