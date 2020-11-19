@@ -12,7 +12,6 @@ foreach eo_file : pub_eo_files_optional_ector
   endif
   eo_file = eo_file[0]
 
-  warning(eo_file)
   configure_file(
     input : in_eo,
     output : eo_file,
@@ -23,6 +22,8 @@ foreach eo_file : pub_eo_files_optional_ector
     input : meson.current_build_dir() / eo_file,
     output : [eo_file + '.h'],
     depfile : eo_file + '.d',
+    install : true,
+    install_dir : join_paths(dir_package_include, 'canvas'),
     command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
                            '-o', 'h:' + meson.current_build_dir() / eo_file + '.h',
                            '-o', 'c:' + meson.current_build_dir() / eo_file + '.c',
