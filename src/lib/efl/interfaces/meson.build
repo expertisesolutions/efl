@@ -59,6 +59,7 @@ pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
                          '-o', 'd:' + meson.current_build_dir() / eo_file + '.d',
                          '-gchd', '@INPUT@'])
 
+pub_eo_files_optional_ector = [meson.current_build_dir() / eo_file]
 
 eolian_include_directories += ['-I', meson.current_build_dir()]
 

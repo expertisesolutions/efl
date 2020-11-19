@@ -63,15 +63,22 @@ foreach lib : cxx_sublibs
     endif
     subdir_file_location = join_paths(file_location, eo_file_subdir)
     foreach cxx_gen_file : cxx_pub_eo_files
+      if (package_name == 'evas' or package_name == 'efl') and cxx_gen_file in pub_eo_files_optional_ector
+        cxx_gen_file_input = cxx_gen_file
+        cxx_gen_file = '@0@'.format(cxx_gen_file)
+        cxx_gen_file = cxx_gen_file.split('/')[-1]
+      else
+        cxx_gen_file_input = join_paths(subdir_file_location, cxx_gen_file)
+      endif
       cxx_generator_target += custom_target('eolian_cxx_gen_'+cxx_gen_file.underscorify()+'',
-        input : join_paths(subdir_file_location, cxx_gen_file),
+        input : cxx_gen_file_input,
         output : [cxx_gen_file + '.hh', cxx_gen_file + '.impl.hh'],
         install : true,
         install_dir : join_paths(dir_include, package_version_name, eo_file_subdir),
         command : [eolian_cxx_gen, '-I', meson.current_source_dir(), eolian_include_directories,
                                    '-o', join_paths(meson.current_build_dir(), cxx_gen_file + '.hh'),
                                    '@INPUT@'])
-      eo_file_list += files(join_paths(subdir_file_location, cxx_gen_file))
+      eo_file_list += files(cxx_gen_file_input)
     endforeach
   endforeach
 
