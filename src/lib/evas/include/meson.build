@@ -1,9 +1,12 @@
 evas_include_directories += [include_directories('.')]
 
 
-pub_eo_files = [
-  'evas_ector_buffer.eo'
-]
+pub_eo_files = []
+if get_option('ector')
+  pub_eo_files += [
+    'evas_ector_buffer.eo'
+  ]
+endif
 
 foreach eo_file : pub_eo_files
   pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
