@@ -31,21 +31,21 @@ foreach eo_file : pub_legacy_eo_files
                            '-gchd', '@INPUT@'])
 endforeach
 
+eo_file = 'efl_text_style.eo'
 if get_option('ector')
   configure_file(
     input : 'efl_text_style_vg.eo',
-    output : 'efl_text_style.eo',
+    output : eo_file,
     copy : true,
   )
 else
   configure_file(
     input : 'efl_text_style_non_vg.eo',
-    output : 'efl_text_style.eo',
+    output : eo_file,
     copy : true,
   )
 endif
 
-eo_file = 'efl_text_style.eo'
 pub_eo_file_text_style = [meson.current_build_dir() / eo_file]
 pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
   input : meson.current_build_dir() / eo_file,
@@ -54,9 +54,9 @@ pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
   install : true,
   install_dir : join_paths(dir_package_include, 'interfaces'),
   command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
-                         '-o', 'h:' + join_paths(meson.current_build_dir(), eo_file + '.h'),
-                         '-o', 'c:' + join_paths(meson.current_build_dir(), eo_file + '.c'),
-                         '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
+                         '-o', 'h:' + meson.current_build_dir() / eo_file + '.h',
+                         '-o', 'c:' + meson.current_build_dir() / eo_file + '.c',
+                         '-o', 'd:' + meson.current_build_dir() / eo_file + '.d',
                          '-gchd', '@INPUT@'])
 
 
