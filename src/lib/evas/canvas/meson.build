@@ -1,7 +1,7 @@
 pub_eo_files_optional_ector_ = [
-  ['efl_canvas_group.eo', 'efl_canvas_group_vg.eo', 'efl_canvas_group_non_vg.eo'],
-  ['efl_canvas_image_internal.eo', 'efl_canvas_image_internal_vg.eo', 'efl_canvas_image_internal_non_vg.eo'],
-  ['efl_canvas_textblock.eo', 'efl_canvas_textblock_vg.eo', 'efl_canvas_textblock_non_vg.eo'],
+  ['efl_canvas_group.eo', 'efl_canvas_group_vg.eo_template', 'efl_canvas_group_non_vg.eo_template'],
+  ['efl_canvas_image_internal.eo', 'efl_canvas_image_internal_vg.eo_template', 'efl_canvas_image_internal_non_vg.eo_template'],
+  ['efl_canvas_textblock.eo', 'efl_canvas_textblock_vg.eo_template', 'efl_canvas_textblock_non_vg.eo_template'],
 ]
 
 foreach eo_file : pub_eo_files_optional_ector_

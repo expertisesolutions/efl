@@ -34,13 +34,13 @@ endforeach
 eo_file = 'efl_text_style.eo'
 if get_option('ector')
   configure_file(
-    input : 'efl_text_style_vg.eo',
+    input : 'efl_text_style_vg.eo_template',
     output : eo_file,
     copy : true,
   )
 else
   configure_file(
-    input : 'efl_text_style_non_vg.eo',
+    input : 'efl_text_style_non_vg.eo_template',
     output : eo_file,
     copy : true,
   )

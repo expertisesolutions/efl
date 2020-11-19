@@ -10,6 +10,7 @@ EFL_START_TEST(eolian_static_check)
 {
    Eolian_State *eos = eolian_state_new();
    fail_if(!eolian_state_directory_add(eos, EO_SRC_DIR));
+   fail_if(!eolian_state_directory_add(eos, EO_BUILD_DIR));
    fail_if(!eolian_state_all_eot_files_parse(eos));
    fail_if(!eolian_state_all_eo_files_parse(eos));
    /* too many failures to enable this yet */
