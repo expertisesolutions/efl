@@ -4,7 +4,6 @@
 #include "evas_common_private.h"
 #include "evas_private.h"
 
-#ifdef HAVE_ECTOR
 
 #ifdef EAPI
 # undef EAPI
@@ -350,7 +349,5 @@ struct _Evas_Filter_Data_Binding
 
 #undef EAPI
 #define EAPI
-
-#endif
 
 #endif
