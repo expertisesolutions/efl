@@ -77,6 +77,9 @@ if [ "$DISTRO" != "" ] ; then
     docker exec --env EIO_MONITOR_POLL=1 --env CFLAGS="-fdirectives-only"  --env CC="gcc" --env CXX="g++"\
     --env CXXFLAGS="-fdirectives-only" $(cat $HOME/cid) sh -c "mkdir build && meson build $OPTS"
   else
+    echo "docker exec --env EIO_MONITOR_POLL=1 --env CC=\"ccache gcc\" \
+      --env CXX=\"ccache g++\" --env CFLAGS=\"-fdirectives-only\" --env CXXFLAGS=\"-fdirectives-only\" \
+      --env LD=\"ld.gold\" $(cat $HOME/cid) sh -c \"mkdir build && meson build $OPTS\""
     docker exec --env EIO_MONITOR_POLL=1 --env CC="ccache gcc" \
       --env CXX="ccache g++" --env CFLAGS="-fdirectives-only" --env CXXFLAGS="-fdirectives-only" \
       --env LD="ld.gold" $(cat $HOME/cid) sh -c "mkdir build && meson build $OPTS"
