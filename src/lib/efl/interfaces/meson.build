@@ -1,5 +1,8 @@
 eolian_include_directories += ['-I', join_paths(meson.source_root(), 'src', 'lib')]
 
+# for evas/canvas
+eolian_include_directories += ['-I', meson.build_root() / 'src' / 'lib']
+
 pub_legacy_eo_files = [
   'efl_gfx_fill.eo',
   'efl_gfx_entity.eo',
@@ -28,6 +31,36 @@ foreach eo_file : pub_legacy_eo_files
                            '-gchd', '@INPUT@'])
 endforeach
 
+eo_file = 'efl_text_style.eo'
+if get_option('ector')
+  in_eo = eo_file + '_vg'
+else
+  in_eo = eo_file + '_non_vg'
+endif
+
+configure_file(
+  input : in_eo,
+  output : eo_file,
+  copy : true,
+)
+
+pub_eo_file_text_style = [meson.current_build_dir() / eo_file]
+pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
+  input : meson.current_build_dir() / eo_file,
+  output : eo_file + '.h',
+  depfile : eo_file + '.d',
+  install : true,
+  install_dir : join_paths(dir_package_include, 'interfaces'),
+  command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
+                         '-o', 'h:' + meson.current_build_dir() / eo_file + '.h',
+                         '-o', 'c:' + meson.current_build_dir() / eo_file + '.c',
+                         '-o', 'd:' + meson.current_build_dir() / eo_file + '.d',
+                         '-gchd', '@INPUT@'])
+
+pub_eo_files_optional_ector = [meson.current_build_dir() / eo_file]
+
+eolian_include_directories += ['-I', meson.current_build_dir()]
+
 pub_eo_files = [
   'efl_playable.eo',
   'efl_config.eo',
@@ -41,7 +74,6 @@ pub_eo_files = [
   'efl_audio_control.eo',
   'efl_text.eo',
   'efl_text_font_properties.eo',
-  'efl_text_style.eo',
   'efl_text_format.eo',
   'efl_text_markup.eo',
   'efl_text_markup_util.eo',
@@ -133,7 +165,8 @@ foreach eo_file : pub_eo_types_files
 endforeach
 
 if get_option('install-eo-files')
-  install_data(pub_eo_files + pub_legacy_eo_files + pub_eo_types_files,
+  install_data(pub_eo_files + pub_legacy_eo_files + pub_eo_types_files +
+    pub_eo_file_text_style,
     install_dir: join_paths(eolian_include_dir, package_version_name)
   )
 endif

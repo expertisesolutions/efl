@@ -1,0 +1,136 @@
+class Efl.Canvas.Group extends Efl.Canvas.Object implements Efl.Gfx.Filter
+{
+   [[A group object is a container for other canvas objects. Its children
+     move along their parent and are often clipped with a common clipper.
+     This is part of the legacy smart object concept.
+
+     A group is not necessarily a container (see @Efl.Container) in the
+     sense that a standard widget may not have any empty slots for content.
+     However it's still a group of low-level canvas objects (clipper, raw objects,
+     etc.).
+
+     @since 1.22
+   ]]
+   data: Evas_Smart_Data;
+   methods {
+      @property group_need_recalculate {
+         [[Indicates that the group's layout needs to be recalculated.
+
+           If this flag is set, then the @.group_calculate function will
+           be called, during rendering phase of the canvas. After that,
+           this flag will be automatically unset.
+
+           Note: setting this flag alone will not make the canvas' whole scene
+           dirty. Using evas_render() will have no effect. To
+           force this, use @.group_change, which will also call this function
+           automatically, with the parameter set to $true.
+
+           See also @.group_calculate.
+         ]]
+         set {
+         }
+         get {
+         }
+         values {
+            value: bool; [[$true if the group layout needs to be recalculated, $false otherwise]]
+         }
+      }
+      group_change {
+         [[Marks the object as dirty.
+
+           This also forcefully marks the given object as needing
+           recalculation. As an effect, on the next rendering cycle its
+           @.group_calculate method will be called.
+         ]]
+      }
+      group_calculate {
+         [[Triggers an immediate recalculation of this object's geometry.
+
+           This will also reset the flag @.group_need_recalculate.
+         ]]
+      }
+      group_members_iterate @const {
+         [[Returns an iterator over the children of this object, which are
+           canvas objects.
+
+           This returns the list of "smart" children. This might be different
+           from both the @Efl.Object children list as well as the @Efl.Container
+           content list.
+         ]]
+         return: iterator<Efl.Canvas.Object> @move;
+            [[Iterator to object children]]
+      }
+      group_member_add {
+         [[Set a canvas object as a member of a given group (or smart object).
+
+           Members will automatically be stacked and layered together with the
+           smart object. The various stacking functions will operate on
+           members relative to the other members instead of the entire canvas,
+           since they now live on an exclusive layer (see
+           @Efl.Gfx.Stack.stack_above(), for more details).
+
+           Subclasses inheriting from this one may override this function
+           to ensure the proper stacking of special objects, such as clippers,
+           event rectangles, etc...
+
+           See also @.group_member_remove.
+           See also @.group_member_is.
+         ]]
+         params {
+            @in sub_obj: Efl.Canvas.Object; [[The member object.]]
+         }
+      }
+      group_member_remove {
+         [[Removes a member object from a given smart object.
+
+           This removes a member object from a smart object, if it was added
+           to any. The object will still be on the canvas, but no longer
+           associated with whichever smart object it was associated with.
+
+           See also @.group_member_add.
+           See also @.group_member_is.
+         ]]
+         params {
+            @in sub_obj: Efl.Canvas.Object; [[The member object to remove.]]
+         }
+      }
+      group_member_is @const {
+         [[Finds out if a given object is a member of this group.]]
+         params {
+            @in sub_obj: const(Efl.Canvas.Object); [[A potential sub object.]]
+         }
+         return: bool; [[$true if $sub_obj is a member of this group.]]
+      }
+      @property group_clipper @protected {
+         [[The internal clipper object used by this group.
+
+           This is the object clipping all the child objects. Do not delete
+           or otherwise modify this clipper!
+         ]]
+         values {
+            clipper: const(Efl.Canvas.Object); [[A clipper rectangle.]]
+         }
+         get {
+         }
+      }
+   }
+   events {
+      member,added: Efl.Gfx.Entity; [[Called when a member is added to the group.]]
+      member,removed: Efl.Gfx.Entity; [[Called when a member is removed from the group.]]
+   }
+   implements {
+      class.constructor;
+      class.destructor;
+      Efl.Object.constructor;
+      Efl.Object.destructor;
+      Efl.Object.debug_name_override;
+      Efl.Gfx.Color.color { set; }
+      Efl.Gfx.Entity.visible { set; }
+      Efl.Gfx.Entity.position { set; }
+      Efl.Gfx.Entity.size { set; }
+      Efl.Gfx.Filter.filter_program { set; }
+      Efl.Canvas.Object.clipper { set; }
+      Efl.Canvas.Object.no_render { set; }
+      Efl.Canvas.Object.paragraph_direction { get; set; }
+   }
+}

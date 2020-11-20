@@ -92,13 +92,21 @@ foreach lib : mono_sublibs
 
       subdir_file_location = join_paths(file_location, eo_file_subdir)
       foreach mono_gen_file : mono_pub_eo_files
+
+        if package_name in ['evas', 'efl'] and mono_gen_file in pub_eo_files_optional_ector
+          mono_gen_file_input = mono_gen_file
+          mono_gen_file = '@0@'.format(mono_gen_file)
+          mono_gen_file = mono_gen_file.split('/')[-1]
+        else
+          mono_gen_file_input = subdir_file_location / mono_gen_file
+        endif
         if not blacklisted_files.contains(mono_gen_file)
           partial = []
           if manual_inheritance_files.contains(mono_gen_file)
             partial = '-p'
           endif
           mono_generator_target += custom_target('eolian_mono_gen_'+mono_gen_file.underscorify()+'',
-            input : join_paths(subdir_file_location, mono_gen_file),
+            input : mono_gen_file_input,
             output : [mono_gen_file + '.cs'],
             command : [eolian_mono_gen, beta_option, '-I', meson.current_source_dir(), eolian_include_directories,
                                        '--dllimport', package_name,

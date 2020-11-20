@@ -1,7 +1,45 @@
+_pub_eo_files_optional_ector = [
+  'efl_canvas_group.eo',
+  'efl_canvas_image_internal.eo',
+  'efl_canvas_textblock.eo',
+]
+
+evas_canvas_eo_files = []
+
+foreach eo_file : _pub_eo_files_optional_ector
+  if get_option('ector')
+    in_eo = eo_file + '_vg'
+  else
+    in_eo = eo_file + '_non_vg'
+  endif
+
+  configure_file(
+    input : in_eo,
+    output : eo_file,
+    copy: true,
+  )
+
+  priv_eo_file_target += custom_target('eolian_gen_' + eo_file,
+    input : meson.current_build_dir() / eo_file,
+    output : [eo_file + '.h'],
+    depfile : eo_file + '.d',
+    install : true,
+    install_dir : join_paths(dir_package_include, 'canvas'),
+    command : eolian_gen + [ '-I', meson.current_source_dir(), eolian_include_directories,
+                           '-o', 'h:' + meson.current_build_dir() / eo_file + '.h',
+                           '-o', 'c:' + meson.current_build_dir() / eo_file + '.c',
+                           '-o', 'd:' + meson.current_build_dir() / eo_file + '.d',
+                           '-gchd', '@INPUT@'])
+
+  pub_evas_eo_files += files(meson.current_build_dir()/eo_file)
+  pub_eo_files_optional_ector += meson.current_build_dir() / eo_file
+endforeach
+
+evas_canvas_eo_files += pub_eo_files_optional_ector
+eolian_include_directories += ['-I', meson.current_build_dir()]
 
 pub_eo_files = [
   'efl_canvas_polygon.eo',
-  'efl_canvas_image_internal.eo',
   'efl_canvas_image.eo',
   'efl_canvas_snapshot.eo',
   'efl_canvas_proxy.eo',
@@ -27,11 +65,9 @@ pub_eo_files = [
   'efl_canvas_textblock_factory.eo',
   'efl_canvas_rectangle.eo',
   'efl_canvas_object.eo',
-  'efl_canvas_group.eo',
   'efl_gfx_mapping.eo',
   'efl_canvas_event_grabber.eo',
   'efl_text_cursor_object.eo',
-  'efl_canvas_textblock.eo',
   'efl_text_formatter.eo',
   'efl_canvas_object_animation.eo',
 ]
@@ -70,7 +106,7 @@ foreach eo_file : priv_eo_files
                            '-gchd', '@INPUT@'])
 endforeach
 
-evas_canvas_eo_files = pub_eo_files
+evas_canvas_eo_files += pub_eo_files
 
 pub_evas_eo_files += files(pub_eo_files)
 

@@ -65,6 +65,7 @@ eolian_cxx_suite = executable('eolian_cxx_suite',
   cpp_args : package_c_args +[
   '-DTESTS_BUILD_DIR="'+meson.current_build_dir()+'"',
   '-DEO_SRC_DIR="'+join_paths(meson.source_root(), 'src', 'lib')+'"',
+  '-DEO_BUILD_DIR="'+meson.build_root() / 'src' / 'lib'+'"',
   '-DTESTS_SRC_DIR="'+meson.current_source_dir()+'"']
 )
 

@@ -1,0 +1,38 @@
+abstract @beta Efl.Canvas.Image_Internal extends Efl.Canvas.Object implements Efl.Canvas.Filter.Internal,
+                                    Efl.Gfx.Image, Efl.Gfx.Buffer,
+                                    Efl.Gfx.Fill, Efl.Gfx.View,
+                                    Efl.Gfx.Image_Orientable, Efl.File_Save
+{
+   [[Efl canvas internal image class]]
+   data: Evas_Image_Data;
+   implements {
+      Efl.Object.constructor;
+      Efl.Object.destructor;
+      Efl.Object.finalize;
+      Efl.Object.debug_name_override;
+      Efl.File_Save.save;
+      Efl.Gfx.Image_Orientable.image_orientation { get; set; }
+      Efl.Gfx.Image.smooth_scale { get; set; }
+      Efl.Gfx.Image.ratio { get; }
+      Efl.Gfx.Image.content_region { get; }
+      Efl.Gfx.Image.border_insets { get; set; }
+      Efl.Gfx.Image.border_insets_scale { get; set; }
+      Efl.Gfx.Image.center_fill_mode { get; set; }
+      Efl.Gfx.Image.stretch_region { get; set; }
+      Efl.Gfx.Image.scale_hint { get; set; }
+      Efl.Gfx.Image.content_hint { get; set; }
+      Efl.Gfx.Image.image_size { get; }
+      Efl.Gfx.Image.image_load_error { get; }
+      Efl.Gfx.Buffer.alpha { get; set; }
+      Efl.Gfx.Buffer.buffer_update_add;
+      Efl.Gfx.Buffer.colorspace { get; }
+      Efl.Gfx.Fill.fill { get; set; }
+      Efl.Gfx.Fill.fill_auto { get; set; }
+      Efl.Gfx.Filter.filter_program { set; }
+      Efl.Gfx.View.view_size { get; }
+      Efl.Canvas.Filter.Internal.filter_dirty;
+      Efl.Canvas.Filter.Internal.filter_input_alpha;
+      Efl.Canvas.Filter.Internal.filter_input_render;
+      Efl.Canvas.Filter.Internal.filter_state_prepare;
+   }
+}

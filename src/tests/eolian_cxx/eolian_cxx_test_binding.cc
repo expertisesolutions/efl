@@ -75,7 +75,7 @@ EFL_START_TEST(eolian_cxx_test_binding_constructor_all_optionals)
       g.optional_ctor_b(5);
     }
     );
-  
+
   ck_assert_int_eq(2, g.req_ctor_a_value_get());
   ck_assert_int_eq(3, g.opt_ctor_a_value_get());
   ck_assert_int_eq(4, g.req_ctor_b_value_get());
@@ -221,6 +221,7 @@ klass_def init_test_data(std::string const target_file, std::string const target
 {
    ck_assert(::eolian_state_directory_add(state.value, TESTS_SRC_DIR));
    ck_assert(::eolian_state_directory_add(state.value, EO_SRC_DIR));
+   ck_assert(::eolian_state_directory_add(state.value, EO_BUILD_DIR));
    ck_assert(::eolian_state_all_eot_files_parse(state.value));
    ck_assert(::eolian_state_file_parse(state.value, target_file.c_str()));
 
