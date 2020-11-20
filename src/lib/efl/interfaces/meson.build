@@ -1,6 +1,6 @@
 eolian_include_directories += ['-I', join_paths(meson.source_root(), 'src', 'lib')]
 
-# for evas/cavas
+# for evas/canvas
 eolian_include_directories += ['-I', meson.build_root() / 'src' / 'lib']
 
 pub_legacy_eo_files = [
@@ -33,23 +33,21 @@ endforeach
 
 eo_file = 'efl_text_style.eo'
 if get_option('ector')
-  configure_file(
-    input : 'efl_text_style_vg.eo_template',
-    output : eo_file,
-    copy : true,
-  )
+  in_eo = eo_file + '_vg'
 else
-  configure_file(
-    input : 'efl_text_style_non_vg.eo_template',
-    output : eo_file,
-    copy : true,
-  )
+  in_eo = eo_file + '_non_vg'
 endif
+
+configure_file(
+  input : in_eo,
+  output : eo_file,
+  copy : true,
+)
 
 pub_eo_file_text_style = [meson.current_build_dir() / eo_file]
 pub_eo_file_target += custom_target('eolian_gen_' + eo_file,
   input : meson.current_build_dir() / eo_file,
-  output : [eo_file + '.h'],
+  output : eo_file + '.h',
   depfile : eo_file + '.d',
   install : true,
   install_dir : join_paths(dir_package_include, 'interfaces'),

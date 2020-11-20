@@ -92,7 +92,8 @@ foreach lib : mono_sublibs
 
       subdir_file_location = join_paths(file_location, eo_file_subdir)
       foreach mono_gen_file : mono_pub_eo_files
-        if mono_gen_file in pub_eo_files_optional_ector
+
+        if package_name in ['evas', 'efl'] and mono_gen_file in pub_eo_files_optional_ector
           mono_gen_file_input = mono_gen_file
           mono_gen_file = '@0@'.format(mono_gen_file)
           mono_gen_file = mono_gen_file.split('/')[-1]

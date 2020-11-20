@@ -63,12 +63,12 @@ foreach lib : cxx_sublibs
     endif
     subdir_file_location = join_paths(file_location, eo_file_subdir)
     foreach cxx_gen_file : cxx_pub_eo_files
-      if (package_name == 'evas' or package_name == 'efl') and cxx_gen_file in pub_eo_files_optional_ector
+      if package_name in ['evas', 'efl'] and cxx_gen_file in pub_eo_files_optional_ector
         cxx_gen_file_input = cxx_gen_file
         cxx_gen_file = '@0@'.format(cxx_gen_file)
         cxx_gen_file = cxx_gen_file.split('/')[-1]
       else
-        cxx_gen_file_input = join_paths(subdir_file_location, cxx_gen_file)
+        cxx_gen_file_input = subdir_file_location / cxx_gen_file
       endif
       cxx_generator_target += custom_target('eolian_cxx_gen_'+cxx_gen_file.underscorify()+'',
         input : cxx_gen_file_input,

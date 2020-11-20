@@ -316,8 +316,6 @@ class Efl.Canvas.Textblock extends Efl.Canvas.Object implements Efl.Text,
              Default value is $[1].
              See @Efl.Text_Style.text_underline_height.
 
-           - gfx_filter: Experimental filter name. See Efl.Gfx.Filter for more information.
-
            Color codes: Colors can be specified using any of the following formats:
            $[#RRGGBB], $[#RRGGBBAA], $[#RGB], $[#RGBA], $[rgb(r,g,b)], $[rgba(r,g,b,a)].
            Additionally, X11 color names like $red or $blanchedalmond can be used.

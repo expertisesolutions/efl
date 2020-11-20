@@ -1,16 +1,17 @@
-pub_eo_files_optional_ector_ = [
-  ['efl_canvas_group.eo', 'efl_canvas_group_vg.eo_template', 'efl_canvas_group_non_vg.eo_template'],
-  ['efl_canvas_image_internal.eo', 'efl_canvas_image_internal_vg.eo_template', 'efl_canvas_image_internal_non_vg.eo_template'],
-  ['efl_canvas_textblock.eo', 'efl_canvas_textblock_vg.eo_template', 'efl_canvas_textblock_non_vg.eo_template'],
+_pub_eo_files_optional_ector = [
+  'efl_canvas_group.eo',
+  'efl_canvas_image_internal.eo',
+  'efl_canvas_textblock.eo',
 ]
 
-foreach eo_file : pub_eo_files_optional_ector_
+evas_canvas_eo_files = []
+
+foreach eo_file : _pub_eo_files_optional_ector
   if get_option('ector')
-    in_eo = eo_file[1]
+    in_eo = eo_file + '_vg'
   else
-    in_eo = eo_file[2]
+    in_eo = eo_file + '_non_vg'
   endif
-  eo_file = eo_file[0]
 
   configure_file(
     input : in_eo,
@@ -29,17 +30,12 @@ foreach eo_file : pub_eo_files_optional_ector_
                            '-o', 'c:' + meson.current_build_dir() / eo_file + '.c',
                            '-o', 'd:' + meson.current_build_dir() / eo_file + '.d',
                            '-gchd', '@INPUT@'])
-endforeach
 
-evas_canvas_eo_files = []
-
-foreach eo_file_list : pub_eo_files_optional_ector_
-  pub_evas_eo_files += files(meson.current_build_dir()/eo_file_list[0])
-  pub_eo_files_optional_ector += meson.current_build_dir() / eo_file_list[0]
+  pub_evas_eo_files += files(meson.current_build_dir()/eo_file)
+  pub_eo_files_optional_ector += meson.current_build_dir() / eo_file
 endforeach
 
 evas_canvas_eo_files += pub_eo_files_optional_ector
-
 eolian_include_directories += ['-I', meson.current_build_dir()]
 
 pub_eo_files = [
@@ -109,7 +105,6 @@ foreach eo_file : priv_eo_files
                            '-o', 'd:' + join_paths(meson.current_build_dir(), eo_file + '.d'),
                            '-gchd', '@INPUT@'])
 endforeach
-
 
 evas_canvas_eo_files += pub_eo_files
 
