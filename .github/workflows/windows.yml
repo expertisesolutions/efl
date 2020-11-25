@@ -87,6 +87,9 @@ jobs:
       run: .\vcpkg\vcpkg --triplet x64-windows upgrade
     - name: Run vcpkg integrate install
       run: .\vcpkg\vcpkg integrate install
+    - name: Run VCVARS64
+      shell: cmd
+      run: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"'
     - name: Configure
       run: meson build --native-file platforms/windows-native.txt --native-file platforms/windows-ci-custom-native-properties.txt
     - name: Build
@@ -148,6 +151,9 @@ jobs:
       run: |
         dir "${{ github.workspace }}\build\subprojects\getopt"
         dir "${{ github.workspace }}\build\subprojects\pcre-8.37"
+    - name: Run VCVARS64
+      shell: cmd
+      run: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"'
     - name: Check path
       run: $env:PATH
     - name: Run tests
