@@ -48,12 +48,13 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-    - name: install ninja
-      run: py -3 -m pip install ninja
-    - name: test ninja
-      run: ninja --version
-    - name: install meson
-      run: py -3 -m pip install meson
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: (py -3 -m pip cache dir)
+        key: cache-pip
+    - name: Install python dependencies
+      run: py -3 -m pip install --upgrade --upgrade-strategy eager pip ninja meson
     - name: test meson
       run: meson -v
     - uses: ilammy/msvc-dev-cmd@v1
@@ -119,6 +120,13 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: (py -3 -m pip cache dir)
+        key: cache-pip
+    - name: Install python dependencies
+      run: py -3 -m pip install --upgrade --upgrade-strategy eager pip ninja meson
     - name: Cache vcpkg
       uses: actions/cache@v2
       id: cache-vcpkg
@@ -129,9 +137,6 @@ jobs:
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
       run: echo "${VCPKG_INFO}"
-    - name: Install ninja
-      # unexplicably, installation returns error code 1 if a cache location is used
-      run: py -3 -m pip install ninja
     - name: Test ninja
       run: ninja --version
     - name: Install meson
