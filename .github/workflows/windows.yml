@@ -87,11 +87,21 @@ jobs:
       run: .\vcpkg\vcpkg --triplet x64-windows upgrade
     - name: Run vcpkg integrate install
       run: .\vcpkg\vcpkg integrate install
+    # Usefull for debugging vcpkg:
+#    - name: List packages
+#      run: .\vcpkg\vcpkg list
+#    - name: List installed packages structure
+#      run: tree vcpkg\installed\x64-windows /F
     - name: Run VCVARS64
       shell: cmd
       run: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"'
     - name: Configure
       run: meson build --native-file platforms/windows-native.txt --native-file platforms/windows-ci-custom-native-properties.txt
+    # Usefull for debuggin Meson:
+#    - name: Show meson config
+#      run: meson configure build
+#    - name: Show all meson introspect
+#      run: meson introspect --all --indent build
     - name: Build
       run: meson compile -C build
     - name: Upload artifact
