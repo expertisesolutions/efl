@@ -30,6 +30,6 @@ opengl = 'none'
 emotion-loaders-disabler = 'gstreamer1,libvlc,xine'
 bindings = ''
 
-[properties]
+[built-in options]
 c_args = common_flags
 cpp_args = common_flags
