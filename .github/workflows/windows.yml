@@ -105,7 +105,7 @@ jobs:
     - name: Build
       run: .\build.bat
     - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2
       with:
         name: build
         path: build
@@ -140,9 +140,10 @@ jobs:
     - name: Test meson
       run: meson -v
     - name: Download build artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v2
       with:
         name: build
+        path: build
     - name: Check directory tree (for debugging purposes)
       run: tree .
     - name: Add vcpkg installed package dirs to path
