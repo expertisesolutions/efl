@@ -25,8 +25,8 @@ jobs:
         cache-name: cache-llvm
       with:
         path: "C:\\Program Files\\LLVM"
-        key: cache-llvm-v10.0.0.0-1
-        restore-keys: cache-llvm-v10.0.0.0-1
+        key: cache-llvm
+        restore-keys: cache-llvm
     - name: Cache vcpkg
       uses: actions/cache@v2
       id: cache-vcpkg
