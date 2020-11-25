@@ -10,6 +10,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
 
     # Remove Strawberry
     # Strawberry is added by default to the PATH environmment, and it happens
@@ -57,9 +60,6 @@ jobs:
       run: py -3 -m pip install --upgrade --upgrade-strategy eager pip ninja meson
     - name: test meson
       run: meson -v
-    - uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: x64
     - name: Show from where clang-cl
       run: where clang-cl
 
