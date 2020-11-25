@@ -98,12 +98,10 @@ jobs:
       run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/bin"
     - name: Add vcpkg installed package dirs to path (debug libs)
       run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/debug/bin"
-    - name: configure
-      run: .\configure.bat
-      env:
-        vcpkg_toolchain_file: ${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+    - name: Configure
+      run: meson build --native-file platforms/windows-native.txt --native-file platforms/windows-ci-custom-native-properties.txt
     - name: Build
-      run: .\build.bat
+      run: meson compile -C build
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
