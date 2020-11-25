@@ -10,6 +10,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+
+    # Remove Strawberry
+    # Strawberry is added by default to the PATH environmment, and it happens
+    # that the Meson inconveniently preffer its packages over those installed
+    # with vcpkg, so we just rename Strawberry folder so it can't be found.
+    - name: Remove Strawberry
+      run: mv C:\Strawberry C:\Strawberry.disabled
+
     - name: Cache LLVM install
       uses: actions/cache@v2
       id: cache-llvm
