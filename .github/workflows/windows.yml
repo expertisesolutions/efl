@@ -10,6 +10,18 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    # Remove Strawberry
+    # Strawberry is added by default to the PATH environmment, and it happens
+    # that the Meson inconveniently preffer its packages over those installed
+    # with vcpkg, so we just rename Strawberry folder so it can't be found.
+    - name: Remove Strawberry
+      run: mv C:\Strawberry C:\Strawberry.disabled
+
+    # CACHE LLVM
     - name: Cache LLVM install
       uses: actions/cache@v2
       id: cache-llvm
@@ -17,8 +29,10 @@ jobs:
         cache-name: cache-llvm
       with:
         path: "C:\\Program Files\\LLVM"
-        key: cache-llvm-v10.0.0.0-1
-        restore-keys: cache-llvm-v10.0.0.0-1
+        key: cache-llvm
+        restore-keys: cache-llvm
+
+    # CACHE VCPKG
     - name: Cache vcpkg
       uses: actions/cache@v2
       id: cache-vcpkg
@@ -29,31 +43,38 @@ jobs:
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
       run: echo "${VCPKG_INFO}"
+
+    # INSTALL LLVM
     - name: Install LLVM
       if: steps.cache-llvm.outputs.cache-hit != 'true'
       run: choco install llvm
     - name: Add clang-cl to PATH
-      run: echo "::add-path::C:\Program Files\LLVM\bin"
+      run: echo "C:\Program Files\LLVM\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Search clang-cl
       run: clang-cl -v
-    - name: add python scripts to path
-      run: |
-        $python_version = (py -3 --version).replace("Python ", "")
-        $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
-        echo "::add-path::$python_scripts_path"
-    - name: install ninja
-      run: py -3 -m pip install ninja
-    - name: test ninja
-      run: ninja --version
-    - name: install meson
-      run: py -3 -m pip install meson
+
+    # SETUP PYTHON
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    # CACHE PYTHON
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: (py -3 -m pip cache dir)
+        key: cache-pip
+
+    # INSTALL PYTHON PACKAGES
+    - name: Install python dependencies
+      run: py -3 -m pip install --upgrade --upgrade-strategy eager pip ninja meson
     - name: test meson
       run: meson -v
-    - uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: x64
     - name: Show from where clang-cl
       run: where clang-cl
+
+    # INSTALL VCPKG
     - name: Check if vcpkg is already installed
       if: steps.cache-vcpkg.outputs.cache-hit == 'true'
       run: .\vcpkg\vcpkg version
@@ -67,59 +88,66 @@ jobs:
     - name: Run vcpkg bootstrap
       if: steps.cache-vcpkg.outputs.cache-hit != 'true'
       run: .\vcpkg\bootstrap-vcpkg.bat
-    - name: Install openssl (vcpkg)
+
+    # INSTALL VCPKG PACKAGES
+    - name: Install vcpkg packages
       if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install openssl:x64-windows
-    - name: Install freetype (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install freetype:x64-windows
-    - name: Install libjpeg (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install libjpeg-turbo:x64-windows
-    - name: Install lua (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install lua:x64-windows
-    - name: Install luajit (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install luajit:x64-windows
-    - name: Install zlib (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install zlib:x64-windows
-    - name: Install check (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install check:x64-windows
-    - name: Install getopt (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install getopt:x64-windows
-    - name: Install curl (vcpkg)
-      if: steps.cache-vcpkg.outputs.cache-hit != 'true'
-      run: .\vcpkg\vcpkg install curl:x64-windows
+      run: .\vcpkg\vcpkg --triplet x64-windows install openssl freetype libjpeg-turbo lua luajit zlib check getopt curl
     - name: Add vcpkg installed package dirs to path
-      run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/bin"
+      run: echo "${{ github.workspace }}/vcpkg/installed/x64-windows/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Add vcpkg installed package dirs to path (debug libs)
-      run: echo "::add-path::${{ github.workspace }}/vcpkg/installed/x64-windows/debug/bin"
-    - name: configure
-      run: .\configure.bat
-      env:
-        vcpkg_toolchain_file: ${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: echo "${{ github.workspace }}/vcpkg/installed/x64-windows/debug/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+    - name: Upgrade Cached Packages
+      if: steps.cache-vcpkg.outputs.cache-hit == 'true'
+      run: .\vcpkg\vcpkg --triplet x64-windows upgrade
+    - name: Run vcpkg integrate install
+      run: .\vcpkg\vcpkg integrate install
+    # Usefull for debugging vcpkg:
+#    - name: List packages
+#      run: .\vcpkg\vcpkg list
+#    - name: List installed packages structure
+#      run: tree vcpkg\installed\x64-windows /F
+
+    # BUILD EFL
+    - name: Run VCVARS64
+      shell: cmd
+      run: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"'
+    - name: Configure
+      run: meson build --native-file platforms/windows-native.txt --native-file platforms/windows-ci-custom-native-properties.txt
+    # Usefull for debuggin Meson:
+#    - name: Show meson config
+#      run: meson configure build
+#    - name: Show all meson introspect
+#      run: meson introspect --all --indent build
     - name: Build
-      run: .\build.bat
+      run: meson compile -C build
     - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2
       with:
         name: build
         path: build
+
   tests:
     name: Tests
     runs-on: windows-latest
     needs: build
     steps:
     - uses: actions/checkout@v2
-    - name: Add python scripts to path
-      run: |
-        $python_version = (py -3 --version).replace("Python ", "")
-        $python_scripts_path = ($(echo C:\hostedtoolcache\windows\Python\$python_version\x64\Scripts ) -join "")
-        echo "::add-path::$python_scripts_path"
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    # CACHE PIP PACKAGES
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: (py -3 -m pip cache dir)
+        key: cache-pip
+    - name: Install python dependencies
+      run: py -3 -m pip install --upgrade --upgrade-strategy eager pip ninja meson
+
+    # CACHE VCPKG
     - name: Cache vcpkg
       uses: actions/cache@v2
       id: cache-vcpkg
@@ -130,37 +158,48 @@ jobs:
       env:
         VCPKG_INFO: ${{ toJSON(steps.cache-vcpkg) }}
       run: echo "${VCPKG_INFO}"
-    - name: Install ninja
-      # unexplicably, installation returns error code 1 if a cache location is used
-      run: py -3 -m pip install ninja
+
+    # CHECK PYTHON PACKAGES
     - name: Test ninja
       run: ninja --version
     - name: Install meson
       run: py -3 -m pip install meson
     - name: Test meson
       run: meson -v
+
+    # GET EFL BUILT ARTIFACTS
     - name: Download build artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v2
       with:
         name: build
+        path: build
     - name: Check directory tree (for debugging purposes)
       run: tree .
+
+    # SETUP VCPKG PACKAGES
     - name: Add vcpkg installed package dirs to path
       run: |
-        echo "::add-path::${{ github.workspace }}\vcpkg\installed\x64-windows\bin"
-        echo "::add-path::${{ github.workspace }}\vcpkg\installed\x64-windows\debug\bin"
+        echo "${{ github.workspace }}\vcpkg\installed\x64-windows\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "${{ github.workspace }}\vcpkg\installed\x64-windows\debug\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Check installed vcpkg libs
       run: |
         dir "${{ github.workspace }}\vcpkg\installed\x64-windows\bin"
         dir "${{ github.workspace }}\vcpkg\installed\x64-windows\debug\bin"
+
+    # SETUP BUILT EFL
     - name: Add build libs to path
       run: |
-        echo "::add-path::${{ github.workspace }}\build\subprojects\getopt"
-        echo "::add-path::${{ github.workspace }}\build\subprojects\pcre-8.37"
+        echo "${{ github.workspace }}\build\subprojects\getopt" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "${{ github.workspace }}\build\subprojects\pcre-8.37" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
     - name: Check built EFL libs
       run: |
         dir "${{ github.workspace }}\build\subprojects\getopt"
         dir "${{ github.workspace }}\build\subprojects\pcre-8.37"
+
+    # TEST EFL
+    - name: Run VCVARS64
+      shell: cmd
+      run: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"'
     - name: Check path
       run: $env:PATH
     - name: Run tests

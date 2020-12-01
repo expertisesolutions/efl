@@ -97,7 +97,7 @@ efl_libs.csv
 .uuid
 
 #native windows files
-env.bat
+custom-native-properties.txt
 
 # Subprojects
 subprojects/*
