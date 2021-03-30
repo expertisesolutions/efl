@@ -28,7 +28,7 @@ libmount = 'false'
 evas-loaders-disabler = 'gst,pdf,ps,raw,svg,rsvg,xcf,bmp,dds,generic,gif,ico,jp2k,pmaps,psd,tga,tgv,tiff,wbmp,webp,xpm,json'
 opengl = 'none'
 emotion-loaders-disabler = 'gstreamer1,libvlc,xine'
-bindings=
+bindings = ''
 
 [properties]
 c_args = common_flags
