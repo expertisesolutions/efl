@@ -1,0 +1,5 @@
+[properties]
+cmake_toolchain_file = 'D:/a/efl/efl/vcpkg/scripts/buildsystems/vcpkg.cmake'
+
+[project options]
+buildtype = 'debug'
