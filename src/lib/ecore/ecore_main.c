@@ -2547,6 +2547,7 @@ typedef struct
 {
    DWORD   objects_nbr;
    HANDLE *objects;
+   HANDLE *event;
    DWORD   timeout;
 } Ecore_Main_Win32_Thread_Data;
 
@@ -2554,11 +2555,10 @@ static unsigned int __stdcall
 _ecore_main_win32_objects_wait_thread(void *data)
 {
    Ecore_Main_Win32_Thread_Data *td = (Ecore_Main_Win32_Thread_Data *)data;
-   return MsgWaitForMultipleObjects(td->objects_nbr,
-                                    (const HANDLE *)td->objects,
-                                    FALSE,
-                                    td->timeout,
-                                    QS_ALLINPUT);
+   return WaitForMultipleObjects(td->objects_nbr + 1, // plus event to quit
+                                 (const HANDLE *)td->objects,
+                                 FALSE,
+                                 td->timeout);
 }
 
 static DWORD
@@ -2578,8 +2578,8 @@ _ecore_main_win32_objects_wait(DWORD objects_nbr,
    // too much objects, so we launch a bunch of threads to
    // wait for, each one calls MsgWaitForMultipleObjects
 
-   threads_nbr = objects_nbr / (MAXIMUM_WAIT_OBJECTS - 1);
-   threads_remain = objects_nbr % (MAXIMUM_WAIT_OBJECTS - 1);
+   threads_nbr = objects_nbr / (MAXIMUM_WAIT_OBJECTS - 2); // minus quit event
+   threads_remain = objects_nbr % (MAXIMUM_WAIT_OBJECTS - 2);
    if (threads_remain > 0) threads_nbr++;
 
    if (threads_nbr > MAXIMUM_WAIT_OBJECTS)
@@ -2606,8 +2606,9 @@ _ecore_main_win32_objects_wait(DWORD objects_nbr,
    objects_idx = 0;
    for (i = 0; i < threads_nbr; i++)
      {
+        DWORD cur_objects_idx = objects_idx;
         threads_data[i].timeout = timeout;
-        threads_data[i].objects = (HANDLE *)objects + objects_idx;
+        threads_data[i].event = CreateEvent(NULL, TRUE, FALSE, NULL);
 
         if ((i == (threads_nbr - 1)) && (threads_remain != 0))
           {
@@ -2616,9 +2617,14 @@ _ecore_main_win32_objects_wait(DWORD objects_nbr,
           }
         else
           {
-             threads_data[i].objects_nbr = (MAXIMUM_WAIT_OBJECTS - 1);
-             objects_idx += (MAXIMUM_WAIT_OBJECTS - 1);
+             threads_data[i].objects_nbr = (MAXIMUM_WAIT_OBJECTS - 2); // minus quit event
+             objects_idx += (MAXIMUM_WAIT_OBJECTS - 2);
           }
+
+        // copy objects and add quit event
+        threads_data[i].objects = (HANDLE*)malloc(sizeof(HANDLE*) * (threads_data[i].objects_nbr+1));
+        memcpy(threads_data[i].objects, objects + cur_objects_idx, threads_data[i].objects_nbr*sizeof(HANDLE*));
+        threads_data[i].objects[threads_data[i].objects_nbr] = threads_data[i].event;
 
         threads_handles[i] = (HANDLE)_beginthreadex
           (NULL, 0, _ecore_main_win32_objects_wait_thread,
@@ -2628,18 +2634,24 @@ _ecore_main_win32_objects_wait(DWORD objects_nbr,
              DWORD j;
 
              ERR("Can not create the waiting threads.");
+             for (j = 0; j != i; j++)
+                 SetEvent(threads_data[j].event);
              WaitForMultipleObjects(i, threads_handles, TRUE, INFINITE);
              for (j = 0; j < i; j++)
-               CloseHandle(threads_handles[i]);
+               CloseHandle(threads_handles[j]);
+             for (j = 0; j != i; j++)
+                 CloseHandle(threads_data[j].event);
+             for (j = 0; j != i; j++)
+                 free(threads_data[j].objects);
 
              goto free_threads_data;
           }
      }
 
-   result = WaitForMultipleObjects(threads_nbr,
-                                   threads_handles,
-                                   FALSE, // we wait until one thread signaled
-                                   INFINITE);
+   result = MsgWaitForMultipleObjects(threads_nbr,
+                                      threads_handles,
+                                      FALSE, // we wait until one thread signaled
+                                      INFINITE, QS_ALLINPUT);
 
    if (result < (WAIT_OBJECT_0 + threads_nbr))
      {
@@ -2651,15 +2663,25 @@ _ecore_main_win32_objects_wait(DWORD objects_nbr,
         if (GetExitCodeThread(threads_handles[result - WAIT_OBJECT_0],
                               &wait_res))
           {
+             for (i = 0; i < threads_nbr; i++)
+               SetEvent(threads_data[i].event);
              WaitForMultipleObjects(threads_nbr, threads_handles,
                                     TRUE, INFINITE);
              for (i = 0; i < threads_nbr; i++)
                CloseHandle(threads_handles[i]);
+             for (i = 0; i < threads_nbr; i++)
+               CloseHandle(threads_data[i].event);
+             for (i = 0; i < threads_nbr; i++)
+               free(threads_data[i].objects);
              free(threads_data);
              free(threads_handles);
              return wait_res;
           }
      }
+   else if (result == (WAIT_OBJECT_0 + threads_nbr))
+       return WAIT_OBJECT_0 + objects_nbr;
+   else if (result == WAIT_TIMEOUT)
+       return WAIT_OBJECT_0 + objects_nbr;
    else
      {
         ERR("Error when waiting threads.");
