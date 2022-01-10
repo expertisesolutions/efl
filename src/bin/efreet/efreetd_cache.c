@@ -227,7 +227,7 @@ subdir_cache_save(void)
 
    if (rename(tmpstr, eina_strbuf_string_get(buf)) < 0)
      {
-        unlink(tmpstr);
+        eina_file_unlink(tmpstr);
         ERR("Can't save subdir cache %s", eina_strbuf_string_get(buf));
      }
    // we dont need saving anymore - we just did

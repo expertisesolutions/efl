@@ -92,8 +92,7 @@ static void
 _sigint(int sig EINA_UNUSED)
 {
    EINA_LOG_ERR("Image save interrupted by SIGINT: '%s'.", job.output);
-   // eina_file_unlink
-   unlink(job.output);
+   eina_file_unlink(job.output);
    exit(-1);
 }
 #endif

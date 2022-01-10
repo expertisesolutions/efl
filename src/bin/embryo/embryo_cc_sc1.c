@@ -234,7 +234,7 @@ sc_closebin(void *handle, int deletefile)
 {
    fclose((FILE *) handle);
    if (deletefile)
-      unlink(binfname);
+      eina_file_unlink(binfname);
 }
 
 void
@@ -401,7 +401,7 @@ sc_compile(int argc, char *argv[])
      }				/* if */
    if (outf)
       sc_closeasm(outf);
-   unlink(outfname);
+   eina_file_unlink(outfname);
    eina_tmpstr_del(outfname);
    if (binf)
       sc_closebin(binf, errnum != 0);

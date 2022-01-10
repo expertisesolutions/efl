@@ -859,7 +859,7 @@ main(int argc, char **argv)
     {
         // delete old cache
         eet_close(theme_ef);
-        if (unlink(efreet_icon_theme_cache_file()) < 0)
+        if (eina_file_unlink(efreet_icon_theme_cache_file()) != EINA_TRUE)
         {
             if (errno != ENOENT) goto on_error_efreet;
         }
@@ -945,7 +945,7 @@ main(int argc, char **argv)
         {
             // delete old cache
             eet_close(icon_ef);
-            if (unlink(efreet_icon_cache_file(theme->theme.name.internal)) < 0)
+            if (eina_file_unlink(efreet_icon_cache_file(theme->theme.name.internal)) != EINA_TRUE)
             {
                 if (errno != ENOENT) goto on_error_efreet;
             }
@@ -1023,7 +1023,7 @@ main(int argc, char **argv)
     {
         // delete old cache
         eet_close(icon_ef);
-        if (unlink(efreet_icon_cache_file(EFREET_CACHE_ICON_FALLBACK)) < 0)
+        if (eina_file_unlink(efreet_icon_cache_file(EFREET_CACHE_ICON_FALLBACK)) != EINA_TRUE)
         {
             if (errno != ENOENT) goto on_error_efreet;
         }

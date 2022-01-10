@@ -91,7 +91,7 @@ EFL_START_TEST(eina_test_xattr_set)
    fail_if(ret != EINA_TRUE);
 
    close(fd);
-   unlink(test_file_path);
+   eina_file_unlink(test_file_path);
    eina_tmpstr_del(test_file_path);
 
 }
@@ -238,8 +238,8 @@ EFL_START_TEST(eina_test_xattr_list)
 
    close(fd);
    close(fd1);
-   unlink(test_file_path);
-   unlink(cp_file_path);
+   eina_file_unlink(test_file_path);
+   eina_file_unlink(cp_file_path);
    eina_tmpstr_del(test_file_path);
    eina_tmpstr_del(cp_file_path);
 }
@@ -283,7 +283,7 @@ EFL_START_TEST(eina_test_xattr_types)
    fail_if(!EINA_DBL_EQ(double_data, double_ret));
 
    close(fd);
-   unlink(test_file_path);
+   eina_file_unlink(test_file_path);
    eina_tmpstr_del(test_file_path);
 
 }

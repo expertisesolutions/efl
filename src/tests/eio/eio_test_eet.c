@@ -107,7 +107,7 @@ EFL_START_TEST(eio_test_eet_cipher_decipher)
    ecore_main_loop_begin();
    fail_if(!ef);
 
-   unlink(file);
+   eina_file_unlink(file);
    eina_tmpstr_del(file);
    eet_shutdown();
 }
@@ -201,7 +201,7 @@ EFL_START_TEST(eio_test_eet_data_cipher_decipher)
    ecore_main_loop_begin();
    fail_if(!ef);
 
-   unlink(file);
+   eina_file_unlink(file);
    eina_tmpstr_del(file);
    eet_shutdown();
 }

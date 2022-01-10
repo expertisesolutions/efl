@@ -26,7 +26,7 @@ typedef struct _url_test
 static void
 _free_url_test(url_test *info)
 {
-   unlink(info->_test_file);
+   eina_file_unlink(info->_test_file);
    eina_tmpstr_del(info->_test_file);
    close(info->_tmpfd);
    free(info);
@@ -371,7 +371,7 @@ static void
 _ecore_con_url_cookies_test_shutdown(Ecore_Con_Url *ec_url, int tmpfd, Eina_Tmpstr **path)
 {
    close(tmpfd);
-   unlink(*path);
+   eina_file_unlink(*path);
    eina_tmpstr_del(*path);
    ecore_con_url_free(ec_url);
    ecore_con_url_shutdown();

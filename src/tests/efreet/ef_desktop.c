@@ -179,14 +179,14 @@ ef_cb_desktop_save(void)
         desktop = efreet_desktop_get("/tmp/test.desktop");
         if (!desktop)
           {
-             unlink("/tmp/test.desktop");
+             eina_file_unlink("/tmp/test.desktop");
              printf("Failed to get Desktop file\n");
              return 0;
           }
 
         printf("save data: %d\n", efreet_desktop_save(desktop));
         efreet_desktop_free(desktop);
-        unlink("/tmp/test.desktop");
+        eina_file_unlink("/tmp/test.desktop");
      }
 
    desktop = efreet_desktop_empty_new("/tmp/test.desktop");
@@ -200,7 +200,7 @@ ef_cb_desktop_save(void)
    desktop->categories = eina_list_append(desktop->categories,
                                           eina_stringshare_add("Enlightenment"));
    printf("save test: %d\n", efreet_desktop_save(desktop));
-   unlink("/tmp/test.desktop");
+   eina_file_unlink("/tmp/test.desktop");
    efreet_desktop_free(desktop);
 
    return 1;

@@ -304,8 +304,7 @@ ecore_file_rmdir(const char *dir)
 ECORE_FILE_API Eina_Bool
 ecore_file_unlink(const char *file)
 {
-   if (unlink(file) < 0) return EINA_FALSE;
-   return EINA_TRUE;
+   return eina_file_unlink(file);
 }
 
 ECORE_FILE_API Eina_Bool

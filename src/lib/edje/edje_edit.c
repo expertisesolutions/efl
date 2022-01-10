@@ -12488,7 +12488,7 @@ _edje_edit_embryo_rebuild(Edje_Edit *eed)
    if (!f)
      {
         close(fd);
-        unlink(tmp_in);
+        eina_file_unlink(tmp_in);
         return EINA_FALSE;
      }
 
@@ -12619,11 +12619,11 @@ the_way_out:
 the_doorway:
    if (tmp_out)
      {
-        unlink(tmp_out);
+        eina_file_unlink(tmp_out);
         eina_tmpstr_del(tmp_out);
      }
 almost_out:
-   unlink(tmp_in);
+   eina_file_unlink(tmp_in);
    eina_tmpstr_del(tmp_in);
 
    return success;

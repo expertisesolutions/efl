@@ -188,7 +188,7 @@ EFL_START_TEST(eio_test_job_xattr_set)
 
    efl_unref(job);
    close(fd);
-   unlink(test_file_path);
+   eina_file_unlink(test_file_path);
    eina_tmpstr_del(test_file_path);
 }
 EFL_END_TEST

@@ -425,8 +425,8 @@ EFL_START_TEST(eina_file_map_new_test)
    eina_file_close(e_file);
    eina_file_close(e_file2);
 
-   unlink(test_file_path);
-   unlink(test_file2_path);
+   eina_file_unlink(test_file_path);
+   eina_file_unlink(test_file2_path);
    rmdir(test_dirname);
 
    free(test_file_path);
@@ -616,7 +616,7 @@ EFL_START_TEST(eina_test_file_xattr)
    fail_if(count != sizeof (data) / sizeof (data[0]));
    eina_iterator_free(it);
 
-   unlink(test_file_path);
+   eina_file_unlink(test_file_path);
    eina_tmpstr_del(test_file_path);
    eina_file_close(ef);
 }
@@ -678,8 +678,8 @@ EFL_START_TEST(eina_test_file_copy)
    eina_file_map_free(e_file2, content2);
    eina_file_close(e_file1);
    eina_file_close(e_file2);
-   unlink(test_file1_path);
-   unlink(test_file2_path);
+   eina_file_unlink(test_file1_path);
+   eina_file_unlink(test_file2_path);
    eina_tmpstr_del(test_file1_path);
    eina_tmpstr_del(test_file2_path);
 
@@ -722,8 +722,8 @@ EFL_START_TEST(eina_test_file_statat)
         fail_if(st.size != (unsigned int)template_size);
      }
 
-   unlink(test_file1_path);
-   unlink(test_file2_path);
+   eina_file_unlink(test_file1_path);
+   eina_file_unlink(test_file2_path);
    fail_if(rmdir(test_dirname) != 0);
    eina_tmpstr_del(test_file1_path);
    eina_tmpstr_del(test_file2_path);
@@ -766,11 +766,11 @@ EFL_START_TEST(eina_test_file_mktemp)
 #ifdef F_GETPATH
    /* most likely Mac OS */
    if (fcntl(fd, F_GETPATH, buf) != -1)
-     unlink(buf);
+     eina_file_unlink(buf);
 #elif !defined _WIN32
    sprintf(fmt, "/proc/self/fd/%d", fd);
    if (readlink(fmt, buf, sizeof(buf)))
-     unlink(buf);
+     eina_file_unlink(buf);
 #else
    {
       char buf[4096];
@@ -782,7 +782,7 @@ EFL_START_TEST(eina_test_file_mktemp)
       l = GetFinalPathNameByHandle(h, buf, sizeof(buf), 0);
       fail_if(l == 0);
       /* GetFinalPathNameByHandle() preprends path with \\?\ */
-      unlink(buf + 4);
+      eina_file_unlink(buf + 4);
    }
 #endif
    close(fd);
@@ -797,7 +797,7 @@ EFL_START_TEST(eina_test_file_mktemp)
         file = eina_file_open(tmpfile, EINA_FALSE);
         fail_if(!file);
         eina_file_close(file);
-        unlink(tmpfile);
+        eina_file_unlink(tmpfile);
         eina_tmpstr_del(tmpfile);
         close(fd);
      }
@@ -830,7 +830,7 @@ EFL_START_TEST(eina_test_file_mktemp)
 
    eina_iterator_free(it);
 
-   unlink(tmpfile);
+   eina_file_unlink(tmpfile);
    remove(tmpdir);
 }
 EFL_END_TEST

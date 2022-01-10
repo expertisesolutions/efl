@@ -826,7 +826,7 @@ _old_shots_rm_cb(const char *name, const char *path, void *data)
         unsigned int length = strlen(path) + strlen(name) + 2;
         char *buf = alloca(length);
         snprintf(buf, length, "%s/%s", path, name);
-        if (unlink(buf))
+        if (eina_file_unlink(buf) != EINA_TRUE)
           {
              printf("Failed deleting '%s/%s': ", path, name);
              perror("");

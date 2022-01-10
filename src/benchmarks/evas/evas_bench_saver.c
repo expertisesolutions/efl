@@ -65,7 +65,7 @@ evas_bench_saver_tgv(int request)
         evas_object_image_save(o, dest, NULL, "compress=1 quality=50");
      }
 
-   unlink(dest);
+   eina_file_unlink(dest);
    eina_tmpstr_del(dest);
 
    evas_free(e);

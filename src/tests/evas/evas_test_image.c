@@ -925,7 +925,7 @@ EFL_START_TEST(evas_object_image_map_unmap)
         h2 = sz.h;
 
         // unlink now to not leave any crap after failing the test
-        unlink(tmp);
+        eina_file_unlink(tmp);
 
         fail_if(w2 != w);
         fail_if(h2 != h);
@@ -975,7 +975,7 @@ EFL_START_TEST(evas_object_image_map_unmap)
         efl_gfx_buffer_unmap(o, sorig);
         efl_gfx_buffer_unmap(o2, sdest);
      }
-   else unlink(tmp);
+   else eina_file_unlink(tmp);
    eina_tmpstr_del(tmp);
 
    // TODO: test copy-on-write

@@ -373,7 +373,7 @@ write_error:
    ERR("Cannot write to %s", buf);
 error:
    if (f) fclose(f);
-   if (unlink(buf) != 0) WRN("Cannot delete tmp file %s", buf);
+   if (eina_file_unlink(buf) != EINA_TRUE) WRN("Cannot delete tmp file %s", buf);
 }
 
 int

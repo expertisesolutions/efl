@@ -555,8 +555,8 @@ main(int argc, char **argv)
       }
     else
       {
-         unlink(tmpuc);
-         unlink(tmpc);
+         eina_file_unlink(tmpuc);
+         eina_file_unlink(tmpc);
       }
 
     {

@@ -84,7 +84,7 @@ _extnbuf_free(Extnbuf *b)
    if (b->am_owner)
      {
         if (b->file) shm_unlink(b->file);
-        if (b->lock) unlink(b->lock);
+        if (b->lock) eina_file_unlink(b->lock);
      }
    
    if (b->addr != MAP_FAILED) munmap(b->addr, b->size);
