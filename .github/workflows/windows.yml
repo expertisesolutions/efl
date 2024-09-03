@@ -138,7 +138,7 @@ jobs:
     - name: Test meson
       run: meson -v
     - name: Download build artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build
     - name: Check directory tree (for debugging purposes)
